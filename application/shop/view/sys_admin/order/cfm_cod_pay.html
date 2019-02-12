@@ -1,0 +1,27 @@
+
+
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('cfmCodPay')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">线下支付收款确认</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">备注</label>
+                    <div class="col-sm-9">
+                      <textarea name="pay_no" class="input-xlarge" style="width:90%" >{$orderInfo.pay_no}</textarea>
+                       <div style="color:#F00; line-height:30px;">* 一旦操作后将不能再修改，请核实清楚后操作</div>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{$orderInfo.order_id}" name="id" />
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

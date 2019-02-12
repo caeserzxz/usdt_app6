@@ -1,0 +1,68 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head"}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>品牌管理</strong>&nbsp; <small>拖拽后保存生效</small>
+                </li>                                  
+            </ul>
+        </div>
+</header>
+
+<section class="scrollable  wrapper">
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <a href="javascript:;" data-remote="{:url('info')}" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加品牌</a>
+           
+
+
+        </header>
+        <div class="panel-body">
+
+
+            <div class="col-sm-12">
+
+                <div class="dd" id="dragClassify" data-toggle="nestable">
+                    <ol class="dd-list">
+
+                    {volist name="list" id="vo" }
+                        <li class="dd-item" data-id="{$vo.id}">
+                            <div class="dd-handle">
+                                <img src="{$vo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; height:18px;" /> {$vo.name}
+                                <span class="pull-right">
+                                    <a href="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                    <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除  {$vo.name}分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+                                </span>
+                            </div>
+                        </li>
+                   {/volist}  
+                      
+                    </ol>
+                </div>
+
+                <div class="<?=empty($list)?'':'hide'?>" id="noClassify">
+                    暂无分类 ...
+                </div>
+
+            </div>
+
+
+        </div>
+        <footer class="panel-footer">
+            <button type="submit" class="btn btn-primary" data-loading-text="保存中..." data-remote="{:url('saveSort')}" id="save_class">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </footer>
+    </section>
+</section>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+		seajs.use("dist/goods/init.js")
+</script>
+{/block}

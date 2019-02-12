@@ -1,0 +1,26 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{$action}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['name']?'编辑商品类目':'添加商品类目'}</h4>
+            </div>
+            <div class="modal-body">
+            			
+                		<div class="form-group">
+                            <label class="col-sm-2 control-label">类目名称</label>
+                            <div class="col-sm-6 must">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="name" value="{$row.name}" >
+                            </div>
+                        </div> 
+                       
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="id" value="{$row.id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                {gt name="row.id" value="0"}<button type="button" class="btn btn-default" href="{:url('delSkuCategory',array('id'=>$row['id']))}" data-toggle="ajaxRemove" data-fun="setSkuCategory" data-msg="确定将 {$row.name} 删除？"  >删除</button>{/gt}
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

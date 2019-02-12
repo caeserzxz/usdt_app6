@@ -1,0 +1,23 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>优惠券列表</strong>
+                </li>                                  
+            </ul>
+            {$bonus.type_name}
+        <a class="text-muted pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+     </div>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/bonus/bList" /}
+        </div>
+    </section>
+</section>
+
+{/block}

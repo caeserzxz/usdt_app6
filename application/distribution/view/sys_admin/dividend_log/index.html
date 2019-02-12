@@ -1,0 +1,42 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+ 	<form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>佣金明细</strong>
+                </li>                                  
+            </ul>
+             <select name="status"  style="width: 200px;" data-toggle="select2"  data-notsearch="true" data-chang="submit">
+                   <option value="-1">所有状态</option>
+                   {volist name="divdend_satus" id="dsval"}
+                   		 <option value="{$key}">{$dsval}</option>
+                   {/volist}
+              </select>
+              <div class="form-group">
+                    <a class="btn btn-default  " data-toggle="reportrange" data-change="submit">
+                        <i class="fa fa-calendar fa-lg"></i>
+                        <small>记录时间</small>
+                        <span></span> <b class="caret"></b>
+                        <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                    </a>
+              </div>
+              <input type="text" class="form-control input-text" value="{$search.user_id}" name="user_id" placeholder="用户ID"  />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/dividend_log/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

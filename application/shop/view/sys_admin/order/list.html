@@ -1,0 +1,83 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+   
+    <th>商品信息</th>
+    <th width="150" >实收款</th>
+    <th width="150" align="center">收货人</th>
+    <th width="100">支付方式</th>
+    <th width="100">状态</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+<tr>
+    
+    <td colspan="6"><span class="m-r">订单编号：{$vo.order_sn}</span>
+        <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+         <span class="m-r">{$vo.merger_name} {$vo.address}</span>
+        <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="btn btn-sm btn-default fr" title="查看详情">
+            <i class="fa fa-search "></i>订单详情</a>
+    </td>
+</tr>
+<tr>
+ 
+    <td>
+        <ul class="list-group no-borders">
+            {volist name="vo.goodsList" id="grow" }
+            <li class="list-group-item ">
+                <div class="media">
+                    <span class="pull-left thumb-sm">
+                        <img src="{$grow.pic}" ></span>
+                    <div class="pull-right">
+                        x {$grow.goods_number}
+                    </div>
+                    <div class="media-body">
+                        <div style="color:#999;">
+             
+                        <a href="{:url('info',array('id'=>$vo['order_id']))}">{$grow.goods_name} </a>{$grow.sku_name}</div>
+                        <small class="text-muted">单价： {$grow.goods_price|priceFormat}<span class="m-l-xs"></span></small>
+                    </div>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </td>
+    <td>
+        <p class=" m-b-xs">
+             {$vo.order_amount|priceFormat}
+           {neq name="a.ostatus" value="待发货" }
+            <a href="javascript:;" data-remote="{:url('changePrice',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" >
+                <i class="fa fa-edit text-muted"></i>
+            </a>
+            {/neq}
+        </p>
+        <small class="text-muted">[含运费: {$vo.shipping_fee}]</small>
+    </td>
+    <td>
+         {$vo.consignee}<p>{$vo.user_id}</p>
+         </td>
+    <td>{$vo.pay_name}</td>
+
+    <td>
+        <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
+        <p>
+           {$orderLang['ss'][$vo['shipping_status']]|raw}
+           {eq name="a.ostatus" value="待发货" }
+            <a href="javascript:;" data-remote="{:url('shipping',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" title="发货">
+                <i class="fa fa-truck text-muted"></i>
+            </a>
+            {/eq}
+        </p>
+        
+    </td>
+
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

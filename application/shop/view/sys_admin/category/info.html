@@ -1,0 +1,112 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['id'] > 0?'编辑分类':'添加分类'}</h4>
+            </div>
+            <div class="modal-body">
+            			<div class="form-group">
+                            <label class="control-label">分类级别：</label>
+                            <div class="col-sm-6 must">
+                                <select class="input-xlarge" data-rule-required="true" name="pid">
+                                     <option value="0">顶级分类</option>
+                                     {$select|raw}
+                                </select>
+                            </div>
+                        </div>
+                		<div class="form-group">
+                            <label class="control-label">分类名称：</label>
+                            <div class="col-sm-6 must">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="10" data-rule-required="true" name="name" value="{$row.name}" >
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="control-label">分类简称：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="10"  name="m_name" value="{$row.m_name}" >
+                            </div>
+                        </div> 
+                         <div class="form-group">
+                          	<label class="control-label">状态：</label>
+                            <div class=" controls">
+                              <label class="radio-inline">
+                                  <input name="status" value="1" {$row['status']==1?'checked':''} class="js_undertake " type="radio" >
+                                  正常
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="status" value="0" {$row['status']==0?'checked':''} class="js_undertake" type="radio" >隐藏
+                              </label>
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
+                          <div class="form-group">
+    <label class="control-label">运费计算方式：</label>
+    <div class="col-sm-5">
+       <select  name="freight_template" data-rule-required="true" aria-required="true" aria-invalid="true" >
+            	<option value="-1" selected>-- 使用默认运费模板 --</option>
+                 {volist name="ShippingTpl" id="sfrow" }
+                  <option value="{$sfrow.sf_id}" {$row['freight_template']==$sfrow['sf_id']?'selected':''}>{$sfrow.sf_name}{$sfrow['is_default']==1?'(默认)':''}</option>
+                 {/volist}
+                 {empty name="ShippingTpl"}
+                 <option value="0" selected>-- 没有运费模板 --</option>
+                 {/empty}
+             </select>
+       
+    </div>
+</div>
+                        <div class="form-group">
+                          	<label class="control-label">是否推荐：</label>
+                            <div class="col-sm-8 controls">
+                              <label class="radio-inline">
+                                  <input name="is_best" value="1" {$row['is_best']==1?'checked':''} class="js_undertake " type="radio" >
+                                  是
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="is_best" value="0" {$row['is_best']==0?'checked':''} class="js_undertake" type="radio" >否
+                              </label>
+                              <p><span class="help-inline">选择推荐将在分类列表中的推荐中额外显示其子类列表，其下级无子类，则设置也不显示</span></p> 
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
+                          <div class="form-group">
+                                <label class="control-label">首页显示：</label>
+                                <div class="col-sm-8 controls">
+                                  <label class="radio-inline">
+                                      <input name="is_index" value="1" {$row['is_index']==1?'checked':''} class="js_undertake " type="radio" >
+                                      是
+                                  </label>
+                                  <label class="radio-inline">
+                                      <input name="is_index" value="0" {$row['is_index']==0?'checked':''} class="js_undertake" type="radio" >否
+                                  </label> <p><span class="help-inline">所属大类设置已首页显示，建议其小类不要设置此项</span></p>         
+                                </div>     
+                                <div class="clearfix"></div>
+                          </div>
+                      <div class="form-group">
+                          <label class="control-label">分类图片：</label>
+                          <div class="col-sm-7">
+                              <img class="thumb_img" name="imagefile" id="imagefile" src="{$row.pic|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                              <input class="hide" type="text" id="classpic" name="pic" value="{$row.pic}" />
+                              <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                              <p><span class="help-inline">图片尺寸：128*128像素</span><br /><a href="javascript:;" onclick="$('#classpic').val('');$('#imagefile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">封面图片：</label>
+                          <div class="col-sm-7">
+                              <img class="thumb_img" name="coverfile" id="coverfile" src="{$row.cover|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                              <input class="hide" type="text" id="classcover" name="cover" value="{$row.cover}" />
+                              <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                              <p><span class="help-inline">图片尺寸：750*420像素</span><br /><a href="javascript:;" onclick="$('#classcover').val('');$('#coverfile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                          </div>
+                      </div>
+
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="id" value="{$row.id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

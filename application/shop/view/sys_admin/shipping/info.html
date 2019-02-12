@@ -1,0 +1,81 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">编辑快递</h4>
+            </div>
+            <div class="modal-body">
+                		<div class="form-group">
+                            <label class="col-sm-2 control-label">快递名称</label>
+                            <div class="col-sm-6 must">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_name" value="{$row.shipping_name}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递代码</label>
+                            <div class="col-sm-6 must">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_code" value="{$row.shipping_code}" >
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">是否启用</label>
+                            <div class="col-sm-6">
+                             <label class="radio-inline">
+                                  <input name="status" value="1" {$row.status|tplckval='=1','checked',true} type="radio">
+                                  是
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="status" value="0" {$row.status|tplckval='=0','checked'} type="radio">
+                                  否
+                              </label>
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">前台开放</label>
+                            <div class="col-sm-3">
+                             <label class="radio-inline">
+                                  <input name="is_front" value="1" {$row.is_front|tplckval='=1','checked',true} type="radio">
+                                  是
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="is_front" value="0" {$row.is_front|tplckval='=0','checked'} type="radio">
+                                  否
+                              </label>
+                              </div>
+                              <p class="help-inline">是否开放前台用户下单选择</p>
+                        </div> 
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">货到付款</label>
+                            <div class="col-sm-6">
+                                  <label class="radio-inline">
+                                      <input name="support_cod" value="1" {$row.support_cod|tplckval='=1','checked'} type="radio">
+                                      是
+                                  </label>
+                                  <label class="radio-inline">
+                                      <input name="support_cod" value="0" type="radio" {$row.support_cod|tplckval='=0','checked',true} >
+                                      否
+                                  </label>
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">排序</label>
+                            <div class="col-sm-2 ">
+                                <input type="text" class="input-max"  data-rule-required="true" name="sort_order" value="{$row.sort_order|intval}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递描述</label>
+                            <div class="col-sm-6 ">
+                              <textarea name="shipping_desc" class="input-xlarge" >{$row.shipping_desc}</textarea>
+                            </div><input name="shipping_id" type="hidden" value="{$row.shipping_id|intval}" />
+                        </div> 
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="id" value="{$row.shipping_id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

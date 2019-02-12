@@ -1,0 +1,37 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="120">支付编码</th>
+    <th width="100">状态</th>
+    <th width="100">支付金额</th>
+    <th>支付方式</th>
+    <th>流水号</th>
+    <th>记录时间</th>
+    <th>支付时间</th>
+    <th>退回时间</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+<tr>
+    <td>{$vo.pay_sn}</td>
+    <td>{$ss[$vo['status']]}</td>
+    <td>{$vo.pay_total}</td>
+    <td>{$vo.pay_name}</td>
+    <td>{$vo.serial_number}</td>
+    <td>{$vo.log_time|dateTpl}</td>
+    <td>{$vo.pay_time|dateTpl}</td>
+    <td>{$vo.return_time|dateTpl}</td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

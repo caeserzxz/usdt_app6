@@ -1,0 +1,29 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('editRole')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">修改分销身份</h4>
+            </div>
+            <div class="modal-body">
+                 <div class="form-group">
+                        <label class="col-sm-2 control-label">分销身份</label>
+                        <div class="col-sm-6 must">
+                            <select class="input-xlarge" name="role_id" data-rule-required="true">
+                              <option value="0" {$row['role_id']==0?'selected':''} >普通会员</option>
+                              {volist name="roleList" id="arr" }
+                                <option value="{$arr.role_id}" {$arr['role_id']==$row['role_id']?'selected':''} >{$arr.role_name}</option>
+                              {/volist}
+                            </select>
+                        </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{$row.user_id}" name="user_id" />
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,33 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+  <th>等级名称</th>
+  <th>积分下限</th>
+  <th>积分上限</th>
+  <th>会员折扣</th>
+  <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.level_name}</td>
+    <td>{$vo.min}</td>
+    <td>{$vo.max}</td>
+    <td>{$vo.level_pro}%</td>
+    <td>  <a href="{:url('info',array('level_id'=>$vo['level_id']))}"  data-toggle="ajaxModal" class="m-xs" title="编辑">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+        <a href="{:url('delete',array('level_id'=>$vo['level_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.level_name}" class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a></td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

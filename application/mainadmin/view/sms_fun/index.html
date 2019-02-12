@@ -1,0 +1,133 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>短信接口</strong>
+                </li>                                  
+            </ul>
+      </div>
+</header>
+<section class="scrollable  wrapper">
+  
+      <section class="panel panel-default">
+                <div class="widget-body">
+                    <div class="collapse in">
+                        <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+                           
+                            <div class="form-group">
+                                  <label class="control-label">短信接口：</label>
+                                  <div class="col-sm-5 must">
+                                    <select  id="supplier" class="input-max" data-rule-required="true" name="supplier">
+                                         <option value="0">选择接口</option>
+                                         {volist name="function" id="val"}	
+                                            <option value="{$val.function}" {$row['function'] == $val['function']?'selected':''} data-jsonval='{$val.val|json_encode}'>{$val.name}</option>            
+                                         {/volist}
+                                    </select>
+                                </div>
+                             </div>
+                             <div id="function_val_box">
+                             {volist name="row.function_val" id="val"}
+                                <div class="form-group">
+                                    <label class="control-label">{$function[$row["function"]][val][$key]}：</label>
+                                    <div class="col-sm-5 ">
+                                       <input type="text" name="function_val[{$key}]"  class="input-max" data-rule-required="true" value="{$val}">
+                                  </div>
+                               </div>
+                             {/volist}
+                             </div>
+                               <div class="form-group">
+                                  <label class="control-label">用户注册时：</label>
+                                    <div class="col-sm-4 m-t-md">
+                                         <label class="fl">
+                                               <input class="checkbox-slider colored-blue rand_amount"  name="register"  type="checkbox" value="1" {$row['register']|tplckval=1,'checked'}>
+                                               <span class="text"></span>
+                                         </label>
+                                         <span class="fl">用户注册时使用短信验证</span>
+                                    </div>
+
+                             </div>
+                              <div class="form-group">
+                                  <label class="control-label">用户登陆时：</label>
+                                    <div class="col-sm-4 m-t-md">
+                                         <label class="fl">
+                                               <input class="checkbox-slider colored-blue rand_amount"  name="login"  type="checkbox" value="1" {$row['login']|tplckval=1,'checked'}>
+                                               <span class="text"></span>
+                                         </label>
+                                         <span class="fl">用户登陆时使用短信验证</span>
+                                    </div>
+
+                             </div>
+                             <div class="form-group">
+                                  <label class="control-label">找回密码时：</label>
+                                    <div class="col-sm-4 m-t-md">
+                                         <label class="fl">
+                                               <input class="checkbox-slider colored-blue rand_amount"  name="forget_password" type="checkbox" value="1" {$row['forget_password']|tplckval=1,'checked'}>
+                                               <span class="text"></span>
+                                         </label>
+                                        <span class="fl">用户找回密码时使用短信验证</span>
+                                    </div>
+                             </div>
+                             <div class="form-group">
+                                  <label class="control-label">商家发货时：</label>
+                                    <div class="col-sm-4 m-t-md">
+                                         <label class="fl">
+                                               <input class="checkbox-slider colored-blue rand_amount"  name="shipping" type="checkbox" value="1" {$row['shipping']|tplckval=1,'checked'}>
+                                               <span class="text"></span>
+                                         </label>
+                                         <span class="fl">商家发货时是否给客户发短信</span>
+                                    </div>
+                             </div>
+                             <div class="form-group">
+                                  <label class="control-label">后台登陆时：</label>
+                                    <div class="col-sm-4 m-t-md">
+                                         <label class="fl">
+                                               <input class="checkbox-slider colored-blue rand_amount"  name="admin_login" type="checkbox" value="1" {$row['admin_login']|tplckval=1,'checked'}>
+                                               <span class="text"></span>
+                                         </label>
+                                         <span class="fl">登陆系统后台时使用短信验证</span>
+                                    </div>
+                             </div>
+                             <div class="form-group">
+                                   <label class="control-label"></label>
+                                    <div class="controls"> 
+                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                                    </div>
+                             </div>
+                        </form>
+                        
+                    </div>
+                </div>     
+      </section>
+  </section>
+
+{literal}
+<script type="text/html" id="text_tpl"> 
+{{each list as item index}} 
+  <div class="form-group">
+        <label class="control-label">{{item}}：</label>
+        <div class="col-sm-5 ">
+           <input type="text" name="function_val[{{index}}]"  class="input-max" data-rule-required="true" value="{{}}">
+      </div>
+   </div>
+{{/each}}
+</script>   
+
+<script type="text/javascript">
+$(function(){
+	$("#supplier").change(function (){
+		$("#function_val_box").html('');
+		var obj = $(this).find('option:selected');		
+		var jsonval = obj.data('jsonval');
+		if (typeof(jsonval) == 'undefined') return false;
+		$("#function_val_box").html(template("text_tpl", {'list':jsonval}));		
+	})
+})
+</script>
+{/literal} 
+  
+{/block}

@@ -1,0 +1,34 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="50">ID</th>
+    <th width="180">角色名称</th>
+    <th>说明</th>
+    <th width="80">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+<tr>
+    <td>{$vo.role_id}</td>
+    <td>{$vo.role_name}</td>
+    <td>{$vo.info}</td>
+  
+	<td>
+
+<a    href="{:url('info',['role_id'=>$vo['role_id']])}" data-toggle="ajaxModal" title="编辑" class="fa fa-edit text-muted m-xs" ></a>
+
+    </td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

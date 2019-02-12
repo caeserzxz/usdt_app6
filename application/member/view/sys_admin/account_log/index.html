@@ -1,0 +1,64 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+ 	<form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList',array('user_id'=>$search['user_id']))}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>帐户明细</strong>
+                </li>                                  
+            </ul>
+              <div class="form-group">
+                    <a class="btn btn-default  " data-toggle="reportrange" data-change="submit">
+                        <i class="fa fa-calendar fa-lg"></i>
+                        <small>时间范围</small>
+                        <span></span> <b class="caret"></b>
+                        <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                    </a>
+              </div>             
+            <div class="form-group">
+             <select name="change_type"  style="width: 130px;" data-toggle="select2"  data-chang="submit">
+                   <option value="">所有变动类型</option>
+                   <option value="1">人工调整</option>
+                   <option value="2">下单获得</option>
+                   <option value="3">交易减免</option>
+                   <option value="4">获得佣金</option>
+              </select>
+              <select name="account_type"  style="width: 130px;" data-toggle="select2"  data-chang="submit">
+                   <option value="">所有变动记录</option>
+                   <option value="balance_money">余额变动</option>
+                   <option value="use_integral">可用积分变动</option>
+                   <option value="total_dividend">总佣金变动</option>
+                   <option value="total_integral">总积分变动</option>
+              </select>
+            </div> 
+        <a class="text-muted pull-right pointer p-r m-t-md m-l" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        <a href="javascript:;" data-remote="{:url('manage',array('user_id'=>$account['user_id']))}" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-mc m-r"><i class="fa fa-edit"></i>调节会员帐户</a>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+ <div style=" line-height:23px; padding:5px;">
+ <table width="100%" style="max-width:1000px;" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>用户ID：{$account.user_id}</td>
+    <td>注册手机：{$account.mobile}</td>
+    <td>帐户余额：{$account.balance_money|priceFormat=true}</td>
+    <td>提现冻结：{$account.frozen_money|priceFormat=true}</td>
+    <td>历史总佣金：{$account.total_dividend|priceFormat=true}</td>
+    <td>历史总积分：{$account.total_integral|intval}</td>
+    <td>消费积分：{$account.use_integral|intval}</td>
+  </tr>
+</table>
+ </div>
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/account_log/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

@@ -1,0 +1,30 @@
+
+<table class="table table-striped m-b-none ">
+    <thead>
+        <tr>
+            <th width="80">编号</th>
+        	<th width="120">序列号</th>
+        	<th width="150">面额</th>
+            <th width="150">所属会员</th>
+            <th width="150">订单号</th>
+          	<th>使用时间</th>
+        </tr>
+    </thead>
+    <tbody>
+{volist name="data.list" id="row" }
+        <tr>
+        	<td>{$row.bonus_id}</td>
+        	<td>{$row.bonus_sn}</td>
+            <td><span class="money">{$bonus.type_money}</span></td>
+             <td>{gt name="row.user_id" value="0"}{$row.user_id}-{$row.user_id|userInfo}{/gt}</td>
+            <td>{$row.order_sn}</td>
+            <td>{$row.used_time|dateTpl}</td>
+        </tr>
+{/volist} 
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" align="center" valign="middle" >没有相关信息！</td></tr>
+</table>
+{/empty}

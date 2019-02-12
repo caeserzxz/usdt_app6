@@ -1,0 +1,31 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="50">LOGID</th>
+    <th width="120">用户ID</th>
+    <th >用户名</th>
+    <th>登陆时间</th>
+    <th>登陆IP</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+<tr>
+    <td>{$vo.log_id}</td>
+    <td>{$vo.user_id}</td>
+    <td>{$vo.user_id|adminInfo}</td>
+    <td>{$vo.log_time|dateTpl}</td>
+    <td>{$vo.log_ip}</td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

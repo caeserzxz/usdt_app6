@@ -1,0 +1,55 @@
+<table class="table table-bordered table-striped">
+    <thead class="flip-content bordered-palegreen">
+    <tr>
+        <th style="text-align: center;">ID</th>
+        <th style="text-align: center;">商品分类</th>
+        <th style="text-align: center;">用户名</th>
+        <th style="text-align: center;">评论内容</th>
+        <th style="text-align: center;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        {volist name="data.list" id="item"}
+        <tr>
+            <td style="text-align: center">{$item['id']}</td>
+            <td style="text-align: center;">
+                <div class="single-line" style="width: 400px;">{$item['category_name']}</div>
+            </td>
+            <td style="text-align: center">{$item['user_name']}</td>
+            <td style="text-align: center">
+                <div class="single-line" style="width: 400px;">{$item['content']}</div>
+            </td>
+
+            <td style="text-align: center">
+
+                <a href="{:url('info', ['id' => $item['id']])}">
+                    <i class="fa fa-edit"></i>
+                    详情
+                </a>
+
+                {if condition="!$item['deleted']"}
+
+                <a href="{:url('delete', ['id' => $item['id']])}" data-toggle="ajaxRemove" data-msg="确定删除？">
+                    <i class="fa fa-trash"></i>
+                    删除
+                </a>
+
+                {else/}
+
+                <a href="{:url('restore', ['id' => $item['id']])}" data-toggle="ajaxRemove" data-msg="确定还原？">
+                    <i class="fa fa-repeat m-r"></i>
+                    还原
+                </a>
+                {/if}
+            </td>
+        </tr>
+        {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" style="text-align: center" valign="middle">没有相关数据！</td>
+    </tr>
+</table>
+{/empty}

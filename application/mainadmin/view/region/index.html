@@ -1,0 +1,53 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head"}
+
+{/block}
+{block name="main" }
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>区域管理</strong>
+                </li>                                  
+            </ul>
+            <div class="upload-file btn btn-sm btn-primary fr  m-t-md m-r" data-uploadpath="{:url('upload')}" data-type='file' data-text='上传execl导入区域信息'> 上传execl导入区域信息</div> 
+             {gt name="$region.pid" value="0"}<a href="{:url('index',['pid'=>$region['pid']])}" class="btn btn-sm btn-default fr  m-t-md m-r" ><i class="fa fa-reply"></i> 返回上一级</a>{/gt}
+      </div>
+</header>
+    <section class="scrollable wrapper w-f ">
+        <section class="panel panel-default ">
+           <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th  colspan="3">当前选择的区域：{$region.name} </th>
+                </tr>
+                <tr>
+                {volist name="list" id="vo" mod="3" }	
+                    <td>{$vo.name} {if condition="$vo.level_type lt 3"} | <a href="{:url('index',['pid'=>$vo['id']])}" class="btn btn-sm btn-default"><i class="fa fa-edit m-r-xs"></i>管理</a>{/if}</td>
+                    {eq name="mod" value="2"}</tr><tr>{/eq}     	
+                {/volist}
+                </tr>	
+             </table>
+        </section>
+</section>
+
+    {include file="mainadmin@layouts/web_upload" /}
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+WebUploaderDiy('.upload-file');
+$(document).on('click',".upload-file input", function () {
+
+    pick = $(this).parents('.upload-file');
+    var extdata = pick.data('extdata');
+    if (uploadering == 1) return false;
+    
+    if (typeof(pick.data('uploadpath')) != 'undefined'){
+    	uploader.options.server = pick.data('uploadpath');
+    }
+    if (typeof(extdata) == 'object'){
+    	uploader.options.formData.extdata = JSON.stringify(extdata);    
+    }
+});
+</script>
+{/block}

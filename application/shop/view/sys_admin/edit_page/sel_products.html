@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>选择商品</title>
+  <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/editPage/css/bootstrap.min.css">
+
+  <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/editPage/css/layout.css">
+
+  <style>
+    body{
+      background-color: #fff;
+    }
+	.products-select{ font-size:12px;}
+  </style>
+</head>
+<body>
+  <div id="main-wrapper" class="products-select">
+    <div id="filter-wrapper">
+      <form id="filter-form" method="post" action="{:url('selproducts',array('pIds'=>$search['pIds']))}">
+        <table>
+          <tr>
+            <td>关键字：<input name="keyword" type="text" value="{$search['keyword']}"></td>
+            <td>分类：<select  name="cid" >
+                    <option value="0">--全部--</option>
+                    {$classListOpt|raw}
+            </select>
+            </td>
+            <td>
+              <input class="submit-field" type="submit" value="查询">
+              <a href="{:url('selproducts',array('pIds'=>$search['pIds']))}" class="reset">重置</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div id="data-wrapper">
+      <table class="data-table table-bordered table-responsive">
+        <tr>
+          <th><input id="check-all" name="all" type="checkbox" value="1">全选</th>
+          <th>商品图片</th>
+          <th>商品编号</th>
+          <th>商品名称</th>
+          <th>售价</th>
+          <th>库存</th>
+        </tr>
+        {volist name="goodsList" id="g"}
+                  <tr class="data">
+            <td width="80px">
+          {:strstr(','.$search['pIds'].',',','.$g['goods_id'].',')?'已选择':'<input class="item" name="pIds" type="checkbox" value="'.$g['goods_id'].'">'}
+          </td>
+            <td><img width="60" height="60" src="{$g.goods_thumb}"/></td>
+            <td>{$g['is_spec']==1?'多规格':$g['goods_sn']}</td>
+            <td>{$g.goods_name}</td>
+            <td>{$g['is_spec']==1?$g['show_price']:$g['shop_price']}</td>
+            <td>{$g['store_count']+$g['virtual_sale']}</td>
+          </tr>
+         {/volist}
+      </table>
+      {empty name="goodsList"}
+        <table width="100%" >
+            <tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+        </table>
+       {/empty} 
+    </div>
+    <div id="operation-wrapper" class="clearfix">
+      <div class="buttons">
+        <ul class="list-unstyled list-inline">
+                    <li><span class="add">添加</span></li>
+          <li>【小提示】在进入下一页面之前，请先点击添加按钮将本页选择的商品添加进组件。</li>
+        </ul>
+      </div>
+      <div class="pagination-wrapper">
+        {$pages|raw}
+      </div>
+    </div>
+  </div>
+  <script src="__STATIC__/editPage/js/jquery/jquery.min.js"></script>
+
+  <script>
+    
+    (function($){
+      $(document).ready(function(){
+        //全选
+        $("#check-all").click(function(){
+          $(".item").prop("checked",$(this).prop("checked"));
+        });
+
+        //添加商品进组件
+
+        $('span.add').click(function(){
+          var data = [];
+          $('.item').each(function(){
+            if($(this).prop("checked")){
+              data.push($(this).val())
+            }
+          });
+			
+          if(data.length == 0) return;
+          $.ajax({
+            url: '{:url("productsAdd")}',
+            data:{pIds:data.join()},
+            dataType : 'json',
+            type: 'post',
+            success:function(result){
+			  if (result.info) alert(result.info);
+			  if (result.state != 1) return false;
+              if(window.parent.McMore.selectProductsCallback(result)){
+                alert('商品添加成功')
+              }
+            }
+          })
+        })
+      })
+    })(jQuery)
+  </script>
+</body>
+</html>

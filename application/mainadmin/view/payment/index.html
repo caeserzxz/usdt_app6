@@ -1,0 +1,52 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>支付列表</strong>
+                </li>                                  
+            </ul>
+      </div>
+      </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            <table class="table table-striped m-b-none ">
+    <thead>
+        <tr>
+         <th width="100">ID</th>
+           <th width="120">接口名称</th>
+           <th width="120">支付编码</th>
+           <th >支付编码</th>
+           <th width="100">是否启用</th>
+           <th class="col-sm-1 mn70">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+{volist name="_list" id="row" }
+        <tr>
+        	<td align="center">{$row.pay_id}</td>
+            <td>{$row.pay_name}</td>
+             <td>{$row.pay_code}</td>
+             <td>{$row.pay_desc|raw}</td>
+            <td><a href="#" data-remote="{:url('ajaxEdit',array('pay_id'=>$row['pay_id'],'field'=>'status'))}" class="{$row.status|tplckval='>0','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+            <td>
+                <a href="{:url('info',array('pay_id'=>$row['pay_id']))}"  title="编辑">
+                    <i class="fa fa-edit text-muted"></i>
+                </a>
+                
+            </td>
+        </tr>
+{/volist} 
+    </tbody>
+</table>
+        </div>
+    </section>
+ </section>
+
+{/block}

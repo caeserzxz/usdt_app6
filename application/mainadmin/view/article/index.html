@@ -1,0 +1,31 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+    
+<header class="header  b-b clearfix">
+ <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>文章列表</strong>
+                </li>                                  
+            </ul>
+             <select name="cid"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选" data-chang="submit">
+                   <option value="">所有分类</option>
+                   {$cgOpt|raw}
+             </select>
+             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="文章标题" data-rule-required="true" />
+             <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+             <a href="{:url('info')}" class="btn btn-sm btn-default fr m-r-tm m-t-md"><i class="fa fa-plus"></i>添加文章</a>
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="article/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

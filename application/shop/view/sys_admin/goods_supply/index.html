@@ -1,0 +1,52 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head"}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>商品供货商</strong>
+                </li>                                  
+            </ul>
+            <a href="{:url('info')}" data-toggle="ajaxModal" title="添加供货商" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加供货商</a>
+        </div>
+</header>
+
+<section class="scrollable wrapper">
+    <section class="panel panel-default ">
+        <div class="table-responsive " >
+            <table id="listTable" class="table table-hover dataTable">
+<thead>
+<tr>
+    <th width="200">供货商名称</th>
+    <th >简介</th>
+    <th width="80" style="text-align:center;">操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="list" id="vo" }
+    <tr>
+      	<td>{$vo.name}</td>
+       <td>{$vo.info}</td>
+        <td align="center">
+        	<a  href="javascript:;" data-remote="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal" title="编辑" class="fa fa-edit m-xs" ></a>
+   			<a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.cat_name}"  class="fa fa-trash"  title="删除"></a>
+        </td>
+    </tr>
+{/volist}
+{empty name="list"}
+<tr>
+    <td height="200" colspan="24" valign="middle" style="text-align:center;">没有找到相关数据!</td>
+</tr>
+{/empty}
+</tbody>
+</table>
+      
+        </div>
+    </section>
+</section>
+{/block}

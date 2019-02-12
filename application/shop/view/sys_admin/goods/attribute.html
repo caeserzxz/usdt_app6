@@ -1,0 +1,18 @@
+{volist name="model.attr_list" id="attr" }
+    <div class="form-group">
+          <label class="control-label col-sm-2">{$attr.attr_name}：</label>
+          <div class="col-sm-5" >
+          		{if condition="$attr.attr_input_type eq 0"}
+          		<input type="text" size="40" value="{$goodsAttr[$attr['attr_id']]}" name="attr_value_list[{$attr.attr_id}]">
+                {elseif condition="$attr.attr_input_type eq 1"/}
+                      {volist name="attr.attr_values_arr" id="values" }
+                          <label><input name="attr_value_list[{$attr.attr_id}][]" type="checkbox" value="{$values}" 
+                         <in name="values" value="$goodsAttr[$attr['attr_id']]">checked</in> /> {$values}</label>
+                     {/volist}
+                      <input name="attr_value_list[{$attr.attr_id}][]" type="hidden" value="" />
+                {else/}
+                	<textarea name="attr_value_list[{$attr.attr_id}]" class="input-max" style="height:80px;">{$goodsAttr[$attr['attr_id']]}</textarea>
+                {/if}
+          </div>
+    </div>
+{/volist}

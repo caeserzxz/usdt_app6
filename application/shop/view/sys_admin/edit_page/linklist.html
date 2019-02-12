@@ -1,0 +1,35 @@
+<form class="form-horizontal form-validate form-modal" method="post" id="search_form" >
+    <div class="row-fluid">
+        <select name="status" id="status" style="width: 200px;padding:5px;" data-toggle="select2" data-placeholder="按活动状态筛选" data-chang="submit">
+                <option value="0">已开始</option>
+                <option value="1" {$status == 1 ? 'selected':''}>未开始</option>
+        </select>&nbsp;&nbsp;活动名称：<input name="keyword" id="keywords" type="text" class="input-medium" placeholder="输入活动名称进行查找" value="" style="width: 200px;padding:5px;"/>
+        <button type="button" onclick="eval_list({$type})" style="width:60px;padding:5px;">查找</button>
+    </div>
+</form>    
+<table class="table table-striped table-condensed" >        
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>链接</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="_list" id="vo">
+                    <tr>
+                        <td width="220">{$vo.a_name}</td>
+                        <td>http://{$http_host}{$url}/aid/{$vo.id}</td>
+                        <td>
+                            <button class="btn btn-default" onclick="window.parent.McMore.selectUrlCallback('http://{$http_host}{$url}/aid/{$vo.id}')">使用</button>
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+    </table>
+          <div class="row-fluid" style="height:50px;margin:10px;padding-top:20px;border-top:1px solid #CCC;">
+                共有 <span class="red" id="_count_num">0</span> 条符合条件
+                <button type="button"  id="p_page" onclick="eval_list({$type},'prev')">上一页</button>
+                <span id="p_page_str">第<span id="_nowPage">1</span>页/共<span id="_totalPages">1</span>页</span>
+                <button type="button" id="n_page" onclick="eval_list({$type},'next')">下一页</button>
+          </div>

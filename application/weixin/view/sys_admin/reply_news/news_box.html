@@ -1,0 +1,174 @@
+<style>
+.up_image{width:420px;position:relative;overflow:hidden;margin-bottom:20px;border:1px solid #d3d3d3;background-color:#fff;box-shadow:0 1px 0 rgba(0,0,0,0.1);-moz-box-shadow:0 1px 0 rgba(0,0,0,0.1);-webkit-box-shadow:0 1px 0 rgba(0,0,0,0.1);border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px
+}
+.up_image span div{padding:2px;}
+#top_title {padding:10px;position:relative;}
+#top_title span{ width:90%; padding:0px;}
+#top_title p{cursor:pointer;display:block;color:#c0c0c0;text-align:center;line-height:160px;font-weight:400;font-style:normal;background-color:#ececec;font-size:22px}
+
+.appmsg_item{*zoom:1;position:relative;padding:10px;border-top:1px solid #d3d3d3; height:100px; clear:both;}
+.appmsg_item span{float:left;width:318px;height:100%;}
+.appmsg_item p{cursor:pointer;position:relative;float:right;width:78px;height:78px;background-color:#ececec;}
+.appmsg_item p i{position:absolute;line-height:78px;font-weight:200;color:#c0c0c0; text-align:center;font-style:normal;width:78px;}
+.appmsg_item .p_class{width:78px;height:20px; background-color:#1e74c5; clear:both}
+.appmsg_item .p_class i{line-height:20px;width:78px; color:#ffffff; }
+</style>
+ <div class="form-group">
+    <label class="control-label">图文内容：</label>
+    <div class="controls">
+        
+        <div class="up_image">
+            <div id="top_title">
+                <p onclick="up_image_p_click(this)" style="background-image:url('{$row.imgurl}'); background-size:100%;">
+                    点击上传图片，360*200
+                    <input name="imgurl" value="{$row.imgurl}" type="hidden">
+                </p>
+                <span>
+                    <div>
+                        <strong style="margin-left:2em;">标题：</strong>
+                        <input name="title" title="请录入图文标题" class="input-text" style="width:75%;" value="{$row.title}" type="text">
+                    </div>
+                    <div>
+                        <strong style="margin-left:2em;">简介：</strong>
+                        <input name="description" title="请录入图文简介" class="input-text" style="width:75%;" value="{$row.description}" type="text">
+                    </div>
+                    <div>
+                        <strong>回复类型：</strong>
+                        <select id="bind_type" name="bind_type" onChange="show_url_type(this,0);" class="input-medium" style="width:285px;">
+                            <option>请选择</option>
+                            {$row.option|raw}
+                         </select>
+                    </div>
+                    <div  >
+                        <strong>绑定关联：</strong>
+                        <input name="type_val" id="type_val_0" class="input-text" style="width:50%;" type="text" value="{$row.data}">
+                       <input name="type_val_key" id="type_val_key_0" type="hidden" value="{$row.ext_id}">
+                         <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default {$row['bind_type']=='article'?'':'hide'}" id="article_btn_0" >绑定文章</a> 
+                         <a href="javascript:;" data-remote="{:url('shop/sys_admin.goods/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default {$row['bind_type']=='goods'?'':'hide'}" id="goods_btn_0" >绑定商品</a> 
+                        
+                    </div>
+                   
+                </span>
+            </div>
+            
+            {volist name="row.row_sun" id="t"}
+                <div id="uds_appmsg_item_{$t.id}" class="appmsg_item">
+                    <span>
+                        <div>
+                            <strong style="margin-left:2em;">标题：&nbsp;</strong>
+                            <input type="text" value="{$t.title}" style="width:65%;" class="input-text" name="ndata[title][{$t.id}]">
+                        </div>
+                        <div>
+                            <strong>回复类型：</strong>
+                            <select style="width:190px;" class="input-medium" onchange="show_url_type(this,{$t.id});" name="ndata[bind_type][{$t.id}]" id="type">
+                                 <option>请选择</option>
+                                 {$t.option|raw}
+                            </select>
+                        </div>
+                        <div>
+                           <strong>绑定关联：</strong>
+                        <input name="ndata[type_val][{$t.id}]" id="type_val_{$t.id}" class="input-text" style="width:50%;" type="text" value="{$t.data}">
+                       <input name="ndata[type_val_key][{$t.id}]" id="type_val_key_{$t.id}" type="hidden" value="{$t.ext_id}">
+                       <input name="ndata[ext_activity][{$t.id}]" id="ext_activity_{$t.id}" type="hidden" value="{$t.ext_activity}">
+                         <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>$t['id']))}"  data-toggle="ajaxModal" class="type_bding_btn_{$t.id} btn btn-sm btn-default {$t['bind_type']=='article'?'':'hide'}" id="article_btn_{$t.id}" >绑定文章</a> 
+                        <a href="javascript:;" data-remote="{:url('shop/sys_admin.goods/searchBox',['_menu_index'=>$t['id']])}"  data-toggle="ajaxModal" class="type_bding_btn_{$t.id} btn btn-sm btn-default {$t['bind_type']=='goods'?'':'hide'}" id="goods_btn_{$t.id}" >绑定商品</a> 
+                        
+                        </div>
+                     </span>
+                     
+                     <p onclick="up_image_p_click(this)" style="background-image:url('{$t.imgurl}'); background-size:100%;"><i>点击上传</i><input type="hidden" value="{$t.imgurl}" name="ndata[imgurl][{$t.id}]"></p>
+                     <p onclick="del_appmsg_item({$t.id},'deldb')" class="p_class"><i class="p_class">删除</i></p>
+                </div>
+                <input name="ndata[id][{$t.id}]" type="hidden" value="{$t.id}">
+            {/volist}
+            
+        </div>
+      
+    </div>
+   
+ <script>
+	// 图片选择与上传
+	var editor = KindEditor.editor({
+		uploadJson : uploadJ ,
+		fileManagerJson : fileManagerJ ,
+		allowFileManager : true
+	});
+	function up_image_p_click(sel) {
+	  editor.loadPlugin("smimage", function() {
+		  editor.plugin.imageDialog({
+			  imageUrl : $(sel).find('input').val(),
+			  clickFn : function(url) {
+				  $(sel).find('input').val(url);
+				  editor.hideDialog();
+				  $(sel).css("background-image","url("+url+")");
+			  }
+		  });
+	  });
+	}
+	// 显示选中的链接类型
+	function show_url_type(sel,input_id){
+		$(".type_bding_btn_"+input_id).addClass('hide');
+		$("#type_val_"+input_id).val('');
+		$("#ext_activity_"+input_id).val(0);
+		$("#type_val_key_"+input_id).val(0);
+		if (sel.value == 'article') $("#article_btn_"+input_id).removeClass('hide');
+		else if (sel.value == 'link') $("#type_val_"+input_id).val('http://');
+		else if (sel.value == 'goods') $("#goods_btn_"+input_id).removeClass('hide');
+	}
+	function assigBack(type,type_id,id,title,tid){
+	  $("#type_val_key_"+type_id).val(id);
+	  $("#ext_activity_"+type_id).val(tid);
+	  $("#type_val_"+type_id).val(title);
+	  $(".modal-dialog .close").trigger("click");
+  }
+	
+	var new_id = 0;var _new_id_;
+	function add_appmsg_item() {
+		if(isshowimgwin() >= 9){
+			G.ui.tips.info("小图标图文内容不能超过9条！");
+			return false;
+		}
+		new_id ++;
+		_new_id_ = new_id+'n';
+		var html = [];
+		html.push('<div id="uds_appmsg_item_'+_new_id_+'" class="appmsg_item">');
+		html.push(' <span>');
+		html.push('	 <div><strong style="margin-left:2em;">标题：&nbsp;</strong><input type="text" value="" style="width:65%;" class="input-text" name="new[title]['+_new_id_+']"></div>');
+		html.push('	 <div>');
+		html.push('	  <strong>回复类型：</strong>');
+		html.push('	  <select id="type" name="new[bind_type]['+_new_id_+']" onChange="show_url_type(this,\''+_new_id_+'\');" class="input-medium" style="width:190px;"><option value="">请选择</option>{$option|raw}</select>');
+		html.push('	 </div>');
+		html.push('	 <div >');
+		html.push('	 <strong>绑定关联：</strong>');
+		html.push('	 <input name="new[type_val]['+_new_id_+']" id="type_val_'+_new_id_+'" class="input-text" style="width:50%;" type="text" value="">');
+		html.push('	 <input name="new[type_val_key]['+_new_id_+']" id="type_val_key_'+_new_id_+'" type="hidden" value="">');
+		html.push('	 <input name="new[ext_activity]['+_new_id_+']" id="ext_activity_'+_new_id_+'" type="hidden" value="">');
+		html.push('	 <a href="javascript:;" data-remote="{:_url("mainadmin/article/searchBox",array("_menu_index"=>"【_new_id_】"))}"  data-toggle="ajaxModal" class="type_bding_btn_'+_new_id_+' btn btn-sm btn-default hide" id="article_btn_'+_new_id_+'" >绑定文章</a> ');
+		html.push('	 <a href="javascript:;" data-remote="{:_url("shop/sys_admin.goods/searchBox",array("_menu_index"=>"【_new_id_】"))}"  data-toggle="ajaxModal" class="type_bding_btn_'+_new_id_+' btn btn-sm btn-default hide" id="goods_btn_'+_new_id_+'" >绑定商品</a>');
+		
+		html.push('	 </div>');
+		html.push('	</span>');
+		html.push('	<p onclick="up_image_p_click(this)" style="background-size:100%;"><i>点击上传</i><input name="new[imgurl]['+_new_id_+']" type="hidden" value="" /></p>');
+		html.push('	<p class="p_class" onclick="del_appmsg_item(\''+_new_id_+'\')"><i class="p_class">删除</i></p>');
+		html.push('</div>');
+		$(".up_image").append(html.join(''));
+	}
+	function del_appmsg_item(input_id,type){
+		if (type == 'deldb')
+		{
+			var res = jq_ajax('{:url("delete")}','id='+input_id);
+			if (res.info) alert(res.info);
+			if (res.status != 0) return false;
+		}
+		$("#uds_appmsg_item_"+input_id).remove();
+	}
+	
+
+	function isshowimgwin(){
+		var i = 0;
+		$("div.appmsg_item").each(function(){
+			i ++;
+		});
+		return i;
+	}
+	</script>

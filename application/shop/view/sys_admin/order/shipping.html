@@ -1,0 +1,61 @@
+
+
+<!DOCTYPE html>
+
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('shipping')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">发货信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning m-b">
+                    <p>订单编号：<span class="m-l-xs">{$orderInfo.order_sn}</span></p>
+                    <p>下单时间：<span class="m-l-xs">{$orderInfo.add_time|dateTpl}</span></p>
+                    <p>收货信息：<span class="m-l-xs">{$orderInfo.consignee},{$orderInfo.mobile},{$orderInfo.merger_name} {$orderInfo.address}</span></p>
+
+                </div>
+                <div class="bs-example bs-example-tabs">
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active"><a href="#logistics" data-toggle="tab">物流信息</a></li>
+                        <li><a href="#nlogistics" data-toggle="tab">无需物流</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane m-t fade in active" id="logistics"  style="overflow:hidden;">
+                                                       <div class="form-group">
+                                <label class="col-sm-2 control-label">快递公司</label>
+                                <div class="col-sm-6 must">
+                                    <select class="input-xlarge" name="shipping_id" data-rule-required="true">
+                                        <option value="">请选择快递</option>
+                                        {$shippingOpt|raw}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">快递单号</label>
+                                <div class="col-sm-6 must">
+                                    <input type="text" class="input-xlarge" data-rule-required="true" name="invoice_no" value="{$orderInfo.invoice_no}" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane m-t fade" id="nlogistics">
+                            <p>如果该物品无需物流运送(如虚拟产品)</p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{$orderInfo.order_id}" name="id" />
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
+

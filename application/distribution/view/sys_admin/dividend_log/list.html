@@ -1,0 +1,39 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+    <th>记录时间</th>
+    <th>提成订单</th>
+    <th width="220">提成会员</th>
+    <th width="100">佣金等级</th>
+    <th width="100">等级佣金</th>
+    <th width="100">角色佣金</th>
+    <th width="100">平级佣金</th>
+    <th width="160">佣金总计</th>
+    <th width="150">状态</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="row" }
+<tr>
+<td>{$row.add_time|dateTpl}</td>
+<td>{$row.order_sn}</td>
+<td>{$row.dividend_uid} - {$row.dividend_uid|userInfo}</td>
+<td>{$row.dividend_level}</td>
+<td>{$row.level_amount}</td>
+<td>{$row.role_amount}</td>
+<td>{$row.eq_amount}</td>
+<td>{$row.dividend_amount|priceFormat}</td>
+<td>{$ds[$row['status']]} / 
+<a href="{:U('Order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
+    <i class="fa fa-search text-muted"></i>
+</a>
+</td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

@@ -1,0 +1,54 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url($is_cancel==true?'trashList':'getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$is_cancel==true?'订单回收列表':'订单列表'}</strong>
+                </li>                                  
+            </ul>
+         <select name="state" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+             <option value="0" {$search['state']==0?'selected':''} >全部订单</option>
+             <option value="1" {$search['state']==1?'selected':''} >待确认</option>
+             <option value="2" {$search['state']==2?'selected':''} >待支付</option>
+             <option value="3" {$search['state']==3?'selected':''} >待发货</option>
+             <option value="4" {$search['state']==4?'selected':''} >已发货</option>
+             <option value="5" {$search['state']==5?'selected':''} >已签收</option>
+             <option value="6" {$search['state']==6?'selected':''} >已退货</option>
+         </select>
+
+           <div class="form-group">
+                <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
+                    <i class="fa fa-calendar fa-lg"></i>
+                    <small>下单时间</small>
+                    <span></span> <b class="caret"></b>
+                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                </a>
+          </div>
+
+         <select name="searchBy" style="width: 100px;" data-toggle="select2" >
+             <option value="order_sn" >订单编号</option>
+             <option value="consignee"  >收货人</option>
+             <option value="mobile"  >联系电话</option>
+         </select>
+
+          <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="输入相关内容筛选" data-rule-required="true" />
+           <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+      
+         
+    </div>
+</form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/order/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

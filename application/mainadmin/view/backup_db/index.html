@@ -1,0 +1,167 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+       <div class="page-breadcrumbs">
+              <ul class="breadcrumb">
+                  <li>
+                      <i class="fa fa-ellipsis-v"></i>
+                      <strong>备份数据</strong>
+                  </li>                                  
+              </ul>
+              <a href="javascript:;" id="export"  class="btn btn-sm btn-default  fr m-r-tm m-t-md"><i class="fa fa-floppy-o m-r-xs"></i>数据备份</a>
+          </div>
+  </header>
+
+  <section  id="explanation" class="scrollable wrapper ">
+      <section class="panel panel-default padding">
+          <ul>
+         
+               <p>数据备份功能根据你的选择备份全部数据或指定数据，导出的数据文件可用"数据恢复"功能或 phpMyAdmin 导入</p>
+               <p>建议定期备份数据库</p>
+              <p class="ftitle">
+              <span>数据库表列表</span>
+              <span>(共{$tableNum}张记录，共计{$total})</span>
+              <a href="javascript:;" title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></a>
+              
+          </p>
+          </ul>
+    
+          <form  method="post" id="export-form" action="{:url('export')}">
+      
+              <table class="table table-bordered table-striped ">
+              <thead>
+              <tr>
+                  <th class="sign" axis="col0" >
+                      <input type="checkbox" onClick="javascript:$('input[name*=tables]').prop('checked',this.checked);">
+                  </th>
+                  <th align="left" abbr="article_title" axis="col3" class="">
+                      数据库表
+                  </th>
+                  <th align="center" abbr="ac_id" axis="col4" class="">
+                      记录条数
+                  </th>
+                  <th align="center" abbr="article_show" axis="col5" class="">
+                      占用空间
+                  </th>
+                  <th align="center" abbr="article_time" axis="col6" class="">
+                      编码
+                  </th>
+                  <th align="center" abbr="article_time" axis="col6" class="">
+                      创建时间
+                  </th>
+              
+                  <th align="center" axis="col1" class="handle">
+                      操作
+                  </th>
+                  
+              </tr>
+              </thead>
+              
+              {foreach name="list" item="vo" key="k"}
+                      <tr data-id="{$vo.Name}">
+                          <td class="sign">
+                              <input type="checkbox" name="tables[]" value="{$vo.Name}">
+                          </td>
+                          <td align="left" class="">
+                              {$vo.Name}
+                          </td>
+                          <td align="center" class="">
+                              {$vo.Rows}
+                          </td>
+                          <td align="center" class="">
+                              {$vo.Data_length|formatBytes}
+                          </td>
+                          <td align="center" class="">
+                              {$vo.Collation}
+                          </td>
+                          <td align="center" class="">
+                              {$vo.Create_time}
+                          </td>
+                          
+                          <td align="center" class="handle">
+                              
+                                  <a href="{:url('BackupDb/optimize',array('tablename'=>$vo['Name']))}" data-toggle="ajaxPost" data-noturl="1" title="优化" class="m-r-xs"><i class="fa fa-magic"></i></a>
+                                  
+                                  <a  href="{:url('BackupDb/repair',array('tablename'=>$vo['Name']))}" data-toggle="ajaxPost" data-noturl="1" title="修复"><i class="fa fa-wrench"></i></a>
+                              
+                          </td>
+                          
+                      </tr>
+                  {/foreach}
+          </table>
+          </form>
+   
+</section>
+
+    
+    
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+	});
+
+	(function($){
+		var $form = $("#export-form"), $export = $("#export"), tables
+		$export.click(function(){
+			if($("input[name^='tables']:checked").length == 0){
+				_alert('请选中要备份的数据表');
+				return false;
+			}
+			$export.addClass("disabled");
+			$export.html("正在发送备份请求...");
+			$.post(
+					$form.attr("action"),
+					$form.serialize(),
+					function(res){
+						if(res.code == 1){
+							tables = res.data.tables;
+							$export.html(res.msg + "开始备份，请不要关闭本页面！");
+							backup(res.data.tab);
+							window.onbeforeunload = function(){ return "正在备份数据库，请不要关闭！" }
+						} else {
+							_alert(res.msg);
+							$export.removeClass("disabled");
+							$export.html("立即备份");
+						}
+					},
+					"json"
+			);
+			return false;
+		});
+
+		function backup(tab, status){
+			status && showmsg(tab.id, "开始备份...(0%)");
+			$.get($form.attr("action"), tab, function(res){
+				if(res.code == 1){
+					showmsg(tab.id, res.data.info);
+					if(!$.isPlainObject(res.data.tab)){
+						$export.removeClass("disabled");
+						$export.html("备份完成，点击重新备份");
+						window.onbeforeunload = function(){ return null }
+						return;
+					}
+					backup(res.data.tab, tab.id != res.data.tab.id);
+				} else {
+					$export.removeClass("disabled");
+					$export.html("立即备份");
+				}
+			}, "json");
+		}
+
+		function showmsg(id, msg){
+			$form.find("input[value=" + tables[id] + "]").closest("tr").find(".info").html(msg);
+		}
+	})(jQuery);
+</script>
+
+{/block}
+

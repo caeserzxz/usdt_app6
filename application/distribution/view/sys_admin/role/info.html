@@ -1,0 +1,123 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$row['level_id']>0?'编辑':'添加'}身份</strong>
+                </li>                                  
+            </ul>
+           
+        </div>
+</header>
+<section class="scrollable  wrapper">
+ <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+                <div class="panel-body">            			
+                		<div class="form-group">
+                            <label class="control-label">身份名称：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="input-large" data-rule-maxlength="20" data-rule-required="true" name="role_name" value="{$row.role_name}" ><span class="maroon">*</span>
+                            </div>
+                        </div> 
+                         <div class="form-group">
+                            <label class=" control-label"> 级别：</label>
+                            <div class="col-sm-6 ">
+                                <input aria-required="true" class="input-small" data-rule-required="true" name="level" value="{$row.level|intval}" data-rule-integer="true" type="text"><span class="maroon">*</span><span class="help-inline">此决定身份的排序高低，身份越高请设越大</span>
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="control-label">选择升级方法：</label>
+                        <div class="col-sm-6" >
+                            <select name="upleve_function" id="upleve_function"  >
+                                <option value="">选择升级方法</option>
+                                {volist name="upLevel" id="val"}	
+                                        <option value="{$val.function}" {$row['function'] == $val['function']?'selected':''} 
+                                        data-jsonval='{$val.val|json_encode}' data-condition='{$val.condition|json_encode}' data-explain="{$val.explain}">{$val.name}</option>            
+                                {/volist}
+                            </select>
+                            <span class="help-inline">不设置只能手动设定此身份</span>
+                        </div>
+              		</div>
+                    <div id="upleve_function_box">
+                    	
+                    </div>
+                     <div class="line line-dashed line-lg pull-in"></div>
+                    <div class="form-group">
+                        <label class="control-label">选择佣金算法：</label>
+                        <div class="col-sm-6" >
+                            <select name="dividend_function" >
+                                <option value="">选择佣金算法</option>
+                                
+                            </select>
+                        </div>
+              		</div>
+            </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <input name="role_id" type="hidden" value="{$row.role_id|intval}">
+
+    </form>
+</section>
+
+{include file="shop@/sys_admin/goods/sel_goods" /}
+
+{literal}
+<script type="text/html" id="upLevel_tpl"> 
+<div class="form-group">
+	  <label class="control-label">详细说明：</label>
+	  <div class="col-sm-8 m-t-mc">{{explain}}</div>
+</div>
+<div class="form-group">
+	  <label class="control-label">达成条件：</label>
+	  <div class="col-sm-3">
+	  		<select  class="input-max" name="function_val[condition]" data-rule-required="true" >
+                 <option value="">选择达成条件</option>
+                 {{each condition as cdval cdkey}} 
+					 <option value="{{cdkey}}">{{cdval}}</option>
+				 {{/each}}         
+         	</select>
+	  </div>
+</div>
+{{each list as item index}}
+  <div class="form-group">
+        <label class="control-label">{{item.text}}：</label>
+        <div class="col-sm-9">
+		{{if item.rule == 'ismoney'}}
+			<input type="text" name="function_val[{{item.name}}]"  class="input-small" data-rule-required="true" data-rule-ismoney="true" value="">
+			<span class="help-inline">{{item.tip}}</span>
+		{{else if item.input == 'text'}}
+           <input type="text" name="function_val[{{item.name}}]"  class="input-large" data-rule-required="true" value="">
+		{{else if item.input == 'sel_goods'}}
+			{{include 'selGoods_tpl'}} 
+		{{/if}}
+      </div>
+   </div>
+{{/each}}
+
+</script>   
+
+<script type="text/javascript">
+$(function(){
+	$("#upleve_function").change(function (){
+		$("#upleve_function_box").html('');
+		var obj = $(this).find('option:selected');		
+		var jsonval = obj.data('jsonval');
+		if (typeof(jsonval) == 'undefined') return false;
+		$("#upleve_function_box").html(template("upLevel_tpl", {'list':jsonval,'explain':obj.data('explain'),'condition':obj.data('condition')}));		
+	})
+})
+</script>
+{/literal} 
+{/block}

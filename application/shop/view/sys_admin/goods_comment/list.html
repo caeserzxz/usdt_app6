@@ -1,0 +1,96 @@
+<table class="table table-bordered table-striped ">
+    <thead class="flip-content bordered-palegreen">
+    <tr>
+        <th style="text-align: center;">ID</th>
+        <th style="text-align: center;">商品编号</th>
+        <th style="text-align: center;width: 280px;">商品名</th>
+        <th style="text-align: center;">管理员</th>
+        <th style="text-align: center;">用户名</th>
+        <th style="text-align: center;width: 280px;">评论内容</th>
+        <th style="text-align: center;width: 120px;">通过审核</th>
+        <th style="text-align: center;width: 120px;">审核操作</th>
+        <th style="text-align: center;width: 180px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        {volist name="data.list" id="item"}
+        <tr>
+            <td style="text-align: center">{$item['id']}</td>
+            <td style="text-align: center">{$item['goods_sn']}</td>
+            <td style="text-align: center;">
+                <div class="single-line" style="width: 240px;">{$item['goods_name']}</div>
+            </td>
+            <td style="text-align: center">
+                <span class="{if $item['admin_id']}active{/if}">
+                    <i class="fa fa-check text-success text-active"></i>
+                    <i class="fa fa-times text-danger text"></i>
+                </span>
+            </td>
+            <td style="text-align: center">{$item['user_name']}</td>
+            <td style="text-align: center">
+                <div class="single-line" style="width: 240px;">{$item['content']}</div>
+            </td>
+            <td style="text-align: center">
+                <span class="{$item['status_class']}">
+                    {if condition="$item['status_icon_class']"}
+                    <i class="{$item['status_icon_class']}"></i>
+                    {/if}
+                    {$item['status_text']}
+                </span>
+            </td>
+
+            <td style="text-align: center">
+                <a class="text-success" href="{:url('review', ['id' => $item['id'], 'result' => 'passed'])}">
+                    <i class="fa fa-check"></i>
+                    通过
+                </a>
+                <a class="text-danger" href="{:url('review', ['id' => $item['id'], 'result' => 'denied'])}">
+                    <i class="fa fa-times"></i>
+                    拒绝
+                </a>
+            </td>
+            <td style="text-align: center">
+
+                {if condition="!$item['deleted']"}
+
+                <a href="{:url('info', ['id' => $item['id']])}">
+                    <i class="fa fa-edit"></i>
+                    详情
+                </a>
+
+                {if condition="$item['goods_id']"}
+                <a href="{:url('sys_admin.goods/info', ['goods_id' => $item['goods_id']])}">
+                    <i class="fa fa-gift"></i> 商品
+                </a>
+                {/if}
+
+                {if condition="$item['user_id']"}
+                <a href="{:url('sys_admin.users/info', ['user_id' => $item['user_id']])}">
+                    <i class="fa fa-user"></i> 用户
+                </a>
+                {/if}
+
+                <a href="{:url('delete', ['id' => $item['id']])}" data-toggle="ajaxRemove" data-msg="确定删除？">
+                    <i class="fa fa-trash"></i>
+                    删除
+                </a>
+
+                {else/}
+
+                <a href="{:url('restore', ['id' => $item['id']])}" data-toggle="ajaxRemove" data-msg="确定还原？">
+                    <i class="fa fa-repeat m-r"></i>
+                    还原
+                </a>
+                {/if}
+            </td>
+        </tr>
+        {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" style="text-align: center" valign="middle">没有相关数据！</td>
+    </tr>
+</table>
+{/empty}

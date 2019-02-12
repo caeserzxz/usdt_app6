@@ -1,0 +1,33 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>管理员列表</strong>
+                </li>                                  
+            </ul>
+             
+            <select name="role_id"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                        <option value="">所有管理员</option>
+                       {$roleOpt|raw}
+                 </select>
+              <input type="text" class="form-control input-large" value="" name="keyword" placeholder="管理员ID/名称" data-rule-required="true" />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+              <a href="{:url('info')}"  title="添加管理员" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加管理员</a>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="admin_user/list" /}
+        </div>
+    </section>
+</section>
+ 
+{/block}

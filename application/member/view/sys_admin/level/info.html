@@ -1,0 +1,43 @@
+<form class="form-horizontal form-validate " method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['level_id']>0?'编辑':'添加'}等级</h4>
+            </div>
+            <div class="modal-body">
+            			
+                		<div class="form-group">
+                            <label class="col-sm-2 control-label"> 等级名称</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="input-large" data-rule-maxlength="20" data-rule-required="true" name="level_name" value="{$row.level_name}" ><span class="maroon">*</span>
+                            </div>
+                        </div> 
+                         <div class="form-group">
+                            <label class="col-sm-2 control-label"> 积分下限</label>
+                            <div class="col-sm-6 ">
+                                <input aria-required="true" class="input-small" data-rule-required="true" name="min" value="{$row.min}" data-rule-integer="true" type="text"><span class="maroon">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"> 积分上限</label>
+                            <div class="col-sm-6 ">
+                                <input aria-required="true" class="input-small" data-rule-required="true" name="max" value="{$row.max}" data-rule-integer="true" type="text"><span class="maroon">*</span>
+                            </div>
+                        </div> 
+                    
+                         <div class="form-group">
+                            <label class="col-sm-2 control-label"> 等级折扣</label>
+                            <div class="col-sm-10 ">
+                                <input aria-required="true" class="input-small" data-rule-required="true" name="level_pro" value="{$row.level_pro|default=100}"  data-rule-decimal="2" max="100" min="1" type="text">%<span class="maroon">*</span> <span class="help-inline">会员价 = （商品售价 * 等级折扣）</span>
+                            </div>
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="level_id" value="{$row.level_id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

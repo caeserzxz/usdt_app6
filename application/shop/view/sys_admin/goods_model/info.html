@@ -1,0 +1,37 @@
+<div class="modal-dialog">
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{$row['id'] > 0?'编辑类型':'添加类型'}</h4>
+        </div>
+        <div class="modal-body">
+              <div class="form-group">
+                  <label class="control-label">类型名称</label>
+                  <div class="col-sm-6 must">
+                      <input type="text" class="input-xlarge"  data-rule-required="true" name="name" value="{$row.name}" >
+                  </div>
+              </div> 
+              
+              <div class="form-group">
+                      <label class="control-label">是否显示：</label>
+                      <div class="col-sm-2controls">
+                        <label class="radio-inline">
+                            <input name="status" value="1" {$row['status']==1?'checked':''} class="js_undertake " type="radio" >
+                            是
+                        </label>
+                        <label class="radio-inline">
+                            <input name="status" value="0" {$row['status']==0?'checked':''} class="js_undertake" type="radio" >不是
+                        </label>
+                      </div>
+                      <div class="clearfix"></div>
+             </div>
+        </div>
+        <div class="modal-footer">
+            <input  type="hidden" name="id" value="{$row.id|intval}"/>
+            <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+    </form>
+</div>

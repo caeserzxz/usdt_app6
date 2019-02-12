@@ -1,0 +1,115 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">作为普通商品销售：</label>
+    <div class="col-sm-6">
+		<label class="radio inline">
+            <input type="checkbox" name="is_alone_sale" value="1" {$row['is_alone_sale']==1 || $row['goods_id']==0?'checked':''}> 打勾表示能作为普通商品销售，否则只能作为配件、赠品或积分兑换.
+        </label>
+    </div>
+</div>
+<div class="form-group">               
+	<label class="col-sm-2 control-label">是否分销商品：</label>
+    <div class="col-sm-10">
+          <label class="radio-inline">
+            <input name="is_dividend" value="0" {$row.is_dividend|tplckval='<1','checked'}  type="radio" class="js_quota">不是
+        </label>
+        <label class="radio-inline">
+            <input name="is_dividend" value="1" {$row.is_dividend|tplckval='>0','checked'} type="radio" class="js_quota js_quota_show">是
+        </label>
+          <label class="is_dividend_container  v-top {$row.is_dividend|tplckval='=1','inline','hd'} " style="position:relative;">
+            <input class="input-xs input-sm"  data-rule-min="1"  type="text" data-rule-required="true" name="dividend_num" value="{$row['dividend_num']<1?1:$row['dividend_num']}" data-rule-positive="true"  />
+            <span style="text-decoration:none">分销计算数量，默认以1件计算，输入2则按2件计算佣金</span>
+        </label>
+    </div>            
+	
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">上架时间：</label>
+    <div class="col-sm-10" >
+        <label class="radio" style="padding-left:20px; width:200px;">
+            <input type="radio" name="isputaway" value="1"  {$row.isputaway|tplckval='=1','checked',true}  />立即上架
+        </label>
+         <label class="radio" style="padding-left:20px;width:200px;">
+            <input type="radio" name="isputaway"   value="0" {$row.isputaway|tplckval='=0','checked'} >暂不上架，放入仓库中
+        </label>
+        <label class="radio" style="padding-left:20px;width:200px;">
+                <input type="radio" name="isputaway" value="2" {$row.isputaway|tplckval='=2','checked'}/>设定商品上下架时间 
+         </label>
+  
+       
+        <div class="col-sm-1" style="width:70px;padding:0; margin:0;">
+            <label style="padding:0;margin:0;">上架时间</label>
+        </div>
+        <div class="col-sm-3"  style="width:180px;padding:0; margin:0;">
+            <div class="input-group"> <input type="text" class="input-max" name="added_time" readonly="readonly" value="{$row.added_time|dateTpl='Y-m-d H:i',true}" data-before="#solddate"   data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+        </div>
+         <div class="col-sm-1" style="width:70px;margin:0; margin-left:10px;">
+            <label style="padding:0;margin:0;">下架时间</label>
+        </div>
+        <div class="col-sm-3"  style="width:180px;padding:0; margin:0;">
+            <div class="input-group"> <input type="text" class="input-max" name="shelf_time" value="{$row.shelf_time|dateTpl='Y-m-d H:i',true}" data-after="#groundingdate" data-offsetday="0"  readonly="readonly" data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+        </div>
+
+    </div>
+</div>
+<div class="line line-dashed line-lg pull-in"></div>
+ 
+<div class="form-group">
+    <label class="col-sm-2 control-label">加入推荐：</label>
+    <div class="col-sm-6">
+		<label class="radio inline">
+            <input type="checkbox" name="is_best" value="1" {$row.is_best|tplckval='=1','checked'}> 推荐（优先首页猜你喜欢显示）
+        </label><br />
+       <label class="radio inline">
+            <input type="checkbox" name="is_new" value="1" {$row.is_new|tplckval='=1','checked'}> 新品
+        </label><br />
+        <label class="radio inline">
+            <input type="checkbox" name="is_hot" value="1" {$row.is_hot|tplckval='=1','checked'}> 热销（优先首页分类显示）
+        </label>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">虚拟销量：</label>
+    <div class="col-sm-5">
+
+        <div class="input-group">
+            <input type="text" class="input-mini" name="virtual_sale" value="{:intval($row['virtual_sale']-$row['sale_num'])}">
+             <span class="help-inline">+ {$row.sale_num|intval}，前端显示：虚拟销售量 + 真实销量</span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">虚拟收藏：</label>
+    <div class="col-sm-5">
+
+        <div class="input-group">
+            <input type="text" class="input-mini" name="virtual_collect" value="{:intval($row['virtual_collect']-$row['sale_num'])}">
+             <span class="help-inline">+ {$row.sale_num|intval}，前端显示：虚拟收藏量 + 真实收藏量</span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="line line-dashed line-lg pull-in"></div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">商品标签：</label>
+    <div class="col-sm-6" >
+        <input type="text" class="input-max" data-rule-maxlength="40" name="goodsTag" value="{$goodsTag}" >
+    </div>
+    <span class="help-inline">用空格分隔</span>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">关键字：</label>
+    <div class="col-sm-6" >
+        <input type="text" class="input-max" data-rule-maxlength="40" name="keywords" value="{$row.keywords}" >
+    </div>
+    <span class="help-inline">用空格分隔</span>
+</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">商品简单描述：</label>
+      <div class="col-sm-8">
+        <textarea name="description"  style=" width:80%; height:100px;">{$row.description}</textarea>
+      </div>
+</div>

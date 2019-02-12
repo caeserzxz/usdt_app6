@@ -1,0 +1,109 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+   <div class="page-breadcrumbs">
+          <ul class="breadcrumb">
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>编辑文章</strong>
+              </li>                                  
+          </ul>
+      </div>
+</header>
+
+<section class="scrollable  wrapper">
+<form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+      <section class="panel panel-default">
+          <header class="panel-heading bg-light">
+              基本信息
+          </header>
+          <div class="panel-body">  
+              <div class="form-group">
+                  <label class="control-label">文章分组</label>
+                  <div class="controls w250 must">
+                     <select class="wb80 " name="cid" data-maxcount="3" data-msg-required="请选择文章分组" data-toggle="select2" data-placeholder="请选择文章分组" data-width="999px">
+                       <option value=""></option>
+                       
+                         {$cg_opt|raw}
+                                                      
+                      </select>
+                  </div>
+                 
+              </div>
+
+            
+        <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">文章标题</label>
+                  <div class="controls" >
+                      <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
+                  </div>
+              </div>
+            
+           <div class="form-group">
+                  <label class="control-label">标题图片</label>
+                  <div class="col-sm-8 must" >
+                     <img class="thumb_img" name="imagefile" src="{$row.img_url}" style="max-height: 100px;" />
+                      <input class="hide" type="text" name="img_url" value="{$row.img_url}" />
+                      <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                  </div>
+              </div>
+            
+             
+          
+
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">文章内容</label>
+                  <div class="controls wb80">
+                      <textarea rows="13" class="hd" data-toggle="kindeditor"  data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[1,50000]" data-rule-required="true" data-msg-required="文章内容不能为空"  name="content" style="visibility:hidden;">{$row.content}</textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+
+                  </div>
+              </div>
+           </div>
+      </section>
+    
+
+      <section class="panel panel-default">
+          <header class="panel-heading bg-light">
+              其他信息
+          </header>
+         
+             <div class="line line-dashed line-lg pull-in"></div>
+             <div class="form-group">
+                  <div class="controls" >
+                  <label class="control-label">关键字</label>
+                     <input type="text" class="input-xlarge"  name="keywords" value="{$row.keywords}" >
+                   <span class="help-inline">填写用空格分开</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">文章简介</label>
+                  <div class="controls" >
+                      <textarea name="description"  class="input-xxlarge" >{$row.description}</textarea>
+                  </div>
+              </div>
+             <div class="form-group">
+                  <label class="control-label">发布时间</label>
+                  <div class="input-group w150" > <input type="text" class="input-medium" name="add_time" value="{$row.add_time|dateTpl}" id="solddate" data-after="#groundingdate" data-offsetday="0" readonly="readonly" data-toggle="datetimepicker" data-position="top-right"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+                 
+              </div>
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <div class="col-sm-4 col-sm-offset-2">
+                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                  </div>
+              </div>
+          </div>
+
+      </section>
+
+	<input name="id" type="hidden" value="{$row.id|intval}">
+</form>
+</section>
+
+   
+{/block}

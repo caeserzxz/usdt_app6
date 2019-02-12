@@ -1,0 +1,36 @@
+
+
+<form class="form-horizontal form-validate form-modal" method="post" action="{:U('editGoods')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">修改商品</h4>
+            </div>
+            <div class="modal-body">
+            
+            <table class="table table-striped  m-b-none">
+                <thead>
+                <tr>
+                    <th>商品</th>
+                    <th width="120" >数量</th>
+                </tr>
+                </thead>
+                <tbody>
+				<volist name="row.goodsList" id="grow" >
+                <tr>
+                    <th>{$grow.goods_name}{$grow.sku_name}</th>
+                    <th ><input type="text" class="input-max" data-rule-required="true" name="goods_number[{$grow.rec_id}]" min=1 value="{$grow.goods_number}" /></th>
+                </tr>                
+				</volist> 
+                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{$row.order_id}" name="id" />
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

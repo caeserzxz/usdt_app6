@@ -1,0 +1,30 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+    <th width="160" class="th-sortable" data-sort-name="change_time">变动时间</th>
+    <th>变动原因</th>
+    <th width="150">帐户余额/变更前</th>
+    <th width="150">消费积分/变更前</th>
+    <th width="150">历史总佣金/变更前</th>
+    <th width="150">历史总积分/变更前</th>
+   
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="row" }
+<tr>
+<td align="center">{$row.change_time|dateTpl}</td>
+<td>{eq name="row.change_type" value="1"} <i class="fa fa-laptop text-muted"></i>人工调整：{/eq}{$row.change_desc}</td>
+<td align="center"  style="{$row['balance_money']>0?'color:#F00;':''}{$row['balance_money']<0?'color:#390;':''}">{$row.balance_money} / {$row.old_balance_money}</td>
+<td align="center"  style="{$row['use_integral']>0?'color:#F00;':''}{$row['use_integral']<0?'color:#390;':''}">{$row.use_integral} / {$row.old_use_integral}</td>
+<td align="center" style="{$row['total_dividend']>0?'color:#F00;':''}{$row['total_dividend']<0?'color:#390;':''}">{$row.total_dividend} / {$row.old_total_dividend}</td>
+<td align="center"  style="{$row['total_integral']>0?'color:#F00;':''}{$row['total_integral']<0?'color:#390;':''}">{$row.total_integral} / {$row.old_total_integral}</td>
+</tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

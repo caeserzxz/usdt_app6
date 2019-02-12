@@ -1,0 +1,200 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>微信自定义菜单</strong>
+                </li>                                  
+            </ul>
+           
+       </div>
+</header>
+<section class="scrollable  wrapper">
+      <section class="panel panel-default">
+          <section class="scrollable wrapper">
+      <div class="alert">
+          <p>注意：1级菜单最多只能开启3个，2级子菜单最多开启5个!</p>
+          <p>只有保存主菜单后才可以添加子菜单</p>
+          <p>生成自定义菜单,必须在已经保存的基础上进行,临时勾选启用点击生成是无效的! 第一步必须先修改保存状态！第二步点击生成!</p>
+          <p>当您为自定义菜单填写链接地址时请填写以"http://"开头，这样可以保证用户手机浏览的兼容性更好</p>
+          <p>撤销自定义菜单：撤销后，您的微信公众帐号上的自定义菜单将不存在；如果您想继续在微信公众帐号上使用自定义菜单，请点击"生成自定义菜单"按钮，将重新启用！</p>
+        </div>
+        <section class="panel panel-default ">
+         <form action="{:url('save')}" method="post" class="form-horizontal form-validate"  style="padding:0;">             
+            <table id="listTable" class="table table-bordered table-hover dataTable">
+              <thead>
+                <tr>
+                  <th width="70">顺序</th>
+                  <th width="250">主菜单名称</th>
+                  <th width="150">响应动作类型</th>
+                  <th width="120">绑定操作</th>
+                  <th>响应值</th>
+                  <th width="70">启用</th>
+                  <th width="70">操作</th>
+                </tr>
+              </thead>                  
+              {volist name="rows" id="vo" }                  	
+                {empty name="vo.pid"}
+                    {gt name="i" value="1"}</thead>{/gt}
+                    <thead id="Submenu_{$vo.id}">
+                {/empty}
+                <tr class="{$vo['icon']==''?'ztr':'ptr'}">
+                  <td><input type="text" class="input-ssmall" size="3" value="{$vo.sort}" name="ps[{$vo.id}][sort]"   /></td>
+                  <td>
+                 {if condition="$vo.pid eq 0"}<i class="fa fa-plus cursor_p add" title="添加子菜单" rel="{$vo.id}" style="float:right; padding-right:10px; padding-top:8px;"></i>{/if}
+                    {if condition="($vo.icon neq '')"}<i class='board'></i>{/if}
+                    <input type="text" class="input-medium" size="15" value="{$vo.name}"  name="ps[{$vo.id}][name]" data-rule-required="true" data-rule-maxlength="30" style="width:150px;" />
+                  </td>
+                  <td>
+                    <select name="ps[{$vo.id}][type]" id="ps_type_{$vo.id}" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,'ps',{$vo.id});">
+                        <option value="0">--请选择--</option>
+                        {$vo.event_select|raw}
+                    </select>
+                  </td>
+                  <td>
+                    <input type="hidden" value="{$vo.pid}" name="ps[{$vo.id}][parent_id]"/>
+                    <input name="ps[{$vo.id}][keyword]" id="ps_keyword_{$vo.id}" class="input-text {$vo['keyword_value']==''?'hide':''}" style="width:50px;" value="{$vo.keyword}" type="hidden" >
+                    <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}"  data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'}" id="ps_Article_btn_{$vo.id}" >绑定文章</a>
+                                          
+                    <a href="javascript:;" data-remote="{:url('sys_admin.replyText/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='click'?'':'hide'}" id="ps_ReplyText_btn_{$vo.id}">绑定关键字</a>
+                  </td>
+                  <td><input name="ps[{$vo.id}][keyword_value]" id="ps_keyword_value_{$vo.id}"  style="width:100%" value="{$vo.keyword_value}" type="text" class="input-text {$vo['keyword_value']==''?'hide':''}" ></td>
+                  <td>
+                  <label class="m-t">
+                  <input class="checkbox-slider colored-blue" name="ps[{$vo.id}][is_show]" type="checkbox" value="1" { {$vo['is_show']==1?'checked':''}>
+                  <span class="text"></span>
+                  </label>
+                  </td>
+                  <td><a href="javascript:G.ui.tips.confirm('您确定要删除此菜单吗?', '{:url('delete',array('id'=>$vo['id']))}');" class="fa fa-trash"></a></td>
+                </tr>
+              {/volist}
+              
+            </table>
+            <div class="form-group m-t">
+              <a href="javascript:void(0)" id="add_menu" class="btn  btn-default m-r" style=" margin-left:20px;"><i class="fa fa-plus m-r-xs"></i>添加主菜单</a>
+              <button id="bsubmit" type="submit" data-loading-text="提交中..." class="btn btn-primary">保存</button>
+              <button id="create_menu" type="button" class="btn btn-primary" style="margin:0px 20px;">生成自定义菜单</button>
+              <button id="remove_menu" type="button" class="btn">撤销自定义菜单</button>
+                
+            </div>
+          </form>
+     </section>
+</section>
+
+             
+<script type="text/javascript">
+
+	   var _add_menu = $("#add_menu");
+	   var _add_zmenu = $("i.add");
+	   var _menu_index = 0;
+	   
+	   // 添加主菜单事件
+	   _add_menu.click(function (e) {
+		   e.preventDefault();
+		   _menu_index++;
+		   var _menuPtrtmp = '<thead id="Submenu_'+_menu_index+'"><tr>' 
+						   + '<td><input name="new[sort][' + _menu_index + ']" size="3" type="text" value="0" class="input-ssmall"  /></td>'
+						   + '<td><i class="fa fa-plus cursor_p add" title="添加子菜单" rel="'+_menu_index+'" style="float:right; padding-right:10px; padding-top:8px;"></i><input name="new[name][' + _menu_index + ']" size="15" type="text" class="input-medium" data-rule-required="true" data-rule-maxlength="30" style="width:150px;" /></td>'
+						   + '<td>'
+						   + '<select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
+						   + '    <option value="0">--请选择--</option>'
+						   + '	{$WeixinEventType_opt}'
+						   + '</select>'
+						   + '</td>'
+						   + '<td>'
+						   + '<a href="javascript:;" data-remote="{:url("MAdmin/Article/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'"  data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_Article_btn_' + _menu_index + '" >绑定文章</a> <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'						 
+						   + '</td><td>'
+						   + '<input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
+						   + '<input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '" type="hidden" >'
+						   + '<input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium"  type="text"  style="width:60%">'
+						   + '</td>'
+						   + '<td><label class="m-t"><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'
+						   + '<td><a href="javascript:void(0)" class="del fa fa-trash"></a></td>'
+						   + '</tr> </thead>';
+		  $("#listTable").append(_menuPtrtmp.replace("{pid}", 0));
+	  });
+	  
+	  // 添加子菜单事件
+	  $(document).on('click',"i.add",function() {
+		  var $pid = $(this).attr("rel");		
+		  _menu_index++;
+		  var _menuPtrtmp = '<tr>'
+						  + '<td><input name="new[sort][' + _menu_index + ']" size="3" type="text" value="0" class="input-ssmall"   /></td>'
+						  + '<td><i class="board"></i><input name="new[name][' + _menu_index + ']" size="15" type="text" class="input-medium" data-rule-required="true" data-rule-maxlength="30" style="width:150px;"/></td>'
+						  + '<td>'
+						  + '  <select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
+						  + '    <option value="0">--请选择--</option>'
+						   + '	{$WeixinEventType_opt|raw}'
+						  + '  </select>'
+						  + '</td><td>'
+						  + '  <a href="javascript:;" data-remote="{:url("MAdmin/Article/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'"  data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_Article_btn_' + _menu_index + '" >绑定文章</a> <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'
+						+ '</td><td>'
+						  + '  <input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
+						  + '  <input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '"   type="hidden"   >'
+						  + '  <input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium" type="text"   style="width:60%">'
+						
+						  + '</td>'
+						  + '<td><label><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'
+						  + '<td><a href="javascript:void(0)" class="del fa fa-trash"></a></td>'
+						  + '</tr>';
+		  var tp = _menuPtrtmp.replace("{pid}", $pid);
+		  
+		   $("#Submenu_"+$pid).append(tp);
+		 
+	  });
+	  
+	  $("#listTable .del").live("click", (function () {
+		  $(this).parents("tr").remove();
+	  }));
+	  
+	  $("input.type").live("change", function () {
+		  var $this = $(this);
+		  var $val = $this.val();
+		  var $nex = $this.nextAll("input.key_type");
+		  var re = /[a-zA-z]+:\/\/[^\s]*/i;
+		  if (re.test($val)) { $nex.val(2) } else { $nex.val(1) };
+	  });
+	  
+	  $("#create_menu").click(function () {
+		  $.post("{:url('push')}",{ },function(res){
+			  alert(res.error);
+		  },'json');
+	  });
+	  
+	  $("#remove_menu").click(function () {
+		  G.ui.tips.confirm_flag('撤销后微信公众号中不再显示自定义菜单，确定要撤销吗？',function(){
+			  $.post("{:url('remove')}",{ },function(res){
+				  $.fallr('hide');
+				  alert(res.error);
+			  },'json');
+		  });
+	  });
+
+ function getKeywordSelect(obj,type,id){
+	 if(type == 'ps') type = 'ps';
+	 else if(type == '-1') type = 'new';
+	 $("#"+type+"_keyword_"+id).val('');
+	 $("#"+type+"_keyword_value_"+id).val('');
+	 $("."+type+"_bding_btn_"+id).addClass('hide');
+	 $("#"+type+"_keyword_value_"+id).addClass('hide');
+	 if(obj.value == 'view'){
+	   $("#"+type+"_Article_btn_"+id).removeClass('hide');
+	   $("#"+type+"_keyword_value_"+id).removeClass('hide');
+	   $("#"+type+"_keyword_value_"+id).val('http://');
+	 }else if(obj.value == 'click'){
+	   $("#"+type+"_keyword_value_"+id).removeClass('hide');
+	   $("#"+type+"_ReplyText_btn_"+id).removeClass('hide');
+	 }
+	 $(".modal-dialog .close").trigger("click");
+ }
+  
+  function assigBack(type,type_id,id,title){
+	  $("#"+type+"_keyword_value_"+type_id).val(title);
+	  $("#"+type+"_keyword_"+type_id).val(id);
+	  $(".modal-dialog .close").trigger("click");
+  }
+</script>
+{/block}

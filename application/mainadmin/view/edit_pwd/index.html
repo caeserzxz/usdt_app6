@@ -1,0 +1,56 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+       <div class="page-breadcrumbs">
+              <ul class="breadcrumb">
+                  <li>
+                      <i class="fa fa-ellipsis-v"></i>
+                      <strong>修改密码</strong>
+                  </li>                                  
+              </ul>
+             
+          </div>
+  </header>
+
+<section class="scrollable  wrapper">
+   
+      <section class="panel panel-default">
+                <div class="widget-body">
+                    <div class="collapse in">
+                        <form class="form-horizontal form-validate" method="post" action="{:url('editPwd')}">
+                            <div class="form-group">
+                                <label class="control-label" >当前密码</label>
+                                <div class="controls">
+                                  <input type="password" name="old_pwd"  class="input-large" data-rule-required="true" ata-rule-rangelength="[6,16]" value="">
+                                <span class="maroon">* 请输入当前使用的密码.</span> </div>
+                            </div>
+                          
+                            <div class="form-group">
+                                <label class="control-label" >设置新密码</label>
+                                <div class="controls">
+                                  <input name="new_password" class="input-large" id="new_password" data-rule-required="true" data-rule-rangelength="[6,16]" type="password">
+                                  <span class="maroon">* 长度为6~16位字符</span>
+                                 </div>
+                            </div>
+             <div class="form-group">
+                                <label class="control-label" >确认新密码</label>
+                                <div class="controls">
+                                 <input name="repassword" class="input-large" id="repassword" data-rule-required="true" data-rule-equalto="#new_password" type="password">
+                                <span class="maroon">*</span> </div>
+                            </div>
+
+                             <div class="form-group">
+                                   <label class="control-label"></label>
+                                    <div class="controls"> 
+                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                                    </div>
+                             </div>
+                        </form>
+                        
+                    </div>
+                </div>     
+      </section>
+</section>
+
+{/block}
+

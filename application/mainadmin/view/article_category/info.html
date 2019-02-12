@@ -1,0 +1,41 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['id'] > 0?'编辑分类':'添加分类'}</h4>
+            </div>
+            <div class="modal-body">
+            			<div class="form-group">
+                            <label class="control-label">分类级别：</label>
+                            <div class="col-sm-6 must">
+                                <select class="input-xlarge" data-rule-required="true" name="pid">
+                                     <option value="0">顶级分类</option>
+                                     {$select|raw}
+                                </select>
+                            </div>
+                        </div>
+                		<div class="form-group">
+                            <label class="control-label">分类名称：</label>
+                            <div class="col-sm-6 must">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="10" data-rule-required="true" name="name" value="{$row.name}" >
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label class="control-label">分类图片：</label>
+                            <div class="col-sm-7">
+                                <img class="thumb_img" name="imagefile" id="imagefile" src="{$row.pic|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                                <input class="hide" type="text" id="classpic" name="pic" value="{$row.pic}" />
+                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                                <p><span class="help-inline">图片尺寸：240*240像素</span><br /><a href="javascript:;" onclick="$('#classpic').val('');$('#imagefile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                            </div>
+                        </div>
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="id" value="{$row.id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

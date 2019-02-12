@@ -1,0 +1,89 @@
+<div class="modal-dialog">
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{$row['id'] > 0?'编辑品牌':'添加品牌'}</h4>
+        </div>
+        <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <label class="control-label">品牌名称：</label>
+                        <div class="col-sm-6 must">
+                            <input type="text" class="input-xlarge" data-rule-maxlength="10" data-rule-required="true" name="name" value="{$row.name}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">关联分类：</label>
+                        <div class="col-sm-6 must">
+                            <select class="input-xlarge" data-rule-required="true" name="cid">
+                                <option value="0">关联分类</option>
+                                {$cidOpt|raw}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group hide">
+                        <label class="control-label">品牌简称：</label>
+                        <div class="col-sm-6 ">
+                            <input type="text" class="input-xlarge" data-rule-maxlength="10"  name="m_name" value="{$row.m_name}" >
+                        </div>
+                    </div> 
+                    <div class="form-group hide">
+                        <label class="control-label">品牌网址：</label>
+                        <div class="col-sm-6 ">
+                            <input type="text" class="input-max"   name="site_url" value="{$row.site_url}" >
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <label class="control-label">品牌描述：</label>
+                        <div class="col-sm-7">
+                          <textarea name="desc" class="input-max">{$row.desc}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <label class="control-label">是否热门：</label>
+                            <div class="col-sm-2controls">
+                              <label class="radio-inline">
+                                  <input name="is_hot" value="1" {$row['is_hot']==1?'checked':''} class="js_undertake " type="radio" >
+                                  是
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="is_hot" value="0" {$row['is_hot']==0?'checked':''} class="js_undertake" type="radio" >不是
+                              </label>
+                            </div>
+                            <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                            <label class="control-label">是否显示：</label>
+                            <div class="col-sm-2controls">
+                              <label class="radio-inline">
+                                  <input name="status" value="1" {$row['status']==1?'checked':''} class="js_undertake " type="radio" >
+                                  是
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="status" value="0" {$row['status']==0?'checked':''} class="js_undertake" type="radio" >不是
+                              </label>
+                            </div>
+                            <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">品牌图片：</label>
+                        <div class="col-sm-7">
+                            <img class="thumb_img" name="imagefile" id="imagefile" src="{$row.logo|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                            <input class="hide" type="text" id="classpic" name="logo" value="{$row.logo}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <p><span class="help-inline">图片尺寸：240*240像素</span><br /><a href="javascript:;" onclick="$('#classpic').val('');$('#imagefile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                        </div>
+                    </div>
+        </div>
+        <div class="modal-footer">
+            <input  type="hidden" name="id" value="{$row.id|intval}"/>
+            <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+    </form>
+</div>

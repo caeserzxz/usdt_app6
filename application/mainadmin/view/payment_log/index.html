@@ -1,0 +1,35 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+ 	<form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     	<div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>支付流水</strong>
+                </li>                                  
+            </ul>
+            
+              <div class="form-group m-l">
+                    <a class="btn btn-default  " data-toggle="reportrange" data-change="submit">
+                        <i class="fa fa-calendar fa-lg"></i>
+                        <small>时间范围</small>
+                        <span></span> <b class="caret"></b>
+                        <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                    </a>
+              </div>
+              <input type="text" class="form-control input-large" value="" name="user_id" placeholder="操作用户ID" data-rule-required="true" />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+              <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="payment_log/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

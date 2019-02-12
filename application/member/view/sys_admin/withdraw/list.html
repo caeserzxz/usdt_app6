@@ -1,0 +1,31 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+    <th>会员名称</th>
+    <th>申请日期</th>
+    <th>金额</th>
+    <th>提现方式</th>
+    <th>处理状态</th>
+    <th>更新时间</th>
+    <th>操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+<tr>
+<td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
+<td>{$vo.add_time|dateTpl}</td>
+<td>{$vo.amount|priceFormat}</td>
+<td>{$account_type[$vo['account_type']]}</td>
+<td>{$status[$vo['status']]}</td>
+<td>{$vo.update_time|dateTpl}</td>
+<td><a href="{:url('info',array('id'=>$row['id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据.</td></tr>
+</table>
+{/empty}   

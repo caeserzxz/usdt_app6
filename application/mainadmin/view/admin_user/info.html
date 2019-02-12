@@ -1,0 +1,131 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>帐号管理</strong>
+                </li>                                  
+            </ul>
+           
+        </div>
+</header>
+<section class="scrollable  wrapper">
+ <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+          
+            <div class="panel-body">  
+             <div class="form-group">
+                    <label class="control-label">角色</label>
+                    <div class="controls" >
+                        <select name="role_id"  data-rule-required="true">
+                            <option value="0">选择帐号角色</option>
+                            {$roleOpt|raw}
+                        </select>
+                        
+                    </div>
+              </div>
+               {gt name="row.user_id" value="0"}
+                    <div class="form-group">
+                        <label class="control-label">帐号</label>
+                        <div class="controls ">
+                            <span class="help-inline"><strong>{$row.user_name}</strong></span>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label">真实姓名</label>
+                        <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="real_name" value="{$row.real_name}" ><span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">手机号码</label>
+                        <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="moblie" value="{$row.moblie}" >
+                        <span >不填写，一旦开启后台登陆短信验证，则无法登陆</span>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label">状态：</label>
+                        <div class="controls">
+                                 <label class="radio-inline">
+                                    <input name="status" value="0" id="status" class="js_undertake" type="radio" >封禁
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="status" value="1" id="status" class="js_undertake " type="radio" {$row['status']==1?'checked':''}>
+                                    正常
+                                </label>
+                        </div>
+                       <div class="clearfix"></div>
+                </div>
+                    <div class="form-group">
+                     <label class="control-label" for="new_password">设置密码</label>
+                            <div class="controls">
+                                <input name="new_password" class="input-max" id="new_password"  data-rule-rangelength="[6,16]" type="password">
+                                <span class="maroon">*</span><span >长度为6~16位字符</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="repassword">确认密码</label>
+                            <div class="controls">
+                                <input name="repassword" class="input-max" id="repassword" data-rule-equalto="#new_password" type="password">
+                             <span class="maroon">*</span>
+                            </div>
+                        </div>
+               {else/}
+                    
+                    <div class="form-group">
+                        <label class="control-label">帐号</label>
+                        <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="帐号不能为空" name="real_name" value="" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">手机号码</label>
+                        <div class="controls " >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="moblie" value="" >
+                        
+                        </div><span class="help-inline">不填写，一旦开启后台短信验证，则无法登陆</span>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label">真实姓名</label>
+                        <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="name" value="" >
+                        </div><span class="maroon">*</span>
+                    </div>
+                  <div class="form-group">
+                            <label class="control-label" for="new_password">设置密码</label>
+                            <div class="controls">
+                                <input name="new_password" class="input-max" id="new_password" data-rule-required="true" data-rule-rangelength="[6,16]" type="password">
+                                
+                            </div><span class="maroon ">*</span><span class="help-inline">长度为6~16位字符</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="repassword">确认密码</label>
+                            <div class="controls">
+                                <input name="repassword" class="input-max" id="repassword" data-rule-required="true" data-rule-equalto="#new_password" type="password">
+                            
+                            </div> <span class="maroon">*</span>
+                        </div>
+             {/gt}
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <input name="user_id" type="hidden" value="{$row.user_id|intval}">
+
+    </form>
+</section>
+
+   
+{/block}
+

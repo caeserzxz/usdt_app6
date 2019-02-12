@@ -1,0 +1,59 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>下载备份</strong>
+                </li>                                  
+            </ul>
+           
+        </div>
+</header>
+
+<section  id="explanation" class="scrollable wrapper w-f">
+    <section class="panel panel-default ">
+    	<table class="table table-bordered table-striped ">
+            <thead>
+            <tr>                
+                <th align="left"  >
+                    文件名称
+                </th>
+                <th align="center">
+                    卷号
+                </th>                
+                <th align="center">
+                    数据大
+                </th>
+                <th align="center">
+                    备份时间
+                </th>            
+                <th align="center">
+                    操作
+                </th>                
+            </tr>
+            </thead>            
+           {foreach name="list" item="vo" key="k" }
+                <tr>                    
+                    <td align="left" class="">
+                        {$vo.basename}
+                    </td>
+                    <td align="center" class="">
+                        {$vo.part}
+                    </td>                    
+                    <td align="center" class="">
+                        {$vo.size|formatBytes}
+                    </td>
+                    <td align="center" class="">
+                        {$vo.time|dateTpl}
+                    </td>                    
+                    <td align="center" class="handle">
+                    <a href="{:url('BackupDb/downFile',array('time'=>$vo['time']))}" class=" bule"><i class="fa fa-download"></i>下载</a>                        
+                    </td>                    
+                </tr>
+            {/foreach}
+        </table>    
+</section>
+
+{/block}

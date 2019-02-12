@@ -1,0 +1,64 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+	<th width="90" class="th-sortable" data-sort-name="u.user_id">UID</th>
+    <th width="120">注册手机</th>
+    <th width="100">昵称</th>
+    <th width="120">推荐人</th>
+    <th width="150">等级/身份</th> 
+    <th width="100">帐户余额</th> 
+    <th width="130">最近登陆</th>    
+    <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+<td>{$vo.user_id}</td>
+<td>{$vo.mobile}</td>
+<td>{$vo.nick_name}</td>
+<td>{$vo.pid} - {$vo.pid|userInfo}</td>
+<td>{$vo.total_integral|userLevel} / 
+{eq name="vo.role_id" value="0"}
+普通会员
+{else/}
+{$roleList[$vo['role_id']]['role_name']}
+{/eq}
+</td>
+
+<td>{$vo.balance_money}</td>
+<td>{$vo.last_login|dateTpl}</td>
+
+<td> 
+
+<a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456? " data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-wrench text-muted"></i></a>
+{eq name="is_ban" value="0"}
+<a title="封禁会员"  data-confirm="您确定要封禁该会员，封禁后则会员则无法登陆? " data-toggle="cfmAjax" href="{:url('evelBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-lock text-muted"></i></a>
+{else/}
+<a title="解禁会员"  data-confirm="您确定要解禁该会员，解禁后则会员则可正常登陆? " data-toggle="cfmAjax" href="{:url('reBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-unlock"></i></a>
+{/eq}
+<a href="{:url('info',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看会员信息">
+    <i class="fa fa-edit"></i>
+</a>
+<a href="{:url('shop/sys_admin.order/index',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看订单">
+    <i class="fa fa-search"></i>
+</a>
+  <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$vo['user_id']))}" class="m-xs" title="资金变动明细">
+    <i class="fa fa-dollar"></i>
+</a>  
+  <a href="{:url('sys_admin.logOperate/index',array('edit_id'=>$vo['user_id']))}" class="m-xs" title="操作日志">
+    <i class="fa fa-calendar"></i>
+</a> 
+
+    </td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

@@ -1,0 +1,96 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>发送优惠券</strong>
+                </li>                                  
+            </ul>
+      
+        <a class="text-muted pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+     </div>
+</header>
+       
+        
+        
+<section class="scrollable  wrapper">
+ <form class="form-horizontal form-validate" method="post" action="{:url('send')}">
+        <div class="panel panel-default">
+            <input name="type_id" type="hidden" value="{$row.type_id|intval}">
+                <div class="form-group m-t">
+                    <label class="col-sm-2 control-label">类型金额：</label>
+                    <div class="col-sm-10"><label >{$row.type_name} -- {$row.type_money|priceFormat=true}</label></div>
+                </div>
+                {eq name="row.send_type" value="3"}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">优惠券数量：</label>
+                    <div class="col-sm-1 " >
+                        <input type="text" class="input-max" data-rule-required="true" name="send_num" value="" data-rule-maxlength="15" />
+                    </div>
+                        <span class="help-inline">提示:优惠券序列号由六位序列号种子加上四位随机数字组成</span>
+                </div>
+                {else/}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">按级别发放：</label>
+                        <div class="col-sm-6">
+                           	<select id="user_level" name="user_level"  style="width: 180px; " >
+                            	<option value="-1">选择用户级别</option>
+                                <option value="0">所有级别用户</option>
+                                {volist name="levelList" id="ul" }
+                                	<option value="{$ul.level_id}">{$ul.level_name}</option>
+                                {/volist}
+                            </select> <span class="help-inline">提示：选择了级别发放，指定用户将不生效</span>
+                         </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-sm-2 control-label">指定用户：</label>
+                        <div class="col-sm-6 " >
+                            <input type="text" class="input-small"  id="user_keyword" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchuser('user_keyword','select_user');"><i class="fa fa-search text-muted"></i></a>
+                            <select id="select_user" name="select_user"  style="width: 180px; " >
+                            	<option value="">选择用户</option>
+                            </select>
+                            <a href="javascript:;" class="m-xs" title="增加" onclick="adduser();"><i class="fa fa-plus text-muted"></i></a>
+                        </div>  
+                                                
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-2"  id="user_box">
+                          
+                        </div>                           	
+                    </div>
+                {/eq}
+                <div class="form-group">
+                      <div class="col-sm-4 col-sm-offset-2 mt-8"> 
+                          <button type="submit" class="btn btn-primary" data-loading-text="发送中...">确定发送优惠券</button>
+                          <button type="button" class="btn btn-default" data-toggle="back">返回</button>
+                      </div>
+               </div>
+          </div>
+    
+    </form>
+</section>
+<script type="text/javascript">
+function adduser(){
+	var select_user = $("#select_user").val();
+	if (select_user == ''){
+		_alert('请选择分配会员.');
+		return false;
+	}
+	// 检查是否已经存在
+	var is_error = false;
+	$("#user_box").find("input").each(function(){
+		if ($(this).val() == select_user){
+			is_error = true;
+			_alert('已存在列表中：'+$("#select_user").find("option:selected").text(),true);
+			return false;
+		}
+	});
+	if (is_error == true) return false;
+	$("#user_box").append('<label><input type="checkbox" name="user_id[]" value="'+ select_user +'" checked > '+  $("#select_user").find("option:selected").text()+'</label><br>');
+	return true;
+}
+</script>
+{/block}

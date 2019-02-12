@@ -1,0 +1,129 @@
+<script src="__STATIC__/js/webuploader/webuploader.js"></script>
+<script type="text/javascript">//upload
+var ratio = window.devicePixelRatio || 1,
+thumbnailWidth = 100 * ratio,// 优化retina, 在retina下这个值是2
+thumbnailHeight = 100 * ratio,
+uploader = null, pick = null,uploadering = 0;
+function WebUploaderDiy(_pick){
+	    uploader = WebUploader.create({
+        // swf文件路径
+        swf: '__STATIC__/js/webuploader/Uploader.swf',
+        // 文件接收服务端。
+        server: '{:url("mainAdmin/Attachment/upload")}',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: _pick,
+        resize: false,
+        auto: false,
+		duplicate :true
+    });
+ 
+    uploader.on('fileQueued', function (file) {   	
+        var _this = pick.parent();
+        pick.find('div.error').remove();  
+        uploadering = 1;        
+        if (_this.find('.upload-file').data('type') == 'file'){
+      		 _this.find('.upload-file').data('text',_this.find('.webuploader-pick').text());    
+             _this.find('.webuploader-pick').text('上传处理中...');           
+             uploader.upload();//执行上传  
+			  return;      
+        }else if (_this.find('.file-item').length > 0){
+            var $li = $('<div><img><div class="info">' + file.name + '</div></div>'),
+            $img = $li.find('img');
+            pick.parent().find('.file-item').html( $li );
+        }else if (_this.find('.upload-file').length > 0){
+        	 _this.find('.info').data('text',_this.find('.info').text()); 
+        	 _this.find('.info').text('上传0%...');  
+              uploader.makeThumb( file, function( error, src ) {
+                   if ( error ) {
+                        $('<div class="error">不能预览</div>').appendTo(pick);               
+                        return;
+                    }
+                   _this.find('.upload-file').css("background-image","url("+src+")");        
+                }, 1, 1 );     
+             uploader.upload();//执行上传
+             return false;         
+        }else{            
+        	_alert('无法识别上传类型',true);      
+            return false;
+        }
+        // 创建缩略图
+        // 如果为非图片文件，可以不用调用此方法。
+        // thumbnailWidth x thumbnailHeight 为 100 x 100
+        uploader.makeThumb( file, function( error, src ) {
+            if ( error ) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+            $img.attr( 'src', src );
+        }, 1, 1 );     
+         uploader.upload();//执行上传    	
+    });
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var _this = pick.parent();
+        if (_this.find('.upload-file').length > 0){
+        	_this.find('.info').text('上传中'+percentage * 100 + '%'); 
+            return false;
+        }        
+        
+    	var $li = $( '.uploadify-queue'),
+        $percent = $li.find('.uploadify-queue-item');
+		if ($li.length < 1 ) return false;
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div  class="uploadify-queue-item"><span class="fileName">'+file.name+' </span>	<span class="data"></span><div class="uploadify-progress"><div class="uploadify-progress-bar" style="width: 1%;"><!--Progress Bar--></div></div></div>').appendTo( $li ).find('.progress-bar');
+        }
+       
+    	$li.find('.data').html('上传中'+percentage * 100 + '%');
+        $li.find('.uploadify-progress-bar').css( 'width', percentage * 100 + '%' );
+        if (percentage == 1){        
+         	$percent.remove();
+        }
+	});
+    uploader.on('uploadSuccess', function (file, data) {
+   		uploadering = 0;
+    	if (data.code == 1){
+        	_alert(data.msg);
+            return false;
+        }
+     	var _this =  pick.parent();
+        if (_this.find('.upload-file').data('type') == 'file'){
+        	_this.find('.webuploader-pick').text($(_this).find('.upload-file').data('text'));
+      		 return false;
+    	}else if (_this.find('.file-item').length > 0){
+        	_this.find('.file-item').html("<img src='" + data.src + "' /><div class='info'>" + data.savename + "</div>");
+        }else if (_this.find('.upload-file').length > 0){
+        	_this.find('.upload-file').css("background-image","url("+data.src+")");
+        	_this.find('.info').text($(_this).find('.info').data('text'));
+            _this.find('.file_path').val(data.src);
+			_this.find('.item_close').data("id",data.image.id);
+            _this.find('.info').html('上传成功！');
+			if (_this.find('.upload-file').data('sku')){
+				 var c = _this.find('.file_path').data("id"),
+				d = _this.find('.file_path').data("name"),
+				ic = _this.find('.item_close').data("name"),
+				f = {};
+				f[d] = data.src;
+				f[ic] = data.image.id;
+				window.goods_data.products[c] = f;
+			}
+            return false;         
+        }else if(_this.find('.info').length > 0){
+        	_this.find('.info').html('上传成功！');
+        }
+        pick.prev().val(data.savename);
+    });
+
+	// 文件上传失败，显示上传出错。
+    uploader.on('uploadError', function (file) {
+      uploadering = 0;
+       var $error = pick.find('div.error');
+        // 避免重复创建
+        if ( !$error.length ) {
+            $error = $('<div class="error"></div>').appendTo(pick);
+        }
+
+        $error.text('上传失败');
+    });
+}  
+</script>

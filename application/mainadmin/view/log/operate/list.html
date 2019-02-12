@@ -1,0 +1,35 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="50">LOGID</th>
+    <th width="100">操作用户ID</th>
+    <th width="100">操作用户名</th>
+    <th width="150">操作时间</th>
+    <th width="100">操作IP</th>
+    <th width="100">影响数据ID</th>
+    <th>操作记录</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+<tr>
+    <td>{$vo.log_id}</td>
+    <td>{$vo.user_id}</td>
+    <td>{$vo.user_id|adminInfo}</td>
+    <td>{$vo.log_time|dateTpl}</td>
+	<td>{$vo.log_ip}</td>
+    <td>{$vo.edit_id}</td>
+    <td>{$vo.log_info}</td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

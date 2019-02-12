@@ -1,0 +1,292 @@
+
+<div class="form-group">          
+<label class="col-sm-2 control-label">抵扣积分：</label>
+    <div class="col-sm-8" >
+          <input type="text" class="input-mini" name="use_integral" data-rule-min="0" data-rule-max="9999" data-rule-number="true" value="{$row['use_integral']|intval}">
+          <span class="help-inline">用于积分+现金组合购买，一旦设置用户须有相应积分进行抵扣才能购买</span>
+    </div>
+</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">优惠券：</label>
+      <div class="col-sm-10">
+        <label class="radio-inline">
+            <input type="radio" name="use_bond" value="0" {$row.use_bond|tplckval='0','checked'} >不能使用
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="use_bond" value="1" {$row.use_bond|tplckval='>0','checked',true}  /> 可以使用
+        </label>
+        
+    </div>
+</div>
+
+<div class="form-group">          
+<label class="col-sm-2 control-label">等级积分规则：</label>
+    <div class="col-sm-8" >
+    	 <select name="rank_integral_type" class="select_integral_type" >
+        	   <option value="0" {$row['give_integral_type']==0?'selected':''}>商品售价1:1赠送</option>
+         	   <option value="1" {$row['give_integral_type']==1?'selected':''}>不赠送</option>
+               <option value="2" {$row['give_integral_type']==2?'selected':''}>赠送指定积分</option>
+         </select>
+         <input type="text" class="input-mini {$row['rank_integral']==2?'':'hd'} " name="rank_integral" min="0" data-rule-max="9999" data-rule-number="true" value="{$row['rank_integral']|intval}">
+    </div>
+</div>
+<div class="form-group">          
+<label class="col-sm-2 control-label">消费积分规则：</label>
+    <div class="col-sm-8" >
+    	 <select name="give_integral_type"  class="select_integral_type" >
+         	   <option value="0" {$row['give_integral_type']==0?'selected':''}>商品售价1:1赠送</option>
+         	   <option value="1" {$row['give_integral_type']==1?'selected':''}>不赠送</option>
+               <option value="2" {$row['give_integral_type']==2?'selected':''}>赠送指定积分</option>
+         </select>
+          <input type="text" class="input-mini {$row['give_integral']==2?'':'hd'}" name="give_integral" min="0" data-rule-max="9999" data-rule-number="true" value="{$row['give_integral']|intval}">
+       
+    </div>
+</div>
+<div class="help-inline red">默认全等级可购买，一旦勾选则只有勾选中的等级才能进行购买</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">限制会员购买：</label>
+      <div class="col-sm-8" >
+      {volist name="UsersLevel" id="urow" }
+        <li style="list-style:none; float:left; margin:2px;">
+        <label><input type="checkbox" name="limit_user_level[]" value="{$urow.level_id}"  <?=in_array($urow['level_id'],$limit_user_level)?'checked':'';?>> {$urow.level_name}</label></li>
+       {/volist}
+      </div>
+</div>
+<div class="help-inline red">默认全分销身份可购买，一旦勾选则只有勾选中的分销身份才能进行购买</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">限制分销身份购买：</label>
+      <div class="col-sm-8" >
+      {volist name="UsersRole" id="urow" }
+        <li style="list-style:none; float:left; margin:2px;">
+        <label><input type="checkbox" name="limit_user_role[]" value="{$urow.role_id}" <?=in_array($urow['role_id'],$limit_user_role)?'checked':'';?>> {$urow.role_name}</label></li>
+       {/volist}
+      </div>
+</div>
+<div class="line line-dashed line-lg pull-in"></div>
+
+
+<div class="form-group">
+      <label class="col-sm-2 control-label">会员价格优惠：</label>
+      <div class="col-sm-9" >
+        <select name="level_price_type" class="level_price_type" >
+         	   <option value="0" {$row['level_price_type']==0?'selected':''}>默认商城售价</option>
+               <option value="1" {$row['level_price_type']==1?'selected':''}>会员等级折扣</option>
+               <option value="2" {$row['level_price_type']==2?'selected':''}>自定义折扣</option>
+               <option value="3" {$row['level_price_type']==3?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
+         </select>
+      </div>
+</div>
+<div class="form-group level_price_box {$row['level_price_type']==0?'hd':''}">
+      <label class="col-sm-2 control-label">会员价格：</label>
+      <div class="col-sm-9" >
+      {volist name="UsersLevel" id="urow" }
+        <li style="list-style:none; float:left; position:relative; margin-right:10px;">
+        {$urow.level_name}：<input type="text" class="input-mini" min="0.1"  name="level_price[{$urow['level_id']}]" data-rule-ismoney="true"  value="{$row['level_price_type']==1?$urow['level_pro']:$levelPrice[$urow['level_id']]|default='0'}" {$row['level_price_type']==1?'disabled':''} data-level_pro="{$urow.level_pro}"><b class="symbol p-l">{$row['level_price_type']<=2?'%':'元'}</b></li>
+       {/volist}
+      </div>
+</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">身份价格优惠：</label>
+      <div class="col-sm-9" >
+        <select name="role_price_type" class="role_price_type">
+         	   <option value="0" {$row['role_price_type']==0?'selected':''}>默认商城售价</option>
+               <option value="1" {$row['role_price_type']==1?'selected':''}>自定义折扣</option>
+               <option value="2" {$row['role_price_type']==2?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
+         </select>
+      </div>
+</div>
+<div class="form-group role_price_box {$row['role_price_type']==0?'hd':''}">
+      <label class="col-sm-2 control-label">身份价格：</label>
+      <div class="col-sm-9" >
+      {volist name="UsersRole" id="urow" }
+        <li style="list-style:none; float:left; position:relative; margin-right:10px;">
+        {$urow.role_name}：<input type="text" class="input-mini" min="0.1"  name="role_price[{$urow['role_id']}]" data-rule-ismoney="true" value="{$rolePrice[$urow['role_id']]|default='0'}" ><b class="symbol p-l">{$row['role_price_type']==1?'%':'元'}</b></li>
+       {/volist}
+      </div>
+</div>
+
+<div style=" padding-bottom:10px; line-height:20px;">
+<div class="help-inline red">设置会员价格或阶梯价格则所有规格商品统一售价</div>
+<div class="help-inline">商城价、会员价、阶梯价和促销价不同时享受，按最低价格计算</div>
+</div>
+<div class="form-group">
+      <label class="col-sm-2 control-label">阶梯价格定义：</label>
+      <div class="col-sm-9" >
+        <select name="volume_price_type" class="volume_price_type">
+               <option value="1" {$row['volume_price_type']<=1?'selected':''}>指定固定售价</option>
+               <option value="2" {$row['volume_price_type']==2?'selected':''}>指定折扣售价</option>
+         </select>
+      </div>
+</div>
+<div class="form-group volume_price_box">
+      <label class="col-sm-2 control-label">阶梯价格：</label>
+      <div class="col-sm-4" id="volume_box">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            {volist name="VolumePriceList" id="vpl" key="key"}
+                <tr>
+                  <td> {eq name="key" value="1"}
+                          <a class="fa fa-plus m-xs addVolumePrice" title="增加" href="javascript:;"></a>
+                      {else/}  
+                          <a class="fa fa-minus m-xs removeVolumePrice" title="删除" href="javascript:;"></a>
+                      {/eq} </td>
+                  <td>优惠数量</td>
+                  <td style="position:relative;"><input name="volume_number[]" class="volume_number input-mini" value="{$vpl.number}" type="text" data-rule-ismoney="true"></td>
+                  <td>优惠价格</td>
+                  <td style="position:relative;"><input name="volume_price[]" class="volume_price input-mini" value="{$vpl.price}" type="text"  data-rule-ismoney="true">{$row['volume_price_type']<=1?'元':'%'}</td>
+                </tr>
+          {/volist}
+          {empty name="VolumePriceList"}
+                <tr>
+                  <td><a class="fa fa-plus m-xs addVolumePrice" title="增加" href="javascript:;"></a></td>
+                  <td>优惠数量</td>
+                  <td style="position:relative;"><input name="volume_number[]" class="volume_number input-mini" value="" type="text"  data-rule-ismoney="true"></td>
+                  <td>优惠价格</td>
+                  <td style="position:relative;"><input name="volume_price[]" class="volume_price input-mini" value="" type="text"  data-rule-ismoney="true"><b class="symbol p-l">{$row['volume_price_type']<=1?'元':'%'}</b></td>
+                </tr>
+           {/empty}
+        </table>
+      </div>
+      <span class="help-inline">购买数量达到优惠数量时享受的优惠价格</span>
+</div>
+<div class="line line-dashed line-lg pull-in"></div>
+<div style=" padding-bottom:10px; line-height:20px;">
+	<div class="help-inline red">* 只是开启限购，只限制每笔订单最高下单数量，可以重复下单.</div>
+	<div class="help-inline red">* 同时开启限购和促销，则在促销期间此商品购买数量不能超过限购的数量（包含促销期间所有正常订单和当前购买数量）.</div>
+</div>
+
+
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">单次限购：</label>
+    <div class="col-sm-10">
+        <label class="radio-inline">
+            <input type="radio" name="is_quota" value="0" {$row['quota_amount']<=0?'checked':''}  class="js_quota">不限购
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_quota" value="1" {$row['quota_amount']>0?'checked':''}  class="js_quota js_quota_show" />
+            限购
+        </label>
+        <label class="is_quota_container  v-top {$row['quota_amount']>0?'inline':'hd'} " style="position:relative;">
+            <input class="input-xs input-sm" type="text" data-rule-required="true" name="quota_amount" value="{$row.quota_amount|intval}" data-rule-positive="true" />
+        </label>
+    </div>
+</div>
+
+<div class="form-group">               
+      
+	<label class="col-sm-2 control-label">开启促销：</label>
+    <div class="col-sm-10">
+         <label class="m-t-md">
+               <input class="checkbox-slider colored-blue rand_amount"  name="is_promote" id="is_promote" type="checkbox" value="1" {$row['is_promote']==1?'checked':''}>
+               <span class="text"></span>
+         </label>
+    </div>
+ </div> 
+   <div class="form-group"> 
+     <label class="col-sm-2 control-label">促销价：</label>
+     <div class="col-sm-8">
+             <input type="text" class="input-mini" data-rule-ismoney="true" name="promote_price" value="{$row.promote_price}" >元
+             <span class="help-inline">促销期间以此价格进行销售</span>
+        </div>
+      
+</div>   
+<div class="form-group">          
+<label class="col-sm-2 control-label">促销时间：</label>
+    <div class="col-sm-3" >
+            <span class="fl help-inline">开始时间：</span><div class="input-group"> <input type="text" class="input-max" name="promote_start_date" readonly="readonly" id="promote_start_date" value="{$row.promote_start_date|dateTpl='Y-m-d H:i',true}"  data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+        </div>
+        
+        <div class="col-sm-3" >
+            <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" name="promote_end_date" value="{$row.promote_end_date|dateTpl='Y-m-d H:i',true}" id="promote_end_date"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+        </div>
+</div>
+
+
+
+<script type="text/javascript">
+$('.select_integral_type').change(function(){
+	if ($(this).val() == 2){
+		$(this).parent().find('input').removeClass('hd');
+	}else{
+		$(this).parent().find('input').addClass('hd');
+	}
+})
+//会员价格优惠
+$('.level_price_type').change(function(){
+	$('.level_price_box').find('input').val(0).attr("disabled", false);
+	$('.level_price_box').find('input').removeClass('error');
+	$('.level_price_box .error').remove();
+	if ($(this).val() == 0){
+		$('.level_price_box').addClass('hd');
+		return false;
+	}
+	$('.level_price_box').removeClass('hd');
+	if ($(this).val() == 1){
+		$('.level_price_box').find('input').attr("disabled", true);
+		$('.level_price_box').find('input').each(function(){
+			$(this).val($(this).data('level_pro'));
+		});
+	}
+	if ($(this).val() == 3){
+		$('.level_price_box').find('.symbol').html('元');
+	}else{
+		$('.level_price_box').find('.symbol').html('%');
+	}
+})
+//身份价格优惠
+$('.role_price_type').change(function(){
+	$('.role_price_box').find('input').val(0);
+	$('.role_price_box').find('input').removeClass('error');
+	$('.role_price_box .error').remove();
+	if ($(this).val() == 0){
+		$('.role_price_box').addClass('hd');
+		return false;
+	}
+	$('.role_price_box').removeClass('hd');
+	if ($(this).val() == 1){
+		$('.role_price_box').find('.symbol').html('%');
+	}else{
+		$('.role_price_box').find('.symbol').html('元');		
+	}
+})
+//价格阶梯定义
+$('.volume_price_type').change(function(){
+	if ($(this).val() == 1){
+		$('.volume_price_box').find('.symbol').html('元');
+	}else{
+		$('.volume_price_box').find('.symbol').html('%');		
+	}
+	$('.volume_price').val('');
+})
+$('.addVolumePrice').click(function(){
+	var title = '';
+	$('.volume_number').each(function(){
+		if ($(this).val() == ''){
+			title += "请输入优惠数量<br>";
+			return false
+		}
+	});
+	$('.volume_price').each(function(){
+		if ($(this).val() == ''){
+			title += "请输入优惠价格";
+			return false;
+		}
+	})
+	if (title) return _alert(title);	
+	if ($('.volume_price_type').val() == 1){
+		var symbol = '元';
+	}else{
+		var symbol = '%';	
+	}
+	$('#volume_box').find('table').append('<tr><td><a class="fa fa-minus m-xs removeVolumePrice" title="删除" href="javascript:;"></a></td>'
+          +'<td>优惠数量</td>'
+          +'<td style="position:relative;"><input name="volume_number[]" class="volume_number input-mini" value="" type="text"  data-rule-positive="true"></td>'
+          +'<td>优惠价格</td>'
+          +'<td style="position:relative;"><input name="volume_price[]" class="volume_price input-mini" value="" type="text"  data-rule-positive="true"><b class="symbol p-l">'+symbol+'</b></td>'
+        +'</tr>');
+});
+$("#volume_box").on("click",".removeVolumePrice",function(){
+	$(this).parents('tr').remove();
+});
+</script>

@@ -1,0 +1,31 @@
+{extend name="mainadmin@layouts/base" /}
+
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>模板列表</strong>
+                </li>                                  
+            </ul>
+            <select name="type"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                   <option value="">全部类型</option>
+                   <option value="dividend" {$search['type']=='dividend'?'selected':''}>分佣相关</option>
+                   <option value="withdraw" {$search['type']=='dividend'?'selected':''}>提现相关</option>
+                   <option value="order" {$search['type']=='order'?'selected':''}>订单相关</option>
+            </select>
+      </div>
+      </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/msg_tpl/list" /}
+        </div>
+    </section>
+ </section>
+
+{/block}

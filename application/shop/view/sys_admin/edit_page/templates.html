@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html class="grey-bg"><head lang="en"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>选择模板</title>
+      <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/EditPage/css/bootstrap.min.css">
+
+    <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/EditPage/css/jquery.fancybox.css">
+
+    <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/EditPage/css/owl.carousel.css">
+
+    <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/EditPage/css/layout.css">
+
+    <link media="all" type="text/css" rel="stylesheet" href="__STATIC__/EditPage/css/style.css">
+
+    <script src="__STATIC__/EditPage/js/jquery/jquery.min.js"></script>
+
+    <script src="__STATIC__/EditPage/js/jquery/jquery.fancybox.js"></script>
+
+    <script src="__STATIC__/EditPage/js/jquery/jquery.pin.min.js"></script>
+
+    <script src="__STATIC__/EditPage/js/templates.js"></script>
+
+<style type="text/css">.fancybox-margin{margin-right:8px;}</style></head>
+<body class="grey-bg">
+<div id="main-wrapper" class="clearfix">
+    <div id="header-wrapper">
+        <div id="header">
+            <div id="logo">
+                <a href="/">
+                   <img src="__STATIC__/EditPage/images/logo.png"/>
+                </a>
+            </div>
+            <div id="select-wrapper">
+                <a class="back-to-page" href="{:U('index')}"><img src="__STATIC__/EditPage/images/return-to-edit.png" width="80%"></a>
+            </div>
+        </div>
+    </div>
+    <div class="pin-wrapper" style="height: 65px;"><div class="theme-groups-menu" style="width: 1358px;">
+        <div class="theme-groups-menu-inner">
+            <ul class="list-unstyled list-inline">
+            	<volist name="templates" id="t" key='i'>
+                  <li><a class="group-menu {$i==1?'active':''}" href="javascript:void(0)" data-id="#{$key}">{$t.name}</a></li>
+                </volist>    
+           </ul>
+        </div>
+    </div></div>
+    <div id="main-content" class="clearfix">
+        <div class="templates-list">
+        	<volist name="templates" id="t" key="k" >
+                <hr id="{$key}">
+                <assign name="_theme_type" value="$key" />
+                <div class="group-name"><span>{$t.name}</span></div>
+                <div class="group-templates clearfix">
+                	<volist name="t.list" id="temp" >
+                         <div class="template">
+                             <div class="template-image"><img src="{$temp.img}"></div>
+                             <div class="template-name">{$temp.name}</div>
+                             <if condition="($theme_type eq $_theme_type) AND ($select_theme eq $key) "><div class="cur-page-icon"></div></if>
+                             <div class="preview-cover <if condition="($theme_type eq $_theme_type) AND ($select_theme eq $key) ">cur-page</if>">{$_theme_type}<a class="use-button" href="{:U('index',array('theme_type'=>$_theme_type,'select_theme'=>$key))}">立即使用</a></div>
+                         </div>
+                     </volist>  
+        		</div>
+             </volist>    
+       </div>
+   </div>                
+</div>
+
+</body></html>

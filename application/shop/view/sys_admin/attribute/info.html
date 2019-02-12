@@ -1,0 +1,83 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['attr_id']>0?'编缉属性':'添加属性'}</h4>
+            </div>
+            <div class="modal-body">
+            		<div class="form-group">
+                      <label class="control-label">所属模型</label>
+                      <div class="col-sm-4">
+                       <select name="model_id"  class="input-max _model_id" data-toggle="select2" >
+                          <option value="">请选择</option>   
+                           {volist name="listOpt" id="opt"} 
+                           		<option value="{$opt.id}" {$opt["id"]==$row["model_id"]?"selected":""} attr_group="{$opt['attr_group']}" >{$opt.name}</option>    
+                           {/volist}               
+                      </select>
+                      </div>
+                  </div>  
+                  <div class="form-group">
+                      <label class="control-label">属性名称</label>
+                      <div class="col-sm-6 must">
+                          <input type="text" class="input-xlarge"  data-rule-required="true" name="attr_name" value="{$row.attr_name}" >
+                      </div>
+                  </div> 
+                                  
+                 
+                  <div class="form-group">
+                      <label class="control-label">能否进行检索</label>
+                      <div class="col-sm-9">
+                       <label class="radio-inline text-muted" >
+                        <input type="radio" value="0" name="attr_index" {$row.attr_index|tplckval='=0','checked',true}>
+                          不需要检索 <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="不需要该属性成为检索商品条件的情况请选择不需要检索"></i>
+                        </label>
+                       <label class="radio-inline text-muted" >
+                        <input type="radio"  value="1" name="attr_index"  {$row.attr_index|tplckval='=1','checked'}>
+                         关键字检索 <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="需要该属性进行关键字检索商品时选择关键字检索"></i>
+                        </label>
+                      
+                        
+                      </div>
+                     
+                  </div>
+                  
+                   <div class="form-group">
+                      <label class="control-label">录入方式</label>
+                      <div class="col-sm-9">
+                      <label class="radio-inline text-muted" >
+                        <input type="radio" value="0" name="attr_input_type" class="attr_input_type" {$row.attr_input_type|tplckval='=0','checked',true} onclick="_attr_input_type(this)">
+                          手工录入
+                        </label>
+                       <label class="radio-inline text-muted" >
+                        <input type="radio" value="1" name="attr_input_type" class="attr_input_type" {$row.attr_input_type|tplckval='=1','checked'}  onclick="_attr_input_type(this)">
+                         从下面的列表中选择 <i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="一行代表一个可选值"></i>
+                        </label>
+                       <label class="radio-inline text-muted" >
+                        <input type="radio" value="2" name="attr_input_type" class="attr_input_type" {$row.attr_input_type|tplckval='=2','checked'}  onclick="_attr_input_type(this)">
+                            多行文本框 
+                        </label>
+                      </div>                     
+                  </div>
+                   <div class="form-group">
+                      <label class="control-label">可选值列表</label>
+                      <div class="col-sm-9">
+                     <textarea  id="attr_values"  name="attr_values" {$row['attr_input_type']!=1?'disabled':""} style="width:80%; height:60px;">{$row.attr_values}</textarea>
+                      </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="attr_id" value="{$row.attr_id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+
+function _attr_input_type(obj){
+	$("#attr_values").attr("disabled",true); 
+	if ($(obj).val() == 1)	$("#attr_values").attr("disabled",false);
+}
+</script>

@@ -1,0 +1,55 @@
+<div class="modal-dialog" style="width:880px;">
+<div class="modal-content">
+
+<div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="bootbox-close-button close" type="button">×</button><h4 class="modal-title">选择地区</h4></div>
+
+<div class="modal-body">
+<div class="bootbox-body">
+
+
+    <div class="pop-area">
+       <?PHP foreach ($d_region as $key=>$rowa){?>      
+           <div  class="pop-area-row ng-scope" >
+                <div class="pop-area-provinces">
+                    <div class="pop-area-region">
+                        <label class="ng-binding">
+                            <input type="checkbox" name="sel_region" class="ng-pristine ng-untouched ng-valid" onchange="changeCheck(this,1)" value="<?=$key?>">
+                            <?=$rowa['name']?>
+                        </label>
+                    </div>
+                    
+                    <?PHP foreach ($rowa['plist'] as $rowb){?>
+                    <div class="pop-area-province ng-scope" >
+                        <label class="ng-binding">
+                            <input type="checkbox" name="sel_region" class="ng-pristine ng-untouched ng-valid" region_name="<?=$rowb['short_name']?>" value="<?=$rowb['id']?>" onchange="changeCheck(this,2)">
+                            <span id="region_name_<?=$rowb['id']?>"><?=$rowb['short_name']?></span>
+                        </label>
+                        <span class="pop-area-cities-count ng-binding"></span>
+                        <div class="pop-area-province-arrow" onclick="toggleProvince(this)" >
+                            <span  class="caret ng-scope"></span>
+                        </div>
+                    </div>
+                    <?PHP }?> 
+                 	<?PHP foreach ($rowa['clist'] as $rowc){?>
+                    <div class="pop-area-cities ng-scope" style="display:none;"  >
+                            <volist name="rowc" id="rowd" >
+                            <?PHP foreach ($rowc as $rowd){?>
+                               <div class="pop-area-city ng-scope">
+                                    <label class="ng-binding">
+                                        <input type="checkbox" name="sel_region" pid="<?=$rowd['pid']?>"  region_name="<?=$rowd['short_name']?>" class="ng-pristine ng-untouched ng-valid" value="<?=$rowd['id']?>" onchange="changeCheck(this,3)">
+                                       <?=$rowd['short_name']?>
+                                    </label>
+                                </div>
+                            <?PHP }?> 
+                    </div>
+                	<?PHP }?> 
+                 </div>
+            </div>
+       <?PHP }?> 
+   </div>
+
+
+
+<div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal" onclick="edit_sel_region();">确定</button></div>
+
+</div></div>

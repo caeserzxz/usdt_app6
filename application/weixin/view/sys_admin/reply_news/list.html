@@ -1,0 +1,41 @@
+<table id="listTable" class="table table-hover table-nomargin table-bordered usertable dataTable">
+        <thead>
+            <tr>
+               
+                <th width="150">关键词</th>
+                <th width="150">图文类型</th>
+                <th>图文标题</th>
+                <th width="200">添加时间</th>
+                <th width="100">是否启用</th>
+                <th width="100" align="center">关注回复</th>
+				<th width="130" align="center">默认无匹配回复</th>
+                <th width="80">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {volist name="data.list" id="vo" key="i" offset="0" length='12'}
+             <tr>                
+                <td>{$vo.keyword}</td>
+                <td>{$vo['is_more']==1?'多图文':'单图文'}</td>
+                <td>{$vo.title}</td>
+                <td>{$vo.add_time|dateTpl}</td>
+                <td><a href="#" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'status'))}" class="{$vo.status|tplckval='>0','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+                 <td align="center"><a href="#" title="设为关注回复，用户关注后优先收到的信息" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'subscribe'))}" class="{$vo.subscribe|tplckval='=1','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+      <td align="center"><a href="#" title="设为默认回复，用户输入没有的关键字时的自动回复" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'default'))}" class="{$vo.default|tplckval='=1','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+                <td align="center" >
+                    <a href="{:url('info',array('id'=>$vo['id']))}"  rel="tooltip" title="编辑" class="fa fa-edit m-xs"></a>
+                    <a href="{:url('delete',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}" class="fa fa-trash" title="删除"></a>
+                </td>
+            </tr>
+        {/volist}
+
+{empty name="data.list"}
+<tr>
+    <td height="200" colspan="20" style="text-align:center;">没有找到相关数据!</td>
+</tr>
+{/empty}
+    
+    </tbody>
+   
+</table>
+      
