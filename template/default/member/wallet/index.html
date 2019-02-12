@@ -1,0 +1,50 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="top">
+        <div class="money">
+            <p class="fs48 num color_w">36962.00</p>
+            <a href="{:url('withdraw/index')}" class="fs24 color_w">提现</a>
+        </div>
+        <span class="fs26 color_w">余额（元）</span>
+        <div class="tips">
+            <div class="color_w fs26">可提现金额 ￥<p class="fs30">1587.00</p>, 冻结金额 ￥<p class="fs30">3652.00</p></div>
+        </div>
+    </div>
+    <div class="moneyInfo">
+        <div>
+            <p class="fs40 color_3 num">962.00</p>
+            <span class="fs26 color_9">今日收益(元)</span>
+        </div>
+        <div>
+            <p class="fs40 color_3 num">1365.32</p>
+            <span class="fs26 color_9">本月收益(元)</span>
+        </div>
+        <div>
+            <p class="fs40 color_3 num">1365.32</p>
+            <span class="fs26 color_9">累计收益(元)</span>
+        </div>
+    </div>
+    <div class="cellBox">
+        <a href="{:url('mylog')}">
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">收益明细</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+        <a href="{:url('leaderboard')}">
+            <div><img src="__STATIC__/mobile/default/images/wallet02.png" alt=""><span class="fs30 fw_b color_3">排行榜</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+    </div>
+</div>
+<div class="button">
+    <a href="充值.html" class="fs32 fw_b BGcolor_r color_w">充值</a>
+</div>
+
+{/block}
+
+{block name="footer"}
+{/block}

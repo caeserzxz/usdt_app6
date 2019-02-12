@@ -1,0 +1,222 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/shopCart.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+<!-- 页面内容-->
+<div class="top"><span class="fs32 color_3">当前购物车共<em>0</em>件商品</span><p class="fs28 color_r" data-type='0'>编辑</p></div>
+    <!-- 空购物车 -->
+    <div class="emptyBox">
+        <img src="__STATIC__/mobile/default/images/emptyCart.png" alt="">
+        <div><span class="fs30 color_9">购物车空空如也~</span><a href="/" class="fs30 color_r">去逛逛</a></div>
+    </div>
+    <!-- 购物车 -->
+    <div class="goodslist">
+        <ul>
+
+        </ul>
+    </div>
+    <!-- 失效商品 -->
+    <div class="loseGoods" style="display: none;">
+        <div class="title"><span class="fs32 fw_b color_3">失效商品</span><p class="fs28 color_r clearInvalid">清空</p></div>
+
+    </div>
+
+</div>
+<div class="paying">
+    <div class="totalBox ">
+        <div class="left">
+            <label for="checkall_a">
+                <div class="iconBox">
+                    <input type="checkbox" class="check checkall" name="checkbox1" id="checkall_a">
+                    <i class="icon_checked"></i>
+                </div>
+                <span class="fs32 fw_b color-3">全选</span>
+            </label>
+            <p class="fs28 color_9">小计</p>
+            <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52 totel_price_1">00</em><p class="totel_price_2">.00</p></div>
+        </div>
+        <a href="{:url('checkOut')}" class="right BGcolor_r fs30 color_w"><span class="fw_b">结算</span>(<em id="buyNum">0</em>)</a>
+    </div>
+</div>
+<!-- 编辑 -->
+<div class="edit">
+    <div class="totalBox">
+        <div class="left">
+            <label for="checkall_b">
+                <div class="iconBox">
+                    <input type="checkbox"  class="check checkall" name="checkbox1" id="checkall_b">
+                    <i class="icon_checked"></i>
+                </div>
+                <span class="fs32 fw_b color-3">全选</span>
+            </label>
+        </div>
+        <div class="button fs30 color_w fw_b"><span class="BGcolor_3 delSelGoods">删除</span><span class="BGcolor_r collectGoods">收藏</span></div>
+    </div>
+</div>
+{include file="layouts@bottom" /}
+<script type="text/html" id="goodsLi">
+    {{each goodsList as item index}}
+    <li>
+        <div class="checkbox">
+            <label for="s{{item.rec_id}}">
+                <div class="iconBox">
+                    <input type="checkbox" class="check" id="s{{item.rec_id}}" name="rec_ids[]" value="{{item.rec_id}}" data-rec_id="{{item.rec_id}}" {{item.is_select?'checked':''}}>
+                    <i class="icon_checked"></i>
+                </div>
+            </label>
+            <div class="block">
+                <a href='{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}' >
+                    <img src="{{item.pic}}" alt="" class="goodsimg">
+                </a>
+                <div class="info">
+                    <p class="fs28 color_3">{{item.goods_name}}</p>
+                    <div class="sign fs28 color_9">{{item.sku_name}}</div>
+                    <div class="Money">
+                        <div class="left">
+                            <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+                            <span class="fs24 color_9">￥{{item.market_price}}</span>
+                        </div>
+                        <div class="number">
+                            <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{item.rec_id}}','down');" class="minus">
+                            <input class="fs30 color_3" type="text" readonly value="{{item.goods_number}}">
+                            <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{item.rec_id}}','up');" class="add"></div>
+
+                    </div>
+                </div>
+            </div>
+                <div class="swiped BGcolor_3">
+                    <div class="delect" data-rec_id="{{item.rec_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+                    <div class="like collectGoods" data-goods_id="{{item.goods_id}}"><img src="__STATIC__/mobile/default/images/goodsIcon03.png" alt="" data-type="0"></div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+</script>
+
+<script type="text/html" id="loseGoodsLi">
+    {{each invalidList as item index}}
+    <a href='{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}' >
+        <div class="box">
+            <img src="{{item.pic}}" alt="">
+            <div class="info">
+                <p class="fs28 color_9">{{item.goods_name}}</p>
+                <span class="fs30 color_3">失效</span>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script>
+    //购物车统一请求
+    function evalCart(action,arr){
+        jq_ajax('{:url("shop/api.flow/'+action+'")}',arr,function(res){
+            if (res.code==0){
+                _alert(res.msg);
+                return false;
+            }
+            $('.top').find('em').html(res.cartInfo.allGoodsNum);
+            $('.totel_price_1').html(res.cartInfo.exp_total[0]);
+            $('.totel_price_2').html('.'+res.cartInfo.exp_total[1]);
+            $('#buyNum').html(res.cartInfo.buyGoodsNum);
+            if (res.cartInfo.goodsList){
+                $('.emptyBox').hide();
+                $('.goodslist ul').html(template('goodsLi',res.cartInfo));
+            }else{
+                $('.goodslist ul').html('');
+                $('.emptyBox').show();
+            }
+
+            if (res.cartInfo.isAllSel == 1){
+                $('.checkall').prop("checked",true);
+            }else{
+                $('.checkall').prop('checked',false);
+            }
+            $('.loseGoods').find('.box').remove();
+            if (res.cartInfo.invalidList){
+                $('.loseGoods').show();
+                $('.loseGoods').append(template('loseGoodsLi',res.cartInfo));
+            }else{
+                $('.loseGoods').hide();
+            }
+            container('.goodslist li');
+            return true;
+        })
+    }
+    //修改购物车订购数量
+    function editNum(obj,rec_id,type) {
+        var num = $(obj).parent().find('input').val();
+        if (type == 'up'){
+            num++;
+        }else {
+            num--;
+        }
+        if (num < 1) return false;
+        return evalCart('editNum','rec_id='+rec_id+'&num='+num);
+    }
+    //删除购物车商品
+    $(document).on('click','.delect',function () {
+        var rec_id = $(this).data('rec_id');
+        return evalCart('delGoods','rec_id='+rec_id);
+    })
+    //清空购物车失效商品
+    $('.clearInvalid').on('click',function () {
+        return evalCart('clearInvalid');
+    })
+    //选择商品
+    $('.goodslist').on('click','.check',function () {
+        var is_select = 0;
+        if ($(this).is(':checked')){
+            is_select = 1;
+        }
+        return evalCart('setSel','rec_id='+$(this).data('rec_id')+'&is_select='+is_select);
+    })
+    //全选或全不选商品
+    $('.checkall').on('click',function () {
+        var is_select = 0;
+        if ($(this).is(':checked') == true){
+            is_select = 1;
+        }
+        return evalCart('setSel','rec_id=all&is_select='+is_select);
+    })
+    //删除选择的商品
+    $('.delSelGoods').on('click',function () {
+        return evalCart('delSelGoods','');
+    })
+    //收藏选中的商品
+    $('.collectGoods').on('click',function () {
+
+    })
+
+    $(function(){
+        evalCart('getList');//加载购物车
+        $('.top p').on('click',function(){
+            if($(this).attr('data-type')==0){
+                $(this).text('完成')
+                $('.paying').hide();
+                $('.edit').show();
+                $(this).attr('data-type','1')
+            }else{
+                $(this).text('编辑')
+                $('.edit').hide();
+                $('.paying').show();
+                $(this).attr('data-type','0')
+            }
+        })
+        $(document).on('click','.like img',function(){
+            if($(this).attr('data-type')==0){
+                $(this).attr('src','__STATIC__/mobile/default/images/goodsIcon03_lh.png')
+                $(this).attr('data-type','1')
+            }else{
+                $(this).attr('src','__STATIC__/mobile/default/images/goodsIcon03.png')
+                $(this).attr('data-type','0')
+            }
+
+        })
+    })
+</script>
+{/block}

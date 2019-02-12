@@ -1,0 +1,221 @@
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css">
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/bank.css"/>
+<div class="{$isAddOrder==1?'wrapper':''} addressesList">
+    {eq name="$isAddOrder" value="1"}
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
+            </div>
+            <div class="header-title">选择地址</div>
+            <div class="header-right"></div>
+        </div>
+    </div>
+    {/eq}
+    <ul class="addresslist">
+
+    </ul>
+    <div class="page-ft">
+        <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
+    </div>
+</div>
+
+<div class="wrapper addressInfoBox">
+
+</div>
+<script src="__STATIC__/js/jquery/jquery-weui.min.js"></script>
+<!--地址列表-->
+<script type="text/html" id="addressLiTpl">
+    {{each list as item index}}
+    <li>
+        <object>
+            <div class="block" data-index="{{index}}">
+                <div class="address">
+                    <div class="info">
+                        <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p></div>
+                        <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
+                    <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+                </div>
+                <div class="radioBox">
+                    <label for="address_{{item.address_id}}">
+                        <div class="iconBox">
+                            <input type="radio" class="check editDefault" name="radiobox" id="address_{{item.address_id}}"
+                                   value="{{item.address_id}}" {{item.is_default==1?'checked':''}}>
+                            <i class="icon_checked"></i>
+                        </div>
+                        <span class="fs26 color_9">设为默认地址</span>
+                    </label>
+                    <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
+                </div>
+            </div>
+            <div class="swiped BGcolor_3">
+                <div class="delect" data-address_id="{{item.address_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+            </div>
+        </object>
+    </li>
+    {{/each}}
+</script>
+<!--编缉或添加地址-->
+{literal}
+<script type="text/html" id="addressInfoTpl">
+
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
+            </div>
+            <div class="header-title">{{if address_id }}修改地址{{else}}添加地址{{/if}}</div>
+            <div class="header-right"></div>
+        </div>
+    </div>
+    <!-- 页面内容-->
+    <div class="addressBox">
+        <form action="" id="formAddress">
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">收货人</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名" name="consignee" value="{{consignee}}">
+            </div>
+
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">手机号码</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入收货人电话" name="mobile" value="{{mobile}}">
+            </div>
+        </div>
+        <div class="cell bankType">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">所在地区</span>
+                <input type="text" value="{{_merger_name}}" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
+            </div>
+            <div class="cell_ft">
+                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">详细地址</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
+            </div>
+        </div>
+            <input type="hidden" name="address_id" value="{{address_id}}">
+        </form>
+    </div>
+    <div class="page-ft">
+        <a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>
+    </div>
+
+ </script>
+{/literal}
+<script type="text/javascript">
+    var isAddOrder = '{$isAddOrder|intval}';
+    var addressList = {};
+    var defAddressId = 0;
+
+    //获取收货地址区列表
+    function getAddressList() {
+        jq_ajax('{:url("member/api.address/getList")}', '', function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            addressList = res.list;
+            if (isAddOrder == 1) {
+
+                if (typeof(res.list) == 'undefined') {
+                    $('.addressBox .tips').show();
+                    $('.addressBox .address').hide();
+                    return false;
+                }
+                showAddress(addressList[0]);
+                evalShippingFee();//计算运费
+                defAddressId = addressList[0]['address_id'];
+            }
+
+            $('.addresslist').html(template('addressLiTpl', res));
+            container('.addresslist object')
+        })
+    }
+
+    //设置显示指定收货地址
+    function showAddress(address) {
+        $('.address').find('._consignee').html(address.consignee + ' ' + address.mobile);
+        $('.address').find('._address').html(address.merger_name + ' ' + address.address);
+        $('#address_id').val(address.address_id);
+    }
+
+    $(function () {
+        getAddressList();
+    })
+    //点击删除地址
+    $('.addresslist').on('click','.delect',function() {
+        jq_ajax('{:url("member/api.address/delete")}','address_id='+$(this).data('address_id'),function(res){
+            if (res.code == 0) {
+                alert(res.msg);
+                return false;
+            }
+            addressList = res.list;
+            $('.addresslist').html(template('addressLiTpl', res));
+            container('.addresslist object');
+        })
+    })
+    //关闭编缉弹出
+    $('.addressInfoBox').on('click','.close_wrapper',function () {
+        $('html').removeClass('noscroll');
+        $('.addressInfoBox').removeClass('move-left');
+    })
+
+    //点击新增地址
+    $('.add_address').on('click', function () {
+        $('html').addClass('noscroll');
+        $('.addressInfoBox').html(template('addressInfoTpl'));
+        $('.addressInfoBox').addClass('move-left');
+        $("#city-picker").cityPicker({
+            title: "请选择省市区"
+        });
+    })
+    //点击编缉收货地址
+    $('.addresslist').on('click', '.edit', function () {
+        isContainer = true;
+        $('.addressInfoBox').html(template('addressInfoTpl', addressList[$(this).data('index')]));
+        $('html').addClass('noscroll');
+        $('.addressInfoBox').addClass('move-left');
+        $("#city-picker").cityPicker({
+            title: "请选择省市区"
+        });
+    })
+    //提交修改或添加操作
+    function evalPost(){
+        var postData = $('#formAddress').toJson();
+        postData.regionIds = $(document).find('#city-picker').data('codes');
+        var url = postData.address_id > 0 ?  '{:url("member/api.address/edit")}':'{:url("member/api.address/add")}';
+        jq_ajax(url,postData,function(res){
+            if (res.code == 0) {
+                alert(res.msg);
+                return false;
+            }
+            $('.addressBox .tips').hide();
+            $('.addressBox .address').show();
+            addressList = res.list;
+            $('.addresslist').html(template('addressLiTpl', res));
+            container('.addresslist object');
+            $('.addressInfoBox .close_wrapper').trigger("click");
+        })
+    }
+    //设置为默认地址
+    $('.addresslist').on('click','.editDefault',function() {
+        var obj = $(this);
+        if (defAddressId != obj.val()) {
+            jq_ajax('{:url("member/api.address/editDefault")}', 'address_id=' + $(this).val(),function (res){
+                if (res.code == 0) {
+                    alert(res.msg);
+                    return false;
+                }
+                defAddressId = obj.val();
+            })
+        }
+
+    })
+</script>

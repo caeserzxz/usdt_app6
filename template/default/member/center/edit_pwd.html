@@ -1,0 +1,67 @@
+{extend name="layouts@base" /}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="cellBox">
+   
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">旧密码</span>
+                <input type="password" class="fs28 fw_b color_3" id="old_password" placeholder="请输入旧密码">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">新密码</span>
+                <input type="password" class="fs28 fw_b color_3" id="password" placeholder="请输入新密码">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">确认密码</span>
+                <input type="password" class="fs28 fw_b  color_3" id="cfm_password" placeholder="请再次输入新密码">
+            </div>
+        </div>
+    </div>
+    <div class="page-ftb">
+        <span class="fs32 color_w fw_b BGcolor_r editpwd">确定</span>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="footer"}
+<script type="text/javascript">
+	$('.editpwd').on('click',function(){
+        var arr = new Object();
+      	arr.old_password = $('#old_password').val();
+        arr.password = $('#password').val();
+		arr.cfm_password = $('#cfm_password').val();
+        if (arr.old_password == '' ){
+            _alert('请输入旧密码.');
+            return false;
+        }
+		if (arr.password == '' ){
+            _alert('请输入新密码.');
+            return false;
+        }
+        if (arr.password.length < 8){
+            _alert('新密码长度不能小于八位.');
+            return false;
+        }
+		if (arr.password !== arr.cfm_password){
+			_alert('两次输入的密码不一致.');
+			return false;	
+		}        
+        jq_ajax('{:url("member/api.users/editPwd")}',arr,function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg,'{:url("login")}');
+        })
+    })
+</script>
+
+{/block}

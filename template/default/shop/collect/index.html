@@ -1,0 +1,199 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myCollection.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+        <!-- 页面内容-->
+        <div class="top"><span class="fs32 color_3">当前收藏夹共<em>0</em>件商品</span><p class="fs28 color_r" data-type='0'>编辑</p></div>
+        <!-- 购物车 -->
+        <div class="goodslist">
+           <ul>
+              
+          </ul>
+          </div>
+      </div>
+      <!-- 编辑 -->
+      <div class="edit">
+        <div class="totalBox">
+            <div class="left">      
+                <label for="s02">
+                  <div class="iconBox">
+                    <input type="checkbox" class="check allcheck" name="checkbox2" id="s02">
+                    <i class="icon_checked"></i>
+                  </div>
+                  <span class="fs32 fw_b color-3">全选</span>
+                </label>
+            </div>
+            <div class="button fs30 color_w fw_b batch_cancel"><span class="BGcolor_r">取消收藏</span></div>
+        </div>
+      </div>
+<script type="text/html" id="goodsTpl">
+{{each list as item index}}
+<li id="gid{{item.goods_id}}">
+  <object>	  
+	<div class="checkbox">
+	  <div class="labelBox">
+		<label for="_gid{{item.goods_id}}">
+		  <div class="iconBox">
+			<input type="checkbox" class="check" value="{{item.goods_id}}" name="checkgoods" id="_gid{{item.goods_id}}">
+			<i class="icon_checked"></i>
+		  </div>
+		</label>
+	  </div>
+	  <a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}">
+	  <div class="block margion_l30">                   
+		<img src="{{item.goods_thumb}}" alt="" class="goodsimg">
+		<div class="info">
+		  <p class="fs28 color_3">{{item.goods_name}}</p>
+		  <div class="sign fs28 color_9"></div>
+		  <div class="Money">
+			  <div class="left">
+				<div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+				<span class="fs24 color_9">￥{{item.market_price}}</span>
+			  </div>
+		   </div>
+		</div>
+	  </div>
+	  </a>
+	  <div class="swiped BGcolor_3">
+		<div class="delect" data-goods_id="{{item.goods_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+	  </div>   
+	</div>
+  
+  </object> 
+</li>
+{{/each}}
+</script>
+
+{/block}
+
+{block name="footer"}
+<script>
+      $(function(){
+		   jq_ajax('{:_url("shop/api.goods/getCollectlist")}','',function(res){
+			   if(res.code  == 0 ){
+                    _alert(res.msg)
+					return false;
+               }
+			    $('.goodslist ul').html(template('goodsTpl',res));
+				$('.top em').html(res.count);
+				touchmove();
+				$('.top p').on('click',function(){
+					  if($(this).attr('data-type')==0){
+					  $(this).text('完成')
+					  $('.edit').show();
+					  $('.labelBox').show()
+					  $('.block').removeClass('margion_l30')
+					  $(this).attr('data-type','1')
+					  $('.goodslist object').removeClass('swipeleft')
+					}else{
+					  $(this).text('编辑')
+					  $('.labelBox').hide()
+					  $('.edit').hide();
+					  $('.block').addClass('margion_l30')
+					  $(this).attr('data-type','0') 
+					}
+					
+				 })
+				 
+				 $('.delect').on('click',function(){
+					var gid = $(this).data('goods_id');
+					jq_ajax('{:_url("shop/api.goods/cancelCollect")}','gids='+gid,function(res){
+						if(res.code  == 0 ){
+							_alert(res.msg)
+							return false;
+						 }
+						 $('.top em').html($('.top em').html() - 1);
+						 $('#gid'+gid).remove();
+					}); 
+				 })				
+			});
+		  	//取消收藏
+			$('.batch_cancel').click(function(){
+				var gids = [];
+				$(".goodslist").find('input:checkbox').each(function() { //遍历所有复选框
+				    if ($(this).prop('checked') == true) {
+				       gids.push($(this).val());
+				    }
+				});				
+				jq_ajax('{:_url("shop/api.goods/cancelCollect")}','gids='+gids.join(','),function(res){
+					if(res.code  == 0 ){
+						_alert(res.msg)
+						return false;
+				     }
+				  	  window.location.reload();	
+				});
+			})
+
+        //全选
+        $('.totalBox .left').on('click',function(){
+          $(".labelBox input:checkbox").prop("checked", $('.allcheck').prop('checked'));
+        })
+        $(".labelBox input:checkbox").on('click', function() {
+            //当选中的长度等于checkbox的长度的时候,就让控制全选反选的checkbox设置为选中,否则就为未选中
+            if($(".labelBox input:checkbox").length === $(".labelBox input:checked").length) {
+                $(".allcheck").prop("checked", true);
+            } else {
+                $(".allcheck").prop("checked", false);
+            }
+        })
+      })
+      //收起选择框
+      function edit(){
+        let that=$('.top p')
+          that.text('编辑')
+          $('.labelBox').hide()
+          $('.edit').hide();
+          $('.block').addClass('margion_l30')
+          that.attr('data-type','0') 
+      }
+function touchmove(){    
+	//侧滑显示删除按钮
+	var expansion = null; //是否存在展开的list
+	var container = document.querySelectorAll('.goodslist object');
+	for(var i = 0; i < container.length; i++){    
+		var x, y, X, Y, swipeX, swipeY;
+		container[i].addEventListener('touchstart', function(event) {
+		  edit()
+			x = event.changedTouches[0].pageX;
+			y = event.changedTouches[0].pageY;
+			swipeX = true;
+			swipeY = true ;
+			if(expansion){   //判断是否展开，如果展开则收起
+				expansion.className = "";
+			}        
+		});
+		container[i].addEventListener('touchmove', function(event){
+		  edit()
+			X = event.changedTouches[0].pageX;
+			Y = event.changedTouches[0].pageY;        
+			// 左右滑动
+			if(swipeX && Math.abs(X - x) - Math.abs(Y - y) > 0){
+				// 阻止事件冒泡
+				event.stopPropagation();
+				if(X - x > 1){   //右滑
+					event.preventDefault();
+					this.className = "";    //右滑收起
+				}
+				if(x - X > 1){   //左滑
+					event.preventDefault();
+					this.className = "swipeleft";   //左滑展开
+					expansion = this;
+				}
+				swipeY = false;
+			}
+			// 上下滑动
+			if(swipeY && Math.abs(X - x) - Math.abs(Y - y) < 0) {
+				swipeX = false;
+			}        
+		});
+		container[i].addEventListener('touchend', function(event){
+		  event.stopPropagation();      
+		});
+	}
+}
+</script>
+
+
+{/block}

@@ -1,0 +1,43 @@
+
+<div class="color_3 cell bonusInfo">
+    <span class="fs28">优惠券</span>
+    <div class="ticket"><em class="fs22 color_w BGcolor_r"><em class="unusedNum">0</em>张可用</em><span
+            class="color_3 ">未使用</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></div>
+    <div class="color_3 fs28 num money" style="display: none;"></div>
+</div>
+
+<div class="wrapper bonusListBox">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
+            </div>
+            <div class="header-title">优惠券</div>
+            <div class="header-right"></div>
+        </div>
+    </div>
+
+    {include file="bonus/list" /}
+</div>
+<script type="text/javascript">
+    //显示优惠券列表
+    $('.bonusInfo').on('click', function () {
+        $('html').addClass('noscroll');
+        $('.bonusListBox').addClass('move-left');
+    });
+    //关闭优惠券弹出
+    $('.bonusListBox').on('click', '.close_wrapper', function () {
+        $('html').removeClass('noscroll');
+        $('.bonusListBox').removeClass('move-left');
+    })
+    //点击选择优惠券
+    $('.bonusListBox').on('click', '.usedBonus', function () {
+        used_bonus_id  = $(this).data('bonus_id');
+        var bonus = bounsData.unused[used_bonus_id];
+        bonus_money = bonus.bonus.type_money;
+        $('.bonusInfo .ticket').hide();
+        $('.bonusInfo .money').show().html('<p class=" fm_p ">'+bonus.bonus.type_name+'：</p><p class="fw_b fm_p">-￥</p><em class="fs34 ">'+bonus.bonus.type_money+'</em>');
+        $('.bonusListBox .close_wrapper').trigger("click");
+        evalPrice();//计算支付金额
+    })
+</script>

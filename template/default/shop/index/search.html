@@ -1,0 +1,62 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/sousuo.css" />
+{/block}
+{block name="main" }
+	<div class="page-bd">
+        <!-- 页面内容-->
+        <div class="top">
+        	
+           <div class="inputBox"><img src="__STATIC__/mobile/default/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" name="keyword" id="keyword"  placeholder="{$setting.shop_index_search_text}"></form></div>
+           <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span>
+           
+        </div>
+        {notempty name="searchKeys"}
+            <div class="history">
+              <div class="title fw_b color_3 fs34">历史搜索</div>
+              <div class="list">
+                {volist name="searchKeys" id="val" }
+                    <span class="fs28 color_3 ahref" >{$val}</span>
+                {/volist}
+              </div>
+            </div>
+        {/notempty}
+        {if condition="empty($hotSearch)==false || empty($promotion) == false"}
+        <div class="history hot">
+            <div class="title fw_b color_3 fs34">热门搜索</div>
+            {notempty name="promotion"}
+            <div class="twe">
+            	{volist name="promotion" id="val" }
+                	<p class="fs28 color_3 ahref">{$val}</p>
+                {/volist}
+            </div>
+            {/notempty}
+            {notempty name="hotSearch"}
+            <div class="list">
+            	{volist name="hotSearch" id="val" }
+              		<span class="fs28 color_3 ahref">{$val}</span>
+                {/volist}
+            </div>
+            {/notempty}
+          </div>
+         {/if}
+      </div>
+
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+$(function(){
+	$('.inputBox input').focus();
+	$('.top span').on('click',function(){
+	  $('.inputBox input').val('');
+	  $('.inputBox input').focus();
+	});
+	$('.ahref').on('click',function(){
+		var keyword = $(this).html();
+		window.location.href ='{:_url("goods/index",["keyword"=>"【keyword】"])}';
+	});
+})
+</script>
+{/block}

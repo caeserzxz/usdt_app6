@@ -1,0 +1,186 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/index.css" />
+{/block}
+{block name="main" }
+
+      <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="swiper-container swiper1" id="swiper01">
+          <div class="swiper-wrapper">
+          	{volist name="slideList" id="slide" }
+            	<a href="{$slide.url}" class="swiper-slide"><img src="{$slide.imgurl}" alt=""/></a>
+            {/volist}
+          </div>
+          <div class="swiper-pagination pagination1"></div>
+          <a href="{:url('index/search')}" class="selech"><img src="__STATIC__/mobile/default/images/index_01.png" alt="" /><span class="fs32 color_w">{$setting.shop_index_search_text}</span></a>
+        </div>
+        <!-- 功能入口 -->
+        <div class="girdBox">
+          <div class="gird">
+            <div class="row">
+              <a href="#" class="box">
+                <div><img src="__STATIC__/mobile/default/images/index_icon01.png" alt="" /></div>
+                <span class="fs26 color_3">领券专区</span>
+              </a>
+              <a href="#" class="box">
+                <div><img src="__STATIC__/mobile/default/images/index_icon02.png" alt="" /></div>
+                <span class="fs26 color_3">秒杀活动</span>
+              </a>
+              <a href="#" class="box">
+                <div><img src="__STATIC__/mobile/default/images/index_icon03.png" alt="" /></div>
+                <span class="fs26 color_3">满减活动</span>
+              </a>
+              <a href="#"  class="box">
+                  <div><img src="__STATIC__/mobile/default/images/index_icon04.png" alt="" /></div>
+                  <span class="fs26 color_3">新品首发</span>
+                </a>
+            </div>
+            <div class="row">
+
+              <a href="#"  class="box">
+                <div><img src="__STATIC__/mobile/default/images/index_icon05.png" alt="" /></div>
+                <span class="fs26 color_3">排行榜</span>
+              </a>
+              <a href="#"  class="box">
+                <div><img src="__STATIC__/mobile/default/images/index_icon06.png" alt="" /></div>
+                <span class="fs26 color_3">会员专享</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- 秒杀 -->
+        <div class="seckill">
+            <div class="title">
+              <div class="left"><p class="fs36 color_3 fw_b">今日秒杀</p><div class="time"><div>00</div><span>:</span><div>30</div><span>:</span><div>10</div></div></div>
+              <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></a>    
+            </div>
+            <div class="seckilllist">
+                <a href="商品.html" class="box">
+                  <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                  <span class="fs28 color_3">补水保湿套装</span>
+                  <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.00</p></div>
+                </a>
+                <div class="box">
+                    <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                    <span class="fs28 color_3">补水保湿套装补湿套装</span>
+                    <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.00</p></div>
+                  </div>
+                  <div class="box">
+                      <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                      <span class="fs28 color_3">补水保湿套装</span>
+                      <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.00</p></div>
+                    </div>
+                    <div class="box">
+                        <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                        <span class="fs28 color_3">补水保湿套装</span>
+                        <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.00</p></div>
+                      </div>
+                      <div class="box">
+                          <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                          <span class="fs28 color_3">补水保湿套装</span>
+                          <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.00</p></div>
+                        </div>
+            </div>
+        </div>
+        <!-- 拼团 -->
+        <div class="group">
+            <div class="swiper-container swiper2" id="swiper02">
+                <div class="swiper-wrapper">
+                  <a href="#" class="swiper-slide"><img src="__STATIC__/mobile/default/images/group01.png" alt=""/>
+                    <div class="info">
+                      <div class="fs34 fw_b color_3 name">KENZO/高田贤一春夏新款</div>
+                      <div class="tips"><span class="fs26 color_9">韩系时髦搭配指南</span><div class="color_r fs22 num"><p class="fw_b fm_p">￥</p><em>199</em><p>.00</p></div></div>
+                    </div>
+                  </a>
+                  <a href="#" class="swiper-slide"><img src="__STATIC__/mobile/default/images/group01.png" alt=""/>
+                    <div class="info">
+                        <div class="fs34 fw_b color_3 name">KENZO/高田贤三春夏新款</div>
+                        <div class="tips"><span class="fs26 color_9">韩系时髦搭配指南</span><div class="color_r fs22 num"><p class="fw_b fm_p">￥</p><em>199</em><p>.00</p></div></div>
+                      </div>
+                  </a>
+                  <a href="#" class="swiper-slide"><img src="__STATIC__/mobile/default/images/group01.png" alt=""/>
+                    <div class="info">
+                        <div class="fs34 fw_b color_3 name">KENZO/高田贤五春夏新款</div>
+                        <div class="tips"><span class="fs26 color_9">韩系时髦搭配指南</span><div class="color_r fs22 num"><p class="fw_b fm_p">￥</p><em>199</em><p>.00</p></div></div>
+                      </div>
+                  </a>
+                  <a href="#" class="swiper-slide"><img src="__STATIC__/mobile/default/images/group01.png" alt=""/>
+                    <div class="info">
+                        <div class="fs34 fw_b color_3 name">KENZO/高田贤久春夏新款</div>
+                        <div class="tips"><span class="fs26 color_9">韩系时髦搭配指南</span><div class="color_r fs22 num"><p class="fw_b fm_p">￥</p><em>199</em><p>.00</p></div></div>
+                      </div>
+                  </a>
+                </div>
+                <div class="swiper-pagination pagination2"></div>                
+              </div>
+              <a href="#" class="fs26 color_3 groupMore">查看更多拼团</a>
+        </div>
+        <!-- 分类 -->
+        {volist name="classGoods" id="cg" }
+        <div class="trademark">
+           <img src="{$cg.cover}" alt="" class="trademarkBG">
+           <div class="googslist">
+           {volist name="cg.gooodsList" id="goods" }
+             <a href="{:url('goods/info',['id'=>$goods['goods_id']])}">
+               <img src="{$goods.goods_thumb}" alt="">
+               <span class="fs26 color_3">{$goods.goods_name}</span>
+               <div class="color_r fs20 num"><p class="fw_b fm_p">￥</p><em class="fs30">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
+             </a>
+            {/volist}
+           </div>
+        </div>
+        {/volist}
+        <!-- 猜你喜欢 -->
+        <div class="youLike">
+            <div class="title">
+                <div class="left fs36 color_3 fw_b">猜你喜欢</div>
+                <a href="{:url('goods/index',['is_best'=>1])}" class="right"><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></a>    
+            </div>
+            <div class="list">
+                <div class="box">
+                	{volist name="bestGoods" id="goods" }
+                    <a href="{:url('goods/info',['id'=>$goods['goods_id']])}">
+                        <img src="{$goods.goods_thumb}" alt="">
+                        <span class="fs30 color_3">{$goods.goods_name}</span>
+                        <div class="color_r fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
+                    </a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+      </div>      
+    </div>
+    {include file="layouts@bottom" /}
+
+{/block}
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+      $(function() {
+        swiper1 = createSwiper(1);
+        swiper2 = createSwiper(2);        
+      });
+      function createSwiper(index) {
+        var swiper = new Swiper(".swiper" + index, {
+          pagination: {
+            el: ".pagination" + index
+          },
+          paginationClickable: true,
+          observer: true,
+          observeParents: true,
+          loop: true,
+          autoplay: {
+            delay: 1500,
+            stopOnLastSlide: false,
+            disableOnInteraction: false
+          },
+          onSlideChangeEnd: function(swiper) {
+            swiper.update(); //swiper更新
+          }
+        });
+        return swiper;
+      }
+</script>
+{/block}

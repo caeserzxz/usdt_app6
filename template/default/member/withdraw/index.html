@@ -1,0 +1,86 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/chongzhi.css"/>
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="inputBlock">
+        <div class="tips fs60 fw_b color_9">提现金额(元)</div>
+        <input type="text" class="fs60 num textBox">
+        <span class="fs24 fw_b color_3">手续费0元</span>
+    </div>
+    <div class="money">
+        <div class="fs26 color_9">可提现金额<span class="color_3">￥198</span></div>
+        <p class="fs24 tag_active">全部提现</p>
+    </div>
+    <div class="paytype">
+        <div class="title fs34 color_3 fw_b">请选择提现银行</div>
+        <div class="cantre">
+            <div class="block">
+                <label for="s12">
+                <div class="payType"><img src="__STATIC__/mobile/default/images/weixinPay.png" alt="">
+                    <div><span class="fs30 color_3">微信支付(134***5236)</span></div>
+                </div>
+                </label>
+                <label for="s11">
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s11" checked>
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s12">
+                <div class="payType"><img src="__STATIC__/mobile/default/images/AliPay.png" alt="">
+                    <div><span class="fs30 color_3">支付宝(158***2345)</span></div>
+                </div>
+                </label>
+                <label for="s12">
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s12">
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s12">
+                <div class="payType"><img src="__STATIC__/mobile/default/images/GSBank.png" alt="">
+                    <div><span class="fs30 color_3">中国工商银行(622***9945)</span></div>
+                </div>
+                </label>
+                <label for="s13">
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s13">
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s12">
+                <div class="payType"><img src="__STATIC__/mobile/default/images/JSBank.png" alt="">
+                    <div><span class="fs30 color_3">中国建设银行(622***7356)</span></div>
+                </div>
+                </label>
+                <label for="s14">
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s14">
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <a href="{:url('add')}" class="block">
+                <div class="payType"><img src="__STATIC__/mobile/default/images/add.png" alt="">
+                    <div><span class="fs30 color_3 fw_b">添加银行卡</span></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="button fs32 fw_b color_w BGcolor_r">确认提现</div>
+
+</div>
+
+{/block}
+
+{block name="footer"}
+{/block}

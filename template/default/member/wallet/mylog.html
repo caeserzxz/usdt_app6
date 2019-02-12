@@ -1,0 +1,198 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/balanceDetail.css"/>
+{/block}
+{block name="main" }
+<div class="top">
+    <div class="dataBox">
+        <div class="left">
+            <input type="text" class="fs28 fw_b color_3" readonly value="2018年03月" id="nowValue"/>
+            <span class="fs24 color_9">支出￥36952  收入￥93321</span>
+        </div>
+        <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
+    </div>
+    <div class="title">
+        <span class="fs26 color_6">商城佣金支出</span>
+        <div><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0" class="typeimg"></div>
+
+    </div>
+</div>
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="list">
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_3">
+                -189
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_r">
+                +1365.32
+            </div>
+        </div>
+        <div class="cell">
+            <div class="left">
+                <p class="fs28 fw_b color_2">商城购物</p>
+                <span class="fs24 color_9">今天 12:30</span>
+            </div>
+            <div class="right fs34 num color_3">
+                -189
+            </div>
+        </div>
+    </div>
+</div>
+<div class="model">
+    <div class="modelBg"></div>
+    <div class="modelbd">
+        <label for="s11">
+            <span class="fs28 color_3 fw_b">商城佣金支出</span>
+            <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" id="s11" checked>
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s12">
+            <span class="fs28 color_3 fw_b">个人转账</span>
+            <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" id="s12">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s13">
+            <span class="fs28 color_3 fw_b">商城佣金收入</span>
+            <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" id="s13">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s14">
+            <span class="fs28 color_3 fw_b">分享收入</span>
+            <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" id="s14">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s15">
+            <span class="fs28 color_3 fw_b">积分兑换</span>
+            <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" id="s15">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
+</div>
+
+{/block}
+
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/datePicker.js"></script>
+<script>
+    $(function(){
+        $('.dataBox img').on('click',function(){
+            $('.model').hide()
+            $('.typeimg').attr('data-type','0')
+            $('.typeimg').css('transform','rotate(0deg)')
+            demoClick()
+        })
+        //开启数据筛选
+        $('.title div').on('click',function(){
+            let imgBox=$('.typeimg')
+            if (imgBox.attr('data-type')=='1') {
+                $('.model').hide()
+                imgBox.attr('data-type','0')
+                imgBox.css('transform','rotate(0deg)')
+            }else{
+                $('.model').show()
+                imgBox.attr('data-type','1')
+                imgBox.css('transform','rotate(180deg)')
+            }
+        })
+        $('.modelBg').on('click',function(){
+            $('.model').hide()
+        })
+
+        $('.modelbd label').on('click',function(){
+            if ($(this).find('input').is(':checked')) {
+                let val=$(this).find('span').text()
+                $('.title span').text(val)
+            }
+        })
+    })
+
+    // 日期选择器
+    function demoClick() {
+        var nowValue = document.getElementById('nowValue');
+        var reg = new RegExp("年|月","g");
+        let nowval=nowValue.value.replace(reg,"-").substring(0,7);
+        new DatePicker({
+            "type": "1",//0年, 1年月, 2月日, 3年月日
+            "title": '请选择年月',//标题(可选)
+            "maxYear": "2050",//最大年份（可选）
+            "minYear": "1950",//最小年份（可选）
+            "separator": "-",//分割符(可选)
+            "defaultValue": nowval,//默认值（可选）
+            "callBack": function (val) {
+                //回调函数（val为选中的日期）
+                let arr=val.split('-');
+                val=arr[0]+'年'+arr[1]+'月'
+                nowValue.value = val;
+            }
+        });
+    }
+</script>
+
+{/block}

@@ -1,0 +1,76 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/fenlei.css" />
+{/block}
+{block name="main" }
+
+	<div class="page-bd">
+        <!-- 页面内容-->
+        <div class="top bor_b">
+        <a href="{:url('index/search')}">
+            <div class="inputBox"><img src="__STATIC__/mobile/default/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" placeholder="请输入关键词"></form></div></a>
+           <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span>
+        </div>
+        <div class="left bor_R">
+          {notempty name="$allSort.best"}	
+          	<div class="box fs28 color_3 boxActive">推荐</div>
+          {/notempty}
+           {volist name="allSort.rows" id="class" }
+           		<div class="box fs28 color_3 {if condition="empty($allSort['best']) && $i == 1"}boxActive{/if}">{$class['m_name']?$class['m_name']:$class['name']}</div>
+           {/volist}
+        </div>
+        <div class="right">
+         {notempty name="$allSort.best"}	
+          	<div class="rightBox" style="display:block">
+            {volist name="allSort.best" id="best" }
+              <div class="block">
+                  <div class="title"><i></i><span class="fs28 fw_b color_3">{$best.m_name}</span><i></i></div>
+                  <div class="list">
+                  	{volist name="best.children" id="cid"}
+                      <a href='{:url("goods/index",['cid'=>$cid])}'><img src="{$classList[$cid]['pic']}" alt=""><span class="fs26 color_6">
+                      {$classList[$cid]['m_name']?$classList[$cid]['m_name']:$classList[$cid]['name']}
+                      </span></a>
+                    {/volist}
+                  </div>
+              </div>
+            {/volist}
+          </div>
+          {/notempty}
+        
+        
+        {volist name="allSort.rows" id="class" }
+              <div class="rightBox" style="{if condition="empty($allSort['best']) && $i == 1"}display:block{/if}">
+              	 {volist name="class.children"  id="cids" }
+                  <div class="block">
+                      <div class="title"><i></i><span class="fs28 fw_b color_3">{$classList[$key]['m_name']?$classList[$key]['m_name']:$classList[$key]['name']}</span><i></i></div>
+                      <div class="list">
+                      	{volist name="cids" id="cid" }
+                        <a href='{:url("goods/index",['cid'=>$cid])}'><img src="{$classList[$cid]['pic']}" alt=""><span class="fs26 color_6">{$classList[$cid]['m_name']?$classList[$cid]['m_name']:$classList[$cid]['name']}</span></a>
+                       {/volist}
+                      </div>
+                  </div>
+                 {/volist} 
+              </div>
+         {/volist}
+        </div>
+      </div>
+{include file="layouts@bottom" /}
+{/block}
+{block name="footer"}
+
+<script>
+  $(function(){
+        $('.top span').on('click',function(){
+          $('.inputBox input').val('');
+          $('.inputBox input').focus();
+        });
+        $('.box').on('click',function(){
+          let index=$(this).index();
+          $(this).addClass('boxActive');
+          $(this).siblings().removeClass('boxActive')
+          $('.rightBox').eq(index).show();
+          $('.rightBox').eq(index).siblings().hide();
+        })
+ })
+</script>
+{/block}

@@ -1,0 +1,146 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/bank.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="cellBox">
+        <div class="cell bankType">
+
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">银行类型</span>
+                <input type="text" class="fs28  color_3 bankBox" placeholder="请选择银行类型" readonly value="中国银行">
+            </div>
+            <div class="cell_ft">
+                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">持卡人</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入持卡人姓名">
+            </div>
+
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">卡号</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入卡号">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">持卡人电话</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入持卡人电话">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">网点所在地</span>
+                <input type="text" class="fs28  color_3" placeholder="请输入网点所在地">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 color_3 fw_b">支行名称</span>
+                <input type="text" class="fs28 color_3" placeholder="请输入支行名称">
+            </div>
+        </div>
+    </div>
+    <div class="page-ftb">
+        <span class="fs32 color_w fw_b BGcolor_r">确认添加</span>
+    </div>
+</div>
+<!-- 支付方式 -->
+<div class="model">
+    <div class="modelBg"></div>
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="title fs36 color_3 fw_b">请选择银行</div>
+        <div class="cantre">
+            <div class="block">
+                <label for="s11">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/ZGBank.png" alt=""><span class="fs30 color_3">中国银行</span></div>
+
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s11" checked>
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s12">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/JSBank.png" alt=""><span class="fs30 color_3">中国建设银行</span></div>
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s12">
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s13">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/GSBank.png" alt=""><span class="fs30 color_3">中国工商银行</span></div>
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s13" >
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s14">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/NYBank.png" alt=""><span class="fs30 color_3">中国农业银行</span></div>
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s14" >
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s15">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/ZSBank.png" alt=""><span class="fs30 color_3">招商银行</span></div>
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s15" >
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="block">
+                <label for="s16">
+                    <div class="payType"><img src="__STATIC__/mobile/default/images/JTBank.png" alt=""><span class="fs30 color_3">交通银行</span></div>
+                    <div class="iconBox">
+                        <input type="radio" class="check" name="radiobox" id="s16" >
+                        <i class="icon_checked"></i>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="footer"}
+<script>
+    $(function(){
+        $('.bankType').on('click',function(){
+            $('.model').show();
+        })
+        $('.block label').on('click',function(){
+            if($(this).find('input').is(':checked')){
+                let nameVal= $(this).find('span').text();
+                $('.bankBox').val(nameVal)
+                $('.model').hide();
+            }
+        })
+        $('.closeBox').on('click',function(){
+            $('.model').hide();
+        })
+        $('.modelBg').on('click',function(){
+            $('.model').hide();
+        })
+    })
+</script>
+
+{/block}

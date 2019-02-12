@@ -1,0 +1,13 @@
+<div class="component-slideshow clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+    <div id="slideshow" data-rtl="{$theme_row.rtl}" data-time="{$theme_row.autoplayTimeout}" class="component-data clearfix">
+    {volist name="theme_row.data" id="row" }	
+        <div class="slide">
+            <div class="slide-img">
+                <a href="{$row['link']?$row['link']:'#'}">
+                    <img src="{$row.src}" alt="{$row.name}"/>
+                </a>
+            </div>
+        </div>
+     {/volist} 
+     </div>
+</div>

@@ -1,0 +1,127 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/passport.css" />
+{/block}
+{block name="main" }
+
+      <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="top">
+          <img src="__STATIC__/mobile/default/images/APPLOGO.png" alt="">
+          <span class="fs34 color_3 fw_b">最新潮购物商城</span>
+        </div>
+        <div class="inputBlock bor_b">
+            <div class="tips fs34 color_9">账号</div>
+            <input type="text" class="fs34 fw_b textBox" id="mobile">
+        </div>
+        <div class="inputBlock bor_b">
+            <div class="tips fs34 color_9">密码</div>           
+              <input type="password" class="fs38 fw_b textBox" id="password">
+              <div class="ereBox">
+                  <img src="__STATIC__/mobile/default/images/login01.png" alt="" data-type="0">
+              </div>
+        </div>
+        {if condition="$sms_fun['login']==1"}
+        <div class="inputBlock bor_b">
+            <div class="tips fs34 color_9">验证码</div>           
+              <input type="text" class="fs34 fw_b textBox code" id="code">
+              <div class="codeBox">
+                  <input type="text" value="获取验证码" id="codebtn" class="color_r fs28 fw_b" readonly onclick="codeButton()">
+              </div>  
+        </div>
+        {/if}
+        <a href="{:url('forgetPwd')}" class="fs30 color_9 remPassword">忘记密码</a>
+        <div class="button fs32 fw_b color_w BGcolor_r login">登录</div>
+      <div class="fs30 goregister"><span class="color_9">还没有账号，</span><a href="{:url('register')}" class="fw_b color_3">立即注册</a></div>
+      </div>
+
+{/block}
+{block name="footer"}
+    <script>
+    $(function(){
+      $('.textBox').on('click',function(){
+        $(this).siblings('.tips').animate({'fontSize':'0.186666rem','top':'0.15rem'})
+      })
+      $('.inputBlock input').blur(function(){
+        if($(this).val()==''){
+          $(this).siblings('.tips').animate({'fontSize':'0.226666rem','top':'0.36rem'})
+        }
+      })
+      $('.ereBox').on('click',function(){
+        let obj=$(this).find('img')
+        if(obj.attr('data-type')=='0'){
+          obj.attr('src','__STATIC__/mobile/default/images/login02.png')
+          obj.attr('data-type','1')
+          $(this).siblings('input').attr('type','text')
+        }else{
+          obj.attr('src','__STATIC__/mobile/default/images/login01.png')
+          obj.attr('data-type','0')
+          $(this).siblings('input').attr('type','password')
+        }
+      })
+    })
+    $('.login').on('click',function(){
+        var arr = new Object();
+        arr.mobile = $('#mobile').val();
+        arr.password = $('#password').val();
+        if (arr.mobile == ''){
+            _alert('请输入手机号码.');
+            return false;
+        }
+        if ($('#code').length > 0){
+            arr.code = $('#code').val();
+
+            if (arr.code == ''){
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+        if (arr.password == '' ){
+            _alert('请输入用户密码.');
+            return false;
+        }
+        if (arr.password.length < 8){
+            _alert('用户密码长度不能小于八位.');
+            return false;
+        }
+
+        jq_ajax('{:url("member/api.users/login")}',arr,function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            window.location.href = '{:url("center/index")}';
+        })
+    })
+    function codeButton(){
+        var arr = new Object();
+        arr.type = 'login';
+        arr.mobile = $('#mobile').val();
+        if (arr.mobile == ''){
+            _alert('请输入手机号码');
+            return false;
+        }
+        jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            var codebtn = $("#codebtn");
+            setTimeout(function(){
+                codebtn.css("color","#999");
+                codebtn.attr("disabled","disabled");
+            },1000)
+            var time = 60;
+            var set=setInterval(function(){
+                codebtn.val(""+--time+"s");
+            }, 1000);
+            setTimeout(function(){
+                codebtn.attr("disabled",false).val("获取验证码");
+                codebtn.css("color","#F65236");
+                clearInterval(set);
+            }, 60000);
+        })
+
+    }
+    </script>
+{/block}

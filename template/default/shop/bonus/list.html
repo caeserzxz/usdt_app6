@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myTicket.css"/>
+
+
+<!-- 页面内容-->
+<div class="tab fs32">
+    <div class="color_9 orderActive">未使用<span class="fs26">(<em class="unusedNum">0</em>)</span></div>
+    <div class="color_9">已使用<span class="fs26">(<em class="usedNum">0</em>)</span></div>
+    <div class="color_9">已过期<span class="fs26">(<em class="expiredNum">0</em>)</span></div>
+</div>
+<div class="tabBox bonusList">
+
+</div>
+<div class="page-ft">
+    <a href="#" class="fs32 fw_b color_w BGcolor_r">去领券中心</a>
+</div>
+
+<script type="text/html" id="addressTabTpl">
+    <div class="tabBlock ">
+        {{each unused as item index}}
+        <div class="listBox">
+            {literal}
+            <div class="block {{if totalGoodsPrice==-1 || totalGoodsPrice >= item.bonus.min_amount}}userTicket usedBonus{{/if}}" data-bonus_id="{{item.bonus_id}}">
+            {/literal}
+                <div class="left">
+                    <div class="fs34  fw_b">{{item.bonus.type_name}}</div>
+                    <p class="fs26 ">满{{item.bonus.min_amount}}元可用</p>
+                    <span class="fs24 ">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</span>
+                </div>
+                <div class="right">
+                    <div class=" fs38 num money"><p class="fw_b fm_p">￥</p><em class="fs60">{{item.bonus.type_money}}</em></div>
+                    {eq name="isAddOrder" value="1"} <span class=" fs24 " >去使用</span>{/eq}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="tabBlock box">
+        {{each used as item index}}
+        <div class="listBox">
+            <div class="block">
+                <div class="left">
+                    <div class="fs34  fw_b">{{item.bonus.type_name}}</div>
+                    <p class="fs26 ">满{{item.bonus.min_amount}}元可用</p>
+                    <span class="fs24 ">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</span>
+                </div>
+                <div class="right">
+                    <div class=" fs38 num money"><p class="fw_b fm_p">￥</p><em class="fs60">{{item.bonus.type_money}}</em></div>
+                    {eq name="isAddOrder" value="1"}<span class="bfs24">去使用</span>{/eq}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="tabBlock box">
+        {{each expired as item index}}
+        <div class="listBox">
+            <div class="block">
+                <div class="left">
+                    <div class="fs34  fw_b">{{item.bonus.type_name}}</div>
+                    <p class="fs26 ">满{{item.bonus.min_amount}}元可用</p>
+                    <span class="fs24 ">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</span>
+                </div>
+                <div class="right">
+                    <div class=" fs38 num money"><p class="fw_b fm_p">￥</p><em class="fs60">{{item.bonus.type_money}}</em></div>
+                    {eq name="isAddOrder" value="1"}<span class="bfs24">去使用</span>{/eq}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+
+<script type="text/javascript">
+    var bounsData = {};
+    $(function () {
+        getBonusList();//加载优惠券
+    })
+    //获取优惠券列表
+    function getBonusList() {
+        jq_ajax('{:url("shop/api.bonus/getList")}', '', function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            bounsData = res.data;
+            $('.unusedNum').html(bounsData['unusedNum']);
+            $('.usedNum').html(bounsData['usedNum']);
+            $('.expiredNum').html(bounsData['expiredNum']);
+            if (typeof(totalGoodsPrice) != 'undefined' ){
+                bounsData.totalGoodsPrice = parseFloat(totalGoodsPrice);
+            }else{
+                bounsData.totalGoodsPrice = -1;
+            }
+
+            $('.bonusList').html(template('addressTabTpl', bounsData));
+        })
+    }
+
+    $(function () {
+        $('.tab div').on('click', function () {
+            let index = $(this).index();
+            $(this).addClass('orderActive')
+            $(this).siblings().removeClass('orderActive');
+            $('.tabBlock').eq(index).show();
+            $('.tabBlock').eq(index).siblings().hide();
+        })
+    })
+</script>

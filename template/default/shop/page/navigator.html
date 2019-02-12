@@ -1,0 +1,14 @@
+<div class="component-navigator clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+    <div class="component-data clearfix">
+    {volist name="theme_row.data" id="row"}
+       {if condition="$row.visible eq 1 "}
+          <div class="nav-item clearfix" style="width:{$row.width}">
+                <a href="{:url($row['link'])}">
+                    <div class="nav-item-img {$row.code}"></div>
+                    <div class="nav-item-name"><span>{$row.name}</span></div>
+                </a>
+          </div>
+        {/if}
+    {/volist}    
+    </div>
+</div>

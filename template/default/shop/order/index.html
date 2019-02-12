@@ -1,0 +1,188 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myOrder.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="tab fs32">
+        <div class="color_9 orderActive" data-type="all">全部</div>
+        <div class="color_9" data-type="waitPay">待付款</div>
+        <div class="color_9" data-type="waitShipping">待发货</div>
+        <div class="color_9" data-type="waitSign">待收货</div>
+        <div class="color_9" data-type="sign">已完成</div>
+    </div>
+    <div class="tabBox">
+        <div class="block allBox"></div>
+        <div class="block box waitPayBox"></div>
+        <div class="block box waitShippingBox"></div>
+        <div class="block box waitSignBox"></div>
+        <div class="block box signBox"></div>
+    </div>
+</div>
+<!-- 没有相关订单-->
+<script type="text/html" id="emptyTpl">
+    <div class="empeyOrder">
+        <img src="__STATIC__/mobile/default/images/emptyData.png" alt="">
+        <span class="fs28 color_3">暂无相关订单</span>
+    </div>
+</script>
+
+<script type="text/html" id="orderTpl">
+    {{each list as item index}}
+    <div class="orderBox">
+        <a href="{:_url('info',['order_id'=>'[[item.order_id]]'])}">
+            <div class="code fs28"><p class="color_3">订单编号:{{item.order_sn}}</p><span class="color_9 ostatus">{{item.ostatus}}</span></div>
+            <div class="goodslist">
+                {{each item.goodsList as goods indexb}}
+                <div class="goods">
+                    <img src="{{goods.pic}}" alt="">
+                    <div class="goodsinfo">
+                        <p class="fs28 color_3">{{goods.goods_name}}</p>
+                        <span class="fs28 color_9">{{goods.sku_name}}</span>
+                        <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><p>.{{goods.exp_price[1]}}</p></div><em class="fs28 color_3">x{{goods.goods_number}}</em></div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="payment"><span class="fs24 color_9">共{{item.allNum}}件商品 实付款</span><div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div></div>
+        </a>
+
+        <div class="button">
+            {literal}
+            <span class="BGcolor_3 fs28 fw_b color_w">联系客服</span>
+            {{if item.isCancel==1}}
+            <span class="fs28 fw_b color_3 bor_e order_action" data-type="cancel" data-order_id="{{item.order_id}}">取消订单</span>
+            {{/if}}
+            {{if item.isSign==1}}
+            <span class="BGcolor_3 fs28 fw_b color_w order_action" data-type="sign" data-order_id="{{item.order_id}}">确认收货</span>
+            {{/if}}
+            {{if item.isPay==1}}
+            {/literal}
+            <a href="{:_url('flow/done',['order_id'=>'[[item.order_id]]'])}" class="BGcolor_r fs28 fw_b color_w order_pay">立即支付</a>
+            {literal}
+            {{/if}}
+            {{if item.isReview==1}}
+            <span class="fs28 fw_b color_3 bor_e order_review">评价</span>
+            {{/if}}
+            {{if item.isDel==1}}
+            <span class="fs28 fw_b color_3 bor_e order_action" data-type="del" data-order_id="{{item.order_id}}">删除</span>
+            {{/if}}
+            {/literal}
+        </div>
+
+    </div>
+    {{/each}}
+</script>
+<script>
+    var nowPage = [],getAgain = [],isLoadend = [];
+   var _type = '{$type}';
+    $(function(){
+        $('.left-arrow').on('click',function(){
+            window.location.href = '{:url("member/center/index")}';
+        })
+        $('.page-bd').scroll(function(){
+            let box_h=$(this).height()
+            let content_h=$('.scrollBox').height()
+            let scroll_h=$(this).scrollTop();
+            if(content_h-box_h-scroll_h<20){
+                getList();
+            }
+        })
+        //请求列表数据
+        function getList(isagain) {
+            page = nowPage[_type];
+            if (typeof(page) == 'undefined') page = 1;
+            if (isLoadend[_type] == true ) return false;
+            if (isagain == true){
+                if (getAgain[_type] == false) return false;
+                getAgain[_type] = false;
+            }else{
+                $('.'+_type+'Box').append('<div class="get_list_tip" data-type="'+_type+'">加载数据中...</div>');
+            }
+            isLoadend[_type] = true;
+            $.ajax({
+                url:'{:_url("shop/api.order/getlist",["type"=>"【_type】","p"=>"【page】"])}',// 跳转到 action
+                data:{},
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    isLoadend[_type] = false;
+                    if(res.code  == 0 ){
+                        _alert(res.msg);
+                        getAgain[_type] = true;
+                        $('.'+_type+'Box').find('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    nowPage[_type] = page+1;
+                    $('.'+_type+'Box').find('.get_list_tip').remove();
+                    if (res.list){
+                        $('.'+_type+'Box').append(template('orderTpl',res));
+                    }else{
+                        $('.'+_type+'Box').html(template('emptyTpl'));
+                    }
+
+                    if (res.page_count == page) {
+                        $('.'+_type+'Box').append('<div class="get_list_tip">---我也有底线的---</div>');
+                        isLoadend[_type] = true;
+                    }
+                },error : function() {
+                    isLoadend[_type] = false;
+                    getAgain[_type] = true;
+                    $('.'+_type+'Box').find('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+        //重新请求数据
+        $(document).on('click','.get_list_tip',function () {
+                _type = $(this).data('_type');
+                getList(true);
+        })
+        //订单操作
+        $('.tabBox').on('click','.order_action',function(){
+            var _this = $(this);
+            var arr = new Object();
+            arr.order_id = _this.data('order_id');
+            arr.type = _this.data('type');
+			if (arr.type == 'cancel'){
+				_alert('确定取消此订单？',function(){action(arr,_this)});
+				return false;
+			}
+           return action(arr);
+        })
+		function action(arr,_this){
+		 	jq_ajax('{:url("shop/api.order/action")}',arr,function(res){
+				if(res.code  == 0 ){
+					_alert(res.msg);
+					return false;
+				}
+				_this.parents('.orderBox').remove();
+			})	
+		}
+        $('.tab div').on('click',function(){
+            let index=$(this).index();
+            _type = $(this).data('type');
+            if ($('.'+_type+'Box').html() == ''){
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+                getList();//执行加载
+            }
+            $(this).addClass('orderActive')
+            $(this).siblings().removeClass('orderActive')
+            $('.block').eq(index).show();
+            $('.block').eq(index).siblings().hide();
+        })
+        $('.tab div').each(function () {
+            if ($(this).data('type') == _type){
+                $(this).trigger('click');
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+
+            }
+
+
+        })
+    })
+</script>
+{/block}

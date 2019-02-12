@@ -1,0 +1,17 @@
+<div class="component-mainmenu clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+        <div class="component-data clearfix">
+        <div class="iscroll-wrapper">
+    <div class="scroll-content clearfix">
+    		{volist name="theme_row.data" id="row" }	
+            	<if condition="$row.visible eq 1 ">
+                    <div class="nav-item clearfix">
+                           <a href="{:url('Mobile/Goods/goodsList',array('id'=>$row['id']))}" class="{$row['active']==1?'active':''}"><span class="nav-item-name"><span>{$row.name}</span></span></a>
+                    </div>
+                 </if>
+             {/volist}
+    </div>
+    <div class="more-left"></div>
+    <div class="more-right"></div>
+</div>
+    </div>
+</div>

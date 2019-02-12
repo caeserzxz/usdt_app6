@@ -1,0 +1,274 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+{/block}
+{block name="main" }
+<div class="page-hd">
+          <div class="header">
+              <div class="header-left back">
+                  <a href="javascript:history.go(-1)" class="left-arrow"></a>
+              </div>
+              <div class="header-title">
+                <span class="fs32 color_9 active">商品</span>
+                <span class="fs32 color_9">评价</span>
+                <span class="fs32 color_9">详情</span>  
+              </div>
+          </div>
+      </div>
+
+<div class="page-bd tabBox" id="goods">
+    <!-- 页面内容-->
+    <!-- 商品轮播 -->
+    <div class="swiperBox">
+        <div class="swiper-container swiper1" id="swiper01">
+            <div class="swiper-wrapper">
+                {volist name="imgsList" id="img" }
+                <a href="javascript:;" class="swiper-slide"><img src="{$img.goods_img}" alt=""/></a>
+                {/volist}
+            </div>
+            <div class="swiper-pagination pagination1"></div>
+
+        </div>
+    </div>
+    <!-- 商品信息 -->
+    <div class="moneyBox">
+        <div class="top">
+            <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p>
+                {eq name="goods.is_spec" value="0"}
+                <em class="fs52">{$goods.exp_price[0]}</em>
+                <p>.{$goods.exp_price[1]}</p>
+                {else/}
+                <em class="fs52">{$goods.exp_min_price[0]}</em>
+                <p>.{$goods.exp_min_price[1]}</p>
+                <em class="fs52">~</em>
+                <em class="fs52">{$goods.exp_max_price[0]}</em>
+                <p>.{$goods.exp_max_price[1]}</p>
+                {/eq}
+            </div>
+            {eq name="goods.is_promote" value="1"}<span class="fs22 color_w BGcolor_r">活动价</span>{/eq}
+        </div>
+        <div class="original fs24 color_9">￥{$goods.market_price}</div>
+        <div class="name fw_b fs34 color_3">{$goods.goods_name}</div>
+        <div class="tips fs28 color_9"><span>热销{$goods.sale_count}</span>
+            <p style="display:none ">运费10元</p></div>
+    </div>
+    {eq name="goods.is_spec" value='1'}
+    <div class="cell">
+        <span class="fs32 fw_b color_3">选择规格</span>
+        <div class="size"><p class="fs28 color_6 selSkuName">请选择规格</p><img
+                src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+    </div>
+    {/eq}
+    <!-- 店铺 -->
+    <div class="shopName bor_b" style="display: none">
+        <div><img src="__STATIC__/mobile/default/images/shoplogo.png" alt=""><span class="fs32 fw_b color_3">xxxx</span>
+        </div>
+        <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight">
+    </div>
+   <!-- 评论 -->
+        <div class="comment">
+           <a class="top" href="更多评论.html">
+              <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9">(9)</p></div>
+              <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+           </a>
+           <div class="commentBox">
+              <div class="user">
+                <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                <div class="info">
+                  <p class="fs28 color_3">狂风扫落叶</p>
+                  <span class="fs24 color_9">2018.12.22</span>
+                </div>
+              </div>
+              <div class="comtext fs28 color_3 line_twe">
+                  大衣是A字型的，有暗扣，系腰带效果一般，12.17买的，以为低价了，结果刚买完又降价了，预料不到的促销
+              </div>
+              <div class="comimg">
+                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
+                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
+                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
+              </div>
+              <a class="top" href="问大家.html">
+                  <div class="fs32 color_3"><span class="fw_b">问大家</span><p class="color_9">(19)</p></div>
+                  <div><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+              </a>
+               <div class="question">
+                 <div class="tips"><em class="fs22 color_w BGcolor_r">问</em><span class="fs28 color_3 line_one">这款衣服色差大吗？</span></div>
+                 <p class="fs26 color_9">4个回答</p>
+               </div>
+               <div class="question">
+                  <div class="tips"><em class="fs22 color_w BGcolor_r">问</em><span class="fs28 color_3 line_one">羽绒服吗？有人鉴定过羽绒含量是真的99%以上吗？</span></div>
+                  <p class="fs26 color_9">4个回答</p>
+                </div>
+           </div>
+        </div>
+        <!-- 图文 -->
+        <div class="imgText">
+          <div class="title fw_b fs32 color_3">商品详情</div>
+          {$goods.m_goods_desc|raw}
+        </div>
+    <!-- 浮按钮 -->
+    <div class="button">
+        <a href="商品二维码.html" class="share BGcolor_3"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""></a>
+        <i></i>
+        <div class="attention BGcolor_3"><img
+                src="__STATIC__/mobile/default/images/goodsIcon03{$isCollect==1?'_lh':''}.png" data-no="{$isCollect}"
+                alt=""></div>
+    </div>
+</div>
+
+<!-- 弹出规格选择 -->
+{include file="goods/sku" /}
+
+<!-- 底部 -->
+<div class="page-ft">
+    <div class="left">
+        <a href="/"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span
+                class="fs22 color_6">首页</span></a>
+        <div><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6">客服</span>
+        </div>
+        <a href="{:url('flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">{$cartInfo.num|intval}</em><img
+                src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span
+                class="fs22 color_6">购物车</span></a>
+    </div>
+    <div class="right">
+        <div class="fs28 color_w fw_b BGcolor_3 buyBtn" data-type="show">加入购物车</div>
+        <div class="fs28 color_w fw_b BGcolor_r buyBtn" data-type="show">立即购买</div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+    $(function () {
+        swiper1 = createSwiper(1);
+        // 关注
+        $('.attention').on('click', function () {
+            let imgObj = $(this).find('img');
+            var status = imgObj.data('no');
+            jq_ajax('{:url("shop/api.goods/collect")}', 'goods_id={$goods.goods_id}', function (res) {
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    return false;
+                }
+                if (status == 0) {
+                    imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03_lh.png')
+                    imgObj.data('no', '1')
+                } else {
+                    imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03.png')
+                    imgObj.data('no', '0')
+                }
+            });
+
+
+        })
+        // 滚动出现tab
+        $('#goods').scroll(function(){
+          let scrolltop=$(this).scrollTop()
+          // console.log($('.comment').offset().top,scrolltop)
+          if(scrolltop>100){
+            $('.header-title').css('display','flex');
+            $('.header-left').removeClass('back')
+            $('.page-hd').css('background-color','#fff')
+            $('.header').addClass('bgShow')
+            if($('.comment').offset().top<$('.page-hd').height()){
+              $('.header-title span').eq(1).addClass('active')
+              $('.header-title span').eq(1).siblings().removeClass('active')
+              if($('.imgText').offset().top<$('.page-hd').height()){
+                $('.header-title span').eq(2).addClass('active')
+                $('.header-title span').eq(2).siblings().removeClass('active')
+              }else{
+                $('.header-title span').eq(1).addClass('active')
+                $('.header-title span').eq(1).siblings().removeClass('active')
+              }
+            }else{
+              $('.header-title span').eq(0).addClass('active')
+              $('.header-title span').eq(0).siblings().removeClass('active')
+            }
+
+          }else{
+            $('.header-title').css('display','none');
+            $('.header-left').addClass('back')
+            $('.page-hd').css('background-color','transparent')
+            $('.header').removeClass('bgShow')
+          }
+
+        })
+          //tab切换
+        $('.header-title span').on('click',function(){
+          let index=$(this).index()
+          let topHeight=$('.page-hd').height()
+          let commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
+          let imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
+            if(index==0){
+              $("#goods").animate({scrollTop:0}, 300)
+            }else if(index==1){
+              $("#goods").animate({scrollTop:commentTop+'px'}, 300)
+            }else{
+              $("#goods").animate({scrollTop:imgTextTop+'px'}, 300)
+            }
+        })
+        //点击购买按钮
+        $('.buyBtn ').on('click', function () {
+            var obj = $(this);
+            if (obj.data('type') == 'show') {
+                $('.model').show();
+                selsku();
+            } else {
+                addToCart(obj);
+            }
+        })
+    })
+    //获取购物车
+    jq_ajax("{:url('shop/api.flow/getCartInfo')}", '',function (res) {
+        if (res.code == 0)  return false;
+        $('.cartNum').html(res.cartInfo.num);
+    });
+    //添加到购物车
+    function addToCart(obj) {
+        var arr = new Object;
+        arr.goods_id = obj.data('goods_id');
+        arr.specifications = obj.data('sku');
+        arr.number = $('#buynumber').val();
+        var res = jq_ajax("{:url('shop/api.flow/addCart')}", arr);
+        if (res.code == 1) {
+            if (obj.data('type') == 'onbuy') {
+                window.location = "{:url('flow/cart')}";
+                return false;
+            }
+            $('.cartNum').html(res.cartInfo.num);
+        }
+        if (res.msg) _alert(res.msg);
+    }
+
+    //更多评论
+    function moreComment() {
+        $('.header-title span').eq(2).addClass('active')
+        $('.header-title span').eq(2).siblings().removeClass('active')
+        $('.page-bd').eq(2).addClass('tabBox');
+        $('.page-bd').eq(2).siblings().removeClass('tabBox');
+        $('.button').hide()
+    }
+
+    function createSwiper(index) {
+        var swiper = new Swiper(".swiper" + index, {
+            pagination: {
+                el: ".pagination" + index
+            },
+            paginationClickable: true,
+            observer: true,
+            observeParents: true,
+            loop: true,
+            autoplay: {
+                delay: 1500,
+                stopOnLastSlide: false,
+                disableOnInteraction: false
+            },
+            onSlideChangeEnd: function (swiper) {
+                swiper.update(); //swiper更新
+            }
+        });
+        return swiper;
+    }
+</script>
+{/block}

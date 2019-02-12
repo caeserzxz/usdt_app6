@@ -1,0 +1,14 @@
+<div class=" component-extmenu clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+	{if condition="$theme_row.hasTitle eq 'yes'"}
+    	<div class="component-title {$theme_row.titleTheme}"><span>{$theme_row.componentName}</span></div>
+   {/if}
+  {volist name="theme_row.data" id="row" }	
+    <div class="extmenu clearfix {$theme_row.templateId}" style="width:{$row.width};">
+        <a href="{$row.link}">
+            <div class="meun-img"><img class="prod-img" src="{$row.src|default='/public/editPage/images/exttypeset/images/d.png'}"></div>
+            <if condition="$row.name neq ''"><div class="meun-name"><span>{$row.name}</span></div></if>
+        </a>
+    </div>
+ {/volist}
+
+</div>

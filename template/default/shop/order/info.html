@@ -1,0 +1,155 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    {if condition="$orderInfo.ostatus == '待付款'"}
+    <div class="top">
+        <div><img src="__STATIC__/mobile/default/images/orderIcon03.png" alt="">
+            <span class="fs34 fw_b color_w">待付款</span></div>
+            {if condition="$orderInfo.countdown ==1"}
+            <div class="time"><p class="fs26">剩 <em class="color_w">23小时59分</em> 自动关闭</p></div>
+            {/if}
+    </div>
+    {elseif condition="$orderInfo.ostatus == '待发货'"}
+    <div class="top">
+        <div><img src="__STATIC__/mobile/default/images/orderIcon04.png" alt=""><span
+                class="fs34 fw_b color_w">待发货</span></div>
+        <p class="fs26 color_w">您的商品还在打包中，请耐心等待！</p>
+    </div>
+    {elseif condition="$orderInfo.ostatus == '已发货'"}
+    <div class="top">
+        <div><img src="__STATIC__/mobile/default/images/orderIcon01.png" alt=""><span
+                class="fs34 fw_b color_w">已发货</span></div>
+        <p class="fs26 color_w">您的商品已经火速运输中，请耐心等待！</p>
+    </div>
+    {elseif condition="$orderInfo.ostatus == '已取消'"}
+    <div class="top">
+        <div><img src="__STATIC__/mobile/default/images/orderIcon02.png" alt=""><span
+                class="fs34 fw_b color_w">已取消</span></div>
+        <p class="fs26 color_w">该订单您已取消</p>
+    </div>
+    {/if}
+
+
+    <div class="address">
+        <div class="fs30 fw_b color_3">{$orderInfo.consignee} {$orderInfo.mobile}</div>
+        <p class="fs28 color_9 color_9">{$orderInfo.merger_name}{$orderInfo.address}</p>
+    </div>
+    <div class="orderBox">
+        <div class="code fs28"><p class="color_3">订单编号:{$orderInfo.order_sn}</p><span class="color_9">{$orderInfo.ostatus}</span>
+        </div>
+        <div class="goodslist">
+            {volist name="$orderInfo.goodsList" id="goods" }
+            <a href="{:url('goods/info',['id'=>$goods['goods_id']])}" class="goods">
+                <img src="{$goods.pic}" alt="">
+                <div class="goodsinfo">
+                    <p class="fs28 color_3">{$goods.goods_name}</p>
+                    <div class="appleBox"><span class="fs28 color_9">{$goods.sku_name}</span></div>
+                    <div class="money">
+                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em
+                                class="fs36">{$goods.exp_price[0]}</em>
+                            <p>.{$goods.exp_price[1]}</p></div>
+                        <em class="fs28 color_3">x{$goods.goods_number}</em></div>
+                </div>
+            </a>
+            {/volist}
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">优惠券</span>
+            <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">折扣</span>
+            <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.discount}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">运费</span>
+            <div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em>
+            </div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3 fw_b">实付金额</span>
+            <div class="color_3 fs30 num"><p class="fw_b fm_p">￥</p><em class="fs40">{$orderInfo.order_amount}</em>
+            </div>
+        </div>
+    </div>
+    <div class="button">
+        <span class="fs28 fw_b color_3 bor_e">联系客服</span>
+        {if condition="$orderInfo.isCancel == 1"}
+        <span class="fs28 fw_b color_3 bor_e" data-type="cancel">取消订单</span>
+        {/if}
+        {if condition="$orderInfo.isDel == 1"}
+        <span class="fs28 fw_b color_r bor " data-type="del">删除订单</span>
+        {/if}
+        {if condition="$orderInfo.isPay == 1"}
+        <a href="{:url('flow/done',['order_id'=>$orderInfo['order_id']])}" class="fs28 fw_b color_r bor ">立即支付</a>
+        {/if}
+        {if condition="$orderInfo.isSign == 1"}
+        <span class="fs28 fw_b color_r bor " data-type="sign">确认收货</span>
+        <a href="物流信息.html" class="fs28 fw_b color_r bor ">查看物流</a>
+        {/if}
+        {if condition="$orderInfo.isReview == 1"}
+        <a href="#" class="fs28 fw_b color_r bor ">评论</a>
+        {/if}
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+$(function(){
+    $('.left-arrow').on('click',function(){
+        window.location.href = '{:url("order/index")}';
+    })
+    //订单操作
+    $('.button').on('click','span',function(res){
+        var _this = $(this);
+        var arr = new Object();
+        arr.order_id = '{$orderInfo.order_id}';
+        arr.type = _this.data('type');
+		if (arr.type == 'cancel'){
+			_alert('确定取消此订单？',function(){action(arr)});
+			return false;
+		}
+		return action(arr);
+    })
+	function action(arr){
+        jq_ajax('{:url("shop/api.order/action")}',arr,function(res){
+            if(res.code  == 0 ){
+                _alert(res.msg);
+                return false;
+            }
+            window.location.reload();
+        })	
+	}
+})
+</script>
+{if condition="$orderInfo.isCancel == 1"}
+<script type="text/javascript">
+codeButton();
+function codeButton(){
+    var code = $(".time em");
+    var time= {$orderInfo['last_time']};//总秒数
+    var hour=time%3600==0?parseInt(time/3600)-1:parseInt(time/3600);//shi
+    var min = time%60==0?parseInt((time-hour*3600)/60)-1:parseInt(time/3600)>0?parseInt((time-hour*3600)/60):parseInt(time/60);//fen
+    var second=time%60==0?59:time%60//miao
+    code.text(hour+"时"+min+"分"+second+"秒")
+    set=setInterval(function(){
+        code.text(hour+"时"+min+"分"+--second+"秒");
+        if(second==0){
+            second=60
+            min<=0?0:--min
+            if(min==0&&hour>0){
+                min=59
+                hour<=0?0:--hour
+            }
+        }
+    }, 1000);
+    setTimeout(function(){
+        clearInterval(set);
+    }, 1000*time);
+}</script>
+{/if}
+{/block}

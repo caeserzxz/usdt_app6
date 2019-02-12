@@ -1,0 +1,18 @@
+<div class="component-exttypeset clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+	{if condition="$theme_row.hasTitle eq 'yes'"}
+    <div class="component-title {$theme_row.titleTheme}"><span>{$theme_row.componentName}</span></div>
+    {/if}
+{if condition="$theme_row.templateId neq 'tpl_5'"}
+    {volist name="theme_row.data" id="row" }	
+        <div class="exttypeset clearfix exttypeset_{$key+1}">
+             <a href="{$row.link}"><img class="prod-img" src="{$row.src|default='__STATIC__/assets/images/exttypeset/images/d.png'}"></a>
+      </div>
+    {/volist} 
+{else/}
+    {volist name="theme_row.data" id="row" }	
+         <div class="exttypeset clearfix exttypeset_{$key+1}">
+             <a href="{$row.link}"><img class="prod-img" src="{$row.src|default='__STATIC__/assets/images/exttypeset/images/d.png'}"><div class="prod-name"><span>{$row.name}</span><span>{$row.nameb}</span></div></a>
+        </div>
+	{/volist}   	
+{/if}
+</div>

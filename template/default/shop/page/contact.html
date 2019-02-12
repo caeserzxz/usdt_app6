@@ -1,0 +1,20 @@
+<div class="component-contact clearfix {$theme_row.themeId} {$theme_row.templateId} {$theme_row['hasMarginTop']=='yes'?'margin-top':''}">
+    <div class="component-data clearfix">   
+      {if condition="$theme_row.templateId eq 'tpl_2' "}
+        <div class="contact-wrapper">
+         	<div class="contact-left">
+                <span class="phone">{$theme_row.phone}</span>
+                <span class="desc">24小时咨询热线</span>
+            </div>
+            <div class="contact-right">
+                <a class="phone-image" href="tel:{$theme_row.phone|str_replace=array(' ','-'),'',###}"></a>
+            </div>
+        </div>
+      {else/}  
+        <div class="contact-button-wrapper">
+          <a class="contact-button" href="tel:{$theme_row.phone||str_replace=array(' ','-'),'',###}"><span>{$theme_row.label}</span></a>
+        </div>
+      {/if}
+    </div>
+</div>
+
