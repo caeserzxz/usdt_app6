@@ -1,0 +1,122 @@
+.top {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0.2rem;
+  background-color: #fff;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.top .inputBox {
+  width: 4rem;
+  height: 0.4rem;
+  background: #f4f4f4;
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.top .inputBox img {
+  width: 0.226667rem !important;
+  height: 0.226667rem;
+}
+
+.top .inputBox input {
+  margin-left: 0.133333rem;
+  width: 90%;
+}
+
+.top input::-webkit-input-placeholder {
+  color: #999;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-size: 0.2rem;
+}
+
+.history {
+  background-color: #fff;
+  padding: 0.2rem;
+}
+
+.history .title {
+  height: 0.613333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.066667rem;
+}
+
+.history .list {
+  overflow: hidden;
+}
+
+.history .list span {
+  width: 1.466667rem;
+  height: 0.466667rem;
+  background: #f4f4f4;
+  margin-bottom: 0.106667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 0.1rem;
+  float: left;
+}
+
+.history .list span:nth-child(3n) {
+  margin-right: 0;
+}
+
+.hot {
+  margin-top: 0.133333rem;
+}
+
+.hot .twe {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.hot p {
+  width: 2.253333rem;
+  height: 0.466667rem;
+  background: #faf6f5;
+  margin-bottom: 0.106667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 0.093333rem;
+  color: #F65236;
+  float: left;
+}
+
+.hot .list span {
+  margin-right: 0.1rem;
+}
+
+.hot p:nth-child(2) {
+  margin-right: 0;
+}

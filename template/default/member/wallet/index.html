@@ -7,25 +7,25 @@
     <!-- 页面内容-->
     <div class="top">
         <div class="money">
-            <p class="fs48 num color_w">36962.00</p>
+            <p class="fs48 num color_w balance_money">0.00</p>
             <a href="{:url('withdraw/index')}" class="fs24 color_w">提现</a>
         </div>
         <span class="fs26 color_w">余额（元）</span>
         <div class="tips">
-            <div class="color_w fs26">可提现金额 ￥<p class="fs30">1587.00</p>, 冻结金额 ￥<p class="fs30">3652.00</p></div>
+            <div class="color_w fs26">可提现金额 ￥<p class="fs30 balance_money">0.00</p>, 冻结金额 ￥<p class="fs30 frozen_amount">0.00</p></div>
         </div>
     </div>
     <div class="moneyInfo">
         <div>
-            <p class="fs40 color_3 num">962.00</p>
+            <p class="fs40 color_3 num today_income">0.00</p>
             <span class="fs26 color_9">今日收益(元)</span>
         </div>
         <div>
-            <p class="fs40 color_3 num">1365.32</p>
+            <p class="fs40 color_3 num month_income">0.00</p>
             <span class="fs26 color_9">本月收益(元)</span>
         </div>
         <div>
-            <p class="fs40 color_3 num">1365.32</p>
+            <p class="fs40 color_3 num total_income">0.00</p>
             <span class="fs26 color_9">累计收益(元)</span>
         </div>
     </div>
@@ -47,4 +47,22 @@
 {/block}
 
 {block name="footer"}
+<script type="text/javascript">
+    $(function () {
+        //加载会员数据
+        jq_ajax('{:url("member/api.users/getAccount")}','',function (res) {
+            if (res.code==0){
+                _alert(res.msg);
+                return false;
+            }
+            $('.balance_money').html(res.account.balance_money);
+			$('.total_income').html(res.account.total_dividend);
+            $('.frozen_amount').html(res.frozen_amount);
+			$('.today_income').html(res.today_income);
+			$('.month_income').html(res.month_income);
+
+        })
+    })
+</script>
+
 {/block}

@@ -1,0 +1,164 @@
+.form-wizard {
+	margin-bottom:0
+}
+.form-wizard .step .control-group {
+	padding:0 20px
+}
+.form-wizard .form-actions {
+	margin-top:0;
+	margin-bottom:0
+}
+.form-wizard.wizard-vertical {
+	margin-bottom:0
+}
+.form-wizard.wizard-vertical .form-content {
+	background:#fff;
+	border-left:1px solid #d6d6d6;
+	margin-left:220px;
+	padding:10px 10px;
+	overflow:hidden
+}
+.form-wizard.wizard-vertical .form-content .control-group {
+	padding:10px
+}
+.form-wizard.wizard-vertical .form-content .control-group:last-child {
+	margin-bottom:0
+}
+.form-wizard.wizard-vertical .step {
+	background:#eee
+}
+.form-wizard.wizard-vertical .wizard-steps {
+	float:left;
+	width:220px;
+	margin-bottom:0;
+	min-height:200px
+}
+.form-wizard.wizard-vertical .wizard-steps>li {
+	float:none;
+	width:100% !important;
+	*zoom:1;
+	display:block;
+	background:#eee;
+	border-top:1px solid #eee;
+	border-bottom:1px solid #eee
+}
+.form-wizard.wizard-vertical .wizard-steps>li:after {
+	content:"";
+	display:table;
+	clear:both
+}
+.form-wizard.wizard-vertical .wizard-steps>li:first-child {
+	border-top:0
+}
+.form-wizard.wizard-vertical .wizard-steps>li.active {
+	background:#fff;
+	position:relative;
+	border-top:1px solid #d6d6d6;
+	border-bottom:1px solid #d6d6d6
+}
+.form-wizard.wizard-vertical .wizard-steps>li.active:first-child {
+	border-top:0
+}
+.form-wizard.wizard-vertical .wizard-steps>li.active:after {
+	position:absolute;
+	content:"";
+	top:0;
+	left:auto;
+	bottom:0;
+	background:#ffffff;
+	width:1px;
+	right:-1px;
+	height:100%;
+	display:block
+}
+.form-wizard.wizard-vertical .wizard-steps>li .single-step {
+	*zoom:1;
+	padding:10px
+}
+.form-wizard.wizard-vertical .wizard-steps>li .single-step:after {
+	content:"";
+	display:table;
+	clear:both
+}
+.form-wizard.wizard-vertical .wizard-steps>li .title {
+	float:left
+}
+.form-wizard.wizard-vertical .wizard-steps>li .description {
+	float:left;
+	margin-left:10px;
+	margin-top:2px
+}
+.form-wizard.wizard-vertical .form-actions {
+	padding-left:240px;
+	background:#fff;
+	margin-bottom:0;
+	margin-top:0;
+	border-top:1px solid #d6d6d6
+}
+.form-wizard .wizard-steps {
+	list-style-type:none;
+	margin:0 0 30px 0;
+	padding:0;
+	*zoom:1;
+	background:#eee
+}
+.form-wizard .wizard-steps:after {
+	content:"";
+	display:table;
+	clear:both
+}
+.form-wizard .wizard-steps li {
+	float:left;
+	text-align:center
+}
+.form-wizard .wizard-steps li:last-child .single-step {
+	border-right:0
+}
+.form-wizard .wizard-steps li .single-step {
+	padding:15px 0
+}
+.form-wizard .wizard-steps li .single-step .title {
+	text-align:center;
+	font-size:16px;
+	background:#ddd;
+	padding:4px 10px;
+	color:#888
+}
+.form-wizard .wizard-steps li .single-step .description {
+	margin-left:5px;
+	color:#aaa
+}
+.form-wizard .wizard-steps li.active {
+	background:#fff;
+	position:relative
+}
+.form-wizard .wizard-steps li.active:after {
+	position:absolute;
+	bottom:-1px;
+	right:0;
+	left:0;
+	content:"";
+	background:#ffffff;
+	width:100%;
+	height:1px;
+	display:block
+}
+.form-wizard .wizard-steps li.active .single-step .title {
+	background:#368ee0;
+	color:#fff
+}
+.form-wizard .wizard-steps li.active .single-step .description {
+	color:#333
+}
+.form-wizard .wizard-steps.steps-2 li {
+	width:50%
+}
+.form-wizard .wizard-steps.steps-3 li {
+	width:33.333%
+}
+.form-wizard .wizard-steps.steps-4 li {
+	width:25%
+}
+.form-wizard .wizard-steps.steps-5 li {
+	width:20%
+}

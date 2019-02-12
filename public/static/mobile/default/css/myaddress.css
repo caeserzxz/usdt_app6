@@ -1,0 +1,224 @@
+.top {
+  background-color: #fff;
+  height: 1.266667rem;
+  background-image: url('../images/lineBG.png');
+  background-size: 100% 0.026667rem;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.block {
+  background-color: #fff;
+  padding-top: 0.266667rem;
+}
+
+.address {
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  width: 100vw;
+}
+
+.address .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.666667rem;
+}
+
+.address .info div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.address .info div span {
+  width: 0.4rem;
+  margin-left: 0.106667rem;
+  text-align: center;
+}
+
+.address .info span {
+  width: 4.266667rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.address a {
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.address img {
+  width: 0.133333rem;
+  height: 0.16rem;
+}
+
+label > * {
+  pointer-events: none;
+}
+
+label {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  touch-action: none;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+label .check {
+  position: absolute;
+  left: -9999em;
+}
+
+label .iconBox {
+  position: relative;
+}
+
+label .check[type=radio] + i {
+  display: inline-block;
+  vertical-align: middle;
+  font: normal normal normal 0.093333rem/1 weui;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+label .check + i:after {
+  content: "\EA01";
+  color: #c9c9c9;
+  font-size: 0.306667rem;
+  display: block;
+}
+
+label .check[type=radio]:checked + i:after {
+  content: "\EA06";
+  color: #f65236;
+}
+
+.radioBox {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0 0.266667rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.radioBox span {
+  margin-left: 0.093333rem;
+}
+.radioBox .edit {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.radioBox .edit img {
+  width: 0.213333rem;
+  height: 0.213333rem;
+  margin-right: 0.066667rem;
+}
+.addresslist {
+  overflow: hidden;
+  padding-bottom: 0.133333rem;
+}
+
+.addresslist object {
+  margin-top: 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.addresslist li {
+  overflow: hidden;
+  width: 120%;
+}
+
+.addresslist .swipeleft {
+  transform: translateX(-16vw);
+  -webkit-transform: translateX(-16vw);
+}
+
+.addresslist .swiped {
+  width: 16vw;
+  height: 1.733333rem;
+}
+
+.addresslist .swiped div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 1.733333rem;
+}
+
+.addresslist .swiped img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.page-ft a {
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+		  width:92%;
+		  position: fixed;
+		  bottom:0.2rem;
+}

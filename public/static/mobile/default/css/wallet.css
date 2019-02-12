@@ -1,0 +1,152 @@
+.top {
+  background-image: url('../images/walletBG.png');
+  width: 4.733333rem;
+  margin: 0.106667rem 0.133333rem 0;
+  height: 1.746667rem;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.top .money {
+  margin-top: 0.32rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.top .money a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 0.666667rem;
+  height: 0.306667rem;
+  border: 0.006667rem solid rgba(255, 255, 255, 0.5);
+}
+
+.top span {
+  opacity: 0.5;
+  margin-top: 0.026667rem;
+}
+
+.top .tips {
+  margin-top: 0.253333rem;
+  opacity: 0.5;
+}
+
+.top .tips div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.top .tips p {
+  margin-right: 0.066667rem;
+}
+
+.moneyInfo {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  background-color: #fff;
+}
+
+.moneyInfo div {
+  height: 1.333333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+
+.moneyInfo div p {
+  margin-bottom: 0.04rem;
+}
+
+.cellBox {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.cellBox a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+  height: 0.733333rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 100%;
+}
+
+.cellBox a div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.cellBox a div img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.066667rem;
+}
+
+.cellBox a .rightIcon {
+  width: 0.133333rem;
+  height: 0.16rem;
+}
+
+.button {
+  margin: 0 0.2rem 0.266667rem;
+}
+
+.button a {
+  width: 4.6rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}

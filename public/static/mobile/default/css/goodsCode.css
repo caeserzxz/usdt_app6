@@ -1,0 +1,102 @@
+.top {
+  margin: 0.2rem 0.266667rem;
+}
+
+.top img {
+  width: 4.466667rem;
+  height: 4.466667rem;
+  box-shadow: 0 0.133333rem 0.266667rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.page-bd {
+  background-color: #fff;
+  padding-bottom: 0.6rem;
+}
+
+.name {
+  margin: 0.333333rem 0.266667rem 0.133333rem;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.info {
+  margin: 0 0.266667rem 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-right: 0.133333rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.info .left {
+  margin-top: 0.133333rem;
+}
+
+.info .left .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.info .left .user {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 0.333333rem;
+}
+
+.info .left .user img {
+  width: 0.466667rem;
+  height: 0.466667rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.info .right img {
+  width: 1.533333rem;
+  height: 1.533333rem;
+}
+
+.page-fd {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.page-fd div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 0.6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.page-fd div img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.04rem;
+}

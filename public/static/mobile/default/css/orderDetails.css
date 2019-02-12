@@ -1,0 +1,240 @@
+.top {
+  background-image: url('../images/orderTopBG.png');
+  background-size: 100% 100%;
+  width: 100vw;
+  height: 1.333333rem;
+  background-repeat: no-repeat;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 0.266667rem;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.top div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.066667rem;
+}
+
+.top div img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.066667rem;
+}
+
+.top P {
+  opacity: 0.6;
+}
+
+.top .time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.top .time P {
+  opacity: 1;
+}
+
+.address {
+  background-image: url('../images/lineBG.png');
+  background-size: 100% 0.026667rem;
+  width: 100vw;
+  height: 1.266667rem;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-color: #fff;
+  margin-top: 0.026667rem;
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.address div {
+  margin-top: 0.306667rem;
+}
+
+.address p {
+  width: 4.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  margin-top: 0.106667rem;
+}
+
+.orderBox {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.orderBox .code {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.orderBox .goodslist .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.066667rem 0 0.333333rem;
+}
+
+.orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.orderBox .goodslist .goodsinfo .appleBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: -0.133333rem;
+}
+
+.orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.orderBox .cell {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.266667rem;
+  height: 0.6rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderBox .cell div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.payInfo {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+  padding: 0.266667rem;
+  height: 1.733333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.button {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+  padding-right: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+
+.button span,
+.button a {
+  margin-left: 0.066667rem;
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}

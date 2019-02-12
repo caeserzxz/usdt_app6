@@ -8,12 +8,12 @@
     <div class="dataBox">
         <div class="left">
             <input type="text" class="fs28 fw_b color_3" readonly value="2018年03月" id="nowValue"/>
-            <span class="fs24 color_9">支出￥36952  收入￥93321</span>
+            <span class="fs24 color_9">支出￥<em>36952</em>  收入￥<em>93321</em></span>
         </div>
         <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
     </div>
     <div class="title">
-        <span class="fs26 color_6">商城佣金支出</span>
+        <span class="fs26 color_6">全部记录</span>
         <div><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0" class="typeimg"></div>
 
     </div>
@@ -30,61 +30,7 @@
                 +1365.32
             </div>
         </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_r">
-                +1365.32
-            </div>
-        </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_r">
-                +1365.32
-            </div>
-        </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_r">
-                +1365.32
-            </div>
-        </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_r">
-                +1365.32
-            </div>
-        </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_3">
-                -189
-            </div>
-        </div>
-        <div class="cell">
-            <div class="left">
-                <p class="fs28 fw_b color_2">商城购物</p>
-                <span class="fs24 color_9">今天 12:30</span>
-            </div>
-            <div class="right fs34 num color_r">
-                +1365.32
-            </div>
-        </div>
-        <div class="cell">
+       <div class="cell">
             <div class="left">
                 <p class="fs28 fw_b color_2">商城购物</p>
                 <span class="fs24 color_9">今天 12:30</span>
@@ -99,28 +45,28 @@
     <div class="modelBg"></div>
     <div class="modelbd">
         <label for="s11">
-            <span class="fs28 color_3 fw_b">商城佣金支出</span>
+            <span class="fs28 color_3 fw_b">全部记录</span>
             <div class="iconBox">
                 <input type="radio" class="check" name="radiobox" id="s11" checked>
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s12">
-            <span class="fs28 color_3 fw_b">个人转账</span>
+            <span class="fs28 color_3 fw_b">提现相关</span>
             <div class="iconBox">
                 <input type="radio" class="check" name="radiobox" id="s12">
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s13">
-            <span class="fs28 color_3 fw_b">商城佣金收入</span>
+            <span class="fs28 color_3 fw_b">商城消费</span>
             <div class="iconBox">
                 <input type="radio" class="check" name="radiobox" id="s13">
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s14">
-            <span class="fs28 color_3 fw_b">分享收入</span>
+            <span class="fs28 color_3 fw_b">佣金收入</span>
             <div class="iconBox">
                 <input type="radio" class="check" name="radiobox" id="s14">
                 <i class="icon_checked"></i>
@@ -181,8 +127,8 @@
         new DatePicker({
             "type": "1",//0年, 1年月, 2月日, 3年月日
             "title": '请选择年月',//标题(可选)
-            "maxYear": "2050",//最大年份（可选）
-            "minYear": "1950",//最小年份（可选）
+            "maxYear": "2030",//最大年份（可选）
+            "minYear": "2010",//最小年份（可选）
             "separator": "-",//分割符(可选)
             "defaultValue": nowval,//默认值（可选）
             "callBack": function (val) {

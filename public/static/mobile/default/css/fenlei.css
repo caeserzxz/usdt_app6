@@ -1,0 +1,199 @@
+.top {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0.2rem;
+  background-color: #fff;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  z-index: 999;
+}
+
+.top .inputBox {
+  width: 4rem;
+  height: 0.4rem;
+  background: #f4f4f4;
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.top .inputBox img {
+  width: 0.226667rem;
+  height: 0.226667rem;
+  margin-right: 0.133333rem;
+}
+
+.top .inputBox input {
+  width: 90%;
+}
+
+.top input::-webkit-input-placeholder {
+  color: #999;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-size: 0.2rem;
+}
+
+.left {
+  width: 22.666vw;
+  background-color: #fff;
+  bottom: 0.2rem;
+  left: 0;
+  top: 0.8rem;
+  position: absolute;
+  z-index: 99;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.left .box {
+  width: 100%;
+  height: 0.6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.left .boxActive {
+  position: relative;
+  font-weight: bold;
+  color: #f65236;
+  background-color: #fff;
+}
+
+.right {
+  width: 100%;
+  background-color: #fff;
+  bottom: 0.2rem;
+  left: 0;
+  padding-left: 22.666vw;
+  top: 0.8rem;
+  position: absolute;
+  padding-bottom: 0.066667rem;
+}
+
+.right .rightBox {
+  margin-bottom: 0.133333rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  display: none;
+}
+
+.boxActive::before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+  color: #eeeeee;
+  height: 200%;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+.boxActive::after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0.22rem;
+  width: 200%;
+  border-left: 6px solid #f65236;
+  color: #f65236;
+  height: 0.32rem;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+.bor_R::before {
+  content: " ";
+  position: absolute;
+  left: 99.2%;
+  top: 0;
+  height: 1px;
+  border-left: 1px solid #eeeeee;
+  color: #eeeeee;
+  height: 200%;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+.block {
+  margin-left: 0.2rem;
+}
+
+.block .title {
+  height: 0.186667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-right: 0.2rem;
+  margin: 0.226667rem 0 0.266667rem;
+}
+
+.block .title span {
+  margin: 0 0.066667rem;
+}
+
+.block .title i {
+  width: 0.106667rem;
+  height: 0.026667rem;
+  background: #333333;
+}
+
+.block .list {
+  overflow: hidden;
+}
+
+.block .list a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  margin-right: 0.133333rem;
+  float: left;
+}
+
+.block .list img {
+  width: 1.066667rem;
+  height: 1.066667rem;
+}
+
+.block .list span {
+  margin: 0.133333rem 0;
+}

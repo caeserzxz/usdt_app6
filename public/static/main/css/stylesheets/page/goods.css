@@ -1,0 +1,153 @@
+.js_custom_list p,.js_custom_list a{
+	padding:0 10px;
+}
+.js_custom_list .js_custom_input{
+	width:200px;
+}
+.js_input_outer{
+	position: relative;
+	zoom:1;
+}
+.custom-dropdown-label{
+	width:90px;
+	display: inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	outline: none;
+}
+.custom-dropdown-caret{
+	margin-bottom: 8px;
+}
+.custom-select{
+	max-height:250px;
+	overflow:hidden;
+	overflow-y:auto;
+}
+.custom-select li{
+	position: relative;
+	zoom:1;
+}
+.custom-select .custom-del-btn{
+	position: absolute;
+	right: 5px;
+	top:-1px;
+}
+.js_limit{
+	position: absolute;
+	right:11px;
+	top:1px;
+	color:#999;
+	height:30px;
+	line-height:30px;
+	padding-right: 5px;
+	background: #fff;
+}
+
+.js_custom_list a,.add-attr a{
+	color:#4cc0c1 !important;
+}
+.js_custom_list a:hover,.add-attr a:hover{
+	text-decoration: underline !important;
+}
+.custom-attr-dl-horizontal{
+	position: relative;
+	zoom:1;
+}
+dl.custom-attr-dl-horizontal dd{
+	margin-left: 125px;
+	margin-right: 35px;
+}
+.custom-attr-del{
+	position: absolute;
+	right:0;
+	top:8px;
+	cursor: pointer;
+}
+.custom-attr-del:hover{
+	text-decoration: underline;
+}
+.specvals-show{
+	margin:0 10px 10px 0;
+	padding:5px 10px;
+	float:left;
+}
+.js_kindeditor_tongji{
+	position: absolute;
+	bottom: 5px;
+	right: 25px;
+}
+.list-goods{
+	overflow:hidden;
+}
+.list-goods li{
+	width:333px;
+	height:100px;
+	float:left;
+	display: inline;
+	border:1px solid #ccc;
+	overflow:hidden;
+	margin:0 15px 10px 0;
+	cursor: pointer;
+	position: relative;
+	zoom:1;
+}
+.list-goods li img{
+	width:80px;
+	height:80px;
+	margin:10px;
+}
+.tab-pane{
+	overflow-x:hidden;
+}
+.goods-name,.goods-label{
+	width:220px;
+	height:20px;
+	white-space:nowrap; 
+    text-overflow:ellipsis; 
+	overflow:hidden;
+}
+.goods-label{
+	margin:5px 0;
+}
+.goods-price,.goods-count{
+	width:110px;
+	padding-right:10px;
+	height:20px;
+	white-space:nowrap; 
+    text-overflow:ellipsis; 
+	overflow:hidden;
+}
+.list-goods li.selected{
+	border-color: #65bd77;
+}
+.list-goods li.selected .goods-name{
+	color:#009dda;
+}
+.selected-sign{
+	position: absolute;
+	bottom: -11px;
+	right: -11px;
+	width:23px;
+	display: none;
+	height:23px;
+	background-color: #65bd77;
+	transform: rotate(45deg);
+}
+.list-goods li.selected .selected-sign{
+	display: block;
+}
+.list-goods li.disabled{
+	color: #999;
+	background-color: #fff;
+	border-color: #ddd;
+}
+.list-goods li.disabled .label-danger{
+	background-color: #999;
+}
+.list-goods li.disabled:hover{
+	color: #999;
+	background-color: #fff;
+	border-color: #ddd;
+	cursor: not-allowed;
+}

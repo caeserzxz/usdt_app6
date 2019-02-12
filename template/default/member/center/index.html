@@ -144,15 +144,14 @@
 
             $('.unusedNum').html(res.unusedNum);
 
-            if (res.orderStats.wait_pay_num > 0){
-                console.log(1);
+            if (res.orderStats.wait_pay_num > 0){               
                 $('.wait_pay_num').append('<em>'+res.orderStats.wait_pay_num+'</em>');
             }
             if (res.orderStats.wait_shipping_num > 0){
                 $('.wait_shipping_num').append('<em>'+res.orderStats.wait_shipping_num+'</em>');
             }
             if (res.orderStats.wait_sign_num > 0){
-                $('.wait_sign_num').append('<em>'+res.orderStats.wait_pay_num+'</em>');
+                $('.wait_sign_num').append('<em>'+res.orderStats.wait_sign_num+'</em>');
             }
 
         })

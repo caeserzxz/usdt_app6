@@ -1,0 +1,380 @@
+.page-bd {
+  padding-bottom: 0.133333rem;
+}
+
+.top {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.2rem;
+  height: 0.666667rem;
+  background-color: #fff;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.top p {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.goodslist {
+  background-color: #fff;
+  margin-top: 0.133333rem;
+  overflow: hidden;
+}
+
+.goodslist object {
+  display: block;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.goodslist li {
+  overflow: hidden;
+  width: 120%;
+}
+
+.goodslist .swipeleft {
+  transform: translateX(-16vw);
+  -webkit-transform: translateX(-16vw);
+}
+
+.goodslist .checkbox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0.2rem 0 0.2rem 0.133333rem;
+  overflow: hidden;
+}
+
+.goodslist .checkbox .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0.066667rem 0.2rem 0.066667rem 0;
+  width: 4.666667rem;
+}
+
+.goodslist .checkbox .block .goodsimg {
+  width: 0.933333rem;
+  height: 0.933333rem;
+}
+
+.goodslist .checkbox .info {
+  margin-left: 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.goodslist .checkbox .info p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.goodslist .checkbox .info .Money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: 0.066667rem;
+  margin-bottom: -0.066667rem;
+}
+
+.goodslist .checkbox .info .Money .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.goodslist .checkbox .info .Money .left div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.goodslist .checkbox .info .Money .left span {
+  text-decoration: line-through;
+  margin-left: 0.066667rem;
+}
+
+.goodslist .checkbox .info .Money .number {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.goodslist .checkbox .info .Money .number img {
+  width: 0.293333rem;
+  height: 0.293333rem;
+}
+
+.goodslist .checkbox .info .Money .number input {
+  width: 0.4rem;
+  margin: 0 0.133333rem;
+  text-align: center;
+}
+
+.goodslist .checkbox .swiped {
+  width: 16vw;
+}
+
+.goodslist .checkbox .swiped div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 1.066667rem;
+}
+
+.goodslist .checkbox .swiped img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.loseGoods {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+  width: 100%;
+  overflow: hidden;
+}
+
+.loseGoods .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 0.8rem;
+  padding: 0 0.2rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.loseGoods .box {
+  padding: 0 0.2rem;
+  margin-bottom: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+          align-items: flex-start;
+}
+
+.loseGoods .box img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.loseGoods .box .info {
+  width: 3.466667rem;
+}
+
+.loseGoods .box .info p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.loseGoods .box .info span {
+  margin-top: 0.106667rem;
+  display: block;
+}
+
+.labelBox {
+  display: none;
+  width: 0.44rem;
+}
+
+label > * {
+  pointer-events: none;
+}
+
+label {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  touch-action: none;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 1.066667rem;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+label .check {
+  position: absolute;
+  left: -9999em;
+}
+
+label .iconBox {
+  position: relative;
+  margin-right: 0.133333rem;
+}
+
+label .check[type=checkbox] + i {
+  display: inline-block;
+  vertical-align: middle;
+  font: normal normal normal 0.093333rem/1 weui;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+label .check + i:after {
+  content: "\EA01";
+  color: #c9c9c9;
+  font-size: 0.293333rem;
+  display: block;
+  margin: 0 1px;
+}
+
+label .check[type=checkbox]:checked + i:after {
+  content: "\EA06";
+  color: #f65236;
+}
+
+.totalBox {
+  width: 100%;
+  background-color: #fff;
+  height: 0.653333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.066667rem 0 0.16rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  box-shadow: 0 -0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.totalBox .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.totalBox .left label {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.totalBox .left label span {
+  margin-right: 0.106667rem;
+  margin-left: -0.066667rem;
+  height: 0.306667rem;
+}
+
+.totalBox .left .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  margin-bottom: 0.053333rem;
+  margin-left: 0.026667rem;
+}
+
+.totalBox .right {
+  width: 1.333333rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.totalBox .button {
+  width: 1.333333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.totalBox .button span {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 0.533333rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.edit {
+  display: none;
+}
+
+.margion_l30 {
+  margin-left: 0.2rem;
+}

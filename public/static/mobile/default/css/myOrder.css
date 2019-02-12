@@ -1,0 +1,202 @@
+.tab {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  height: 0.666667rem;
+  background-color: #fff;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+}
+
+.tabBox {
+  margin-top: 0.133333rem;
+}
+
+.tabBox .box {
+  display: none;
+}
+
+.block {
+  margin: 0.066667rem 0 0.2rem;
+}
+
+.orderBox {
+  margin-bottom: 0.133333rem;
+  background-color: #fff;
+}
+
+.orderBox .code {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.orderBox .goodslist .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.266667rem;
+}
+
+.orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.orderBox .goodslist .goodsinfo span {
+  margin-top: -0.16rem;
+}
+
+.orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.orderBox .payment {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  background: #fafafa;
+  margin: 0 0.2rem;
+  width: 4.573333rem;
+  padding-left: 0.2rem;
+}
+
+.orderBox .payment div {
+  margin-left: 0.066667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.orderBox .button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 0.2rem 0.266667rem 0.333333rem;
+}
+
+.orderBox .button span,
+.orderBox .button a {
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-left: 0.066667rem;
+}
+
+.orderBox .button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.empeyOrder {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  top: 0.8rem;
+}
+
+.empeyOrder img {
+  width: 100%;
+  margin-top: 20vh;
+}
+
+.empeyOrder span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding-bottom: 0.266667rem;
+}
