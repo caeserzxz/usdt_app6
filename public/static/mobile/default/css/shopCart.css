@@ -1,9 +1,11 @@
 .page-bd {
   padding-bottom: 0.133333rem;
 }
+
 img {
   touch-action: none;
 }
+
 .emptyBox {
   background-color: #fff;
   display: none;
@@ -26,6 +28,7 @@ img {
           justify-content: center;
   padding-bottom: 0.333333rem;
 }
+
 .top {
   display: -webkit-box;
   display: -webkit-flex;
@@ -58,7 +61,7 @@ img {
   overflow: hidden;
 }
 
-.goodslist a {
+.goodslist object {
   display: block;
   -webkit-transition: all 0.3s linear;
   transition: all 0.3s linear;
@@ -87,7 +90,7 @@ img {
   display: -webkit-flex;
   display: flex;
   padding: 0.066667rem 0.2rem 0.066667rem 0;
-  width: 4.426667rem;
+  width: 4.48rem;
 }
 
 .goodslist .checkbox .block .goodsimg {
@@ -97,10 +100,6 @@ img {
 
 .goodslist .checkbox .info {
   margin-left: 0.133333rem;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .goodslist .checkbox .info p {
@@ -126,6 +125,7 @@ img {
   -webkit-justify-content: space-between;
           justify-content: space-between;
   margin-top: 0.066667rem;
+  width: 3.106667rem;
 }
 
 .goodslist .checkbox .info .Money .left {
@@ -229,6 +229,8 @@ img {
 .loseGoods .box img {
   width: 0.933333rem;
   height: 0.933333rem;
+  -webkit-filter: brightness(60%);
+          filter: brightness(60%);
   margin-right: 0.133333rem;
 }
 
@@ -249,54 +251,12 @@ img {
   display: block;
 }
 
-label > * {
-  pointer-events: none;
-}
-
-label {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  touch-action: none;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
-label .check {
-  position: absolute;
-  left: -9999em;
-}
-
 label .iconBox {
-  position: relative;
   margin-right: 0.133333rem;
-}
-
-label .check[type=checkbox] + i {
-  display: inline-block;
-  vertical-align: middle;
-  font: normal normal normal 0.093333rem/1 weui;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-}
-
-label .check + i:after {
-  content: "\EA01";
-  color: #c9c9c9;
-  font-size: 0.306667rem;
-  display: block;
-}
-
-label .check[type=checkbox]:checked + i:after {
-  content: "\EA06";
-  color: #f65236;
 }
 
 .totalBox {
   width: 100%;
-  margin-bottom: 0.066667rem;
   background-color: #fff;
   height: 0.653333rem;
   display: -webkit-box;
@@ -309,7 +269,8 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;
-  box-shadow: 0 -0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -0.026667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+  position: relative;
 }
 
 .totalBox .left {
@@ -343,8 +304,9 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-align: baseline;
   -webkit-align-items: baseline;
           align-items: baseline;
-  margin-bottom: 0.053333rem;
   margin-left: 0.026667rem;
+  line-height: 0;
+  margin-top: 0.093333rem;
 }
 
 .totalBox .right {
@@ -386,4 +348,27 @@ label .check[type=checkbox]:checked + i:after {
 
 .edit {
   display: none;
+}
+
+.bottom-tabbar {
+  box-shadow: none;
+}
+
+.bottom-tabbar::before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  border-top: 1px solid #eeeeee;
+  color: #eeeeee;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+}
+
+.bottom-tabbar {
+  position: relative;
+  z-index: 9999;
 }

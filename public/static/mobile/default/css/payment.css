@@ -1,8 +1,8 @@
-.page-bd {
+.payment .page-bd {
   padding-bottom: 0.133333rem;
 }
 
-.top {
+.payment .top {
   background-color: #fff;
   height: 1.266667rem;
   background-image: url('../images/lineBG.png');
@@ -17,7 +17,7 @@
           align-items: center;
 }
 
-.top .tips {
+.payment .top .tips {
   padding-left: 0.266667rem;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -32,7 +32,7 @@
   display: none;
 }
 
-.top .address {
+.payment .top .address {
   padding: 0 0.266667rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -46,7 +46,7 @@
   width: 100%;
 }
 
-.top .address div {
+.payment .top .address div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -60,7 +60,7 @@
   height: 0.666667rem;
 }
 
-.top .address div span {
+.payment .top .address div span {
   width: 4.266667rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -69,18 +69,18 @@
   -webkit-box-orient: vertical;
 }
 
-.top .address img {
+.payment .top .address img {
   width: 0.133333rem;
   height: 0.16rem;
 }
 
-.goodslist {
+.payment .goodslist {
   background-color: #fff;
   margin-top: 0.133333rem;
   overflow: hidden;
 }
 
-.goodslist .title {
+.payment .goodslist .title {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -91,7 +91,7 @@
   padding: 0 0.266667rem;
 }
 
-.goodslist .checkbox {
+.payment .goodslist .checkbox {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -99,17 +99,17 @@
   overflow: hidden;
 }
 
-.goodslist .checkbox .goodsimg {
+.payment .goodslist .checkbox .goodsimg {
   width: 1.066667rem;
   height: 1.066667rem;
 }
 
-.goodslist .checkbox .info {
+.payment .goodslist .checkbox .info {
   margin-left: 0.133333rem;
   width: 3.266667rem;
 }
 
-.goodslist .checkbox .info p {
+.payment .goodslist .checkbox .info p {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -118,11 +118,11 @@
   line-height: 0.226667rem;
 }
 
-.goodslist .checkbox .info .sign {
+.payment .goodslist .checkbox .info .sign {
   margin-top: 0.026667rem;
 }
 
-.goodslist .checkbox .info .Money {
+.payment .goodslist .checkbox .info .Money {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -135,7 +135,7 @@
   margin-top: 0.066667rem;
 }
 
-.goodslist .checkbox .info .Money .left {
+.payment .goodslist .checkbox .info .Money .left {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -144,7 +144,7 @@
           align-items: baseline;
 }
 
-.goodslist .checkbox .info .Money .left div {
+.payment .goodslist .checkbox .info .Money .left div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -153,12 +153,12 @@
           align-items: baseline;
 }
 
-.goodslist .checkbox .info .Money .left span {
+.payment .goodslist .checkbox .info .Money .left span {
   text-decoration: line-through;
   margin-left: 0.066667rem;
 }
 
-.goodslist .checkbox .info .Money .number {
+.payment .goodslist .checkbox .info .Money .number {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -167,18 +167,18 @@
           align-items: center;
 }
 
-.goodslist .checkbox .info .Money .number img {
+.payment .goodslist .checkbox .info .Money .number img {
   width: 0.293333rem;
   height: 0.293333rem;
 }
 
-.goodslist .checkbox .info .Money .number input {
+.payment .goodslist .checkbox .info .Money .number input {
   width: 0.4rem;
   margin: 0 0.133333rem;
   text-align: center;
 }
 
-.inputBox {
+.payment .inputBox {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -193,15 +193,21 @@
           justify-content: space-between;
 }
 
-.inputBox span {
+.payment .inputBox span {
   height: 0.28rem;
 }
 
-.inputBox input {
-  width: 2.866667rem;
+.payment .inputBox input {
+  width: 3.4rem;
 }
 
-.bor_t::before {
+.payment .inputBox p {
+  height: 0.28rem;
+  line-height: 0.28rem;
+  margin-top: 0.04rem;
+}
+
+.payment .bor_t::before {
   content: " ";
   position: absolute;
   left: 0;
@@ -215,17 +221,17 @@
           transform: scale(0.5);
 }
 
-.bor_t {
+.payment .bor_t {
   position: relative;
 }
 
-.cellBox {
+.payment .cellBox {
   padding: 0 0.266667rem;
   margin-top: 0.133333rem;
   background-color: #fff;
 }
 
-.cellBox .cell {
+.payment .cellBox .cell {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -238,7 +244,7 @@
           justify-content: space-between;
 }
 
-.cellBox .cell .money {
+.payment .cellBox .cell .money {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -247,7 +253,11 @@
           align-items: baseline;
 }
 
-.cellBox .cell .ticket {
+.payment .cellBox .cell .showBox {
+  display: none;
+}
+
+.payment .cellBox .cell .ticket {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -256,21 +266,36 @@
           align-items: center;
 }
 
-.cellBox .cell .ticket em {
+.payment .cellBox .cell .ticket em {
   width: 0.6rem;
   text-align: center;
 }
 
-.cellBox .cell .ticket img {
+.payment .cellBox .cell .ticket img {
   width: 0.133333rem;
   height: 0.16rem;
 }
 
-.cellBox .cell .ticket span {
+.payment .cellBox .cell .ticket span {
   margin: 0 0.08rem 0 0.066667rem;
 }
 
-.payment {
+.payment .cellBox .cell .closed {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.payment .cellBox .cell .closed img {
+  width: 0.2rem;
+  height: 0.2rem;
+  margin-left: 0.066667rem;
+}
+
+.payment .paymentbox {
   height: 0.666667rem;
   right: 0;
   display: -webkit-box;
@@ -286,7 +311,7 @@
   background-color: #fff;
 }
 
-.payment .left {
+.payment .paymentbox .left {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -295,7 +320,7 @@
           align-items: center;
 }
 
-.payment .money {
+.payment .paymentbox .money {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -303,10 +328,10 @@
   -webkit-align-items: baseline;
           align-items: baseline;
   margin-left: 0.106667rem;
-  margin-bottom: 0.066667rem;
+  margin-top: 0.053333rem;
 }
 
-.payment .gopay {
+.payment .paymentbox .gopay {
   width: 1.333333rem;
   height: 0.533333rem;
   display: -webkit-box;
@@ -320,7 +345,7 @@
           align-items: center;
 }
 
-.model {
+.payment .model {
   position: fixed;
   top: 0;
   left: 0;
@@ -331,7 +356,7 @@
   display: none;
 }
 
-.model .modelContent {
+.payment .model .modelContent {
   position: absolute;
   left: 0;
   width: 100%;
@@ -340,18 +365,18 @@
   height: 3.906667rem;
 }
 
-.model .modelContent .closeBox {
+.payment .model .modelContent .closeBox {
   position: absolute;
   top: 0.306667rem;
   right: 0.2rem;
 }
 
-.model .modelContent .closeBox img {
+.payment .model .modelContent .closeBox img {
   width: 0.173333rem;
   height: 0.173333rem;
 }
 
-.model .modelContent .title {
+.payment .model .modelContent .title {
   padding: 0 0.2rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -362,13 +387,13 @@
   height: 0.733333rem;
 }
 
-.model .modelContent .cantre {
+.payment .model .modelContent .cantre {
   width: 100%;
   padding: 0 0.2rem;
   margin-top: 0.066667rem;
 }
 
-.model .modelContent .cantre .block {
+.payment .model .modelContent .cantre .block {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -381,7 +406,7 @@
   height: 0.733333rem;
 }
 
-.model .modelContent .cantre .block .payType {
+.payment .model .modelContent .cantre .block .payType {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -390,13 +415,13 @@
           align-items: center;
 }
 
-.model .modelContent .cantre .block .payType img {
+.payment .model .modelContent .cantre .block .payType img {
   width: 0.266667rem;
   height: 0.266667rem;
   margin-right: 0.133333rem;
 }
 
-.model .modelContent .cantre .block .payType img div {
+.payment .model .modelContent .cantre .block .payType img div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -405,7 +430,7 @@
           align-items: center;
 }
 
-.model .modelContent .buttBox {
+.payment .model .modelContent .buttBox {
   width: 100%;
   padding: 0.2rem;
   display: -webkit-box;
@@ -413,7 +438,7 @@
   display: flex;
 }
 
-.model .modelContent .buttBox span {
+.payment .model .modelContent .buttBox span {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
@@ -429,46 +454,92 @@
           justify-content: center;
 }
 
-label > * {
-  pointer-events: none;
-}
-
-label {
+.payResult .paType {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  touch-action: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #fff;
+}
+
+.payResult .paType img {
+  width: 1.2rem;
+  height: 0.68rem;
+  margin-top: 0.666667rem;
+}
+
+.payResult .paType p {
+  margin-top: 0.133333rem;
+}
+
+.payResult .paType div {
+  margin-top: 0.333333rem;
+}
+
+.payResult .paType span {
+  margin-bottom: 0.4rem;
+}
+
+.payResult .cellBox {
+  padding: 0.2rem 0.266667rem 0.2rem;
+  background-color: #fff;
+}
+
+.payResult .cellBox .cell {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.6rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.payResult .cellBox .cell .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
 }
 
-label .check {
-  position: absolute;
-  left: -9999em;
+.payResult .line {
+  width: 4.466667rem;
+  height: 0.013333rem;
+  border: 0.013333rem dashed #eee3e1;
+  margin-bottom: 0.266667rem;
 }
 
-label .iconBox {
-  position: relative;
+.payResult .button {
+  margin: 0.333333rem 0;
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
 }
 
-label .check[type=radio] + i {
-  display: inline-block;
-  vertical-align: middle;
-  font: normal normal normal 0.093333rem/1 weui;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-}
-
-label .check + i:after {
-  content: "\EA01";
-  color: #c9c9c9;
-  font-size: 0.306667rem;
-  display: block;
-}
-
-label .check[type=radio]:checked + i:after {
-  content: "\EA06";
-  color: #f65236;
+.payResult .button a {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
 }

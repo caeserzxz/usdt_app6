@@ -50,7 +50,7 @@ function f_hash($password)
 }
 //验证手机号码
 function checkMobile($phone = ''){
-    $preg_phone='/^1[34578]\d{9}$/ims';
+    $preg_phone='/^1\d{10}$/ims';
     if(preg_match($preg_phone,$phone)){
         return true;
     }
@@ -419,4 +419,17 @@ function timeTran($show_time) {
 		return floor($dur / 86400) . '天前';  
 	}
 	return date("Y-m-d", $show_time); 
-}  
+}
+ /*------------------------------------------------------ */
+// * 对银行卡号进行掩码处理
+// * @param  string $bankCardNo 银行卡号
+//* @return string             掩码后的银行卡号
+/*------------------------------------------------------ */
+function formatBankCardNo($bankCardNo){
+	//截取银行卡号前4位
+	$prefix = substr($bankCardNo,0,4);
+	//截取银行卡号后4位
+	$suffix = substr($bankCardNo,-4,4);
+	$maskBankCardNo = $prefix." **** **** **** ".$suffix;
+	return $maskBankCardNo;
+}

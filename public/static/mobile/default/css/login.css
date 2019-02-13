@@ -49,11 +49,28 @@ body {
   z-index: 0;
 }
 
-.inputBlock .textBox {
+.inputBlock input {
   margin-top: 0.4rem;
   position: relative;
   z-index: 99;
-  width: 80%;
+  width: 90%;
+}
+
+.inputBlock .ereBox {
+  width: 10%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+
+.inputBlock img {
+  width: 0.226667rem;
+  height: 0.16rem;
+  float: right;
+  margin-top: 0.4rem;
 }
 
 .inputBlock .code {
@@ -68,30 +85,12 @@ body {
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
           justify-content: flex-end;
-  margin-top: 0.253333rem;
 }
 
 .inputBlock .codeBox input {
   width: 100%;
   text-align: end;
   padding-right: 0.026667rem;
-}
-
-.inputBlock .ereBox {
-  width: 20%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-          justify-content: flex-end;
-}
-
-.inputBlock img {
-  width: 0.226667rem;
-  height: 0.16rem;
-  float: right;
-  margin-top: 0.4rem;
 }
 
 .remPassword {
@@ -120,6 +119,11 @@ body {
           justify-content: center;
   margin: 0 0.493333rem;
   height: 0.533333rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  margin: 0 0.493333rem;
 }
 
 .goregister {
@@ -196,159 +200,4 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-}
-
-.cellBox .cell {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  height: 0.733333rem;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  background-color: #fff;
-  padding: 0 0.266667rem;
-  position: relative;
-}
-
-.cellBox .cell span {
-  width: 1.333333rem;
-}
-
-.cellBox .cell .cell_bd {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
-.cellBox .cell .cell_bd input {
-  width: 3.133333rem;
-}
-
-.cellBox .cell .cell_bd .bankBox {
-  width: 2.733333rem;
-}
-
-.cellBox .cell .cell_bd .codeBox {
-  width: 1.333333rem;
-}
-
-.cellBox .cell #code {
-  width: 1.8rem;
-  text-align: right;
-}
-
-.cellBox .cell .cell_ft {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
-.cellBox .cell .cell_ft input {
-  text-align: right;
-  width: 3.133333rem;
-}
-
-.cellBox .cell .cell_ft img {
-  width: 0.133333rem;
-  height: 0.16rem;
-  margin-left: 0.066667rem;
-}
-
-.cellBox .noline::before {
-  display: none;
-}
-
-.cellBox .cell:last-child {
-  margin-bottom: 0.133333rem;
-}
-
-.cellBox .twoBox {
-  margin-top: 0.133333rem;
-}
-
-.cellBox .top {
-  height: 1.2rem;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  padding: 0 0.266667rem;
-  background-color: #fff;
-}
-
-.cellBox .top div {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
-.cellBox .top div .userimg {
-  width: 0.533333rem;
-  height: 0.533333rem;
-  border-radius: 50%;
-}
-
-.cellBox .top div .rightimg {
-  width: 0.133333rem;
-  height: 0.16rem;
-  margin-left: 0.08rem;
-}
-
-.cell::before {
-  content: " ";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 1px;
-  border-top: 1px solid #e5e5e5;
-  color: #e5e5e5;
-  -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
-  -webkit-transform: scaleY(0.5);
-          transform: scaleY(0.5);
-  left: 0.266667rem;
-  z-index: 2;
-}
-
-.page-ft {
-  margin: 0.533333rem 0.2rem 0.253333rem;
-}
-
-.page-ft span {
-  width: 4.6rem;
-  height: 0.533333rem;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
-input[disabled] {
-  color: #999;
-  -webkit-text-fill-color: #999;
-  -webkit-opacity: 1;
-  opacity: 1;
 }

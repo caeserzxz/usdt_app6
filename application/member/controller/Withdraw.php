@@ -16,11 +16,25 @@ class Withdraw  extends ClientbaseController{
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */
-    //-- 添加银行卡
+    //-- 银行卡
     /*------------------------------------------------------ */
-    public function add(){
+    public function bankList(){
+        $this->assign('title', '银行卡');
+        return $this->fetch('bankList');
+    }
+	/*------------------------------------------------------ */
+    //-- 银行卡
+    /*------------------------------------------------------ */
+    public function bankAdd(){
         $this->assign('title', '添加银行卡');
-        return $this->fetch('add');
+        return $this->fetch('bankAdd');
+    }
+	/*------------------------------------------------------ */
+    //-- 添加支付宝
+    /*------------------------------------------------------ */
+    public function alipayAdd(){
+        $this->assign('title', '添加支付宝');
+        return $this->fetch('alipayAdd');
     }
    
 

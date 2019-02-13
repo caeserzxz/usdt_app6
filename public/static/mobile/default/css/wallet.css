@@ -1,4 +1,4 @@
-.top {
+.myWallet .top {
   background-image: url('../images/walletBG.png');
   width: 4.733333rem;
   margin: 0.106667rem 0.133333rem 0;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.top .money {
+.myWallet .top .money {
   margin-top: 0.32rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -22,7 +22,7 @@
           justify-content: space-between;
 }
 
-.top .money a {
+.myWallet .top .money a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -37,17 +37,17 @@
   border: 0.006667rem solid rgba(255, 255, 255, 0.5);
 }
 
-.top span {
+.myWallet .top span {
   opacity: 0.5;
   margin-top: 0.026667rem;
 }
 
-.top .tips {
+.myWallet .top .tips {
   margin-top: 0.253333rem;
   opacity: 0.5;
 }
 
-.top .tips div {
+.myWallet .top .tips div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -56,11 +56,11 @@
           align-items: center;
 }
 
-.top .tips p {
+.myWallet .top .tips p {
   margin-right: 0.066667rem;
 }
 
-.moneyInfo {
+.myWallet .moneyInfo {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -69,7 +69,7 @@
   background-color: #fff;
 }
 
-.moneyInfo div {
+.myWallet .moneyInfo div {
   height: 1.333333rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -89,16 +89,16 @@
           flex: 1;
 }
 
-.moneyInfo div p {
+.myWallet .moneyInfo div p {
   margin-bottom: 0.04rem;
 }
 
-.cellBox {
+.myWallet .cellBox {
   margin-top: 0.133333rem;
   background-color: #fff;
 }
 
-.cellBox a {
+.myWallet .cellBox a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -113,7 +113,7 @@
   width: 100%;
 }
 
-.cellBox a div {
+.myWallet .cellBox a div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -122,22 +122,22 @@
           align-items: center;
 }
 
-.cellBox a div img {
+.myWallet .cellBox a div img {
   width: 0.266667rem;
   height: 0.266667rem;
   margin-right: 0.066667rem;
 }
 
-.cellBox a .rightIcon {
+.myWallet .cellBox a .rightIcon {
   width: 0.133333rem;
   height: 0.16rem;
 }
 
-.button {
+.myWallet .button {
   margin: 0 0.2rem 0.266667rem;
 }
 
-.button a {
+.myWallet .button a {
   width: 4.6rem;
   height: 0.533333rem;
   display: -webkit-box;
@@ -149,4 +149,712 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+}
+
+.balanceDetail .top .dataBox {
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0 0.266667rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.866667rem;
+}
+
+.balanceDetail .top .dataBox .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.balanceDetail .top .dataBox .left input {
+  margin-bottom: 0.026667rem;
+}
+
+.balanceDetail .top .dataBox img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.balanceDetail .top .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+  height: 0.6rem;
+  background: #f8f8f8;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.balanceDetail .top .title div {
+  height: 100%;
+  width: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.balanceDetail .top .title img {
+  width: 0.133333rem;
+}
+
+.balanceDetail .list {
+  padding: 0.133333rem 0;
+  background-color: #fff;
+}
+
+.balanceDetail .list .cell {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.8rem;
+  padding: 0 0.266667rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.balanceDetail .list .cell .left p {
+  margin-bottom: 0.026667rem;
+}
+
+.balanceDetail .model {
+  display: none;
+  position: fixed;
+  top: 1.986667rem;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9;
+}
+
+.balanceDetail .model .modelBg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.balanceDetail .model .modelbd {
+  padding: 0.133333rem 0;
+  background-color: #fff;
+  position: relative;
+  z-index: 888;
+}
+
+.balanceDetail .model .modelbd label {
+  height: 0.666667rem;
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.balanceDetail label .check + i:after {
+  content: "";
+}
+
+.balanceDetail label .check[type=radio]:checked + i:after {
+  content: "\EA08";
+  color: #f65236;
+}
+
+.rank .tab {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  height: 0.466667rem;
+  margin-top: -0.866667rem;
+  padding: 0 0.066667rem;
+}
+
+.rank .tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rank .tab .rankActive {
+  font-weight: bold;
+  color: #fff;
+  position: relative;
+}
+
+.rank .tabBox {
+  margin-top: 0.133333rem;
+}
+
+.rank .tabBox .box {
+  display: none;
+}
+
+.rank .top {
+  width: 100%;
+  height: 2.4rem;
+  background-image: url('../images/rankBG.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding-left: 0.266667rem;
+  overflow: hidden;
+}
+
+.rank .top span {
+  margin-top: 0.266667rem;
+  display: block;
+}
+
+.rank .top div {
+  margin-top: 0.04rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.rank .top div input {
+  width: 1.066667rem;
+}
+
+.rank .top div img {
+  width: 0.12rem;
+  height: 0.12rem;
+}
+
+.rank .block {
+  padding: 0 0.133333rem;
+}
+
+.rank .block .cell {
+  width: 4.733333rem;
+  height: 0.8rem;
+  background: #ffffff;
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.rank .block .cell .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.rank .block .cell .left div {
+  width: 0.36rem;
+  height: 0.36rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  line-height: 0.426667rem;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 0.2rem;
+}
+
+.rank .block .cell .left div img {
+  width: 100%;
+  height: 100%;
+}
+
+.rank .block .cell .left .userimg {
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.rank .block .cell .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.rank .block .cell .right p {
+  margin-top: 0.066667rem;
+}
+
+.rank .block .cell .right span {
+  margin-left: 0.04rem;
+}
+
+.rank .block .my {
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.rank .block .cellBox {
+  margin-top: 0.093333rem;
+}
+
+.rank .block .cellBox .cell:first-child p {
+  color: #F65236;
+}
+
+.chongzhi .inputBlock {
+  height: 1.333333rem;
+  background-color: #fff;
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.chongzhi .inputBlock .tips {
+  position: absolute;
+  top: 0.386667rem;
+  z-index: 0;
+}
+
+.chongzhi .inputBlock input {
+  margin-top: 0.4rem;
+  position: relative;
+  z-index: 99;
+  height: auto;
+  line-height: normal;
+  width: 3.333333rem;
+}
+
+.chongzhi .inputBlock span {
+  margin-top: 0.4rem;
+  display: none;
+}
+
+.chongzhi .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem 0.2rem;
+  background-color: #fff;
+  overflow: hidden;
+  width: 100%;
+}
+
+.chongzhi .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.chongzhi .money P {
+  width: 0.853333rem;
+  height: 0.306667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.chongzhi .paytype {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.chongzhi .paytype .title {
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.866667rem;
+}
+
+.chongzhi .paytype .cells {
+  width: 100%;
+}
+
+.chongzhi .paytype .cells .cell {
+  height: 0.733333rem;
+}
+
+.chongzhi .paytype .cells .cell .cell_hd img {
+  width: 0.333333rem;
+  height: 0.333333rem;
+  margin-right: 0.133333rem;
+}
+
+.chongzhi .uploading {
+  background-color: #fff;
+  display: none;
+}
+
+.chongzhi .uploading .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  padding: 0 0.266667rem;
+}
+
+.chongzhi .uploading .uploadBox {
+  padding: 0.066667rem 0.266667rem 0.306667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.chongzhi .uploading .uploadBox .Box {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0.013333rem dashed #eeeeee;
+  margin-right: 0.186667rem;
+}
+
+.chongzhi .uploading .uploadBox .Box .imgBox {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: -0.013333rem 0 0 -0.013333rem;
+}
+
+.chongzhi .uploading .uploadBox .Box .closeImg {
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  top: -0.093333rem;
+  right: -0.093333rem;
+}
+
+.chongzhi .uploading .uploadBox .Box input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.chongzhi .button {
+  width: 4.466667rem;
+  margin: 0.266667rem 0.2rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.takeOut .goodslist {
+  margin: 0.106667rem 0.133333rem;
+  overflow: hidden;
+}
+
+.takeOut .goodslist object {
+  display: block;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.takeOut .goodslist li {
+  overflow: hidden;
+  width: 120%;
+  margin-bottom: 0.133333rem;
+}
+
+.takeOut .goodslist .swipeleft {
+  transform: translateX(-16vw);
+  -webkit-transform: translateX(-16vw);
+}
+
+.takeOut .goodslist .checkbox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  overflow: hidden;
+  height: 1.533333rem;
+}
+
+.takeOut .goodslist .checkbox .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 4.733333rem;
+  background-color: #fff;
+}
+
+.takeOut .goodslist .checkbox .block .info {
+  width: 100%;
+  padding: 0 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.8rem;
+}
+
+.takeOut .goodslist .checkbox .block .info .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.takeOut .goodslist .checkbox .block .info .left img {
+  width: 0.333333rem;
+  height: 0.333333rem;
+  margin-right: 0.066667rem;
+}
+
+.takeOut .goodslist .checkbox .block .info .rightIcon {
+  width: 0.133333rem;
+  height: 0.16rem;
+}
+
+.takeOut .goodslist .checkbox .block .cardCode {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+  height: 0.733333rem;
+}
+
+.takeOut .goodslist .checkbox .swiped {
+  width: 16vw;
+  height: 1.533333rem;
+}
+
+.takeOut .goodslist .checkbox .swiped div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100%;
+}
+
+.takeOut .goodslist .checkbox .swiped img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.takeOut .addType {
+  position: fixed;
+  margin: 0 0.2rem 0.133333rem;
+  bottom: 0;
+  width: 4.6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.533333rem;
+}
+
+.takeOut .model {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+  display: none;
+}
+
+.takeOut .model .modelBg {
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.takeOut .model .modelContent {
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  height: 2.586667rem;
+}
+
+.takeOut .model .modelContent .closeBox {
+  position: absolute;
+  top: 0.306667rem;
+  right: 0.2rem;
+}
+
+.takeOut .model .modelContent .closeBox img {
+  width: 0.173333rem;
+  height: 0.173333rem;
+}
+
+.takeOut .model .modelContent .title {
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.733333rem;
+}
+
+.takeOut .model .modelContent .cantre {
+  width: 100%;
+  padding: 0 0.2rem;
+  margin-top: 0.066667rem;
+}
+
+.takeOut .model .modelContent .cantre .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.733333rem;
+  width: 100%;
+}
+
+.takeOut .model .modelContent .cantre .block .payType {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.takeOut .model .modelContent .cantre .block .payType img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.133333rem;
+}
+
+.takeOut .model .modelContent .cantre .block .payType img div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.takeOut label .check + i::after {
+  content: "";
+}
+
+.takeOut label .check[type=radio]:checked + i::after {
+  content: "\EA08";
+  color: #f65236;
 }

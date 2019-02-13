@@ -1,0 +1,62 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css"/>
+{/block}
+{block name="pageType"}takeOut{/block}
+{block name="main" }
+<form id="alipay_from">
+<div class="page-bd">
+  <!-- 页面内容-->
+        <div class="cells">
+          <div class="cell">
+            <div class="cell_hd"><span class="fs28 color_3 fw_b">账户姓名</span></div>  
+            <div class="cell_bd">     
+                <input type="text" class="fs28  color_3" name="alipay_user_name" placeholder="请输入账户姓名">
+            </div>
+
+          </div>
+          <div class="cell">
+              <div class="cell_hd"><span class="fs28 color_3 fw_b">支付宝账号</span></div>  
+            <div class="cell_bd">
+                <input type="text" class="fs28  color_3" name="alipay_account" placeholder="请输入支付宝账号">
+            </div>
+          </div>
+        </div> 
+        <div class="page-ft">
+            <span class="fs32 color_w fw_b BGcolor_r postBtn">确认添加</span>
+          </div>
+      </div>
+    
+
+</div>
+</form>
+{/block}
+
+{block name="footer"}
+<script>
+$(function(){
+  
+	
+	$('.postBtn').click(function (){
+		var arr = $('#bakn_from').toJson();
+		if (arr.alipay_user_name == ''){
+			_alert('请输入账户姓名.');
+			return false;	
+		}
+		if (arr.alipay_account == ''){
+			_alert('请输入支付宝账号.');
+			return false;	
+		}
+	
+		jq_ajax('{:url("member/api.withdraw/addAlipay")}',arr,function(res){
+			if (res.code == 0){
+				_alert(res.msg);
+				return false;
+			}
+			window.location.href = '{:url("withdraw/banklist")}';	
+		});	
+		
+	})
+})
+</script>
+{/block}

@@ -1,0 +1,486 @@
+.introducer .page-bd {
+  background-color: #fff;
+}
+
+.introducer .page-bd .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #fff;
+}
+
+.introducer .page-bd img {
+  margin-top: 0.88rem;
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-bottom: 0.146667rem;
+  border-radius: 50%;
+}
+
+.introducer .page-bd .sign {
+  width: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-bottom: 1.173333rem;
+}
+
+.introducer .page-bd p {
+  margin-top: 0.066667rem;
+}
+
+.introducer .page-bd .aBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.133333rem;
+}
+
+.introducer .page-bd .button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 4rem;
+  height: 0.533333rem;
+  margin-top: 1.866667rem;
+  margin-bottom: 0.24rem;
+}
+
+.download .page-bd {
+  background-image: url('../images/downloadTop.png');
+  background-color: #fa6349;
+  background-size: 100% 5.026667rem;
+  background-repeat: no-repeat;
+}
+
+.download .page-bd .bolck {
+  margin: 1.706667rem 0.36rem 0.2rem;
+  height: 6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  background-color: #fff;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.download .page-bd .bolck p {
+  margin-top: 0.4rem;
+  margin-bottom: 0.133333rem;
+}
+
+.download .page-bd .bolck img {
+  width: 2.306667rem;
+  height: 2.306667rem;
+  margin: 0.2rem 0;
+}
+
+.download .page-bd .bolck .botton {
+  width: 2.666667rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-top: 0.6rem;
+}
+
+.myCode .one {
+  margin: 0.266667rem 0.466667rem;
+  padding: 0.08rem;
+  box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+.myCode .one .goodsimg {
+  width: 3.906667rem;
+  height: 3.906667rem;
+}
+
+.myCode .one .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.12rem;
+  height: 1.133333rem;
+}
+
+.myCode .one .info .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.myCode .one .info .left img {
+  width: 0.56rem;
+  height: 0.56rem;
+  margin-right: 0.066667rem;
+  border-radius: 50%;
+}
+
+.myCode .one .info .left div p {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.myCode .one .info .left div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  width: 1.84rem;
+}
+
+.myCode .one .info .right {
+  margin-top: -1.133333rem;
+}
+
+.myCode .one .info .right img {
+  width: 1.133333rem;
+  height: 1.133333rem;
+}
+
+.myCode .two {
+  margin: 0.266667rem 0.466667rem;
+  padding: 0.08rem;
+  box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  position: relative;
+}
+
+.myCode .two .goodsimg {
+  width: 3.906667rem;
+  height: 3.906667rem;
+}
+
+.myCode .two .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.12rem;
+  height: 1.133333rem;
+}
+
+.myCode .two .info .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.myCode .two .info .left img {
+  width: 0.56rem;
+  height: 0.56rem;
+  margin-right: 0.066667rem;
+  border-radius: 50%;
+}
+
+.myCode .two .info .left div p {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.myCode .two .info .left div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  width: 1.84rem;
+}
+
+.myCode .two .right {
+  position: absolute;
+  top: 53%;
+  left: 50%;
+}
+
+.myCode .two .right img {
+  width: 1.133333rem;
+  height: 1.133333rem;
+  margin-left: -50%;
+}
+
+.myCode .three {
+  margin: 0.266667rem 0.466667rem;
+  padding: 0.08rem;
+  box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.myCode .three .goodsimg {
+  width: 2.88rem;
+  height: 2.88rem;
+  margin-bottom: 0.626667rem;
+}
+
+.myCode .three .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 1.533333rem;
+  padding: 0.16rem 0;
+}
+
+.myCode .three .info img {
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 50%;
+  margin-bottom: 0.04rem;
+}
+
+.myCode .three .info p {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.myCode .three .info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.myCode .three .right {
+  margin-top: -1.133333rem;
+}
+
+.myCode .three .right img {
+  width: 1.133333rem;
+  height: 1.133333rem;
+}
+
+.myCode .tabBox .box {
+  display: none;
+}
+
+.myCode .tab {
+  margin: 0 0.466667rem 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.myCode .tab .tablist {
+  box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.myCode .tab .tablist img {
+  width: 1.066667rem;
+}
+
+.myCode .tab .boxOpacity {
+  opacity: 0.5;
+}
+
+.myCode .page-ft {
+  width: 100%;
+  z-index: 9;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.myCode .page-ft div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 0.6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.myCode .page-ft div img {
+  width: 0.186667rem;
+  height: 0.186667rem;
+  margin-right: 0.04rem;
+}
+
+.goodsCode .top {
+  margin: 0.2rem 0.266667rem;
+}
+
+.goodsCode .top img {
+  width: 4.466667rem;
+  height: 4.466667rem;
+  padding: 0.08rem;
+  background-color: #fff;
+  box-shadow: 0 0.133333rem 0.266667rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.goodsCode .page-bd {
+  background-color: #fff;
+  padding-bottom: 0.6rem;
+}
+
+.goodsCode .name {
+  margin: 0.333333rem 0.266667rem 0.133333rem;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.goodsCode .info {
+  margin: 0 0.266667rem 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-right: 0.133333rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.goodsCode .info .left {
+  margin-top: 0.133333rem;
+}
+
+.goodsCode .info .left .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.goodsCode .info .left .user {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 0.333333rem;
+}
+
+.goodsCode .info .left .user img {
+  width: 0.466667rem;
+  height: 0.466667rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.goodsCode .info .right img {
+  width: 1.533333rem;
+  height: 1.533333rem;
+}
+
+.goodsCode .page-fd {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.goodsCode .page-fd div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 0.6rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.goodsCode .page-fd div img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.04rem;
+}

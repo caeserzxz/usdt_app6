@@ -232,54 +232,12 @@
   width: 0.44rem;
 }
 
-label > * {
-  pointer-events: none;
-}
-
-label {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  touch-action: none;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+.labelBox label {
   height: 1.066667rem;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
 }
 
-label .check {
-  position: absolute;
-  left: -9999em;
-}
-
-label .iconBox {
-  position: relative;
+.labelBox label .iconBox {
   margin-right: 0.133333rem;
-}
-
-label .check[type=checkbox] + i {
-  display: inline-block;
-  vertical-align: middle;
-  font: normal normal normal 0.093333rem/1 weui;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-}
-
-label .check + i:after {
-  content: "\EA01";
-  color: #c9c9c9;
-  font-size: 0.293333rem;
-  display: block;
-  margin: 0 1px;
-}
-
-label .check[type=checkbox]:checked + i:after {
-  content: "\EA06";
-  color: #f65236;
 }
 
 .totalBox {
@@ -308,18 +266,9 @@ label .check[type=checkbox]:checked + i:after {
           align-items: center;
 }
 
-.totalBox .left label {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-
 .totalBox .left label span {
   margin-right: 0.106667rem;
-  margin-left: -0.066667rem;
+  margin-left: 0.066667rem;
   height: 0.306667rem;
 }
 
