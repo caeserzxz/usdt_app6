@@ -6,6 +6,7 @@ use app\ApiController;
 
 use app\member\model\UsersModel;
 use app\member\model\WithdrawModel;
+use app\member\model\AccountLogModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
@@ -92,7 +93,7 @@ class Users extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
-	 /*------------------------------------------------------ */
+	/*------------------------------------------------------ */
     //-- 获取会员帐号数据
     /*------------------------------------------------------ */
     public function getAccount()
@@ -123,5 +124,63 @@ class Users extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
-	
+	/*------------------------------------------------------ */
+    //-- 获取会员帐户变动日志
+    /*------------------------------------------------------ */
+    public function getAccountLog()
+    {
+		$type = input('type','order','trim');
+		$time = input('time','','trim');
+		if (empty($time)){
+			$time = date('Y年m月');			
+		}
+		$return['time'] = $time;
+		$_time = strtotime(str_replace(array('年','月'),array('-',''),$time));
+		$return['code'] = 1;
+		$AccountLogModel = new AccountLogModel();
+		$where[] = ['user_id','=',$this->userInfo['user_id']];
+		switch($type){
+			case 'order'://订单相关
+				$where[] = ['change_type','=',3];
+			break;
+			case 'brokerage'://佣金相关
+				$where[] = ['change_type','=',4];
+			break;
+			case 'withdraw'://提现相关
+				$where[] = ['change_type','=',5];
+			break;
+			case 'integral'://积分相关
+				$where[] = ['use_integral','<>',0];
+			break;
+			default:
+				return $this->error('类型错误.');
+			break;			
+		}
+		$where[] = ['change_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+		$rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
+		foreach ($rows as $key=>$row){			
+			if ($row['balance_money'] != 0){
+				if ( $row['balance_money'] > 0){
+					$return['expend'] += $row['balance_money'];
+					$row['value'] = '+'.$row['balance_money'];
+				}else{
+					$return['income'] += $row['balance_money'];
+					$row['value'] = $row['balance_money'];
+				}
+			}elseif ($row['use_integral'] != 0){
+				if ( $row['use_integral'] > 0){
+					$return['expend'] += $row['use_integral'];
+					$row['value'] = '+'.$row['use_integral'];
+				}else{
+					$return['income'] += $row['use_integral'];
+					$row['value'] = $row['use_integral'];
+				}
+			}else{
+				continue;
+			}
+			$row['_time'] = timeTran($row['change_time']);
+			$return['list'][] = $row;		
+		}
+        return $this->ajaxReturn($return);
+	}
 }

@@ -384,8 +384,6 @@ function settings($key = ''){
 }
 /*------------------------------------------------------ */
 //-- 生成指定长度的随机字符串(包含大写英文字母, 小写英文字母, 数字)
-//-- @author yxb
-//--
 //-- @param int $length 需要生成的字符串的长度
 //-- @return string 包含 大小写英文字母 和 数字 的随机字符串
 /*------------------------------------------------------ */
@@ -400,3 +398,25 @@ function random_str($length,$isupper = false){
     }
     return $str;
 }
+/*------------------------------------------------------ */
+//-- 时间转换计算
+/*------------------------------------------------------ */
+function timeTran($show_time) {  
+    $dur = time() - $show_time;  
+    if ($dur < 0) {  
+        return '刚刚';  
+    } 
+	if ($dur < 60) {  
+		return $dur . '秒前';  
+	}
+	if ($dur < 3600) {  
+		return floor($dur / 60) . '分钟前';  
+	} 
+	if ($dur < 86400) {  
+		return floor($dur / 3600) . '小时前';  
+	} 
+	if ($dur < 259200) {//3天内  
+		return floor($dur / 86400) . '天前';  
+	}
+	return date("Y-m-d", $show_time); 
+}  
