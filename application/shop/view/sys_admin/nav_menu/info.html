@@ -5,7 +5,7 @@
                     <ul class="breadcrumb" >
                         <li>
                             <i class="fa fa-ellipsis-v"></i>
-                            <strong>{$row['id']>0?"编辑幻灯片":"添加幻灯片"}</strong>
+                            <strong>{$row['id']>0?"编辑导航菜单":"添加导航菜单"}</strong>
                         </li>                                  
                     </ul>
           
@@ -18,20 +18,24 @@
 
       <section class="panel panel-default">
          
-          <div class="panel-body">
-              
+          <div class="panel-body">              
               <div class="form-group">
-                  <label class="col-sm-2 control-label">幻灯片图片</label>
+                  <label class="col-sm-2 control-label">图标</label>
                   <div class="col-sm-3 must" >
                       <div id="image_upload" class="">
                       <img class="thumb_img" name="imagefile" src="{$row.imgurl}" style="max-height: 100px;">
                       <input class="hide" name="imgurl" value="{$row.imgurl}" type="text">
                       <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                      <span>选择上传幻灯片图片</span></div>
+                      <span>选择上传图标</span></div>
                   </div>
               </div>
-              <div class="line line-dashed line-lg pull-in" ></div>
-              
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">标题</label>
+                  <div class="col-sm-3 must" >
+                   	<input name="title" class="input-large"  type="text" value="{$row.title}">
+                  </div>
+              </div>
+              <div class="line line-dashed line-lg pull-in" ></div>              
               <div class="form-group">
                   <label class="col-sm-2 control-label">链接类型</label>
                   <div class="col-sm-2 must" >

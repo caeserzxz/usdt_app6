@@ -9,7 +9,7 @@ use think\Db;
 use think\facade\Cache;
 use app\shop\model\SlideModel;
 use app\shop\model\GoodsModel;
-
+use app\shop\model\NavMenuModel;
 class Index  extends ClientbaseController{
 	/*------------------------------------------------------ */
 	//-- 首页
@@ -21,6 +21,7 @@ class Index  extends ClientbaseController{
 		}
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
+		$this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单
 		$GoodsModel = new GoodsModel();
 		$this->assign('classGoods',$GoodsModel->getIndexClass());//获取首页分类
 		$this->assign('bestGoods',$GoodsModel->getIndexBestGoods());//获取首页分类

@@ -20,33 +20,15 @@
         <div class="girdBox">
           <div class="gird">
             <div class="row">
-              <a href="#" class="box">
-                <div><img src="__STATIC__/mobile/default/images/index_icon01.png" alt="" /></div>
-                <span class="fs26 color_3">领券专区</span>
+             {volist name="navMenuList" id="nav" }
+              <a href="{$nav.url}" class="box">
+                <div><img src="{$nav.imgurl}" alt="" /></div>
+                <span class="fs26 color_3">{$nav.title}</span>
               </a>
-              <a href="#" class="box">
-                <div><img src="__STATIC__/mobile/default/images/index_icon02.png" alt="" /></div>
-                <span class="fs26 color_3">秒杀活动</span>
-              </a>
-              <a href="#" class="box">
-                <div><img src="__STATIC__/mobile/default/images/index_icon03.png" alt="" /></div>
-                <span class="fs26 color_3">满减活动</span>
-              </a>
-              <a href="#"  class="box">
-                  <div><img src="__STATIC__/mobile/default/images/index_icon04.png" alt="" /></div>
-                  <span class="fs26 color_3">新品首发</span>
-                </a>
-            </div>
-            <div class="row">
-
-              <a href="#"  class="box">
-                <div><img src="__STATIC__/mobile/default/images/index_icon05.png" alt="" /></div>
-                <span class="fs26 color_3">排行榜</span>
-              </a>
-              <a href="#"  class="box">
-                <div><img src="__STATIC__/mobile/default/images/index_icon06.png" alt="" /></div>
-                <span class="fs26 color_3">会员专享</span>
-              </a>
+              {if condition="$i==4"}
+              	</div><div class="row">
+              {/if}
+             {/volist}
             </div>
           </div>
         </div>

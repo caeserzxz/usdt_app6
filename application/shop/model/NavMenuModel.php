@@ -3,13 +3,13 @@ namespace app\shop\model;
 use app\BaseModel;
 use think\facade\Cache;
 //*------------------------------------------------------ */
-//-- 幻灯片
+//-- 商城首页导航菜单
 /*------------------------------------------------------ */
-class SlideModel extends BaseModel
+class NavMenuModel extends BaseModel
 {
-	protected $table = 'shop_slide';
+	protected $table = 'shop_nav_menu';
 	public $pk = 'id';
-    protected static $mkey = 'shop_slide_list';
+    protected static $mkey = 'shop_nav_menu_list';
 	 /*------------------------------------------------------ */
 	//-- 清除缓存
 	/*------------------------------------------------------ */ 
