@@ -489,6 +489,60 @@ function(a) {
 				if (fn) eval(fn+'(data)');
          })
     }),
+	b(document).on("click", '[data-toggle="ajaxEditInput"]',
+    function(c) {
+        var d = b(this);
+         /* 保存原始的内容 */
+		 var val = d.html(),
+		     u = d.data("url"),
+			 f = d.data("field"),
+			tp = d.data("type"),
+		  _fmt = d.data("format") || 'Y-m-d H:i';
+		
+		 if(val.indexOf("input ") > 0) return false;
+		 var txt = document.createElement("input");
+		 txt.value = (val == 'N/A') ? '' : val;
+		 txt.style = "width:100%;text-align:center;" ;
+		 /* 隐藏对象中的内容，并将输入框加入到对象中 */
+		 d.html('');
+		 d.append(txt);
+		 if (tp == 'datetime'){
+			var a = d.find('input');
+			a.datetimepicker({
+				lang:'ch',
+				format:_fmt
+            }).on("show",
+            function() {
+                if (i && b(i).val()) {
+                    var c = new Date(b(i).val());
+                    c.setDate(c.getDate() + k),
+                    a.datetimepicker("setStartDate", c)
+                }
+                if (j && b(j).val()) {
+                    var c = new Date(b(j).val());
+                    c.setDate(c.getDate() + k),
+                    a.datetimepicker("setEndDate", c)
+                }
+            }); 
+		 }
+		 
+		  txt.focus();
+		 
+		 /* 编辑区失去焦点的处理函数 */
+		 txt.onblur = function(e){
+			var _val = d.find('input').val();
+			d.html(_val);
+			if (_val == val) return false;
+			$.post(u,'field='+f+'&value='+_val,function(res){				
+				if (res.code != 0){					
+					d.html(val);
+					return false;
+				}else{
+					G.ui.tips.suc(res.msg);	
+				}
+			 });
+		 }
+    }),
     b(document).on("click.dropdown-menu", ".dropdown-select > .js_custom_list",
     function(a) {
         return a.preventDefault(),

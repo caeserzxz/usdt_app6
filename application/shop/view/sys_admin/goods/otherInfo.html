@@ -74,7 +74,7 @@
     <div class="col-sm-5">
 
         <div class="input-group">
-            <input type="text" class="input-mini" name="virtual_sale" value="{:intval($row['virtual_sale']-$row['sale_num'])}">
+            <input type="text" class="input-mini" name="virtual_sale" data-rule-min="0"  data-rule-number="true"  value="{:intval($row['virtual_sale']-$row['sale_num'])}">
              <span class="help-inline">+ {$row.sale_num|intval}，前端显示：虚拟销售量 + 真实销量</span>
         </div>
     </div>
@@ -84,7 +84,7 @@
     <div class="col-sm-5">
 
         <div class="input-group">
-            <input type="text" class="input-mini" name="virtual_collect" value="{:intval($row['virtual_collect']-$row['sale_num'])}">
+            <input type="text" class="input-mini" name="virtual_collect" data-rule-min="0"  data-rule-number="true"  value="{:intval($row['virtual_collect']-$row['sale_num'])}">
              <span class="help-inline">+ {$row.sale_num|intval}，前端显示：虚拟收藏量 + 真实收藏量</span>
         </div>
     </div>

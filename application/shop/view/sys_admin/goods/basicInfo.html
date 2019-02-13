@@ -170,7 +170,7 @@
         <label class="col-sm-2 control-label">重量：</label>
         <div class="col-sm-2">
             <div class="input-group" style="width: 180px;">
-                <input type="text" class="input-medium" name="goods_weight" value="{$row.goods_weight}">
+                <input type="text" class="input-medium" name="goods_weight" data-rule-min="0"  data-rule-number="true"  value="{$row.goods_weight}">
                 <span class="input-group-addon">g</span>
             </div>
         </div>
@@ -180,6 +180,13 @@
         <label class="col-sm-2 control-label">库存：</label>
         <div class="col-sm-8">
             {$row['goods_id']>0?'当前库存：'.$row['goods_number'].' + ':''}<input type="text" class="input-mini" name="goods_number" data-rule-digits="true" data-rule-required="true" data-msg-required="库存不能为空" value="{$row['goods_id']>0?'0':''}">
+            <span class="red">*</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">排序：</label>
+        <div class="col-sm-8">
+           <input type="text" class="input-mini" name="sort_order"  data-rule-min="0"  data-rule-number="true" value="{$row['sort_order']}">
             <span class="red">*</span>
         </div>
     </div>

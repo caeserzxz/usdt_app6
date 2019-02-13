@@ -632,6 +632,7 @@ class Goods extends AdminController
 		$log = '快速修改商品';
 		$this->_Log($id,$log);
 		$this->Model->cleanMemcache($id);
+		return $this->success('修改成功');
 	}
 	/*------------------------------------------------------ */
 	//-- 删除商品
