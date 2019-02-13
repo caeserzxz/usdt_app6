@@ -108,10 +108,13 @@
 {/block}
 {block name="footer"}
 <script>
-
+	var rec_id = '{$rec_id}';
     //购物车统一请求
-    function evalCart(action,arr){
-        arr += "&is_sel=1";
+    function evalCart(action,arr){ 
+	 	arr += "&is_sel=1";      
+		if (rec_id != ''){
+			 arr += "&recids="+rec_id;
+		}
         jq_ajax('{:url("shop/api.flow/'+action+'")}',arr,function(res){
             if (res.code==0){
                 _alert(res.msg);
@@ -187,6 +190,9 @@
                 _alert('请选择支付方式.');
                 return false;
             }
+			if (rec_id != ''){
+				 arr.recids = rec_id;
+			}
             jq_ajax('{:url("shop/api.flow/addOrder")}',arr,function(res){
                 if (res.code==0){
                     _alert(res.msg);

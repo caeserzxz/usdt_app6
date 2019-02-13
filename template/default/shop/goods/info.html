@@ -229,11 +229,12 @@
         var arr = new Object;
         arr.goods_id = obj.data('goods_id');
         arr.specifications = obj.data('sku');
+		arr.type = obj.data('type');
         arr.number = $('#buynumber').val();
         var res = jq_ajax("{:url('shop/api.flow/addCart')}", arr);
         if (res.code == 1) {
-            if (obj.data('type') == 'onbuy') {
-                window.location = "{:url('flow/cart')}";
+            if (arr.type == 'onbuy') {
+                window.location = '{:_url("flow/checkout",array("rec_id"=>"【res.rec_id】"))}';
                 return false;
             }
             $('.cartNum').html(res.cartInfo.num);

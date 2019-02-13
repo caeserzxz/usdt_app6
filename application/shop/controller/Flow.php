@@ -20,6 +20,7 @@ class Flow extends ClientbaseController{
     /*------------------------------------------------------ */
     public function checkOut(){
         $this->assign('title', '结算');
+		$this->assign('rec_id', input('rec_id','','trim'));
         return $this->fetch('check_out');
     }
     /*------------------------------------------------------ */

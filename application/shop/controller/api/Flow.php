@@ -37,17 +37,22 @@ class Flow extends ApiController
     {
         $goods_id = input('goods_id', 0, 'intval');
         $num = input('number', 1, 'intval');
+		$type = input('type','','trim');
+		if ($type == 'onbuy'){
+			$this->checkLogin();//验证登陆
+		}
         if ($num < 1) $num = 1;
         $specifications = input('specifications', '', 'trim');
         if ($specifications == 'undefined') $specifications = '';
         if ($goods_id < 1) return $this->error('传值失败，请重新尝试提交！');
-        $res = $this->Model->addToCart($goods_id, $num, $specifications);
-        if ($res !== true) {
-            return $this->error($res);
+        $rec_id = $this->Model->addToCart($goods_id, $num, $specifications);
+        if (is_numeric($rec_id) == false) {
+            return $this->error($rec_id);
         }
         $return['cartInfo'] = $this->Model->getCartInfo();
         $return['msg'] = '添加购物车成功.';
         $return['code'] = 1;
+		$return['rec_id'] = $rec_id;
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
@@ -56,7 +61,8 @@ class Flow extends ApiController
     public function getList()
     {
         $is_sel = input('is_sel', 0, 'intval');
-        $return['cartInfo'] = $this->Model->getCartList($is_sel);
+		$recids = input('recids', '', 'trim');
+        $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
@@ -76,6 +82,7 @@ class Flow extends ApiController
     {
         $rec_id = input('rec_id', 0, 'intval');
         $is_sel = input('is_sel', 0, 'intval');
+		$recids = input('recids', '', 'trim');
         if ($rec_id < 1) return $this->error('传值失败，请重新尝试提交.');
         $num = input('num', 1, 'intval');
         if ($num < 1) return $this->error('订购数量不能小于1.');
@@ -86,7 +93,7 @@ class Flow extends ApiController
         if ($address_id > 0) {
             $return['shippingFee'] = $this->evalShippingFee($address_id, true);
         }
-        $return['cartInfo'] = $this->Model->getCartList($is_sel);
+        $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
@@ -177,8 +184,10 @@ class Flow extends ApiController
         $address = $addressList[$address_id];
         if (empty($address)) return $this->error('相关收货地址不存在.');
         $used_bonus_id = input('used_bonus_id', 0, 'intval');
-
-        $cartList = $this->Model->getCartList(1, true);
+		
+		$recids = input('recids', '', 'trim');
+        $cartList = $this->Model->getCartList(1, true,$recids);
+		
         if ($cartList['buyGoodsNum'] < 1) return $this->error('请选择订购商品.');
 
         $GoodsModel = new GoodsModel();
@@ -302,7 +311,7 @@ class Flow extends ApiController
             }
         }
         //end
-        $this->addOrderGoods($order_id);//写入商品
+        $this->addOrderGoods($order_id,$recids);//写入商品
         Db::commit();// 提交事务
         $return['order_id'] = $order_id;
         $return['code'] = 1;
@@ -312,7 +321,7 @@ class Flow extends ApiController
     //-- 写入订单商品
     //--- 这里可能有bug,如果用户同时执行多次，商品有可能发生错误
     /*------------------------------------------------------ */
-    public function addOrderGoods($order_id)
+    public function addOrderGoods($order_id,$recids)
     {
         $add_time = time();
         $sql = "INSERT INTO shop_order_goods (" .
@@ -321,6 +330,9 @@ class Flow extends ApiController
             " FROM  shop_cart  WHERE ";
         $sql .= " user_id = '" . $this->userInfo['user_id'] . "' AND is_select = 1 ";
         $sql .= " AND is_integral =  " . $this->is_integral;
+		if (empty($recids) == false){
+			 $sql .= " AND rec_id IN (".$recids.") ";
+		}
         $sql .= " order by rec_id asc";
         $res = Db::execute($sql);
         if ($res < 1) {
@@ -330,6 +342,9 @@ class Flow extends ApiController
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
         $where[] = ['is_select', '=', 1];
         $where[] = ['is_integral', '=', $this->is_integral];
+		if (empty($recids) == false){
+			 $where[] = ['rec_id', 'in', explode(',',$recids)];
+		}
         $this->Model->where($where)->delete();// 清理购物车的商品
         $this->Model->cleanMemcache();
         return $res;

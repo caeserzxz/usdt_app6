@@ -26,12 +26,9 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     public function cleanMemcache()
     {
-        $mdata['user_id'] = $this->userInfo['user_id'] * 1;
-        if ($mdata['user_id'] == 0) $mdata['session_id'] = session_id();
-        $mdata['is_integral'] = $this->is_integral;
-        Cache::rm('CartInfo_' . json_encode($mdata));
-        $mdata['is_select'] = 1;
-        Cache::rm('CartInfo_' . json_encode($mdata));
+        $user_id = $this->userInfo['user_id'] * 1;
+        Cache::rm('CartInfo_'.$user_id.session_id().'0'.$this->is_integral);
+        Cache::rm('CartInfo_'.$user_id.session_id().'1'.$this->is_integral);
     }
     /*------------------------------------------------------ */
     //-- 添加购物车处理
@@ -110,6 +107,7 @@ class CartModel extends BaseModel
             $update['is_dividend'] = $goods['is_dividend'];
             $res = $this->where('rec_id', $row['rec_id'])->update($update);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
+			$rec_id = $row['rec_id'];
         } else {// 购物车没有此物品，则插入
             $res = $this->checkGoodsOrder($goods, $num, $spec);// 判断是商品能否购买或修改
             if ($res !== true) return $res['msg'];
@@ -159,12 +157,12 @@ class CartModel extends BaseModel
                     $parent['buy_again_discount'] = $DividendLevel[1]['money'];
                 }
             }
-            $res = $this->insert($parent);
+            $res = $this->save($parent);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
-
+			$rec_id = $this->rec_id;
         }
         $this->cleanMemcache();
-        return true;
+        return $rec_id;
     }
     /*------------------------------------------------------ */
     //-- 验证商品能否下单
@@ -209,14 +207,23 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 购物车信息
     /*------------------------------------------------------ */
-    public function getCartList($is_sel = 0, $no_cache = false)
+    public function getCartList($is_sel = 0, $no_cache = false, $recids = '')
     {
-        $map['user_id'] = $this->userInfo['user_id'] * 1;
-        if ($map['user_id'] == 0) $map['session_id'] = session_id();
-        $map['is_integral'] = $this->is_integral;
+		$user_id = $this->userInfo['user_id'] * 1;
+        
+        if ($user_id < 1){
+			 $where[] = ['session_id','=',session_id()];
+		}else{
+			$where[] = ['user_id','=',$this->userInfo['user_id']];	
+		}
+		$where[] = ['is_integral','=',$this->is_integral];
         if ($is_sel == 1) $map['is_select'] = 1;
-        $mkey = 'CartInfo_' . json_encode($map);
-        if ($no_cache == false) $data = Cache::get($mkey);
+		if (empty($recids) == false){
+			$where[] = ['rec_id','in',explode(',',$recids)];			
+		}elseif ($no_cache == false){
+			$mkey = 'CartInfo_'.$user_id.session_id().$is_sel.$this->is_integral;
+			$data = Cache::get($mkey);
+		}
         if (empty($data['allGoodsNum'])) {
             $data['isAllSel'] = 1;
             $data['orderTotal'] = 0;
@@ -226,7 +233,7 @@ class CartModel extends BaseModel
             $data['totalDiscount'] = 0;
             $data['totalGoodsPrice'] = 0;
             $data['buyAgainDiscount'] = 0;
-            $rows = $this->where($map)->order('rec_id ASC')->select();
+            $rows = $this->where($where)->order('rec_id ASC')->select();
             foreach ($rows as $key => $row) {
                 if ($row['is_invalid'] == 1) {//无效记录到无效列表
                     $data['invalidList'][] = $row;
@@ -274,7 +281,7 @@ class CartModel extends BaseModel
             $data['totalGoodsPrice'] = sprintf("%.2f", $data['totalGoodsPrice']);
             $data['orderTotal'] = sprintf("%.2f", $data['orderTotal'] - $data['buyAgainDiscount']);
             $data['exp_total'] = explode('.', $data['orderTotal']);
-            Cache::set($mkey, $data, 600);
+            Cache::set($mkey, $data, 300);
         }
         return $data;
     }
