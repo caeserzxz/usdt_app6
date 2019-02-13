@@ -177,13 +177,14 @@
         })
         //关闭规格选择弹窗
         $('.buttBox span').on('click',function(){
+			isLoadend = false;
             var type = $(this).data('type');
             if (type == 'clear'){
                 $('.modelContent').find('span').removeClass('tag_active');
                 $('.modelContent').find('input').val('');
                 $('.brandlist').html('');
                 return false;
-            }else{
+            }else{				
                 postData.min_price = $('#min_price').val();
                 postData.max_price = $('#max_price').val();
                 postData.cid = $('.class_list').find('.tag_active').data('cid');
