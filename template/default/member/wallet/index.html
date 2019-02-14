@@ -2,13 +2,16 @@
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css" />
 {/block}
+{block name="pageType"}myWallet{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="top">
         <div class="money">
             <p class="fs48 num color_w balance_money">0.00</p>
-            <a href="{:url('withdraw/index')}" class="fs24 color_w">提现</a>
+            
+            <a href="{:url('withdraw/index')}" class="fs24 color_w withdrwa_btn hide">提现</a>
+            
         </div>
         <span class="fs26 color_w">余额（元）</span>
         <div class="tips">
@@ -60,7 +63,9 @@
             $('.frozen_amount').html(res.frozen_amount);
 			$('.today_income').html(res.today_income);
 			$('.month_income').html(res.month_income);
-
+			if (res.withdraw_status == 1){
+				$('.withdrwa_btn').removeClass('hide');
+			}
         })
     })
 </script>

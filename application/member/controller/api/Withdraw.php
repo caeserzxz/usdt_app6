@@ -1,8 +1,10 @@
 <?php
 namespace app\member\controller\api;
+use think\Db;
 use app\ApiController;
 use app\member\model\WithdrawAccountModel;
-
+use app\member\model\AccountLogModel;
+use app\member\model\WithdrawModel;
 /*------------------------------------------------------ */
 //-- 提现相关API
 /*------------------------------------------------------ */
@@ -112,8 +114,9 @@ class Withdraw extends ApiController
 	public function delAccount(){
 		$id = input('id',0,'intval');
 		if ($id < 1) return $this->error('传参失败.');
-		$res = $this->Model->where('id',$id)->delete();
+		$res = $this->Model->where('id',$id)->update(['is_del'=>1]);
 		if ($res < 1) return $this->error('删除失败.');
+		$this->Model->cleanMemcache();
 		return $this->success('删除成功.');
 	}
 	/*------------------------------------------------------ */
@@ -137,4 +140,68 @@ class Withdraw extends ApiController
 		}
 		return $this->success('添加支付宝成功.');
     }
+	/*------------------------------------------------------ */
+    //-- 验证是否满足提现，并返回手续费
+    /*------------------------------------------------------ */
+    public function checkWithdraw($amount = 0,$isreturn = false)
+    {
+		if ($amount <= 0){
+			$amount = input('amount') * 1;
+		}
+		$settings = settings();
+		if ($settings['withdraw_status'] == 0){
+			return $this->error('提现未开启，暂不能操作.');
+		}
+		if ($amount < $settings['withdraw_min_money']){
+			return $this->error('每次提现不能低于￥'.$settings['withdraw_min_money']);
+		}
+		if ($amount > $settings['withdraw_max_money']){
+			return $this->error('每次提现不能高于￥'.$settings['withdraw_max_money']);
+		}
+		$withdraw_fee = $amount / 100 * $settings['withdraw_fee'];
+		if ($settings['withdraw_fee_min'] > $withdraw_fee){
+			$withdraw_fee = $settings['withdraw_fee_min'];
+		}elseif ($settings['withdraw_fee_max'] > 0 && $withdraw_fee > $settings['withdraw_fee_max']){
+			$withdraw_fee = $settings['withdraw_fee_max'];
+		}
+		if ($this->userInfo['account']['balance_money'] < $amount + $withdraw_fee){
+			return $this->error('帐户余额不足.');
+		}
+		if ($isreturn == true) return $withdraw_fee;
+		$return['withdraw_fee'] = $withdraw_fee;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+	}
+	/*------------------------------------------------------ */
+    //-- 提交提现
+    /*------------------------------------------------------ */
+    public function postWithdraw()
+    {
+		$inArr['amount'] = input('amount') * 1;
+		$inArr['withdraw_fee'] = $this->checkWithdraw($amount,true);
+		$inArr['account_id'] = input('account_id') * 1;
+		if ($inArr['account_id'] < 1){
+			return $this->error('选择提现方式.');
+		}
+		$inArr['add_time'] = time();
+		Db::startTrans();//启动事务
+		$WithdrawModel = new WithdrawModel();
+		$res = $WithdrawModel->save($inArr);
+		if ($res < 1){
+			Db::rollback();// 回滚事务
+			return $this->error('提现失败.');
+		}
+		$AccountLogModel = new AccountLogModel();
+	    $changedata['change_desc'] = '提现扣除';
+		$changedata['change_type'] = 5;
+		$changedata['by_id'] = $this->WithdrawModel->id;
+		$changedata['balance_money'] = ($inArr['amount'] + $inArr['withdraw_fee']) * -1;
+		$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+		if ($res !== true) {
+			Db::rollback();// 回滚事务
+			return $this->error('未知错误，提现扣除用户余额失败.');
+		}
+		Db::commit();// 提交事务
+		return $this->success('提现成功.');
+	}
 }

@@ -19,21 +19,25 @@ class WithdrawAccountModel extends BaseModel
             $uid = $this->userInfo['user_id'];
             if ($uid < 1) return true;
         }
-        Cache::rm($this->mkey . $uid);
+        Cache::rm($this->mkey . $uid.'_0');
+		Cache::rm($this->mkey . $uid.'_1');
     }
     /*------------------------------------------------------ */
     //-- 获取列表
     /*------------------------------------------------------ */
-    public function getRows($uid = 0)
+    public function getRows($uid = 0,$is_del = 0)
     {
         if ($uid < 1){
             $uid = $this->userInfo['user_id'];
             if ($uid < 1) return [];
         }
-        $list = Cache::get($this->mkey . $uid);
+		$mkey = $this->mkey . $uid.'_'.$is_del;
+        $list = Cache::get($mkey);
         if (empty($list) == false) return $list;
-        $list = $this->where('user_id',$uid)->order('id DESC')->select()->toArray();
-        Cache::set($this->mkey, $list, 300);
+		$where[] = ['user_id','=',$uid];
+		$where[] = ['is_del','=',$is_del];
+        $list = $this->where($where)->order('id DESC')->select()->toArray();
+        Cache::set($mkey, $list, 300);
         return $list;
     }
 }

@@ -45,6 +45,7 @@
       </div>
 
 </div>
+{literal}
 <script type="text/html" id="liTpl">
 {{each list as item index}}
 <li>
@@ -52,10 +53,17 @@
 	  <div class="checkbox">
 		<div class="block">
 		  <div class="info">
+		  {{if item.type == 'bank'}}
 			<div class="left"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""><span class="fs32 color_3 fw_b">{{item.bank_name}}</span></div>			
 			<img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
 			</div>
-		  <div class="cardCode"><p class="fs38 color_3 num">{{item.bank_card_number}}</p><span class="fs28 color_9 fw_b">{{item.bank_cardholder}}</span></div> 
+		    <div class="cardCode"><p class="fs38 color_3 num">{{item.bank_card_number}}</p><span class="fs28 color_9 fw_b">{{item.bank_cardholder}}</span></div> 
+		  {{else}}
+		  <div class="left"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""><span class="fs32 color_3 fw_b">支付宝</span></div>			
+			<img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+			</div>
+		    <div class="cardCode"><p class="fs38 color_3 num">{{item.alipay_account}}</p><span class="fs28 color_9 fw_b">{{item.alipay_user_name}}</span></div> 
+		  {{/if}}
 		</div>
 		<div class="swiped BGcolor_3">
 		  <div class="delect" data-id="{{item.id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
@@ -65,11 +73,15 @@
 </li>
 {{/each}}
 </script>
+{/literal}
 {/block}
 
 {block name="footer"}
 <script>
 $(function() {
+	$('.left-arrow').click(function(){
+		window.location.href='{:url("member/center/index")}'
+	})
 	FastClick.attach(document.body);
 	$('.addType').on('click',function(){
 		$('.model').show();

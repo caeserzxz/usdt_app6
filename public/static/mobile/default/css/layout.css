@@ -1046,3 +1046,4 @@ html.noscroll {
 .move-left {
     left: 0;
 }
+.hide{ display:none !important;}

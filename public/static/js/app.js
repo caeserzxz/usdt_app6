@@ -65,9 +65,9 @@ $.fn.toJson = function() {
 	return json;
 };
 //提示框
-function _alert(e,type){
+function _alert(e,type,url){
 	if (type === true){
-		 G.ui.tips.suc(e);
+		 G.ui.tips.suc(e,url);
 	}else{
 	 	G.ui.tips.info(e);
 	}

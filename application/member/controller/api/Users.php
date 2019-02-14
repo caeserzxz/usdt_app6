@@ -121,6 +121,7 @@ class Users extends ApiController
 		$where[] = ['add_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
 		$return['month_income'] = $DividendModel->where($where)->sum('dividend_amount'); 
 		//end
+		$return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
