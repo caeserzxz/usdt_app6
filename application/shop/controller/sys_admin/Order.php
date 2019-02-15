@@ -104,19 +104,23 @@ class Order extends AdminController{
 		$search['shipping_status'] = input('shipping_status',0,'intval');
 		if ($search['shipping_status']>0) $where[] = ['shipping_status','=',$search['shipping_status']];
 		
+		
 		$search['keyword'] = input('keyword','','trim');
 		if (!empty($search['keyword'])){
-			$search['searchBy'] = input('searchBy',0,'intval');
+			 $search['searchBy'] = input('searchBy','','trim');			
 			//综合状态
 			switch($search['searchBy']){
 				case 'consignee':
 					$where[] = ['consignee','like',$search['keyword'].'%'];
 				break;
-				case 'buy_goods_sn':
+				case 'goods_sn':
 				 	$where['_string'][] = "FIND_IN_SET('".$search['keyword']."', buy_goods_sn)";
 				break;
 				case 'mobile':
 				 	$where[] = ['mobile','like',$search['keyword'].'%'];
+				break;
+				case 'order_sn':
+				 	$where[] = ['order_sn','like',$search['keyword'].'%'];
 				break;
 				default:
 				break;
