@@ -1,16 +1,31 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
 <header class="header  b-b clearfix">
+<form id="forms" class="talbe-search form-inline "  method="post" action="{:url('bList',['type_id'=>$bonus['type_id']])}" >
      <div class="page-breadcrumbs">
             <ul class="breadcrumb" >
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
-                    <strong>优惠券列表</strong>
+                    <strong>{$bonus.type_name}</strong>
                 </li>                                  
             </ul>
-            {$bonus.type_name}
-        <a class="text-muted pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-     </div>
+          <select name="usd_type" class="usd_type" style="width: 150px;" data-toggle="select2" >
+                  <option value="-1">全部优惠券</option>
+                  <option value="0">未使用</option>
+                  <option value="1">已使用</option>
+           </select>
+          <a class="btn btn-default usdtime_reportrange " data-toggle="reportrange" >
+              <i class="fa fa-calendar fa-lg"></i>
+              <small>使用时间</small>
+              <span></span> <b class="caret"></b>
+              <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+          </a>
+          <input type="text" class="form-control input-large" value="" name="keyword" placeholder="会员id/订单号" data-rule-required="true" />
+          <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+          <a class="text-muted pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+         
+    </div>
+</form> 
 </header>
 <section class="scrollable wrapper w-f ">
     <section class="panel panel-default ">

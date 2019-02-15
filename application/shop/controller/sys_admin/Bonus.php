@@ -20,6 +20,7 @@ class Bonus extends AdminController
    		parent::initialize();
 		$this->Model = new BonusModel();
 		$this->store_id = 0;//当前默认为总后台，门店值默认为0 
+		
     }
 	/*------------------------------------------------------ */
 	//-- 主页
@@ -159,7 +160,9 @@ class Bonus extends AdminController
 	/*------------------------------------------------------ */
 	//-- 红包列表
 	/*------------------------------------------------------ */
-	public function bonusList(){
+	public function bonusList(){		
+		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
+		$this->assign("end_date",date('Y/m/d'));
 		$this->bList(true);
 		return $this->fetch('bonusList');
 	}
@@ -171,10 +174,23 @@ class Bonus extends AdminController
 		$this->assign("bonus", $this->Model->info($bonus_type_id));	
 		$BonusListModel = new BonusListModel();
 		$where[] = ['type_id','=',$bonus_type_id];
+		$usd_type = input('usd_type',-1,'intval');
+		if ($usd_type == 0){
+			$where[] = ['order_id','=',0];
+		}elseif ($usd_type == 1){
+			$where[] = ['order_id','>',0];
+			$reportrange = input('reportrange','','trim');
+            $dtime = explode('-',$reportrange);
+            $where[] = ['used_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+		}
+		$keyword = input('keyword','','trim');
+		if (empty($keyword) == false){
+			 $where['_string'][] = " user_id = '".$keyword."' OR order_sn = '".$keyword."' ";
+		}
 		$data = $this->getPageList($BonusListModel,$where);
 		$this->assign("data", $data);
 		if ($runData == false){
-			$data['content'] = $this->fetch('list');
+			$data['content'] = $this->fetch('bList');
 			unset($data['list']);
 			return $this->success('','',$data);
 		}

@@ -183,9 +183,22 @@ class Withdraw extends ApiController
 		if ($inArr['account_id'] < 1){
 			return $this->error('选择提现方式.');
 		}
+		$WithdrawModel = new WithdrawModel();
+		$withdraw_num = settings('withdraw_num');
+		//判断提现限制
+		if ($withdraw_num > 0){
+			$where[] = ['user_id','=',$this->userInfo['user_id']];
+			$where[] = ['status','<',3];
+			$where[] = ['add_time','>',strtotime(date('Y-m-d'))];
+			$wnum = $WithdrawModel->where($where)->count('id');
+			if ($wnum >= $withdraw_num){
+				return $this->error('每天最多只能提现'.$withdraw_num.'次.');
+			}
+		}
+		
 		$inArr['add_time'] = time();
 		Db::startTrans();//启动事务
-		$WithdrawModel = new WithdrawModel();
+		
 		$res = $WithdrawModel->save($inArr);
 		if ($res < 1){
 			Db::rollback();// 回滚事务
