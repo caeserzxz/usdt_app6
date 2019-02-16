@@ -116,7 +116,7 @@
     function evalCart(action,arr){
         jq_ajax('{:url("shop/api.flow/'+action+'")}',arr,function(res){
             if (res.code==0){
-                _alert(res.msg);
+                if (res.msg != '') _alert(res.msg);
                 return false;
             }
             $('.top').find('em').html(res.cartInfo.allGoodsNum);

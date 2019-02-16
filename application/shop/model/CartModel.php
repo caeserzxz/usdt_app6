@@ -209,18 +209,18 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     public function getCartList($is_sel = 0, $no_cache = false, $recids = '')
     {
-		$user_id = $this->userInfo['user_id'] * 1;
-        
+		$user_id = $this->userInfo['user_id'] * 1;        
         if ($user_id < 1){
 			 $where[] = ['session_id','=',session_id()];
 		}else{
 			$where[] = ['user_id','=',$this->userInfo['user_id']];	
 		}
 		$where[] = ['is_integral','=',$this->is_integral];
-        if ($is_sel == 1) $map['is_select'] = 1;
+        if ($is_sel == 1) $where[] = ['is_select','=',1];
+		
 		if (empty($recids) == false){
 			$where[] = ['rec_id','in',explode(',',$recids)];			
-		}elseif ($no_cache == false){
+		}elseif ($no_cache == false){		
 			$mkey = 'CartInfo_'.$user_id.session_id().$is_sel.$this->is_integral;
 			$data = Cache::get($mkey);
 		}

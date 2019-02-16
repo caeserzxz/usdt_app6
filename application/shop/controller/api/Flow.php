@@ -88,12 +88,15 @@ class Flow extends ApiController
         if ($num < 1) return $this->error('订购数量不能小于1.');
         $where['rec_id'] = $rec_id;
         $res = $this->Model->updataGoods($rec_id, $num);
-        if ($res != 1) return $this->error($res);
+        if ($res != 1){
+			if ($res == 0) return $this->error('');
+			return $this->error($res);
+		}
         $address_id = input('address_id', 0, 'intval');
         if ($address_id > 0) {
             $return['shippingFee'] = $this->evalShippingFee($address_id, true);
         }
-        $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
+        $return['cartInfo'] = $this->Model->getCartList($is_sel,true,$recids);
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
