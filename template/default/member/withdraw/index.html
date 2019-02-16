@@ -1,7 +1,8 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/chongzhi.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css"/>
 {/block}
+{block name='pageType'}chongzhi{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
@@ -17,14 +18,13 @@
     </div>
     <div class="paytype">
         <div class="title fs34 color_3 fw_b">请选择提现银行</div>
-        <div class="cantre">
+        <div class="cells">
         	<div class="banklist">
                 
            </div>
-            <a href="{:url('bankAdd')}" class="block">
-                <div class="payType"><img src="__STATIC__/mobile/default/images/add.png" alt="">
-                    <div><span class="fs30 color_3 fw_b">添加银行卡</span></div>
-                </div>
+            <a href="{:url('bankAdd')}" class="cell">
+                <div class="cell_hd"><img src="__STATIC__/mobile/default/images/add.png" alt=""></div>
+               <div class="cell_bd"><span class="fs30 color_3 fw_b">添加银行卡</span></div>
             </a>
         </div>
     </div>
@@ -34,25 +34,26 @@
 {literal}
 <script type="text/html" id="liTpl">
 {{each list as item index}}
-<div class="block">
-	<label for="s_{{item.id}}">
+
+<div class="cell">
+	
 	{{if item.type == 'bank'}}
-		<div class="payType"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt="">
-			<div><span class="fs30 color_3">{{item.bank_name}}({{item.bank_card_number}})</span></div>
-		</div>
+		<div class="cell_hd"><label for="s_{{item.id}}"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""></label></div>
+		<div class="cell_bd"><label for="s_{{item.id}}"><span class="fs30 color_3">{{item.bank_name}}({{item.bank_card_number}})</span></label></div>		
 	{{/if}}	
 	{{if item.type == 'alipay'}}
-		<div class="payType"><img src="__STATIC__/mobile/default/images/Alipay.png" alt="">
-			<div><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></div>
-		</div>
+		<div class="cell_hd"><label for="s_{{item.id}}"><img src="__STATIC__/mobile/default/images/Alipay.png" alt=""></label></div>
+		<div class="cell_bd"><label for="s_{{item.id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>		
 	{{/if}}
-	</label>
+
+	<div class="cell_ft">
 	<label for="s_{{item.id}}">
 		<div class="iconBox">
 			<input type="radio" class="check" value="{{item.id}}" name="account_id" id="s_{{item.id}}" >
 			<i class="icon_checked"></i>
 		</div>
 	</label>
+	</div>
 </div>
 {{/each}}
 </script>

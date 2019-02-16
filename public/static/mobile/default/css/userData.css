@@ -159,11 +159,11 @@
           justify-content: center;
 }
 
-label > * {
+.userData label > * {
   pointer-events: none;
 }
 
-label {
+.userData label {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -177,16 +177,16 @@ label {
           justify-content: space-between;
 }
 
-label .check {
+.userData label .check {
   position: absolute;
   left: -9999em;
 }
 
-label .iconBox {
+.userData label .iconBox {
   position: relative;
 }
 
-label .check[type=radio] + i {
+.userData label .check[type=radio] + i {
   display: inline-block;
   vertical-align: middle;
   font: normal normal normal 0.093333rem/1 weui;
@@ -195,21 +195,21 @@ label .check[type=radio] + i {
   -webkit-font-smoothing: antialiased;
 }
 
-label .check + i:after {
+.userData label .check + i:after {
   font-size: 0.24rem;
   display: block;
 }
 
-label .check[type=radio]:checked + i:after {
+.userData label .check[type=radio]:checked + i:after {
   content: "\EA08";
   color: #f65236;
 }
 
-.page-ft {
+.userData .page-ft {
   margin: 0.533333rem 0.2rem 0.253333rem;
 }
 
-.page-ft span {
+.userData .page-ft span {
   width: 4.6rem;
   height: 0.533333rem;
   display: -webkit-box;
@@ -223,7 +223,7 @@ label .check[type=radio]:checked + i:after {
           align-items: center;
 }
 
-input[disabled] {
+.userData input[disabled] {
   color: #999;
   -webkit-text-fill-color: #999;
   -webkit-opacity: 1;

@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/bank.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+
 <div class="{$isAddOrder==1?'wrapper':''} addressesList">
     {eq name="$isAddOrder" value="1"}
     <div class="page-hd">
@@ -13,9 +14,12 @@
         </div>
     </div>
     {/eq}
-    <ul class="addresslist">
+    <div class="page-bd">
+
+    <ul class="addresslist goodslist">
 
     </ul>
+   </div>
     <div class="page-ft">
         <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
     </div>
@@ -37,6 +41,8 @@
                         <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
                     <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
                 </div>
+				
+				
                 <div class="radioBox">
                     <label for="address_{{item.address_id}}">
                         <div class="iconBox">
@@ -46,7 +52,7 @@
                         </div>
                         <span class="fs26 color_9">设为默认地址</span>
                     </label>
-                    <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
+                    <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt=""></a>
                 </div>
             </div>
             <div class="swiped BGcolor_3">
@@ -69,43 +75,46 @@
             <div class="header-right"></div>
         </div>
     </div>
-    <!-- 页面内容-->
-    <div class="addressBox">
-        <form action="" id="formAddress">
-        <div class="cell">
-            <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">收货人</span>
-                <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名" name="consignee" value="{{consignee}}">
-            </div>
-
-        </div>
-        <div class="cell">
-            <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">手机号码</span>
-                <input type="text" class="fs28  color_3" placeholder="请输入收货人电话" name="mobile" value="{{mobile}}">
-            </div>
-        </div>
-        <div class="cell bankType">
-            <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">所在地区</span>
-                <input type="text" value="{{_merger_name}}" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
-            </div>
+    <div class="page-bd userData">
+        <!-- 页面内容-->
+        <div class="cells">
+          <div class="cell">
+            <div class="cell_bd"><span class="fs28 color_9">收货人</span></div>
+            
             <div class="cell_ft">
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+              <input type="text" value="张信哲" class="fs28 fw_b color_3 inputBox" placeholder="张信哲">
             </div>
-        </div>
-        <div class="cell">
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28 color_9">电话</span></div>
+            <div class="cell_ft">
+              <input type="text" value="15632697456" class="fs28 fw_b color_3 inputBox" placeholder="15632697456">
+            </div>
+          </div>
+          <div class="cell bankType cell_access">
+              <div class="cell_bd">
+              <span class="fs28 color_9">所在地区</span></div>
+              <div class="cell_ft">
+                <input type="text" value="广东省 广州市 天河区" class="fs28 fw_b color_3 bankBox" readonly id="city-picker">
+              </div>
+          </div>
+          <div class="cell">
             <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">详细地址</span>
-                <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
+            <span class="fs28 color_9">详细地址</span></div>
+            <div class="cell_ft">
+              <input type="text" value="棠下御富科贸园C1栋2楼" class="fs28 fw_b color_3 inputBox" id="address" placeholder="棠下御富科贸园C1栋2楼">
             </div>
-        </div>
-            <input type="hidden" name="address_id" value="{{address_id}}">
-        </form>
+          </div>
+        </div> 
+        <div class="page-ft">
+            <span class="fs32 color_w fw_b BGcolor_r">保存更改</span>
+          </div>
+      </div>
+
+
     </div>
-    <div class="page-ft">
-        <a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>
-    </div>
+
 
  </script>
 {/literal}

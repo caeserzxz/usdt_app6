@@ -1,7 +1,8 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css" />
 {/block}
+{block name='pageType'}orderDetails{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
@@ -76,6 +77,15 @@
             </div>
         </div>
     </div>
+    
+    
+    <div class="payInfo fs28 color_9">
+            <span>支付方式:{$orderInfo.pay_name}</span>
+            <span>下单时间:{$orderInfo.add_time|dateTpl}</span>
+            <span>发货时间:{$orderInfo.shipping_time|dateTpl}</span>
+            <span>确认收货时间:{$orderInfo.sign_time|dateTpl}</span>
+    </div> 
+    
     <div class="button">
         <span class="fs28 fw_b color_3 bor_e">联系客服</span>
         {if condition="$orderInfo.isCancel == 1"}

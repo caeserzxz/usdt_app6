@@ -1,38 +1,47 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/passport.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
 {/block}
 {block name="main" }
-<div class="page-bd">
+<div class="page-bd userData">
         <!-- 页面内容-->
-        <div class="cellBox">
+        <div class="cells ">
 
           <div class="cell">
-            <div class="cell_bd">
+             <div class="cell_hd">
                 <span class="fs28 color_3 fw_b">手机号</span>
+             </div>
+              <div class="cell_bd">
                 <input type="text" class="fs28 fw_b  color_3" placeholder="请输入注册手机号" id="mobile">
             </div>
           </div>
           {if condition="$sms_fun['forget_password']==1"}
              <div class="cell">
-            <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">验证码</span>
+             <div class="cell_hd">
+                  <span class="fs28 color_3 fw_b">验证码</span>
+              </div>
+              <div class="cell_bd">
                 <input type="text" class="fs28 fw_b  color_3 codeBox" placeholder="请输入验证码">
-                <div class="codeBox">
+              </div>
+              <div class="cell_ft">
                 <input type="text" value="获取验证码" id="code" class="color_r fs28 fw_b" readonly onclick="codeButton()">
-                </div>
-            </div>
+              </div>
           </div>
            {/if}
           <div class="cell">
-              <div class="cell_bd">
+              <div class="cell_hd">
                   <span class="fs28 color_3 fw_b">新密码</span>
+               </div>
+               <div class="cell_bd">   
                   <input type="password" class="fs28 fw_b  color_3" placeholder="请输入新密码" id="password">
               </div>
             </div>
             <div class="cell">
+              <div class="cell_hd">
+                <span class="fs28 color_3 fw_b">确认密码</span>
+               </div>
                 <div class="cell_bd">
-                    <span class="fs28 color_3 fw_b">确认密码</span>
+                    
                     <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入新密码" id="cfm_password">
                 </div>
               </div>

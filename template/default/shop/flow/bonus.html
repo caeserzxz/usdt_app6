@@ -1,9 +1,14 @@
 
 <div class="color_3 cell bonusInfo">
-    <span class="fs28">优惠券</span>
-    <div class="ticket"><em class="fs22 color_w BGcolor_r"><em class="unusedNum">0</em>张可用</em><span
-            class="color_3 ">未使用</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></div>
-    <div class="color_3 fs28 num money" style="display: none;"></div>
+   <span class="fs28">优惠券</span>        
+   <div class="color_3 fs28 ticket">  
+           <em class="fs22 color_w BGcolor_r"><em class="unusedNum">0</em>张可用</em>
+           <span class="color_3 fs28">未使用</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+       
+   </div>                      
+	<div class="color_3 fs28 num closed money " style="display:none;">   
+    
+    </div>
 </div>
 
 <div class="wrapper bonusListBox">
@@ -21,7 +26,7 @@
 </div>
 <script type="text/javascript">
     //显示优惠券列表
-    $('.bonusInfo').on('click', function () {
+    $('.ticket').on('click', function () {
         $('html').addClass('noscroll');
         $('.bonusListBox').addClass('move-left');
     });
@@ -36,8 +41,16 @@
         var bonus = bounsData.unused[used_bonus_id];
         bonus_money = bonus.bonus.type_money;
         $('.bonusInfo .ticket').hide();
-        $('.bonusInfo .money').show().html('<p class=" fm_p ">'+bonus.bonus.type_name+'：</p><p class="fw_b fm_p">-￥</p><em class="fs34 ">'+bonus.bonus.type_money+'</em>');
+        $('.bonusInfo .money').show().html('<p class=" fm_p ">'+bonus.bonus.type_name+'：</p><p class="fw_b fm_p">-￥</p><em class="fs34 ">'+bonus.bonus.type_money+'</em><img src="__STATIC__/mobile/default/images/closed.png" alt="" class="give_up_bonus">');
         $('.bonusListBox .close_wrapper').trigger("click");
         evalPrice();//计算支付金额
     })
+	//放弃使用
+	$('.bonusInfo').on('click','.give_up_bonus',function(){
+		used_bonus_id = bonus_money = 0;
+		$('.bonusInfo .ticket').show();
+		$('.bonusInfo .money').hide();
+		evalPrice();//计算支付金额
+	})
+	
 </script>

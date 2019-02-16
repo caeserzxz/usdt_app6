@@ -5,19 +5,20 @@
     var orderTotal = 0,shippingFee = 0,bonus_money = 0,totalGoodsPrice=0,used_bonus_id = 0;
 </script>
 {/block}
+{block name='pageType'}payment{/block}
 {block name="main" }
 {assign name="isAddOrder" value="1"}
 <div class="page-bd">
     <!-- 收货地址-->
     {include file="flow/address" /}
     <!-- 购物车 -->
-    <div class="goodslist">
+    <div class="goodslist" style="padding-bottom:0px;">
         <div class="title fs32 color_3 fw_b">商品信息</div>
         <div class="goodsList">
            <div style="line-height: 100px; text-align: center">数据加载中..</div>
         </div>
         <div class="inputBox bor_t">
-            <span class="fs28 color_3">给商家留言</span><input type="text" placeholder="请输入" class="fs26 color_3" id="buyMsg"><p class="fs28 color_9 num" id="wordNum">0/140</p>
+            <span class="fs28 color_3">留言</span><input type="text" placeholder="请输入" class="fs26 color_3" id="buyMsg"><p class="fs28 color_9 num" id="wordNum">0/140</p>
         </div>
     </div>
     <div class="cellBox">
@@ -38,7 +39,7 @@
     </div>
 </div>
 
-<div class="payment">
+<div class="paymentbox">
     <div class="left"><span class="fs28 color_9">实付款</span><div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span></div></div>
     <div class="gopay fs28 fw_b color_w BGcolor_r">立即支付</div>
 </div>
@@ -129,7 +130,7 @@
                 shippingFee = res.shippingFee.shipping_fee;
                 used_bonus_id = 0;
                 $('.bonusInfo .ticket').show();
-                $('.bonusInfo .money').hide()
+                $('.bonusInfo .usdinfo').html('')
                 getBonusList();
             }
             evalPrice();
