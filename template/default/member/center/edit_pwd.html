@@ -1,24 +1,27 @@
 {extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+{/block}
 {block name="main" }
-<div class="page-bd">
+<div class="page-bd userData">
     <!-- 页面内容-->
-    <div class="cellBox">
+    <div class="cells">
    
         <div class="cell">
+        	<div class="cell_hd"><span class="fs28 color_3 fw_b">旧密码</span></div>
             <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">旧密码</span>
                 <input type="password" class="fs28 fw_b color_3" id="old_password" placeholder="请输入旧密码">
             </div>
         </div>
         <div class="cell">
+        	<div class="cell_hd"><span class="fs28 color_3 fw_b">新密码</span></div>
             <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">新密码</span>
                 <input type="password" class="fs28 fw_b color_3" id="password" placeholder="请输入新密码">
             </div>
         </div>
         <div class="cell">
+        	<div class="cell_hd"><span class="fs28 color_3 fw_b">确认密码</span></div>
             <div class="cell_bd">
-                <span class="fs28 color_3 fw_b">确认密码</span>
                 <input type="password" class="fs28 fw_b  color_3" id="cfm_password" placeholder="请再次输入新密码">
             </div>
         </div>

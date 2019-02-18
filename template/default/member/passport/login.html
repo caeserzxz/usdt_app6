@@ -8,7 +8,7 @@
         <!-- 页面内容-->
         <div class="top">
           <img src="__STATIC__/mobile/default/images/APPLOGO.png" alt="">
-          <span class="fs34 color_3 fw_b">最新潮购物商城</span>
+          <span class="fs34 color_3 fw_b">{:settings('site_name')}</span>
         </div>
         <div class="inputBlock bor_b">
             <div class="tips fs34 color_9">账号</div>
@@ -85,7 +85,7 @@
             return false;
         }
 
-        jq_ajax('{:url("member/api.users/login")}',arr,function (res) {
+        jq_ajax('{:url("member/api.passport/login")}',arr,function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;

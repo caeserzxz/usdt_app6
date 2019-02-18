@@ -133,7 +133,7 @@ class AdminController extends BaseController
 			  }
 		  }
 	   }
-	   Cache::set($mkey,$menus,3600);
+	   Cache::set($mkey,$menus,60);
        return $menus;
 	}
     /**

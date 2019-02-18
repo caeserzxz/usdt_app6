@@ -134,11 +134,11 @@
                     <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
                      <div class="form-group">
                             <label class="col-sm-2 control-label">分享海报：</label>
-                            <div class="controls col-sm-6">
-                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                                <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                <img class="thumb_img" src="{$setting.logo}" style="max-height: 100px;" />
-                                <input class="hide" type="text" name="setting[logo]" value="{$setting.logo}" />                                  
+                            <div class="controls col-sm-6">                               
+                                  <img class="thumb_img" src="{$share_bg}" style="max-height: 100px;" /><br>
+                                  <input class="hide" type="text" name="share_bg" value="{$share_bg}" />
+                                  <button class="btn btn-default" type="button" data-toggle="selectimg">选择分享背景图</button>
+                          <span class="help-inline">建议图片尺寸：320*320像素</span><br>
                             </div>
                      </div>
                     

@@ -1,0 +1,100 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css" />
+{/block}
+{block name="pageType"}chongzhi{/block}
+{block name="main" }
+<div class="page-bd">
+        <!-- 页面内容-->  
+          <div class="inputBlock">
+            <div class="tips fs60 fw_b color_9">充值金额(元)</div>
+            <input type="text" class="fs60 num textBox"> 
+          </div>
+          <div class="paytype">
+              <div class="title fs34 color_3 fw_b">请选择支付方式</div>
+              <div class="cells">
+                <div class="cell">
+                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/weixinPay.png" alt=""></div>
+                    <div class="cell_bd"><span class="fs30 color_3">微信支付</span></div>
+                    <div class="cell_ft">
+                    <label for="s11">
+                        <div class="iconBox">
+                          <input type="radio" class="check" value="wxpay" name="radiobox" id="s11" checked>
+                          <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="cell">
+                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""></div>
+                    <div class="cell_bd"><span class="fs30 color_3">支付宝</span></div>
+                    <div class="cell_ft">
+                      <label for="s12">
+                          <div class="iconBox">
+                            <input type="radio" class="check" value="alipay" name="radiobox" id="s12">
+                            <i class="icon_checked"></i>
+                          </div>
+                      </label>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/offlinePay.png" alt=""></div>
+                    <div class="cell_bd"><span class="fs30 color_3">线下打款</span></div>
+                    <div class="cell_ft">
+                    <label for="s13">
+                        <div class="iconBox">
+                          <input type="radio" class="check" value="offline" name="radiobox" id="s13" >
+                          <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                    </div>
+                </div>
+              </div>
+              <div class="uploading">
+                  <div class="title fs28 fw_b color_3">上传凭证</div>
+                  <div class="uploadBox">
+                     <div class="Box">
+                       <img src="__STATIC__/mobile/default/images/youLike01.png" alt="" class="imgBox">
+                       <input type="file" class="uploadInput">
+                       <img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg">
+                     </div>
+                     <div class="Box">
+                        <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                        <input type="file" class="uploadInput">
+                        
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+          <div class="button fs32 fw_b color_w BGcolor_r">确认充值</div>
+
+    </div>
+    </div>
+
+{/block}
+
+{block name="footer"}
+<script type="text/javascript">
+ 
+ $(function(){
+          $('.textBox').on('click',function(){
+          $(this).siblings().animate({'fontSize':'0.173333rem','top':'0.2666666rem'})
+        })
+        $('.inputBlock input').blur(function(){
+          if($(this).val()==''){
+            $(this).siblings().animate({'fontSize':'0.4rem','top':'0.386667rem'})
+          }
+        })
+        $(".check").on('click',function(){
+          if ($('#s13').is(":checked")) {
+              $('.uploading').show()
+          }else{
+            $('.uploading').hide()
+          }
+        }) 
+      })
+
+</script>
+
+{/block}

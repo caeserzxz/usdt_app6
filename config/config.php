@@ -12,4 +12,5 @@
 return [
     // 上传目录
 	'_upload_'=> './upload/',
+	'host_path'=> 'http://'.$_SERVER['SERVER_NAME'],//指定域名
 ];

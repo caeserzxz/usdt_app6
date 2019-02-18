@@ -16,6 +16,13 @@ class Wallet  extends ClientbaseController{
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */
+    //-- 充值
+    /*------------------------------------------------------ */
+    public function recharge(){
+        $this->assign('title', '充值');
+        return $this->fetch('recharge');
+    }
+	/*------------------------------------------------------ */
     //-- 余额明细
     /*------------------------------------------------------ */
     public function mylog(){

@@ -1,32 +1,36 @@
 {extend name="layouts@base" /}
-{block name="main" }
-<div class="page-bd">
-    <!-- 页面内容-->
-    <div class="cellBox">
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+{/block}
 
-        <a href="{:url('editPwd')}" class="cell">
-            <span class="fs28 color_3 fw_b">修改密码</span>
+{block name="main" }
+<div class="page-bd userData">
+    <!-- 页面内容-->
+    <div class="cells">
+
+        <a href="{:url('editPwd')}" class=" cell cell_access noline">
+            <div class="cell_bd"><span class="fs28 color_3 fw_b">修改密码</span></div>
             <div class="cell_ft">
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+               
             </div>
         </a>
-        <a href="#" class="cell">
-            <span class="fs28 color_3 fw_b">账号绑定</span>
+        <a href="#"  class=" cell cell_access noline">
+           <div class="cell_bd"><span class="fs28 color_3 fw_b">账号绑定</span></div>
             <div class="cell_ft">
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+                
             </div>
         </a>
-        <a href="#" class="cell">
-            <span class="fs28 color_3 fw_b">帮助中心</span>
+        <a href="#" class=" cell cell_access noline">
+        	<div class="cell_bd"><span class="fs28 color_3 fw_b">帮助中心</span></div>
             <div class="cell_ft">
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+               
             </div>
         </a>
-        <div class="cell">
-            <span class="fs28 color_3 fw_b">联系客服</span>
+        <div  class=" cell  ">
+            <div class="cell_bd"><span class="fs28 color_3 fw_b">联系客服</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_9">020-8888-0025</p>
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+              
             </div>
         </div>
     </div>

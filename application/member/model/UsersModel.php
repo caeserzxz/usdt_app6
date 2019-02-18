@@ -227,7 +227,8 @@ class UsersModel extends BaseModel
 			}
 			$info['account'] = $account->toArray();
 		}
-		unset( $info['password']);
+		unset($info['password']);
+		$info['shareUrl'] = config('config.host_path').'/?share_token='.$info['token'];//分享链接
         $info['level'] = userLevel($info['total_integral'],false);//获取等级信息
 		Cache::set($this->mkey.$val,$info,30);
 		return $info;

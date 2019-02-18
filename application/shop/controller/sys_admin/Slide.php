@@ -48,7 +48,9 @@ class Slide extends AdminController
 	//-- 添加前调用
 	/*------------------------------------------------------ */
 	public function beforeAdd($data){
-		$data['add_time'] =  time();	
+		if ($data['id'] < 1){
+			$data['add_time'] =  time();	
+		}
 		$data['update_time'] = time();
 		$data['data'] = input('type_val','','trim');
 		if(empty($data['imgurl'])) return $this->error('幻灯片图片未选择！');

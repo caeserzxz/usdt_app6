@@ -26,6 +26,7 @@ class Setting extends AdminController
 		$Dividend = settings('DividendInfo');
 		$Dividend['status'] = settings('DividendSatus');
 		$this->assign('Dividend',$Dividend);
+		$this->assign('share_bg',settings('share_bg'));
 		$this->assign('d_level',config('config.DIVIDEND_LEVEL'));
 		return $this->fetch();
 	}
@@ -50,8 +51,9 @@ class Setting extends AdminController
 			if ($max_money > 70 || $max_point > 70) return $this->error('系统限制了总提成不能高于70%！');	
 		}
 		$arr['DividendSatus'] = $Dividend['status'];
-		unset($Dividend['status']);
+		unset($Dividend['status'],$Dividend['share_bg']);
 		$arr['DividendInfo'] = json_encode($Dividend);
+		$arr['share_bg'] = input('share_bg','','trim');
 		$res = $this->Model->editSave($arr);
 		if ($res == false) return $this->error();
 		return $this->success('设置成功.');

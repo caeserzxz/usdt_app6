@@ -85,7 +85,7 @@
 			return false;	
 		}
         
-        jq_ajax('{:url("member/api.users/forgetPwd")}',arr,function (res) {
+        jq_ajax('{:url("member/api.passport/forgetPwd")}',arr,function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;

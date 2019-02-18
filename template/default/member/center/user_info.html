@@ -1,74 +1,86 @@
 {extend name="layouts@base" /}
-
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+{/block}
 {block name="main" }
-<div class="page-bd">
+<div class="page-bd userData">
     <!-- 页面内容-->
-    <div class="cellBox">
-        <a href="#" class="top">
-            <span class="fs34 color_3 fw_b">个人资料</span>
-            <div><img src="__STATIC__/mobile/default/images/seckillimg.png" alt="" class="userimg"><img
-                    src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightimg"></div>
-        </a>
-        <div class="cell noline">
-            <span class="fs28 color_9">昵称</span>
+     <div class="cells">
+          <a href="#" class="top cell cell_access noline">
+              <div class="cell_bd">
+            <span class="fs34 color_3 fw_b">个人资料</span></div>
+            <div class="cell_ft"><img src="__STATIC__/mobile/default/images/seckillimg.png" alt="" class="userimg"></div>
+          </a>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28 color_9">昵称</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">你的男神</p>
             </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_3 fw_b">会员号</span>
+          </div>
+          <div class="cell">
+            <div class="cell_bd"><span class="fs28 color_9">会员号</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">YY5741</p>
             </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_3 fw_b">性别</span>
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28  color_9">性别</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">男</p>
             </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_3 fw_b">生日</span>
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28  color_9">生日</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">1990.11.18</p>
             </div>
-        </div>
-        <a href="{:url('address')}" class="cell twoBox">
-            <span class="fs28 color_9">收货地址管理</span>
-            <div class="cell_ft">
-                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
-            </div>
-        </a>
-        <div class="cell">
-            <span class="fs28 color_9">绑定手机号</span>
+          </div>
+          <a href="我的收货地址.html" class="cell twoBox cell_access">
+              <div class="cell_bd">
+              <span class="fs28 color_9">收货地址管理</span></div>
+              <div class="cell_ft">
+              </div>
+          </a>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28 color_9">绑定手机号</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">15963263254</p>
             </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_9">是否公开手机号</span>
-            <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">020-8888-0025</p>
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+              <span class="fs28 color_9">是否公开手机号</span></div>
+              <div class="cell_ft">
+                  <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+                  <label for="male" class="choose-label"></label>
+              </div>
             </div>
-        </div>
-        <div class="cell twoBox">
-            <span class="fs28 color_9">上级昵称</span>
-            <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">狂风扫落叶</p>
-            </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_9">上级手机号</span>
+          <div class="cell twoBox">
+              <div class="cell_bd">
+              <span class="fs28 color_9">上级昵称</span></div>
+              <div class="cell_ft">
+                  <p class="fs28 color_3 fw_b">狂风扫落叶</p>
+              </div>
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28 color_9">上级手机号</span></div>
             <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">15635874269</p>
             </div>
-        </div>
-        <div class="cell">
-            <span class="fs28 color_9">关注时间</span>
-            <div class="cell_ft">
+          </div>
+          <div class="cell">
+              <div class="cell_bd">
+              <span class="fs28 color_9">关注时间</span></div>
+              <div class="cell_ft">
                 <p class="fs28 color_3 fw_b">020-8888-0025</p>
+              </div>
             </div>
-        </div>
+
     </div>
 </div>
 {/block}

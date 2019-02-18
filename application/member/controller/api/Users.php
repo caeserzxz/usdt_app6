@@ -25,6 +25,7 @@ class Users extends ApiController
     public function initialize()
     {
         parent::initialize();
+		$this->checkLogin();//验证登陆
         $this->Model = new UsersModel();
     }
     /*------------------------------------------------------ */
@@ -36,44 +37,12 @@ class Users extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
-    /*------------------------------------------------------ */
-    //-- 用户登陆
-    /*------------------------------------------------------ */
-    public function login()
-    {
-        $this->checkPostLimit('login');//验证请求次数
-        $this->checkCode('login',input('mobile'),input('code'));//验证短信验证
-        $res = $this->Model->login(input());
-        if ($res < 1) return $this->error($res);
-        return $this->success('登陆成功.');
-    }
-
-    /*------------------------------------------------------ */
-    //-- 注册用户
-    /*------------------------------------------------------ */
-    public function register()
-    {
-        $this->checkCode('register',input('mobile'),input('code'));//验证短信验证
-        $res = $this->Model->register(input());
-        if ($res !== true) return $this->error($res);
-        return $this->success('注册成功.');
-    }
-	/*------------------------------------------------------ */
-    //-- 找回用户密码
-    /*------------------------------------------------------ */
-    public function forgetPwd()
-    {
-        $this->checkCode('forget_password',input('mobile'),input('code'));//验证短信验证
-        $res = $this->Model->forgetPwd(input(),$this);
-        if ($res !== true) return $this->error($res);		
-        return $this->success('密码已重置，请用新密码登陆.');
-    }
+  
 	/*------------------------------------------------------ */
     //-- 修改用户密码
     /*------------------------------------------------------ */
     public function editPwd()
     {
-		$this->checkLogin();//验证登陆
         $res = $this->Model->editPwd(input(),$this);
         if ($res !== true) return $this->error($res);		
         return $this->success('密码已重置，请用新密码登陆.');
@@ -82,8 +51,7 @@ class Users extends ApiController
     //-- 获取会员中心首页所需数据
     /*------------------------------------------------------ */
     public function getCenterInfo()
-    {
-        $this->checkLogin();//验证登陆
+    {        
         $OrderModel = new OrderModel();
         $return['orderStats'] =  $OrderModel->userOrderStats($this->userInfo['user_id']);
         $return['userInfo'] = $this->userInfo;
@@ -94,11 +62,27 @@ class Users extends ApiController
         return $this->ajaxReturn($return);
     }
 	/*------------------------------------------------------ */
+    //-- 获取分享二维码
+    /*------------------------------------------------------ */
+    public function myCode(){
+		$file_path = config('config._upload_').'qrcode/'. substr($this->userInfo['user_id'], -1) . '/';
+		$file = $file_path.$this->userInfo['token'].'.png';
+		if (file_exists($file) == false){
+			include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件			
+        	$QRcode = new \phpqrcode\QRcode();
+			$value = config('config.host_path').'/?share_token='.$this->userInfo['token'];
+			makeDir($file_path);
+			$png = $QRcode::png($value, $file, "L", 10,1,2,true);		
+		}
+		$return['file'] = config('config.host_path').trim($file,'.');
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+	/*------------------------------------------------------ */
     //-- 获取会员帐号数据
     /*------------------------------------------------------ */
     public function getAccount()
     {
-        $this->checkLogin();//验证登陆
         $return['account'] = $this->userInfo['account'];
 		//计算提现中金额，即为冻结金额
 		$WithdrawModel = new WithdrawModel();

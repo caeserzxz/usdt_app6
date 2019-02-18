@@ -47,7 +47,7 @@ class MenuListModel extends Model
 			$key = empty($row['key']) ? $row['id'] : $row['key'];
 			$data[$key] = $row;
 		}
-		Cache::set('main_menu_list',$data,10);
+		Cache::set('main_menu_list',$data,60);
         return $data;
     }
 	/*------------------------------------------------------ */
