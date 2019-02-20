@@ -37,9 +37,7 @@ class Order extends ClientbaseController{
         $this->assign('title', '物流信息');
         $order_id = input('order_id',0,'intval');
         if ($order_id < 1) return $this->error('传参错误.');
-     
-        $shippingLog = (new ShippingLogModel)->find($order_id);
-        
+        $this->assign('order_id', $order_id);
         return $this->fetch('shipping_info');
     }
 }?>

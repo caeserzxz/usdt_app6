@@ -20,6 +20,9 @@ class ShippingLogModel extends BaseModel
 		$info = Cache::get($this->mkey.$orderInfo['order_id']);
 		if (empty($info) == false) return $info;
 		$info = $this->where('order_id',$orderInfo['order_id'])->find();
+		if (empty($info) == false){
+			$info = $info->toArray();	
+		}
 		if ($orderInfo['shipping_status'] == 1){
 			 $fun = str_replace('/','\\','/shipping/'.$shop_shippping_view_fun);
        	 	 $Class = new $fun();

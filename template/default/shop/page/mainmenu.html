@@ -5,7 +5,7 @@
     		{volist name="theme_row.data" id="row" }	
             	<if condition="$row.visible eq 1 ">
                     <div class="nav-item clearfix">
-                           <a href="{:url('Mobile/Goods/goodsList',array('id'=>$row['id']))}" class="{$row['active']==1?'active':''}"><span class="nav-item-name"><span>{$row.name}</span></span></a>
+                           <a href="{:url('shop/goods/index',array('cid'=>$row['id']))}" class="{$row['active']==1?'active':''}"><span class="nav-item-name"><span>{$row.name}</span></span></a>
                     </div>
                  </if>
              {/volist}

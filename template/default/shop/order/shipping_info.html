@@ -1,0 +1,46 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css" />
+{/block}
+{block name='pageType'}wuliu{/block}
+{block name="main" }
+<div class="page-bd ">
+    <!-- 页面内容-->
+    <div class="top">
+      <img src="__STATIC__/mobile/default/images/logisticsLogo.png" alt="">
+      <div><p class="fs34 color_3 fw_b shipping_name"></p><span class="fs30 color_9 invoice_no"></span></div>
+    </div>  
+    <div class="info">
+    
+      
+    </div>        
+</div>
+<script type="text/html" id="LiTpl">
+    {{each data as item index}}
+      <div class="block">
+            <div class="left {{item.isend==1?'end':''}}">
+              <p class="fs24 color_9">{{item._time[1]}}</p>
+              <span class="fs24 color_9">{{item._time[0]}}</span>
+            </div>
+            <div class="right">
+              <p class="fs26 color_3">{{item.context}}</p>
+            </div>
+       </div>
+    {{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+$(function(){
+  jq_ajax('{:url("shop/api.shipping/getLog")}','order_id={$order_id}',function(res){
+	  if (res.code == 0){
+		  _alert(res.msg);
+		  return false;
+	  }
+	  $('.info').html(template('LiTpl', res));
+	  $('.shipping_name').html(res.shipping_name);
+	  $('.invoice_no').html(res.invoice_no);
+  })	
+})
+</script>
+{/block}

@@ -125,7 +125,7 @@ class Index  extends ClientbaseController{
 				$_body = $this->fetch('page/'.$row['componentType']);
 				$body .= $_body;
 			}
-			Cache::set($mkey,$body,300);
+			Cache::set($mkey,$body,60);
 		}
 		$this->assign('theme', $theme);
 		$this->assign('body', $body);
