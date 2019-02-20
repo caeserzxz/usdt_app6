@@ -316,7 +316,12 @@ function returnRecArr(&$rows){
 function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 ){
 	$select = '';
 	$selected = explode(',',$selected);
-	foreach ($rows AS $val){
+	foreach ($rows AS $key=>$val){
+		if (is_array($val) == false){
+			$selected = (in_array($key,$selected)) ? "selected='selected'" : '';
+			$select .= '<option value="'.$key.'" '.$selected.'>'.$val.'</option>';
+			 continue;	
+		}
 		if ($level > 0 && $val['level'] > $level) continue;		
 		$select .= '<option ';
 		if ($islimit === true && $val['children'] != $val['id'] ){

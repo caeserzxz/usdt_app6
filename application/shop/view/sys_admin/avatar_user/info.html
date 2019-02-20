@@ -1,0 +1,78 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header >
+         <div class="page-breadcrumbs">
+                    <ul class="breadcrumb" >
+                        <li>
+                            <i class="fa fa-ellipsis-v"></i>
+                            <strong>{$row['id']>0?"编辑会员":"添加会员"}</strong>
+                        </li>                                  
+                    </ul>
+          
+            <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+        </header>
+
+<section class="scrollable  wrapper">
+  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+
+      <section class="panel panel-default">
+         
+          <div class="panel-body">
+             <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-2">
+                    <input type="text" class="input-max" data-rule-required="true" name="user_name" value="{$row.user_name}">
+                </div>
+            </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">头像</label>
+                  <div class="col-sm-4 " >
+                      <div id="image_upload" class="">
+                      <img class="thumb_img" name="imagefile" src="{$row.headimgurl}" style="max-height: 100px;">
+                      <input class="hide" name="headimgurl" value="{$row.headimgurl}" type="text">
+                      <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                      <span>选择上传头像图片</span></div>
+                  </div>
+              </div>
+              
+              
+              <div class="line line-dashed line-lg pull-in" ></div>
+              
+              <div class="control-group">
+                  <div class="controls col-sm-offset-2">
+                      <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
+                      <input class="btn" name="button" id="button" data-toggle="back" value="取消" type="button">
+                  </div>
+              </div>
+              
+          </div> 
+      </section>
+      
+      <input type="hidden" name="id" value="{$row.id}" >
+  </form>
+      
+</section>
+
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+seajs.use("dist/plupload/init.js")
+
+function showUrlType(sel,input_id){
+	$(".type_bding_btn").addClass('hide');
+	$("#type_val").val('');
+	$("#ext_id").val(0);
+	$("#ext_activity").val(0);
+	if (sel.value == 'article') $("#article_btn").removeClass('hide');
+	else if (sel.value == 'link') $("#type_val").val('http://');
+	else if (sel.value == 'goods') $("#goods_btn").removeClass('hide');
+	else if (sel.value == 'activity') $("#activity_btn").removeClass('hide');
+}
+function assigBack(type,type_id,id,title,tid){
+  $("#ext_id").val(id);
+  $("#ext_activity").val(tid);
+  $("#type_val").val(title);
+}
+</script>
+{/block}

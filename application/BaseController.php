@@ -247,4 +247,56 @@ class BaseController extends Controller
 		$Model->save($data);
 		return true;
 	}
+	/*------------------------------------------------------ */
+	//-- 上传文件
+	/*------------------------------------------------------ */
+    protected function _upload($file, $dir = '', $thumb = array(), $save_rule='uniqid') {
+		
+        $upload = new \lib\UploadFile();
+		$upload_path = '';
+        if ($dir) {
+            $upload_path = config('config._upload_') . $dir ;
+        }
+		
+        if ($thumb) {
+            $upload->thumb = true;
+            $upload->thumbMaxWidth = $thumb['width'];
+            $upload->thumbMaxHeight = $thumb['height'];
+            $upload->thumbPrefix = '';
+            $upload->thumbSuffix = isset($thumb['suffix']) ? $thumb['suffix'] : '_thumb';
+            $upload->thumbExt = isset($thumb['ext']) ? $thumb['ext'] : '';
+            $upload->thumbRemoveOrigin = isset($thumb['remove_origin']) ? true : false;
+        }
+        //自定义上传规则
+        $upload = $this->_upload_init($upload);
+        if( $save_rule!='uniqid' ){
+            $upload->saveRule = $save_rule;
+        }
+
+        if ($result = $upload->uploadOne($file,$upload_path)) {
+            return array('error'=>0, 'info'=>$result);
+        } else {
+            return array('error'=>1, 'info'=>$upload->getErrorMsg());
+        }
+    }
+    protected function _upload_init($upload) {
+        $file_type = empty($_GET['dir']) ? 'image' : trim($_GET['dir']);
+        $ext_arr = array(
+            'image' => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
+            'flash' => array('swf', 'flv'),
+            'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
+            'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
+        );
+        //和总配置取交集
+        
+		if (empty($ext_arr[$file_type]) == false){
+        	$upload->allowExts = $ext_arr[$file_type];  //文件类型限制
+		}
+        $upload->savePath =  config('config._upload_'). $file_type . '/';
+        $upload->saveRule = 'uniqid';
+        $upload->autoSub = true;
+        $upload->subType = 'date';
+        $upload->dateFormat = 'Ymd/';
+        return $upload;
+    }
 }

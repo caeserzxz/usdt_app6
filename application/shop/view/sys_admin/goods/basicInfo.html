@@ -105,7 +105,7 @@
             <input type="radio" name="is_spec" value="1"   data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>
             多规格</label>
        </div>
-     	<div class="m-t-md col-sm-4 specificationstable hd">
+     	<div class="m-t-md col-sm-6 specificationstable hd">
          	选择商品模型 <select name="sku_model" id="skuModelId" data-toggle="changeSkuModelId">
                   {$skuModelOpt|raw}
               </select>{gt name="row.goods_id" value="0"}

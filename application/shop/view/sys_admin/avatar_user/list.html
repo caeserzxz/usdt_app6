@@ -1,0 +1,32 @@
+
+<table class="table table-striped m-b-none ">
+    <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th width="120" >名称</th>
+            <th>头像</th>
+            <th width="80">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+{volist name="data.list" id="g"}
+        <tr>
+       	  	<td>{$g.id}</td>
+            <td>{$g.user_name}</td>
+       	  	<td><img src="{$g.headimgurl}" style="max-width:100px;max-width:80px;"/></td>
+            
+            <td>
+                <a href="{:url('info',array('id'=>$g['id']))}" class="m-xs" title="编辑">
+                    <i class="fa fa-edit text-muted"></i>
+                </a>
+               
+            </td>
+        </tr>
+{/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

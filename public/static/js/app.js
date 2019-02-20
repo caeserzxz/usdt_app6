@@ -135,12 +135,24 @@ function searchuser(keyword,selects) {
 	var user_keyword = $("#"+keyword).val();  	
 	$("#"+selects+" option").each(function(){if ($(this).val() != 0) $(this).remove();});	
 	var res = jq_ajax(searchUserUrl, 'keyword='+user_keyword);	
-	if (res.info)  _alert(res.info);
-	if (res.status == 0) return false	
+	if (res.msg)  _alert(res.msg);
+	if (res.code == 0) return false	
     var arr = res.list;
 	$.each(res.list,function(i,val){
 		$("#"+selects).append("<option value='"+val.user_id+"'>"+val.user_id+'-'+val.mobile+'-'+val.user_name+"</option>"); 
 	}); 
 	   
 }
-
+//搜索商品
+function searchgoods(keyword,selects) {
+	var keyword = $("#"+keyword).val();  	
+	$("#"+selects+" option").each(function(){if ($(this).val() != 0) $(this).remove();});	
+	var res = jq_ajax(searchGoodsUrl, 'keyword='+keyword);	
+	if (res.msg)  _alert(res.msg);
+	if (res.code == 0) return false	
+    var arr = res.list;
+	$.each(res.list,function(i,val){
+		$("#"+selects).append("<option value='"+val.goods_id+"' data-goods_name='"+val.goods_name+"'>"+(val.is_spec==1?'多规格':val.goods_sn)+':'+val.goods_name+"</option>"); 
+	}); 
+	   
+}

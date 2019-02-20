@@ -8,363 +8,148 @@
 
 namespace app\shop\controller\sys_admin;
 
+use think\facade\Request;
+
 use app\AdminController;
-use app\common\model\ShopGoodsComment;
-use app\mainadmin\model\AdminUserModel;
-use app\member\model\UsersModel;
+use app\shop\model\GoodsCommentModel;
 use app\shop\model\GoodsModel;
-use PDO;
-use think\Db;
-use think\db\Query;
-use think\facade\Config;
+use app\shop\model\AvatarUserModel;
+use app\shop\model\GoodsCommentImagesModel;
+use app\member\model\UsersModel;
 
 class GoodsComment extends AdminController {
 
     /**
      * @var ShopGoodsComment
      */
-    public $Model;
-
-    // 删除状态列表
-    protected $modeList = [
-        [
-            'id' => 1,
-            'name' => '未删除的',
-        ],
-        [
-            'id' => 2,
-            'name' => '已删除的',
-        ],
-    ];
+    public $Model;   
 
     protected function initialize() {
         parent::initialize();
-
-        // 不自动提交
-        Config::set('database.params', [
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET autocommit = 0',
-        ]);
-
-        $this->Model = new ShopGoodsComment();
+        $this->Model = new GoodsCommentModel();
     }
-
-    /**
-     * @return string
-     */
-    public function index() {
-        $options = $this->getListOptions();
-        $this->assign('search', $options);
-
-        $statusList = [];
-        foreach (ShopGoodsComment::$statusList as $statusId => $item) {
-            $statusList[] = [
-                'id'   => $statusId,
-                'name' => $item,
-            ];
-        }
-        $this->assign('statusListHtml', arrToSel($statusList, $options['status']));
-
-        $this->assign('modeListHtml', arrToSel($this->modeList, $options['mode']));
-
-        $listInfo = $this->getPagedList($options);
-        $this->assign('data', $listInfo);
-
-        return $this->fetch(__FUNCTION__);
+	//*------------------------------------------------------ */
+	//-- 首页
+	/*------------------------------------------------------ */
+    public function index(){
+		$this->getList(true);
+		
+        return $this->fetch('index');
     }
-
-    public function getList() {
-        $options = $this->getListOptions();
-
-        $listInfo = $this->getPagedList($options);
-        $this->assign('data', $listInfo);
-        $listInfo['content'] = $this->fetch('list');
-
-        $this->success('', '', $listInfo);
+    /*------------------------------------------------------ */
+    //-- 获取列表
+	//-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getList($runData = false,$is_delete=0) {
+		$search['status'] = input('status',1,'intval');
+		$where = array();
+		if ($search['status'] > 0){
+			$where[] = ['status','=',$search['status']];
+		}
+		
+        $this->data = $this->getPageList($this->Model, $where);		
+		$this->assign("data", $this->data);
+		$this->assign("search", $search);	
+		$this->assign('statusListHtml', arrToSel($this->Model->statusList,$search['status']));	
+		if ($runData == false){
+            $this->data['content'] = $this->fetch('list');
+			unset($this->data['list']);
+			return $this->success('','',$this->data);
+		}
+        return true;
     }
-
-    /**
-     * 获取分页列表
-     *
-     * @param array $options
-     * @return array $listInfo
-     */
-    protected function getPagedList(array $options = []) {
-
-        $where = [];
-
-        if ($options['keyword']) {
-            $where[] = ['c.content', 'like', "%{$options['keyword']}%"];
-        }
-
-        if ($options['status'] && in_array($options['status'], array_keys(ShopGoodsComment::$statusList))) {
-            $where[] = ['c.status', '=', $options['status']];
-        }
-
-        $queryHandler = function(Query $query) use ($options, $where) {
-
-            /** @var ShopGoodsComment $model */
-            switch ($options['mode']) {
-                case 2:
-                    // 显示已删除的
-                    $model = $query->getModel();
-                    $query->useSoftDelete($model->getDeleteTimeField(), $model->getWithTrashedExp());
-                    break;
-                case 3:
-                    // 显示全部
-                    $query->removeOption('soft_delete');
-                    break;
-            }
-
-            $query->alias('c')
-                ->leftJoin('shop_goods g', 'g.goods_id = c.goods_id')
-                ->leftJoin('users u', 'c.user_id <> 0 and u.user_id = c.user_id')
-                ->where($where)
-                ->field([
-                    'c.*',
-                    'g.goods_name',
-                    'g.is_spec',
-                    'g.goods_sn',
-                    'u.user_name' => 'true_user_name',
-                ]);
-        };
-
-        $countInfo = ShopGoodsComment::getCountInStatic($queryHandler, $options['page_size']);
-
-        $list = ShopGoodsComment::getListInStatic($queryHandler, $options['page'], 'create_time desc', $options['page_size']);
-
-        foreach ($list as $item) {
-            if ($item['user_id']) {
-                $item['user_name'] = $item['true_user_name'];
-            }
-            if ($item['is_spec']) {
-                $item['goods_sn'] = '多规格';
-            }
-
-            $item['deleted'] = $item->trashed();
-
-            $item['status_text'] = ShopGoodsComment::$statusList[$item['status']];
-            switch ($item['status']) {
-                case ShopGoodsComment::PASSED:
-                    $item['status_class'] = 'text-success';
-                    $item['status_icon_class'] = 'fa fa-check';
-                    break;
-                case ShopGoodsComment::DENIED:
-                    $item['status_class'] = 'text-danger';
-                    $item['status_icon_class'] = 'fa fa-times';
-                    break;
-            }
-        }
-
-        return [
-            'list'        => $list,
-            'page'        => $options['page'],
-            'total_count' => $countInfo['count'],
-            'page_count'  => $countInfo['page_count'],
-            'page_size'   => $options['page_size'],
-        ];
+   
+    /*------------------------------------------------------ */
+    //-- 添加、修改评论
+    /*------------------------------------------------------ */
+    protected function asInfo($data) {
+        $goodsCategoryList = (new GoodsModel)->getClassList();
+        $this->assign('categoryOpt', arrToSel($goodsCategoryList, $data['cat_id']));
+		if (empty($data['id'])){
+			$data['type'] = 'goods';	
+			$data['status'] = '2';
+			$imgWhere[] = ['comment_id','=',0]; 
+			$imgWhere[] = ['admin_id','=',AUID]; 
+		}else{
+			$imgWhere[] = ['comment_id','=',$data['id']]; 
+		}
+		$this->assign('imgs',(new GoodsCommentImagesModel)->where($imgWhere)->select()->toArray());
+        return $data;
+    }	
+	
+	 /*------------------------------------------------------ */
+    //-- 上传图片
+    /*------------------------------------------------------ */
+    public function uploadImg(){	
+		  $thumb['width'] = 250;
+		  $thumb['height'] = 250;
+		  $result = $this->_upload($_FILES['file'],'comment/',$thumb);
+		  if ($result['error']) {
+			  $data['code'] = 1;
+			  $data['msg'] = $result['info'];
+			  return $this->ajaxReturn($data);
+		  }
+		  $_root_ = Request::root();
+		  $addArr['comment_id'] = input('post.comment_id',0,'intval');
+		  $addArr['admin_id'] = AUID;
+		  $addArr['image'] = $file_url = str_replace('./','/',$_root_.$result['info'][0]['savepath'].$result['info'][0]['savename']);
+		  $addArr['thumbnail'] = str_replace('.','_thumb.',$addArr['image']);
+		  $GoodsCommentImagesModel =  new GoodsCommentImagesModel();
+		  $GoodsCommentImagesModel->save($addArr);	
+		  $img_id = $GoodsCommentImagesModel->id;
+		  if ($img_id < 1){
+			  @unlink($file_url);//删除刚刚上传的
+			  $data['code'] = 0;
+			  $data['msg'] = '图片写入数据库失败！';
+			  return $this->ajaxReturn($data);
+		  }
+		  $data['code'] = 1;
+		  $data['msg'] = "上传成功";
+		  $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);		 
+		  return $this->ajaxReturn($data);
     }
-
-    /**
-     * 获取列表参数
-     *
-     * @return array
-     */
-    protected function getListOptions() {
-        $options = parent::getListOptions();
-
-        $options['status'] = (int) $this->request->param('status', ShopGoodsComment::UNREVIEWED);
-        $options['mode'] = (int) $this->request->param('mode', 1);
-
-        return $options;
-    }
-
-    /**
-     * @param array $item
-     * @return array $item
-     * @throws \think\exception\DbException
-     */
-    protected function asInfo($item) {
-        $item['admin_id'] and $admin = AdminUserModel::get($item['admin_id']);
-        $this->assign('admin', $admin ? $admin->toArray() : null);
-
-        $item['user_id'] and $user = UsersModel::get($item['user_id']);
-        $this->assign('user', $user ? $user->toArray() : null);
-
-        if (!$user) {
-            if ($item['headimgurl']) {
-                $this->assign('images', [$item['headimgurl']]);
-            }
-        }
-
-        $goodsId = $item['goods_id'];
-        $goodsList = (new GoodsModel)->getList([], [
-            'goods_id',
-            'goods_name',
-        ]);
-        $goodsList = array_map(function($item) {
-            return [
-                'id'   => $item['goods_id'],
-                'name' => $item['goods_name'],
-            ];
-        }, $goodsList);
-        $this->assign('goodsListHtml', arrToSel($goodsList, $goodsId));
-
-        return $item;
-    }
-
-    protected function beforeAdd($item) {
-        $this->checkData($item);
-
-        Db::startTrans();
-
-        if (is_array($item['headimgurl'])) {
-            $item['headimgurl'] = $item['headimgurl']['path'][0];
-        }
-
-        $item['status'] = ShopGoodsComment::PASSED;
-        $item['admin_id'] = $this->admin['info']['user_id'];
-        $item['review_admin_id'] = $this->admin['info']['user_id'];
-        $item['create_time'] = time();
-
-        return $item;
-    }
-
-    protected function afterAdd($item) {
-        Db::commit();
-
-        $this->_log($item['id'], "添加商品评论: {$item['id']}");
-    }
-
-    protected function beforeEdit($item) {
-        $this->checkData($item);
-
-        Db::startTrans();
-
-        if (is_array($item['headimgurl'])) {
-            $item['headimgurl'] = $item['headimgurl']['path'][0];
-        }
-
-        return $item;
-    }
-
-    protected function afterEdit($item) {
-        Db::commit();
-
-        ShopGoodsComment::clearCache($item['id']);
-        $this->_log($item['id'], "修改商品评论: {$item['id']}");
-    }
-
-    protected function checkData($item) {
-        if (!$item['user_name']) {
-            $this->error('请输入用户名');
-        }
-        if (!$item['goods_id']) {
-            $this->error('请选择商品');
-        }
-        if (!$item['content']) {
-            $this->error('请输入商品评论内容');
-        }
-    }
-
-    /**
-     * 审核商品评论
-     *
-     * @throws \think\exception\DbException
-     */
-    public function review() {
-        $id = (int) $this->request->param('id');
-        $id and $item = ShopGoodsComment::withTrashed()->where([
-            'id' => $id,
-        ])->find();
-        if (!$item) {
-            $this->error();
-        }
-
-        $reviewResult = (string) $this->request->param('result');
-        switch ($reviewResult) {
-            case 'passed':
-                $status = ShopGoodsComment::PASSED;
-                break;
-            case 'denied':
-                $status = ShopGoodsComment::DENIED;
-                break;
-            default:
-                $this->error();
-                break;
-        }
-
-        Db::startTrans();
-        $item['status'] = $status;
-
-        $item->save();
-
-        Db::commit();
-
-        ShopGoodsComment::clearCache($item['id']);
-        $this->_log($item['id'], "审核商品评论: {$item['id']}");
-
-        $this->success('操作成功');
-    }
-
-    /**
-     * @throws \think\exception\DbException
-     */
-    public function delete() {
-        $id = (int) $this->request->param('id');
-
-        if ($id) {
-            /** @var ShopGoodsComment $item */
-            $item = ShopGoodsComment::withTrashed()->where([
-                'id' => $id,
-            ])->find();
-        }
-        if (!$item) {
-            $this->error();
-        }
-
-        Db::startTrans();
-
-        $result = $item->delete();
-        if (!$result) {
-            $this->error();
-        }
-
-        Db::commit();
-
-        ShopGoodsComment::clearCache($id);
-        $this->_log($id, "删除商品评论: {$id}");
-
-        $this->success('操作成功');
-    }
-
-    /**
-     * @throws \think\exception\DbException
-     */
-    public function revert() {
-        $id = (int) $this->request->param('id');
-
-        if ($id) {
-            /** @var ShopGoodsComment $item */
-            $item = ShopGoodsComment::withTrashed()->where([
-                'id' => $id,
-            ])->find();
-        }
-        if (!$item) {
-            $this->error();
-        }
-
-        Db::startTrans();
-
-        $result = $item->restore();
-        if (!$result) {
-            $this->error();
-        }
-
-        Db::commit();
-
-        ShopGoodsComment::clearCache($id);
-        $this->_log($id, "还原商品评论: {$id}");
-
-        $this->success('操作成功');
-    }
+	
+	/*------------------------------------------------------ */
+	//-- 添加前处理
+	/*------------------------------------------------------ */
+    public function beforeAdd($data) {
+		if ($data['type'] == 'goods' && $data['goods_id'] < 1){
+			return $this->error('请选择商品.');
+		}
+		if ($data['type'] == 'goods_category' && $data['cat_id'] < 1){
+			return $this->error('请选择分类.');
+		}
+		$AvatarUserModel = new AvatarUserModel();
+		if ($data['avatar_user'] == 0){
+			$avatarUser = $AvatarUserModel->orderRaw('RAND()')->find();
+			$data['avatar_user'] = $avatarUser['id'];
+			$data['user_name'] = $avatarUser['user_name'];
+			$data['headimgurl'] = $avatarUser['headimgurl'];
+		}else{
+			$avatarUser = $AvatarUserModel->find($data['avatar_user']);
+			$data['user_name'] = $avatarUser['user_name'];
+			$data['headimgurl'] = $avatarUser['headimgurl'];
+		}
+		$data['create_time'] = time();
+		$data['admin_id'] = AUID;
+		return $data;
+	}
+	/*------------------------------------------------------ */
+	//-- 添加后调用
+	/*------------------------------------------------------ */
+	public function afterAdd($data){
+		$GoodsImages = input('post.GoodsImages');
+		$GoodsCommentImagesModel = new GoodsCommentImagesModel();
+		foreach ($GoodsImages['id'] as $key=>$id){
+			$imgwhere = array();
+			$imgwhere[] = ['id','=',$id];
+			$imgwhere[] = ['comment_id','=',0];
+			$imgwhere[] = ['admin_id','=',AUID];
+			$upArr['sort_order'] = $key;
+			$upArr['comment_id'] = $data['id'];
+			$GoodsCommentImagesModel->where($imgwhere)->update($upArr);
+		}
+		return $this->success('添加成功',url('index'));
+	}
+	
 }

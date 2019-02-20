@@ -11,22 +11,18 @@
                 </li>
             </ul>
             <label>
-                审核状态
                 <select name="status" style="width: 150px;" data-toggle="select2" data-chang="submit">
                     <option value="0">全部</option>
                     {$statusListHtml|raw}
                 </select>
             </label>
+             <input type="text" class="form-control input-small"  id="goods_keyword" placeholder="商品名称/SN" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchgoods('goods_keyword','select_goods');"><i class="fa fa-search text-muted"></i></a>
+              <select id="select_goods" name="select_goods"  style="width: 130px; " >
+                  <option value="">选择商品</option>
+              </select>
             <label>
-                删除状态
-                <select name="mode" style="width: 150px;" data-toggle="select2" data-chang="submit">
-                    <option value="0">全部</option>
-                    {$modeListHtml|raw}
-                </select>
-            </label>
-            <label>
-                搜索
-                <input type="text" class="form-control input-large" name="keyword" value="{$search.keyword}" placeholder="关键字"/>
+              
+                <input type="text" class="form-control input-large" name="keyword" value="{$search.keyword}" placeholder="评论关键字/会员ID"/>
                 <button class="btn btn-default-iq" type="submit"><i class="fa fa-search"></i></button>
             </label>
             <a href="{:url('info')}" class="btn btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加商品评论</a>

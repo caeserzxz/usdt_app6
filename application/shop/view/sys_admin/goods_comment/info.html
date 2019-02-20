@@ -20,81 +20,102 @@
 
 <section class="scrollable wrapper">
     <form class="form-horizontal form-validate" method="post" action="">
-
-        <input name="id" type="hidden" value="{$row['id']}">
-
-        {if condition="$admin"}
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评论管理员</label>
-            <div class="col-sm-10">
-                <label>
-                    {$admin.user_name}
-                    <a class="btn-xs m-xs" href="{:url('mainadmin/admin_user/info', ['user_id' => $admin['user_id']])}">
-                        <i class="fa fa-search text-muted"></i> 查看
-                    </a>
-                </label>
+        {if condition="$row.id > 0"}
+         <div class="form-group">
+            <label class="col-sm-2 control-label">评论商品/分类：</label>
+            <div class="col-sm-4 m-t-md">
+              {$row.by_name} 
             </div>
-        </div>
-        {/if}
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">商品</label>
-            <div class="col-sm-4 must">
-                <select name="goods_id" style="width:100%;" data-toggle="select2">
-                    <option value="">请选择商品</option>
-                    {$goodsListHtml|raw}
+        </div> 
+        {else/}
+         <div class="form-group">
+            <label class="col-sm-2 control-label">评论类型</label>
+            <div class="col-sm-4 ">
+               <label><input name="type" type="radio" class="type_radio" value="goods" {$row['type']=='goods'?'checked':''} /> 商品</label>
+               <label><input name="type" type="radio" class="type_radio"  value="goods_category" {$row['type']=='goods_category'?'checked':''}/> 分类</label>
+            </div>
+        </div>        
+        <div class="form-group cat_div {$row['type']=='goods'?'hide':''}">
+            <label class="col-sm-2 control-label">商品分类</label>
+            <div class="col-sm-3 must">
+                <select name="category_id" id="sel_category" style="width:100%;" >
+                    <option value="">请选择商品分类</option>
+                    {$categoryOpt|raw}
                 </select>
             </div>
         </div>
-
-        {if condition="$user"}
-        <div class="form-group">
-            <label class="col-sm-2 control-label">评论用户</label>
-            <div class="col-sm-4">
-                <label>
-                    {$user.user_name}
-                    <a class="m-xs" href="{:url('sys_admin.users/info', ['user_id' => $user['user_id']])}"><i class="fa fa-search text-muted"></i> 查看</a>
-                </label>
-            </div>
+        <div class="form-group goods_div {$row['type']=='goods'?'':'hide'}">
+              <label class="col-sm-2 control-label">指定商品：</label>
+              <div class="col-sm-4 " >
+                  <input type="text" class="input-small"  id="goods_keyword" placeholder="商品名称/SN"  value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchgoods('goods_keyword','select_goods');"><i class="fa fa-search text-muted"></i></a>
+                  <select id="select_goods"  style="width: 200px; " >
+                      <option value="">选择商品</option>
+                  </select>               
+              </div>
+              <div class="clearfix"></div>
+              <label class="col-sm-2 control-label">指定商品：</label>
+              <div class="col-sm-8 m-t-md" id="goods_name">{$row['goods_name']?$row['goods_name']:'-----请选择商品-----'}</div>
+              <input name="goods_id" id="goods_id" type="hidden" value="0" />
         </div>
-
-        {else/}
-        <div class="line line-dashed line-lg pull-in"></div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">用户名</label>
-            <div class="col-sm-4">
-                <input type="text" class="input-max" data-rule-maxlength="35" name="user_name" value="{$row.user_name}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">用户头像</label>
-            <div class="col-sm-10">
-                <div class="js_upload_container">
-                    <div class="js_file_upload">
-                        <button type="button" class="btn btn-default js_new_upload" data-submitname="headimgurl" data-count="1" data-uploadpath="{:url('mainAdmin/attachment/upload')}" style="position: relative; z-index: 1;">选择图片</button>
-                    </div>
-                    <div class="uploadify-queue js_file_upload_queue"></div>
-                    <ul class="ipost-list ui-sortable js_fileList" data-required="true">
-                        {volist name="images" id="image"}
-                        <li class="imgbox">
-                            <a class="item_new_close item_close" href="javascript:" title="删除"></a>
-                            <span class="item_box"><img src="{$image}" alt=""></span>
-                        </li>
-                        {/volist}
-                    </ul>
-                </div>
-            </div>
-        </div>
+		<input name="by_name" id="by_name" type="hidden" value="" />
         {/if}
+       {if condition="$row.user_id > 0"}
+       <div class="form-group">
+                <label class="col-sm-2 control-label">评论会员：</label>               
+                <div class="col-sm-4"> 
+                	{$row.user_id|userInfo} 
+                	<a href="{:url('member/sys_admin.users/info',['user_id'=>$row['user_id']])}" target="_blank" class="m-xs" title="查看" ><i class="fa fa-refresh text-muted"></i></a>     
+                </div>
+        </div>
+       {else/}
+        <div class="form-group">
+        	<label class="col-sm-2 control-label">虚拟会员：</label>
+         	<select id="avatar_user"  style="width: 200px; " >
+                <option value="0">随机分配虚拟会员</option>
+            </select>    
+            <a href="javascript:;" class="m-xs" title="查看"  onclick="searchAvatarUser();"><i class="fa fa-refresh text-muted"></i></a>           
+        </div>
+       {/if}
 
         <div class="line line-dashed line-lg pull-in"></div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">评论内容</label>
+            <label class="col-sm-2 control-label">评论内容：</label>
             <div class="col-sm-4 must">
-                <textarea class="input-max" name="content" data-rule-maxlength="500" data-rule-required="true">{$row.content}</textarea>
+                <textarea class="input-max" name="content" style="width:100%; height:100px;" data-rule-maxlength="500" data-rule-required="true">{$row.content}</textarea>
             </div>
         </div>
-
+		<div class="form-group">
+            <label class="col-sm-2 control-label">评论图片：</label>
+            <div class="col-sm-10">
+        <div class="js_upload_container">
+            <div class="js_file_upload ">
+                <button type="button" class="btn btn-default js_new_upload" data-submitname="GoodsImages" data-count="20" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" data-data="{ 'comment_id':'{$row.id|intval}' }" style="position: relative; z-index: 1;">上传图片</button>
+                <span class="maroon">*</span>
+                <span class="help-inline">最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+            </div>
+            <div class="uploadify-queue js_file_upload_queue">
+            </div>
+             <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+{volist name="imgs" id="gg"  }
+<li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+<a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除"  data-post-id="{$gg.id}"></a>  
+<input value="{$gg.id}" name="GoodsImages[id][]" type="hidden"> 
+<span class="item_box"><img src="{$gg.thumbnail}"></span>
+</li>
+{/volist}                                           
+             </ul>
+        </div>
+    </div>
+     
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">状态：</label>
+            <div class="col-sm-4 ">
+               <label><input name="status" type="radio"  value="1" {$row['status']=='1'?'checked':''} /> 待审核</label>
+               <label><input name="status" type="radio"  value="2" {$row['status']=='2'?'checked':''}/> 显示</label>
+               <label><input name="status" type="radio"  value="3" {$row['status']=='3'?'checked':''}/> 隐藏（前台不显示）</label>
+            </div>
+        </div> 
         <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
         <div class="form-group" style="width:90%;">
             <div class="col-sm-4 col-sm-offset-2">
@@ -110,6 +131,36 @@
 
 {block name="footer" }
 <script type="text/javascript">
-    seajs.use(["dist/plupload/init.js"])
+    seajs.use(["dist/plupload/init.js"]);
+	$('.type_radio').click(function(){
+		if ($(this).val() == 'goods'){
+			$('.cat_div').addClass('hide');
+			$('.goods_div').removeClass('hide');
+		}else{
+			$('.goods_div').addClass('hide');
+			$('.cat_div').removeClass('hide');
+		}
+	})
+	$('#select_goods').change(function(){
+		$('#goods_name').html($(this).val()+' - '+$(this).find("option:selected").text())
+		$('#goods_id').val($(this).val());
+		$('#by_name').val($(this).find("option:selected").data('goods_name'));
+	})
+	$('#sel_category').change(function(){
+		$('#by_name').val($(this).find("option:selected").data('text'));
+	})
+	//随机获取虚拟会员
+	function searchAvatarUser() {
+		$("#avatar_user option").each(function(){if ($(this).val() != 0) $(this).remove();});	
+		var res = jq_ajax("{:url('shop/sys_admin.AvatarUser/pubSearch')}");	
+		if (res.msg)  _alert(res.msg);
+		if (res.code == 0) return false	
+		var arr = res.list;
+		$.each(res.list,function(i,val){
+			$("#avatar_user").append("<option value='"+val.id+"' data-headimgurl='"+val.headimgurl+"'>"+val.user_name+"</option>"); 
+		}); 
+		   
+	}
+	searchAvatarUser();
 </script>
 {/block}

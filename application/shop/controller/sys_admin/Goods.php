@@ -687,4 +687,20 @@ class Goods extends AdminController
 		$this->assign("searchType", input('searchType','','trim'));
 		return response($this->fetch());
 	}
+	/*------------------------------------------------------ */
+	//-- 根据关键字查询
+	/*------------------------------------------------------ */
+	public function pubSearch() {
+		$keyword =  input('keyword','','trim');			
+		if (!empty($keyword)){
+			 $_string = "( goods_name LIKE '%".$keyword."%' OR goods_sn LIKE '%".$keyword."%' )";
+		}
+		$_list = $this->Model->where($_string)->field("goods_id,goods_name,is_spec,goods_sn")->limit(20)->select();
+		foreach ($_list as $key=>$row){
+			$_list[$key] = $row;
+		}
+		$result['list'] = $_list;
+		$result['code'] = 1;
+		return $this->ajaxReturn($result);
+	}
 }

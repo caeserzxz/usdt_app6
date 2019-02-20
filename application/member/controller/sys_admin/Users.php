@@ -192,7 +192,7 @@ class Users extends AdminController
 		return $this->success('解禁成功.','reload');
 	}
 	/*------------------------------------------------------ */
-	//-- 根据关键字查询客服列表
+	//-- 根据关键字查询
 	/*------------------------------------------------------ */
 	public function pubSearch() {
 		$keyword =  input('keyword','','trim');	
@@ -205,7 +205,7 @@ class Users extends AdminController
 			$_list[$key] = $row;
 		}
 		$result['list'] = $_list;
-		$result['status'] = 1;
+		$result['code'] = 1;
 		return $this->ajaxReturn($result);
 	}
 }

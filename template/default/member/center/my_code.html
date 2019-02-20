@@ -1,14 +1,19 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/generalize.css" />
+<style>
+.block{ display:none;}
+.show{ display:block;}
+
+</style>
 {/block}
 {block name='pageType'}myCode{/block}
 {block name="main" }
 <div class="page-bd ">
     <!-- 页面内容-->
-        <div class="tabBox" id="capture">
-          <div class="block">        
-            <div class="one">
+        <div class="tabBox" >
+          <div class="block show">        
+            <div class="one capture">
               <img src="{:settings('share_bg')}" alt="" class="goodsimg">
               <div class="info">
                 <div class="left">
@@ -19,13 +24,13 @@
                   </div>
                 </div>
                 <div class="right">
-                    <img src="" class="code" alt="">
+                    <img src="" class="qcode" alt="">
                 </div>
               </div>
             </div>
           </div>
-          <div class="block box">
-              <div class="two">
+          <div class="block">
+              <div class="two capture">
                 <div class="info">
                     <div class="left">
                       <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
@@ -37,13 +42,13 @@
                 </div>
                 <img src="{:settings('share_bg')}" alt="" class="goodsimg">
                 <div class="right">
-                    <img src="" class="code" alt="">
+                    <img src="" class="qcode" alt="">
                 </div>
               </div>
               
           </div>
-          <div class="block box">
-            <div class="three">
+          <div class="block">
+            <div class="three capture">
               <div class="info">
                 <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
                 <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
@@ -51,7 +56,7 @@
               </div>
               <img src="{:settings('share_bg')}" alt="" class="goodsimg">
               <div class="right">
-                  <img src="" class="code" alt="">
+                  <img src="" class="qcode" alt="">
               </div>
             </div>
           </div>
@@ -65,73 +70,62 @@
     </div>
     <div class="page-ft">
       <div class="BGcolor_3 saveImg"><img src="__STATIC__/mobile/default/images/goodsIcon04.png" alt=""><span class="fs28 fw_b color_w">保存图片</span></div>
-      <div class="BGcolor_3 copy"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">复制链接</span></div>
-      <div class="BGcolor_3"><img src="__STATIC__/mobile/default/images/myCode05.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
+      <div class="BGcolor_3 copy" data-clipboard-action="copy" data-clipboard-text="{$userInfo.shareUrl}"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">复制链接</span></div>
+      <div class="BGcolor_3"><img src="__STATIC__/mobile/default/images/mycode05.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
     </div>
 
 </div>
 {/block}
 
 {block name="footer"}
-<script type="text/javascript" src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+<script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
 <script>
+
 $(function(){
    $('.tablist').on('click',function(){
 	 let index=$(this).index()
 	 $(this).removeClass('boxOpacity')
 	 $(this).siblings().addClass('boxOpacity')
-	 $('.block').eq(index).removeClass('box')
-	 $('.block').eq(index).siblings().addClass('box')
+	 $('.block').eq(index).addClass('show')
+	 $('.block').eq(index).siblings().removeClass('show')
    })
    //保存图片
-   $('.saveImg').click(function(){
-		html2canvas(document.querySelector("#capture")).then(canvas => {
-			window.location.href = canvas.toDataURL();
-		});
-	})
+  $(".saveImg").on("click", function (event) {
+        event.preventDefault();
+        html2canvas($('.show'), {
+            allowTaint: true,
+            taintTest: false,
+            onrendered: function (canvas) {
+				var url = canvas.toDataURL();
+               //以下代码为下载此图片功能
+			    var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
+				triggerDownload[0].click();
+				triggerDownload.remove();
+            }
+        });
+    });
+
 	 //复制
-   $('.copy').click(function(){
-		copyTextToClipboard('{$userInfo["shareUrl"]}')
-	})
+   var clipboard = new Clipboard('.copy');
+  clipboard.on('success', function(e) {
+	  _alert('复制成功.');
+  });
+  clipboard.on('error', function(e) {
+	  _alert('复制失败.');
+  });
    //获取二维码
    jq_ajax('{:url("member/api.users/myCode")}','',function(res){
 	   if (res.code == 0){
 			_alert(res.msg);
 			return false;   
 	   }
-	   $('.code').attr('src',res.file);
+	   $('.qcode').attr('src',res.file);
 	});
 })
 
 
-  function copyTextToClipboard(text) {
-    var textArea = document.createElement("textarea")
-
-    textArea.style.position = 'fixed'
-    textArea.style.top = 0
-    textArea.style.left = 0
-    textArea.style.width = '2em'
-    textArea.style.height = '2em'
-    textArea.style.padding = 0
-    textArea.style.border = 'none'
-    textArea.style.outline = 'none'
-    textArea.style.boxShadow = 'none'
-    textArea.style.background = 'transparent'
-    textArea.value = text
-
-    document.body.appendChild(textArea)
-
-    textArea.select()
-
-    try {
-      var msg = document.execCommand('copy') ? '成功' : '失败'
-      alert('复制内容 ' + msg);
-    } catch (err) {
-      alert('不能使用这种方法复制内容');
-    }
-
-    document.body.removeChild(textArea)
-}
 </script>
 
 {/block}
