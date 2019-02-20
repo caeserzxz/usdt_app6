@@ -130,6 +130,10 @@ class GoodsComment extends AdminController {
 			$data['user_name'] = $avatarUser['user_name'];
 			$data['headimgurl'] = $avatarUser['headimgurl'];
 		}
+		$GoodsImages = input('post.GoodsImages');
+		if (empty($GoodsImages) == false){
+			$data['is_imgs'] = 1;
+		}
 		$data['create_time'] = time();
 		$data['admin_id'] = AUID;
 		return $data;
@@ -151,5 +155,18 @@ class GoodsComment extends AdminController {
 		}
 		return $this->success('添加成功',url('index'));
 	}
-	
+	/*------------------------------------------------------ */
+	//-- 快捷修改
+	/*------------------------------------------------------ */
+	public function ajaxEdit(){
+		$id = input('id',0,'intval');
+        $field = input('field','','trim');
+		if ($id=='' || $field=='') return $this->error('缺少必要传参.');
+		$row = $this->Model->find($id);
+		if ($field == 'status'){
+			$upArr['status'] = $row['status'] == 2 ? 3: 2;
+		}		
+		$this->Model->save($upArr,['id'=>$id]);
+		return $this->success();
+	}
 }

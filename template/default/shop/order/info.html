@@ -99,7 +99,7 @@
         {/if}
         {if condition="$orderInfo.isSign == 1"}
         <span class="fs28 fw_b color_r bor " data-type="sign">确认收货</span>
-        <a href="物流信息.html" class="fs28 fw_b color_r bor ">查看物流</a>
+        <a href="{:url('order/shippingInfo',['order_id'=>$orderInfo['order_id']])}" class="fs28 fw_b color_r bor ">查看物流</a>
         {/if}
         {if condition="$orderInfo.isReview == 1"}
         <a href="#" class="fs28 fw_b color_r bor ">评论</a>

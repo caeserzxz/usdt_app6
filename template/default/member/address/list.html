@@ -75,6 +75,7 @@
             <div class="header-right"></div>
         </div>
     </div>
+	<form action="" id="formAddress">
     <div class="page-bd userData">
         <!-- 页面内容-->
         <div class="cells">
@@ -82,40 +83,39 @@
             <div class="cell_bd"><span class="fs28 color_9">收货人</span></div>
             
             <div class="cell_ft">
-              <input type="text" value="张信哲" class="fs28 fw_b color_3 inputBox" placeholder="张信哲">
+                 <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名" name="consignee" value="{{consignee}}">
             </div>
           </div>
           <div class="cell">
               <div class="cell_bd">
-            <span class="fs28 color_9">电话</span></div>
+            <span class="fs28 color_9">手机号码</span></div>
             <div class="cell_ft">
-              <input type="text" value="15632697456" class="fs28 fw_b color_3 inputBox" placeholder="15632697456">
+              <input type="text" class="fs28  color_3" placeholder="请输入收货人电话" name="mobile" value="{{mobile}}">
             </div>
           </div>
           <div class="cell bankType cell_access">
               <div class="cell_bd">
               <span class="fs28 color_9">所在地区</span></div>
               <div class="cell_ft">
-                <input type="text" value="广东省 广州市 天河区" class="fs28 fw_b color_3 bankBox" readonly id="city-picker">
+                <input type="text" value="{{_merger_name}}" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
               </div>
           </div>
           <div class="cell">
             <div class="cell_bd">
             <span class="fs28 color_9">详细地址</span></div>
             <div class="cell_ft">
-              <input type="text" value="棠下御富科贸园C1栋2楼" class="fs28 fw_b color_3 inputBox" id="address" placeholder="棠下御富科贸园C1栋2楼">
+             <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
             </div>
           </div>
         </div> 
+		<input type="hidden" name="address_id" value="{{address_id}}">
+		
         <div class="page-ft">
-            <span class="fs32 color_w fw_b BGcolor_r">保存更改</span>
+            <a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>
           </div>
       </div>
-
-
     </div>
-
-
+	</from>
  </script>
 {/literal}
 <script type="text/javascript">

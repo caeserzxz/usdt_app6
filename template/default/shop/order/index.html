@@ -150,7 +150,7 @@
 				_alert('确定取消此订单？',function(){action(arr,_this)});
 				return false;
 			}
-           return action(arr);
+           return action(arr,_this);
         })
 		function action(arr,_this){
 		 	jq_ajax('{:url("shop/api.order/action")}',arr,function(res){

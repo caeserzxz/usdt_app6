@@ -170,14 +170,14 @@ p {
 }
 
 .page-ft {
-  position: fixed;
+  position: absolute;
   width: 100%;
   bottom: 0;
 }
 
+
 .page-ft a {
   height: 0.533333rem;
-  margin: 0 0.2rem 0.133333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -187,4 +187,11 @@ p {
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+		  width:92%;
+		  position: fixed;
+		  bottom:0.01rem;
+}
+.addressInfoBox .page-ft a
+ {
+	margin-left:0px;
 }

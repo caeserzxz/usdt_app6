@@ -73,7 +73,15 @@
       <div class="BGcolor_3 copy" data-clipboard-action="copy" data-clipboard-text="{$userInfo.shareUrl}"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">复制链接</span></div>
       <div class="BGcolor_3"><img src="__STATIC__/mobile/default/images/mycode05.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
     </div>
-
+    <div class="model">
+      <div class="modelBg" onclick="hidemodel()"></div>
+      <div class="modelContent">
+        <div class="imgBox">
+        <img src="" alt="">
+        <span class="fs28 color_w">长按图片保存</span>
+      </div>
+      </div>
+    </div>
 </div>
 {/block}
 
@@ -99,15 +107,25 @@ $(function(){
             taintTest: false,
             onrendered: function (canvas) {
 				var url = canvas.toDataURL();
-               //以下代码为下载此图片功能
-			    var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
-				triggerDownload[0].click();
-				triggerDownload.remove();
+				var u = navigator.userAgent, app = navigator.appVersion;
+				var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+				
+				if (isIOS){
+					$('.model').find('img').attr('src',url);
+					$('.model').show()
+				}else{
+				   //以下代码为下载此图片功能
+					var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
+					triggerDownload[0].click();
+					triggerDownload.remove();
+				}
             }
         });
     });
-
-	 //复制
+	function hidemodel(){
+          $('.model').hide()
+   }
+	//复制
    var clipboard = new Clipboard('.copy');
   clipboard.on('success', function(e) {
 	  _alert('复制成功.');

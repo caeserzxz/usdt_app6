@@ -6,6 +6,7 @@
 namespace app\shop\controller;
 use app\ClientbaseController;
 use app\shop\model\OrderModel;
+use app\shop\model\ShippingLogModel;
 
 
 class Order extends ClientbaseController{
@@ -28,5 +29,17 @@ class Order extends ClientbaseController{
         $orderInfo = $OrderModel->info($order_id);
         $this->assign('orderInfo', $orderInfo);
         return $this->fetch('info');
+    }
+	 /*------------------------------------------------------ */
+    //-- 订单详情
+    /*------------------------------------------------------ */
+    public function shippingInfo(){
+        $this->assign('title', '物流信息');
+        $order_id = input('order_id',0,'intval');
+        if ($order_id < 1) return $this->error('传参错误.');
+     
+        $shippingLog = (new ShippingLogModel)->find($order_id);
+        
+        return $this->fetch('shipping_info');
     }
 }?>

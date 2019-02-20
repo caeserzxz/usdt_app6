@@ -380,6 +380,64 @@
   margin-right: 0.04rem;
 }
 
+.myCode .model {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  z-index: 99;
+  display: none;
+}
+
+.myCode .model .modelBg {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  z-index: 99;
+}
+
+.myCode .model .modelContent {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.myCode .model .modelContent .imgBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  z-index: 100;
+  position: relative;
+}
+
+.myCode .model .modelContent img {
+  width: 76vw;
+}
+
+.myCode .model .modelContent span {
+  margin-top: 0.133333rem;
+}
+
 .goodsCode .top {
   margin: 0.2rem 0.266667rem;
 }
