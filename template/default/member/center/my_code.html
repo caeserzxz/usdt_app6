@@ -50,7 +50,7 @@
           <div class="block">
             <div class="three capture">
               <div class="info">
-                <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                <img src="{$userInfo['headimgurl']}" alt="">
                 <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                 <span class="fs26 color_9">{$userInfo['signature']}</span>
               </div>
@@ -90,7 +90,10 @@
 <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
 <script src="__STATIC__/js/clipboard.min.js"></script>
 <script>
-
+function hidemodel(){
+    $('.model').hide()
+}
+ 
 $(function(){
    $('.tablist').on('click',function(){
 	 let index=$(this).index()
@@ -122,13 +125,12 @@ $(function(){
             }
         });
     });
-	function hidemodel(){
-          $('.model').hide()
-   }
+	
 	//复制
    var clipboard = new Clipboard('.copy');
   clipboard.on('success', function(e) {
 	  _alert('复制成功.');
+	  e.clearSelection();
   });
   clipboard.on('error', function(e) {
 	  _alert('复制失败.');

@@ -60,6 +60,7 @@
 //弹出窗口定义
 function _alert(title,fun){
 	var obj = $('.alertBox');
+	
 	obj.find('.text').html(title);	
 	if (typeof(fun) == 'undefined'){
 		obj.find('.button').css('display','flex').click(function(){
@@ -70,6 +71,8 @@ function _alert(title,fun){
 		obj.find('.button').css('display','flex').click(function(){
 			window.location.href = fun;
 		});	
+		obj.find('.buttonBox').css('display','none');
+		
 	}else{
 		obj.find('button').hide();
 		obj.find('buttonBox').show();

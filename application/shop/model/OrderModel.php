@@ -100,7 +100,6 @@ class OrderModel extends BaseModel
         $info['isPay'] = 0;
         $info['isDel'] = 0;
         $info['isSign'] = 0;
-        $info['isReview'] = 0;
         if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {
             if ($info['is_pay'] > 0  && $info['pay_status'] == $this->config['PS_UNPAYED']) {
                 $info['isCancel'] = 1;

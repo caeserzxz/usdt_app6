@@ -52,7 +52,7 @@ class Goods extends AdminController
 		
 		$search['keyword'] =  input('keyword','','trim');
 		if (empty($search['keyword']) == false){
-			 $where['_string'][] = "( goods_name like '%".$search['keyword']."%')  OR ( goods_sn like '%".$search['keyword']."%')"; 
+			 $where['and'][] = "( goods_name like '%".$search['keyword']."%')  OR ( goods_sn like '%".$search['keyword']."%')"; 
 		}
 		
 		$this->classList = $this->Model->getClassList();
@@ -693,9 +693,9 @@ class Goods extends AdminController
 	public function pubSearch() {
 		$keyword =  input('keyword','','trim');			
 		if (!empty($keyword)){
-			 $_string = "( goods_name LIKE '%".$keyword."%' OR goods_sn LIKE '%".$keyword."%' )";
+			 $where = "( goods_name LIKE '%".$keyword."%' OR goods_sn LIKE '%".$keyword."%' )";
 		}
-		$_list = $this->Model->where($_string)->field("goods_id,goods_name,is_spec,goods_sn")->limit(20)->select();
+		$_list = $this->Model->where($where)->field("goods_id,goods_name,is_spec,goods_sn")->limit(20)->select();
 		foreach ($_list as $key=>$row){
 			$_list[$key] = $row;
 		}

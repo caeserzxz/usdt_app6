@@ -185,7 +185,7 @@ class Bonus extends AdminController
 		}
 		$keyword = input('keyword','','trim');
 		if (empty($keyword) == false){
-			 $where['_string'][] = " user_id = '".$keyword."' OR order_sn = '".$keyword."' ";
+			 $where['and'][] = " user_id = '".$keyword."' OR order_sn = '".$keyword."' ";
 		}
 		$data = $this->getPageList($BonusListModel,$where);
 		$this->assign("data", $data);

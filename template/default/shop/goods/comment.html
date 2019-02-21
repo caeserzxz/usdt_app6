@@ -1,0 +1,115 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css" />
+{/block}
+{block name="main" }
+
+
+  <!-- 页面内容-->
+<div class="page-bd moreComment">
+    <div class="top">
+        <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9">(99)</p></div>
+     </div>
+    <div class="list">
+    
+    </div>
+    
+     
+</div>
+</div>
+  
+  
+
+{/block}
+{block name="footer"}
+
+<script type="text/html" id="listTpl">
+    {{each list as item index}}
+    <div class="commentBox bor_b">
+        <div class="user">
+          <img src="{{item.headimgurl}}" alt="">
+          <div class="info">
+            <p class="fs28 color_3">{{item.user_name}}</p>
+            <span class="fs24 color_9">{{item._time}}</span>
+          </div>
+        </div>
+        <div class="comtext fs28 color_3 line_twe">
+            {{item.content}}
+        </div>
+        <div class="comimg">
+		{{each item.imgs as img indexb}}
+            <img src="{{img.thumbnail}}" alt="">
+          {{/each}}
+        </div>
+        <div class="tips"><span class="fs24 color_9"> {{item.sku_name}}</span></div>
+     </div>
+    {{/each}}
+</script>
+<script>
+    var nowPage = 1,getAgain = false,isLoadend = false;
+    var postData = {$input|json_encode|raw};
+    $(function(){
+        $('.page-bd').scroll(function(){
+            let box_h=$(this).height()
+            let content_h=$('.scrollBox').height()
+            let scroll_h=$(this).scrollTop();
+            if(content_h-box_h-scroll_h<20){
+                getList(nowPage);
+            }
+        })
+        //请求列表数据
+        function getList(page,isagain) {
+            if (page == 1){
+                $('.list').html('');
+            }
+            if (isLoadend == true ) return false;
+            if (isagain == true){
+                if (getAgain == false) return false;
+                getAgain = false;
+            }else{
+                $('.list').append('<div class="get_list_tip">加载数据中...</div>');
+            }
+            isLoadend = true;
+            $.ajax({
+                url:'{:_url("shop/api.comment/getListByGoods",["goods_id"=>$goods_id,"limit"=>5,"p"=>"【page】"])}',
+                data:postData,
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    isLoadend = false;
+                    if(res.code  == 0 ){
+                        _alert(res.msg);
+                        getAgain = true;
+                        $('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    nowPage = page;
+                    nowPage++;
+                    $('.get_list_tip').remove();
+                    if (res.data.list){
+                        $('.list').append(template('listTpl',res.data));
+                    }else{
+                        $('.list').append('<div class="get_list_tip">---没有找到相关数据---</div>');
+                    }
+
+                    if (res.page_count == page) {
+                        $('.list').append('<div class="get_list_tip">---我也有底线的---</div>');
+                        isLoadend = true;
+                    }
+                },error : function() {
+                    isLoadend = false;
+                    getAgain = true;
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+        //重新请求数据
+        $(document).on('click','.get_list_tip',function () {
+                getList(nowPage,true);
+        })
+        getList(nowPage);//执行加载
+        
+    })
+</script>
+{/block}

@@ -1,0 +1,65 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css" />
+{/block}
+{block name='pageType'}seeEvaluate{/block}
+{block name="main" }
+
+ <div class="page-bd">
+       <!-- 页面内容-->
+          <div class="evaluateBox">
+            <div class="top">
+              <span class="fs32 fw_b color_3">评价</span><span class="fs28 color_9 _time"></span>
+           </div>
+           <div class="name fs28 color_3 content">
+             
+           </div>
+           <div class="imgBox">
+            
+           </div>
+          </div> 
+          <a href="" class="goodsBox">
+            <img src="" alt=""> 
+            <div class="info">
+              <div class="name fs28 color_3 textline_1 goods_name"></div>
+              <div class="type fs28 color_9 sku"></div>
+              <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36 price_a"></em><p class="price_b"></p></div>
+                </div>
+              </div>
+            </div>                  
+          </a>
+          
+      </div>
+
+</div>
+
+
+{/block}
+
+{block name="footer"}
+ <script>
+  
+	jq_ajax('{:url("shop/api.comment/getInfo",["rec_id"=>$rec_id])}','',function(res){
+		if (res.code == 0){
+			_alert(res.msg);
+			return false;	
+		}
+		$('.content').html(res.data.comment.content);
+		$('._time').html(res.data._time);
+		$.each(res.data.imgs, function(i,v){
+			$('.imgBox').append('<img src="'+v.thumbnail+'" alt="">');
+		});
+		
+		$('.goodsBox').attr('href','{:_url("shop/goods/info",["id"=>"【res.data.goods_id】"])}');
+		$('.goodsBox').find('img').attr('src',res.data.pic);
+		$('.goodsBox').find('.goods_name').html(res.data.goods_name);
+		$('.goodsBox').find('.sku').html(res.data.sku_name);
+		$('.goodsBox').find('.price_a').html(res.data.exp_price[0]);
+		$('.goodsBox').find('.price_b').html('.'+res.data.exp_price[1]);
+		
+		
+	});
+    </script>
+{/block}

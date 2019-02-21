@@ -104,14 +104,9 @@ class BaseController extends Controller
 		if (empty($this->search)){
 			$this->assign('search',$this->search);	
 		}
-		if (is_object($where) == false){//单表查询
-            $order_by = '';
-            $sort_by = '';
+		if (is_object($where) == false){//单表查询            
             if (empty($this->sqlOrder)){
-                $sort_by = input("sort_by/s");
-                if (empty($sort_by)){
-                    $sort_by = $this->sort_by;
-                }
+                $sort_by = input("sort_by/s");                
                 if (empty($sort_by) == false){
                     $sort_by = strtoupper($sort_by);
                     if (in_array($sort_by,array('DESC','ASC')) == false){
@@ -119,18 +114,17 @@ class BaseController extends Controller
                     }
                 }
                 $order_by = input("order_by/s");
-                if (empty($order_by)){
-                    $order_by = $this->order_by;
-                }
-
                 //判断排序字段是否存在
                 if (empty($order_by) == false){
                     if ($model->isSetField($order_by) == false){
                         $order_by = '';
                     }
-                }
+                }			
+				if (empty($order_by) == false){
+					$this->sqlOrder = $order_by.' '.$sort_by;
+				}
             }
-			return $model->getPageList(input("p/d", 1),$where,$field,$order_by,$sort_by,$this->sqlOrder,$page_size);
+			return $model->getPageList(input("p/d", 1),$where,$field,$page_size,$this->sqlOrder);
 		}else{//联表查询
 			return $model->getJointList(input("p/d", 1),$where,$page_size);
 		}

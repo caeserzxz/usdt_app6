@@ -69,38 +69,23 @@
     </div>
    <!-- 评论 -->
         <div class="comment">
-           <a class="top" href="更多评论.html">
-              <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9">(9)</p></div>
+           <a class="top" href="{:url('comment',['goods_id'=>$goods['goods_id']])}">
+              <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 commentNum">(0)</p></div>
               <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
            </a>
            <div class="commentBox">
               <div class="user">
-                <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                <img src="" alt="">
                 <div class="info">
-                  <p class="fs28 color_3">狂风扫落叶</p>
-                  <span class="fs24 color_9">2018.12.22</span>
+                  <p class="fs28 color_3 uname"></p>
+                  <span class="fs24 color_9 time"></span>
                 </div>
               </div>
-              <div class="comtext fs28 color_3 line_twe">
-                  大衣是A字型的，有暗扣，系腰带效果一般，12.17买的，以为低价了，结果刚买完又降价了，预料不到的促销
+              <div class="comtext fs28 color_3 line_twe content">
+                  
               </div>
               <div class="comimg">
-                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
-                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
-                  <img src="__STATIC__/mobile/default/images/youLike01.png" alt="">
-              </div>
-              <a class="top" href="问大家.html">
-                  <div class="fs32 color_3"><span class="fw_b">问大家</span><p class="color_9">(19)</p></div>
-                  <div><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
-              </a>
-               <div class="question">
-                 <div class="tips"><em class="fs22 color_w BGcolor_r">问</em><span class="fs28 color_3 line_one">这款衣服色差大吗？</span></div>
-                 <p class="fs26 color_9">4个回答</p>
-               </div>
-               <div class="question">
-                  <div class="tips"><em class="fs22 color_w BGcolor_r">问</em><span class="fs28 color_3 line_one">羽绒服吗？有人鉴定过羽绒含量是真的99%以上吗？</span></div>
-                  <p class="fs26 color_9">4个回答</p>
-                </div>
+              </div>              
            </div>
         </div>
         <!-- 图文 -->
@@ -110,7 +95,7 @@
         </div>
     <!-- 浮按钮 -->
     <div class="button">
-        <a href="商品二维码.html" class="share BGcolor_3"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""></a>
+        <a href="{:url('myCode',['goods_id'=>$goods['goods_id']])}" class="share BGcolor_3"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""></a>
         <i></i>
         <div class="attention BGcolor_3"><img
                 src="__STATIC__/mobile/default/images/goodsIcon03{$isCollect==1?'_lh':''}.png" data-no="{$isCollect}"
@@ -160,9 +145,22 @@
                     imgObj.data('no', '0')
                 }
             });
-
-
+			
         })
+		jq_ajax('{:url("shop/api.comment/getListByGoods",["goods_id"=>$goods["goods_id"],"limit"=>1])}','',function(res){
+			if (res.code == 0){
+				return false;	
+			}
+			$('.commentNum').html('('+res.data.total_count+')');
+			$('.commentBox .user img').attr('src',res.data.list[0].headimgurl);
+			$('.commentBox .user .uname').html(res.data.list[0].user_name);
+			$('.commentBox .user .time').html(res.data.list[0]._time);
+			$('.commentBox  .content').html(res.data.list[0].content);
+			$.each(res.data.list[0].imgs,function(i,v){
+				$('.commentBox .comimg').append('<img src="'+v.thumbnail+'">');
+			})
+		})
+
         // 滚动出现tab
         $('#goods').scroll(function(){
           let scrolltop=$(this).scrollTop()
@@ -243,14 +241,7 @@
         if (res.msg) _alert(res.msg);
     }
 
-    //更多评论
-    function moreComment() {
-        $('.header-title span').eq(2).addClass('active')
-        $('.header-title span').eq(2).siblings().removeClass('active')
-        $('.page-bd').eq(2).addClass('tabBox');
-        $('.page-bd').eq(2).siblings().removeClass('tabBox');
-        $('.button').hide()
-    }
+    
 
     function createSwiper(index) {
         var swiper = new Swiper(".swiper" + index, {

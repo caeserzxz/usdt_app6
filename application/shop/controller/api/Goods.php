@@ -27,7 +27,7 @@ class Goods extends ApiController
 
         $search['keyword'] =  input('keyword','','trim');
         if (empty($search['keyword']) == false){
-            $where['_string'][] = "( goods_name like '%".$search['keyword']."%')  OR ( keywords like '%".$search['keyword']."%')";
+            $where['and'][] = "( goods_name like '%".$search['keyword']."%')  OR ( keywords like '%".$search['keyword']."%')";
         }
 		
         $search['cid'] = input('cid',0,'intval');

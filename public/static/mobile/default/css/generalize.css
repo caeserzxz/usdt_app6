@@ -380,7 +380,7 @@
   margin-right: 0.04rem;
 }
 
-.myCode .model {
+.myCode .model,.goodsCode .model {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -389,7 +389,7 @@
   display: none;
 }
 
-.myCode .model .modelBg {
+.myCode .model .modelBg,.goodsCode .model .modelBg{
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -398,7 +398,7 @@
   z-index: 99;
 }
 
-.myCode .model .modelContent {
+.myCode .model .modelContent,.goodsCode .model .modelContent{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -412,7 +412,7 @@
   width: 100vw;
 }
 
-.myCode .model .modelContent .imgBox {
+.myCode .model .modelContent .imgBox,.goodsCode .model .modelContent .imgBox {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -430,11 +430,11 @@
   position: relative;
 }
 
-.myCode .model .modelContent img {
+.myCode .model .modelContent img,.goodsCode .model .modelContent img {
   width: 76vw;
 }
 
-.myCode .model .modelContent span {
+.myCode .model .modelContent span,.goodsCode .model .modelContent span {
   margin-top: 0.133333rem;
 }
 

@@ -32,7 +32,7 @@ class Order extends ApiController
             case 'waitShipping':
                 $where[] = ['order_status', '=', '1'];
                 $where[] = ['shipping_status', '=', '0'];
-                $where['_string'][] = "(pay_status = 1 OR is_pay = 0)";
+                $where['and'][] = "(pay_status = 1 OR is_pay = 0)";
                 break;
             case 'waitSign':
                 $where[] = ['order_status', '=', '1'];

@@ -81,7 +81,7 @@ function userInfo($user_id,$returnName=true){
 	}
 	if (empty($userList[$user_id])) return $returnName == true ? '--' : [];
 	$info = $userList[$user_id];
-	if ($returnName == true) return $info['user_name'];
+	if ($returnName == true) return $info['nick_name'];
 	return $info;
 }
 /*------------------------------------------------------ */

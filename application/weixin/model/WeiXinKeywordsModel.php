@@ -28,10 +28,10 @@ class WeiXinKeywordsModel extends BaseModel
 	/*------------------------------------------------------ */
     public function checkKey($keyword,$fromUsername){
         $map['status'] = 1;
-		$map['_string'] = "FIND_IN_SET('".$keyword."',keyword)";
+		$map['and'] = "FIND_IN_SET('".$keyword."',keyword)";
 		// 关注回复
         if ($keyword == 'subscribe'){
-			unset($map['_string']);
+			unset($map['and']);
             $map['subscribe'] = 1;
 			$map['pid'] = 0;
 			unset($map['keyword']);

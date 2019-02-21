@@ -823,6 +823,75 @@ label .check[type=checkbox]:checked + i:after {
     align-items: center;
 }
 
+
+.uploading {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.uploading .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  padding: 0 0.266667rem;
+}
+
+.uploading .uploadBox {
+  padding: 0.066667rem 0.266667rem 0.306667rem;
+  display: block;
+  overflow:hidden;
+}
+
+.uploading .uploadBox .Box {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0.013333rem dashed #eeeeee;
+  margin-right: 0.285rem;
+  float:left; margin-bottom:18px;
+}
+
+.uploading .uploadBox .Box .imgBox {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: -0.013333rem 0 0 -0.013333rem;
+}
+
+.uploading .uploadBox .Box .closeImg {
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  top: -0.093333rem;
+  right: -0.093333rem;
+}
+
+.uploading .uploadBox .Box input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .alertBox {
   position: fixed;
   top: 0;

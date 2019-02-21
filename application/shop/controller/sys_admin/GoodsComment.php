@@ -156,6 +156,17 @@ class GoodsComment extends AdminController {
 		return $this->success('添加成功',url('index'));
 	}
 	/*------------------------------------------------------ */
+	//-- 修改前调用
+	/*------------------------------------------------------ */
+	public function beforEidt($data) {
+		$info = $this->Model->find($data['id']);
+		if ($info['status'] != $data['status']){
+			$data['review_time'] = time();
+			$data['review_admin_id'] = AUID;
+		}
+		return $data;
+	}
+	/*------------------------------------------------------ */
 	//-- 快捷修改
 	/*------------------------------------------------------ */
 	public function ajaxEdit(){

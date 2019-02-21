@@ -106,38 +106,50 @@ class BaseModel extends Model
       * @param string $order_by
 	 * @param string $sort_by   
      */
-    public function getPageList($page, $condition = '', $field = '*', $order_by = '' ,$sort_by = '',$sqlOrder='',$page_size = 10)
-    {
+    public function getPageList($page, $condition = '', $field = '*',$page_size = 10,$sqlOrder='')
+    {		
         if (empty($sqlOrder)){
-            if (empty($order_by)) $order_by =  $this->pk;
-            if (empty($sort_by))  $sort_by = 'DESC';
-            $sqlOrder = $order_by.' '.$sort_by;
+            $sqlOrder = $this->pk.' DESC';
         }
-		if (empty($condition['_string']) == false){
-			$whereArr = $condition['_string'];
-			unset($condition['_string']);
-			$Obj = $this->where($condition);
-			$_Obj = $this->where($condition);
-			foreach ($whereArr as $where){
-				 $Obj->where($where);
-				 $_Obj->where($where);
-			}
-		}else{
-			 $Obj = $this->where($condition);
-			 $_Obj = $this->where($condition);
+		$this->whereAnd = $this->whereOr = array();
+		if (empty($condition['and']) == false){
+			$this->whereAnd = $condition['and'];
+			unset($condition['and']);			
 		}
-		//echo $Obj->field($field)->order($sqlOrder)->select(false);
-        //exit;
-		$count = $_Obj->count();
+		if (empty($condition['or']) == false){
+			$this->whereOr = $condition['or'];			
+			unset($condition['or']);		
+		}
+		$viewObj = $this->where($condition);
+		
+		if (empty($this->whereAnd) == false){
+			foreach ($this->whereAnd as $where){
+				$viewObj->where($where);			
+			}	
+		}	
+		if (empty($this->whereOr) == false){			
+			 $viewObj->whereOr(function ($query) {				 		 
+					foreach ($this->whereOr as $where){
+						 $query->where($where);			
+					}
+			 });	
+		}
+		
+		
         if ($page_size == 0) {
 			$list = array();
+			$count = Db::query($viewObj->count());
+			$count = $count[0]['tp_count'];
 			if ($count > 0){
 				 $list = $Obj->field($field)->order($sqlOrder)->select()->toArray();
 			}
             $page_count = 1;
         } else {
-            $start_row = $page_size * ($page - 1);
-            $list = $Obj->field($field)->order($sqlOrder)->limit($start_row . "," . $page_size)->select()->toArray();
+			$start_row = $page_size * ($page - 1);
+			$sql = $viewObj->field($field)->limit($start_row . "," . $page_size)->order($sqlOrder)->select(false);			
+			$count = Db::query($viewObj->count());
+			$count = $count[0]['tp_count'];
+            $list = Db::query($sql);
             if ($count % $page_size == 0) {
                 $page_count = $count / $page_size;
             } else {
@@ -152,21 +164,7 @@ class BaseModel extends Model
 			'page_size' => $page_size
         );
     }
-    /**
-     * 获取一定条件下的列表
-     * @param unknown $condition
-     * @param unknown $field
-     */
-    public function getList($condition, $field='*', $order='')
-    {
-		if (is_object($condition)){
-			$list = $condition->field($field)->order($order)->select()->toArray(); 
-		}else{			
-			$list = $this->field($field)->where($condition)->order($order)->select()->toArray(); 
-		}
-        return $list;      
-    }
-
+   
     /**
      * 获取关联查询列表
      *
@@ -189,8 +187,7 @@ class BaseModel extends Model
             	$list = $viewObj->select()->toArray();
 			}
             $page_count = 1;
-        } else {
-            $start_row = $page_size * ($page - 1);            
+        } else {          
             $list = Db::query($sql);
 			 if ($count % $page_size == 0) {
                 $page_count = $count / $page_size;

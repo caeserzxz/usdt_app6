@@ -50,4 +50,24 @@ class Goods extends ClientbaseController{
         return $this->fetch('info');
     }
 	
+	/*------------------------------------------------------ */
+    //-- 商品评论页
+    /*------------------------------------------------------ */
+    public function myCode(){
+		$this->checkLogin(false);//验证白名单
+		$this->assign('title', '商品二维码');
+		$goods_id = input('goods_id',0,'intval');
+		$goods = $this->Model->info($goods_id);
+		$this->assign('goods', $goods);
+		return $this->fetch('my_code');
+	}
+	 /*------------------------------------------------------ */
+    //-- 商品评论页
+    /*------------------------------------------------------ */
+    public function comment(){
+		$this->assign('title', '商品评论');
+		$goods_id = input('goods_id',0,'intval');
+		$this->assign('goods_id', $goods_id);
+		return $this->fetch('comment');
+	}
 }?>

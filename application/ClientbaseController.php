@@ -63,9 +63,9 @@ class ClientbaseController extends BaseController
     /*------------------------------------------------------ */
     //-- 验证登录状态
     /*------------------------------------------------------ */
-    private function checkLogin(){
+    protected function checkLogin($isAllow = true){
         // 验证当前请求是否在白名单
-        if (in_array($this->module.'/'.$this->routeUri, $this->allowAllAction) || in_array($this->module.'/'.$this->controller,$this->allowAllAction)) {
+        if ($isAllow == true && in_array($this->module.'/'.$this->routeUri, $this->allowAllAction) || in_array($this->module.'/'.$this->controller,$this->allowAllAction)) {
             //记录分享
             $share_token = input('share_token','','trim');
             if (empty($share_token) == false){

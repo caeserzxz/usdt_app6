@@ -1,0 +1,113 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css" />
+{/block}
+{block name='pageType'}evaluate{/block}
+{block name="main" }
+<div class="tab fs32 ">
+        <div class="color_9 orderActive" data-type="wait">待评价<span class="fs26 wait_num"></span></div>
+        <div class="color_9" data-type="end">已评价<span class="fs26"></span></div>
+      </div>
+
+ <div class="page-bd">
+        <!-- 页面内容-->
+          <div class="tabBox">
+              <div class="tabBlock ">
+                <div id="waitBox"></div>
+              </div>
+              <div class="tabBlock box">
+                  <div id="endBox"></div>
+              </div>
+          </div>
+
+ </div>
+
+
+{/block}
+
+{block name="footer"}
+
+  <script id="goodsTpl" type="text/html">
+        {{each list as item index}}
+        <div class="goodsBox">
+            <img src={{item.pic}} alt=""> 
+            <div class="info">
+              <div class="name fs28 color_3 textline_1">{{item.goods_name}}</div>
+              <div class="type fs28 color_9">{{item.sku_name}}</div>
+              <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+                    <div class="fs24 color_9 originalMoney">￥{{item.shop_price}}</div>
+                </div>
+				{literal}{{if item.is_evaluate == 1}}{/literal}
+                <a class="butt color_r fs28" href="{:_url('comment',['rec_id'=>'[[item.rec_id]]'])}">评价</a>
+				{literal}{{else}}{/literal}
+				<a class="butt color_3 fs28 borColor_e" href="{:_url('view',['rec_id'=>'[[item.rec_id]]'])}"">查看评价</a>
+				{literal}{{/if}}{/literal}
+              </div>
+            </div>                  
+        </div>
+        {{/each}}
+      
+   </script>
+
+    <script>
+	 var nowPage = [],getAgain = [],isLoadend = [];
+	 var _type = 'wait';
+	function getList(isagain){
+		page = nowPage[_type];
+        if (typeof(page) == 'undefined') page = 1;
+		if (isLoadend[_type] == true ) return false;
+		if (isagain == true){
+			if (getAgain[_type] == false) return false;
+			getAgain[_type] = false;
+		}else{
+			$('.'+_type+'Box').append('<div class="get_list_tip" data-type="'+_type+'">加载数据中...</div>');
+		}
+		
+		isLoadend[_type] = true;
+		jq_ajax('{:url("shop/api.comment/getList")}','type='+_type+'&p='+page,function(res){
+			isLoadend[_type] = false;
+			if(res.code  == 0 ){
+				  _alert(res.msg);
+				  getAgain[_type] = true;
+				  $('.'+_type+'Box').find('.get_list_tip').html('加载失败，点击重新加载.');
+				  return false;
+			}
+			$('#'+_type+'Box').append(template('goodsTpl',res));
+			if (_type == 'wait'){
+				$('.wait_num').html('('+res.total_count+')');	
+			}
+			nowPage[_type] = page+1;
+			$('#'+_type+'Box').find('.get_list_tip').remove();
+			if (res.page_count == page) {
+                 $('.'+_type+'Box').append('<div class="get_list_tip">---我也有底线的---</div>');
+                 isLoadend[_type] = true;
+             }
+		})	
+	}
+       $(function(){
+		getList();
+        $('.tab div').on('click',function(){
+             let index=$(this).index();
+             $(this).addClass('orderActive')
+             $(this).siblings().removeClass('orderActive')
+             $('.tabBlock').eq(index).show();
+             $('.tabBlock').eq(index).siblings().hide();
+			 _type = $(this).data('type');
+			 if ($('#'+_type+'Box').html() == ''){
+					isLoadend[_type] = false;
+					getAgain[_type] = false;
+					getList();//执行加载
+			 }
+           })
+       })
+       $('.tabBlock').scroll(function(){  
+         if($(this).children('div').height()-$(this).height()-$(this).scrollTop()<50){
+           getList();
+         }
+       })
+    </script>
+
+
+{/block}

@@ -38,7 +38,7 @@
         <div class="form-group cat_div {$row['type']=='goods'?'hide':''}">
             <label class="col-sm-2 control-label">商品分类</label>
             <div class="col-sm-3 must">
-                <select name="category_id" id="sel_category" style="width:100%;" >
+                <select name="cat_id" id="sel_category" style="width:100%;" >
                     <option value="">请选择商品分类</option>
                     {$categoryOpt|raw}
                 </select>
@@ -62,9 +62,9 @@
        {if condition="$row.user_id > 0"}
        <div class="form-group">
                 <label class="col-sm-2 control-label">评论会员：</label>               
-                <div class="col-sm-4"> 
+                <div class="col-sm-4 "> 
                 	{$row.user_id|userInfo} 
-                	<a href="{:url('member/sys_admin.users/info',['user_id'=>$row['user_id']])}" target="_blank" class="m-xs" title="查看" ><i class="fa fa-refresh text-muted"></i></a>     
+                     <a href="{:url('member/sys_admin.users/info',['user_id'=>$row['user_id']])}" class="m-xs" title="查看会员"  ><i class="fa fa-search text-muted"></i></a>           
                 </div>
         </div>
        {else/}

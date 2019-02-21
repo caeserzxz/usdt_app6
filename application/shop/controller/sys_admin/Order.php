@@ -114,7 +114,7 @@ class Order extends AdminController{
 					$where[] = ['consignee','like',$search['keyword'].'%'];
 				break;
 				case 'goods_sn':
-				 	$where['_string'][] = "FIND_IN_SET('".$search['keyword']."', buy_goods_sn)";
+				 	$where['and'][] = "FIND_IN_SET('".$search['keyword']."', buy_goods_sn)";
 				break;
 				case 'mobile':
 				 	$where[] = ['mobile','like',$search['keyword'].'%'];
