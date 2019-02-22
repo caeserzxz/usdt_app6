@@ -32,5 +32,14 @@ class DividendRoleModel extends BaseModel
 		Cache::set(self::$mkey,$data,600);
 		return $data;
 	}
-
+	/*------------------------------------------------------ */
+	//-- 获取角色信息
+	/*------------------------------------------------------ */ 
+	public function info($role_id,$returnName = false){
+		$rows = $this->getRows();
+		if ($returnName == true){
+			return $rows[$role_id]['role_name'];
+		}
+		return $rows[$role_id];
+	}
 }

@@ -66,8 +66,7 @@ $(".saveImg").on("click", function (event) {
         });
  });
 	 //获取二维码
-   	jq_ajax('{:url("member/api.users/myCode")}','',function(res){
-	
+   	jq_ajax('{:url("member/api.users/goodsCode")}','goods_id={$goods.goods_id}',function(res){	
 	   if (res.code == 0){
 			_alert(res.msg,'{:url("member/passport/login")}');
 			return false;   

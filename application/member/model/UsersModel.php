@@ -4,7 +4,7 @@ use app\BaseModel;
 use think\facade\Cache;
 
 use app\shop\model\CartModel;
-
+use app\weixin\model\WeiXinUsersModel;
 //*------------------------------------------------------ */
 //-- 会员表
 /*------------------------------------------------------ */
@@ -126,13 +126,14 @@ class UsersModel extends BaseModel
         $inArr['password'] = f_hash($inArr['password']);
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
+		//分享注册
         $share_token = session('share_token');
-        if (empty($share_token) == false){//分享注册
-                $pInfo = $this->getShareUser($share_token,false);
-                if ($pInfo['is_ban'] != 1) {
-                    $inArr['pid'] = $pInfo['user_id']*1;
-                }
-        }
+        if (empty($share_token) == false){
+			  $pInfo = $this->getShareUser($share_token);
+			  if ($pInfo['is_ban'] != 1) {
+				  $inArr['pid'] = $pInfo['user_id']*1;
+			  }
+        }//end
         $res = $this->save($inArr);
         if ($res < 1) return '未知错误，写入会员数据失败.';		
 		
@@ -143,10 +144,10 @@ class UsersModel extends BaseModel
         //捆绑微信会员信息
         $wxuid = session('wxuid');
         if ($wxuid > 0){
-            $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+            $WeiXinUsersModel = new WeiXinUsersModel();
             $WeiXinUsersModel->bindUserId($wxuid,$this->user_id);
         } //end
-        //写入等级关联
+        //写入九级关系链
         $this->regUserBind($this->user_id,$inArr['pid']);
         return true;
     }
@@ -255,7 +256,13 @@ class UsersModel extends BaseModel
 		$this->cleanMemcache($user_id);
     	return $res;
 	}	
-
+	/*------------------------------------------------------ */
+	//-- 根据token获取分享者进行关联
+	/*------------------------------------------------------ */
+	public function getShareUser($token = ''){
+		if (empty($token)) return array();
+		return $this->where('token',$token)->find();
+	}
 	/*------------------------------------------------------ */
 	//-- 获取会员下级汇总
 	/*------------------------------------------------------ */ 
@@ -266,7 +273,7 @@ class UsersModel extends BaseModel
         $UsersBind = new UsersBindModel();
 		$rows = $UsersBind->field("count('user_id') as num,level")->where('pid',$user_id)->group('level')->select();
 		foreach ($rows as $row){
-			$info['all_num'] += $row['num'];
+			$info['all'] += $row['num'];
 			$info[$row['level']] = $row['num'];
 		}
 		Cache::set($this->mkey.'_us_'.$user_id,$info,30);
@@ -279,8 +286,8 @@ class UsersModel extends BaseModel
         $DividendSatus = settings('DividendSatus');
         if ($DividendSatus == 0) return true;//不开启推荐，不执行
         if ($user_id == 0 || $pid == 0) return false;
-        $UsersBind = new UsersBind();
-        $d_level = config('config.DIVIDEND_LEVEL');
+        $UsersBindModel = new UsersBindModel();
+        $d_level = config('config.dividend_level');
         foreach ($d_level as $key=>$val){
             if ($pid < 1) break;
             $spid[] = $pid;
@@ -290,12 +297,12 @@ class UsersModel extends BaseModel
             $inArr['level'] = $key;
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $pid;
-            $UsersBind::create($inArr);
+            $UsersBindModel::create($inArr);
             $pid = $this->where('user_id',$pid)->value('pid');
         }
         $spid[] = $user_id;
         sort($spid);
-        $this->where('user_id',$user_id)->update(['spid'=>$spid]);
+        $this->where('user_id',$user_id)->update(['spid'=>join(',',$spid)]);
 		return true;
 	}
 }

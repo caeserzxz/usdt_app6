@@ -13,4 +13,5 @@ return [
     // 上传目录
 	'_upload_'=> './upload/',
 	'host_path'=> 'http://'.$_SERVER['SERVER_NAME'],//指定域名
+	'dividend_level' => array(1=>'一级',2=>'二级',3=>'三级',4=>'四级',5=>'五级',6=>'六级',7=>'七级',8=>'八级',9=>'九级'),//提成等级
 ];

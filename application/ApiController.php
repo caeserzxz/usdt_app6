@@ -51,7 +51,7 @@ class ApiController extends BaseController
     //-- 验证登录状态
     /*------------------------------------------------------ */
     public function checkLogin(){
-        if (empty($this->userInfo)) return $this->error('请登陆后再操作.');
+        if (empty($this->userInfo) || $this->userInfo['user_id'] < 1) return $this->error('请登陆后再操作.');
         return true;
     }
     /*------------------------------------------------------ */

@@ -79,6 +79,24 @@ class Users extends ApiController
         return $this->ajaxReturn($return);
     }
 	/*------------------------------------------------------ */
+    //-- 获取分享商品二维码
+    /*------------------------------------------------------ */
+    public function goodsCode(){
+		$goods_id = input('goods_id',0,'intval');
+		$file_path = config('config._upload_').'goods_qrcode/'. $goods_id . '/';
+		$file = $file_path.$this->userInfo['token'].'.png';
+		if (file_exists($file) == false){
+			include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件			
+        	$QRcode = new \phpqrcode\QRcode();
+			$value = config('config.host_path').url('shop/goods/info',['id'=>$goods_id,'share_token'=>$this->userInfo['token']]);
+			makeDir($file_path);
+			$png = $QRcode::png($value, $file, "L", 10,1,2,true);		
+		}
+		$return['file'] = config('config.host_path').trim($file,'.');
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+	/*------------------------------------------------------ */
     //-- 获取会员帐号数据
     /*------------------------------------------------------ */
     public function getAccount()
