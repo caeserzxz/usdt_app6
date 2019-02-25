@@ -108,6 +108,10 @@ $('.uploadBox').on('click','.closeImg',function(){
 //选择上传图片
 function uploadFile(_this,e){	
 	compress(e, function(base64Img){
+		if (imgNum > 6){
+			_alert('最多允许上传6张图片.');
+			return false;	
+		}
 		imgNum++;
 		fd.append("imgfile["+imgNum+"]", base64Img);
 		$(_this).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+imgNum+'" class="closeImg"></div>');

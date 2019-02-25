@@ -393,6 +393,7 @@
 .youLike {
   background-color: #fff;
   margin-top: 0.133333rem;
+  padding-bottom:5px;
 }
 
 .youLike .title {

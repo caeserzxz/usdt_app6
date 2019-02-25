@@ -37,7 +37,7 @@
 <script>
     $(function() {
         FastClick.attach(document.body);
-		$("img.lazy").lazyload({effect: "fadeIn"});
+		$("img.lazy").lazyload({effect:"fadeIn",event:"scroll",container:$(".page-bd")});		
     });
 </script>
 {block name="footer"}{/block}

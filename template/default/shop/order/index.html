@@ -93,7 +93,7 @@
 		
 		$('.tabBox').on('click','.order_review',function(){
 			var order_id = $(this).data('order_id');
-			 window.location.href = '{:url("member/center/index",["order_id"=>"【order_id】"])}';
+			 window.location.href = '{:_url("comment/index",["order_id"=>"【order_id】"])}';
 		})
 		
         //请求列表数据

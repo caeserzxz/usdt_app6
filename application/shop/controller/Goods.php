@@ -40,7 +40,7 @@ class Goods extends ClientbaseController{
         $goods = $this->Model->info($goods_id);
         $this->assign('title', $goods['goods_name']);
 						
-		$goods['goods_desc'] = preg_replace("/src=[\"|\'](.*?)[\"|\']/",'class="lazy_pic" src="__STATIC__/mobile/default/images/page_loading.gif" data-original="$1"',$goods['goods_desc']);
+		$goods['m_goods_desc'] = preg_replace("/src=[\"|\'](.*?)[\"|\']/",'class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$1"',$goods['m_goods_desc']);
         $this->assign('goods', $goods);
         $imgWhere[] = ['goods_id','=',$goods_id];
         $this->assign('imgsList', $this->Model->getImgsList($imgWhere));//获取图片

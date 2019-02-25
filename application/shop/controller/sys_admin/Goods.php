@@ -315,7 +315,7 @@ class Goods extends AdminController
 		$row['limit_user_level'] = empty($row['limit_user_level'])?'':join(',',$row['limit_user_level']);
 		//身份购买限制
 		$row['limit_user_role'] = empty($row['limit_user_role'])?'':join(',',$row['limit_user_role']);
-		
+		$row['shop_price'] = $row['shop_price'] * 1;
 		$row['store_id'] = $this->store_id;//门店ID
 		return $row;
 	}
@@ -487,6 +487,7 @@ class Goods extends AdminController
 		}else{
             $row['shop_price'] =  $row['show_price'];
         }
+		$row['shop_price'] = $row['shop_price'] * 1;
         $row['sort_price'] = $row['shop_price'];
         $row['is_best'] =  $row['is_best'] * 1;
         $row['is_hot'] =  $row['is_hot'] * 1;
