@@ -64,7 +64,7 @@
             {literal}
             {{/if}}
             {{if item.isReview==1}}
-            <span class="fs28 fw_b color_3 bor_e order_review">评价</span>
+            <span class="fs28 fw_b color_3 bor_e order_review" data-order_id="{{item.order_id}}">评价</span>
             {{/if}}
             {{if item.isDel==1}}
             <span class="fs28 fw_b color_3 bor_e order_action" data-type="del" data-order_id="{{item.order_id}}">删除</span>
@@ -90,6 +90,12 @@
                 getList();
             }
         })
+		
+		$('.tabBox').on('click','.order_review',function(){
+			var order_id = $(this).data('order_id');
+			 window.location.href = '{:url("member/center/index",["order_id"=>"【order_id】"])}';
+		})
+		
         //请求列表数据
         function getList(isagain) {
             page = nowPage[_type];

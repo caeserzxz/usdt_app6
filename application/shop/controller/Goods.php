@@ -39,6 +39,8 @@ class Goods extends ClientbaseController{
         if ($goods_id < 1) return $this->error('传参错误.');
         $goods = $this->Model->info($goods_id);
         $this->assign('title', $goods['goods_name']);
+						
+		$goods['goods_desc'] = preg_replace("/src=[\"|\'](.*?)[\"|\']/",'class="lazy_pic" src="__STATIC__/mobile/default/images/page_loading.gif" data-original="$1"',$goods['goods_desc']);
         $this->assign('goods', $goods);
         $imgWhere[] = ['goods_id','=',$goods_id];
         $this->assign('imgsList', $this->Model->getImgsList($imgWhere));//获取图片

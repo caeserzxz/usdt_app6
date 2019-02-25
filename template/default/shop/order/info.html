@@ -102,7 +102,7 @@
         <a href="{:url('order/shippingInfo',['order_id'=>$orderInfo['order_id']])}" class="fs28 fw_b color_r bor ">查看物流</a>
         {/if}
         {if condition="$orderInfo.isReview == 1"}
-        <a href="#" class="fs28 fw_b color_r bor ">评论</a>
+        <a href="{:url('comment/index',['order_id'=>$orderInfo['order_id']])}" class="fs28 fw_b color_r bor ">评论</a>
         {/if}
     </div>
 </div>

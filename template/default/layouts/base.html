@@ -8,7 +8,7 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="stylesheet" href="__STATIC__/mobile/default/css/layout.css"/>
     <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
-    <script src="__STATIC__/js/jquery/jquery/2.1.4/jquery.js"></script>
+    <script src="__STATIC__/js/jquery/jquery/2.1.4/jquery.min.js"></script>
     <script src="__STATIC__/mobile/default/js/page.js"></script>
     <title>{$title}  - {$setting.shop_title}</title>
     {block name="head"}{/block}
@@ -33,9 +33,11 @@
 
 <script src="__STATIC__/js/art-template.js"></script>
 <script src="__STATIC__/mobile/default/js/lib/fastclick.js"></script>
+<script src="__STATIC__/js/jquery/lazyload/jquery.lazyload.js"></script>
 <script>
     $(function() {
         FastClick.attach(document.body);
+		$("img.lazy").lazyload({effect: "fadeIn"});
     });
 </script>
 {block name="footer"}{/block}

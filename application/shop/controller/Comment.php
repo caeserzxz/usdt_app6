@@ -13,7 +13,8 @@ class Comment extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
-		$this->assign('title', '评论中心');     
+		$this->assign('title', '评论中心');
+		$this->assign('order_id', input('order_id',0,'intval'));         
 		return $this->fetch('index');
 	}
    /*------------------------------------------------------ */
