@@ -8,7 +8,7 @@
   <!-- 页面内容-->
 <div class="page-bd moreComment">
     <div class="top">
-        <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9">(99)</p></div>
+        <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 comment_num">(0)</p></div>
      </div>
     <div class="list">
     
@@ -27,7 +27,7 @@
     {{each list as item index}}
     <div class="commentBox bor_b">
         <div class="user">
-          <img src="{{item.headimgurl}}" alt="">
+          <img src="{{item.headimgurl?item.headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg'}}" alt="">
           <div class="info">
             <p class="fs28 color_3">{{item.user_name}}</p>
             <span class="fs24 color_9">{{item._time}}</span>
@@ -84,6 +84,9 @@
                         $('.get_list_tip').html('加载失败，点击重新加载.');
                         return false;
                     }
+					if (page == 1){
+						$('.comment_num').html('('+res.data.total_count+')');	
+					}
                     nowPage = page;
                     nowPage++;
                     $('.get_list_tip').remove();
@@ -93,7 +96,7 @@
                         $('.list').append('<div class="get_list_tip">---没有找到相关数据---</div>');
                     }
 
-                    if (res.page_count == page) {
+                    if (res.data.page_count == page) {
                         $('.list').append('<div class="get_list_tip">---我也有底线的---</div>');
                         isLoadend = true;
                     }

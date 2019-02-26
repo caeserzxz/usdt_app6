@@ -15,7 +15,7 @@
         <div class="info">
           <div class="left">
             <div class="color_r fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
-            <div class="user"><img src="{$userInfo['headimgurl']}" alt=""><p class="fs28 color_3 fw_b">{$userInfo['nick_name']}</p></div>
+            <div class="user"><img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt=""><p class="fs28 color_3 fw_b">{$userInfo['nick_name']}</p></div>
           </div>
           <div class="right"><img class="qcode" src="" alt=""></div>
         </div>

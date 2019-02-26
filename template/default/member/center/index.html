@@ -7,7 +7,7 @@
     <!-- 页面内容-->
     <div class="top">
         <div class="left">
-            <img id="headimgurl" src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+            <img id="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
             <a href="{:url('userInfo')}" class="userInfo">
                 <div><p class="fs34 color_3 fw_b nick_name"></p><em class="fs22 color_w fw_b BGcolor_r level_name"></em></div>
                 <span class="fs26 color_9 signature"></span>
@@ -139,9 +139,8 @@
             $('.level_name').html(res.userInfo.level.level_name);
             $('.balance_money').html(res.userInfo.account.balance_money);
             $('.use_integral').html(res.userInfo.account.use_integral);
-            if (res.userInfo.headimgurl != ''){
-                 $('#headimgurl').attr('src',res.userInfo.headimgurl);
-            }
+            $('#headimgurl').attr('src',res.userInfo.headimgurl?res.userInfo.headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');
+            
 
             $('.unusedNum').html(res.unusedNum);
 

@@ -155,7 +155,7 @@ $(function () {
 		
 		$('.commentNum').html('('+res.data.total_count+')');
 		if (res.data.total_count > 0){
-			$('.commentBox .user img').attr('src',res.data.list[0].headimgurl);
+			$('.commentBox .user img').attr('src',res.data.list[0].headimgurl?res.data.list[0].headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');
 			$('.commentBox .user .uname').html(res.data.list[0].user_name);
 			$('.commentBox .user .time').html(res.data.list[0]._time);
 			$('.commentBox  .content').html(res.data.list[0].content);

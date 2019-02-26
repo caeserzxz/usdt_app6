@@ -33,7 +33,7 @@
               <div class="two capture">
                 <div class="info">
                     <div class="left">
-                      <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                      <img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                       <div>
                         <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                         <span class="fs26 color_9">{$userInfo['signature']}</span>
@@ -50,7 +50,7 @@
           <div class="block">
             <div class="three capture">
               <div class="info">
-                <img src="{$userInfo['headimgurl']}" alt="">
+                <img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                 <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                 <span class="fs26 color_9">{$userInfo['signature']}</span>
               </div>
