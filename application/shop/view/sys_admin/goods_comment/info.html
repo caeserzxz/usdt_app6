@@ -91,7 +91,7 @@
             <div class="js_file_upload ">
                 <button type="button" class="btn btn-default js_new_upload" data-submitname="GoodsImages" data-count="20" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" data-data="{ 'comment_id':'{$row.id|intval}' }" style="position: relative; z-index: 1;">上传图片</button>
                 <span class="maroon">*</span>
-                <span class="help-inline">最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                <span class="help-inline">(<small>可拖拽图片调整显示顺序 </small>)</span>
             </div>
             <div class="uploadify-queue js_file_upload_queue">
             </div>
@@ -118,7 +118,7 @@
         </div> 
         <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
         <div class="form-group" style="width:90%;">
-            <div class="col-sm-4 col-sm-offset-2">
+            <div class="col-sm-4 col-sm-offset-2"><input name="id" type="hidden" value="{$row['id']}" />
                 <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
                 <button type="button" class="btn btn-default" data-toggle="back">取消</button>
             </div>

@@ -14,11 +14,9 @@ class Comment extends ApiController
 	/*------------------------------------------------------ */
 	//-- 优先执行
 	/*------------------------------------------------------ */
-	public function initialize(){
+	/*public function initialize(){
         parent::initialize();
-       
-        
-    }
+    }*/
 	/*------------------------------------------------------ */
 	//-- 获取会员评论列表
 	/*------------------------------------------------------ */
@@ -106,10 +104,15 @@ class Comment extends ApiController
 			Db::rollback();// 回滚事务
             return $this->error('未知原因，写入失败-1.');
 		}
+		$imgfile = input('imgfile');
+		
 		//写入评论
 		$inArr['rec_id'] = $rec_id;
 		$inArr['type'] = 'goods';
 		$inArr['goods_id'] = $ogoods['goods_id'];
+		if (empty($imgfile) == false){
+			$inArr['is_imgs'] = 1;
+		}
 		$inArr['sku_val'] = $ogoods['sku_val'];
 		$inArr['sku_name'] = $ogoods['sku_name'];
 		$inArr['by_name'] = $ogoods['goods_name'];
@@ -124,8 +127,7 @@ class Comment extends ApiController
             return $this->error('未知原因，写入失败-2.');
 		}
 		$comment_id = $GoodsCommentModel->id;
-		//处理图片
-		$imgfile = input('imgfile');
+		//处理图片		
 		if (empty($imgfile) == false){
 			$GoodsCommentImagesModel = new GoodsCommentImagesModel();
 			$file_path = config('config._upload_').'comment/'.date('Ymd').'/';

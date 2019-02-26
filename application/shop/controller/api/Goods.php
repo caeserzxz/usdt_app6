@@ -171,6 +171,9 @@ class Goods extends ApiController
 		$rows = $GoodsCollectModel->where($where)->order('update_time DESC')->select();
 		foreach ($rows as $row){
 			$goods = $this->Model->info($row['goods_id']);
+			if ($goods['is_delete'] == 1){
+				continue;
+			}
             $_goods['goods_id'] = $goods['goods_id'];
             $_goods['goods_name'] = $goods['goods_name'];
             $_goods['short_name'] = $goods['short_name'];

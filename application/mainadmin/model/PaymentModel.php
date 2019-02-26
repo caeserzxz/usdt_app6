@@ -15,19 +15,24 @@ class PaymentModel extends BaseModel
     //--  清除memcache
     /*------------------------------------------------------ */
     public function cleanMemcache(){
-        Cache::rm($this->mkey);
+        Cache::rm($this->mkey.'pay_id');
+		Cache::rm($this->mkey.'pay_code');
     }
 	/*------------------------------------------------------ */
 	//-- 列表
 	/*------------------------------------------------------ */
-	public function getRows($status = false){
-		$data = Cache::get($this->mkey);
+	public function getRows($status = false,$type='pay_id'){
+		$data = Cache::get($this->mkey.$type);
 		if (empty($data)){		
-			$rows = $this->order('status DESC,sort_order DESC')->select()->toArray();		
+			$rows = $this->field('*,pay_id AS id,pay_name AS name')->order('status DESC,sort_order DESC')->select()->toArray();		
 			foreach ($rows as $row){
-				$data[$row['pay_id']] = $row;
+				if ($type == 'pay_id'){
+					$data[$row['pay_id']] = $row;
+				}else{
+					$data[$row['pay_code']] = $row;
+				}
 			}
-			Cache::set($this->mkey,$data,600);
+			Cache::set($this->mkey.$type,$data,600);
 		}
 		if ($status == true){
 			foreach ($data as $key=>$row){

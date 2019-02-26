@@ -23,7 +23,8 @@
            <th width="120">接口名称</th>
            <th width="120">支付编码</th>
            <th >支付编码</th>
-           <th width="100">是否启用</th>
+           <th width="100">启用</th>
+           <th width="100">充值</th>
            <th class="col-sm-1 mn70">操作</th>
         </tr>
     </thead>
@@ -35,6 +36,7 @@
              <td>{$row.pay_code}</td>
              <td>{$row.pay_desc|raw}</td>
             <td><a href="#" data-remote="{:url('ajaxEdit',array('pay_id'=>$row['pay_id'],'field'=>'status'))}" class="{$row.status|tplckval='>0','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+             <td><a href="#" data-remote="{:url('ajaxEdit',array('pay_id'=>$row['pay_id'],'field'=>'is_recharge'))}" class="{$row.is_recharge|tplckval='>0','active'}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
             <td>
                 <a href="{:url('info',array('pay_id'=>$row['pay_id']))}"  title="编辑">
                     <i class="fa fa-edit text-muted"></i>

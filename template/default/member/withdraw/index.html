@@ -38,18 +38,18 @@
 <div class="cell">
 	
 	{{if item.type == 'bank'}}
-		<div class="cell_hd"><label for="s_{{item.id}}"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""></label></div>
-		<div class="cell_bd"><label for="s_{{item.id}}"><span class="fs30 color_3">{{item.bank_name}}({{item.bank_card_number}})</span></label></div>		
+		<div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""></label></div>
+		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">{{item.bank_name}}({{item.bank_card_number}})</span></label></div>		
 	{{/if}}	
 	{{if item.type == 'alipay'}}
-		<div class="cell_hd"><label for="s_{{item.id}}"><img src="__STATIC__/mobile/default/images/Alipay.png" alt=""></label></div>
-		<div class="cell_bd"><label for="s_{{item.id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>		
+		<div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/Alipay.png" alt=""></label></div>
+		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>		
 	{{/if}}
 
 	<div class="cell_ft">
-	<label for="s_{{item.id}}">
+	<label for="s_{{item.account_id}}">
 		<div class="iconBox">
-			<input type="radio" class="check" value="{{item.id}}" name="account_id" id="s_{{item.id}}" >
+			<input type="radio" class="check" value="{{item.account_id}}" name="account_id" id="s_{{item.account_id}}" >
 			<i class="icon_checked"></i>
 		</div>
 	</label>
@@ -133,7 +133,7 @@ $(function() {
 				_alert(res.msg);
 				return false;
 			}
-			_alert(res.msg,true,'{:url("member/wallet/index")}')
+			_alert(res.msg,'{:url("member/wallet/index")}')
 		})
 	})	
 })

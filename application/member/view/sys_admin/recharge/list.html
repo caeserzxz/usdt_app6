@@ -2,9 +2,9 @@
 <thead>
 <tr>
     <th>会员名称</th>
-    <th>申请日期</th>
+    <th>充值时间</th>
+    <th>充值方式</th>
     <th>金额</th>
-    <th>提现方式</th>
     <th>处理状态</th>
     <th>更新时间</th>
     <th>操作</th>
@@ -15,17 +15,11 @@
 <tr>
 <td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
 <td>{$vo.add_time|dateTpl}</td>
+<td>{$payment[$vo['pay_type']]['pay_name']}</td>
 <td>{$vo.amount|priceFormat}</td>
-<td>
-{if condition="$vo['type']=='bank'"}
-{$vo.bank_name}<br>{$vo.bank_cardholder} - {$vo.bank_card_number}
-{else/}
-支付宝<br>{$vo.alipay_user_name} - {$vo.alipay_account}
-{/if}
-</td>
-<td>{$userWithdrawType[$vo['status']]['name']}</td>
+<td>{$userRechargeType[$vo['status']]['dict_val']}</td>
 <td>{$vo.update_time|dateTpl}</td>
-<td><a href="{:url('info',array('id'=>$vo['id']))}"  data-toggle="ajaxModal" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
+<td><a href="{:url('info',array('id'=>$row['id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
 </tr>
 {/volist} 
 </tbody>

@@ -66,7 +66,7 @@
 		  {{/if}}
 		</div>
 		<div class="swiped BGcolor_3">
-		  <div class="delect" data-id="{{item.id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+		  <div class="delect" data-account_id="{{item.account_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
 		</div>   
 	  </div>
 	</object>
@@ -109,7 +109,7 @@ $(function() {
 	//删除
 	$('.goodslist').on('click','.delect',function(){
 		var obj = $(this);
-		jq_ajax('{:url("member/api.withdraw/delAccount")}','id='+obj.data('id'),function(res){
+		jq_ajax('{:url("member/api.withdraw/delAccount")}','account_id='+obj.data('account_id'),function(res){
 			if (res.code == 0){
 				_alert(res.msg);
 				return false;

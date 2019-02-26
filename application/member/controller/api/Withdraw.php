@@ -112,9 +112,9 @@ class Withdraw extends ApiController
     //-- 删除用户提现帐户
     /*------------------------------------------------------ */
 	public function delAccount(){
-		$id = input('id',0,'intval');
-		if ($id < 1) return $this->error('传参失败.');
-		$res = $this->Model->where('id',$id)->update(['is_del'=>1]);
+		$account_id = input('account_id',0,'intval');
+		if ($account_id < 1) return $this->error('传参失败.');
+		$res = $this->Model->where('account_id',$account_id)->update(['is_del'=>1]);
 		if ($res < 1) return $this->error('删除失败.');
 		$this->Model->cleanMemcache();
 		return $this->success('删除成功.');
@@ -195,7 +195,7 @@ class Withdraw extends ApiController
 				return $this->error('每天最多只能提现'.$withdraw_num.'次.');
 			}
 		}
-		
+		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
 		Db::startTrans();//启动事务
 		
@@ -207,7 +207,7 @@ class Withdraw extends ApiController
 		$AccountLogModel = new AccountLogModel();
 	    $changedata['change_desc'] = '提现扣除';
 		$changedata['change_type'] = 5;
-		$changedata['by_id'] = $this->WithdrawModel->id;
+		$changedata['by_id'] = $WithdrawModel->id;
 		$changedata['balance_money'] = ($inArr['amount'] + $inArr['withdraw_fee']) * -1;
 		$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
 		if ($res !== true) {

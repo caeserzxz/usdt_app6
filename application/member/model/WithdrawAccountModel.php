@@ -8,7 +8,7 @@ use think\facade\Cache;
 class WithdrawAccountModel extends BaseModel
 {
 	protected $table = 'users_withdraw_account';
-	public $pk = 'id';
+	public $pk = 'account_id';
     protected $mkey = 'users_withdraw_account_mkey_';
     /*------------------------------------------------------ */
     //-- 清除缓存
@@ -36,7 +36,7 @@ class WithdrawAccountModel extends BaseModel
         if (empty($list) == false) return $list;
 		$where[] = ['user_id','=',$uid];
 		$where[] = ['is_del','=',$is_del];
-        $list = $this->where($where)->order('id DESC')->select()->toArray();
+        $list = $this->where($where)->order('account_id DESC')->select()->toArray();
         Cache::set($mkey, $list, 300);
         return $list;
     }

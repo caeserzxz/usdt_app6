@@ -335,7 +335,7 @@ function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 
 			$select .=  ' style="color:#ff0000;"  ';
 		}
 	    $text = htmlspecialchars(strip_tags($val['name']));
-		if (empty($val['ext_val']) && $val['id'] != 0){
+		if (empty($val['ext_val']) && $val['ext_val'] != 0 && $val['id'] != 0){
 			$select .= ' value="'.$val['id'].'" ';
 			$selval = $val['id'];
 		}else{

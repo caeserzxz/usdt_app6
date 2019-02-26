@@ -47,8 +47,9 @@ class GoodsModel extends BaseModel
 		foreach ($catList as $key=>$cat){
 			 $gwhere = [];
 			 $gwhere[] = ['cid','in',$catRows[$cat['id']]['children']];
-			 $gwhere[] = ['isputaway','=',1];	
-			 $gwhere[] = ['store_id','=',0];		 
+			 $gwhere[] = ['isputaway','=',1];
+			 $gwhere[] = ['is_delete','=',0];
+			 $gwhere[] = ['store_id','=',0];
 			 $gooodsList = $this->where($gwhere)->order('is_hot desc,goods_id desc')->limit(3)->column('goods_id');
 			 foreach ($gooodsList as $_key=>$goods_id){
 				 $gooodsList[$_key] = $this->info($goods_id);
@@ -65,7 +66,8 @@ class GoodsModel extends BaseModel
 		$mkey = 'IndexBestGoodsList';
 		$goodsList = Cache::get($mkey);
 		if (empty($goodsList) == false) return $goodsList;
-		$gwhere[] = ['isputaway','=',1];	
+		$gwhere[] = ['isputaway','=',1];
+		$gwhere[] = ['is_delete','=',0];	
 		$gwhere[] = ['store_id','=',0];
 		$gooodsList = $this->where($gwhere)->order('is_best desc,goods_id desc')->limit(10)->column('goods_id');
 		foreach ($gooodsList as $key=>$goods_id){				 

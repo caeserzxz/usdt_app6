@@ -324,8 +324,11 @@ class AdminController extends BaseController
 			}			
 			return $this->error('操作失败.');			
         } 
-		$id =  input($pk,0,'intval');		
-		$row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id)->toArray();		
+		$id =  input($pk,0,'intval');
+		$row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);		
+		if (empty($row) == false){
+			$row = $row->toArray();	
+		}
 		if(method_exists($this, 'asInfo')){					
 			 $row = $this->asInfo($row);
 		}

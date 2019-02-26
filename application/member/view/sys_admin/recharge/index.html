@@ -7,27 +7,30 @@
             <ul class="breadcrumb" >
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
-                    <strong>提现列表</strong>
+                    <strong>会员充值</strong>
                 </li>                                  
             </ul>
            <select name="status"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
              <option value="-1">所有状态</option>
-             {$userWithdrawTypeOpt|raw}
+             {$userRechargeTypeOpt|raw}
             </select>
-            <select name="type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
-             <option value="">提现方式</option>
-             <option value="bank" {$search['type']=='bank'?'selected':''}>银行卡提现</option>
-             <option value="alipay" {$search['type']=='alipay'?'selected':''}>支付宝提现</option>
+             <select name="pay_type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
+             <option value="">所有充值方式</option>
+             {volist name="payList" id="vo" }
+             	{eq name="vo.is_recharge" value="1"}
+             		<option value="{$vo.pay_code}">{$vo.pay_name}</option>
+                {/eq}
+             {/volist}
             </select>
            <div class="form-group">
                 <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
                     <i class="fa fa-calendar fa-lg"></i>
-                    <small>申请时间</small>
+                    <small>充值时间</small>
                     <span></span> <b class="caret"></b>
                     <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
                 </a>
           </div>
-          <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID/帐号/手机" data-rule-required="true" />
+          <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID" data-rule-required="true" />
           <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
       
          
@@ -38,7 +41,7 @@
 <section class="scrollable wrapper w-f ">
     <section class="panel panel-default ">
         <div class="table-responsive " id="list_box">
-            {include file="sys_admin/withdraw/list" /}
+            {include file="sys_admin/recharge/list" /}
         </div>
     </section>
 </section>
