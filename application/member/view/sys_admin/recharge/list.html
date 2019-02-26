@@ -19,7 +19,7 @@
 <td>{$vo.amount|priceFormat}</td>
 <td>{$userRechargeType[$vo['status']]['dict_val']}</td>
 <td>{$vo.update_time|dateTpl}</td>
-<td><a href="{:url('info',array('id'=>$row['id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
+<td><a href="{:url('info',array('log_id'=>$vo['log_id']))}" data-toggle="ajaxModal"  class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
 </tr>
 {/volist} 
 </tbody>

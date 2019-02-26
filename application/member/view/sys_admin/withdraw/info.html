@@ -48,11 +48,34 @@
                         </div>
                     </div>
                     {/eq}
+                    {gt name="row.admin_id" value="0"}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">操作管理员：</label>
+                        <div class="col-sm-6 m-t-mc">
+                           {$row.admin_id} - {$row.admin_id|adminInfo}
+                        </div>
+                    </div>
+                    {/gt}
+                    {gt name="row.complete_time" value="0"}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">打款时间：</label>
+                        <div class="col-sm-6 m-t-mc">
+                            {$row.complete_time|dateTpl}
+                        </div>
+                    </div>
+                    {/gt}
+                     {gt name="row.refuse_time" value="0"}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">拒绝时间：</label>
+                        <div class="col-sm-6 m-t-mc">
+                            {$row.refuse_time|dateTpl}
+                        </div>
+                    </div>
+                    {/gt}
             </div>
             <div class="modal-footer">
-                <input type="hidden" name="id" value="{$row.id|intval}"/>
-                <input type="hidden" name="operating" id="operating" value="{$row.id|intval}"/>
-                
+                <input type="hidden" name="log_id" value="{$row.log_id|intval}"/>
+                <input type="hidden" name="operating" id="operating" value="note"/>                
                 {eq name="row.status" value="0"}
                     <button type="button" class="btn btn-primary operatbtn" data-type='refuse'>拒绝申请（退回余额）</button>
                     <button type="button" class="btn btn-primary operatbtn" data-type='pay'>已打款</button>

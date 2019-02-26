@@ -8,7 +8,7 @@ use app\BaseModel;
 class WithdrawModel extends BaseModel
 {
 	protected $table = 'users_withdraw_log';
-	public  $pk = 'id';
+	public  $pk = 'log_id';
     
 
 }

@@ -272,6 +272,11 @@ class UsersModel extends BaseModel
 		$user_id = $user_id*1;
         $UsersBind = new UsersBindModel();
 		$rows = $UsersBind->field("count('user_id') as num,level")->where('pid',$user_id)->group('level')->select();
+		$d_level = config('config.dividend_level');
+		$info['all'] = 0;
+		foreach ($d_level as $key=>$val){
+			$info[$key] = 0;
+		}
 		foreach ($rows as $row){
 			$info['all'] += $row['num'];
 			$info[$row['level']] = $row['num'];

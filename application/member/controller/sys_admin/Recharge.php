@@ -1,8 +1,11 @@
 <?php
 namespace app\member\controller\sys_admin;
+use think\Db;
+
 use app\AdminController;
 use app\member\model\RechargeLogModel;
 use app\mainadmin\model\PaymentModel;
+use app\member\model\AccountLogModel;
 //*------------------------------------------------------ */
 //-- 充值
 /*------------------------------------------------------ */
@@ -34,7 +37,7 @@ class Recharge extends AdminController
 		$this->userRechargeType = $this->getDict('UserRechargeType');	
 		$this->payList = (new PaymentModel)->getRows(false,'pay_code');
 		$this->search['keyword'] = input('keyword','','trim');
-		$this->search['status'] = input('status',-1,'intval');
+		$this->search['status'] = input('status',0,'intval');
 		$this->search['pay_type'] = input('pay_type','','trim');
 		$reportrange = input('reportrange');
 		$where = [];
@@ -70,6 +73,57 @@ class Recharge extends AdminController
 		}
         return true;
     }
+	/*------------------------------------------------------ */
+	//-- 信息页调用
+	//-- $data array 自动读取对应的数据
+	/*------------------------------------------------------ */
+	public function asInfo($data){
+		$userRechargeType = $this->getDict('UserRechargeType');
+		$data['status_name'] = $userRechargeType[$data['status']]['name'];
+		$this->assign("payList", (new PaymentModel)->getRows(false,'pay_code'));
+		if ($data['pay_type'] == 'offline'){
+			$data['imgs'] = explode(',',$data['imgs']);
+		}	
+		return $data;
+	}
+	
+	/*------------------------------------------------------ */
+	//-- 修改前处理
+	/*------------------------------------------------------ */
+    public function beforeEdit($data){
+		$operating = input('operating','','trim');
+		if ($operating == 'refuse'){			
+			$data['status'] = 1;			
+		}elseif ($operating == 'arrival'){			
+			$data['status'] = 9;			
+		}else{
+			return $this->error('非法操作.');
+		}
+		$data['admin_id'] = AUID;
+		$data['check_time'] = time();
+		Db::startTrans();//启动事务
+		return $data;		
+	}
+	/*------------------------------------------------------ */
+	//-- 修改后处理
+	/*------------------------------------------------------ */
+    public function afterEdit($data){
+		if ($data['status'] == 9){//拒绝提现，退回帐户
+			$info = $this->Model->find($data['log_id']);
+			$AccountLogModel = new AccountLogModel();
+			$changedata['change_desc'] = '充值到帐';
+			$changedata['change_type'] = 6;
+			$changedata['by_id'] = $info['log_id'];
+			$changedata['balance_money'] = $info['amount'];
+			$res = $AccountLogModel->change($changedata, $info['user_id'], false);
+			if ($res !== true) {
+				Db::rollback();// 回滚事务
+				return $this->error('未知错误，提现退回用户余额失败.');
+			}			
+		}
+		Db::commit();// 提交事务
+		return $this->success('操作成功.',url('index'));
+	}
 
 
 }

@@ -121,11 +121,11 @@ class Withdraw extends AdminController
 	/*------------------------------------------------------ */
     public function afterEdit($data){
 		if ($data['status'] == 1){//拒绝提现，退回帐户
-			$info = $this->Model->find($data['id']);
+			$info = $this->Model->find($data['log_id']);
 			$AccountLogModel = new AccountLogModel();
 			$changedata['change_desc'] = '提现失败退回';
 			$changedata['change_type'] = 5;
-			$changedata['by_id'] = $info['id'];
+			$changedata['by_id'] = $info['log_id'];
 			$changedata['balance_money'] = ($info['amount'] + $info['withdraw_fee']);
 			$res = $AccountLogModel->change($changedata, $info['user_id'], false);
 			if ($res !== true) {

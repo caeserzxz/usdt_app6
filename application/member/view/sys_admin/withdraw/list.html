@@ -25,7 +25,7 @@
 </td>
 <td>{$userWithdrawType[$vo['status']]['name']}</td>
 <td>{$vo.update_time|dateTpl}</td>
-<td><a href="{:url('info',array('id'=>$vo['id']))}"  data-toggle="ajaxModal" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
+<td><a href="{:url('info',array('log_id'=>$vo['log_id']))}"  data-toggle="ajaxModal" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
 </tr>
 {/volist} 
 </tbody>

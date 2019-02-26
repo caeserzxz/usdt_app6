@@ -7,7 +7,7 @@ use app\BaseModel;
 /*------------------------------------------------------ */
 class RechargeLogModel extends BaseModel
 {
-	protected $table = 'uses_recharge_log';
+	protected $table = 'users_recharge_log';
 	public  $pk = 'log_id';
     
 
