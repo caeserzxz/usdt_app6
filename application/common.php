@@ -335,12 +335,13 @@ function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 
 			$select .=  ' style="color:#ff0000;"  ';
 		}
 	    $text = htmlspecialchars(strip_tags($val['name']));
-		if (empty($val['ext_val']) && $val['ext_val'] != 0 && $val['id'] != 0){
-			$select .= ' value="'.$val['id'].'" ';
-			$selval = $val['id'];
-		}else{
+		if (empty($val['dict_val']) == false){
 			$select .= ' value="'.$val['ext_val'].'"  ';
 			$selval = $val['ext_val'];
+		}else{
+			$select .= ' value="'.$val['id'].'" ';
+			$selval = $val['id'];
+			
 		}
 		$select .= (in_array($selval,$selected)) ? "selected='selected'" : '';
 		$select .= ' data-text="'.$text.'" label="'.$text.'" >';		

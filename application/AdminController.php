@@ -326,7 +326,7 @@ class AdminController extends BaseController
         } 
 		$id =  input($pk,0,'intval');
 		$row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);		
-		if (empty($row) == false){
+		if ($id > 0 && empty($row) == false){
 			$row = $row->toArray();	
 		}
 		if(method_exists($this, 'asInfo')){					
