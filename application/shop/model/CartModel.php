@@ -373,18 +373,9 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 计算运费
     /*------------------------------------------------------ */
-    public function evalShippingFee($address_id = 0, &$userAddress = [], &$cartList = [])
+    public function evalShippingFee(&$userAddress = [], &$cartList = [])
     {
-        if (empty($userAddress)) {
-            $UserAddressModel = new \app\member\model\UserAddressModel();
-            $userAddress = $UserAddressModel->getRows();//获取用户全部收货地址
-            $userAddress = $userAddress[$address_id];//获取当前使用的地址
-        }
-        if (empty($cartList)) {
-            $cartList = $this->getCartList(1);
-        }
-
-        if ($cartList['buyGoodsNum'] < 1) return 0;
+		if ($cartList['buyGoodsNum'] < 1) return 0;
         $GoodsModel = new GoodsModel();
         $CategoryModel = new CategoryModel();
         $Category = $CategoryModel->getRows();

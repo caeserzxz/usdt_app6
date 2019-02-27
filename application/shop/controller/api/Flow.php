@@ -94,7 +94,7 @@ class Flow extends ApiController
 		}
         $address_id = input('address_id', 0, 'intval');
         if ($address_id > 0) {
-            $return['shippingFee'] = $this->evalShippingFee($address_id, true);
+            $return['shippingFee'] = $this->evalShippingFee($address_id, true,$recids);
         }
         $return['cartInfo'] = $this->Model->getCartList($is_sel,true,$recids);
         $return['code'] = 1;
@@ -149,18 +149,22 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 计算运费
     /*------------------------------------------------------ */
-    function evalShippingFee($address_id = 0, $is_return = false)
+    function evalShippingFee($address_id = 0, $is_return = false,$recids = '')
     {
         if ($address_id < 0) {
             $address_id = input('address_id', '0', 'intval');
         }
-        $return['code'] = 1;
-        $return['shippingFee'] = 0;
+		$return['code'] = 1;       
         if ($address_id < 1) {
             $return['shippingFee'] = sprintf("%.2f", $return['shippingFee']);
+			if ($is_return == true) return $return;
             return $this->ajaxReturn($return);
         }
-        $shippingFee = $this->Model->evalShippingFee($address_id);
+		$UserAddressModel = new UserAddressModel();
+        $addressList = $UserAddressModel->getRows();
+        $address = $addressList[$address_id];
+		$cartList = $this->Model->getCartList(1, true,$recids);
+        $shippingFee = $this->Model->evalShippingFee($address,$cartList);
         $shippingFee = reset($shippingFee);//现在只返回默认快递
         $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee']);
         if ($is_return == true) return $shippingFee;
@@ -222,7 +226,7 @@ class Flow extends ApiController
         $inArr['shipping_status'] = 0;
         $_log = '生成订单';
         //运费处理
-        $shippingFee = $this->Model->evalShippingFee($address_id, $address, $cartList);
+        $shippingFee = $this->Model->evalShippingFee($address, $cartList);
         $shippingFee = reset($shippingFee);//现在只返回默认快递
         $inArr['shipping_fee'] = $shippingFee['shipping_fee'];
         $inArr['order_amount'] = $cartList['orderTotal'] + $inArr['shipping_fee'] - $inArr['use_bonus'];
