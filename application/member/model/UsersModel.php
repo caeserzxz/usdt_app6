@@ -136,7 +136,10 @@ class UsersModel extends BaseModel
         }//end
         $res = $this->save($inArr);
         if ($res < 1) return '未知错误，写入会员数据失败.';		
-		
+		if ($this->user_id < 19888){
+			$this->where('user_id',$this->user_id)->update(['user_id'=>19888]);
+			$this->user_id = 19888;
+		}
         //创建会员帐户信息
         $AccountModel = new AccountModel();
         $AccountModel->createData(['user_id'=>$this->user_id,'update_time'=>$time]);
@@ -234,6 +237,15 @@ class UsersModel extends BaseModel
 		Cache::set($this->mkey.$val,$info,30);
 		return $info;
 	}
+	/*------------------------------------------------------ */
+	//--获取上级信息
+	/*------------------------------------------------------ */ 
+	public function getSuperior($pid){
+		if ($pid < 1) return [];
+		$info = $this->info($pid);
+		unset($info['password']);//销毁不需要的字段
+		return $info;
+	}	
 	/*------------------------------------------------------ */
 	//--获取会员帐户
 	/*------------------------------------------------------ */ 

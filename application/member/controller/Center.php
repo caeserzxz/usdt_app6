@@ -6,7 +6,7 @@
 namespace app\member\controller;
 use app\ClientbaseController;
 
-
+use app\member\model\UsersModel;
 
 class Center  extends ClientbaseController{
   
@@ -57,7 +57,9 @@ class Center  extends ClientbaseController{
     //-- 个人资料
     /*------------------------------------------------------ */
     public function userInfo(){
-        $this->assign('title', '个人资料');
+        $this->assign('title', '个人资料');	
+		$superior = (new UsersModel)->getSuperior($this->userInfo['pid']);
+		$this->assign('superior', $superior);
         return $this->fetch('user_info');
     }
     /*------------------------------------------------------ */

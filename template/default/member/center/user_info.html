@@ -1,47 +1,59 @@
 {extend name="layouts@base" /}
 {block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css"/>
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
 {/block}
 {block name="body"}
 personalData
 {/block}
 {block name="main" }
-<div class="page-bd">
-    <!-- 页面内容-->
-     <div class="cells">
+      <div class="page-bd ">
+      <form id="userform">
+        <!-- 页面内容-->
+        <div class="cells">
           <a href="#" class="top cell cell_access noline">
-              <div class="cell_bd">
+            <div class="cell_bd">
             <span class="fs34 color_3 fw_b">个人资料</span></div>
-            <div class="cell_ft"><img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="" class="userimg"></div>
+            <div class="cell_ft" style="width: 0.8rem;height: 0.533333rem;">
+            <img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="" class="userimg" style="position: absolute;">
+             <input type="file" class="uploadInput" onchange="uploadFile(this,event)" style="width:100%;height:100%;opacity:0;">
+            </div>
           </a>
           <div class="cell">
               <div class="cell_bd">
             <span class="fs28 color_9">昵称</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">你的男神</p>
+                <input type="text" value="{$userInfo['nick_name']}" name="nick_name" class="fs28 color_3 fw_b inputbox" placeholder="请输入">
+            </div>
+          </div>
+           <div class="cell">
+              <div class="cell_bd">
+            <span class="fs28 color_9">个性签名</span></div>
+            <div class="cell_ft">
+                <input type="text" value="{$userInfo['signature']}" name="signature" class="fs28 color_3 fw_b inputbox" placeholder="请输入">
             </div>
           </div>
           <div class="cell">
             <div class="cell_bd"><span class="fs28 color_9">会员号</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">YY5741</p>
+                <p class="fs28 color_3 fw_b">{$userInfo['user_id']}</p>
             </div>
           </div>
           <div class="cell">
               <div class="cell_bd">
             <span class="fs28  color_9">性别</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">男</p>
+                <input type="text" value="{$userInfo['sex']==1?'男':'女'}" name="sex" readonly class="fs28 color_3 fw_b" id="sex" >
             </div>
           </div>
           <div class="cell">
               <div class="cell_bd">
             <span class="fs28  color_9">生日</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">1990.11.18</p>
+                <input type="text" value="{$userInfo['birthday']}"  name="birthday"  readonly class="fs28 color_3 fw_b" id="nowValue" placeholder="请选择">
             </div>
           </div>
-          <a href="我的收货地址.html" class="cell twoBox cell_access">
+          <a href="{:url('member/center/address')}" class="cell twoBox cell_access">
               <div class="cell_bd">
               <span class="fs28 color_9">收货地址管理</span></div>
               <div class="cell_ft">
@@ -51,42 +63,140 @@ personalData
               <div class="cell_bd">
             <span class="fs28 color_9">绑定手机号</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">15963263254</p>
+                <p class="fs28 color_3 fw_b">{$userInfo['mobile']}</p>
             </div>
           </div>
           <div class="cell">
               <div class="cell_bd">
               <span class="fs28 color_9">是否公开手机号</span></div>
               <div class="cell_ft">
-                  <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+                  <input type="checkbox" name="show_mobile" value="1" id="male" class="chooseBtn" />
                   <label for="male" class="choose-label"></label>
               </div>
             </div>
+         {if condition="$userInfo['pid'] > 0"}   
           <div class="cell twoBox">
               <div class="cell_bd">
               <span class="fs28 color_9">上级昵称</span></div>
               <div class="cell_ft">
-                  <p class="fs28 color_3 fw_b">狂风扫落叶</p>
+                  <p class="fs28 color_3 fw_b">{$superior['nick_name']}</p>
               </div>
           </div>
+          {eq name="superior.show_mobile" value="1"}
           <div class="cell">
               <div class="cell_bd">
             <span class="fs28 color_9">上级手机号</span></div>
             <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">15635874269</p>
+                <p class="fs28 color_3 fw_b">{$superior['mobile']}</p>
             </div>
           </div>
+          {/eq}
           <div class="cell">
               <div class="cell_bd">
               <span class="fs28 color_9">关注时间</span></div>
               <div class="cell_ft">
-                <p class="fs28 color_3 fw_b">020-8888-0025</p>
+                <p class="fs28 color_3 fw_b">{$superior['reg_time']|dateTpl="Y-m-d"}</p>
               </div>
-            </div>
+          </div>
+          {/if}           
+        </div> 
+         
+        </form>
+        
+        <div class="page-ft">
+            <span class="fs32 color_w fw_b BGcolor_r postBtn">确定</span>
+          </div>
 
-    </div>
 </div>
+     
 {/block}
 
 {block name="footer"}
+<script src="__STATIC__/mobile/default/js/datePicker.js"></script>
+<script src="__STATIC__/mobile/default/js/picker.min.js"></script>
+    <script>
+      $(function(){
+        $('#nowValue').on('click',function(){
+          demoClick()
+        })
+        $('.inputbox').on('click',function(){
+          $(this).val('')
+        })
+        $('.picker-mask').on('click',function(){
+          $('.picker').hide();
+        })
+      })
+    // 日期选择器
+    function demoClick() {
+      var nowValue = document.getElementById('nowValue');
+        new DatePicker({
+            "type": "3",//0年, 1年月, 2月日, 3年月日
+            "title": '请选择日期',//标题(可选)
+            "maxYear": "",//最大年份（可选）
+            "minYear": "",//最小年份（可选）
+            "separator": ".",//分割符(可选)
+            "defaultValue": nowValue.value,//默认值（可选）
+            "callBack": function (val) {
+                //回调函数（val为选中的日期）
+                nowValue.value = val;
+            }
+        });
+    }
+      //性别选择
+      var obj=document.getElementById('sex')
+      var data1 = [
+          {
+            text:'男',
+            value: '1',
+          }, {
+            text:'女',
+            value: '2',
+          }
+      ];
+      //初始化picker
+      var picker = new Picker({
+          data: [data1],
+          selectedIndex: [0],
+          title: '请选择性别'
+      });
+      //选择后的内容赋值
+      picker.on('picker.select', function (selectedVal, selectedIndex) {
+        obj.value = data1[selectedIndex].text;
+      })
+      //点击弹出选项框
+      obj.addEventListener('click', function () {
+          picker.show();
+      });
+
+var fd = new FormData();
+//选择上传图片
+function uploadFile(_this,e){	
+	compress(e, function(base64Img){		
+		fd.append("imgfile", base64Img);
+		$('.userimg').attr('src',base64Img);
+	})
+}
+$('.postBtn').click(function(){
+	var data = $('#userform').toJson();
+	$.each(data,function(i,v){
+		fd.append(i, v);	
+	})
+	
+	$.ajax({
+		  url: '{:url("member/api.users/editInfo")}',
+		  type: 'post',
+		  processData: false,
+		  contentType: false,
+		  data: fd,
+		  success: function (res) {
+			 if (res.code == 0){
+				  _alert(res.msg);
+				  return false;	
+			  }
+			  _alert(res.msg,'{:url("member/center/index")}');			  
+		  }
+	})
+})
+</script>
+
 {/block}

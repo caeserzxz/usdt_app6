@@ -159,11 +159,11 @@
           justify-content: center;
 }
 
-.userData label > * {
+label > * {
   pointer-events: none;
 }
 
-.userData label {
+label {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -177,16 +177,16 @@
           justify-content: space-between;
 }
 
-.userData label .check {
+label .check {
   position: absolute;
   left: -9999em;
 }
 
-.userData label .iconBox {
+label .iconBox {
   position: relative;
 }
 
-.userData label .check[type=radio] + i {
+label .check[type=radio] + i {
   display: inline-block;
   vertical-align: middle;
   font: normal normal normal 0.093333rem/1 weui;
@@ -195,21 +195,21 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.userData label .check + i:after {
+label .check + i:after {
   font-size: 0.24rem;
   display: block;
 }
 
-.userData label .check[type=radio]:checked + i:after {
+label .check[type=radio]:checked + i:after {
   content: "\EA08";
   color: #f65236;
 }
 
-.userData .page-ft {
+.page-ft {
   margin: 0.533333rem 0.2rem 0.253333rem;
 }
 
-.userData .page-ft span {
+.page-ft span {
   width: 4.6rem;
   height: 0.533333rem;
   display: -webkit-box;
@@ -223,9 +223,25 @@
           align-items: center;
 }
 
-.userData input[disabled] {
+input[disabled] {
   color: #999;
   -webkit-text-fill-color: #999;
   -webkit-opacity: 1;
   opacity: 1;
+}
+
+.personalData .picker .picker-panel .wheel-wrapper .wheel {
+  font-size: 0.24rem;
+}
+
+.personalData .picker .picker-panel .picker-choose .picker-title {
+  font-size: 0.213333rem;
+}
+
+.personalData .picker .picker-panel .picker-choose {
+  background: #F0F1F2;
+}
+
+.personalData .picker .picker-panel .picker-choose .confirm {
+  color: #F65236;
 }

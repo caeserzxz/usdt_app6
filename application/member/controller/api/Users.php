@@ -105,7 +105,7 @@ class Users extends ApiController
 		//计算提现中金额，即为冻结金额
 		$WithdrawModel = new WithdrawModel();
 		$where[] = ['user_id','=',$this->userInfo['user_id']];
-		$where[] = ['status','<',2];
+		$where[] = ['status','=',0];
 		$return['frozen_amount'] = $WithdrawModel->where($where)->sum('amount');  
 		//end
 		$DividendModel = new DividendModel();
@@ -185,5 +185,38 @@ class Users extends ApiController
 			$return['list'][] = $row;		
 		}
         return $this->ajaxReturn($return);
+	}
+	
+	/*------------------------------------------------------ */
+    //-- 修改会员信息
+    /*------------------------------------------------------ */
+    public function editInfo(){
+		$imgfile = input('imgfile');
+		if (empty($imgfile) == false){
+			$file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
+			makeDir($file_path);
+			$file_name = $file_path.random_str(12).'.jpg';
+			file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$imgfile)));
+			$upArr['headimgurl'] = trim($file_name,'.');	
+		}
+		$upArr['nick_name'] = input('nick_name','','trim');
+		if (empty($upArr['nick_name']) == true){
+			return $this->error('请填写用户昵称.');	
+		}
+		$where[] = ['nick_name','=',$upArr['nick_name']];
+		$where[] = ['user_id','<>',$this->userInfo['user_id']];	
+		$count = $this->Model->where($where)->count('user_id');
+		if ($count > 0) return '昵称：'.$upArr['nick_name'].'，已存在.';
+		$upArr['signature'] = input('signature','','trim');
+		$upArr['sex'] = input('sex','男','trim');
+		$upArr['sex'] = $upArr['sex'] == '男' ? 1 : 0;
+		$upArr['birthday'] = input('birthday','','trim');
+		$upArr['show_mobile'] = input('show_mobile',0,'intval');
+		$res = $this->Model->upInfo($this->userInfo['user_id'],$upArr);
+		if ($res < 1){
+			@unlink($file_name);
+			return $this->error('修改用户信息失败，请重试.');	
+		}
+		 return $this->success('修改成功.');
 	}
 }
