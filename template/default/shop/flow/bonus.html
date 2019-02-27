@@ -29,11 +29,15 @@
     $('.ticket').on('click', function () {
         $('html').addClass('noscroll');
         $('.bonusListBox').addClass('move-left');
+		$('.base-header').hide();
+		$('.paymentbox').hide();
     });
     //关闭优惠券弹出
     $('.bonusListBox').on('click', '.close_wrapper', function () {
         $('html').removeClass('noscroll');
         $('.bonusListBox').removeClass('move-left');
+		$('.base-header').show();
+		$('.paymentbox').show();
     })
     //点击选择优惠券
     $('.bonusListBox').on('click', '.usedBonus', function () {

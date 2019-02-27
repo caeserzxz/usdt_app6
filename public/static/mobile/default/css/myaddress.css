@@ -122,13 +122,14 @@ p {
   margin-right: 0.066667rem;
 }
 
-.goodslist {
+.addressesList .goodslist {
+	background:none;
   overflow: hidden;
   padding-bottom: 0.8rem;
 }
 
 .goodslist object {
-  margin-top: 0.133333rem;
+  margin-bottom: 0.133333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

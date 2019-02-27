@@ -187,10 +187,7 @@
     $('.delSelGoods').on('click',function () {
         return evalCart('delSelGoods','');
     })
-    //收藏选中的商品
-    $('.collectGoods').on('click',function () {
-
-    })
+   
 
     $(function(){
         evalCart('getList');//加载购物车
@@ -209,7 +206,7 @@
         })
         $(document).on('click','.like',function(){
             let imgObj = $(this).find('img');
-			var status = imgObj.data('no');
+			var status = imgObj.data('type');
 			var goods_id = $(this).data('goods_id');
 			jq_ajax('{:url("shop/api.goods/collect")}', 'goods_id='+goods_id, function (res) {
 				if (res.code == 0) {
@@ -218,10 +215,10 @@
 				}
 				if (status == 0) {
 					imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03_lh.png')
-					imgObj.data('no', '1')
+					imgObj.data('type', '1')
 				} else {
 					imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03.png')
-					imgObj.data('no', '0')
+					imgObj.data('type', '0')
 				}
 			});
 
