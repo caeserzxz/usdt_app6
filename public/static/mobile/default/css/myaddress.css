@@ -170,14 +170,15 @@ p {
   height: 0.266667rem;
 }
 
-.page-ft {
+.addressesList .page-ft,.addressInfoBox .page-ft  {
   position: absolute;
   width: 100%;
   bottom: 0;
+  margin:0px !important
 }
 
 
-.page-ft a {
+.addressesList .page-ft a ,.addressInfoBox .page-ft a{
   height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -191,9 +192,5 @@ p {
   width:92%;
   position: fixed;
   bottom:0.1rem;
-  margin: 0.533333rem 0.2rem 0.253333rem;
-}
-.addressInfoBox .page-ft a
-{
-	margin-left:0px;
+  margin: 0.533333rem 0.2rem 0.253333rem ;
 }

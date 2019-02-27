@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
 
+<script type="text/html" id="addressListTpl">
 <div class="{$isAddOrder==1?'wrapper':''} addressesList ">
     {eq name="$isAddOrder" value="1"}
     <div class="page-hd">
@@ -24,11 +25,12 @@
         <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
     </div>
 </div>
-
 <div class="wrapper addressInfoBox">
 
 </div>
+</script>
 <script src="__STATIC__/js/jquery/jquery-weui.min.js"></script>
+
 <!--地址列表-->
 <script type="text/html" id="addressLiTpl">
     {{each list as item index}}
@@ -97,7 +99,7 @@
               <div class="cell_bd">
               <span class="fs28 color_9">所在地区</span></div>
               <div class="cell_ft">
-                <input type="text" value="{{_merger_name}}" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
+                <input type="text" value="{{_merger_name}}"  placeholder="请选择所在区域" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
               </div>
           </div>
           <div class="cell">
@@ -122,7 +124,10 @@
     var isAddOrder = '{$isAddOrder|intval}';
     var addressList = {};
     var defAddressId = 0;
-
+	$(function(){
+		 $({$isAddOrder==1?'"body"':'".page-hd"'}).append(template('addressListTpl'));
+	})
+	
     //获取收货地址区列表
     function getAddressList() {
         jq_ajax('{:url("member/api.address/getList")}', '', function (res) {
@@ -159,7 +164,7 @@
         getAddressList();
     })
     //点击删除地址
-    $('.addresslist').on('click','.delect',function() {
+    $(document).on('click','.addresslist .delect',function() {
         jq_ajax('{:url("member/api.address/delete")}','address_id='+$(this).data('address_id'),function(res){
             if (res.code == 0) {
                 alert(res.msg);
@@ -171,13 +176,13 @@
         })
     })
     //关闭编缉弹出
-    $('.addressInfoBox').on('click','.close_wrapper',function () {
+    $(document).on('click','.addressInfoBox .close_wrapper',function () {
         $('html').removeClass('noscroll');
         $('.addressInfoBox').removeClass('move-left');
     })
 
     //点击新增地址
-    $('.add_address').on('click', function () {
+    $(document).on('click','.add_address', function () {
         $('html').addClass('noscroll');
         $('.addressInfoBox').html(template('addressInfoTpl'));
         $('.addressInfoBox').addClass('move-left');
@@ -186,7 +191,7 @@
         });
     })
     //点击编缉收货地址
-    $('.addresslist').on('click', '.edit', function () {
+    $(document).on('click', '.addresslist .edit', function () {
         isContainer = true;
         $('.addressInfoBox').html(template('addressInfoTpl', addressList[$(this).data('index')]));
         $('html').addClass('noscroll');
@@ -214,7 +219,7 @@
         })
     }
     //设置为默认地址
-    $('.addresslist').on('click','.editDefault',function() {
+    $(document).on('click','.addresslist .editDefault',function() {
         var obj = $(this);
         if (defAddressId != obj.val()) {
             jq_ajax('{:url("member/api.address/editDefault")}', 'address_id=' + $(this).val(),function (res){

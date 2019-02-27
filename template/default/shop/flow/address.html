@@ -25,18 +25,14 @@
         })
     }
     //显示收货地址
-    $('.addressBox').on('click', function () {
+    $(document).on('click','.addressBox', function () {
         $('html').addClass('noscroll');
         $('.addressesList').addClass('move-left');
-		$('.base-header').hide();
-		$('.paymentbox').hide();
     });
     //关闭弹出
-    $('.addressesList .close_wrapper').on('click', function () {
+    $(document).on('click','.addressesList .close_wrapper', function () {
         $('html').removeClass('noscroll');
         $('.addressesList').removeClass('move-left');
-		$('.base-header').show();
-		$('.paymentbox').show();
     })
     //点击选择收货地址
     $('.addresslist').on('click', '.block', function () {
