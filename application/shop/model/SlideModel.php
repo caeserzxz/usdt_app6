@@ -25,7 +25,7 @@ class SlideModel extends BaseModel
 		$rows = self::where('status',1)->order('sort_order DESC')->select()->toArray();
 		foreach ($rows as $key=>$row){			
 			if($row['bind_type'] == 'article') $row['url'] = url('article/info',array('id'=>$row['ext_id']));
-			else if($row['bind_type'] == 'goods') $row['url'] = url('goods/info',array('goods_id'=>$row['ext_id']));
+			else if($row['bind_type'] == 'goods') $row['url'] = url('goods/info',array('id'=>$row['ext_id']));
 			else $row['url'] = $row['data'];			
 			$rows[$key] = $row;
 		}

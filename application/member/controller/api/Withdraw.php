@@ -74,6 +74,7 @@ class Withdraw extends ApiController
 		if ($res < 1){
 			return $this->error('添加银行卡失败.');
 		}
+		$this->Model->cleanMemcache();
 		return $this->success('添加银行卡成功.');
     }
    
@@ -116,7 +117,7 @@ class Withdraw extends ApiController
 		if ($account_id < 1) return $this->error('传参失败.');
 		$res = $this->Model->where('account_id',$account_id)->update(['is_del'=>1]);
 		if ($res < 1) return $this->error('删除失败.');
-		$this->Model->cleanMemcache();
+		$this->Model->cleanMemcache($this->userInfo['user_id']);
 		return $this->success('删除成功.');
 	}
 	/*------------------------------------------------------ */
@@ -138,6 +139,7 @@ class Withdraw extends ApiController
 		if ($res < 1){
 			return $this->error('添加支付宝失败.');
 		}
+		$this->Model->cleanMemcache($this->userInfo['user_id']);
 		return $this->success('添加支付宝成功.');
     }
 	/*------------------------------------------------------ */
