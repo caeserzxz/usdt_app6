@@ -24,7 +24,7 @@ class Passport  extends ClientbaseController{
 	//-- 登陆
 	/*------------------------------------------------------ */
 	public function login(){
-        $this->assign('title', '会员登陆');
+        $this->assign('title', '会员登录');
 		return $this->fetch('login');
 	}
 	/*------------------------------------------------------ */

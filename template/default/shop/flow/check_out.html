@@ -121,6 +121,12 @@
                 if (res.msg != '') _alert(res.msg);
                 return false;
             }
+			if (action == 'getList'){
+				if (res.cartInfo.allGoodsNum < 1){
+					_alert('请选择需购买的商品.','{:url("shop/index/index")}');
+					return false;
+				}
+			}
             $('.goodsList').html(template('goodsListTpl',res.cartInfo));
             $('.totalGoodsPrice').html(res.cartInfo.totalGoodsPrice);
             $('.totalDiscount').html(res.cartInfo.totalDiscount);

@@ -32,7 +32,7 @@
 
 <td> 
 
-<a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456? " data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-wrench text-muted"></i></a>
+<a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456" data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-wrench text-muted"></i></a>
 {eq name="is_ban" value="0"}
 <a title="封禁会员"  data-confirm="您确定要封禁该会员，封禁后则会员则无法登陆? " data-toggle="cfmAjax" href="{:url('evelBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-lock text-muted"></i></a>
 {else/}

@@ -14,7 +14,7 @@ class CartModel extends BaseModel
     protected $table = 'shop_cart';
     public $pk = 'rec_id';
     public $is_integral = 0;
-    /*------------------------------------------------------ */
+ /*------------------------------------------------------ */
     //-- 优先自动执行
     /*------------------------------------------------------ */
     public function initialize()
@@ -81,8 +81,7 @@ class CartModel extends BaseModel
         $row = $this->field('goods_number,rec_id,use_integral')->where($where)->find();
         unset($where);
         if ($row) {// 如果购物车已经有此物品，则更新
-            if ($use_integral != $row['use_integral']) $update['use_integral'] = $use_integral;
-            $num = $row['goods_number'] + $num;
+            if ($use_integral != $row['use_integral']) $update['use_integral'] = $use_integral;			
             // 判断是商品能否购买或修改
             $res = $this->checkGoodsOrder($goods, $num, $spec);
             if ($res !== true) {
@@ -207,7 +206,7 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 购物车信息
     /*------------------------------------------------------ */
-    public function getCartList($is_sel = 0, $no_cache = false, $recids = '')
+    public function getCartList($is_sel = 0, $no_cache = false, $recids = '',$is_collect = true)
     {
 		$user_id = $this->userInfo['user_id'] * 1;        
         if ($user_id < 1){
@@ -224,6 +223,7 @@ class CartModel extends BaseModel
 			$mkey = 'CartInfo_'.$user_id.session_id().$is_sel.$this->is_integral;
 			$data = Cache::get($mkey);
 		}
+						
         if (empty($data['allGoodsNum'])) {
             $data['isAllSel'] = 1;
             $data['orderTotal'] = 0;
@@ -283,14 +283,26 @@ class CartModel extends BaseModel
             $data['exp_total'] = explode('.', $data['orderTotal']);
             Cache::set($mkey, $data, 300);
         }
+		//没有指定选和指定商品，执行查询是否收藏
+		if ($is_sel == 0 && empty($recids) == true && $is_collect == true){
+			$GoodsCollectModel = new GoodsCollectModel();
+			foreach ($data['goodsList'] as $key=>$goods){
+				$where = [];
+				$where[] = ['user_id','=',$user_id];
+				$where[] = ['goods_id','=',$goods['goods_id']];
+				$where[] = ['status','=',1];
+				$data['goodsList'][$key]['is_collect'] = $GoodsCollectModel->where($where)->count();
+			}
+		}
+		
         return $data;
     }
     /*------------------------------------------------------ */
     //-- 获取购物车商品数量和金额
     /*------------------------------------------------------ */
     public function getCartInfo()
-    {
-        $data = $this->getCartList();
+    {		
+        $data = $this->getCartList(0,false,'',false);
         $info['num'] = $data['buyGoodsNum'];
         if ($this->is_integral == 1) {
             $info['total'] = $data['integralTotal'];
