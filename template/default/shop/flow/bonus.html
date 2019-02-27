@@ -11,33 +11,18 @@
     </div>
 </div>
 
-<div class="wrapper bonusListBox">
-    <div class="page-hd">
-        <div class="header bor-1px-b">
-            <div class="header-left">
-                <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
-            </div>
-            <div class="header-title">优惠券</div>
-            <div class="header-right"></div>
-        </div>
-    </div>
 
-    {include file="bonus/list" /}
-</div>
 <script type="text/javascript">
+$(function(){
     //显示优惠券列表
     $('.ticket').on('click', function () {
         $('html').addClass('noscroll');
         $('.bonusListBox').addClass('move-left');
-		$('.base-header').hide();
-		$('.paymentbox').hide();
     });
     //关闭优惠券弹出
     $('.bonusListBox').on('click', '.close_wrapper', function () {
         $('html').removeClass('noscroll');
         $('.bonusListBox').removeClass('move-left');
-		$('.base-header').show();
-		$('.paymentbox').show();
     })
     //点击选择优惠券
     $('.bonusListBox').on('click', '.usedBonus', function () {
@@ -56,5 +41,5 @@
 		$('.bonusInfo .money').hide();
 		evalPrice();//计算支付金额
 	})
-	
+})
 </script>

@@ -1,10 +1,11 @@
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css">
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css?v=1">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
 
 <script type="text/html" id="addressListTpl">
 <div class="{$isAddOrder==1?'wrapper':''} addressesList ">
     {eq name="$isAddOrder" value="1"}
+	<div class="page">
     <div class="page-hd">
         <div class="header bor-1px-b">
             <div class="header-left">
@@ -16,15 +17,16 @@
     </div>
     {/eq}
     <div class="page-bd">
-
-    <ul class="addresslist goodslist">
-
-    </ul>
+		<ul class="addresslist goodslist">
+	
+		</ul>
    </div>
     <div class="page-ft">
         <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
     </div>
 </div>
+</div>
+
 <div class="wrapper addressInfoBox">
 
 </div>

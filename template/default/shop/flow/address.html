@@ -35,7 +35,7 @@
         $('.addressesList').removeClass('move-left');
     })
     //点击选择收货地址
-    $('.addresslist').on('click', '.block', function () {
+    $(document).on('click', '.addresslist .block', function () {
         if (isAddOrder == 0) return false;
         var obj = $(this);
         setTimeout(function () { //在单击事件中添加一个setTimeout()函数，设置单击事件触发的时间间隔
