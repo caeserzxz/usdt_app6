@@ -74,7 +74,7 @@
     </div>
 </form>
 <script type="text/javascript">
-$('.operatbtn').click(function(){
+$(document).on('click','.operatbtn',function(){
 	$('#operating').val($(this).data('type'));
 	$('.postBtn').click();
 })

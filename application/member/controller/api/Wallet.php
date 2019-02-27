@@ -35,7 +35,7 @@ class Wallet extends ApiController
 			//处理图片
 			$imgfile = input('imgfile');
 			if (empty($imgfile)){
-				_alert('线下打款，须上传打款凭证图片.');
+				return $this->error('线下打款，须上传打款凭证图片.');
 				return false;
 			}
 			$imgs = array();
