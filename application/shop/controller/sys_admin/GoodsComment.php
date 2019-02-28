@@ -42,11 +42,17 @@ class GoodsComment extends AdminController {
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
 		$search['status'] = input('status',1,'intval');
+		$search['keyword'] = input('keyword','','trim');
 		$where = array();
 		if ($search['status'] > 0){
 			$where[] = ['status','=',$search['status']];
 		}
-		
+		if (empty($search['keyword']) == false){		
+			 $UsersModel = new UsersModel();
+			 $uids = $UsersModel->where("mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR mobile LIKE '%".$search['keyword']."%'")->column('user_id');
+			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
+			 $where[] = ['user_id','in',$uids];
+		}
         $this->data = $this->getPageList($this->Model, $where);		
 		$this->assign("data", $this->data);
 		$this->assign("search", $search);	

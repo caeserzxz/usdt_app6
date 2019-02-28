@@ -35,9 +35,9 @@ class Withdraw extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
 		$this->userWithdrawType = $this->getDict('UserWithdrawType');	
-		$this->search['keyword'] = input('keyword','','trim');
-		$this->search['status'] = input('status',0,'intval');
-		$this->search['type'] = input('type','','trim');
+		$search['keyword'] = input('keyword','','trim');
+		$search['status'] = input('status',0,'intval');
+		$search['type'] = input('type','','trim');
 		$reportrange = input('reportrange');
 		$where = [];
 		if (empty($reportrange) == false){
@@ -46,13 +46,12 @@ class Withdraw extends AdminController
 		}else{
 			$where[] = ['w.add_time','between',[strtotime("-1 months"),time()]];
 		}
-		if ($this->search['status'] >= 0){
-			$where[] = ['w.status','=',$this->search['status']];
+		if ($search['status'] >= 0){
+			$where[] = ['w.status','=',$search['status']];
 		}	
-		if (empty($this->search['keyword']) == false){
-			 $uwhere[] = "( mobile LIKE '%".$keyword."%' OR user_name LIKE '%".$keyword."%' OR nick_name LIKE '%".$keyword."%' OR mobile LIKE '%".$keyword."%')";
+		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
-			 $uids = $UsersModel->where($uwhere)->column('user_id');
+			 $uids = $UsersModel->where(" mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR mobile LIKE '%".$search['keyword']."%'")->column('user_id');
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['w.user_id','in',$uids];
 		}
@@ -62,7 +61,7 @@ class Withdraw extends AdminController
 		$viewObj = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where);	
         $data = $this->getPageList($this->Model,$viewObj);
 		$this->assign("userWithdrawType", $this->userWithdrawType);
-		$this->assign("search", $this->search);		
+		$this->assign("search", $search);		
 		$this->assign("data", $data);
 		if ($runData == false){
 			$data['content']= $this->fetch('list');

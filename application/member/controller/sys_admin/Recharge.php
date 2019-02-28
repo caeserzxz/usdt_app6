@@ -36,9 +36,9 @@ class Recharge extends AdminController
     public function getList($runData = false) {
 		$this->userRechargeType = $this->getDict('UserRechargeType');	
 		$this->payList = (new PaymentModel)->getRows(false,'pay_code');
-		$this->search['keyword'] = input('keyword','','trim');
-		$this->search['status'] = input('status',0,'intval');
-		$this->search['pay_type'] = input('pay_type','','trim');
+		$search['keyword'] = input('keyword','','trim');
+		$search['status'] = input('status',0,'intval');
+		$search['pay_type'] = input('pay_type','','trim');
 		$reportrange = input('reportrange');
 		$where = [];
 		if (empty($reportrange) == false){
@@ -47,22 +47,21 @@ class Recharge extends AdminController
 		}else{
 			$where[] = ['add_time','between',[strtotime("-1 months"),time()]];
 		}
-		if ($this->search['status'] >= 0){
+		if ($search['status'] >= 0){
 			$where[] = ['status','=',$this->search['status']];
 		}
-		if (empty($this->search['pay_type']) == false){
-			$where[] = ['pay_type','=',$this->search['pay_type']];
+		if (empty($search['pay_type']) == false){
+			$where[] = ['pay_type','=',$search['pay_type']];
 		}
-		if (empty($this->search['keyword']) == false){
-			 $uwhere[] = "( mobile LIKE '%".$keyword."%' OR user_name LIKE '%".$keyword."%' OR nick_name LIKE '%".$keyword."%' OR mobile LIKE '%".$keyword."%')";
+		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
-			 $uids = $UsersModel->where($uwhere)->column('user_id');
+			 $uids = $UsersModel->where(" mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR mobile LIKE '%".$search['keyword']."%'")->column('user_id');
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['user_id','in',$uids];
 		}
 		
         $data = $this->getPageList($this->Model,$where);
-		$this->assign("search", $this->search);	
+		$this->assign("search", $search);	
 		$this->assign("userRechargeType", $this->userRechargeType);
 		$this->assign("payment", $this->payList);		
 		$this->assign("data", $data);
