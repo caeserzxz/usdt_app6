@@ -5,6 +5,7 @@ use app\AdminController;
 use app\member\model\UsersModel;
 use app\member\model\AccountModel;
 use app\member\model\UsersLevelModel;
+use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\distribution\model\DividendModel;
 use think\Db;
@@ -137,10 +138,10 @@ class Users extends AdminController
 		$row['user_address'] = Db::table('users_address')->where('user_id',$user_id)->select();	
 		$this->assign('row',$row);
 		$this->assign('Dividend',DividendModel::level());
-		$this->assign('d_level',config('config.DIVIDEND_LEVEL'));
+		$this->assign('d_level',config('config.dividend_level'));
 		$DividendRoleModel = new DividendRoleModel(); 
 		$this->assign("roleList", $DividendRoleModel->getRows());
-		
+		$this->assign("teamCount", (new UsersBindModel)->where('pid',$user_id)->count());	
 		return $this->fetch('sys_admin/users/info');
 	}
 	/*------------------------------------------------------ */
@@ -207,5 +208,30 @@ class Users extends AdminController
 		$result['list'] = $_list;
 		$result['code'] = 1;
 		return $this->ajaxReturn($result);
+	}
+	/*------------------------------------------------------ */
+	//-- 下级名单
+	/*------------------------------------------------------ */
+    public function getChainList(){
+		$user_id = input('user_id',0,'intval');
+		$DividendRole = (new DividendRoleModel)->getRows();
+		$UsersBindModel = new UsersBindModel();
+		$rows = $this->Model->field('user_id,nick_name,role_id')->where('pid',$user_id)->select();
+		foreach ($rows as $key=>$row){
+			$row['role_name'] = $DividendRole[$row['role_id']]['role_name'];
+			$row['teamCount'] = $UsersBindModel->where('pid',$user_id)->count();
+			$rows[$key] = $row;
+		}
+		$result['list'] = $rows;
+		return $this->ajaxReturn($result);		
+	}
+	/*------------------------------------------------------ */
+	//-- 上级名单
+	/*------------------------------------------------------ */
+    public function getSuperiorList(){
+		$pid = input('pid',0,'intval');
+		$result['code'] = 1;
+		$result['list'] = $this->Model->getSuperior($pid);
+		return $this->ajaxReturn($result);		
 	}
 }

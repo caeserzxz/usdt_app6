@@ -362,7 +362,7 @@
   width: 100%;
   bottom: 0;
   background-color: #fff;
-  height: 3.906667rem;
+  min-height:2rem;
 }
 
 .payment .model .modelContent .closeBox {
@@ -543,4 +543,3 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
-.bonusListBox .page-ft{ margin:0px !important;}

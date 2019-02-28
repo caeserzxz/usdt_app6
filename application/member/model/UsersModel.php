@@ -2,9 +2,10 @@
 namespace app\member\model;
 use app\BaseModel;
 use think\facade\Cache;
-
+use think\Db;
 use app\shop\model\CartModel;
 use app\weixin\model\WeiXinUsersModel;
+use app\distribution\model\DividendRoleModel;
 //*------------------------------------------------------ */
 //-- 会员表
 /*------------------------------------------------------ */
@@ -136,9 +137,12 @@ class UsersModel extends BaseModel
         }//end
         $res = $this->save($inArr);
         if ($res < 1) return '未知错误，写入会员数据失败.';		
-		if ($this->user_id < 19888){
-			$this->where('user_id',$this->user_id)->update(['user_id'=>19888]);
-			$this->user_id = 19888;
+		if ($this->user_id < 29889){
+			$res = $this->where('user_id',$this->user_id)->delete();
+			Db::query("alter table $this->table AUTO_INCREMENT=29889;");
+			sleep(2);
+			$res = $this->save($inArr);
+			if ($res < 1) return '未知错误，写入会员数据失败.';		
 		}
         //创建会员帐户信息
         $AccountModel = new AccountModel();
@@ -321,5 +325,28 @@ class UsersModel extends BaseModel
         sort($spid);
         $this->where('user_id',$user_id)->update(['spid'=>join(',',$spid)]);
 		return true;
+	}
+	/*------------------------------------------------------ */
+	//-- 获取会员的上级关联链
+	/*------------------------------------------------------ */ 
+	public function getSuperiorList($user_id = 0){
+		if ($user_id < 1) return array();
+		$chain = Cache::get('userSuperior_'.$user_id);	
+		if ($chain) return $chain;
+		$DividendRole = (new DividendRoleModel)->getRows();	
+		$i = 1;
+		do {
+			$info = $this->where('user_id',$user_id)->field('user_id,nick_name,pid,role_id,reg_time')->find();
+			$chain[$user_id]['level']     = $i;
+			$chain[$user_id]['user_id']   = $info['user_id'];
+			$chain[$user_id]['reg_time']  = dateTpl($info['reg_time']);
+			$chain[$user_id]['nick_name'] = empty($info['nick_name'])?'未填写':$info['nick_name'];
+			$chain[$user_id]['role_name'] = $info['role_id'] > 0 ? $DividendRole[$info['role_id']]['role_name'] : '无身份';			
+			$user_id = $info['pid'];
+			$i++;
+		} while ($user_id > 0);
+		
+		Cache::set('userSuperior_'.$user_id,$chain,300);
+		return $chain;
 	}
 }

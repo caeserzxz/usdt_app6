@@ -2,7 +2,7 @@
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
 {/block}
-{block name='pageType'}payResult{/block}
+{block name='pageType'}payResult payment{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
@@ -35,8 +35,70 @@
         </div>
     </div>
     <div class="button">
-        <a href="{:url('order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
         <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
+        <a href="{:url('order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
+         {if condition="$orderInfo.isPay == 1" }
+        <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>
+        {/if}
     </div>
 </div>
+
+<!-- 支付方式 -->
+<div class="model">
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="title fs36 color_3 fw_b">请选择支付方式</div>
+        <div class="cantre pay" id="payListBox">
+
+                <p class="get_list_tip">加载中...</p>
+
+        </div>
+        <div class="buttBox">
+            <span class="fs32 fw_b color_w BGcolor_r ">确认支付</span>
+        </div>
+    </div>
+</div>
+{literal}
+<script type="text/html" id="payListTpl">
+    {{each data as item index}}
+    <div class="block">
+        <label for="{{item.pay_code}}" style="width: 100%;">
+        <div class="payType">
+            <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+            <div>
+                <span class="fs30 color_3">{{item.pay_name}}</span>
+                {{if item.pay_code == 'balance'}}
+                <span class="fs26 color_r">(￥{{balance_money}})</span>
+                {{/if}}
+            </div>
+        </div>
+        </label>
+        <label for="{{item.pay_code}}">
+            <div class="iconBox">
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" id="{{item.pay_code}}" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+  //选择支付方式
+  $('.gopay').on('click',function(){
+	  jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
+		  if (res.code==0){
+			  _alert(res.msg);
+			  return false;
+		  }
+		  $('#payListBox').html(template('payListTpl',res));
+		  $('.model').show();
+	  });
+  });
+    $('.closeBox').on('click',function(){
+            $('.model').hide();
+        });
+</script>
 {/block}

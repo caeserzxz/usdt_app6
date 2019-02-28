@@ -21,8 +21,8 @@
                             <li class="active"><a href="#tabinfo" data-toggle="tab">帐户信息</a></li>                            
                             <li><a href="#tabbank" data-toggle="tab">会员资料</a></li>
                             <li><a href="#tabdescribe" data-toggle="tab">地址信息</a></li>
-                            <li><a href="#tabchain" class="_tabchainb_tab" data-toggle="tab">关系树</a></li>
-                           
+                            <li><a href="#superior" class="superior_tab" data-toggle="tab">上级关系树</a></li>
+                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>                           
                         </ul>
                     </header>
                     
@@ -264,11 +264,14 @@
                                 </div>                                
                             </div>
                             
-                             <!--上级关系树-->
+                            <!--上级关系树-->
+                            <div class="tab-pane" id="superior" style="overflow: hidden">
+                               	<div class="table-responsive"></div>
+                             </div>
+                             
+                              <!--下级关系树-->
                             <div class="tab-pane" id="tabchain" style="overflow: hidden">
-                               	<div class="form-horizontal">
-                                   
-                                 </div>
+                               	<div class="table-responsive"></div>
                              </div>
                             
                             
@@ -280,39 +283,66 @@
          
         </section>
     </section>
-
 <script type="text/html" id="chainlist">
 {{each list as item index}}
-<div class="form-group">                                            
+<div class="form-group" style=" margin-left:0px;">                                            
 	<div class="col-sm-8">	
-		<a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" ><i class="fa fa-search m-r"></i>{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.dividend_role_name?item.dividend_role_name:'普通会员'}}</a>	
+		<a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" ><i class="fa fa-search m-r"></i>{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.role_name?item.role_name:'普通会员'}} - 团队数（{{item.teamCount}}）</a>	
 	</div>
 	<div class="nextList" id="next_box_{{item.user_id}}" style="padding-left:50px; padding-top:10px;clear:both;"></div>
 </div>
 {{/each}}
 </script>
+<script type="text/html" id="superiorlist">
+{{each list as item index}}
+ <div class="form-group" style=" margin-left:0px;">                                            
+	  <div class="col-sm-8">
+	  {{item.level}}级 - 会员ID:{{item.user_id}} - 昵称：{{item.nick_name}} - 身份：{{item.role_name}} - 注册时间：{{item.reg_time|dateTpl}}	  
+	  </div>
+  </div>
+{{/each}}
+</script>
 
 <script type="text/javascript">
-	$('.tabchainb_tab').click(function(){
-		if ($('#tabchainb').find('.form-horizontal').html() == ''){
+	$('.superior_tab').click(function(){
+		if ($('#superior').find('.table-responsive').html() == ''){
+			getSuperiorList({$row['user_id']});
+		}
+	})
+	$('.tabchain_tab').click(function(){
+		if ($('#tabchain').find('.table-responsive').html() == ''){
 			getChainList({$row['user_id']});
 		}
 	})
 	$(document).on('click','.next_btn',function(){
 		getChainList($(this).data('id'),true)
 	})
-	
-	
+	//加载上级
+	function getSuperiorList(uid){
+		jq_ajax('{:url("sys_admin.users/getSuperiorList")}','user_id='+uid,function(res){
+			if (res.list.length < 1){
+				$('#superior .table-responsive').html('没有相关信息.');
+				return false;
+			}
+			$('#superior .table-responsive').html(template('superiorlist',res));
+			
+		});
+	}
+	//加载下级
 	function getChainList(uid,next){
-		jq_ajax('{:url("User/getChainList")}','user_id='+uid,function(res){
-			if (res.list == null){
-				_alert('没有了');
+		jq_ajax('{:url("sys_admin.users/getChainList")}','user_id='+uid,function(res){
+			if (res.list.length < 1){
+				if (next == true){
+					$('#next_box_'+uid).html('没有了');
+				}else{
+					$('#tabchain .table-responsive').html('没有了');
+				}
 				return false;
 			}
 			if (next == true){
 				$('#next_box_'+uid).html(template('chainlist',res));
 			}else{
-				$('#tabchainb').find('.form-horizontal').html(template('chainlist',res));
+				$('#tabchain .table-responsive').html(template('chainlist',res));
 			}
 		});
 	}
