@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css?v=1">
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css?v=2">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
 
@@ -209,7 +209,7 @@
         var url = postData.address_id > 0 ?  '{:url("member/api.address/edit")}':'{:url("member/api.address/add")}';
         jq_ajax(url,postData,function(res){
             if (res.code == 0) {
-                alert(res.msg);
+                _alert(res.msg);
                 return false;
             }
             $('.addressBox .tips').hide();
@@ -226,7 +226,7 @@
         if (defAddressId != obj.val()) {
             jq_ajax('{:url("member/api.address/editDefault")}', 'address_id=' + $(this).val(),function (res){
                 if (res.code == 0) {
-                    alert(res.msg);
+                    _alert(res.msg);
                     return false;
                 }
                 defAddressId = obj.val();

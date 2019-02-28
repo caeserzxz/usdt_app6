@@ -93,14 +93,14 @@ class Order extends AdminController{
 			$where[] = ['province','=',$search['province']];
 		}//省市区end
 		$search['shipping_id'] = input('shipping_id',0,'intval');
-		if ($search['shipping_id']) $where['shipping_id'] = $search['shipping_id'];
+		if ($search['shipping_id']) $where[] = ['shipping_id','=',$search['shipping_id']];
 		$search['pay_id'] = input('pay_id',0,'intval');
-		if ($search['pay_id']) $where['pay_id'] = $search['pay_id'];
+		if ($search['pay_id']) $where[] = ['pay_id','=',$search['pay_id']];
 		
 		$search['order_status'] = input('order_status',0,'intval');
-		if ($search['order_status']>0) $where['order_status'] = $search['order_status'];
+		if ($search['order_status']>0) $where[] = ['order_status','=',$search['order_status']];
 		$search['pay_status'] = input('pay_status',0,'intval');
-		if ($search['pay_status']>0) $where['pay_status'] = $search['pay_status'];
+		if ($search['pay_status']>0) $where[] = ['pay_status','=',$search['pay_status']];
 		$search['shipping_status'] = input('shipping_status',0,'intval');
 		if ($search['shipping_status']>0) $where[] = ['shipping_status','=',$search['shipping_status']];
 		

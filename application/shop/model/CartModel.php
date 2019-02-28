@@ -41,12 +41,12 @@ class CartModel extends BaseModel
         $use_integral = $goods['use_integral'];
 
         if ($this->is_integral == 1) {
-            $gmtime = time();
+            $time = time();
             $ExchangeGoodsModel = new ExchangeGoodsModel();
             $ex_resddd = $ExchangeGoodsModel->where('goods_id', $goods_id)->find();
             if (empty($ex_resddd)) return '相关商品不存在';
             if ($ex_resddd['is_exchange'] != 1) return "该商品兑换状态已发生变化不能进行积分兑换.";
-            if ($gmtime < $ex_resddd['start_time'] || $gmtime > $ex_resddd['end_time']) {
+            if ($time < $ex_resddd['start_time'] || $time > $ex_resddd['end_time']) {
                 return "该商品已超过有效兑换时间不能进行积分兑换。";
             }
             $use_integral = $ex_resddd['use_integral'];
@@ -91,7 +91,7 @@ class CartModel extends BaseModel
                 return $res['msg'];
             }
             $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
-
+			$update['add_time'] = time();
             $update['goods_number'] = $num;
             $update['is_select'] = 1;
             $update['goods_price'] = $price['min_price'];

@@ -543,3 +543,7 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
+
+.bonusListBox .page-ft{
+	margin:0px !important;
+}

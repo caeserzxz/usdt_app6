@@ -144,10 +144,10 @@ class Bonus extends AdminController
 					$level = $levelList[$user_level];
 					$AccountModel = new AccountModel();
 					$where = ' total_integral between '.$level['min'].' AND '.$level['max']; 		
-					$users = $AccountModel->where($where)->column('user_id');
+					$userIds = $AccountModel->where($where)->column('user_id');
 				}
-				if (empty($users)) return $this->error('没有找到相关可分配的会员.');
-				$num = $this->Model->makeBonusSn($type_id,0,$users);
+				if (empty($userIds)) return $this->error('没有找到相关可分配的会员.');
+				$num = $this->Model->makeBonusSn($type_id,0,$userIds);
 				
 			}
 			if ($num < 1) return $this->error('发送红包失败，请尝试重新提交.');

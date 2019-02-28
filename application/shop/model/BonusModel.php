@@ -32,6 +32,9 @@ class BonusModel extends BaseModel
 		$bonus_id = array();
 		$addnum = 1;
 		$time = time();
+		if (is_array($userIds) == false){
+			$userIds = explode(',',$userIds);
+		}
 		if (empty($userIds) == false){
 			do{
 				$uid = reset($userIds);
@@ -133,6 +136,20 @@ class BonusModel extends BaseModel
 		Cache::set($mkey,$list,60);//缓存30秒
 		return $list;
 	}
-	
+	/*------------------------------------------------------ */
+	//-- 注册送红包
+	/*------------------------------------------------------ */
+	public function sendByReg($uid = 0){
+		if ($uid < 1) return false;
+		$time = time();
+		$where[] = ['send_type','=',4];
+		$where[] = ['send_start_date','<',$time];
+		$where[] = ['send_end_date','>',$time];
+		$bonusIds = $this->where($where)->column('type_id');
+		foreach ($bonusIds as $bonus_id){
+			$this->makeBonusSn($bonus_id,1,$uid);
+		}
+		return true;
+	}
 	
 }

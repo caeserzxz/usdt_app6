@@ -332,8 +332,7 @@
 	function getChainList(uid,next){
 		jq_ajax('{:url("sys_admin.users/getChainList")}','user_id='+uid,function(res){
 			if (res.list.length < 1){
-				if (next == true){
-					$('#next_box_'+uid).html('没有了');
+				if (next == true){				
 				}else{
 					$('#tabchain .table-responsive').html('没有了');
 				}

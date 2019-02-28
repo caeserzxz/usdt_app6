@@ -6,6 +6,7 @@ use think\Db;
 use app\shop\model\CartModel;
 use app\weixin\model\WeiXinUsersModel;
 use app\distribution\model\DividendRoleModel;
+
 //*------------------------------------------------------ */
 //-- 会员表
 /*------------------------------------------------------ */
@@ -140,7 +141,7 @@ class UsersModel extends BaseModel
 		if ($this->user_id < 29889){
 			$res = $this->where('user_id',$this->user_id)->delete();
 			Db::query("alter table $this->table AUTO_INCREMENT=29889;");
-			sleep(2);
+			sleep(1);
 			$res = $this->save($inArr);
 			if ($res < 1) return '未知错误，写入会员数据失败.';		
 		}
@@ -156,6 +157,12 @@ class UsersModel extends BaseModel
         } //end
         //写入九级关系链
         $this->regUserBind($this->user_id,$inArr['pid']);
+		//红包模块存在执行
+		if(class_exists('app\shop\model\BonusModel')){
+			//注册送红包
+			(new \app\shop\model\BonusModel)->sendByReg($this->user_id);			
+		}
+		
         return true;
     }
 	/*------------------------------------------------------ */
