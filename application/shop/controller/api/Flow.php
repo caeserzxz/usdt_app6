@@ -153,6 +153,7 @@ class Flow extends ApiController
     {
         if ($address_id < 0) {
             $address_id = input('address_id', '0', 'intval');
+			$recids = input('recids', '', 'trim');
         }
 		$return['code'] = 1;       
         if ($address_id < 1) {

@@ -13,9 +13,11 @@
 <script type="text/javascript">
     //计算运费
     function evalShippingFee(){
-        var address_id = $('#address_id').val();
+		var arr = new Object;
+        arr.address_id = $('#address_id').val();
+		arr.recids = rec_id;
         $('.shippingFee').html('<span style="font-size:80%;">运费计算中...</span>');
-        jq_ajax('{:url("shop/api.flow/evalShippingFee")}','address_id='+address_id,function (res) {
+        jq_ajax('{:url("shop/api.flow/evalShippingFee")}',arr,function (res) {
             if (res.code==0){
                 $('.shippingFee').html(res.msg);
                 return false;

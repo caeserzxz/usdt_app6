@@ -172,7 +172,7 @@
 
     }
     //修改购物车订购数量
-    function editNum(obj,rec_id,type) {
+    function editNum(obj,recid,type) {
         var num = $(obj).parent().find('input').val();
         if (type == 'up'){
             num++;
@@ -180,8 +180,8 @@
             num--;
         }
         if (num < 1) return false;
-        var address_id = $('#address_id').val();
-        return evalCart('editNum','rec_id='+rec_id+'&num='+num+'&address_id='+address_id);
+        var address_id = $('#address_id').val();		
+        return evalCart('editNum','rec_id='+recid+'&num='+num+'&address_id='+address_id+'&recids='+rec_id);
     }
     evalCart('getList');//获取购买商品列表
     $(function(){
