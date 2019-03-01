@@ -26,6 +26,12 @@ class AccountLogModel extends BaseModel
         return ($this->toKey($data) == $md5_key);
     }
 	/*------------------------------------------------------ */
+	//-- 创建帐号数据
+	/*------------------------------------------------------ */ 
+	public function createData($data = array()){	
+		return (new AccountModel)->save($data);	
+	}
+	/*------------------------------------------------------ */
 	//-- 记录明细,更新用户帐户，更新用户信息
     //-- $data array 更新的字段数据
     //-- $user_id int 会员ID
