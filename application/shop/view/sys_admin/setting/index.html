@@ -56,7 +56,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group hide">
                                 <label class="col-sm-2 control-label">开放商品问答：</label>
                                 <div class="controls">
                                     <label class="radio-inline">
@@ -70,7 +70,7 @@
                              <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >下单未支付超时取消：</label>
+                                <label class="col-sm-2 control-label" >超时取消：</label>
                                 <div class="controls">
                                   	<select name="shop_order_auto_cancel"  style="width:200px;">
                                     	<option value="0" {$setting['shop_order_auto_cancel']==0?'selected':''}>不执行自动取消</option>
@@ -83,13 +83,13 @@
                                  </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >发货后多少天自动收货：</label>
+                                <label class="col-sm-2 control-label" >自动签收：</label>
                                 <div class="controls">
-                                  	<select name="shop_auto_sign_limit"  style="width:80px;">
+                                  	<select name="shop_auto_sign_limit"  >
                                       {for start="1" end="31" name="day" }
                                          <option value="{$day}" {$setting['shop_auto_sign_limit']==$day?'selected':''}>{$day} 天</option>
                                       {/for}
-                                  </select> <span class="help-line">发货后多少天自动收货</span>
+                                  </select> <span class="help-line">发货多少天后订单自动签收</span>
                                  </div>
                             </div>
                             <div class="form-group">
@@ -104,9 +104,10 @@
                                 </div>
                              </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >多少天内可申请售后：</label>
+                                <label class="col-sm-2 control-label" >申请售后：</label>
                                 <div class="controls">
-                                  	<select name="shop_after_sale_limit"  style="width:80px;">
+                                  	<select name="shop_after_sale_limit"  class="input-max">
+                                      <option value="0" {$setting['shop_after_sale_limit']==0?'selected':''}>不启用售后功能</option>
                                       {for start="1" end="31" name="day" }
                                          <option value="{$day}" {$setting['shop_after_sale_limit']==$day?'selected':''}>{$day} 天</option>
                                       {/for}
