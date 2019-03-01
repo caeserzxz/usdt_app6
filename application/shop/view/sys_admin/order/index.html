@@ -10,6 +10,7 @@
                     <strong>{$is_cancel==true?'订单回收列表':'订单列表'}</strong>
                 </li>                                  
             </ul>
+          {if condition="$is_cancel != true"}  
          <select name="state" style="width: 100px;" data-toggle="select2"  data-chang="submit">
              <option value="0" {$search['state']==0?'selected':''} >全部订单</option>
              <option value="1" {$search['state']==1?'selected':''} >待确认</option>
@@ -18,8 +19,10 @@
              <option value="4" {$search['state']==4?'selected':''} >已发货</option>
              <option value="5" {$search['state']==5?'selected':''} >已签收</option>
              <option value="6" {$search['state']==6?'selected':''} >已退货</option>
+             <option value="7" {$search['state']==7?'selected':''} >待退款</option>
+             <option value="8" {$search['state']==8?'selected':''} >已退款</option>
          </select>
-
+		{/if}
            <div class="form-group">
                 <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
                     <i class="fa fa-calendar fa-lg"></i>

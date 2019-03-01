@@ -109,7 +109,7 @@
                     <li class="active"><a href="#tabinfo" data-toggle="tab">订单信息</a></li>
                     <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
                     <li><a href="#tabdescribe" data-toggle="tab">物流信息</a></li>
-                    <li><a href="#tabdividend" data-toggle="tab">提成信息</a></li>
+                    <li><a href="#tabdividend" data-toggle="tab">分佣信息</a></li>
                     <li><a href="#log" data-toggle="tab">订单日志</a></li>
 
                 </ul>
@@ -120,32 +120,32 @@
                         <div class="col-sm-12">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">订单编号</label>
+                                    <label class="col-sm-3 control-label">订单编号：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.order_sn}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">下单时间</label>
+                                    <label class="col-sm-3 control-label">下单时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.add_time|dateTpl}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">支付时间</label>
+                                    <label class="col-sm-3 control-label">支付时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.pay_time|dateTpl}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">确定时间</label>
+                                    <label class="col-sm-3 control-label">确定时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.confirm_time|dateTpl}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">购买会员</label>
+                                    <label class="col-sm-3 control-label">购买会员：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.user_id} - {$orderInfo.user_id|userInfo}
                                     </div>
@@ -157,33 +157,33 @@
 
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">发货时间</label>
+                                    <label class="col-sm-3 control-label">发货时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.shipping_time|dateTpl}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">签收/自提时间</label>
+                                    <label class="col-sm-3 control-label">签收/自提时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.sign_time|dateTpl}
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">退货时间</label>
+                                    <label class="col-sm-3 control-label">退货时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.returned_time|dateTpl}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">取消时间</label>
+                                    <label class="col-sm-3 control-label">取消时间：</label>
                                     <div class="col-sm-5 form-control-static">
                                         {$orderInfo.cancel_time|dateTpl}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-1 control-label">买家留言</label>
+                                <label class="col-sm-1 control-label">买家留言：</label>
                                 <div class="col-sm-8 form-control-static">
                                     {$orderInfo.buyer_message}
                                 </div>
@@ -295,16 +295,29 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="tabdescribe" style="overflow: hidden">
-
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">收货地址</label>
+						<div class="form-group">
+                            <label class="col-sm-1 control-label">收货人：</label>
                             <div class="col-sm-8 form-control-static">
-                                【{$orderInfo.merger_name}】 {$orderInfo.consignee},{$orderInfo.mobile},
+                                {$orderInfo.consignee}
+                               
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">联系手机：</label>
+                            <div class="col-sm-8 form-control-static">
+                                {$orderInfo.mobile}
+                               
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">收货地址：</label>
+                            <div class="col-sm-8 form-control-static">
+                                【{$orderInfo.merger_name}】 
                                 {$orderInfo.address}
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">要求配送</label>
+                            <label class="col-sm-1 control-label">要求配送：</label>
                             <div class="col-sm-8 form-control-static">
 
                                 {eq name="row.shipping_fee" value="0"}
@@ -315,7 +328,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">买家留言</label>
+                            <label class="col-sm-1 control-label">买家留言：</label>
                             <div class="col-sm-8 form-control-static">
                                 {$orderInfo.buyer_message}
                             </div>
@@ -362,8 +375,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <div class="col-sm-9 col-sm-offset-1">
-                                        订单金额：{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额:{$orderInfo.dividend_amount|priceFormat}</span>
-                                        <span class="m-l-lg">实收:{$orderInfo.real_amount|priceFormat}</span>
+                                        订单金额：{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额：{$orderInfo.dividend_amount|priceFormat}</span>
+                                        <span class="m-l-lg">实收：{$orderInfo.real_amount|priceFormat}</span>
                                     </div>
                                 </div>
                             </div>
@@ -375,14 +388,14 @@
                             <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>提成用户ID</th>
+                                    <th>用户ID</th>
                                     <th>分佣身份</th>
                                     <th>佣金等级</th>
                                     <th>等级佣金</th>
                                     <th>角色佣金</th>
                                     <th>平级佣金</th>
                                     <th>总计佣金</th>
-                                    <th>提成状态</th>
+                                    <th>分佣状态</th>
                                 </tr>
                                 </thead>
                                 <tbody>

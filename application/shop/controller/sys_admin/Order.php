@@ -157,10 +157,16 @@ class Order extends AdminController{
 				break;
             /**已退货**/
             case "6" :
-                $where[] = ['order_status','=',$config['OS_RETURNED']];
-			/**已关闭**/
+                $where[] = ['order_status','=',$config['OS_RETURNED']];			
+			break;
+			/**待退款**/
 			case "7" :
-                $where[] = ['order_status','=',$config['OS_CANCELED']];
+                $where[] = ['order_status','in',[$config['OS_CANCELED'],$config['OS_RETURNED']]];
+				$where[] = ['pay_status','=',$config['PS_PAYED']];
+			break;
+			/**已退款**/
+			case "8" :
+                $where[] = ['pay_status','=',$config['PS_RUNPAYED']];
 			break;
 			default:
 			break;
