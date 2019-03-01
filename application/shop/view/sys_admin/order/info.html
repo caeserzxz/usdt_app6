@@ -31,25 +31,25 @@
                                    data-toggle="ajaxCurl" class="btn btn-default btn-sm" data-msg="确定把订单设为确认？">确认订单</a>
                             </td>
                         {/notempty}
-                        {eq name="operating.cancel" value="1"}
+                        {eq name="operating.isCancel" value="1"}
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"
                                    data-remote="{:url('cancel',array('id'=>$orderInfo['order_id']))}"
                                    data-toggle="ajaxRemove" data-msg="确定取消订单？" class="btn btn-default btn-sm"
-                                   data-loading-text="关闭中...">关闭</a></td>
+                                   data-loading-text="取消中...">取消</a></td>
                         {/eq}
                         {notempty name="operating.setUnPay"}
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"
                                    data-remote="{:url('setUnPay',array('id'=>$orderInfo['order_id']))}"
-                                   data-toggle="ajaxRemove" data-msg="确定退货？" class="btn btn-default btn-sm"
+                                   data-toggle="ajaxRemove" data-msg="确定设为未付款？" class="btn btn-default btn-sm"
                                    title="设为未付款">设为未付款</a></td>
                         {/notempty}
                         {notempty name="operating.returnPay"}
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"
                                    data-remote="{:url('returnPay',array('id'=>$orderInfo['order_id']))}"
-                                   data-toggle="ajaxRemove" data-msg="确定退货？" class="btn btn-default btn-sm"
+                                   data-toggle="ajaxRemove" data-msg="确定设为退款，支付金额退回帐户余额？" class="btn btn-default btn-sm"
                                    title="设为退款">设为退款</a></td>
                         {/notempty}
                         {notempty name="operating.changePrice"}
@@ -361,8 +361,7 @@
                         <div class="col-sm-12">
                             <div class="col-sm-6">
                                 <div class="form-group">
-
-                                    <div class="col-sm-8 col-sm-offset-1">
+                                    <div class="col-sm-9 col-sm-offset-1">
                                         订单金额：{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额:{$orderInfo.dividend_amount|priceFormat}</span>
                                         <span class="m-l-lg">实收:{$orderInfo.real_amount|priceFormat}</span>
                                     </div>

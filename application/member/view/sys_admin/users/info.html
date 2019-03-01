@@ -31,13 +31,13 @@
                             <div class="tab-pane active" id="tabinfo">
                                 <div class="form-group">
                                     <label class="control-label">注册手机：</label>
-                                    <div class="col-sm-2"><label>{$row.mobile}</label></div>
+                                    <div class="col-sm-3"><label>{$row.mobile}</label></div>
                                     <label class="control-label">会员等级：</label>
-                                    <div class="col-sm-2"><label>{$row.total_integral|userLevel}</label></div>
+                                    <div class="col-sm-3"><label>{$row.total_integral|userLevel}</label></div>
                                 </div>
                                  <div class="form-group">
                                     <label class="control-label">真实姓名：</label>
-                                    <div class="col-sm-2"><label>{$row.real_name|default='未填写'}</label></div>
+                                    <div class="col-sm-3"><label>{$row.real_name|default='未填写'}</label></div>
                                    <label class="control-label">分销身份：</label>
                                     <div class="col-sm-3"><label>{$row['role_id']==0?'普通会员':$roleList[$row['role_id']]['role_name']}</label>
                                     <a href="javascript:;" title="修改分销身份" data-remote="{:url('editRole',array('user_id'=>$row['user_id']))}" data-toggle="ajaxModal" class="m-xs" >
@@ -48,55 +48,52 @@
                                
                                  <div class="form-group">
                                     <label class="control-label">注册时间：</label>
-                                    <div class="col-sm-2"><label>{$row.reg_time|dateTpl}</label></div>
+                                    <div class="col-sm-3"><label>{$row.reg_time|dateTpl}</label></div>
                                      <label class="control-label">最近购买时间：</label>
-                                    <div class="col-sm-2"><label>{$row.last_buy_time|dateTpl}</label></div>
+                                    <div class="col-sm-3"><label>{$row.last_buy_time|dateTpl}</label></div>
                                     
                                 </div>
                                  <div class="form-group">
                                     <label class="control-label">最近登陆时间：</label>
-                                    <div class="col-sm-2"><label>{$row.login_time|dateTpl}</label></div>
+                                    <div class="col-sm-3"><label>{$row.login_time|dateTpl}</label></div>
                                     <label class="control-label">最近登陆IP：</label>
-                                    <div class="col-sm-2"><label>{$row.login_ip|default='未记录'}</label></div>
+                                    <div class="col-sm-3"><label>{$row.login_ip|default='未记录'}</label></div>
                                 </div>
                                  <div class="line line-dashed line-lg pull-in"></div>
                                 <div class="form-group">
                                     <label class="control-label">帐户余额：</label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <label>
-                                            {$row.balance_money|priceFormat=true} 
+                                            {$row.account.balance_money|priceFormat=true} 
                                             <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id'],'account_type'=>'balance_money'))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
                                         </label>
                                     </div>
                                      <label class="control-label">待到帐佣金：</label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <label>{$wait_money|priceFormat=true}                                        
                                         <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id'],'account_type'=>'total_dividend'))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
                                         </label>
                                     </div>
                                 </div>   
                                 <div class="form-group">
-                                    <label class="control-label">提现冻结：</label>
-                                    <div class="col-sm-2">
-                                        <label>{$row.frozen_money|priceFormat=true}</label>
-                                    </div>
+                                    
                                    
                                      <label class="control-label">历史总佣金：</label>
                                     <div class="col-sm-5">
-                                        <label >{$row.total_dividend|priceFormat=true} <span class="help-inline">此项记录用户历史所有佣金总和</span></label>
+                                        <label >{$row.account.total_dividend|priceFormat=true} <span class="help-inline">此项记录用户历史所有佣金总和</span></label>
                                    </div>
                                 </div>  
                                  <div class="form-group">
                                     <label class="control-label">消费积分：</label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <label>
-                                        {$row.use_integral|intval} 
+                                        {$row.account.use_integral|intval} 
                                         </label>
                                     </div>
                                       <label class="control-label">历史总积分：</label>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <label>
-                                        {$row.total_integral|intval} 
+                                        {$row.account.total_integral|intval} 
                                         </label>
                                     </div>
                                 </div>   
@@ -118,13 +115,13 @@
                                     </header>
                                 	 <div class="form-group m-t-md">
                                             <label class="control-label">联系电话：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                 {$row.tel|default='未填写'}
                                                 </label>
                                             </div>
                                             <label class="control-label">qq：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                  {$row.qq|default='未填写'}
                                                 </label>
@@ -132,13 +129,13 @@
                         			</div>
                                     <div class="form-group m-t-md">
                                             <label class="control-label">电子邮箱：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                 {$row.email|default='未填写'}
                                                 </label>
                                             </div>
                                             <label class="control-label">生日：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                  {$row.birthday}
                                                 </label>
@@ -153,13 +150,13 @@
                                             <div style="position:absolute; right:20px; width:120px;"><img src="{$row.wx.wx_headimgurl}" style="width:100%" /></div>
                                        {/if}
                                             <label class="control-label">呢称：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                 {$row.wx.wx_nickname|default='未获取'}
                                                 </label>
                                             </div>
                                              <label class="control-label">性别：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                 {$row['wx']['sex']==1?'男':$row['wx']['sex']==2?'女':'未知'}
                                                 </label>
@@ -168,13 +165,13 @@
                         			</div>
                                     <div class="form-group m-t-md">
                                             <label class="control-label">省份：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                  {$row.wx.wx_province|default='未获取'}
                                                 </label>
                                             </div>
                                              <label class="control-label">城市：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                  {$row.wx.wx_city|default='未获取'}
                                                 </label>
@@ -182,13 +179,13 @@
                         			</div>
                                     <div class="form-group m-t-md">
                                             <label class="control-label">是否关注：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                 {$row['wx']['subscribe']==1?'已关注':'未关注'}
                                                 </label>
                                             </div>
                                              <label class="control-label">关注时间：</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label>
                                                  {$row.wx.wx_subscribe_time|dateTpl}
                                                 </label>

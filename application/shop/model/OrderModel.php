@@ -123,19 +123,23 @@ class OrderModel extends BaseModel
                 $info['ostatus'] = '待确认';
                 $info['isCancel'] = 1;
             }
-        } elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
+        }elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
             if ($info['shipping_status'] == $this->config['SS_UNSHIPPED']) {
                 $info['ostatus'] = '待发货';
-            } elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
+            }elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
                 $info['ostatus'] = '已发货';
                 $info['isSign'] = 1;
-            } elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
+            }elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
                 $info['ostatus'] = '已完成';
             }
             if ($info['pay_status'] == $this->config['PS_PAYED']) {
-                $info['isCancel'] = 0;
-            }
-        } elseif ($info['order_status'] == $this->config['OS_RETURNED']) {
+               unset($info['isCancel']);
+            }elseif ($info['is_pay'] > 0  && $info['pay_status'] == $this->config['PS_UNPAYED']){
+				$info['isCancel'] = 1;
+                $info['isPay'] = 1;
+                $info['ostatus'] = '待付款';
+			}
+        }elseif ($info['order_status'] == $this->config['OS_RETURNED']) {
             $info['ostatus'] = '退货';
         } else {            
 			if ($info['is_del'] == 0){
@@ -216,7 +220,7 @@ class OrderModel extends BaseModel
                     }
                 }
             }
-        } elseif ($upData['order_status'] == $this->config['OS_CANCELED'] ) {//取消订单
+        }elseif ($upData['order_status'] == $this->config['OS_CANCELED'] ) {//取消订单
             //提成处理
 
             //end
@@ -229,17 +233,29 @@ class OrderModel extends BaseModel
                 }
                 $upData['is_stock'] = 0;
             }
-        } elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']   ){//退款
-
-        } elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED']) {//发货
+		}elseif ($upData['pay_status'] == $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
+			 
+		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
+			if ($orderInfo['money_paid'] > 0) {
+				$inData['balance_money'] = $orderInfo['money_paid'];           
+                $inData['change_type'] = 3;
+                $inData['by_id'] = $orderInfo['order_id'];
+                $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
+                $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
+                if ($res != true) {
+                    Db::rollback();//回滚
+                    return '订单退款到余额失败.';
+                }
+            }			
+        }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED']) {//发货
             //提成处理
             //end
 
-        } elseif ($upData['shipping_status'] == $this->config['SS_UNSHIPPED']) {//未发货
+        }elseif ($upData['shipping_status'] == $this->config['SS_UNSHIPPED']) {//未发货
             //提成处理
             //end
 
-        } elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
+        }elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
             //积分赠送
             $inData['total_integral'] = intval($orderInfo['total_amount']);
             $inData['use_integral'] = $inData['total_integral'];
@@ -263,11 +279,10 @@ class OrderModel extends BaseModel
                 Db::rollback();//回滚
                 return '修改订单商品为待评价失败.';
             }
-        } elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
+        }elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
             //提成处理
             //end
             //修改订单商品未评价的设为不需要评价
-
            $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
             if ($res < 1) {
                 Db::rollback();//回滚
@@ -279,7 +294,7 @@ class OrderModel extends BaseModel
 
 
 
-        } elseif ($extType == 'unsign' ) {//撤销签收
+        }elseif ($extType == 'unsign' ) {//撤销签收
             unset($where);
             //查询通过订单获取的积分,扣除
             $where['by_id'] = $orderInfo['order_id'];
@@ -322,48 +337,47 @@ class OrderModel extends BaseModel
         $ss = $order['shipping_status'];
         $ps = $order['pay_status'];
         if ($os == $this->config['OS_UNCONFIRMED']){//未确认
-            $operating['cancel'] = true;//取消
-            if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认
-            elseif ($order['pay_id'] == 99 && $ps == $this->config['PS_UNPAYED']) $operating['cfmCodPay'] = true;//设为已付款
+            $operating['isCancel'] = true;//取消
+            if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认           
             $operating['changePrice'] = true; //改价
             $operating['editGoods'] = true; //修改商品
+			if ($order['is_pay'] == 2) $operating['cfmCodPay'] = true;//设为已付款
         }elseif ($os == $this->config['OS_CONFIRMED']){ //已确认
-            if ($ss == $this->config['SS_UNSHIPPED'])
-            {
-                $operating['cancel'] = true;
-                $operating['shipping'] = true;
-                $operating['changePrice'] = true;//改价
-                $operating['editGoods'] = true; //修改商品
-                if ($order['pay_id'] == 99 && $ps == $this->config['PS_UNPAYED']) $operating['cfmCodPay'] = true;//设为已付款
-            }elseif ($ss == $this->config['SS_SHIPPED']){
+            if ($ss == $this->config['SS_UNSHIPPED']){//未发货
+				$operating['isCancel'] = true;	
+				if ($ps == $this->config['PS_UNPAYED']){//未支付									
+					$operating['changePrice'] = true;//改价
+					$operating['editGoods'] = true; //修改商品					
+				}elseif ($ps == $this->config['PS_PAYED']){//已支付
+					$operating['shipping'] = true;	
+					if ($order['is_pay'] == 2){
+						$operating['setUnPay'] = true;//设为未付款
+					}
+				}
+            }elseif ($ss == $this->config['SS_SHIPPED']){//已发货
                 $operating['sign'] = true;
                 $operating['unshipping'] = true;//设为未发货
                 $operating['returned'] = true;//设为退货
-                unset($operating['unconfirmed']);
+                unset($operating['unconfirmed']);              
             }elseif ($ss == $this->config['SS_SIGN']){
                 if (($order['sign_time'] > time() - 604800)){
                     $operating['returned'] = true;//设为退货
                     $operating['unsign'] = true;//设为未签收
                 }
-                unset($operating['unconfirmed']);
-                if ($order['pay_id'] == 1 ){
-                    if ($ps == $this->config['PS_UNPAYED'])$operating['cfmCodPay'] = true;//设为已付款
-                    else unset($operating['unsign']);
-                }
+                unset($operating['unconfirmed']);               
             }else{
-                $operating['cancel'] = true;
+                $operating['isCancel'] = true;
                 $operating['changePrice'] = true;
-            }
-            if ($ps == $this->config['PS_PAYED']){
-                if ($ss == $this->config['SS_UNSHIPPED']){
-                    $operating['setUnPay'] = true;
-                }else{
-                    $operating['returnPay'] = true;
-                }
-                unset($operating['changePrice'],$operating['editGoods']);//已支付不能改价
-            }
+            }           
+		}elseif($os == $this->config['OS_RETURNED']){ //已退货
+			if ($ps == $this->config['PS_PAYED']){//退货后可操作退款
+				$operating['returnPay'] = true;
+			}
         }elseif($os == $this->config['OS_CANCELED']){ //已关闭
             if ($order['cancel_time'] > time() - 604800) $operating['confirmed'] = true;//确认
+			if ($ps == $this->config['PS_PAYED']){//取消后可操作退款
+				$operating['returnPay'] = true;
+			}
         }else{
             $operating['confirmed'] = true;//确认
         }

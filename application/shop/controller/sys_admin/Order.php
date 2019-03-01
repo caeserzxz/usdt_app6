@@ -136,8 +136,9 @@ class Order extends AdminController{
                 break;
             /**,待支付**/
             case "2" :
-                $where[] = ['order_status','=',$config['OS_UNCONFIRMED']];
+                $where[] = ['order_status','in',[$config['OS_CONFIRMED'],$config['OS_UNCONFIRMED']]];
                 $where[] = ['pay_status','=',$config['PS_UNPAYED']];
+				$where[] = ['is_pay','in',[1,2]];
                 break;
             /**,待发货**/
 			case "3" :
@@ -187,7 +188,6 @@ class Order extends AdminController{
     //-- 订单详细页
     /*------------------------------------------------------ */
     public function info(){
-
         $order_id = input('order_id',0,'intval');
         if ($order_id < 1) return $this->error('传参错误.');
         $orderInfo = $this->Model->info($order_id);
@@ -195,7 +195,7 @@ class Order extends AdminController{
         $orderLog = $OrderLogModel->where('order_id',$order_id)->order('log_id DESC')->select()->toArray();
         $this->assign("orderLog",  $orderLog);
         $this->assign("orderLang",  lang('order'));
-        $operating = $this->Model->operating($orderInfo);//订单日志操作记录
+        $operating = $this->Model->operating($orderInfo);//订单操作权限
         $this->assign("operating",  $operating);
         $this->assign('orderInfo', $orderInfo);
         return $this->fetch('info');
@@ -210,7 +210,8 @@ class Order extends AdminController{
         $shipping = $ShippingModel->getRows();
         if ($this->request->isPost()){
             $config = config('config.');
-            if ($orderInfo['shipping_status'] == $config['SS_SIGN']) return $this->error('已签收的订单，不允许修改！');
+			$operating = $this->Model->operating($orderInfo);//订单操作权限
+            if ($operating['shipping'] !== true) return $this->error('订单当前状态不能操作改价.');             
             $data['order_id'] = $order_id;
             $data['shipping_id'] = input('post.shipping_id',0,'intval');
             $data['shipping_name'] = $shipping[$data['shipping_id']]['shipping_name'];
@@ -235,8 +236,8 @@ class Order extends AdminController{
         $orderInfo = $this->Model->info($order_id);
         if ($this->request->isPost()){
             $config = config('config.');
-            if ($orderInfo['pay_status'] == $config['PS_PAYED']) return $this->error('已支付的订单，不允许修改！');
-            if ($orderInfo['shipping_status'] != $config['SS_UNSHIPPED']) return $this->error('已发货/已签收的订单，不允许修改！');
+			$operating = $this->Model->operating($orderInfo);//订单操作权限
+            if ($operating['changePrice'] !== true) return $this->error('订单当前状态不能操作改价.');            
             $data['shipping_fee'] = input('fee',0,'intval');
             $order_amount = input('amount',0,'floatval');
             $data['order_amount'] = $order_amount + $data['shipping_fee'];
@@ -262,7 +263,8 @@ class Order extends AdminController{
         if ($this->request->isPost()){
             $config = config('config.');
             if ($orderInfo['is_pay'] != 2) return $this->error('非线下支付订单，不允许操作！');
-            if ($orderInfo['pay_status'] == $config['PS_PAYED']) return $this->error('已支付的订单，不允许修改！');
+			$operating = $this->Model->operating($orderInfo);//订单操作权限
+            if ($operating['cfmCodPay'] !== true) return $this->error('订单当前状态不能操作线下打款确认.');
             $data['order_status'] = $config['OS_CONFIRMED'];
             $data['pay_status'] = $config['PS_PAYED'];
             if ($orderInfo['confirm_time'] < 1){
@@ -292,9 +294,9 @@ class Order extends AdminController{
         $order_id = input('id',0,'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if($orderInfo['store_id'] > 0) return $this->error('此订单只有门店有操作权限！');
-        if ($orderInfo['order_status'] == $config['OS_CANCELED']) return $this->error('订单已经是取消状态，无需修改！');
-        if ($orderInfo['shipping_status'] == $config['SS_SHIPPED'] || $orderInfo['order_status'] == $config['OS_RETURNED']) return $this->error('已发货/签收的订单，不允许修改！');
+        if($orderInfo['store_id'] > 0) return $this->error('此订单只有门店有操作权限.');
+		$operating = $this->Model->operating($orderInfo);//订单操作权限
+        if ($operating['isCancel'] !== true) return $this->error('订单当前状态不能操作取消.');        
         $data['order_id'] = $order_id;
         $data['order_status'] = $config['OS_CANCELED'];
         $data['cancel_time'] = time();
@@ -311,8 +313,8 @@ class Order extends AdminController{
         $order_id = input('id',0,'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if ($orderInfo['shipping_status'] == $config['SS_UNSHIPPED']) return $this->error('订单已经是未发货状态，无需修改！');
-        if ($orderInfo['order_status'] == $config['SS_SIGN']) return $this->error('签收的订单，不允许修改！');
+		$operating = $this->Model->operating($orderInfo);//订单操作权限
+        if ($operating['unshipping'] !== true) return $this->error('订单当前状态不能操作未发货.'); 
         $data['order_id'] = $order_id;
         $data['shipping_status'] = $config['SS_UNSHIPPED'];
         $data['shipping_time'] = 0;
@@ -332,7 +334,8 @@ class Order extends AdminController{
         $order_id = input('id',0,'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if ($orderInfo['shipping_status'] != $config['SS_SHIPPED']) return $this->error('订单不是发货状态，无法设为已签收！');
+        $operating = $this->Model->operating($orderInfo);//订单操作权限
+        if ($operating['sign'] !== true) return $this->error('订单当前状态不能操作未发货.'); 
         $data['order_id'] = $order_id;
         $data['shipping_status'] = $config['SS_SIGN'];
         $data['sign_time'] = time();
@@ -406,8 +409,6 @@ class Order extends AdminController{
         if ($orderInfo['pay_status'] != $config['PS_PAYED'] ) return $this->error('订单不是付款状态，无法设为退款！');
         $data['order_id'] = $order_id;
         $data['pay_status'] = $config['PS_RUNPAYED'];
-        $data['pay_time'] = 0;
-        $data['money_paid'] = 0;
         $data['tuikuan_money'] = $orderInfo['money_paid'];
         $data['tuikuan_time'] = time();
         $res = $this->Model->upInfo($data);
