@@ -55,8 +55,8 @@ class Withdraw extends AdminController
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['w.user_id','in',$uids];
 		}
-		if (empty($this->search['type']) == false){
-			$where[] = ['uwa.type','=',$this->search['type']];
+		if (empty($search['type']) == false){
+			$where[] = ['uwa.type','=',$search['type']];
 		}
 		$viewObj = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where);	
         $data = $this->getPageList($this->Model,$viewObj);

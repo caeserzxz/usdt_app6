@@ -32,8 +32,8 @@ class Users extends AdminController
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);
-		$this->assign("roleOpt", arrToSel($this->roleList,$this->search['roleId']));
-		$this->assign("levelOpt", arrToSel($this->levelList,$this->search['levelId']));
+		$this->assign("roleOpt", arrToSel($this->roleList,$search['roleId']));
+		$this->assign("levelOpt", arrToSel($this->levelList,$search['levelId']));
         return $this->fetch('sys_admin/users/index');
     }  
 
@@ -43,13 +43,13 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_ban = -1) {
 		
-		$this->search['roleId'] = input('rode_id',0,'intval');
-		$this->search['levelId'] = input('level_id',0,'intval');
-		$this->search['keyword'] = input("keyword");		
-		$this->search['time_type'] = input("time_type");
+		$search['roleId'] = input('rode_id',0,'intval');
+		$search['levelId'] = input('level_id',0,'intval');
+		$search['keyword'] = input("keyword");		
+		$search['time_type'] = input("time_type");
 		
 		$this->assign("is_ban", $this->is_ban);
-		$this->assign("search", $this->search);
+		$this->assign("search", $search);
 		$DividendRoleModel = new DividendRoleModel(); 
 		$this->roleList = $DividendRoleModel->getRows();  
 		$this->assign("roleList", $this->roleList);
@@ -62,7 +62,7 @@ class Users extends AdminController
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
 		}
-		switch ($this->search['time_type']) {
+		switch ($search['time_type']) {
 			case 'reg_time':
 				$where[] = ' u.reg_time between '.strtotime($dtime[0]).' AND '.(strtotime($dtime[1])+86399);
 				break;
@@ -76,19 +76,19 @@ class Users extends AdminController
 			 break;
 		}
 		
-		if ($this->search['roleId'] > 0){
-			$where[] = ' u.role_id = '.$this->search['roleId']; 
+		if ($search['roleId'] > 0){
+			$where[] = ' u.role_id = '.$search['roleId']; 
 		}
-		if ($this->search['levelId'] > 0){
-			$level = $this->levelList[$this->search['levelId']];
+		if ($search['levelId'] > 0){
+			$level = $this->levelList[$search['levelId']];
 			$where[] = ' uc.total_integral between '.$level['min'].' AND '.$level['max']; 
 		}
 	
-        if(empty($this->search['keyword']) == false){			
-			if (is_numeric($this->search['keyword'])){
-				$where[] = "  u.user_id = '".($this->search['keyword'])."' ";  
+        if(empty($search['keyword']) == false){			
+			if (is_numeric($search['keyword'])){
+				$where[] = "  u.user_id = '".($search['keyword'])."' or mobile like '".$search['keyword']."%'";  
 			}else{
-				$where[] = " ( u.user_name like '".$this->search['keyword']."' or u.nick_name like '".$this->search['keyword']."' )";  
+				$where[] = " ( u.user_name like '".$search['keyword']."%' or u.nick_name like '".$search['keyword']."%' )";  
 			}			
 		}
 		$sort_by = input("sort_by",'DESC','trim');

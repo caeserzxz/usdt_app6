@@ -35,6 +35,10 @@ class UsersModel extends BaseModel
         if (empty($userInfo)){
             return '用户不存在.';
         }
+		if ($userInfo['is_ban'] == 1){
+			return '用户已被禁用.';
+		}
+		
         $time = time();
         if ($userInfo['login_odd_num'] >= 10 ){
             if ($userInfo['login_odd_time'] > $time - 3600){
