@@ -139,7 +139,7 @@ class Bonus extends AdminController
 				$num = $this->Model->makeBonusSn($type_id,$send_num);
 			}else{
 				$user_level = input('user_level',-1,'intval');
-				$users = input('user_id');
+				$userIds = input('user_id');
 				if ($user_level >= 0){
 					$level = $levelList[$user_level];
 					$AccountModel = new AccountModel();

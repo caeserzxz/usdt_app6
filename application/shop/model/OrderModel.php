@@ -183,9 +183,9 @@ class OrderModel extends BaseModel
     {
         $order_id = $upData['order_id'];
         unset($upData['order_id']);
-        $orderInfo = $this->where('order_id',$order_id)->find()->toArray();
-
+        $orderInfo = $this->where('order_id',$order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
+		$orderInfo = $orderInfo->toArray();
         if (defined('AUID') == false){
             if($this->userInfo['user_id'] != $orderInfo['user_id']){
                 return '无权操作';
@@ -369,4 +369,28 @@ class OrderModel extends BaseModel
         }
         return $operating;
     }
+	 /*------------------------------------------------------ */
+    //-- 自动收货
+    /*------------------------------------------------------ */
+    public function autoSign($uid = 0){
+		$where = [];
+		$sign_limit = settings('shop_auto_sign_limit');
+		$where[] = ['shipping_status','=',$this->config['SS_SHIPPED']];
+		$where[] = ['shipping_time','<',time() - ($sign_limit * 86400)];		
+		if ($uid > 0){
+			$where[] = ['user_id','=',$uid];
+		}
+		$order_ids = $this->where($where)->column('order_id');
+		foreach ($order_ids as $order_id){
+			$upData['order_id'] = $order_id;
+			$upData['shipping_status'] = $this->config['SS_SIGN'];
+			$upData['sign_time'] = time();
+			$res = $this->upInfo($upData);
+			if ($res == true){
+				$orderInfo = $this->info($order_id);
+				$this->_log($orderInfo,'自动签收');
+			}
+		}
+		return true;
+	}
 }

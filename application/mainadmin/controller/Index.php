@@ -11,7 +11,12 @@ class Index extends AdminController
 	
 
     public function index()
-    {
+    {		
+		//判断订单模块是否存在
+		if(class_exists('app\shop\model\OrderModel')){
+			//执行订单自动签收
+			(new \app\shop\model\OrderModel)->autoSign();			
+		}
         return $this->fetch('index');
     }
 

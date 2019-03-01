@@ -79,6 +79,10 @@ class Comment extends ApiController
 	/*------------------------------------------------------ */
  	public function post(){
 		$this->checkLogin();//验证登陆
+		$shop_goods_comment = settings('shop_goods_comment');
+		if ($shop_goods_comment < 1){
+			return $this->errot('暂不开放评论.');
+		}		
 		$rec_id = input('rec_id',0,'intval');
 		if ($rec_id < 1) return $this->error('传参失败.');
 		$OrderGoodsModel = new OrderGoodsModel();		 
@@ -118,6 +122,7 @@ class Comment extends ApiController
 		$inArr['by_name'] = $ogoods['goods_name'];
 		$inArr['order_id'] = $ogoods['order_id'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
+		$inArr['user_name'] = $this->userInfo['nick_name'];
 		$inArr['headimgurl'] = $this->userInfo['headimgurl'];
 		$inArr['create_time'] = time();
 		$GoodsCommentModel = new GoodsCommentModel();

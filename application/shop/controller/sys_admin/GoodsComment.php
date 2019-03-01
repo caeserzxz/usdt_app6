@@ -43,7 +43,11 @@ class GoodsComment extends AdminController {
     public function getList($runData = false,$is_delete=0) {
 		$search['status'] = input('status',1,'intval');
 		$search['keyword'] = input('keyword','','trim');
+		$search['select_goods'] = input('select_goods',0,'intval');
 		$where = array();
+		if ($search['select_goods'] > 0){
+			$where[] = ['goods_id','=',$search['select_goods']];
+		}
 		if ($search['status'] > 0){
 			$where[] = ['status','=',$search['status']];
 		}

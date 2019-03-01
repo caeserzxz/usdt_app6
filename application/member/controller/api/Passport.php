@@ -37,6 +37,10 @@ class Passport extends ApiController
     /*------------------------------------------------------ */
     public function register()
     {
+		$register_status = settings('register_status');
+		if ($register_status < 1){
+			return $this->errot('暂不开放注册.');
+		}
         $this->checkCode('register',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->register(input());
         if ($res !== true) return $this->error($res);

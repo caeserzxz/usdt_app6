@@ -48,7 +48,7 @@ class Recharge extends AdminController
 			$where[] = ['add_time','between',[strtotime("-1 months"),time()]];
 		}
 		if ($search['status'] >= 0){
-			$where[] = ['status','=',$this->search['status']];
+			$where[] = ['status','=',$search['status']];
 		}
 		if (empty($search['pay_type']) == false){
 			$where[] = ['pay_type','=',$search['pay_type']];
@@ -59,7 +59,6 @@ class Recharge extends AdminController
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['user_id','in',$uids];
 		}
-		
         $data = $this->getPageList($this->Model,$where);
 		$this->assign("search", $search);	
 		$this->assign("userRechargeType", $this->userRechargeType);

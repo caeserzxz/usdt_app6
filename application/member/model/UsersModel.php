@@ -3,7 +3,7 @@ namespace app\member\model;
 use app\BaseModel;
 use think\facade\Cache;
 use think\Db;
-use app\shop\model\CartModel;
+
 use app\weixin\model\WeiXinUsersModel;
 use app\distribution\model\DividendRoleModel;
 
@@ -61,8 +61,14 @@ class UsersModel extends BaseModel
         $inLog['user_id'] = $userInfo['user_id'];
         $LogLoginModel->save($inLog);
         $this->userInfo = $this->info($userInfo['user_id']);//附值全局
-        $CartModel = new CartModel();
-        $CartModel->loginUpCart($userInfo['user_id']);//更新购物车
+       
+		//判断订单模块是否存在
+		if(class_exists('app\shop\model\OrderModel')){
+			//执行订单自动签收
+			(new \app\shop\model\OrderModel)->autoSign($userInfo['user_id']);			 
+        	(new \app\shop\model\CartModel)->loginUpCart($userInfo['user_id']);//更新购物车		
+		}
+		
         return $userInfo['user_id'];
     }
 

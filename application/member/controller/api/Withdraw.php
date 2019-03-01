@@ -179,6 +179,10 @@ class Withdraw extends ApiController
     /*------------------------------------------------------ */
     public function postWithdraw()
     {
+		$withdraw_status = settings('withdraw_status');
+		if ($withdraw_status < 1){
+			return $this->errot('暂不开放提现.');
+		}
 		$inArr['amount'] = input('amount') * 1;
 		$inArr['withdraw_fee'] = $this->checkWithdraw($amount,true);
 		$inArr['account_id'] = input('account_id') * 1;
@@ -209,7 +213,7 @@ class Withdraw extends ApiController
 		$AccountLogModel = new AccountLogModel();
 	    $changedata['change_desc'] = '提现扣除';
 		$changedata['change_type'] = 5;
-		$changedata['by_id'] = $WithdrawModel->id;
+		$changedata['by_id'] = $WithdrawModel->log_id;
 		$changedata['balance_money'] = ($inArr['amount'] + $inArr['withdraw_fee']) * -1;
 		$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
 		if ($res !== true) {
