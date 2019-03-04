@@ -42,6 +42,7 @@ class ApiController extends BaseController
         }else{
             session::set('ajaxDataLog',['time'=>$time,'num'=>1,'limit'=>0]);
         }
+		$this->returnJson = true;//统一返回json
         $userInfo = $this->getLoginInfo();
         $this->userInfo = $userInfo;
 		parent::initialize();
