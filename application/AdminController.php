@@ -16,7 +16,7 @@ class AdminController extends BaseController
     /* @var array $admin 登录信息 */
     protected $admin;
 
-   
+
     /* @var string $route 当前菜单组名 */
     protected $menus_group = '';
     /* @var array $allowAllAction 登录验证白名单 */
@@ -42,7 +42,7 @@ class AdminController extends BaseController
 	//-- 初始化
 	/*------------------------------------------------------ */
     protected function initialize()
-    {	
+    {
 		parent::initialize();
         // 商家登录信息
         $this->admin = Session::get('main_admin');
@@ -55,7 +55,7 @@ class AdminController extends BaseController
         // 全局layout
         $this->layout();
     }
-	
+
    /*------------------------------------------------------ */
 	//-- 全局layout模板输出址
 	/*------------------------------------------------------ */
@@ -71,17 +71,17 @@ class AdminController extends BaseController
 				'top_menus' => $this->top_menus,             // 后台菜单
 				'_module' => $this->module,                   // 模块名称
                 'admin' => $this->admin,                       // 登录信息
-				'menus_group' => $this->menus_group,                
+				'menus_group' => $this->menus_group,
             ]);
 			//print_r($this->menus_list);exit;
         }
     }
 
-   
+
 	/*------------------------------------------------------ */
 	//-- 获取有权限的菜单
 	/*------------------------------------------------------ */
-    private function getPrivList(){ 
+    private function getPrivList(){
 		$mkey = 'main_menu_priv_list_'.AUID;
 		$menus = Cache::get($mkey);
 		if (empty($menus) == false){
@@ -102,7 +102,7 @@ class AdminController extends BaseController
 					  }
 					  unset($menuc['submenu'][$groupd]);
 				  }
-				  
+
 				  if (empty($menuc['submenu'])){
 					  if (empty($menuc['controller']) == false){
 						  if (empty($menuc['right']) ){
@@ -110,9 +110,9 @@ class AdminController extends BaseController
 						  }
 						  if ($this->_privIf($menuc['group'].'|'.$menuc['controller'],$menuc['action'])==true){
 							  continue;
-						  } 
-					  } 
-					 
+						  }
+					  }
+
 					  unset($menub['submenu'][$groupc],$menus[$group]['list'][$groupb]['submenu'][$groupc]);
 				  }else{
 					  $menus[$group]['list'][$groupb]['submenu'][$groupc] = $menuc;
@@ -141,12 +141,12 @@ class AdminController extends BaseController
      * @return array
      */
     private function menus()
-    {	   
-	   $menus = $this->getPrivList();//获取有权限的菜单 
+    {
+	   $menus = $this->getPrivList();//获取有权限的菜单
 	   $this->top_menus = array();
 	   foreach ($menus as $group => $menu){
 		   if (empty($menu['list']) == false){
-			    $menub = reset($menu['list']);				
+			    $menub = reset($menu['list']);
 				 if (empty($menub['submenu']) == false){
 			   		$menuc = reset($menub['submenu']);
 					$this->top_menus[] = ['name'=>$menu['name'],'icon'=>$menu['icon'],'key'=>$menuc['group'],'controller'=>$menuc['controller'],'action'=>$menuc['action']];
@@ -155,7 +155,7 @@ class AdminController extends BaseController
 				 }
 		   }
 	   }
-	
+
 	   $data = $menus[$this->module]['list'];
        foreach ($data as $group => $first) {
 		    $parent = '';
@@ -164,16 +164,16 @@ class AdminController extends BaseController
                 foreach ($first['submenu'] as $secondKey => $second) {
 					// 二级菜单：active
 					$data[$group]['submenu'][$secondKey]['active'] = 0;
-                    if ($this->routeUri == $second['controller'].'/'.$second['action'] || in_array($this->routeUri,explode(',',$second['urls']))){   
+                    if ($this->routeUri == $second['controller'].'/'.$second['action'] || in_array($this->routeUri,explode(',',$second['urls']))){
 						$data[$group]['submenu'][$secondKey]['active'] = 1;
 						$parent = $second['parent'];
-					}                   
+					}
                     $parentb = '';
                     if (isset($second['submenu'])) {
                         // 遍历：三级菜单
-                        foreach ($second['submenu'] as $thirdKey => $third) {   
+                        foreach ($second['submenu'] as $thirdKey => $third) {
 							$data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 0;
-							if ($this->routeUri == $third['controller'].'/'.$third['action'] || in_array($this->routeUri,explode(',',$third['urls']))){   
+							if ($this->routeUri == $third['controller'].'/'.$third['action'] || in_array($this->routeUri,explode(',',$third['urls']))){
 								$data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 1;
 								$parentb = $third['parent'];
 							}
@@ -181,11 +181,11 @@ class AdminController extends BaseController
                     }
                 }
             }
-			if ($this->routeUri == $first['controller'].'/'.$first['action'] || in_array($this->routeUri,explode(',',$first['urls']))){   
+			if ($this->routeUri == $first['controller'].'/'.$first['action'] || in_array($this->routeUri,explode(',',$first['urls']))){
 				$data[$group]['active'] = 1;
-				$this->menus_group = $parent;	
+				$this->menus_group = $parent;
 			}elseif (empty($parent) == false && $parent ==  $data[$group]['key']){
-				 $data[$group]['active'] = 1; 
+				 $data[$group]['active'] = 1;
 				 $this->menus_group = $parent;
 		   }else{
            	   $data[$group]['active'] = $group === $this->group;
@@ -208,43 +208,43 @@ class AdminController extends BaseController
 		if (empty($now)){
 			$now = $this->module.'|'.$this->controller;
 		}
-		$role_action = $role_action[$now];		
-		if (empty($role_action)){			
+		$role_action = $role_action[$now];
+		if (empty($role_action)){
 			if (empty($noPrivList)){
 				$MenuListModel = new \app\mainadmin\model\MenuListModel;
 				$noPrivList = $MenuListModel->getNoPriv();
 			}
 			if (in_array($now,$noPrivList)){
 				return true;
-			}			
+			}
 		}else{
 			$action = empty($action)?$this->action:$action;
 			if ($action == 'info'){
 				if ($this->request->isPost() == true){
-					$isTrue = array_intersect(['manage','edit'],$role_action);	
+					$isTrue = array_intersect(['manage','edit'],$role_action);
 				}else{
-					$isTrue = array_intersect(['view','manage'],$role_action);	
-				}	
+					$isTrue = array_intersect(['view','manage'],$role_action);
+				}
 			}elseif ($action == 'ajaxedit'){
 				$isTrue = array_intersect(['manage','edit'],$role_action);
-			}elseif (in_array($action,array('index','getList','trashList','search'))){				
+			}elseif (in_array($action,array('index','getList','trashList','search'))){
 				$isTrue = array_intersect(['manage','view'],$role_action);
 			}elseif(in_array($action,array('download','export'))){
-				$isTrue = array_intersect(['download','export'],$role_action);	
+				$isTrue = array_intersect(['download','export'],$role_action);
 			}else{
-				$isTrue = in_array($action,$role_action);	
+				$isTrue = in_array($action,$role_action);
 			}
-			
+
 			if (empty($isTrue) == false) return true;
 		}
 		if ($isReturn == true)	return false;
-		$this->error('你无操作权限.');				
+		$this->error('你无操作权限.');
 	}
 	/*------------------------------------------------------ */
 	//-- 权限验证，用于判断返回真假
 	/*------------------------------------------------------ */
  	public function _privIf($now = '',$action = '',$isAll = true){
-		return $this->_priv($now,$action,$isAll,true);			
+		return $this->_priv($now,$action,$isAll,true);
 	}
     /**
      * 验证登录状态
@@ -258,7 +258,7 @@ class AdminController extends BaseController
         // 验证登录状态
         if (empty($this->admin) || (int)$this->admin['is_login'] !== 1) {
 			if ($this->request->isAjax()){
-				 return $this->error('登陆超时，请重新登陆.');	
+				 return $this->error('登陆超时，请重新登陆.');
 			}
             $this->redirect('/mainAdmin/passport/login');
             return false;
@@ -292,17 +292,17 @@ class AdminController extends BaseController
         if ($this->request->isPost()) {
             if (false === $data = $_POST) {
                 $this->error($this->Model->getError());
-            }			
+            }
 			if (empty($data[$pk])){
 				if (method_exists($this, 'beforeAdd')) {
 					$data = $this->beforeAdd($data);
 				}
 				unset($data[$pk]);
-				$res = $this->Model->allowField(true)->save($data);				
+				$res = $this->Model->allowField(true)->save($data);
 				if($res > 0){
 					$data[$pk] = $this->Model->$pk;
 					if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($res);
-					if( method_exists($this, 'afterAdd')){	
+					if( method_exists($this, 'afterAdd')){
 						$result = $this->afterAdd($data);
 						if (is_array($result)) return $this->ajaxReturn($result);
 					}
@@ -315,21 +315,21 @@ class AdminController extends BaseController
 				$res = $this->Model->allowField(true)->save($data,$data[$pk]);
 				if($data[$pk] > 0){
 					if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($data[$pk]);
-					if (method_exists($this, 'afterEdit')){	
+					if (method_exists($this, 'afterEdit')){
 						$result = $this->afterEdit($data);
 						if (is_array($result)) return $this->ajaxReturn($result);
 					}
 					return $this->success('修改成功.',url('index'));
 				}
-			}			
-			return $this->error('操作失败.');			
-        } 
+			}
+			return $this->error('操作失败.');
+        }
 		$id =  input($pk,0,'intval');
-		$row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);		
+		$row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);
 		if ($id > 0 && empty($row) == false){
-			$row = $row->toArray();	
+			$row = $row->toArray();
 		}
-		if(method_exists($this, 'asInfo')){					
+		if(method_exists($this, 'asInfo')){
 			 $row = $this->asInfo($row);
 		}
 		$this->assign("row", $row);
@@ -338,29 +338,29 @@ class AdminController extends BaseController
 			$result['code'] = 1;
 			$result['data'] = $this->fetch('info');
 			return $this->ajaxReturn($result);
-		}		
+		}
 		return response($this->fetch(isset($this->info_tpl)?$this->info_tpl:'info'));
-        
+
     }
 	/**
      * ajax修改单个字段值
      */
     public function ajaxEdit(){
-		
+
 		$pk = $this->Model->getPk();
         $id = input($pk,0,'intval');
-        $field = input('field','','trim');        
+        $field = input('field','','trim');
 		if ($id=='' || $field=='') return $this->error('缺少必要传参.');
 		$data[$field] = input('value','','trim');
 		$toggle = input('toggle');
 		if ($toggle){
 			$data[$field] = $toggle === 'true' || $toggle === 1 ? 1 : 0;
 		}
-		
+
 		if (method_exists($this, 'beforeAjax')){
             $data = $this->beforeAjax($id,$data);
         }
-		$map[$pk] = $id;		
+		$map[$pk] = $id;
         //允许异步修改的字段列表  放模型里面去 TODO
         if (false !== $this->Model->save($data,$map)){
 			if( method_exists($this, 'afterAjax')){
@@ -369,8 +369,8 @@ class AdminController extends BaseController
 		}
         return $this->success();
     }
-	
-	
+
+
 
     /**
      * 获取列表参数
