@@ -27,7 +27,7 @@ class BaseController extends Controller
     protected $group = '';
     /* @var string $route 当前菜单组名 */
     protected $menus_group = '';
-
+ 	public  $returnJson = false;//是否统一返回json
     public  $Model;
     //*------------------------------------------------------ */
 	//-- 获取字典数据
@@ -44,16 +44,21 @@ class BaseController extends Controller
         return $this->success('退出成功.');
     }
     //*------------------------------------------------------ */
-    //-- 获取登陆会员ID
+    //-- 获取前端登陆会员ID
     /*------------------------------------------------------ */
     public function getLoginInfo()
     {
-        $userId = Session::get('userId') * 1;
-       // $userId = 1;
+        $userId = Session::get('userId') * 1;  
         if ($userId < 1) {
-            $utoken = input('utoken', '', 'trim');
-            if (empty($utoken) == false) {//没有session，兼容app/小程序调用用utoken来识别登陆
-                $userId = Cache::get('login_'.$utoken);
+            $devtoken = input('devtoken', '', 'trim');//小程序登陆
+            if (empty($devtoken) == false) {
+				header('Content-type: text/json'); 
+				//判断接口请求是否合法
+				$timeStamp = input('timeStamp/s');
+				$sign = input('sign/s');
+				if (md5($devtoken.$timeStamp.config('config.apikey')) !== $sign) return $this->error('接口验证失败！');
+				if (time() - intval($timeStamp/1000) > 60) return $this->error('请求超时.');
+                $userId = Cache::get('devlogin_'.$devtoken);
             }
         }
         if ($userId > 0){
@@ -155,8 +160,8 @@ class BaseController extends Controller
             'url'  => $url,
             'wait' => $wait,
         ];
-
-        $type = $this->getResponseType();
+		
+        $type = $this->returnJson == true ? 'json' :$this->getResponseType();
         // 把跳转模板的渲染下沉，这样在 response_send 行为里通过getData()获得的数据是一致性的格式
         if ('html' == strtolower($type)) {
             $type = 'jump';
@@ -185,7 +190,7 @@ class BaseController extends Controller
      */
     protected function error($msg = '操作失败,请重试.', $url = null, $data = '', $wait = 3, array $header = [])
     {
-        $type = $this->getResponseType();
+        $type = $this->returnJson == true ? 'json' :$this->getResponseType();
         if (is_null($url)) {
             $url = $this->app['request']->isAjax() ? '' : 'javascript:history.back(-1);';
         } elseif ('' !== $url) {

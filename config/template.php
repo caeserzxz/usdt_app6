@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | 模板设置
 // +----------------------------------------------------------------------
-
+$static_path = str_replace(Request::baseFile(),'',Request::root().'/static');
 return [
 	'layout_on'     =>  false,
     'layout_name'   =>  'layouts\layout',
@@ -36,9 +36,9 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
-    'static_path'=> Request::root().'/static',
+    'static_path'=> $static_path,
 	'tpl_replace_string' => [
 		'__ROOT__' => Request::root(),
-		'__STATIC__'=>Request::root().'/static',
+		'__STATIC__'=>$static_path,
 	]
 ];
