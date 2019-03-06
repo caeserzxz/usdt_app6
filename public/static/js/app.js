@@ -156,3 +156,8 @@ function searchgoods(keyword,selects) {
 	}); 
 	   
 }
+
+$(document).on('click','.js_radio_undertake',function(){
+	$(this).parent().parent().find('.radio_undertake').addClass('hide');
+	$('.'+$(this).data('class')).removeClass('hide');
+})

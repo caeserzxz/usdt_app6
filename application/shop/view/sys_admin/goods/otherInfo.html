@@ -10,15 +10,12 @@
 	<label class="col-sm-2 control-label">是否分销商品：</label>
     <div class="col-sm-10">
           <label class="radio-inline">
-            <input name="is_dividend" value="0" {$row.is_dividend|tplckval='<1','checked'}  type="radio" class="js_quota">不是
+            <input name="is_dividend" value="0" {$row.is_dividend|tplckval='<1','checked'}  type="radio" >不是
         </label>
         <label class="radio-inline">
-            <input name="is_dividend" value="1" {$row.is_dividend|tplckval='>0','checked'} type="radio" class="js_quota js_quota_show">是
+            <input name="is_dividend" value="1" {$row.is_dividend|tplckval='>0','checked'} type="radio" >是
         </label>
-          <label class="is_dividend_container  v-top {$row.is_dividend|tplckval='=1','inline','hd'} " style="position:relative;">
-            <input class="input-xs input-sm"  data-rule-min="1"  type="text" data-rule-required="true" name="dividend_num" value="{$row['dividend_num']<1?1:$row['dividend_num']}" data-rule-positive="true"  />
-            <span style="text-decoration:none">分销计算数量，默认以1件计算，输入2则按2件计算佣金</span>
-        </label>
+         
     </div>            
 	
 </div>

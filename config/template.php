@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | 模板设置
 // +----------------------------------------------------------------------
-$static_path = str_replace(Request::baseFile(),'',Request::root().'/static');
+$static_path = '/static';
 return [
 	'layout_on'     =>  false,
     'layout_name'   =>  'layouts\layout',
