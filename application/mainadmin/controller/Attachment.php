@@ -31,7 +31,7 @@ class Attachment extends AdminController{
         if ($result['error']) {
             echo json_encode(array('error'=>1, 'message'=>$result['info']));
         } else {
-            echo json_encode(array('error'=>0, 'url'=>$this->_root_.str_replace('.','',$result['info'][0]['savepath']). $result['info'][0]['savename']));
+            echo json_encode(array('error'=>0, 'url'=> '/'.$result['info'][0]['savepath']. $result['info'][0]['savename']));
         }
         exit;
     }
@@ -127,7 +127,7 @@ class Attachment extends AdminController{
         //相对于根目录的当前目录
         $result['current_dir_path'] = $current_dir_path;
         //当前目录的URL
-        $result['current_url'] = $this->_root_.str_replace('.','',$current_url);
+        $result['current_url'] = str_replace('.','',$current_url);
 		
         //文件数
         $result['total_count'] = count($file_list);
@@ -186,8 +186,10 @@ class Attachment extends AdminController{
 				$where[]= ['store_admin_id','=',SAUID];
 			}
 			
+			$savepath = '/'.$result['info'][0]['savepath'];
+	
 			$addarr['store_id'] = $this->store_id;
-			$addarr['goods_img'] = $file_url = str_replace('./','/',$this->_root_.$result['info'][0]['savepath'].$result['info'][0]['savename']);
+			$addarr['goods_img'] = $file_url = $savepath.$result['info'][0]['savename'];
 			$addarr['goods_thumb'] = str_replace('.','_thumb.',$addarr['goods_img']);
 			$GoodsImgsModel =  new GoodsImgsModel();
 			//如果sku不为空，查询之前是否已上传过,则删除
@@ -196,7 +198,7 @@ class Attachment extends AdminController{
 				$where[] = ['sku_val','=',$addarr['sku_val']];
 				$imgObj = $GoodsImgsModel->where($where)->find();
 				if (empty($imgObj) == false){
-					unlink($imgObj['goods_thumb'],$imgObj['goods_img']);
+					unlink('.'.$imgObj['goods_thumb'],'.'.$imgObj['goods_img']);
 					$imgObj->delete();
 				}
 			}
@@ -212,7 +214,7 @@ class Attachment extends AdminController{
             $data['msg'] = "上传成功";
             $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);
 			$data['savename'] = $result['info'][0]['savename'];
-			$data['src'] = str_replace('./','/',$this->_root_.$result['info'][0]['savepath'].$result['info'][0]['savename']);;
+			$data['src'] = $file_url;
 			return $this->ajaxReturn($data);
 		}
 		$result = $this->_upload($_FILES['imgFile'],'gdimg/');
@@ -221,38 +223,11 @@ class Attachment extends AdminController{
 			$data['msg'] = $result['info'];
 			return $this->ajaxReturn($data);
 		}
-		$result['url']=str_replace('./','/',$this->_root_.$result['info'][0]['savepath'].$result['info'][0]['savename']);
+		$result['url']= '/'.$result['info'][0]['savepath'].$result['info'][0]['savename'];
         return $this->ajaxReturn($result);
     }
 
-    public function upload() {
-        if (!$_FILES['file']) {
-            $data['code'] = 1;
-            $data['msg'] = '请选择要上传的文件';
-
-            return $this->ajaxReturn($data);
-        }
-
-        $thumb['width'] = 167;
-        $thumb['height'] = 167;
-        $result = $this->_upload($_FILES['file'], 'goods_comment_user_avatar/', $thumb);
-        if ($result['error']) {
-            $data['code'] = 1;
-            $data['msg'] = $result['info'];
-
-            return $this->ajaxReturn($data);
-        }
-
-        $file_url = str_replace('./', '/', $this->_root_ . $result['info'][0]['savepath'] . $result['info'][0]['savename']);
-
-        $data['code'] = 0;
-        $data['msg'] = "上传成功";
-        $data['image'] = array('thumbnail' => $file_url, 'path' => $file_url);
-        $data['savename'] = $result['info'][0]['savename'];
-        $data['src'] = $file_url;
-
-        return $this->ajaxReturn($data);
-    }
+    
 
 	/**
      * 删除商品图片
@@ -271,10 +246,9 @@ class Attachment extends AdminController{
 				return $this->error('删除图片失败.');
 			}
 		}
-		if (empty($file))  return $this->error('传值错误.');
-		$file = str_replace($this->_root_.'/','',$file);
-		unlink($file);
-		unlink(str_replace('.','_thumb.',$file));
+		if (empty($file))  return $this->error('传值错误.');		
+		unlink('.'.$file);
+		unlink('.'.str_replace('.','_thumb.',$file));
 		return $this->success('删除图片成功.');
     }
 }

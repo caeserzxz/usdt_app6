@@ -1,17 +1,14 @@
 <script type="text/html" id="selGoods_tpl"> 
 <div class="m-b">
-      <select name="_cat_id" id="_cat_id" class="m-r" style="width:150px;" data-toggle="select2"  >
-         <option value="">所有商品分类</option>
-           
-       </select>
+     <input name="keyword" id="keyword" type="text" class="input-medium valid" placeholder="商品名称/SN" aria-invalid="false">
     
-     <button class="btn btn-default-iq fa fa-search" title="搜索" type="button" onclick="searchGoods()" ></button>
+     <button class="btn btn-default fa fa-search" title="搜索" type="button" onclick="searchGoods()" ></button>
  
       <select name="sel_goods" id="sel_goods" class="m-r" style="width:250px;" data-toggle="select2" >
          <option value="">选择商品</option>
       </select>
 
-    <a href="javascript:;" title="增加" class="btn btn-default-iq fa fa-plus" onclick="selLinkGoods()"></a>
+    <a href="javascript:;" title="增加" class="btn btn-default  fa fa-plus" onclick="selLinkGoods()"></a>
 </div>
 
 
@@ -24,12 +21,9 @@
             </tr>
         </thead>
         <tbody id="linkGoodsBox">
-            <tr id="link_goods_tr_{$lg.goods_id}">
-                <td>{$lg.goods_sn}<input name="link_goods_id[]" type="hidden" value="{$lg.goods_id}" /></td>
-                <td>{$lg.goods_name}</td>
-                <td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods({$lg.goods_id})" ></a></td>
-            </tr>
-         
+		{{each buy_goods as item index}}
+         <tr id="link_goods_tr_{{item.goods_id}}"><td><input name="link_goods_id[]" type="hidden" value="{{item.goods_id}}" />{{item.goods_sn}}</td><td>{{item.goods_name}}</td><td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods({{item.goods_id}})" ></a></td></tr>
+		 {{/each}}
         </tbody>
     </table>
 </div>   
@@ -37,12 +31,12 @@
 <script type="text/javascript">
 function searchGoods(){
 	var arr = new Object();
-	arr.cat_id = $('#_cat_id').val();
+	arr.keyword = $('#keyword').val();
 	arr.min_search = 1;
 	$('#sel_goods').html('<option value="">选择商品</option>');
-	var res = jq_ajax('{:url("search")}',arr);
-	$.each(res._list, function(i,value){
-		$('#sel_goods').append('<option value="'+value.goods_id+'" _goodsSn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+	var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
+	$.each(res.list, function(i,value){
+		$('#sel_goods').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
 	})
 }
 function selLinkGoods(){
@@ -52,11 +46,11 @@ function selLinkGoods(){
 	$('#linkGoodsBox').find('input').each(function(){
 		if (goods_id == $(this).val()) return isrep = true;
 	})
-	if (isrep == true) return alert('列表中已存在相关商品');
+	if (isrep == true) return _alert('列表中已存在相关商品');
 	var goods_name = $('#sel_goods').find("option:selected").text();
-	var goods_sn = $('#sel_goods').find("option:selected").attr('_goodsSn');
-	$('#linkGoodsBox').append('<tr id="link_goods_tr_'+goods_id+'"><td><input name="link_goods_id[]" type="hidden" value="'+goods_id+'" /></td>'
-						+'<td>'+goods_sn+'</td><td>'+goods_name+'</td>'
+	var goods_sn = $('#sel_goods').find("option:selected").data('goods_sn');
+	$('#linkGoodsBox').append('<tr id="link_goods_tr_'+goods_id+'"><td><input name="link_goods_id[]" type="hidden" value="'+goods_id+'" />'
+						+goods_sn+'</td><td>'+goods_name+'</td>'
 						+'<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('+goods_id+')" ></a>'
 						+'</td></tr>');
 }

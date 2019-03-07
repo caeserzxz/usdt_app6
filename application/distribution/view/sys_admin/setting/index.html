@@ -30,107 +30,25 @@
                  </div>
                  
             
-                
-                 	<header class="panel-heading bg-light">
-                    开启多级提成功能，被推荐者注册后消费则按下面的提成比例计算，否则按上面的定义<br>
-                    设置每一个等级的提成，根据分销模式请输入相应的提成金额/百分比<br>
-                    设置现金系统无法限制，请自行核实最低商品金额，系统默认最多拿商品的70%来分配，超出则不执行.
-                    </header>
-                    
-                      <div class="form-group m-t">
-                          <label class="col-sm-2 control-label">成为分销商条件：</label>
-                         <div class="controls">
-                              <label class="radio-inline">
-                                <input name="DividendCondition" value="0" {$Dividend['DividendCondition']==0?'checked':''} type="radio" >无条件成为分销商
-                              </label>
-                              <label class="radio-inline">
-                                <input name="DividendCondition" value="1" {$Dividend['DividendCondition']==1?'checked':''} type="radio" >需购买商品后成为分销商
-                              </label>
-                            </div>
-                      </div>
-                    
-                    
-                     <div class="form-group">
-                          <label class="col-sm-2 control-label">佣金签收到帐天数：</label>
-                          <div class="controls">
-                              <select name="dividend_limit_day"  style="width:80px;">
-                                  {for start="1" end="31" name="day" }
-                                     <option value="{$day}" {$Dividend['dividend_limit_day']==$day?'selected':''}>{$day} 天</option>
-                                  {/for}
-                              </select>
-                              <span class="help-line">，订单签收到指定天数执行到帐</span>
+                <div class="form-group">
+                          <label class="col-sm-2 control-label">结算时间间隔：</label>
+                          <div class="col-sm-4 controls">
+                           <input type="text" value="{$Dividend['settlement_day']|intval}" min=1  max="30" size="5" data-rule-required="true" data-rule-integer="true" name="settlement_day">
+                            <span class="model_span">天（指定天数间隔返旅游豆）</span>
                           </div>
                       </div>
+                 
+                    
+                    
+                  
                       <div class="form-group">
-                          <label class="col-sm-2 control-label">是否开启复购冲减：</label>
-                          <div class="controls">
-                            <label class="radio-inline">
-                              <input name="buy_again_lower" value="0" {$Dividend['buy_again_lower']==0?'checked':''} type="radio" >停用
-                            </label>
-                            <label class="radio-inline">
-                              <input name="buy_again_lower" value="1" {$Dividend['buy_again_lower']==1?'checked':''} type="radio" >启用
-                            </label>
+                          <label class="col-sm-2 control-label">会员复购限制：</label>
+                          <div class="col-sm-7 controls">
+                           <input type="text" value="{$Dividend['repeat_buy_day']|intval}" min=1  max="30" size="5" data-rule-required="true" data-rule-integer="true" name="repeat_buy_day">
+                            <span class="model_span">天（成为VIP及以上会员，从成会VIP会员的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
                           </div>
-                          <span class="help-inline">二次复购商品自动冲减第一级别分佣金额，即原一级获取第二级佣金，第二级无佣金</span>
-                     </div>
-                     <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                     <div class="form-group">
-                          <label class="col-sm-2 control-label">分销模式：</label>
-                          <div class="controls">
-                              <select name="dividend_model" id="dividend_model" style="width:150px;">
-                                     <option value="0" {$Dividend['dividend_model']==0?'selected':''}>固定金额</option>
-                                     <option value="1" {$Dividend['dividend_model']==1?'selected':''}>订单金额百分比</option>
-                              </select>
-                              <span class="help-line">订单金额，指定设置为分销的商品计算的金额</span>
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          <label class="col-sm-2 control-label">购买者返现：</label>
-                          <div class="controls">
-                           <input type="text" value="{$Dividend['buy_dividend']|floatval}" min=0  size="5" data-rule-required="true" data-rule-integer="true" name="buy_dividend">
-                            <span class="model_span">{$Dividend['dividend_model']==0?'元':'%'}</span>
-                          </div>
-                      </div>
-                      <div class="form-group ">
-                                <label class="col-sm-2 control-label">开启多级提成：</label>
-                                <div class="controls">
-                                  <label class="radio-inline">
-                                    <input name="IsLevelDividend" value="0" {$Dividend['IsLevelDividend']==0?'checked':''} type="radio" onClick="$('._level_div').addClass('hide');">停用
-                                  </label>
-                                  <label class="radio-inline">
-                                    <input name="IsLevelDividend" value="1" {$Dividend['IsLevelDividend']==1?'checked':''} type="radio" onClick="$('._level_div').removeClass('hide');">启用
-                                  </label>
-                                </div>
                       </div>
                      
-                     <div class=" _level_div {$Dividend['IsLevelDividend']==0?'hide':''}" >                     
-                       <div class="form-group">
-                         <label class="col-sm-2 control-label">级别佣金：</label>
-                           <table class="table table-striped m-b-none" style="width:500px;">
-                                <thead>
-                                    <tr>
-                                     <th width="120" class="txt_center">推荐级别</th>
-                                       <th class="txt_center">佣金</th>
-                                       <th class="txt_center" width="70">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="d_level_box">
-                            {volist name="Dividend.LevelRow" id="val" }
-                                    <tr class="d_level_tr ">
-                                        <td align="center">{$d_level[$key]}客户</td>
-                                        <td align="center"><input type="text" name="LevelRow[{$key}][money]" min=0  class="input-ssmall" data-rule-ismoney="true"  value="{$val.money}"><span class="model_span">{$Dividend['dividend_model']==0?'元':'%'}</span></td>
-                                        <td align="center"><a href="javascript:;" title="删除" onClick="del_d_level({$key});"><i class="fa fa-trash-o text-muted"></i></a></td>
-                                    </tr>
-                               {/volist} 
-                             
-                                </tbody><tr>
-                                        <td colspan="3" align="center"><button type="button" class="btn btn-default {$Dividend['IsLevelDividend']==0?'hide':''}}" onClick="add_d_level();"  >增加提成等级</button></td>
-                                        </tr> 
-                            </table>
-                              
-                             
-            			</div>  
-               		</div>
                     <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
                      <div class="form-group">
                             <label class="col-sm-2 control-label">分享海报：</label>
@@ -143,7 +61,7 @@
                      </div>
                     
                      <div class="form-group">
-                          <label class="control-label"></label>
+                          <label class="col-sm-2 control-label"></label>
                           <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
                          
                     </div>
@@ -152,39 +70,5 @@
         </section>
       
     </section>
-<script type="text/html" id="d_level_tr">
-<tr class="d_level_tr">
-	<td align="center">{{val}}客户</td>
-	<td align="center"><input type="text" name="LevelRow[{{key}}][money]" class="input-ssmall" min=0  data-rule-ismoney="true"  value="0"><span class="model_span">{{dividend_model==0?'元':'%'}}</span></td>
-	<td align="center"><a href="javascript:;" title="删除" onClick="del_d_level({{key}});"><i class="fa fa-trash-o text-muted"></i></a></td>
-</tr>
-</script>
-<script type="text/javascript">
-var dividend_model = {$Dividend['dividend_model']|intval};
-$('#dividend_model').change(function(){
-	dividend_model = $(this).val();
-	if (dividend_model == 0){
-		$('.model_span').html('元');
-	}else{
-		$('.model_span').html('%');
-	}
-})
 
-
-var d_level = {$d_level|json_encode|raw};
-function add_d_level(){
-	var length = $('.d_level_tr').length;
-	if (length >= 9) return G.ui.tips.info("提成等级不能超过九级！");
-	var _level = [];
-	_level['key'] = length+1;
-	_level['dividend_model'] = dividend_model;
-	_level['val'] = d_level[length+1];
-	$('#d_level_box').append(template('d_level_tr',_level));
-}
-function del_d_level(key){
-	var length = $('.d_level_tr').length;
-	if (key < length) return G.ui.tips.info("不允许跨级删除！");
-	$('.d_level_tr').eq(key - 1).remove();
-}
-</script>
 {/block}

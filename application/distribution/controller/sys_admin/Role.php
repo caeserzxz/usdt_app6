@@ -30,8 +30,8 @@ class Role extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
-		$this->order_by = 'level';
-		$this->sort_by = 'ASC';
+		
+		$this->sqlOrder = 'level ASC';
         $data = $this->getPageList($this->Model);			
 		$this->assign("data", $data);
 		if ($runData == false){
@@ -57,6 +57,17 @@ class Role extends AdminController
 	/*------------------------------------------------------ */
     public function asInfo($data) {
 		$this->assign('upLevel',  $this->getFunction('upLevel'));
+		$data['function'] = [];
+		if ($data['role_id'] > 0){
+			$upleve_value = json_decode($data['upleve_value'],true);
+			$data['function'][$data['upleve_function']] = $upleve_value;
+			if (empty($upleve_value['buy_goods']) == false){
+				$where[] = ['goods_id','in',$upleve_value['buy_goods']];
+				$list = (new \app\shop\model\GoodsModel)->where($where)->field('goods_id,goods_sn,goods_name')->select();
+				if (empty($list) == false) $data['function'][$data['upleve_function']]['buy_goods'] = $list->toArray(); 
+			}
+		}
+		
 		return $data;
 	}
 	/*------------------------------------------------------ */
@@ -66,6 +77,10 @@ class Role extends AdminController
 		$count = $this->Model->where('role_name',$data['role_name'])->whereOr('level',$data['level'])->count('role_id');
 		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');		
 		$data['add_time'] = $data['update_time'] = time();
+		$upleve_value = input('function_val');
+		$buy_goods = input('link_goods_id');
+		$upleve_value['buy_goods'] = $buy_goods;
+		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;
 	}
 	/*------------------------------------------------------ */
@@ -78,15 +93,17 @@ class Role extends AdminController
 	//-- 修改前处理
 	/*------------------------------------------------------ */
     public function beforeEdit($data){	
-		$info = $this->Model->find($data['role_id'])->toArray();
-		
+		$info = $this->Model->find($data['role_id'])->toArray();		
 		$this->checkUpData($info,$data);
 		$where[] = ' role_id <> '.$data['role_id'];
-		$where[] = " (role_name = '".$data['role_name']."' OR level = '".$data['level']."' )";
-		
+		$where[] = " (role_name = '".$data['role_name']."' OR level = '".$data['level']."' )";		
 		$count = $this->Model->where(join(' AND ',$where))->count('role_id');
 		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');	
 		$data['update_time'] = time();
+		$upleve_value = input('function_val');
+		$buy_goods = input('link_goods_id');
+		$upleve_value['buy_goods'] = $buy_goods;
+		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;		
 	}
 	/*------------------------------------------------------ */

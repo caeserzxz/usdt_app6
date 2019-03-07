@@ -27,7 +27,7 @@ class Setting extends AdminController
 		$Dividend['status'] = settings('DividendSatus');
 		$this->assign('Dividend',$Dividend);
 		$this->assign('share_bg',settings('share_bg'));
-		$this->assign('d_level',config('config.DIVIDEND_LEVEL'));
+		
 		return $this->fetch();
 	}
    

@@ -260,7 +260,7 @@ class AdminController extends BaseController
 			if ($this->request->isAjax()){
 				 return $this->error('登陆超时，请重新登陆.');
 			}
-            $this->redirect($_SERVER['PHP_SELF'].'/mainAdmin/passport/login');
+            $this->redirect($_SERVER['SCRIPT_NAME'].'/mainAdmin/passport/login');
             return false;
         }
         return true;
