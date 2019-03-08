@@ -1,5 +1,5 @@
 <?php
-namespace distribution\upLevel;
+namespace distribution;
 /*------------------------------------------------------ */
 //-- 基础升级方案
 //-- @author iqgmy
@@ -14,6 +14,13 @@ $modules[$i]["val"][] = ['name'=>'buy_goods','text'=>'指定商品','input'=>'se
 
 
 class BasalFun{	
-	
+	/*------------------------------------------------------ */
+	//-- 执行级别更新
+	/*------------------------------------------------------ */ 
+	public function evalUp(&$orderInfo,$role){	
+		$UsersModel = new \app\member\model\UsersModel();
+		
+		
+	}
 }
 ?> 

@@ -6,6 +6,8 @@ use app\BaseModel;
 use think\facade\Cache;
 use think\facade\Env;
 use think\Db;
+
+use app\member\model\AccountLogModel;
 //*------------------------------------------------------ */
 //-- 订单表
 /*------------------------------------------------------ */
@@ -41,7 +43,7 @@ class OrderModel extends BaseModel
         $user_id = $user_id * 1;
         $mkey = $this->mkey . '_user_stat_' . $user_id;
         $info = Cache::get($mkey);
-        //if (empty($info)) return $info;
+        if (empty($info)) return $info;
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['order_status', 'in', [0, 1]];
         $info['all_num'] = $this->where($where)->count('order_id');//全部非取消订单
@@ -91,7 +93,24 @@ class OrderModel extends BaseModel
             $info = $this->where('order_id', $order_id)->find();
             if (empty($info)) return array();
             $info = $info->toArray();
-            list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);
+            list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);			
+			
+			if ($info['is_dividend'] == 0){//提成处理
+				Db::startTrans();//启动事务
+				$resData = $this->distribution($info,'add');
+				if (is_array($resData) == true){	
+					$resData['is_dividend'] = 1;		
+					$res = $this->upInfo($resData);
+					unset($resData);
+					if ($res > 0){
+						$info['is_dividend'] = 1;
+						Db::commit();// 提交事务
+					}else{
+						Db::rollback();// 回滚事务
+					}					
+				}
+			}
+			//end
             Cache::set($this->mkey . $order_id, $info, 30);
         }
 
@@ -110,10 +129,10 @@ class OrderModel extends BaseModel
                     $info['countdown'] = 1;
                     $info['last_time'] =  $info['add_time'] + ($shop_order_auto_cancel * 60) - $time;
                     if ($info['add_time'] < $time - $shop_order_auto_cancel * 60){
-                        $data['order_id'] = $order_id;
-                        $data['order_status'] =$this->config['OS_CANCELED'];
-                        $data['cancel_time'] = $time;
-                        $res = $this->upInfo($data);
+                        $upData['order_id'] = $order_id;
+                        $upData['order_status'] = $this->config['OS_CANCELED'];
+                        $upData['cancel_time'] = $time;
+                        $res = $this->upInfo($upData);
                         if ($res > 0) {
                             $info['ostatus'] = '已取消';
                         }
@@ -203,12 +222,9 @@ class OrderModel extends BaseModel
         Db::startTrans();//启动事务
         $GoodsModel = new GoodsModel();
         $OrderGoodsModel = new OrderGoodsModel();
-        $AccountLogModel = new \app\member\model\AccountLogModel();
+        $AccountLogModel = new AccountLogModel();
 
-        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单
-            //提成处理
-
-            //end
+        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单			
             //订单支付成功
             if ($upData['pay_status'] == $this->config['PS_PAYED']){
                 if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
@@ -219,11 +235,19 @@ class OrderModel extends BaseModel
                         return '支付扣库存失败.';
                     }
                 }
+				$res = $this->distribution($orderInfo,'pay');//提成处理
+				if ($res !== true) {
+					Db::rollback();// 回滚事务
+					return '佣金处理失败.';
+                }
             }
         }elseif ($upData['order_status'] == $this->config['OS_CANCELED'] ) {//取消订单
-            //提成处理
-
-            //end
+            
+			$res = $this->distribution($orderInfo,'cancel');//提成处理
+            if ($res != true) {
+					Db::rollback();// 回滚事务
+					return '佣金处理失败.';
+             }
             //执行商品库存和销量处理
             if ($orderInfo['is_stock'] == 1) {
                 $res = $GoodsModel->evalGoodsStore($orderInfo['goodsList'], 'cancel');
@@ -248,12 +272,17 @@ class OrderModel extends BaseModel
                 }
             }			
         }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED']) {//发货
-            //提成处理
-            //end
-
-        }elseif ($upData['shipping_status'] == $this->config['SS_UNSHIPPED']) {//未发货
-            //提成处理
-            //end
+			$res = $this->distribution($orderInfo,'shipping');//提成处理
+			if ($res != true) {
+					Db::rollback();// 回滚事务
+					return '佣金处理失败.';
+             }
+        }elseif ($upData['shipping_status'] == $this->config['SS_UNSHIPPED']) {//未发货            
+			$res = $this->distribution($orderInfo,'unshipping');//提成处理
+            if ($res !== true) {
+				Db::rollback();// 回滚事务
+				return '佣金处理失败.';
+            }
 
         }elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
             //积分赠送
@@ -270,18 +299,23 @@ class OrderModel extends BaseModel
                 }
             }
             unset($inData);
-            //提成处理
-            //end
-            //修改订单商品为待评价
-            $where['order_id'] = ['order_id', '=', $orderInfo['order_id']];
+			$res = $this->distribution($orderInfo,'sign');	//提成处理		
+            if ($res != true) {
+				Db::rollback();// 回滚事务
+				return '佣金处理失败.';
+            }
+            //修改订单商品为待评价           
             $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
             if ($res < 1) {
                 Db::rollback();//回滚
                 return '修改订单商品为待评价失败.';
             }
         }elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
-            //提成处理
-            //end
+           $res = $this->distribution($orderInfo,'returned');//提成处理
+		   if ($res != true) {
+				Db::rollback();// 回滚事务
+				return '佣金处理失败.';
+            }
             //修改订单商品未评价的设为不需要评价
            $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
             if ($res < 1) {
@@ -291,14 +325,16 @@ class OrderModel extends BaseModel
         }
 
         if ($extType == 'changePrice' || $extType == 'editGoods' ) {//改价或修改商品
-
-
-
+			$res = $this->distribution($orderInfo,'change');//提成处理
+			if ($res != true) {
+				Db::rollback();// 回滚事务
+				return '佣金处理失败.';
+            }
         }elseif ($extType == 'unsign' ) {//撤销签收
             unset($where);
             //查询通过订单获取的积分,扣除
-            $where['by_id'] = $orderInfo['order_id'];
-            $where['change_type'] = 2;
+            $where[] = ['by_id','=',$orderInfo['order_id']];
+            $where[] = ['change_type','=',2];
             $log = $AccountLogModel->where($where)->find();
             if ($log['use_integral'] > 0) {
                 unset($inData);
@@ -316,6 +352,11 @@ class OrderModel extends BaseModel
                     Db::rollback();//回滚
                     return '退还积分失败.';
                 }
+            }
+			 $res = $this->distribution($orderInfo,'unsign');//提成处理
+			 if ($res != true) {
+				Db::rollback();// 回滚事务
+				return '佣金处理失败.';
             }
         }
         $upData['update_time'] = time();
@@ -404,6 +445,17 @@ class OrderModel extends BaseModel
 				$orderInfo = $this->info($order_id);
 				$this->_log($orderInfo,'自动签收');
 			}
+		}
+		return true;
+	}
+	 /*------------------------------------------------------ */
+    //-- 提成处理
+    /*------------------------------------------------------ */
+	public function distribution(&$orderInfo,$type = ''){
+		if (empty($orderInfo)) return false;
+		//判断分销模块是否存在
+		if(class_exists('app\distribution\model\DividendModel')){
+			return (new \app\distribution\model\DividendModel)->_eval($orderInfo,$type);
 		}
 		return true;
 	}

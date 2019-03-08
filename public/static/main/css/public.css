@@ -32,8 +32,8 @@
 .padding{padding:10px;}
 .pl{padding-left:10px;}
 .lh30{line-height:30px;}
-.control-group,.form-group{ position:relative;}
-.controls{ position:relative; float:left;}
+.control-group,.form-group{ position:relative !important; margin-left:0px !important;}
+.controls{ position:relative !important; float:left;}
 .help-block{ position:absolute;top:-23px; line-height:23px; left:0px; min-width:120px; }
 
 input[type='text']{padding:6px;padding-left:5px; margin-bottom:5px;}

@@ -138,6 +138,7 @@ class UsersModel extends BaseModel
         $inArr['password'] = f_hash($inArr['password']);
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
+		$inArr['pid'] = 0;
 		//分享注册
         $share_token = session('share_token');
         if (empty($share_token) == false){
@@ -378,7 +379,7 @@ class UsersModel extends BaseModel
 		if ($user_id < 1) return array();
 		$chain = Cache::get('userSuperior_'.$user_id);	
 		if ($chain) return $chain;
-		$DividendRole = (new DividendRoleModel)->getRows();	
+		$dividendRole = (new DividendRoleModel)->getRows();	
 		$i = 1;
 		do {
 			$info = $this->where('user_id',$user_id)->field('user_id,nick_name,pid,role_id,reg_time')->find();
@@ -386,7 +387,7 @@ class UsersModel extends BaseModel
 			$chain[$user_id]['user_id']   = $info['user_id'];
 			$chain[$user_id]['reg_time']  = dateTpl($info['reg_time']);
 			$chain[$user_id]['nick_name'] = empty($info['nick_name'])?'未填写':$info['nick_name'];
-			$chain[$user_id]['role_name'] = $info['role_id'] > 0 ? $DividendRole[$info['role_id']]['role_name'] : '无身份';			
+			$chain[$user_id]['role_name'] = $info['role_id'] > 0 ? $dividendRole[$info['role_id']]['role_name'] : '无身份';			
 			$user_id = $info['pid'];
 			$i++;
 		} while ($user_id > 0);

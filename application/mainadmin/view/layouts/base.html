@@ -82,7 +82,7 @@ $(function () {
            {volist name="top_menus" id="vo"}
                 
                     <div class="am-fl tpl-header-fun-button {$_module==$vo['key']?'top_select':'top_no_select'}">
-                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
+                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
                     </div>
               
            {/volist}

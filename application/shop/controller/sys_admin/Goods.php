@@ -206,11 +206,7 @@ class Goods extends AdminController
 			}
 			unset($imgwhere);
 		}
-		
-		if ($row['is_dividend'] == 1 && $row['dividend_num'] < 1){
-			 return $this->error('开启分销商品，分销计算数量不能少于1.');
-		}
-		
+				
 		if ($row['is_spec'] == 0){//单规格
 			if (empty($row['goods_sn'])){
 				return $this->error('请输入商品货号.');

@@ -44,8 +44,8 @@ class Role extends AdminController
 	/*------------------------------------------------------ */
 	//-- 获取所有接口程序
 	/*------------------------------------------------------ */
-    public function getFunction($type = '') {
-		$rows = readModules(Env::get('extend_path').'/distribution/'.$type);
+    public function getFunction() {
+		$rows = readModules(Env::get('extend_path').'/distribution');
 		$modules = array();
 		foreach ($rows as $row){
 			$modules[$row['function']] = $row;
@@ -56,7 +56,7 @@ class Role extends AdminController
 	//-- 详细页调用
 	/*------------------------------------------------------ */
     public function asInfo($data) {
-		$this->assign('upLevel',  $this->getFunction('upLevel'));
+		$this->assign('upLevel',  $this->getFunction());
 		$data['function'] = [];
 		if ($data['role_id'] > 0){
 			$upleve_value = json_decode($data['upleve_value'],true);
@@ -112,5 +112,23 @@ class Role extends AdminController
     public function afterEdit($data) {
 		$this->_Log($data['role_id'],'修改分销身份:'.$data['role_name'].'，级别：'.$data['level']);
 	}
-	
+	/*------------------------------------------------------ */
+    //-- 删除
+    /*------------------------------------------------------ */
+    public function delete()
+    {
+        $role_id = input('role_id/d');
+		if ($role_id < 1){
+			return $this->error('传参错误.');	
+		}
+		$data = $this->Model->where('role_id',$role_id)->find();
+		if (empty($data) == true){
+			return $this->error('没有找到相关身份.');	
+		}
+        $res = $this->Model->where('role_id',$role_id)->delete();
+        if ($res < 1) return $this->error('删除失败，请重试.');
+        $this->Model->cleanMemcache();
+		$this->_Log($data['role_id'],'删除分销身份:'.$data['role_name'],'',$data->toArray());
+        return $this->success('删除成功.');
+    }
 }

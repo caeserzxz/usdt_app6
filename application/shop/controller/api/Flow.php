@@ -320,7 +320,7 @@ class Flow extends ApiController
         }
         //end
         $this->addOrderGoods($order_id,$recids);//写入商品
-        Db::commit();// 提交事务
+        Db::commit();// 提交事务		
         $return['order_id'] = $order_id;
         $return['code'] = 1;
         return $this->ajaxReturn($return);

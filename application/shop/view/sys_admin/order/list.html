@@ -44,7 +44,7 @@
     <td>
         <p class=" m-b-xs">
              {$vo.order_amount|priceFormat}
-           {eq name="a.ostatus" value="待付款" }
+           {eq name="vo.ostatus" value="待付款" }
             <a href="javascript:;" data-remote="{:url('changePrice',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" >
                 <i class="fa fa-edit text-muted"></i>
             </a>
@@ -61,7 +61,7 @@
         <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
         <p>
            {$orderLang['ss'][$vo['shipping_status']]|raw}
-           {eq name="a.ostatus" value="待发货" }
+           {eq name="vo.ostatus" value="待发货" }
             <a href="javascript:;" data-remote="{:url('shipping',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" title="发货">
                 <i class="fa fa-truck text-muted"></i>
             </a>

@@ -41,7 +41,7 @@ class Attachment extends AdminController{
      */
     public function editer_manager() {
         $root_path = config('config._upload_');
-        $root_url = config('config._upload_');
+        $root_url = '/'.config('config._upload_');
         $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
         

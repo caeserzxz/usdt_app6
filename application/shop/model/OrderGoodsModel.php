@@ -8,7 +8,7 @@ use app\BaseModel;
 /*------------------------------------------------------ */
 class OrderGoodsModel extends BaseModel
 {
-	protected $table = 'shop_order_goods';
+	public $table = 'shop_order_goods';
 	public  $pk = 'rec_id';
 
 	
