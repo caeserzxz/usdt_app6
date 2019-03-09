@@ -233,8 +233,8 @@ class GoodsModel extends BaseModel
             $goods['exp_max_price'] = explode('.',$goods['max_price']);
         }
 		$goods['exp_price'] = explode('.',$goods['_price']);
-        $goods['sale_count'] = $goods['virtual_sale'];
-        $goods['collect_count'] = $goods['virtual_collect'];
+        $goods['sale_count'] = $goods['virtual_sale'] + $goods['sale_num'];
+        $goods['collect_count'] = $goods['virtual_collect'] + $goods['collect_num'];
 
 		switch($goods['isputaway']){
 			case 1 :/**上架**/

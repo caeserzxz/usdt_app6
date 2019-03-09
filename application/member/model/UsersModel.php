@@ -384,7 +384,7 @@ class UsersModel extends BaseModel
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $_pid;
             $UsersBindModel::create($inArr);
-            $_pid = $this->where('user_id',$pid)->value('pid');
+            $_pid = $this->where('user_id',$_pid)->value('pid');
         }
         $spid[] = $user_id;
         sort($spid);
