@@ -65,12 +65,12 @@
                 <div class="line line-dashed line-lg pull-in"></div>
                 <div class="form-group radio_undertake_award_type award_setting {$row['award_type']<=2?'':'hide'}">
                      <label class="control-label">奖项设置：</label>
-                      <div class="col-sm-5">
-                       <table class="table table-striped m-b-none" style="width:100%;">
+                      <div class="col-sm-7">
+                       <table class="table table-striped m-b-none">
                             <thead>
                                 <tr>
-                                   <th width="120" class="txt_center">级别</th>
-                                   <th width="180" class="txt_center">奖励名称</th>
+                                   <th class="txt_center">级别</th>
+                                   <th class="txt_center">奖励名称</th>
                                    <th class="txt_center">奖励</th>
                                    <th class="txt_center" width="70">操作</th>
                                 </tr>
@@ -86,12 +86,12 @@
             	</div>
                 <div class="form-group radio_undertake_award_type award_manage_setting {$row['award_type']==3?'':'hide'}">
                      <label class="control-label">管理奖项：</label>
-                      <div class="col-sm-5">
-                       <table class="table table-striped m-b-none" style="width:100%;">
+                      <div class="col-sm-7">
+                       <table class="table table-striped m-b-none" >
                             <thead>
                                 <tr>
-                                   <th width="120" class="txt_center">分销身份</th>
-                                   <th width="180" class="txt_center">奖励名称</th>
+                                   <th  class="txt_center">分销身份</th>
+                                   <th  class="txt_center">奖励名称</th>
                                    <th class="txt_center">奖励</th>
                                 </tr>
                             </thead>
@@ -121,7 +121,7 @@
 
 <script type="text/html" id="d_level_tr">
 <tr class="d_level_tr">
-	<td align="center">{{val}}</td>
+	<td align="center">{{val}}<input name="award_value[{{key}}][level]" type="hidden" value="{{key}}" /></td>
 	<td align="center"><input type="text" name="award_value[{{key}}][name]" class="input-max" data-rule-required="true" value="{{name}}"></td>
 	<td align="center"><input type="text" name="award_value[{{key}}][num]" class="input-ssmall" min=1 data-rule-integer="true"  value="{{num}}"><select name="award_value[{{key}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
 	<td align="center"><a href="javascript:;" title="删除" onClick="delLevel({{key}});"><i class="fa fa-trash-o text-muted"></i></a></td>
@@ -129,7 +129,7 @@
 </script>
 <script type="text/html" id="d_role_tr">
 <tr >
-	<td align="center">{{role_name}}</td>
+	<td align="center">{{role_name}}<input name="role_award_value[{{role_id}}][role_id]" type="hidden" value="{{role_id}}" /></td>
 	<td align="center"><input type="text" name="role_award_value[{{role_id}}][name]" class="input-max" data-rule-required="true" value="{{name}}"></td>
 	<td align="center"><input type="text" name="role_award_value[{{role_id}}][num]" class="input-ssmall" min=1 data-rule-integer="true"  value="{{num}}"><select name="role_award_value[{{role_id}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
 </tr>

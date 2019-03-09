@@ -147,6 +147,7 @@ class UsersModel extends BaseModel
 				  $inArr['pid'] = $pInfo['user_id']*1;
 			  }
         }//end
+		
 		Db::startTrans();
         $res = $this->save($inArr);
         if ($res < 1){
@@ -193,8 +194,11 @@ class UsersModel extends BaseModel
 			}
         } //end
 		Db::commit();
-        //写入九级关系链
-        $this->regUserBind($this->user_id,$inArr['pid']);
+		$DividendInfo = settings('DividendInfo');
+		if ($DividendInfo['bind_type'] < 1){
+			//写入九级关系链
+			$this->regUserBind($this->user_id);
+		}
 		
 		//红包模块存在执行
 		if(class_exists('app\shop\model\BonusModel')){
@@ -349,27 +353,42 @@ class UsersModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 写入等级关联
 	/*------------------------------------------------------ */ 
-	public function regUserBind($user_id=0,$pid=0){
+	public function regUserBind($user_id=0){		
         $DividendSatus = settings('DividendSatus');
         if ($DividendSatus == 0) return true;//不开启推荐，不执行
-        if ($user_id == 0 || $pid == 0) return false;
+        if ($user_id < 1 ) return false;
+		$userInfo = $this->where('user_id',$user_id)->field('is_bind,pid')->find();
+		if ($userInfo['is_bind'] > 0) return false;//已执行绑定不再执行
+		
+		$pid = 0;
+		$share_token = session('share_token');
+        if (empty($share_token) == false){
+			  $pInfo = $this->getShareUser($share_token);
+			  if ($pInfo['is_ban'] != 1) {
+				  $pid = $pInfo['user_id']*1;
+			  }
+        }else{
+			$pid = $userInfo['pid'];
+		}		
+		
         $UsersBindModel = new UsersBindModel();
         $d_level = config('config.dividend_level');
+		$_pid = $pid; 
         foreach ($d_level as $key=>$val){
-            if ($pid < 1) break;
-            $spid[] = $pid;
+            if ($_pid < 1) break;
+            $spid[] = $_pid;
             if ($key<=2){
-                $sendUids[$pid] = $val;
+                $sendUids[$_pid] = $val;
             }
             $inArr['level'] = $key;
             $inArr['user_id'] = $user_id;
-            $inArr['pid'] = $pid;
+            $inArr['pid'] = $_pid;
             $UsersBindModel::create($inArr);
-            $pid = $this->where('user_id',$pid)->value('pid');
+            $_pid = $this->where('user_id',$pid)->value('pid');
         }
         $spid[] = $user_id;
         sort($spid);
-        $this->where('user_id',$user_id)->update(['spid'=>join(',',$spid)]);
+        $this->where('user_id',$user_id)->update(['pid'=>$pid,'is_bind'=>1,'spid'=>join(',',$spid)]);
 		return true;
 	}
 	/*------------------------------------------------------ */

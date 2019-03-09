@@ -87,7 +87,7 @@ class OrderModel extends BaseModel
     function info($order_id, $iscache = true)
     {
         if ($iscache == true) {
-           $info = Cache::get($this->mkey . $order_id);
+         	$info = Cache::get($this->mkey . $order_id);
         }
         if ($info['order_id'] < 1){
             $info = $this->where('order_id', $order_id)->find();
@@ -98,9 +98,10 @@ class OrderModel extends BaseModel
 			if ($info['is_dividend'] == 0){//提成处理
 				Db::startTrans();//启动事务
 				$resData = $this->distribution($info,'add');
-				if (is_array($resData) == true){	
-					$resData['is_dividend'] = 1;		
-					$res = $this->upInfo($resData);
+				if (is_array($resData) == true){				
+					$resData['is_dividend'] = 1;
+					$resData['order_id'] = $order_id;				
+					$res = $this->upInfo($resData,'sys');					
 					unset($resData);
 					if ($res > 0){
 						$info['is_dividend'] = 1;
@@ -209,7 +210,7 @@ class OrderModel extends BaseModel
         $orderInfo = $this->where('order_id',$order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
 		$orderInfo = $orderInfo->toArray();
-        if (defined('AUID') == false){
+        if (defined('AUID') == false && $extType != 'sys'){
             if($this->userInfo['user_id'] != $orderInfo['user_id']){
                 return '无权操作';
             }

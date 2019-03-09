@@ -25,19 +25,20 @@ class MenuListModel extends Model
 			$rowsb = self::where(['parent'=>$row['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();			
 			if (empty($rowsb) == false){
 				foreach ($rowsb as $rowb){
-					
-					$rowsc = self::where(['parent'=>$rowb['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
-					if (empty($rowsc) == false){
-						foreach ($rowsc as $keyc=>$rowc){
-							if (empty($rowc['key'])) continue;
-							$rowsd = self::where(['parent'=>$rowc['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
-							if (empty($rowsd) == false) $rowc['submenu'] = $rowsd;
-							if (empty($rowc['right']) == false){
-								$rowc['_right'] = explode(',',$rowc['right']);
+					if (empty($rowb['key']) == false){
+						$rowsc = self::where(['parent'=>$rowb['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
+						if (empty($rowsc) == false){
+							foreach ($rowsc as $keyc=>$rowc){
+								if (empty($rowc['key'])) continue;
+								$rowsd = self::where(['parent'=>$rowc['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
+								if (empty($rowsd) == false) $rowc['submenu'] = $rowsd;
+								if (empty($rowc['right']) == false){
+									$rowc['_right'] = explode(',',$rowc['right']);
+								}
+								$rowsc[$keyc] = $rowc;
 							}
-							$rowsc[$keyc] = $rowc;
+							$rowb['submenu'] = $rowsc;
 						}
-						$rowb['submenu'] = $rowsc;
 					}
 					$key = empty($rowb['key']) ? $rowb['id'] : $rowb['key'];
 					if (empty($rowb['right']) == false){
