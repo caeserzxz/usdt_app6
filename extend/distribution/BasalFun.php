@@ -9,6 +9,7 @@ $i = (isset($modules)) ? count($modules) : 0;
 $modules[$i]["name"] = "升级方案";
 $modules[$i]["explain"] = "基础升级方案，须完全满足以下条件才能升级，为0则不限制.";
 $modules[$i]["val"][] = ['name'=>'referral','text'=>'直推','input'=>'sel_role','tip'=>'个'];
+//$modules[$i]["val"][] = ['name'=>'xxx','text'=>'A','input'=>'text','tip'=>'个'];
 $modules[$i]["val"][] = ['name'=>'buy_type','text'=>'指定类型','input'=>'radio','selval'=>[1=>'购买以下任意指定分销商品',2=>'购买以下全部指定分销商品']];
 $modules[$i]["val"][] = ['name'=>'buy_goods','text'=>'指定分销商品','input'=>'sel_goods'];
 
