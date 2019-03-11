@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e6001a40-829d-4fcc-9c72-42ca21445633" name="默认的" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/runtime/log/201903/01.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/runtime/log/201903/04.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/runtime/temp/2964fbcef1f2e55ef1605a242a8c6562.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/runtime/temp/fdefaa57870afef6ab79a2db00e38aab.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common.php" afterPath="$PROJECT_DIR$/application/common.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/shop/controller/sys_admin/Order.php" afterPath="$PROJECT_DIR$/application/shop/controller/sys_admin/Order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/shop/view/sys_admin/order/shipping.html" afterPath="$PROJECT_DIR$/application/shop/view/sys_admin/order/shipping.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/13186b0eabe5c7c3266584dbdafaaf6f.php" afterPath="$PROJECT_DIR$/runtime/temp/13186b0eabe5c7c3266584dbdafaaf6f.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/2487a0b625a0472a95ac95960323d561.php" afterPath="$PROJECT_DIR$/runtime/temp/2487a0b625a0472a95ac95960323d561.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/31ff5ebf3ae33d58f941d81151201c66.php" afterPath="$PROJECT_DIR$/runtime/temp/31ff5ebf3ae33d58f941d81151201c66.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/6d7af46166fa20335722ae841bb5f391.php" afterPath="$PROJECT_DIR$/runtime/temp/6d7af46166fa20335722ae841bb5f391.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/71d29128dd26928c6ea3c0bad1e8d341.php" afterPath="$PROJECT_DIR$/runtime/temp/71d29128dd26928c6ea3c0bad1e8d341.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/7db2711ee67c68b4598afc7b0d05bea2.php" afterPath="$PROJECT_DIR$/runtime/temp/7db2711ee67c68b4598afc7b0d05bea2.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/a80dca59d47f689c823bd642f21add4d.php" afterPath="$PROJECT_DIR$/runtime/temp/a80dca59d47f689c823bd642f21add4d.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/bcc4a2e666d2e8aec3ab9b608cbdc725.php" afterPath="$PROJECT_DIR$/runtime/temp/bcc4a2e666d2e8aec3ab9b608cbdc725.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/e30470fe464cd12814a8f635b3fed55a.php" afterPath="$PROJECT_DIR$/runtime/temp/e30470fe464cd12814a8f635b3fed55a.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/temp/ffaf0a59c881150985966fa87d86b9c1.php" afterPath="$PROJECT_DIR$/runtime/temp/ffaf0a59c881150985966fa87d86b9c1.php" />
-    </list>
+    <list default="true" id="e6001a40-829d-4fcc-9c72-42ca21445633" name="默认的" comment="" />
     <ignored path="moduleshop.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -51,8 +32,8 @@
       <file leaf-file-name="Order.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/shop/controller/sys_admin/Order.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.618705">
-              <caret line="288" column="0" selection-start-line="288" selection-start-column="0" selection-end-line="288" selection-end-column="0" />
+            <state vertical-scroll-proportion="-0.7793765">
+              <caret line="256" column="29" selection-start-line="256" selection-start-column="29" selection-end-line="256" selection-end-column="29" />
               <folding>
                 <element signature="e#48#72#0#PHP" expanded="true" />
               </folding>
@@ -422,7 +403,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3336887" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -832,8 +813,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/shop/controller/sys_admin/Order.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.618705">
-          <caret line="288" column="0" selection-start-line="288" selection-start-column="0" selection-end-line="288" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.7793765">
+          <caret line="256" column="29" selection-start-line="256" selection-start-column="29" selection-end-line="256" selection-end-column="29" />
           <folding>
             <element signature="e#48#72#0#PHP" expanded="true" />
           </folding>
