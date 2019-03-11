@@ -20,7 +20,7 @@ class DividendLog extends AdminController{
 	//-- 首页
 	/*------------------------------------------------------ */
     public function index(){
-		$this->assign("divdend_satus", lang('divdend_satus'));
+		
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);
@@ -31,8 +31,13 @@ class DividendLog extends AdminController{
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_cancel = false){
+		$this->assign("divdend_satus", lang('divdend_satus'));
+		$search['status'] = input('status','-1','intval');
 		$reportrange = input('reportrange');
 		$where = [];
+		if ($search['status'] >= 0 ){
+			$where[] = ['status','=',$search['status']];
+		}
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
 			$where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];

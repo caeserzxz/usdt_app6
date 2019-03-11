@@ -35,7 +35,7 @@
                                
                                 {volist name="upLevel" id="val"}	
                                         <option value="{$val.function}" {$row['upleve_function'] == $val['function']?'selected':''} 
-                                        data-jsonval='{$val.val|json_encode}' data-condition='{$val.condition|json_encode}' data-explain="{$val.explain}">{$val.name}</option>            
+                                        data-jsonval='{$val.val|json_encode}' data-explain="{$val.explain}">{$val.name}</option>            
                                 {/volist}
                             </select>
                             <input name="uplevel_fun_name" id="uplevel_fun_name" type="hidden" value="{$row.uplevel_fun_name}" />
@@ -78,7 +78,7 @@
 		  <div class="col-sm-9" >
 		  {{if value[item.name]}}
 		  	<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="{{value[item.name][role.role_id]}}"><span class="help-inline">{{item.tip}}</span>
-			{{else/}}
+			{{else}}
 			<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="0"><span class="help-inline">{{item.tip}}</span>
 			{{/if}}
 		  </div>
@@ -121,7 +121,7 @@ function upleveFunction(){
 	if (typeof(upleve_value[val]) == 'undefined'){
 		upleve_value[val] = [];
 	}
-	$("#upleve_function_box").html(template("upLevel_tpl", {'roleList':roleList,'list':jsonval,'explain':obj.data('explain'),'condition':obj.data('condition'),'value':upleve_value[val],'goodsList':upleve_value[val].buy_goods,'select_type':'buy_goods'}));			
+	$("#upleve_function_box").html(template("upLevel_tpl", {'roleList':roleList,'list':jsonval,'explain':obj.data('explain'),'value':upleve_value[val],'goodsList':upleve_value[val].buy_goods,'select_type':'buy_goods'}));			
 }
 $(function(){
 	$("#upleve_function").change(function (){

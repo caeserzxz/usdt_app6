@@ -50,7 +50,7 @@ class DividendModel extends BaseModel {
 				$this->UsersModel->regUserBind($orderInfo['user_id']);
 			}
 			$log = $this->saveLog($orderInfo,$goodsList);//佣金计算				
-			if ($orderInfo['pay_status'] == 1){//如果订单状态已支付时调用				
+			if ($orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']){//如果订单状态已支付时调用				
 				$res = $this->evalLevelUp($orderInfo,$goodsList,$orderInfo['user_id']);
 				if ($res == false) return false;
 			}			

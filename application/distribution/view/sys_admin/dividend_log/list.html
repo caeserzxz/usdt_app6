@@ -23,8 +23,8 @@
 <td>{$row.role_amount}</td>
 <td>{$row.eq_amount}</td>
 <td>{$row.dividend_amount|priceFormat}</td>
-<td>{$ds[$row['status']]} / 
-<a href="{:U('Order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
+<td>{$divdend_satus[$row['status']]} / 
+<a href="{:url('shop/sys_admin.Order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
     <i class="fa fa-search text-muted"></i>
 </a>
 </td>
