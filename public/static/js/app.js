@@ -158,6 +158,11 @@ function searchgoods(keyword,selects) {
 }
 
 $(document).on('click','.js_radio_undertake',function(){
-	$(this).parent().parent().find('.radio_undertake').addClass('hide');
-	$('.'+$(this).data('class')).removeClass('hide');
+	$('.radio_undertake_'+$(this).attr('name')).addClass('hide');
+	
+	$.each($(this).data('class').split('|'),function(i,v){
+		$('.'+v).removeClass('hide');
+	})
+	
+	
 })

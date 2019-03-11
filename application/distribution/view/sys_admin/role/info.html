@@ -25,7 +25,7 @@
                          <div class="form-group">
                             <label class=" control-label"> 级别：</label>
                             <div class="col-sm-6 ">
-                                <input aria-required="true" class="input-small" data-rule-required="true" name="level" value="{$row.level|intval}" data-rule-integer="true" type="text"><span class="maroon">*</span><span class="help-inline">此决定身份的排序高低，身份越高请设越大</span>
+                                <input aria-required="true" class="input-small" data-rule-required="true" name="level" min=1 value="{$row.level|intval}" data-rule-integer="true" type="text"><span class="maroon">*</span><span class="help-inline">此决定身份的排序高低，身份越高请设越大</span>
                             </div>
                         </div>
                     <div class="form-group">
@@ -71,28 +71,46 @@
 </div>
 
 {{each list as item index}}
+{{if item.input == 'sel_role'}}
+	{{each roleList as role index}}
+	<div class="form-group">
+       	 <label class=" control-label">{{item.text}}{{role.name}}：</label>
+		  <div class="col-sm-9" >
+		  {{if value[item.name]}}
+		  	<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="{{value[item.name][role.role_id]}}"><span class="help-inline">{{item.tip}}</span>
+			{{else/}}
+			<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="0"><span class="help-inline">{{item.tip}}</span>
+			{{/if}}
+		  </div>
+	</div>	  
+	{{/each}}
+{{else}}
 <div class="form-group">
         <label class=" control-label">{{item.text}}：</label>
-        <div class="col-sm-9" >
-			{{if item.is_sel == '1' }}
-				<input name="" type="checkbox" value="" />
-			{{/if}}
+        <div class="col-sm-9" >			
 			{{if item.rule == 'ismoney' || item.rule == 'integer'}}
-				<input type="text" name="function_val[{{item.name}}]"  class="input-small" data-rule-required="true" data-rule-{{item.rule}}="true" value="{{value[item.name]}}">
+				<input type="text" name="function_val[{{item.name}}]"  class="input-ssmall" data-rule-required="true" data-rule-{{item.rule}}="true" value="{{value[item.name]}}">
 				<span class="help-inline">{{item.tip}}</span>
 			{{else if item.input == 'text'}}
-			   <input type="text" name="function_val[{{item.name}}]"  class="input-large" data-rule-required="true" value="{{item.value}}"><span class="help-inline">{{item.tip}}</span>
+			   <input type="text" name="function_val[{{item.name}}]"  class="input-large" data-rule-required="true" value="{{value[item.name]}}"><span class="help-inline">{{item.tip}}</span>
+			{{else if item.input == 'radio'}}
+				{{each item.selval as selval index}}
+			      <label><input type="radio"  name="function_val[{{item.name}}]" value="{{index}}" {{value[item.name]==index?'checked':''}}> {{selval}}</label>
+				 {{/each}}
 			{{else if item.input == 'sel_goods'}}
 				{{include 'selGoods_tpl'}} 
+				<div class="col-sm-6 col-sm-offset-1 m-t">指定商品，只有购买此商品的会员才能进行升级.</div>
 			{{/if}}
       </div>
 </div>
+{{/if}}
 {{/each}}
 
 </script>  
 {/literal} 
 <script type="text/javascript">
 var upleve_value = {$row['function']|json_encode|raw};
+var roleList = {$roleList|json_encode|raw};
 function upleveFunction(){
 	$("#upleve_function_box").html('');
 	var obj = $('#upleve_function').find('option:selected');		
@@ -103,7 +121,7 @@ function upleveFunction(){
 	if (typeof(upleve_value[val]) == 'undefined'){
 		upleve_value[val] = [];
 	}
-	$("#upleve_function_box").html(template("upLevel_tpl", {'list':jsonval,'explain':obj.data('explain'),'condition':obj.data('condition'),'value':upleve_value[val],'buy_goods':upleve_value[val].buy_goods}));			
+	$("#upleve_function_box").html(template("upLevel_tpl", {'roleList':roleList,'list':jsonval,'explain':obj.data('explain'),'condition':obj.data('condition'),'value':upleve_value[val],'goodsList':upleve_value[val].buy_goods,'select_type':'buy_goods'}));			
 }
 $(function(){
 	$("#upleve_function").change(function (){

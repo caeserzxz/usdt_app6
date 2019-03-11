@@ -26,8 +26,8 @@ function toUnderScore($str)
 /**
  * 自定义URL
 */
-function _url($url,$arr,$isNotHtml=true){
-	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D'),array("'+","+'",'{{','}}'),url($url,$arr,$isNotHtml));
+function _url($url,$arr,$isNotHtml=true,$domain = false){
+	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D',$_SERVER['SCRIPT_NAME']),array("'+","+'",'{{','}}',''),url($url,$arr,$isNotHtml,$domain));
 }
 /**
  * 后台生成密码hash值

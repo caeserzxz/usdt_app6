@@ -5,6 +5,7 @@
 /*------------------------------------------------------ */
 namespace app\weixin\model;
 use app\BaseModel;
+use think\facade\Cache;
 class WeiXinModel extends BaseModel {
 	public $fromUsername,$toUsername,$keyword,$SetConfig;
 
@@ -123,7 +124,7 @@ class WeiXinModel extends BaseModel {
 	//-- 获取access_token
 	/*------------------------------------------------------ */
 	function getAccessToken($curlagain = false){
-		$access_token = _mymamcache('weixin_access_token');		
+		$access_token = Cache::get('weixin_access_token');
 		if (empty($access_token) || $curlagain == true){			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->SetConfig['weixin_appid']."&secret=".$this->SetConfig['weixin_appsecret']);
@@ -142,9 +143,8 @@ class WeiXinModel extends BaseModel {
 			curl_close($ch);
 			
 			$josn = json_decode($tmpInfo,true);
-			$access_token = $josn['access_token'];
-			//session('weixin_access_token',$access_token);			
-			_mymamcache('weixin_access_token','set',$access_token,3600);		
+			$access_token = $josn['access_token'];	
+			Cache::set('weixin_access_token',$access_token,3600);		
 		}
 		return $access_token;
 	}
@@ -174,7 +174,7 @@ class WeiXinModel extends BaseModel {
 	// ---------------------------------------------------
 	public function getJsApiTicket() {
 		if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) return false;
-		$ticket = _mymamcache('weixin_ticket');
+		$ticket = Cache::get('weixin_ticket');
 		if (!$ticket){
 			$accessToken = $this->getAccessToken();
 			// 如果是企业号用以下 URL 获取 ticket
@@ -182,7 +182,7 @@ class WeiXinModel extends BaseModel {
 			$josn = file_get_contents("https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken");
 			$josn = json_decode($josn,true);
 			$ticket = $josn['ticket'];
-			_mymamcache('weixin_ticket','set',$ticket,600);
+			Cache::set('weixin_ticket',$ticket,600);
 			return $ticket;
 		}
 		return $ticket;
@@ -202,26 +202,19 @@ class WeiXinModel extends BaseModel {
 	//-- 获取微信用户信息
 	/*------------------------------------------------------ */
 	function getWxUserInfo($access_token,$curlagain = false){
-		if (empty($access_token)) return array();		
-		//$arr = _mymamcache('weixin_user_info_'.$openid);
-		//if(empty($arr['openid'])){
-			
-			$userinfo = file_get_contents("https://api.weixin.qq.com/sns/userinfo?access_token=".$access_token['access_token']."&openid=".$access_token['openid']."&lang=zh_CN");
-			$userinfo = json_decode($userinfo,true);
-			
-			
-			if ($userinfo['errcode'] == '40001'){		
-				$ref = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=".$this->SetConfig['weixin_appid']."&grant_type=refresh_token&refresh_token=".$access_token['refresh_token']);
-				$ref = json_decode($ref,true);
-				if (empty($ref['access_token']) == false && $curlagain == false){
-					return $this->getWxUserInfo($ref,true);
-				}
-				
-			}elseif ($userinfo['errcode'] == '41001' && $curlagain == false){				
-				 return $this->getWxUserInfo($access_token,true);
-			}
-			//if ($arr['openid']) _mymamcache('weixin_user_info_'.$openid,'set',$arr,1200);
-		//}
+		if (empty($access_token)) return array();			
+		$userinfo = file_get_contents("https://api.weixin.qq.com/sns/userinfo?access_token=".$access_token['access_token']."&openid=".$access_token['openid']."&lang=zh_CN");
+		$userinfo = json_decode($userinfo,true);		
+		
+		if ($userinfo['errcode'] == '40001'){		
+			$ref = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=".$this->SetConfig['weixin_appid']."&grant_type=refresh_token&refresh_token=".$access_token['refresh_token']);
+			$ref = json_decode($ref,true);
+			if (empty($ref['access_token']) == false && $curlagain == false){
+				return $this->getWxUserInfo($ref,true);
+			}			
+		}elseif ($userinfo['errcode'] == '41001' && $curlagain == false){				
+			 return $this->getWxUserInfo($access_token,true);
+		}
 		
 		return $userinfo;
 	}

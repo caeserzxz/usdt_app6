@@ -116,7 +116,7 @@ class Address extends ApiController
         if ($count ==1)return $this->error('必须保留一个收货地址...');
         $where['address_id'] = input('address_id', 0, 'intval');
         $res = $this->Model->where($where)->delete();
-        if ($res < 1) return $this->error('修改失败，请重试..');
+        if ($res < 1) return $this->error('删除失败，请重试..');
         $this->Model->cleanMemcache();
         return $this->getList();
     }

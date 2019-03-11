@@ -6,6 +6,7 @@ use app\shop\model\OrderModel;
 use app\shop\model\OrderGoodsModel;
 use app\shop\model\OrderLogModel;
 use app\shop\model\ShippingModel;
+use app\distribution\model\DividendModel;
 use think\Lang;
 
 /**
@@ -196,14 +197,15 @@ class Order extends AdminController{
     public function info(){
         $order_id = input('order_id',0,'intval');
         if ($order_id < 1) return $this->error('传参错误.');
-        $orderInfo = $this->Model->info($order_id);
-        $OrderLogModel = new OrderLogModel();
-        $orderLog = $OrderLogModel->where('order_id',$order_id)->order('log_id DESC')->select()->toArray();
+        $orderInfo = $this->Model->info($order_id);        
+        $orderLog = (new OrderLogModel)->where('order_id',$order_id)->order('log_id DESC')->select()->toArray();
         $this->assign("orderLog",  $orderLog);
         $this->assign("orderLang",  lang('order'));
         $operating = $this->Model->operating($orderInfo);//订单操作权限
         $this->assign("operating",  $operating);
         $this->assign('orderInfo', $orderInfo);
+		$dividend_log = (new DividendModel)->where('order_id',$order_id)->order('level ASC')->select()->toArray();
+		$this->assign('dividend_log', $dividend_log);
         return $this->fetch('info');
     }
     /*------------------------------------------------------ */

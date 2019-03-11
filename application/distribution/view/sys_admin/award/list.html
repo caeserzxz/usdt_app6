@@ -2,6 +2,7 @@
 <thead>
 <tr>
   <th>奖项名称</th>
+  <th>参与分销身份</th>
   <th width="150">更新时间</th>
   <th width="100">操作</th>
 </tr>
@@ -11,7 +12,7 @@
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.award_name}</td>
-  
+    <td>{$vo.limit_role_name}</td>
     <td>{$vo.update_time|dateTpl}</td>
     <td>  <a href="{:url('info',array('award_id'=>$vo['award_id']))}"   class="m-xs" title="编辑">
             <i class="fa fa-edit text-muted"></i>

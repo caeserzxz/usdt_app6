@@ -4,6 +4,7 @@ use app\AdminController;
 use app\distribution\model\DividendRoleModel;
 use think\facade\Env;
 
+use app\member\model\UsersModel;
 /**
  * 分销身份管理
  */
@@ -44,8 +45,8 @@ class Role extends AdminController
 	/*------------------------------------------------------ */
 	//-- 获取所有接口程序
 	/*------------------------------------------------------ */
-    public function getFunction($type = '') {
-		$rows = readModules(Env::get('extend_path').'/distribution/'.$type);
+    public function getFunction() {
+		$rows = readModules(Env::get('extend_path').'/distribution');
 		$modules = array();
 		foreach ($rows as $row){
 			$modules[$row['function']] = $row;
@@ -56,7 +57,18 @@ class Role extends AdminController
 	//-- 详细页调用
 	/*------------------------------------------------------ */
     public function asInfo($data) {
-		$this->assign('upLevel',  $this->getFunction('upLevel'));
+		$this->assign('upLevel',  $this->getFunction());
+		$roleList = $this->Model->getRows();
+		if ($data['role_id'] > 0){
+			foreach ($roleList as $key=>$role){
+				if ($role['level'] > $data['level']){
+					unset($roleList[$key]);	
+				}
+			}
+			unset($roleList[$data['role_id']]);	
+		}
+		
+		$this->assign('roleList', $roleList);
 		$data['function'] = [];
 		if ($data['role_id'] > 0){
 			$upleve_value = json_decode($data['upleve_value'],true);
@@ -78,8 +90,8 @@ class Role extends AdminController
 		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');		
 		$data['add_time'] = $data['update_time'] = time();
 		$upleve_value = input('function_val');
-		$buy_goods = input('link_goods_id');
-		$upleve_value['buy_goods'] = $buy_goods;
+		$buy_goods = input('buy_goods_id');
+		$upleve_value['buy_goods_id'] = $buy_goods_id;
 		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;
 	}
@@ -101,8 +113,8 @@ class Role extends AdminController
 		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');	
 		$data['update_time'] = time();
 		$upleve_value = input('function_val');
-		$buy_goods = input('link_goods_id');
-		$upleve_value['buy_goods'] = $buy_goods;
+		$buy_goods_id = input('buy_goods_id');
+		$upleve_value['buy_goods'] = $buy_goods_id;
 		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;		
 	}
@@ -112,5 +124,27 @@ class Role extends AdminController
     public function afterEdit($data) {
 		$this->_Log($data['role_id'],'修改分销身份:'.$data['role_name'].'，级别：'.$data['level']);
 	}
-	
+	/*------------------------------------------------------ */
+    //-- 删除
+    /*------------------------------------------------------ */
+    public function delete()
+    {
+        $role_id = input('role_id/d');
+		if ($role_id < 1){
+			return $this->error('传参错误.');	
+		}
+		$data = $this->Model->where('role_id',$role_id)->find();
+		if (empty($data) == true){
+			return $this->error('没有找到相关身份.');	
+		}
+		$count = (new UsersModel)->where('role_id',$role_id)->count();
+		if ($count > 0){
+			return $this->error('有会员是此分销身份，请修改相关会员身份后再操作.');
+		}
+        $res = $this->Model->where('role_id',$role_id)->delete();
+        if ($res < 1) return $this->error('删除失败，请重试.');
+        $this->Model->cleanMemcache();
+		$this->_Log($data['role_id'],'删除分销身份:'.$data['role_name'],'',$data->toArray());
+        return $this->success('删除成功.');
+    }
 }

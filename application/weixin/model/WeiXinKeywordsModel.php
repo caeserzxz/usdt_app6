@@ -27,42 +27,40 @@ class WeiXinKeywordsModel extends BaseModel
 	//-- $fromUsername	微信用户openid
 	/*------------------------------------------------------ */
     public function checkKey($keyword,$fromUsername){
-        $map['status'] = 1;
-		$map['and'] = "FIND_IN_SET('".$keyword."',keyword)";
+        $where[] = ['status','=',1];	
 		// 关注回复
         if ($keyword == 'subscribe'){
-			unset($map['and']);
-            $map['subscribe'] = 1;
-			$map['pid'] = 0;
-			unset($map['keyword']);
+            $where[] = ['subscribe','=',1];
+			$where[] = ['pid','=',0];
+		}else{
+			$where[] = ['','exp',Db::raw("FIND_IN_SET('".$keyword."',keyword)")];
 		}
         $_mkey = $this->mkey.'_'.$keyword;
 		$row = Cache::get($_mkey);
 		if ($row) return $row;
-        $row = $this->where($map)->find();
+        $row = $this->where($where)->find();
 		unset($map);
 		// 调用默认回复
 		if (empty($row) == true){
-			$map['default'] = 1;
-			$map['status'] = 1;
-			$map['pid'] = 0;
-			$row = $this->where($map)->find();
-			unset($map);
+			$where = [];
+			$where[] = ['default','=',1];
+			$where[] = ['status','=',1];
+			$where[] = ['pid','=',0];
+			$row = $this->where($where)->find();
+			
 		}
 		if ($row['type'] == 'text'){
 			$arr['MsgType'] = 'text';
 			$arr['Content'] = $row['data'];
 		}elseif ($row['type'] == 'news'){
 			$arr['MsgType'] = 'news';
-			$mapb['pid'] = $row['id'];
-        	$rows = $this->where($mapb)->select();
+        	$rows = $this->where('pid',$row['id'])->select();
 			if ($rows){ 
 				array_unshift($rows,$row);
 			}else{
 				$rows[] = $row;
 			}
-			//$domain = $this->request->domain();
-			$domain = \Request::instance()->domain();
+			$domain = $this->request->domain();
 			$Articles = array();
 			foreach ($rows as $key=>$row)
 			{
@@ -76,7 +74,7 @@ class WeiXinKeywordsModel extends BaseModel
 						$Articles[$key]['Url'] = $row['data'];
 					break;
 					case 'article':
-						$Articles[$key]['Url'] = $domain .url('Shop/Article/info',array('id'=>$row['ext_id'],'plc_id'=>$plc_arr['plc_id']));
+						$Articles[$key]['Url'] = _url('Shop/Article/info',array('id'=>$row['ext_id'],'plc_id'=>$plc_arr['plc_id']),false,true);
 					break;
 					case 'tel':
 						$Articles[$key]['Url'] = 'tel:'.$row['data'];

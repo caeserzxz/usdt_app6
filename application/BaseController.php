@@ -106,9 +106,7 @@ class BaseController extends Controller
             }
 			elseif ($page_size != $session_page_size) Session::set('page_size',$page_size);
 	    }	
-		if (empty($this->search)){
-			$this->assign('search',$this->search);	
-		}
+		
 		if (is_object($where) == false){//单表查询            
             if (empty($this->sqlOrder)){
                 $sort_by = input("sort_by/s");                
@@ -129,6 +127,9 @@ class BaseController extends Controller
 					$this->sqlOrder = $order_by.' '.$sort_by;
 				}
             }
+			 if (empty($this->sqlOrder)){
+				 $this->sqlOrder = '';
+			 }
 			return $model->getPageList(input("p/d", 1),$where,$field,$page_size,$this->sqlOrder);
 		}else{//联表查询
 			return $model->getJointList(input("p/d", 1),$where,$page_size);
@@ -231,7 +232,7 @@ class BaseController extends Controller
 	/*------------------------------------------------------ */
 	//-- 记录操作日志
 	/*------------------------------------------------------ */
-	public function _Log($edit_id,$log_info,$model = 'sys'){
+	public function _log($edit_id,$log_info,$model = 'sys',$data=''){
 		if ($model == 'member'){
 			$Model = new \app\member\model\LogSysModel();	
 		}else{
@@ -239,10 +240,11 @@ class BaseController extends Controller
 		}		
 		$data['edit_id'] = $edit_id;
 		$data['log_info'] = $log_info;
-		$data['module'] = $this->request->path();
+		$data['module'] = request()->path();
 		$data['log_ip'] = request()->ip();
 		$data['log_time'] = time();
 		$data['user_id'] = AUID;
+		$data['data'] = base64_encode(serialize($data));
 		$Model->save($data);
 		return true;
 	}

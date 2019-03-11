@@ -92,7 +92,9 @@ class AdminController extends BaseController
 		//权限过滤
 	    foreach ($menus as $group => $menu){
 		  foreach ($menu['list'] as $groupb => $menub){
+			  if (empty($menub['submenu'])) continue;
 			  foreach ($menub['submenu'] as  $groupc => $menuc){
+				   if (empty($menuc['submenu'])) continue;
 				  foreach ($menuc['submenu'] as  $groupd => $menud){
 					  if (empty($menud['right'])){
 						  continue;

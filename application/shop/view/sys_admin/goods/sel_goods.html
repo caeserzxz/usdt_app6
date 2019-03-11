@@ -1,14 +1,14 @@
 <script type="text/html" id="selGoods_tpl"> 
 <div class="m-b">
-     <input name="keyword" id="keyword" type="text" class="input-medium valid" placeholder="商品名称/SN" aria-invalid="false">
+     <input id="{{select_type}}_keyword" type="text" class="input-medium valid" placeholder="商品名称/SN" aria-invalid="false">
     
-     <button class="btn btn-default fa fa-search" title="搜索" type="button" onclick="searchGoods()" ></button>
+     <button class="btn btn-default fa fa-search" title="搜索" type="button" onclick="searchGoods('{{select_type}}')" ></button>
  
-      <select name="sel_goods" id="sel_goods" class="m-r" style="width:250px;" data-toggle="select2" >
+      <select id="{{select_type}}_select" class="m-r" style="width:250px;" data-toggle="select2" >
          <option value="">选择商品</option>
       </select>
 
-    <a href="javascript:;" title="增加" class="btn btn-default  fa fa-plus" onclick="selLinkGoods()"></a>
+    <a href="javascript:;" title="增加" class="btn btn-default  fa fa-plus" onclick="selLinkGoods('{{select_type}}')"></a>
 </div>
 
 
@@ -20,41 +20,41 @@
                 <th width="70">操作</th>
             </tr>
         </thead>
-        <tbody id="linkGoodsBox">
-		{{each buy_goods as item index}}
-         <tr id="link_goods_tr_{{item.goods_id}}"><td><input name="link_goods_id[]" type="hidden" value="{{item.goods_id}}" />{{item.goods_sn}}</td><td>{{item.goods_name}}</td><td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods({{item.goods_id}})" ></a></td></tr>
+        <tbody id="{{select_type}}_box">
+		{{each goodsList as item index}}
+         <tr id="{{select_type}}_tr_{{item.goods_id}}"><td><input name="{{select_type}}_id[]" type="hidden" value="{{item.goods_id}}" />{{item.goods_sn}}</td><td>{{item.goods_name}}</td><td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('{{select_type}}',{{item.goods_id}})" ></a></td></tr>
 		 {{/each}}
         </tbody>
     </table>
 </div>   
 </script>
 <script type="text/javascript">
-function searchGoods(){
+function searchGoods(select_type){
 	var arr = new Object();
-	arr.keyword = $('#keyword').val();
+	arr.keyword = $('#'+select_type+'_keyword').val();
 	arr.min_search = 1;
-	$('#sel_goods').html('<option value="">选择商品</option>');
+	$('#'+select_type+'_select').html('<option value="">选择商品</option>');
 	var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
 	$.each(res.list, function(i,value){
-		$('#sel_goods').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+		$('#'+select_type+'_select').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
 	})
 }
-function selLinkGoods(){
-	var goods_id = $('#sel_goods').val();
+function selLinkGoods(select_type){
+	var goods_id = $('#'+select_type+'_select').val();
 	if (goods_id < 1) return false;
 	var isrep = false;
-	$('#linkGoodsBox').find('input').each(function(){
+	$('#'+select_type+'_box').find('input').each(function(){
 		if (goods_id == $(this).val()) return isrep = true;
 	})
 	if (isrep == true) return _alert('列表中已存在相关商品');
-	var goods_name = $('#sel_goods').find("option:selected").text();
-	var goods_sn = $('#sel_goods').find("option:selected").data('goods_sn');
-	$('#linkGoodsBox').append('<tr id="link_goods_tr_'+goods_id+'"><td><input name="link_goods_id[]" type="hidden" value="'+goods_id+'" />'
+	var goods_name = $('#'+select_type+'_select').find("option:selected").text();
+	var goods_sn = $('#'+select_type+'_select').find("option:selected").data('goods_sn');
+	$('#'+select_type+'_box').append('<tr id="'+select_type+'_tr_'+goods_id+'"><td><input name="'+select_type+'_id[]" type="hidden" value="'+goods_id+'" />'
 						+goods_sn+'</td><td>'+goods_name+'</td>'
-						+'<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('+goods_id+')" ></a>'
+						+'<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods(\''+select_type+'\','+goods_id+')" ></a>'
 						+'</td></tr>');
 }
-function delLinkGoods(goods_id){
-	$('#link_goods_tr_'+goods_id).remove();
+function delLinkGoods(select_type,goods_id){
+	$('#'+select_type+'_tr_'+goods_id).remove();
 }
 </script>
