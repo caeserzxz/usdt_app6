@@ -17,26 +17,26 @@
                 <div class="widget-body">
                     <div class="collapse in">
                         	<div class="form-group">
-                                <label class="col-sm-2 control-label" for="plc_name">公众号名称：</label>
+                                <label class="control-label" for="plc_name">公众号名称：</label>
                                 <div class="controls">
                                   <input type="text" name="setting[plc_name]"  class="input-xlarge" data-rule-required="true" value="{$setting.plc_name}">
                                 <span class="maroon">*</span> </div>
                             </div>
                           
                             <div class="form-group">
-                              <label class="col-sm-2 control-label">AppId：</label>
+                              <label class="control-label">AppId：</label>
                               <div class="controls">
                                 <input type="text" name="setting[weixin_appid]"  class="input-xxlarge" data-rule-required="true" value="{$setting.weixin_appid}">
                                 <span class="maroon">*</span> </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-sm-2 control-label">AppSecret：</label>
+                              <label class="control-label">AppSecret：</label>
                               <div class="controls">
                                 <input type="text" name="setting[weixin_appsecret]"  class="input-xxlarge" data-rule-required="true" value="{$setting.weixin_appsecret}">
                                 <span class="maroon">*</span> </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label" for="type">公众号类型：</label>
+                                  <label class="control-label" for="type">公众号类型：</label>
                                   <div class="controls">
                                     <select  name="setting[weixin_type]" class="input-medium" data-nosearch="true" >
                                       <option value="订阅号"  {$setting['weixin_type']=='订阅号'?'selected':''} >订阅号</option>
@@ -45,20 +45,20 @@
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label" for="type">TOKEN：</label>
+                                  <label class="control-label" for="type">TOKEN：</label>
                                   <div class="controls">
                                    <input type="text" name="setting[weixin_token]"  class="input-medium" data-rule-required="true" value="{$setting.weixin_token}">
                                    <span class="maroon">*</span>
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label  class="col-sm-2 control-label" for="type">接口地址：</label>
+                                  <label  class="control-label" for="type">接口地址：</label>
                                   <div class="controls lh30" >
                                    {:_url('weixin/index/index','',false,true)}
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label">公众号二维码：</label>
+                                  <label class="control-label">公众号二维码：</label>
                                   <div class="controls " >
                                      <img class="thumb_img" name="imagefile" src="{$setting.weixin_qrcode}" style="max-height: 100px;" />
                                       <input class="hide" type="text" name="setting[weixin_qrcode]" value="{$setting.weixin_qrcode}" />
@@ -67,7 +67,7 @@
                               </div>
                               <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
 							 <div class="form-group">
-                                   <label class="col-sm-2 control-label"></label>
+                                   <label class="control-label"></label>
                                     <div class="controls"> 
                                         <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
                                         <button type="button" class="btn btn-default" data-toggle="back">取消</button>
