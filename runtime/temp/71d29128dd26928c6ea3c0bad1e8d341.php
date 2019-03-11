@@ -1,4 +1,4 @@
-<?php /*a:4:{s:75:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\index.html";i:1550453182;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:74:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\list.html";i:1549953096;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:4:{s:75:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\index.html";i:1551662306;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:74:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\list.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -180,6 +180,7 @@ $(function () {
                     <strong><?php echo $is_cancel==true ? '订单回收列表' : '订单列表'; ?></strong>
                 </li>                                  
             </ul>
+          <?php if($is_cancel != true): ?>  
          <select name="state" style="width: 100px;" data-toggle="select2"  data-chang="submit">
              <option value="0" <?php echo $search['state']==0 ? 'selected' : ''; ?> >全部订单</option>
              <option value="1" <?php echo $search['state']==1 ? 'selected' : ''; ?> >待确认</option>
@@ -188,8 +189,10 @@ $(function () {
              <option value="4" <?php echo $search['state']==4 ? 'selected' : ''; ?> >已发货</option>
              <option value="5" <?php echo $search['state']==5 ? 'selected' : ''; ?> >已签收</option>
              <option value="6" <?php echo $search['state']==6 ? 'selected' : ''; ?> >已退货</option>
+             <option value="7" <?php echo $search['state']==7 ? 'selected' : ''; ?> >待退款</option>
+             <option value="8" <?php echo $search['state']==8 ? 'selected' : ''; ?> >已退款</option>
          </select>
-
+		<?php endif; ?>
            <div class="form-group">
                 <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
                     <i class="fa fa-calendar fa-lg"></i>
@@ -252,9 +255,7 @@ $(function () {
                         x <?php echo htmlentities($grow['goods_number']); ?>
                     </div>
                     <div class="media-body">
-                        <div style="color:#999;">
-             
-                        <a href="<?php echo url('info',array('id'=>$vo['order_id'])); ?>"><?php echo htmlentities($grow['goods_name']); ?> </a><?php echo htmlentities($grow['sku_name']); ?></div>
+                        <div style="color:#999;"><?php echo htmlentities($grow['goods_name']); ?> <?php echo htmlentities($grow['sku_name']); ?></div>
                         <small class="text-muted">单价： <?php echo htmlentities(priceFormat($grow['goods_price'])); ?><span class="m-l-xs"></span></small>
                     </div>
                 </div>
@@ -264,7 +265,7 @@ $(function () {
     </td>
     <td>
         <p class=" m-b-xs">
-             <?php echo htmlentities(priceFormat($vo['order_amount'])); if($a['ostatus'] != '待发货'): ?>
+             <?php echo htmlentities(priceFormat($vo['order_amount'])); if($vo['ostatus'] == '待付款'): ?>
             <a href="javascript:;" data-remote="<?php echo url('changePrice',array('id'=>$vo['order_id'])); ?>" data-toggle="ajaxModal" class="m-xs" >
                 <i class="fa fa-edit text-muted"></i>
             </a>
@@ -273,14 +274,14 @@ $(function () {
         <small class="text-muted">[含运费: <?php echo htmlentities($vo['shipping_fee']); ?>]</small>
     </td>
     <td>
-         <?php echo htmlentities($vo['consignee']); ?><p><?php echo htmlentities($vo['user_id']); ?></p>
+         <?php echo htmlentities($vo['consignee']); ?><p>会员ID：<?php echo htmlentities($vo['user_id']); ?></p>
          </td>
     <td><?php echo htmlentities($vo['pay_name']); ?></td>
 
     <td>
         <p><p> <?php echo $orderLang['os'][$vo['order_status']]; ?></p><p><?php echo $orderLang['ps'][$vo['pay_status']]; ?></p></p>
         <p>
-           <?php echo $orderLang['ss'][$vo['shipping_status']]; if($a['ostatus'] == '待发货'): ?>
+           <?php echo $orderLang['ss'][$vo['shipping_status']]; if($vo['ostatus'] == '待发货'): ?>
             <a href="javascript:;" data-remote="<?php echo url('shipping',array('id'=>$vo['order_id'])); ?>" data-toggle="ajaxModal" class="m-xs" title="发货">
                 <i class="fa fa-truck text-muted"></i>
             </a>

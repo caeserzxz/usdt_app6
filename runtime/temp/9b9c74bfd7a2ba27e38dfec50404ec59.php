@@ -1,4 +1,4 @@
-<?php /*a:3:{s:72:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\setting\index.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\article\info.html";i:1549953095;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -170,112 +170,112 @@ $(function () {
     <div class="tpl-content-wrapper <?= empty($second) ? 'no-sidebar-second' : '' ?>" >
     	<section class="vbox">
         	
+
 <header class="header  b-b clearfix">
-     <div class="page-breadcrumbs">
-            <ul class="breadcrumb" >
-                <li>
-                    <i class="fa fa-ellipsis-v"></i>
-                    <strong>基本信息</strong>
-                </li>                                  
-            </ul>
+   <div class="page-breadcrumbs">
+          <ul class="breadcrumb">
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>编辑文章</strong>
+              </li>                                  
+          </ul>
       </div>
 </header>
+
 <section class="scrollable  wrapper">
+<form class="form-horizontal form-validate" method="post" action="<?php echo url('info'); ?>" style="padding:0;">
       <section class="panel panel-default">
-                <div class="widget-body">
-                    <div class="collapse in">
-                        <form class="form-horizontal form-validate" method="post" action="<?php echo url('save'); ?>">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" >网站名称：</label>
-                                <div class="controls col-sm-4 ">
-                                  <input type="text" name="setting[shop_title]"  class="input-max" data-rule-required="true" value="<?php echo htmlentities($setting['shop_title']); ?>">
-                                 </div>
-                            </div>
-                          
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">LOGO：</label>
-                              <div class="controls col-sm-6">
-                                  <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                  <img class="thumb_img" src="<?php echo htmlentities($setting['logo']); ?>" style="max-height: 100px;" /><br>
-                                  <input class="hide" type="text" name="setting[logo]" value="<?php echo htmlentities($setting['logo']); ?>" />
-                                  <button class="btn btn-default" type="button" data-toggle="selectimg">选择logo</button>
-                                  
-                              </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">版权：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[copyright]" value="<?php echo htmlentities($setting['copyright']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">备案编号：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[ipc_no]" value="<?php echo htmlentities($setting['ipc_no']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">联系电话：</label>
-                                  <div class="controls ">
-                                      <input type="text" data-rule-maxlength="15" class="input-max" name="setting[tel]" value="<?php echo htmlentities($setting['tel']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">公司地址：</label>
-                                  <div class="controls col-sm-6 ">
-                                      <input type="text" class="input-max" name="setting[address]" value="<?php echo htmlentities($setting['address']); ?>" /> 
-                                  </div>
-                            </div>
-                           
-                              <div class="line line-dashed line-lg pull-in"></div>
-                              <div class="form-group">
-                                  <label class="col-sm-2 control-label">默认关键字：</label>
-                                  <div class="controls col-xs-7 " >
-                                      <input type="text" class="input-max" data-rule-maxlength="200" name="setting[keywords]" value="<?php echo htmlentities($setting['keywords']); ?>" >
-                                   <span class="help-inline">用空格分隔</span></div>
-                                 
-                              </div>
-                              <div class="form-group">
-                                    <label class="col-sm-2 control-label">默认简单描述：</label>
-                                    <div class="controls col-xs-7">
-                                      <textarea name="setting[description]" class="input-max" style="height:100px;"><?php echo htmlentities($setting['description']); ?></textarea>
-                                    </div>
-                              </div>
-                                <div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开启公告：</label>
-                                        <div class="controls">
-                                           <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="0" id="status0" class="js_undertake" type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=0','checked',true)); ?>>关闭
-                                          </label>
-                                          <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="1" id="status1" class="js_undertake " type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=1','checked')); ?>>
-                                              开启
-                                          </label>
-                                        </div>
-                                        <div class="clearfix"></div>
-                              </div>
+          <header class="panel-heading bg-light">
+              基本信息
+          </header>
+          <div class="panel-body">  
+              <div class="form-group">
+                  <label class="control-label">文章分组</label>
+                  <div class="controls w250 must">
+                     <select class="wb80 " name="cid" data-maxcount="3" data-msg-required="请选择文章分组" data-toggle="select2" data-placeholder="请选择文章分组" data-width="999px">
+                       <option value=""></option>
+                       
+                         <?php echo $cg_opt; ?>
+                                                      
+                      </select>
+                  </div>
+                 
+              </div>
 
-                              <div class="form-group publicnote_status">
-                                  <label class="col-sm-2 control-label">公告：</label>
-                                  <div class="controls " style="padding-left:0px;">
-                                      <textarea rows="5" class="input-xxlarge hd"  data-toggle="kindeditor" data-config="simple" data-kdheight="150" data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d name="setting[bulletin]" style="visibility:hidden;"><?php echo htmlentities($setting['bulletin']); ?></textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
-                                  </div>
-                              </div>
-                         	<div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+            
+        <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">文章标题</label>
+                  <div class="controls" >
+                      <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="<?php echo htmlentities($row['title']); ?>" >
+                  </div>
+              </div>
+            
+           <div class="form-group">
+                  <label class="control-label">标题图片</label>
+                  <div class="col-sm-8 must" >
+                     <img class="thumb_img" name="imagefile" src="<?php echo htmlentities($row['img_url']); ?>" style="max-height: 100px;" />
+                      <input class="hide" type="text" name="img_url" value="<?php echo htmlentities($row['img_url']); ?>" />
+                      <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                  </div>
+              </div>
+            
+             
+          
 
-                             <div class="form-group">
-                                   <label class="col-sm-2 control-label"></label>
-                                    <div class="controls"> 
-                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                                    </div>
-                             </div>
-                        </form>
-                        
-                    </div>
-                </div>     
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">文章内容</label>
+                  <div class="controls wb80">
+                      <textarea rows="13" class="hd" data-toggle="kindeditor"  data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[1,50000]" data-rule-required="true" data-msg-required="文章内容不能为空"  name="content" style="visibility:hidden;"><?php echo htmlentities($row['content']); ?></textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+
+                  </div>
+              </div>
+           </div>
       </section>
+    
+
+      <section class="panel panel-default">
+          <header class="panel-heading bg-light">
+              其他信息
+          </header>
+         
+             <div class="line line-dashed line-lg pull-in"></div>
+             <div class="form-group">
+                  <div class="controls" >
+                  <label class="control-label">关键字</label>
+                     <input type="text" class="input-xlarge"  name="keywords" value="<?php echo htmlentities($row['keywords']); ?>" >
+                   <span class="help-inline">填写用空格分开</span>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">文章简介</label>
+                  <div class="controls" >
+                      <textarea name="description"  class="input-xxlarge" ><?php echo htmlentities($row['description']); ?></textarea>
+                  </div>
+              </div>
+             <div class="form-group">
+                  <label class="control-label">发布时间</label>
+                  <div class="input-group w150" > <input type="text" class="input-medium" name="add_time" value="<?php echo htmlentities(dateTpl($row['add_time'])); ?>" id="solddate" data-after="#groundingdate" data-offsetday="0" readonly="readonly" data-toggle="datetimepicker" data-position="top-right"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+                 
+              </div>
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <div class="col-sm-4 col-sm-offset-2">
+                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                  </div>
+              </div>
+          </div>
+
+      </section>
+
+	<input name="id" type="hidden" value="<?php echo htmlentities(intval($row['id'])); ?>">
+</form>
 </section>
+
+   
 
             <?php if(!(empty($data['page_size']) || (($data['page_size'] instanceof \think\Collection || $data['page_size'] instanceof \think\Paginator ) && $data['page_size']->isEmpty()))): ?>
 <footer class="footer bg-white b-t">

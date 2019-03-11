@@ -1,4 +1,4 @@
-<?php /*a:3:{s:77:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html";i:1549953096;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:77:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html";i:1551662306;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -226,7 +226,7 @@ $(function () {
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group hide">
                                 <label class="col-sm-2 control-label">开放商品问答：</label>
                                 <div class="controls">
                                     <label class="radio-inline">
@@ -240,26 +240,26 @@ $(function () {
                              <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >下单未支付超时取消：</label>
+                                <label class="col-sm-2 control-label" >超时取消：</label>
                                 <div class="controls">
                                   	<select name="shop_order_auto_cancel"  style="width:200px;">
                                     	<option value="0" <?php echo $setting['shop_order_auto_cancel']==0 ? 'selected' : ''; ?>>不执行自动取消</option>
                                     	<option value="15" <?php echo $setting['shop_order_auto_cancel']==15 ? 'selected' : ''; ?>>15 分钟</option>
                                         <option value="30" <?php echo $setting['shop_order_auto_cancel']==30 ? 'selected' : ''; ?>>30 分钟</option>
-                                        <?php $__FOR_START_10998__=1;$__FOR_END_10998__=24;for($time=$__FOR_START_10998__;$time < $__FOR_END_10998__;$time+=1){ ?>
+                                        <?php $__FOR_START_17099__=1;$__FOR_END_17099__=24;for($time=$__FOR_START_17099__;$time < $__FOR_END_17099__;$time+=1){ ?>
                                          <option value="<?php echo htmlentities($time * 60); ?>" <?php echo $setting['shop_order_auto_cancel']==$time * 60 ? 'selected' : ''; ?>><?php echo htmlentities($time); ?> 小时</option>
                                       	<?php } ?>
                                   </select> <span class="help-line">下单成功后超过指定时间未支付自动取消订单</span>
                                  </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >发货后多少天自动收货：</label>
+                                <label class="col-sm-2 control-label" >自动签收：</label>
                                 <div class="controls">
-                                  	<select name="shop_auto_sign_limit"  style="width:80px;">
-                                      <?php $__FOR_START_15901__=1;$__FOR_END_15901__=31;for($day=$__FOR_START_15901__;$day < $__FOR_END_15901__;$day+=1){ ?>
+                                  	<select name="shop_auto_sign_limit"  >
+                                      <?php $__FOR_START_18001__=1;$__FOR_END_18001__=31;for($day=$__FOR_START_18001__;$day < $__FOR_END_18001__;$day+=1){ ?>
                                          <option value="<?php echo htmlentities($day); ?>" <?php echo $setting['shop_auto_sign_limit']==$day ? 'selected' : ''; ?>><?php echo htmlentities($day); ?> 天</option>
                                       <?php } ?>
-                                  </select> <span class="help-line">发货后多少天自动收货</span>
+                                  </select> <span class="help-line">发货多少天后订单自动签收</span>
                                  </div>
                             </div>
                             <div class="form-group">
@@ -274,10 +274,11 @@ $(function () {
                                 </div>
                              </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" >多少天内可申请售后：</label>
+                                <label class="col-sm-2 control-label" >申请售后：</label>
                                 <div class="controls">
-                                  	<select name="shop_after_sale_limit"  style="width:80px;">
-                                      <?php $__FOR_START_1799__=1;$__FOR_END_1799__=31;for($day=$__FOR_START_1799__;$day < $__FOR_END_1799__;$day+=1){ ?>
+                                  	<select name="shop_after_sale_limit"  class="input-max">
+                                      <option value="0" <?php echo $setting['shop_after_sale_limit']==0 ? 'selected' : ''; ?>>不启用售后功能</option>
+                                      <?php $__FOR_START_5777__=1;$__FOR_END_5777__=31;for($day=$__FOR_START_5777__;$day < $__FOR_END_5777__;$day+=1){ ?>
                                          <option value="<?php echo htmlentities($day); ?>" <?php echo $setting['shop_after_sale_limit']==$day ? 'selected' : ''; ?>><?php echo htmlentities($day); ?> 天</option>
                                       <?php } ?>
                                   </select> <span class="help-line">签收后多少天内可申请售后</span>

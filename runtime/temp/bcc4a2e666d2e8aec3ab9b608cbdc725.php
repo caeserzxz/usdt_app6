@@ -101,7 +101,7 @@
                         <ul class="list-unstyled select-themes" style="margin-left:15px; margin-top:5px;">
                              <li class="clearfix">
                                   <dl class=" list-unstyled list-inline ">
-                                   <?php $__FOR_START_24410__=1;$__FOR_END_24410__=11;for($i=$__FOR_START_24410__;$i < $__FOR_END_24410__;$i+=1){ ?>
+                                   <?php $__FOR_START_31092__=1;$__FOR_END_31092__=11;for($i=$__FOR_START_31092__;$i < $__FOR_END_31092__;$i+=1){ ?>
                                          <dd class="theme-item <?php echo $theme['select_theme']==$i ? 'active' : ''; ?>" data-code="<?php echo htmlentities($theme['theme_type']); ?>-<?php echo $i<10 ? '0' : ''; ?><?php echo htmlentities($i); ?>" data-id="<?php echo htmlentities($i); ?>">
                                                 <div class="color-box <?php echo htmlentities($theme['theme_type']); ?>-<?php echo $i<10 ? '0' : ''; ?><?php echo htmlentities($i); ?>"></div>
                                          </dd>

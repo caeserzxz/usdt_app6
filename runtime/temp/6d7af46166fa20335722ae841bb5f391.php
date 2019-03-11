@@ -1,4 +1,4 @@
-<?php /*a:3:{s:79:"D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\setting\index.html";i:1549953096;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:79:"D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\setting\index.html";i:1552290859;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -187,26 +187,26 @@ $(function () {
                 <div class="widget-body">
                     <div class="collapse in">
                         	<div class="form-group">
-                                <label class="col-sm-2 control-label" for="plc_name">公众号名称：</label>
+                                <label class="control-label" for="plc_name">公众号名称：</label>
                                 <div class="controls">
                                   <input type="text" name="setting[plc_name]"  class="input-xlarge" data-rule-required="true" value="<?php echo htmlentities($setting['plc_name']); ?>">
                                 <span class="maroon">*</span> </div>
                             </div>
                           
                             <div class="form-group">
-                              <label class="col-sm-2 control-label">AppId：</label>
+                              <label class="control-label">AppId：</label>
                               <div class="controls">
                                 <input type="text" name="setting[weixin_appid]"  class="input-xxlarge" data-rule-required="true" value="<?php echo htmlentities($setting['weixin_appid']); ?>">
                                 <span class="maroon">*</span> </div>
                             </div>
                             <div class="form-group">
-                              <label class="col-sm-2 control-label">AppSecret：</label>
+                              <label class="control-label">AppSecret：</label>
                               <div class="controls">
                                 <input type="text" name="setting[weixin_appsecret]"  class="input-xxlarge" data-rule-required="true" value="<?php echo htmlentities($setting['weixin_appsecret']); ?>">
                                 <span class="maroon">*</span> </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label" for="type">公众号类型：</label>
+                                  <label class="control-label" for="type">公众号类型：</label>
                                   <div class="controls">
                                     <select  name="setting[weixin_type]" class="input-medium" data-nosearch="true" >
                                       <option value="订阅号"  <?php echo $setting['weixin_type']=='订阅号' ? 'selected' : ''; ?> >订阅号</option>
@@ -215,20 +215,20 @@ $(function () {
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label" for="type">TOKEN：</label>
+                                  <label class="control-label" for="type">TOKEN：</label>
                                   <div class="controls">
                                    <input type="text" name="setting[weixin_token]"  class="input-medium" data-rule-required="true" value="<?php echo htmlentities($setting['weixin_token']); ?>">
                                    <span class="maroon">*</span>
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label  class="col-sm-2 control-label" for="type">接口地址：</label>
+                                  <label  class="control-label" for="type">接口地址：</label>
                                   <div class="controls lh30" >
-                                   <?php echo htmlentities($domain); ?><?php echo url('weixin/index/index'); ?>
+                                   <?php echo _url('weixin/index/index','',false,true); ?>
                                   </div>
                             </div>
                             <div class="form-group">
-                                  <label class="col-sm-2 control-label">公众号二维码：</label>
+                                  <label class="control-label">公众号二维码：</label>
                                   <div class="controls " >
                                      <img class="thumb_img" name="imagefile" src="<?php echo htmlentities($setting['weixin_qrcode']); ?>" style="max-height: 100px;" />
                                       <input class="hide" type="text" name="setting[weixin_qrcode]" value="<?php echo htmlentities($setting['weixin_qrcode']); ?>" />
@@ -237,7 +237,7 @@ $(function () {
                               </div>
                               <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
 							 <div class="form-group">
-                                   <label class="col-sm-2 control-label"></label>
+                                   <label class="control-label"></label>
                                     <div class="controls"> 
                                         <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
                                         <button type="button" class="btn btn-default" data-toggle="back">取消</button>

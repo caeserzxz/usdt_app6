@@ -1,4 +1,4 @@
-<?php /*a:3:{s:74:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\admin_user\info.html";i:1551315553;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:81:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\article_category\index.html";i:1549953095;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -66,6 +66,8 @@ $(function () {
 });
     </script>    
     
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
 </head>
   
 
@@ -176,127 +178,89 @@ $(function () {
             <ul class="breadcrumb">
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
-                    <strong>帐号管理</strong>
+                    <strong>分组管理</strong>&nbsp; <small>拖拽后保存生效</small>
                 </li>                                  
             </ul>
-           
         </div>
 </header>
+
 <section class="scrollable  wrapper">
- <form class="form-horizontal form-validate" method="post" action="<?php echo url('info'); ?>" style="padding:0;">
-        <section class="panel panel-default">
-          
-            <div class="panel-body">  
-             <div class="form-group">
-                    <label class="control-label">角色</label>
-                    <div class="controls" >
-                        <select name="role_id"  data-rule-required="true">
-                            <option value="0">选择帐号角色</option>
-                            <?php echo $roleOpt; ?>
-                        </select>
-                        
-                    </div>
-              </div>
-               <?php if($row['user_id'] > '0'): ?>
-                    <div class="form-group">
-                        <label class="control-label">帐号</label>
-                        <div class="controls ">
-                            <span class="help-inline"><strong><?php echo htmlentities($row['user_name']); ?></strong></span>
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label class="control-label">真实姓名</label>
-                        <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="real_name" value="<?php echo htmlentities($row['real_name']); ?>" ><span class="maroon">*</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">手机号码</label>
-                        <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="11" name="moblie" value="<?php echo htmlentities($row['moblie']); ?>" >
-                        <span >不填写，一旦开启后台登陆短信验证，则无法登陆</span>
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label class="control-label">状态：</label>
-                        <div class="controls">
-                                 <label class="radio-inline">
-                                    <input name="status" value="0" id="status" class="js_undertake" type="radio" >封禁
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="status" value="1" id="status" class="js_undertake " type="radio" <?php echo $row['status']==1 ? 'checked' : ''; ?>>
-                                    正常
-                                </label>
-                        </div>
-                       <div class="clearfix"></div>
-                </div>
-                    <div class="form-group">
-                     <label class="control-label" for="new_password">设置密码</label>
-                            <div class="controls">
-                                <input name="new_password" class="input-max" id="new_password"  data-rule-rangelength="[6,16]" type="password">
-                                <span class="maroon">*</span><span >长度为6~16位字符</span>
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <a href="javascript:;" data-remote="<?php echo url('info'); ?>" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加分类</a>
+            <button id="nestableMenu" class="btn btn-sm btn-default " data-toggle="class:show">
+                <span class="text-active">展开全部</span>
+                <span class="text">折叠全部</span>
+            </button>
+
+
+        </header>
+        <div class="panel-body">
+
+
+            <div class="col-sm-12">
+
+                <div class="dd" id="dragClassify" data-toggle="nestable">
+                    <ol class="dd-list">
+
+                    <?php if(is_array($list[0]) || $list[0] instanceof \think\Collection || $list[0] instanceof \think\Paginator): $i = 0; $__LIST__ = $list[0];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                        <li class="dd-item" data-id="<?php echo htmlentities($vo['id']); ?>">
+                            <div class="dd-handle">
+                                <img src="<?php echo htmlentities((isset($vo['pic']) && ($vo['pic'] !== '')?$vo['pic']:'/static/main/img/def_img.jpg')); ?>" style="width:25px; height:18px;" /> <?php echo htmlentities($vo['name']); ?>
+                                <span class="pull-right">
+                                    <a href="<?php echo url('info',array('id'=>$vo['id'])); ?>" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                    <a href="<?php echo url('info',array('pid'=>$vo['id'])); ?>" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
+                                    <a href="<?php echo url('del',array('id'=>$vo['id'])); ?>" data-toggle="ajaxRemove" data-msg="确定删除  <?php echo htmlentities($vo['name']); ?>分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+                                </span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="repassword">确认密码</label>
-                            <div class="controls">
-                                <input name="repassword" class="input-max" id="repassword" data-rule-equalto="#new_password" type="password">
-                             <span class="maroon">*</span>
-                            </div>
-                        </div>
-               <?php else: ?>
-                    
-                    <div class="form-group">
-                        <label class="control-label">帐号</label>
-                        <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="帐号不能为空" name="user_name" value="" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">手机号码</label>
-                        <div class="controls " >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="moblie" value="" >
-                        
-                        </div><span class="help-inline">不填写，一旦开启后台短信验证，则无法登陆</span>
-                    </div>
-                     <div class="form-group">
-                        <label class="control-label">真实姓名</label>
-                        <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="real_name" value="" >
-                        </div><span class="maroon">*</span>
-                    </div>
-                  <div class="form-group">
-                            <label class="control-label" for="new_password">设置密码</label>
-                            <div class="controls">
-                                <input name="new_password" class="input-max" id="new_password" data-rule-required="true" data-rule-rangelength="[6,16]" type="password">
-                                
-                            </div><span class="maroon ">*</span><span class="help-inline">长度为6~16位字符</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="repassword">确认密码</label>
-                            <div class="controls">
-                                <input name="repassword" class="input-max" id="repassword" data-rule-required="true" data-rule-equalto="#new_password" type="password">
-                            
-                            </div> <span class="maroon">*</span>
-                        </div>
-             <?php endif; ?>
-                <div class="line line-dashed line-lg pull-in"></div>
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                    </div>
+                        <?php if(!(empty($list[$vo['id']]) || (($list[$vo['id']] instanceof \think\Collection || $list[$vo['id']] instanceof \think\Paginator ) && $list[$vo['id']]->isEmpty()))): ?>  
+                            <ol class="dd-list">
+                            <?php if(is_array($list[$vo['id']]) || $list[$vo['id']] instanceof \think\Collection || $list[$vo['id']] instanceof \think\Paginator): $i = 0; $__LIST__ = $list[$vo['id']];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$co): $mod = ($i % 2 );++$i;?>
+                                    <li class="dd-item" data-id="<?php echo htmlentities($co['id']); ?>">
+                                        <div class="dd-handle">
+                                            <img src="<?php echo htmlentities((isset($co['pic']) && ($co['pic'] !== '')?$co['pic']:'/static/main/img/def_img.jpg')); ?>" style="width:25px; height:18px;" /> <?php echo htmlentities($co['name']); ?>
+                                            <span class="pull-right">
+                                                <a href="<?php echo url('info',array('id'=>$co['id'])); ?>" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a> <a href="<?php echo url('info',array('pid'=>$co['id'])); ?>" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
+                                                <a href="<?php echo url('del',array('id'=>$co['id'])); ?>" data-toggle="ajaxRemove" data-msg="确定删除<?php echo htmlentities($co['name']); ?>分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+                                            </span>
+                                        </div>
+                                            <?php if(!(empty($list[$co['id']]) || (($list[$co['id']] instanceof \think\Collection || $list[$co['id']] instanceof \think\Paginator ) && $list[$co['id']]->isEmpty()))): ?> 
+                                            <ol class="dd-list">
+                                                  <?php if(is_array($list[$co['id']]) || $list[$co['id']] instanceof \think\Collection || $list[$co['id']] instanceof \think\Paginator): $i = 0; $__LIST__ = $list[$co['id']];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$eo): $mod = ($i % 2 );++$i;?>
+                                                      <li class="dd-item" data-id="<?php echo htmlentities($eo['id']); ?>">
+                                                          <div class="dd-handle">
+                                                              <img src="<?php echo htmlentities((isset($eo['pic']) && ($eo['pic'] !== '')?$eo['pic']:'/static/main/img/def_img.jpg')); ?>" style="width:25px; height:18px;"/> <?php echo htmlentities($eo['name']); ?>
+                                                              <span class="pull-right">
+                                                          <a href="<?php echo url('info',array('id'=>$eo['id'])); ?>" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                                          <a href="<?php echo url('del',array('id'=>$eo['id'])); ?>" data-toggle="ajaxRemove" data-msg="确定删除<?php echo htmlentities($co['name']); ?>分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+                                                              </span>
+                                                          </div>
+                                                      </li>    
+                                                  <?php endforeach; endif; else: echo "" ;endif; ?>
+                                             </ol>
+                                         <?php endif; ?>
+                                    </li> 
+                             <?php endforeach; endif; else: echo "" ;endif; ?>  
+                         </ol>
+                        <?php endif; endforeach; endif; else: echo "" ;endif; ?>  
+                      
+                    </ol>
                 </div>
+
+                <div class="<?=empty($list)?'':'hide'?>" id="noClassify">
+                    暂无分类 ...
+                </div>
+
             </div>
 
-        </section>
 
-        <input name="user_id" type="hidden" value="<?php echo htmlentities(intval($row['user_id'])); ?>">
-
-    </form>
+        </div>
+        <footer class="panel-footer">
+            <button type="submit" class="btn btn-primary" data-loading-text="保存中..." data-remote="<?php echo url('saveSort'); ?>" id="save_class">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </footer>
+    </section>
 </section>
-
-   
 
             <?php if(!(empty($data['page_size']) || (($data['page_size'] instanceof \think\Collection || $data['page_size'] instanceof \think\Paginator ) && $data['page_size']->isEmpty()))): ?>
 <footer class="footer bg-white b-t">
@@ -347,6 +311,10 @@ $(function () {
 <script src="/static/assets/seajs_config.js"></script>
 <script type="text/javascript">
 	seajs.use("dist/application/app.js");	
+</script>
+
+<script type="text/javascript">
+		seajs.use("dist/goods/init.js")
 </script>
 
 </body>

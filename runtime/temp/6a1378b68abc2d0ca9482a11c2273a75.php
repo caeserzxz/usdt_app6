@@ -1,16 +1,20 @@
-<?php /*a:1:{s:87:"D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\reply_text\search_box.html";i:1549953096;}*/ ?>
+<?php /*a:1:{s:77:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\article\search_box.html";i:1549953095;}*/ ?>
 <div class="modal-dialog">
     <div class="modal-content">
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="icon-table"></i>选择关键字</h4>
+            <h4 class="modal-title"><i class="icon-table"></i>选择文章</h4>
         </div>
       
         <div class="modal-body" style="padding-bottom:0px;">
            <form class="form-horizontal form-validate form-modal" method="post" id="search_form" >
-            <div class="row-fluid">              
-                 关键字：<input name="keyword" id="keyword" type="text" class="input-medium" placeholder="请输入关键字" />
+            <div class="row-fluid">
+               <select name="cid"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选">
+                          <option value="">所有分类</option>
+                          <?php echo $cgOpt; ?>
+                  </select> 
+                 文章标题：<input name="keyword" id="keyword" type="text" class="input-medium" placeholder="输入文章标题进行查找" />
                 <button type="button" class="btn "onclick="evalList()" ><strong>查找</strong></button>
             </div>
             </form>
@@ -27,7 +31,7 @@
                        <thead>
                               <tr>
                                  <th width="80">ID</th>
-                                 <th >关键字</th>
+                                 <th >文章标题</th>
                               </tr>
                           </thead>
                       <tbody  id="data_list">
@@ -67,7 +71,7 @@
 	  $('#_nowPage').html(res.page);
 	  $('#_totalPages').html(res.page_count);
 	  $.each(res.list,function(key,val){ key
-		   $('#data_list').append('<tr onclick="selTr(this,'+val.id+',\''+val.keyword+'\')" ><td>'+val.id+'</td><td>'+val.keyword+'</td></tr>');
+		   $('#data_list').append('<tr onclick="selTr(this,'+val.id+',\''+val.title+'\')" ><td>'+val.id+'</td><td>'+val.title+'</td></tr>');
 	  })	
 	}
 	function selTr(obj,id,title){

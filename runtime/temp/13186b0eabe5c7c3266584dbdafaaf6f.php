@@ -1,4 +1,4 @@
-<?php /*a:3:{s:41:"../template/default/shop\index\index.html";i:1551229709;s:37:"../template/default/layouts\base.html";i:1551315553;s:39:"../template/default/layouts\bottom.html";i:1551092090;}*/ ?>
+<?php /*a:3:{s:41:"../template/default/shop\index\index.html";i:1552272354;s:37:"../template/default/layouts\base.html";i:1551315553;s:39:"../template/default/layouts\bottom.html";i:1551092090;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
   <head>
@@ -60,7 +60,7 @@
           </div>
         </div>
         <!-- 秒杀 -->
-        <div class="seckill">
+        <div class="seckill" style="display:none;">
             <div class="title">
               <div class="left"><p class="fs36 color_3 fw_b">今日秒杀</p><div class="time"><div>00</div><span>:</span><div>30</div><span>:</span><div>10</div></div></div>
               <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="/static/mobile/default/images/rightIcon.png" alt=""></a>    

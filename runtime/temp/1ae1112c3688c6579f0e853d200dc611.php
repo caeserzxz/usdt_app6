@@ -1,5 +1,6 @@
+<?php /*a:1:{s:78:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\shipping.html";i:1552300466;}*/ ?>
 <!DOCTYPE html>
-<form class="form-horizontal form-validate form-modal" method="post" action="{:url('shipping')}">
+<form class="form-horizontal form-validate form-modal" method="post" action="<?php echo url('shipping'); ?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,9 +9,9 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning m-b">
-                    <p>订单编号：<span class="m-l-xs">{$orderInfo.order_sn}</span></p>
-                    <p>下单时间：<span class="m-l-xs">{$orderInfo.add_time|dateTpl}</span></p>
-                    <p>收货信息：<span class="m-l-xs">{$orderInfo.consignee},{$orderInfo.mobile},{$orderInfo.merger_name} {$orderInfo.address}</span></p>
+                    <p>订单编号：<span class="m-l-xs"><?php echo htmlentities($orderInfo['order_sn']); ?></span></p>
+                    <p>下单时间：<span class="m-l-xs"><?php echo htmlentities(dateTpl($orderInfo['add_time'])); ?></span></p>
+                    <p>收货信息：<span class="m-l-xs"><?php echo htmlentities($orderInfo['consignee']); ?>,<?php echo htmlentities($orderInfo['mobile']); ?>,<?php echo htmlentities($orderInfo['merger_name']); ?> <?php echo htmlentities($orderInfo['address']); ?></span></p>
                 </div>
                 <div class="bs-example bs-example-tabs">
                     <ul id="myTab" class="nav nav-tabs">
@@ -26,14 +27,14 @@
                                 <div class="col-sm-6 must">
                                     <select class="input-xlarge" name="shipping_id">
                                         <option value="">请选择快递</option>
-                                        {$shippingOpt|raw}
+                                        <?php echo $shippingOpt; ?>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">快递单号</label>
                                 <div class="col-sm-6 must">
-                                    <input type="text" class="input-xlarge" placeholder="请输入快递单号" name="invoice_no" value="{$orderInfo.invoice_no}" />
+                                    <input type="text" class="input-xlarge" placeholder="请输入快递单号" name="invoice_no" value="<?php echo htmlentities($orderInfo['invoice_no']); ?>" />
                                 </div>
                             </div>
                         </div>
@@ -44,7 +45,7 @@
                                 <div class="col-sm-6 must">
                                     <select class="input-xlarge" name="kdn_shipping_id">
                                         <option value="">请选择快递</option>
-                                        {$kdnpingopt|raw}
+                                        <?php echo $kdnpingopt; ?>
                                     </select>
                                 </div>
                             </div>
@@ -59,7 +60,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="hidden" value="{$orderInfo.order_id}" name="id" />
+                <input type="hidden" value="<?php echo htmlentities($orderInfo['order_id']); ?>" name="id" />
                 <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>

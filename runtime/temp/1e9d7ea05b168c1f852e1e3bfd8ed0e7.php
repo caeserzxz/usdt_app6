@@ -1,4 +1,4 @@
-<?php /*a:3:{s:72:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\setting\index.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:78:"D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\msg_tpl\info.html";i:1549953096;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -66,6 +66,10 @@ $(function () {
 });
     </script>    
     
+<link href="/static/js/colorpicker/bootstrap-colorpicker.css" rel="stylesheet" />
+<script type="text/javascript" src="/static/js/colorpicker/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="/static/js/clipboard.min.js"></script>
+
 </head>
   
 
@@ -83,7 +87,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -171,111 +175,177 @@ $(function () {
     	<section class="vbox">
         	
 <header class="header  b-b clearfix">
+     
      <div class="page-breadcrumbs">
             <ul class="breadcrumb" >
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
-                    <strong>基本信息</strong>
+                    <strong>编缉短信模板</strong>
                 </li>                                  
             </ul>
+           
       </div>
+   
 </header>
-<section class="scrollable  wrapper">
-      <section class="panel panel-default">
-                <div class="widget-body">
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+<form class="form-horizontal form-validate form-modal" method="post" action="<?php echo url('info'); ?>">
+<div class="widget-body">
                     <div class="collapse in">
-                        <form class="form-horizontal form-validate" method="post" action="<?php echo url('save'); ?>">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" >网站名称：</label>
-                                <div class="controls col-sm-4 ">
-                                  <input type="text" name="setting[shop_title]"  class="input-max" data-rule-required="true" value="<?php echo htmlentities($setting['shop_title']); ?>">
-                                 </div>
-                            </div>
-                          
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">LOGO：</label>
-                              <div class="controls col-sm-6">
-                                  <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                  <img class="thumb_img" src="<?php echo htmlentities($setting['logo']); ?>" style="max-height: 100px;" /><br>
-                                  <input class="hide" type="text" name="setting[logo]" value="<?php echo htmlentities($setting['logo']); ?>" />
-                                  <button class="btn btn-default" type="button" data-toggle="selectimg">选择logo</button>
-                                  
-                              </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">版权：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[copyright]" value="<?php echo htmlentities($setting['copyright']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">备案编号：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[ipc_no]" value="<?php echo htmlentities($setting['ipc_no']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">联系电话：</label>
-                                  <div class="controls ">
-                                      <input type="text" data-rule-maxlength="15" class="input-max" name="setting[tel]" value="<?php echo htmlentities($setting['tel']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">公司地址：</label>
-                                  <div class="controls col-sm-6 ">
-                                      <input type="text" class="input-max" name="setting[address]" value="<?php echo htmlentities($setting['address']); ?>" /> 
-                                  </div>
-                            </div>
-                           
-                              <div class="line line-dashed line-lg pull-in"></div>
-                              <div class="form-group">
-                                  <label class="col-sm-2 control-label">默认关键字：</label>
-                                  <div class="controls col-xs-7 " >
-                                      <input type="text" class="input-max" data-rule-maxlength="200" name="setting[keywords]" value="<?php echo htmlentities($setting['keywords']); ?>" >
-                                   <span class="help-inline">用空格分隔</span></div>
-                                 
-                              </div>
-                              <div class="form-group">
-                                    <label class="col-sm-2 control-label">默认简单描述：</label>
-                                    <div class="controls col-xs-7">
-                                      <textarea name="setting[description]" class="input-max" style="height:100px;"><?php echo htmlentities($setting['description']); ?></textarea>
-                                    </div>
-                              </div>
-                                <div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开启公告：</label>
-                                        <div class="controls">
-                                           <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="0" id="status0" class="js_undertake" type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=0','checked',true)); ?>>关闭
-                                          </label>
-                                          <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="1" id="status1" class="js_undertake " type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=1','checked')); ?>>
-                                              开启
-                                          </label>
-                                        </div>
-                                        <div class="clearfix"></div>
-                              </div>
-
-                              <div class="form-group publicnote_status">
-                                  <label class="col-sm-2 control-label">公告：</label>
-                                  <div class="controls " style="padding-left:0px;">
-                                      <textarea rows="5" class="input-xxlarge hd"  data-toggle="kindeditor" data-config="simple" data-kdheight="150" data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d name="setting[bulletin]" style="visibility:hidden;"><?php echo htmlentities($setting['bulletin']); ?></textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
-                                  </div>
-                              </div>
-                         	<div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-
-                             <div class="form-group">
-                                   <label class="col-sm-2 control-label"></label>
-                                    <div class="controls"> 
-                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                                    </div>
-                             </div>
-                        </form>
-                        
+                    <div class="form-group">
+                        <label class="control-label">模板名称</label>
+                        <div class="col-sm-6 m-t-md">
+                            <?php echo htmlentities($row['tpl_name']); ?>
+                        </div>
                     </div>
-                </div>     
-      </section>
-</section>
+                    <div class="form-group">
+                        <label class="control-label">模板code</label>
+                        <div class="col-sm-6 ">
+                            <input type="text" class="input-xlarge"  name="tpl_code" value="<?php echo htmlentities($row['tpl_code']); ?>" data-rule-required="true" >
+                        </div>
+                    </div>
+                 <div class="form-group">
+                                <label class="control-label">是否开启</label>
+                                <div class="col-sm-7">
+                                    <label class="m-t-md">
+                                          <input class="checkbox-slider colored-blue" name="status" type="checkbox" value="1" <?php echo htmlentities(tplckval($row['status'],1,'checked')); ?>>
+                                          <span class="text"></span>
+                                   </label>
+                                </div>
+                   </div>
+                    <div class="form-group">
+                        <label class="control-label">标题颜色</label>
+                        <div class="col-sm-6">
+                           <input id="sel_color" name="topcolor"  class="sel-color" type="text" style="background-color:<?php echo htmlentities((isset($row['topcolor']) && ($row['topcolor'] !== '')?$row['topcolor']:'#FF0000')); ?>;" value="<?php echo htmlentities((isset($row['topcolor']) && ($row['topcolor'] !== '')?$row['topcolor']:'#FF0000')); ?>" readonly/>
+                        </div>
+                    </div> 
+                    
+                    <div class="form-group">
+                        <label class="control-label">替换值</label>
+                        <div class="col-sm-8">
+                        <p><span class="m-r">分佣相关:</span>
+                          	<a href="javascript:;" class="copy_str m-r">[分佣等级]</a>
+                            <a href="javascript:;" class="copy_str m-r">[佣金金额]</a>
+                            <a href="javascript:;" class="copy_str m-r">[到帐天数]</a>
+                         </p>
+                         <p><span class="m-r">提现相关:</span>
+                            <a href="javascript:;" class="copy_str m-r">[提现金额]</a>
+                            <a href="javascript:;" class="copy_str m-r">[提现时间]</a>
+                         </p>
+                         <p><span class="m-r">会员相关:</span>
+                          	<a href="javascript:;" class="copy_str m-r">[会员ID]</a>
+                            <a href="javascript:;" class="copy_str m-r">[会员昵称]</a>
+                            <a href="javascript:;" class="copy_str m-r">[会员姓别]</a>
+                            <a href="javascript:;" class="copy_str m-r">[会员所在地区]</a>
+                         </p>
+                         <p><span class="m-r">订单相关:</span>
+                          	<a href="javascript:;" class="copy_str m-r">[订单ID]</a>
+                            <a href="javascript:;" class="copy_str m-r">[订单编号]</a>
+                            <a href="javascript:;" class="copy_str m-r">[收货人]</a>
+                            <a href="javascript:;" class="copy_str m-r">[订单金额]</a>
+                            <a href="javascript:;" class="copy_str m-r">[下单时间]</a>
+                            <a href="javascript:;" class="copy_str m-r">[快递公司]</a>
+                            <a href="javascript:;" class="copy_str m-r">[快递编号]</a>
+                         </p>
+                          <p><span class="m-r">其它内容:</span>
+                          	<a href="javascript:;" class="copy_str m-r">[当前时间]</a>
+                         </p>
+                         <span class="help-inline">点击以上内容即可复制</span>
+                        </div>
+                    </div> 
+                     <div class="form-group">
+                        <label class="control-label">标题</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="input-max"  name="first" value="<?php echo htmlentities($row['first']); ?>" data-rule-required="true">
+                        </div>
+                    </div> 
+                    
+                    <?php if(is_array($row['tpl_keys']) || $row['tpl_keys'] instanceof \think\Collection || $row['tpl_keys'] instanceof \think\Paginator): $i = 0; $__LIST__ = $row['tpl_keys'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                    <div class="form-group tpl_keys">
+                        <label class="control-label">第<?php echo htmlentities($key); ?>行内容</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="input-xxlarge"  name="tpl_keys[<?php echo htmlentities($key); ?>]" value="<?php echo htmlentities($vo); ?>" data-rule-required="true">
+                           <?php if($key == '1'): ?>
+                           		<a href="javascript:;" id="add_key" title="添加" class="btn btn-default "><i class="fa fa-plus m-r-xs"></i></a>
+                            <?php else: ?>
+                            	<a href="javascript:;" title="删除" class="btn btn-default "><i class="fa fa-times m-r-xs"></i></a>
+                            <?php endif; ?>
+                        </div>
+                    </div> 
+                     <?php endforeach; endif; else: echo "" ;endif; if(empty($row['tpl_keys']) || (($row['tpl_keys'] instanceof \think\Collection || $row['tpl_keys'] instanceof \think\Paginator ) && $row['tpl_keys']->isEmpty())): ?>
+                     <div class="form-group tpl_keys">
+                        <label class="control-label">第1行内容</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="input-xxlarge"  name="tpl_keys[1]" value="" data-rule-required="true">
+                           <a href="javascript:;" id="add_key" title="添加" class="btn btn-default m-b-md" ><i class="fa fa-plus m-r-xs"></i></a>
+                        </div>
+                    </div> 
+                     <?php endif; ?>
+                     <div id="new_key_list"></div>
+                     <div class="form-group">
+                        <label class="control-label">备注</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="input-max"  name="remark" value="<?php echo htmlentities($row['remark']); ?>" data-rule-required="true">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="control-label">短信样板</label>
+                        <div class="col-sm-8 ">
+                        <textarea name="tpl_content" data-rule-required="true" style="width:100%; height:120px;"><?php echo htmlentities($row['tpl_content']); ?></textarea>
+                           
+                        </div>
+                    </div> 
+            </div>
+            <input  type="hidden" name="tpl_id" value="<?php echo htmlentities(intval($row['tpl_id'])); ?>"/>
+             <div class="form-group">
+                   <label class="control-label"></label>
+                    <div class="controls"> 
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+             </div>
+    </div>
+</div> 
+</form>
+    </section>
+ </section>
+<script>
+    $(function () {
+        // 基本实例化:
+        $('#sel_color').colorpicker();
+
+        // 添加change事件 改变背景色
+        $('#sel_color').on('change', function (event) {
+            $(this).css('background-color', event.color.toString()).val('');
+            $(this).text(event.color.toString());
+        });
+		$('.copy_str').click(function(){
+			var s = $(this).html();
+			var clipboard = new Clipboard('.copy_str', {
+                //.btn为点击复制的按钮
+                    text: function() {						
+                        return s;
+                    }
+                });
+                clipboard.on('success', function(e) {
+                    //_alert("复制成功",true);
+                });
+
+                clipboard.on('error', function(e) {
+                   _alert("复制失败")
+                });
+		})
+		//添加key
+		$('#add_key').click(function(){
+			var i = $('.tpl_keys').length + 1;
+			$('#new_key_list').append('<div class="form-group tpl_keys"><label class="control-label">第'+i+'行内容</label><div class="col-sm-8"><input type="text" class="input-xxlarge"  name="tpl_keys['+i+']" value="" data-rule-required="true"> <a href="javascript:;" title="删除" class="btn btn-default m-b-md del_key" ><i class="fa fa-times m-r-xs"></i></a></div></div>');
+		})
+		//删除
+		$(document).on('click','.del_key',function(){
+			$(this).parents('.tpl_keys').remove();
+		})
+    });
+</script>
 
             <?php if(!(empty($data['page_size']) || (($data['page_size'] instanceof \think\Collection || $data['page_size'] instanceof \think\Paginator ) && $data['page_size']->isEmpty()))): ?>
 <footer class="footer bg-white b-t">

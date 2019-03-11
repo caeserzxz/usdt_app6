@@ -1,4 +1,4 @@
-<?php /*a:3:{s:72:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\setting\index.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:4:{s:76:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\payment_log\index.html";i:1549953095;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:75:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\payment_log\list.html";i:1549953095;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -171,111 +171,73 @@ $(function () {
     	<section class="vbox">
         	
 <header class="header  b-b clearfix">
-     <div class="page-breadcrumbs">
+ 	<form id="forms" class="talbe-search form-inline "  method="post" action="<?php echo url('getList'); ?>" >
+     	<div class="page-breadcrumbs">
             <ul class="breadcrumb" >
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
-                    <strong>基本信息</strong>
+                    <strong>支付流水</strong>
                 </li>                                  
             </ul>
-      </div>
+            
+              <div class="form-group m-l">
+                    <a class="btn btn-default  " data-toggle="reportrange" data-change="submit">
+                        <i class="fa fa-calendar fa-lg"></i>
+                        <small>时间范围</small>
+                        <span></span> <b class="caret"></b>
+                        <input type="hidden" value="<?php echo htmlentities($start_date); ?> - <?php echo htmlentities($end_date); ?>" id="reportrange" name="reportrange" />
+                    </a>
+              </div>
+              <input type="text" class="form-control input-large" value="" name="user_id" placeholder="操作用户ID" data-rule-required="true" />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+              <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+    </form>
 </header>
-<section class="scrollable  wrapper">
-      <section class="panel panel-default">
-                <div class="widget-body">
-                    <div class="collapse in">
-                        <form class="form-horizontal form-validate" method="post" action="<?php echo url('save'); ?>">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" >网站名称：</label>
-                                <div class="controls col-sm-4 ">
-                                  <input type="text" name="setting[shop_title]"  class="input-max" data-rule-required="true" value="<?php echo htmlentities($setting['shop_title']); ?>">
-                                 </div>
-                            </div>
-                          
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label">LOGO：</label>
-                              <div class="controls col-sm-6">
-                                  <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                  <img class="thumb_img" src="<?php echo htmlentities($setting['logo']); ?>" style="max-height: 100px;" /><br>
-                                  <input class="hide" type="text" name="setting[logo]" value="<?php echo htmlentities($setting['logo']); ?>" />
-                                  <button class="btn btn-default" type="button" data-toggle="selectimg">选择logo</button>
-                                  
-                              </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">版权：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[copyright]" value="<?php echo htmlentities($setting['copyright']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">备案编号：</label>
-                                  <div class="controls">
-                                      <input type="text" data-rule-maxlength="25" class="input-max" name="setting[ipc_no]" value="<?php echo htmlentities($setting['ipc_no']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">联系电话：</label>
-                                  <div class="controls ">
-                                      <input type="text" data-rule-maxlength="15" class="input-max" name="setting[tel]" value="<?php echo htmlentities($setting['tel']); ?>" />
-                                  </div>
-                            </div>
-                            <div class="form-group">
-                                 <label class="col-sm-2 control-label">公司地址：</label>
-                                  <div class="controls col-sm-6 ">
-                                      <input type="text" class="input-max" name="setting[address]" value="<?php echo htmlentities($setting['address']); ?>" /> 
-                                  </div>
-                            </div>
-                           
-                              <div class="line line-dashed line-lg pull-in"></div>
-                              <div class="form-group">
-                                  <label class="col-sm-2 control-label">默认关键字：</label>
-                                  <div class="controls col-xs-7 " >
-                                      <input type="text" class="input-max" data-rule-maxlength="200" name="setting[keywords]" value="<?php echo htmlentities($setting['keywords']); ?>" >
-                                   <span class="help-inline">用空格分隔</span></div>
-                                 
-                              </div>
-                              <div class="form-group">
-                                    <label class="col-sm-2 control-label">默认简单描述：</label>
-                                    <div class="controls col-xs-7">
-                                      <textarea name="setting[description]" class="input-max" style="height:100px;"><?php echo htmlentities($setting['description']); ?></textarea>
-                                    </div>
-                              </div>
-                                <div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开启公告：</label>
-                                        <div class="controls">
-                                           <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="0" id="status0" class="js_undertake" type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=0','checked',true)); ?>>关闭
-                                          </label>
-                                          <label class="radio-inline">
-                                              <input name="setting[bulletin_status]" value="1" id="status1" class="js_undertake " type="radio" <?php echo htmlentities(tplckval($setting['bulletin_status'],'=1','checked')); ?>>
-                                              开启
-                                          </label>
-                                        </div>
-                                        <div class="clearfix"></div>
-                              </div>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            <table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="120">支付编码</th>
+    <th width="100">状态</th>
+    <th width="100">支付金额</th>
+    <th>支付方式</th>
+    <th>流水号</th>
+    <th>记录时间</th>
+    <th>支付时间</th>
+    <th>退回时间</th>
+</tr>
+</thead>
+<tbody>
 
-                              <div class="form-group publicnote_status">
-                                  <label class="col-sm-2 control-label">公告：</label>
-                                  <div class="controls " style="padding-left:0px;">
-                                      <textarea rows="5" class="input-xxlarge hd"  data-toggle="kindeditor" data-config="simple" data-kdheight="150" data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d name="setting[bulletin]" style="visibility:hidden;"><?php echo htmlentities($setting['bulletin']); ?></textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
-                                  </div>
-                              </div>
-                         	<div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+<?php if(is_array($data['list']) || $data['list'] instanceof \think\Collection || $data['list'] instanceof \think\Paginator): $i = 0; $__LIST__ = $data['list'];if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
 
-                             <div class="form-group">
-                                   <label class="col-sm-2 control-label"></label>
-                                    <div class="controls"> 
-                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                                    </div>
-                             </div>
-                        </form>
-                        
-                    </div>
-                </div>     
-      </section>
+<tr>
+    <td><?php echo htmlentities($vo['pay_sn']); ?></td>
+    <td><?php echo htmlentities($ss[$vo['status']]); ?></td>
+    <td><?php echo htmlentities($vo['pay_total']); ?></td>
+    <td><?php echo htmlentities($vo['pay_name']); ?></td>
+    <td><?php echo htmlentities($vo['serial_number']); ?></td>
+    <td><?php echo htmlentities(dateTpl($vo['log_time'])); ?></td>
+    <td><?php echo htmlentities(dateTpl($vo['pay_time'])); ?></td>
+    <td><?php echo htmlentities(dateTpl($vo['return_time'])); ?></td>
+</tr>
+
+<?php endforeach; endif; else: echo "" ;endif; ?> 
+</tbody>
+</table>
+<?php if(empty($data['list']) || (($data['list'] instanceof \think\Collection || $data['list'] instanceof \think\Paginator ) && $data['list']->isEmpty())): ?>
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+<?php endif; ?>  
+        </div>
+    </section>
 </section>
+
 
             <?php if(!(empty($data['page_size']) || (($data['page_size'] instanceof \think\Collection || $data['page_size'] instanceof \think\Paginator ) && $data['page_size']->isEmpty()))): ?>
 <footer class="footer bg-white b-t">
