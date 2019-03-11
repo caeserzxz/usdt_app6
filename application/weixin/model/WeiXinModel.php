@@ -12,9 +12,8 @@ class WeiXinModel extends BaseModel {
     /*------------------------------------------------------ */
     //-- 优先自动执行
     /*------------------------------------------------------ */
-    public function __construct($is_integral){
-        $this->autoCheckFields = false;
-        parent::__construct($is_integral);
+    public function initialize(){
+        parent::initialize();
         $this->SetConfig = settings();
     }
 	/*------------------------------------------------------ */

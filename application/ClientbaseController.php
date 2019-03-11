@@ -76,7 +76,24 @@ class ClientbaseController extends BaseController
             }
             return true;
         }
-        if (empty($this->userInfo)){           
+        if (empty($this->userInfo)){  
+			//微信网页访问执行
+			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){				
+				$access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId		
+				if (empty($access_token['openid'])){//获取openid，跳转登陆
+					 return $this->redirect('member/passport/login');
+				}
+				$wxInfo = $WeiXinUsers->login($access_token);//用户存在进行登陆，否则进行注册操作
+				if (is_array($wxInfo) == true){
+					session('wxInfo',$wxInfo);
+					if ($wxInfo['user_id'] > 0 ){
+						session('userId',$wxInfo['user_id']);
+           				$this->userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);					
+					}
+				}
+				return true;
+			}
+			//end
             return $this->redirect('member/passport/login');
         }
 		

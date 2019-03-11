@@ -113,29 +113,32 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 会员注册
     /*------------------------------------------------------ */
-    public function register($inArr = array())
+    public function register($inArr = array(),$wxuid = 0)
     {
-        if (empty($inArr)){
-            return '获取注册数据失败.';
-        }
-        if (empty($inArr['mobile'])){
-            return '请填写手机号码';
-        }
-        if (checkMobile($inArr['mobile']) == false){
-            return '手机号码不正确.';
-        }
-        $count = $this->where('mobile', $inArr['mobile'])->count('user_id');
-        if ($count > 0) return '手机号码：'.$inArr['mobile'].'，已存在.';
-        if (empty($inArr['nick_name']) == false) {//昵称不为空时，判断是否已存在
-            $count = $this->where('nick_name', $inArr['nick_name'])->count('user_id');
-            if ($count > 0) return '昵称：'.$inArr['nick_name'].'，已存在.';
-        }
-        $res = $this->checkPwd($inArr['password']);//验证密码强度
-        if ($res !== true){
-            return $res;
-        }
-        $time = time();
-        $inArr['password'] = f_hash($inArr['password']);
+		if ($wxuid == 0){
+			if (empty($inArr)){
+				return '获取注册数据失败.';
+			}
+			if (empty($inArr['mobile'])){
+				return '请填写手机号码';
+			}
+			if (checkMobile($inArr['mobile']) == false){
+				return '手机号码不正确.';
+			}
+			$count = $this->where('mobile', $inArr['mobile'])->count('user_id');
+			if ($count > 0) return '手机号码：'.$inArr['mobile'].'，已存在.';
+			if (empty($inArr['nick_name']) == false) {//昵称不为空时，判断是否已存在
+				$count = $this->where('nick_name', $inArr['nick_name'])->count('user_id');
+				if ($count > 0) return '昵称：'.$inArr['nick_name'].'，已存在.';
+			}
+			$res = $this->checkPwd($inArr['password']);//验证密码强度
+			if ($res !== true){
+				return $res;
+			}
+			$time = time();
+			$inArr['password'] = f_hash($inArr['password']);
+		}
+		
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
 		$inArr['pid'] = 0;
@@ -148,7 +151,9 @@ class UsersModel extends BaseModel
 			  }
         }//end
 		
-		Db::startTrans();
+		if ($wxuid == 0){//如果微信UID为0，启用事务，不为0时，外部已启用
+			Db::startTrans();
+		}
         $res = $this->save($inArr);
         if ($res < 1){
 			 Db::rollback();
@@ -156,8 +161,7 @@ class UsersModel extends BaseModel
 		}
 		if ($this->user_id < 29889){
 			$res = $this->where('user_id',$this->user_id)->delete();
-			Db::query("alter table $this->table AUTO_INCREMENT=29889;");
-			sleep(1);
+			$inArr['user_id'] = 29889;
 			$res = $this->save($inArr);
 			if ($res < 1){
 				 Db::rollback();
@@ -184,7 +188,10 @@ class UsersModel extends BaseModel
 		}
         //edn
         //捆绑微信会员信息
-        $wxuid = session('wxuid');
+		if ($wxuid == 0){
+        	$wxInfo = session('wxInfo');
+			$wxuid = $wxInfo['wxuid'];
+		}
         if ($wxuid > 0){
             $WeiXinUsersModel = new WeiXinUsersModel();
             $res = $WeiXinUsersModel->bindUserId($wxuid,$this->user_id);
