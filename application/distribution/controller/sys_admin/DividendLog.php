@@ -33,10 +33,14 @@ class DividendLog extends AdminController{
     public function getList($runData = false,$is_cancel = false){
 		$this->assign("divdend_satus", lang('divdend_satus'));
 		$search['status'] = input('status','-1','intval');
+		$search['keyword'] = input('keyword','','trim');
 		$reportrange = input('reportrange');
 		$where = [];
 		if ($search['status'] >= 0 ){
 			$where[] = ['status','=',$search['status']];
+		}
+		if (empty($search['keyword']) == false){
+			$where[] = ['order_sn|dividend_uid','=',$search['keyword']*1];
 		}
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
