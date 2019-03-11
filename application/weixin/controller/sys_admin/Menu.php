@@ -7,6 +7,7 @@ namespace app\weixin\controller\sys_admin;
 use app\AdminController;
 
 use app\weixin\model\WeiXinMenusModel;
+use app\weixin\model\WeiXinModel;
 
 
 class Menu extends AdminController
@@ -22,7 +23,7 @@ class Menu extends AdminController
 	//-- 主页
 	/*------------------------------------------------------ */
     public function index(){
-		$this->assign("domain", $this->request->domain());	
+		
 		$WeixinEventType = $this->getDict('WeixinEventType');		
 		$this->assign("WeixinEventType_opt", arrToSel($WeixinEventType));
 		$rows = $this->Model->field('id,pid,sort,name,keyword,keyword_value,is_show,type')->order('sort,id asc')->select();
@@ -59,14 +60,15 @@ class Menu extends AdminController
 	//-- 推送菜单到微信
 	/*------------------------------------------------------ */
 	function push(){		
-		$map['pid'] = 0;
-		$map['is_show'] = 1;
-		$rows = $this->_mod->where($map)->order('sort,id ASC')->limit(3)->select();
+		$where[] = ['pid','=',0];
+		$where[] = ['is_show','=',1];
+		$rows = $this->Model->where()->order('sort,id ASC')->limit(3)->select();
 		$bntarr = array();
 		foreach ($rows as $row){			
-			unset($p_row);
-			$map['pid'] = $row['id'];
-			$rowsb = $this->_mod->where($map)->order('sort,id ASC')->limit(5)->select();
+			unset($p_row,$where);
+			$where[] = ['pid','=',$row['id']];
+			$where[] = ['is_show','=',1];
+			$rowsb = $this->Model->where($where)->order('sort,id ASC')->limit(5)->select();
 			$p_row['name'] = urlencode($row['name']);	
 			if ($rowsb){
 				foreach ($rowsb as $rowb){
@@ -78,7 +80,7 @@ class Menu extends AdminController
 						$_row['key'] = urlencode('【在线客服】');
 					}else{
 						if ($rowb['keyword'] >= 1){							
-							$_row['url'] = C('SERVER_LOCATION').U('Shop/Article/info',array('id'=>$rowb['keyword']));
+							$_row['url'] = _url('shop/article/info',array('id'=>$rowb['keyword']),false,true);
 						}else{
 							$_row['url'] = $_row['type'] == 'view' ? $rowb['keyword_value'] : urlencode($rowb['keyword_value']);
 						}
@@ -95,7 +97,7 @@ class Menu extends AdminController
 					$p_row['key'] = urlencode('【在线客服】');
 				}else{
 					if ($row['keyword'] >= 1){
-						$p_row['url'] = C('SERVER_LOCATION').U('Shop/Article/info',array('id'=>$row['keyword']));
+						$p_row['url'] = _url('Shop/article/info',array('id'=>$row['keyword']),false,true);
 					}else{
 						$p_row['url'] = $p_row['type'] == 'view' ? $row['keyword_value'] : urlencode($row['keyword_value']);
 					}
@@ -107,12 +109,11 @@ class Menu extends AdminController
 		if (empty($bntarr)) return $this->error('没有可推送的菜单定义');				
 		$bntarr = urldecode(json_encode($bntarr));
 		
-		$wx_mod = D('WeiXin');
-		$wx_mod->plcInfo = $this->plcInfo;
-		$res = $wx_mod->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/create?',$bntarr);
+		$WeiXinModel = new WeiXinModel();		
+		$res = $WeiXinModel->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/create?',$bntarr);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
-		$this->_log(0,'推送'.$this->ntitle.'到微信');
+		
 		return $this->success();
 	}
 	/*------------------------------------------------------ */
@@ -123,7 +124,7 @@ class Menu extends AdminController
 		$res = D('WeiXin')->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/delete?',$bntarr);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
-		$this->_logsave(array('info'=>'撤销微信菜单'));
-		$this->success();
+		
+		return $this->success();
 	}
 }

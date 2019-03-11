@@ -160,7 +160,7 @@
 	  
 	  $("#create_menu").click(function () {
 		  $.post("{:url('push')}",{ },function(res){
-			  alert(res.error);
+			  _alert(res.msg);
 		  },'json');
 	  });
 	  
@@ -168,7 +168,7 @@
 		  G.ui.tips.confirm_flag('撤销后微信公众号中不再显示自定义菜单，确定要撤销吗？',function(){
 			  $.post("{:url('remove')}",{ },function(res){
 				  $.fallr('hide');
-				  alert(res.error);
+				  _alert(res.msg);
 			  },'json');
 		  });
 	  });
