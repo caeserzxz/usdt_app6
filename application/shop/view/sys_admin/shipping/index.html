@@ -12,7 +12,6 @@
                 </li>                                  
             </ul>
              <a href="{:url('info')}" title="新增物流" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>新增物流</a>
-        
         </div>
 </header>
 <section class="scrollable wrapper w-f ">
@@ -22,7 +21,8 @@
             <tr>
                <th width="80">ID</th>
                <th width="120">名称</th>
-               <th width="100">代码</th>
+               <th width="150">快递100代码</th>
+               <th width="150">快递鸟代码</th>
                <th>描述</th>
                <th width="80">排序</th>
                <th width="90">货到付款</th>
@@ -38,6 +38,7 @@
             <td align="center">{$row.shipping_id}</td>
           <td  class="{$row['is_sys']==1?'red':''}">{$row.shipping_name}</td>
           <td>{$row.shipping_code}</td>
+          <td>{$row.kdn_code}</td>
             <td>{$row.shipping_desc}</td>
             <td>{$row.sort_order}</td>
             <td><a href="#" data-remote="{:url('ajaxEdit',array('shipping_id'=>$row['shipping_id'],'field'=>'support_cod'))}" class="{$row.support_cod|tplckval='>0','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>  <td><a href="#" class="{$row.is_zt|tplckval='>0','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
@@ -56,8 +57,7 @@
         <table width="100%" >
         	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
         </table>
-        {/empty}  
- 
+        {/empty}
     </section>
 </section>
 {/block}

@@ -7,6 +7,7 @@ use app\shop\model\OrderModel;
 use app\shop\model\OrderGoodsModel;
 use app\shop\model\OrderLogModel;
 use app\shop\model\ShippingModel;
+use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
 use think\Lang;
 use Kuaidi\Kdapieorder;
@@ -20,6 +21,7 @@ class Order extends AdminController
 {
 
     private $shipping_model = null;
+    private $setting_model = null;
     //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
@@ -28,6 +30,7 @@ class Order extends AdminController
         parent::initialize();
         $this->Model = new OrderModel();
         $this->shipping_model = new ShippingModel();
+        $this->setting_model = new SettingsModel();
         $this->store_id = 0;//当前默认为总后台，门店值默认为0
     }
 
@@ -240,10 +243,28 @@ class Order extends AdminController
                 if ($kdn_shipping_id == "") return $this->error("请选择快递公司");
                 if ($shippinginfo == "") return $this->error("请选择快递公司");
                 if ($kdeorder_goods_name == "") return $this->error("请输入货物名称");
+                $kdn_appid = $this->setting_model->getVal(['name' => 'kdn_appid'], 'data');
+                $kdn_apikey = $this->setting_model->getVal(['name' => 'kdn_apikey'], 'data');
+                $kdn_apiurl = $this->setting_model->getVal(['name' => 'kdn_apiurl'], 'data');
+                $kdn_name = $this->setting_model->getVal(['name' => 'kdn_name'], 'data');
+                $kdn_phone = $this->setting_model->getVal(['name' => 'kdn_phone'], 'data');
+                $kdn_province = $this->setting_model->getVal(['name' => 'kdn_province'], 'data');
+                $kdn_city = $this->setting_model->getVal(['name' => 'kdn_city'], 'data');
+                $kdn_area = $this->setting_model->getVal(['name' => 'kdn_area'], 'data');
+                $kdn_address = $this->setting_model->getVal(['name' => 'kdn_address'], 'data');
+                if ($kdn_appid == "") return $this->error("请先配置电商ID（快递鸟）");
+                if ($kdn_apikey == "") return $this->error("请先配置电商加密私钥（快递鸟）");
+                if ($kdn_apiurl == "") return $this->error("请先配置接口地址（快递鸟）");
+                if ($kdn_name == "") return $this->error("请先配置寄件人名称（快递鸟）");
+                if ($kdn_phone == "") return $this->error("请先配置联系电话（快递鸟）");
+                if ($kdn_province == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_city == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_area == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_address == "") return $this->error("请先配置详情地址（快递鸟）");
                 $kd_config = [];
-                $kd_config['kd_id'] = '1350174'; //电商ID
-                $kd_config['ke_appkey'] = 'ad3e65b7-6632-48bd-ac02-4f1a70d7f501'; //电商加密私钥
-                $kd_config['ke_requrl'] = 'http://testapi.kdniao.com:8081/api/EOrderService';
+                $kd_config['kd_id'] = $kdn_appid; //电商ID
+                $kd_config['ke_appkey'] = $kdn_apikey; //电商加密私钥
+                $kd_config['ke_requrl'] = $kdn_apiurl;
                 $kdapiorder = new Kdapieorder($kd_config);
 
                 //构造电子面单提交信息
@@ -255,12 +276,12 @@ class Order extends AdminController
 
                 //寄件人
                 $sender = [];
-                $sender["Name"] = "李先生";
-                $sender["Mobile"] = "18888888888";
-                $sender["ProvinceName"] = "李先生";
-                $sender["CityName"] = "深圳市";
-                $sender["ExpAreaName"] = "福田区";
-                $sender["Address"] = "赛格广场5401AB";
+                $sender["Name"] = $kdn_name;
+                $sender["Mobile"] = $kdn_phone;
+                $sender["ProvinceName"] = $kdn_province;
+                $sender["CityName"] = $kdn_city;
+                $sender["ExpAreaName"] = $kdn_area;
+                $sender["Address"] = $kdn_address;
 
                 //收件人
                 list($ProvinceName, $CityName, $ExpAreaName) = $merger_name = explode(',', $orderInfo['merger_name']);
