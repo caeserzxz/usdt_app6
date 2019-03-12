@@ -1,4 +1,4 @@
-<?php /*a:3:{s:79:"D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html";i:1550132957;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1550818706;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:79:"D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html";i:1552371293;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -83,7 +83,7 @@ $(function () {
            <?php if(is_array($top_menus) || $top_menus instanceof \think\Collection || $top_menus instanceof \think\Paginator): $i = 0; $__LIST__ = $top_menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
                 
                     <div class="am-fl tpl-header-fun-button <?php echo $_module==$vo['key'] ? 'top_select' : 'top_no_select'; ?>">
-                        <a href="<?php $vob = reset($vo['list']);echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
+                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa <?php echo htmlentities($vo['icon']); ?>"></i> <?php echo htmlentities($vo['name']); ?></a>
                     </div>
               
            <?php endforeach; endif; else: echo "" ;endif; ?>
@@ -184,116 +184,116 @@ $(function () {
 <form class="form-horizontal form-validate" method="post" action="<?php echo url('save'); ?>">
       <section class="panel panel-default">
             <header >
-                  <ul class="nav nav-tabs">
-                      <li class="active"><a href="#basic" data-toggle="tab">基本设置</a></li>
-                      <li><a href="#withdraw" data-toggle="tab">提现设置</a></li>
-                  </ul>
-              </header>
-                    
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="basic">                        	
-                         	<div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开放注册：</label>
-                                  <div class="controls">
-                                    <label class="radio-inline">
-                                      <input name="register_status" value="1" <?php echo $setting['register_status']==1 ? 'checked' : ''; ?> type="radio">开放
-                                    </label>
-                                    <label class="radio-inline">
-                                      <input name="register_status" value="0" <?php echo $setting['register_status']==0 ? 'checked' : ''; ?> type="radio" >关闭
-                                    </label>
-                                  </div>
-                             </div>
-                        	<div class="form-group ">
-                                  <label class="col-sm-2 control-label">注册赠送积分：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['register_integral']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="register_integral">
-                                    <span class="help-line">会员注册赠送积分</span>
-                                  </div>
-                             </div>
-                        	<div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                        	<div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开放签到：</label>
-                                  <div class="controls">
-                                    <label class="radio-inline">
-                                      <input name="sign_in" value="1" <?php echo $setting['sign_in']==1 ? 'checked' : ''; ?> type="radio">开放
-                                    </label>
-                                    <label class="radio-inline">
-                                      <input name="sign_in" value="0" <?php echo $setting['sign_in']==0 ? 'checked' : ''; ?> type="radio" >关闭
-                                    </label>
-                                  </div>
-                             </div>
-                    	</div>
-                        <div class="tab-pane " id="withdraw">
-                            <div class="form-group">
-                                  <label class="col-sm-2 control-label">是否开启提现：</label>
-                                  <div class="controls">
-                                    <label class="radio-inline">
-                                      <input name="withdraw_status" value="1" <?php echo $setting['withdraw_status']==1 ? 'checked' : ''; ?> type="radio">开启
-                                    </label>
-                                    <label class="radio-inline">
-                                      <input name="withdraw_status" value="0" <?php echo $setting['withdraw_status']==0 ? 'checked' : ''; ?> type="radio" >关闭
-                                    </label>
-                                  </div>
-                             </div>
-                             <div class="form-group ">
-                                  <label class="col-sm-2 control-label">最低提现金额：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['withdraw_min_money']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="withdraw_min_money">
-                                    <span class="help-line"> 金额必须达到最低提现金额，才能申请提现</span>
-                                  </div>
-                             </div>
-                              <div class="form-group ">
-                                  <label class="col-sm-2 control-label">最高提现金额：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['withdraw_max_money']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="withdraw_max_money">
-                                    <span class="help-line"> 单次提现金额不能超过此金额，才能申请提现</span>
-                                  </div>
-                             </div>  
-                              
-                            <div class="form-group ">
-                                  <label class="col-sm-2 control-label">提现手续费：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['withdraw_fee']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee">
-                                    <span class="help-line"> %（注：如填1就是 代表每笔提现，收取提现金额1%的手续费）</span>
-                                  </div>
-                             </div>  
-                             <div class="form-group ">
-                                  <label class="col-sm-2 control-label">最低手续费：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['withdraw_fee_min']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee_min">
-                                    <span class="help-line"> （注：单笔手续费计算出来小于该值时，则取该值）</span>
-                                  </div>
-                             </div>
-                             <div class="form-group ">
-                                  <label class="col-sm-2 control-label">最高手续费：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities($setting['withdraw_fee_max']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee_max">
-                                    <span class="help-line"> （注：单笔手续费计算出来大于该值时，则取该值,为0时则不限）</span>
-                                  </div>
-                             </div>
-                             <div class="form-group ">
-                                  <label class="col-sm-2 control-label">每日累计提现次数：</label>
-                                  <div class="controls">
-                                   <input type="text" value="<?php echo htmlentities(intval($setting['withdraw_num'])); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_num">
-                                    <span class="help-line"> （注：单人每日累计提现次数达到该值时，本日将不支持继续提现,为0时则不限）</span>
-                                  </div>
-                             </div>
-             			</div>
-                        
-                   </div>
-				<div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+              <ul class="nav nav-tabs">
+                  <li class="active"><a href="#basic" data-toggle="tab">基本设置</a></li>
+                  <li><a href="#withdraw" data-toggle="tab">提现设置</a></li>
+              </ul>
+            </header>
+            <div class="tab-content">
+                <div class="tab-pane active" id="basic">
+                    <div class="form-group">
+                          <label class="col-sm-2 control-label">注册相关：</label>
+                          <div class="controls">
+                           <label class="radio-inline">
+                              <input name="register_status" value="0" <?php echo $setting['register_status']==0 ? 'checked' : ''; ?> type="radio" >关闭注册
+                            </label>
+                            <label class="radio-inline">
+                              <input name="register_status" value="1" <?php echo $setting['register_status']==1 ? 'checked' : ''; ?> type="radio">开放注册
+                            </label>
 
-                 <div class="form-group">
-                       <label class="control-label"></label>
-                        <div class="controls"> 
-                            <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                        </div>
-                 </div>
-                    
-                  
+                            <label class="radio-inline">
+                              <input name="register_status" value="2" <?php echo $setting['register_status']==2 ? 'checked' : ''; ?> type="radio" >微信自动注册（使用微信自动注册，将关闭页面注册）
+                            </label>
+                          </div>
+                     </div>
+
+                    <div class="form-group ">
+                          <label class="col-sm-2 control-label">注册赠送积分：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['register_integral']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="register_integral">
+                            <span class="help-line">会员注册赠送积分</span>
+                          </div>
+                     </div>
+                    <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                    <div class="form-group">
+                          <label class="col-sm-2 control-label">是否开放签到：</label>
+                          <div class="controls">
+                            <label class="radio-inline">
+                              <input name="sign_in" value="1" <?php echo $setting['sign_in']==1 ? 'checked' : ''; ?> type="radio">开放
+                            </label>
+                            <label class="radio-inline">
+                              <input name="sign_in" value="0" <?php echo $setting['sign_in']==0 ? 'checked' : ''; ?> type="radio" >关闭
+                            </label>
+                          </div>
+                     </div>
+                </div>
+                <div class="tab-pane" id="withdraw">
+                    <div class="form-group">
+                          <label class="col-sm-2 control-label">是否开启提现：</label>
+                          <div class="controls">
+                            <label class="radio-inline">
+                              <input name="withdraw_status" value="1" <?php echo $setting['withdraw_status']==1 ? 'checked' : ''; ?> type="radio">开启
+                            </label>
+                            <label class="radio-inline">
+                              <input name="withdraw_status" value="0" <?php echo $setting['withdraw_status']==0 ? 'checked' : ''; ?> type="radio" >关闭
+                            </label>
+                          </div>
+                     </div>
+                     <div class="form-group ">
+                          <label class="col-sm-2 control-label">最低提现金额：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['withdraw_min_money']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="withdraw_min_money">
+                            <span class="help-line"> 金额必须达到最低提现金额，才能申请提现</span>
+                          </div>
+                     </div>
+                      <div class="form-group ">
+                          <label class="col-sm-2 control-label">最高提现金额：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['withdraw_max_money']); ?>" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="withdraw_max_money">
+                            <span class="help-line"> 单次提现金额不能超过此金额，才能申请提现</span>
+                          </div>
+                     </div>
+
+                    <div class="form-group ">
+                          <label class="col-sm-2 control-label">提现手续费：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['withdraw_fee']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee">
+                            <span class="help-line"> %（注：如填1就是 代表每笔提现，收取提现金额1%的手续费）</span>
+                          </div>
+                     </div>
+                     <div class="form-group ">
+                          <label class="col-sm-2 control-label">最低手续费：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['withdraw_fee_min']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee_min">
+                            <span class="help-line"> （注：单笔手续费计算出来小于该值时，则取该值）</span>
+                          </div>
+                     </div>
+                     <div class="form-group ">
+                          <label class="col-sm-2 control-label">最高手续费：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities($setting['withdraw_fee_max']); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_fee_max">
+                            <span class="help-line"> （注：单笔手续费计算出来大于该值时，则取该值,为0时则不限）</span>
+                          </div>
+                     </div>
+                     <div class="form-group ">
+                          <label class="col-sm-2 control-label">每日累计提现次数：</label>
+                          <div class="controls">
+                           <input type="text" value="<?php echo htmlentities(intval($setting['withdraw_num'])); ?>" min=0  size="10" data-rule-required="true" data-rule-money="true" name="withdraw_num">
+                            <span class="help-line"> （注：单人每日累计提现次数达到该值时，本日将不支持继续提现,为0时则不限）</span>
+                          </div>
+                     </div>
+                </div>
+           </div>
+            <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+             <div class="form-group">
+                   <label class="control-label"></label>
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+             </div>
       </section>
-          </form>
+</form>
 </section>
 
             <?php if(!(empty($data['page_size']) || (($data['page_size'] instanceof \think\Collection || $data['page_size'] instanceof \think\Paginator ) && $data['page_size']->isEmpty()))): ?>

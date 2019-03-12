@@ -5159,3 +5159,2410 @@
 [ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
 [ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping_log` [ RunTime:0.010000s ]
 [ sql ] [ SQL ] SELECT * FROM `shop_shipping_log` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:14+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.105006s] [吞吐率：9.52req/s] [内存消耗：2,695.57kb] [文件加载：89]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:21+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/mainadmin/index/index.html
+[运行时间：0.074004s] [吞吐率：13.51req/s] [内存消耗：2,641.82kb] [文件加载：85]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\mainadmin\view\index\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `shop_order_info` WHERE  `shipping_status` = 1  AND `shipping_time` < 1551758061 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:23+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/mainadmin/setting/index.html
+[运行时间：0.057004s] [吞吐率：17.54req/s] [内存消耗：1,848.50kb] [文件加载：78]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/mainadmin/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\mainadmin\view\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:29+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/index.html
+[运行时间：0.147008s] [吞吐率：6.80req/s] [内存消耗：3,247.66kb] [文件加载：98]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/mainadmin/setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'start_date',
+  6 => 'end_date',
+  7 => 'is_cancel',
+  8 => 'orderLang',
+  9 => 'data',
+  10 => 'search',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549943669 AND 1552362869 ORDER BY `order_id` DESC LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549943669 AND 1552362869 ORDER BY `order_id` DESC LIMIT 0,10 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.014001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 9 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 9 ORDER BY `rec_id` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 8 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 8 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7  AND `is_dividend` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552362869  WHERE  `order_id` = 7 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 6 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 6 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 5 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 5 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 4 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 4 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 3 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 3 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 2 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 2 ORDER BY `rec_id` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1  AND `is_dividend` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552362869  WHERE  `order_id` = 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:29+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.045003s] [吞吐率：22.22req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:54:30+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190305/5c7df3af3ae24_thumb.png
+[运行时间：0.018001s] [吞吐率：55.55req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:54:35+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.104006s] [吞吐率：9.61req/s] [内存消耗：3,104.30kb] [文件加载：99]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: isCancel[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:203]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:35+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.032002s] [吞吐率：31.25req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:54:35+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/api.shipping/getlog.html
+[运行时间：0.077005s] [吞吐率：12.99req/s] [内存消耗：2,599.43kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'content-length' => '11',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ error ] [2]Declaration of app\shop\model\ShippingLogModel::getInfo(&$orderInfo) should be compatible with app\BaseModel::getInfo($condition = '', $field = '*', $order = '')[D:\phpStudy\WWW\moduleshop\application\shop\model\ShippingLogModel.php:48]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping_log` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_shipping_log` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:40+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.043002s] [吞吐率：23.25req/s] [内存消耗：1,893.38kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:54:58+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.users/index.html
+[运行时间：0.253015s] [吞吐率：3.95req/s] [内存消耗：2,952.11kb] [文件加载：94]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\users\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'start_date',
+  6 => 'end_date',
+  7 => 'is_ban',
+  8 => 'search',
+  9 => 'roleList',
+  10 => 'levelList',
+  11 => 'data',
+  12 => 'roleOpt',
+  13 => 'levelOpt',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_role` [ RunTime:0.036002s ]
+[ sql ] [ SQL ] SELECT *,role_id as id,role_name as name FROM `distribution_dividend_role` ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `users` `u` LEFT JOIN `users_account` `uc` ON `u`.`user_id`=`uc`.`user_id` WHERE  (  is_ban = 0 ) ORDER BY `u`.`user_id` DESC LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `u`.*,`uc`.`balance_money`,`uc`.`use_integral` FROM `users` `u` LEFT JOIN `users_account` `uc` ON `u`.`user_id`=`uc`.`user_id` WHERE  (  is_ban = 0 ) ORDER BY `u`.`user_id` DESC LIMIT 0,10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29890 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29890 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29889 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29889 LIMIT 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义变量: search[D:\phpStudy\WWW\moduleshop\application\member\controller\sys_admin\Users.php:35]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义变量: search[D:\phpStudy\WWW\moduleshop\application\member\controller\sys_admin\Users.php:36]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+---------------------------------------------------------------
+[ 2019-03-12T11:55:02+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.078004s] [吞吐率：12.82req/s] [内存消耗：2,004.40kb] [文件加载：79]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.users/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:55:11+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/weixin/sys_admin.setting/index.html
+[运行时间：0.049003s] [吞吐率：20.41req/s] [内存消耗：1,812.95kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'domain',
+  6 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:19+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/weixin/sys_admin.setting/index.html
+[运行时间：0.105006s] [吞吐率：9.52req/s] [内存消耗：1,461.92kb] [文件加载：67]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-03-12T14:04:19+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/mainAdmin/passport/login
+[运行时间：0.044002s] [吞吐率：22.73req/s] [内存消耗：1,449.37kb] [文件加载：65]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\mainadmin\view\passport\login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:20+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/mainAdmin/passport/login
+[运行时间：0.049003s] [吞吐率：20.41req/s] [内存消耗：1,449.37kb] [文件加载：65]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\mainadmin\view\passport\login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:24+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/mainAdmin/passport/login
+[运行时间：0.279014s] [吞吐率：3.58req/s] [内存消耗：2,559.31kb] [文件加载：86]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/mainAdmin/passport/login',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'content-length' => '50',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'User' => 
+  array (
+    'user_name' => 'test',
+    'password' => 'abc123',
+  ),
+)
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:0.012000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_admin_user` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_admin_user` WHERE  `user_name` = 'test'  AND `password` = '42bc491a8917d524b86f3c4dae21308a' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] UPDATE `main_admin_user`  SET `login_time` = 1552370664 , `login_ip` = '127.0.0.1' , `last_login_time` = 1552359074 , `last_login_ip` = '127.0.0.1'  WHERE  `user_id` = 10002 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_log_login` [ RunTime:0.015001s ]
+[ sql ] [ SQL ] INSERT INTO `main_log_login` (`log_ip` , `log_time` , `user_id`) VALUES ('127.0.0.1' , 1552370664 , 10002) [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_admin_role` [ RunTime:0.020000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_admin_role` WHERE  `role_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:26+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/mainadmin/index/index.html
+[运行时间：0.121007s] [吞吐率：8.26req/s] [内存消耗：2,709.58kb] [文件加载：88]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/mainAdmin/passport/login',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\mainadmin\view\index\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_settings` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_settings` [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `shop_order_info` WHERE  `shipping_status` = 1  AND `shipping_time` < 1551765866 [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:31+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/weixin/sys_admin.setting/index.html
+[运行时间：0.053003s] [吞吐率：18.87req/s] [内存消耗：1,812.51kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/mainadmin/index/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\weixin\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'domain',
+  6 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:33+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/index.html
+[运行时间：0.139008s] [吞吐率：7.19req/s] [内存消耗：3,247.23kb] [文件加载：98]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/weixin/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'start_date',
+  6 => 'end_date',
+  7 => 'is_cancel',
+  8 => 'orderLang',
+  9 => 'data',
+  10 => 'search',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549951473 AND 1552370673 ORDER BY `order_id` DESC LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549951473 AND 1552370673 ORDER BY `order_id` DESC LIMIT 0,10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 9 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 9 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 8 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 8 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7  AND `is_dividend` = 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552370673  WHERE  `order_id` = 7 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 6 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 6 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 5 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 5 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 4 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 4 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 3 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 3 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 2 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 2 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1  AND `is_dividend` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552370673  WHERE  `order_id` = 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+---------------------------------------------------------------
+[ 2019-03-12T14:04:34+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.053003s] [吞吐率：18.87req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T14:04:35+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190305/5c7df3af3ae24_thumb.png
+[运行时间：0.024002s] [吞吐率：41.66req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T14:04:35+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.049003s] [吞吐率：20.41req/s] [内存消耗：1,892.95kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:05:58+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.078004s] [吞吐率：12.82req/s] [内存消耗：2,695.45kb] [文件加载：89]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.008001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:06+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.users/index.html
+[运行时间：0.176010s] [吞吐率：5.68req/s] [内存消耗：2,802.07kb] [文件加载：92]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\users\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'start_date',
+  6 => 'end_date',
+  7 => 'is_ban',
+  8 => 'search',
+  9 => 'roleList',
+  10 => 'levelList',
+  11 => 'data',
+  12 => 'roleOpt',
+  13 => 'levelOpt',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_role` [ RunTime:0.014000s ]
+[ sql ] [ SQL ] SELECT *,role_id as id,role_name as name FROM `distribution_dividend_role` ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_level` [ RunTime:0.022001s ]
+[ sql ] [ SQL ] SELECT *,level_id as id,level_name as name FROM `users_level` ORDER BY `min` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.016001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `users` `u` LEFT JOIN `users_account` `uc` ON `u`.`user_id`=`uc`.`user_id` WHERE  (  is_ban = 0 ) ORDER BY `u`.`user_id` DESC LIMIT 1 [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `u`.*,`uc`.`balance_money`,`uc`.`use_integral` FROM `users` `u` LEFT JOIN `users_account` `uc` ON `u`.`user_id`=`uc`.`user_id` WHERE  (  is_ban = 0 ) ORDER BY `u`.`user_id` DESC LIMIT 0,10 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.015001s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29890 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29890 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29889 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29889 LIMIT 1 [ RunTime:0.001000s ]
+[ error ] [8]未定义变量: search[D:\phpStudy\WWW\moduleshop\application\member\controller\sys_admin\Users.php:35]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义变量: search[D:\phpStudy\WWW\moduleshop\application\member\controller\sys_admin\Users.php:36]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:233]
+[ error ] [8]未定义数组索引: last_login[D:\phpStudy\WWW\moduleshop\runtime\temp\00bb16b9001164298211dd70690cd84d.php:241]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:08+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.059003s] [吞吐率：16.95req/s] [内存消耗：1,836.27kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.users/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:11+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.038002s] [吞吐率：26.31req/s] [内存消耗：1,836.27kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:11+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.038002s] [吞吐率：26.31req/s] [内存消耗：1,836.27kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:12+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.046002s] [吞吐率：21.74req/s] [内存消耗：1,836.27kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:12+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.042002s] [吞吐率：23.81req/s] [内存消耗：1,836.27kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:40+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.071004s] [吞吐率：14.08req/s] [内存消耗：2,085.09kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:06:40+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.056003s] [吞吐率：17.86req/s] [内存消耗：1,893.51kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:04+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.118006s] [吞吐率：8.47req/s] [内存消耗：2,887.19kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:05+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.057003s] [吞吐率：17.54req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:27+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.048003s] [吞吐率：20.83req/s] [内存消耗：2,085.09kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:28+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.057003s] [吞吐率：17.54req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:28+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.052003s] [吞吐率：19.23req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:28+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.045003s] [吞吐率：22.22req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:28+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.057003s] [吞吐率：17.54req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:07:30+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.055003s] [吞吐率：18.18req/s] [内存消耗：1,893.52kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:08:51+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.124007s] [吞吐率：8.06req/s] [内存消耗：2,900.84kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:08:52+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.042002s] [吞吐率：23.81req/s] [内存消耗：1,899.17kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:08:54+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.053003s] [吞吐率：18.87req/s] [内存消耗：1,836.58kb] [文件加载：77]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:08:56+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.048003s] [吞吐率：20.83req/s] [内存消耗：1,899.17kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:09:07+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.067003s] [吞吐率：14.92req/s] [内存消耗：2,094.63kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:09:08+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.040001s] [吞吐率：25.00req/s] [内存消耗：1,899.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:10:29+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.104006s] [吞吐率：9.61req/s] [内存消耗：2,895.72kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:10:30+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.045002s] [吞吐率：22.22req/s] [内存消耗：1,898.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:11:33+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.160009s] [吞吐率：6.25req/s] [内存消耗：2,895.72kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.003001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002001s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:11:34+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.069004s] [吞吐率：14.49req/s] [内存消耗：1,898.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:12:11+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.066004s] [吞吐率：15.15req/s] [内存消耗：2,093.63kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:12:12+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.048003s] [吞吐率：20.83req/s] [内存消耗：1,898.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:12:12+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.050003s] [吞吐率：20.00req/s] [内存消耗：1,898.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:12:15+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.044003s] [吞吐率：22.73req/s] [内存消耗：1,898.10kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:13:25+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.096005s] [吞吐率：10.42req/s] [内存消耗：2,895.72kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.013001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:13:26+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.039003s] [吞吐率：25.64req/s] [内存消耗：1,898.05kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:14:53+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.230013s] [吞吐率：4.35req/s] [内存消耗：2,888.36kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.018001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.003001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_settings` [ RunTime:0.014001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_settings` [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:14:55+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.041002s] [吞吐率：24.39req/s] [内存消耗：1,892.67kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:03+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.070004s] [吞吐率：14.28req/s] [内存消耗：2,083.75kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:10+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.041002s] [吞吐率：24.39req/s] [内存消耗：1,892.17kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:49+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.067003s] [吞吐率：14.92req/s] [内存消耗：2,083.75kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:53+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.043002s] [吞吐率：23.25req/s] [内存消耗：1,975.63kb] [文件加载：79]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:53+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/member/sys_admin.setting/index.html
+[运行时间：0.081005s] [吞吐率：12.34req/s] [内存消耗：2,626.93kb] [文件加载：85]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/member/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\member\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:15:54+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.048003s] [吞吐率：20.83req/s] [内存消耗：1,892.17kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:16:51+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.060004s] [吞吐率：16.67req/s] [内存消耗：2,084.38kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:16:52+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.038002s] [吞吐率：26.31req/s] [内存消耗：1,892.80kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:17:27+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.107006s] [吞吐率：9.35req/s] [内存消耗：2,886.47kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+---------------------------------------------------------------
+[ 2019-03-12T14:17:28+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.039002s] [吞吐率：25.64req/s] [内存消耗：1,892.80kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:17:29+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.051003s] [吞吐率：19.61req/s] [内存消耗：1,892.80kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:17:42+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.053003s] [吞吐率：18.87req/s] [内存消耗：2,084.19kb] [文件加载：83]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T14:17:43+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.049002s] [吞吐率：20.41req/s] [内存消耗：1,892.61kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
