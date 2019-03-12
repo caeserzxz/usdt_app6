@@ -1,4 +1,4 @@
-<?php /*a:3:{s:77:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html";i:1551662306;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:77:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html";i:1552362177;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -246,7 +246,7 @@ $(function () {
                                     	<option value="0" <?php echo $setting['shop_order_auto_cancel']==0 ? 'selected' : ''; ?>>不执行自动取消</option>
                                     	<option value="15" <?php echo $setting['shop_order_auto_cancel']==15 ? 'selected' : ''; ?>>15 分钟</option>
                                         <option value="30" <?php echo $setting['shop_order_auto_cancel']==30 ? 'selected' : ''; ?>>30 分钟</option>
-                                        <?php $__FOR_START_17099__=1;$__FOR_END_17099__=24;for($time=$__FOR_START_17099__;$time < $__FOR_END_17099__;$time+=1){ ?>
+                                        <?php $__FOR_START_14905__=1;$__FOR_END_14905__=24;for($time=$__FOR_START_14905__;$time < $__FOR_END_14905__;$time+=1){ ?>
                                          <option value="<?php echo htmlentities($time * 60); ?>" <?php echo $setting['shop_order_auto_cancel']==$time * 60 ? 'selected' : ''; ?>><?php echo htmlentities($time); ?> 小时</option>
                                       	<?php } ?>
                                   </select> <span class="help-line">下单成功后超过指定时间未支付自动取消订单</span>
@@ -256,7 +256,7 @@ $(function () {
                                 <label class="col-sm-2 control-label" >自动签收：</label>
                                 <div class="controls">
                                   	<select name="shop_auto_sign_limit"  >
-                                      <?php $__FOR_START_18001__=1;$__FOR_END_18001__=31;for($day=$__FOR_START_18001__;$day < $__FOR_END_18001__;$day+=1){ ?>
+                                      <?php $__FOR_START_10649__=1;$__FOR_END_10649__=31;for($day=$__FOR_START_10649__;$day < $__FOR_END_10649__;$day+=1){ ?>
                                          <option value="<?php echo htmlentities($day); ?>" <?php echo $setting['shop_auto_sign_limit']==$day ? 'selected' : ''; ?>><?php echo htmlentities($day); ?> 天</option>
                                       <?php } ?>
                                   </select> <span class="help-line">发货多少天后订单自动签收</span>
@@ -274,11 +274,61 @@ $(function () {
                                 </div>
                              </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label" >电商ID（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_appid" value="<?php echo htmlentities($setting['kdn_appid']); ?>" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >电商加密私钥（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_apikey" value="<?php echo htmlentities($setting['kdn_apikey']); ?>" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >接口地址（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_apiurl" value="<?php echo htmlentities($setting['kdn_apiurl']); ?>" style="width: 300px;">
+                                    <span class="help-line"></span>
+                                    <select onchange="$('input[name=kdn_apiurl]').val($(this).val());">
+                                        <option value="">请选择接口地址</option>
+                                        <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
+                                        <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >寄件人名称（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_name" value="<?php echo htmlentities($setting['kdn_name']); ?>"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >联系电话（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_phone" value="<?php echo htmlentities($setting['kdn_phone']); ?>"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >地区（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_province" class="input-mini" style="text-align: center" value="<?php echo htmlentities($setting['kdn_province']); ?>"> <span class="help-line">省</span>
+                                    <input type="text" name="kdn_city" class="input-mini" style="text-align: center" value="<?php echo htmlentities($setting['kdn_city']); ?>"> <span class="help-line">市</span>
+                                    <input type="text" name="kdn_area" class="input-mini" style="text-align: center" value="<?php echo htmlentities($setting['kdn_area']); ?>"> <span class="help-line">区</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >详情地址（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_address" value="<?php echo htmlentities($setting['kdn_address']); ?>" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label" >申请售后：</label>
                                 <div class="controls">
                                   	<select name="shop_after_sale_limit"  class="input-max">
                                       <option value="0" <?php echo $setting['shop_after_sale_limit']==0 ? 'selected' : ''; ?>>不启用售后功能</option>
-                                      <?php $__FOR_START_5777__=1;$__FOR_END_5777__=31;for($day=$__FOR_START_5777__;$day < $__FOR_END_5777__;$day+=1){ ?>
+                                      <?php $__FOR_START_5247__=1;$__FOR_END_5247__=31;for($day=$__FOR_START_5247__;$day < $__FOR_END_5247__;$day+=1){ ?>
                                          <option value="<?php echo htmlentities($day); ?>" <?php echo $setting['shop_after_sale_limit']==$day ? 'selected' : ''; ?>><?php echo htmlentities($day); ?> 天</option>
                                       <?php } ?>
                                   </select> <span class="help-line">签收后多少天内可申请售后</span>

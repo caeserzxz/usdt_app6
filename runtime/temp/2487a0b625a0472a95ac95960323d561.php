@@ -1,4 +1,4 @@
-<?php /*a:3:{s:78:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\shipping\index.html";i:1549953096;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
+<?php /*a:3:{s:78:"D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\shipping\index.html";i:1552360281;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\base.html";i:1552272354;s:71:"D:\phpStudy\WWW\moduleshop\application\mainadmin\view\layouts\page.html";i:1549953095;}*/ ?>
 <?PHP header("Cache-Control:private"); ?>
 <!DOCTYPE html>
 <html lang="cn" class="app fadeInUp animated">
@@ -180,8 +180,7 @@ $(function () {
                     <strong>物流列表</strong>
                 </li>                                  
             </ul>
-             <a href="<?php echo url('info'); ?>" title="新增物流" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>新增物流</a>
-        
+             <a href="<?php echo url('info'); ?>" title="新增物流" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>新5增物流</a>
         </div>
 </header>
 <section class="scrollable wrapper w-f ">
@@ -191,7 +190,8 @@ $(function () {
             <tr>
                <th width="80">ID</th>
                <th width="120">名称</th>
-               <th width="100">代码</th>
+               <th width="150">快递100代码</th>
+               <th width="150">快递鸟代码</th>
                <th>描述</th>
                <th width="80">排序</th>
                <th width="90">货到付款</th>
@@ -207,6 +207,7 @@ $(function () {
             <td align="center"><?php echo htmlentities($row['shipping_id']); ?></td>
           <td  class="<?php echo $row['is_sys']==1 ? 'red' : ''; ?>"><?php echo htmlentities($row['shipping_name']); ?></td>
           <td><?php echo htmlentities($row['shipping_code']); ?></td>
+          <td><?php echo htmlentities($row['kdn_code']); ?></td>
             <td><?php echo htmlentities($row['shipping_desc']); ?></td>
             <td><?php echo htmlentities($row['sort_order']); ?></td>
             <td><a href="#" data-remote="<?php echo url('ajaxEdit',array('shipping_id'=>$row['shipping_id'],'field'=>'support_cod')); ?>" class="<?php echo htmlentities(tplckval($row['support_cod'],'>0','active')); ?>"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>  <td><a href="#" class="<?php echo htmlentities(tplckval($row['is_zt'],'>0','active')); ?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
@@ -225,8 +226,7 @@ $(function () {
         <table width="100%" >
         	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
         </table>
-        <?php endif; ?>  
- 
+        <?php endif; ?>
     </section>
 </section>
 

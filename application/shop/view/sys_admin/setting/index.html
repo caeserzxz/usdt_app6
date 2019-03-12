@@ -104,6 +104,56 @@
                                 </div>
                              </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label" >电商ID（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_appid" value="{$setting.kdn_appid}" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >电商加密私钥（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_apikey" value="{$setting.kdn_apikey}" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >接口地址（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_apiurl" value="{$setting.kdn_apiurl}" style="width: 300px;">
+                                    <span class="help-line"></span>
+                                    <select onchange="$('input[name=kdn_apiurl]').val($(this).val());">
+                                        <option value="">请选择接口地址</option>
+                                        <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
+                                        <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >寄件人名称（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_name" value="{$setting.kdn_name}"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >联系电话（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_phone" value="{$setting.kdn_phone}"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >地区（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_province" class="input-mini" style="text-align: center" value="{$setting.kdn_province}"> <span class="help-line">省</span>
+                                    <input type="text" name="kdn_city" class="input-mini" style="text-align: center" value="{$setting.kdn_city}"> <span class="help-line">市</span>
+                                    <input type="text" name="kdn_area" class="input-mini" style="text-align: center" value="{$setting.kdn_area}"> <span class="help-line">区</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >详情地址（快递鸟）：</label>
+                                <div class="controls">
+                                    <input type="text" name="kdn_address" value="{$setting.kdn_address}" style="width: 300px;"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label" >申请售后：</label>
                                 <div class="controls">
                                   	<select name="shop_after_sale_limit"  class="input-max">
