@@ -17,7 +17,7 @@ class Index  extends BaseController{
 		$WeiXinModel = new WeiXinModel();
 		
 		// 关注验证
-		if ($_GET["echostr"]) die($wx_mod->valid($_GET["echostr"]));
+		if ($_GET["echostr"]) die($WeiXinModel->valid($_GET["echostr"]));
 		// 验证微信请求
 		$WeiXinModel->getMsg();
 		if ($WeiXinModel->keyword == '【在线客服】') {

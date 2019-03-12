@@ -26,7 +26,7 @@ use think\Db;
 
 class alipayMobile extends BaseModel
 {    
-    public $tableName = 'main_payment'; // 插件表        
+    public $tableName = 'main_payment'; // 支付表        
     public $alipay_config = array();// 支付宝支付配置参数
     
     /**
@@ -71,8 +71,8 @@ class alipayMobile extends BaseModel
                         'seller_id'=> trim($this->alipay_config['partner']), //收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
                         "key" => trim($this->alipay_config['key']), // MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
                         // "seller_email" => trim($this->alipay_config['seller_email']),                                            
-                        "notify_url"	=> SITE_URL.U('Payment/notifyUrl',array('pay_code'=>'alipayMobile')) , //服务器异步通知页面路径 //必填，不能修改
-                        "return_url"	=> SITE_URL.U('Payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
+                        "notify_url"	=> = config('config.host_path').url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile')) , //服务器异步通知页面路径 //必填，不能修改
+                        "return_url"	=> config('config.host_path').url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
                         "sign_type"     => strtoupper('MD5'), //签名方式
                         "input_charset" =>strtolower('utf-8'), //字符编码格式 目前支持utf-8
                         "cacert"	=>  getcwd().'\\cacert.pem',
@@ -83,7 +83,7 @@ class alipayMobile extends BaseModel
                         "out_trade_no"	=> $order['order_sn'], //商户订单号
                         "subject"       => $store_name, //订单名称，必填
                         "total_fee"	=> $order['order_amount'], //付款金额
-                        "show_url"	=> "http://www.tp-shop.cn", //收银台页面上，商品展示的超链接，必填
+                        "show_url"	=> config('config.host_path'), //收银台页面上，商品展示的超链接，必填
                 
                     );
             //  如果是支付宝网银支付    

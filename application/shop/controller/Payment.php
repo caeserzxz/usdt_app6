@@ -5,6 +5,9 @@
 namespace app\shop\controller;
 
 use think\Db;
+use app\member\model\RechargeLogModel;
+use app\shop\model\OrderModel;
+use app\mainadmin\model\PaymentModel;
 
 class Payment extends ClientbaseController
 {
@@ -45,25 +48,24 @@ class Payment extends ClientbaseController
     public function getCode()
     {
         header("Content-type:text/html;charset=utf-8");
-        if (!session('user')) {
-            $this->error('请先登录', url('member/passport/login'));
-        }
+        
 
         // 修改订单的支付方式
         $order_id = input('order_id/d'); // 订单id
-        $order = Db::name('order')->where("order_id", $order_id)->find();
+		$OrderModel = new OrderModel();
+        $order = $OrderModel->where("order_id", $order_id)->find();
         if ($order['pay_status'] == 1) {
             $this->error('此订单，已完成支付!');
         }
 
-        $payment_arr = Db::name('main_payment')->where('type', 'payment')->getField("code,name");
-        Db::name('order')->where("order_id", $order_id)->save(['pay_code' => $this->pay_code, 'pay_name' => $payment_arr[$this->pay_code]]);
+        $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
+        Db::name('order')->where("order_id", $order_id)->save(['pay_code'=>$this->pay_code,'pay_id'=>$payment['pay_idd'],'pay_name'=>$payment['pay_name']]);
 
         // 订单支付提交
         $config = parseUrlParam($this->pay_code); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
         $config['body'] = getPayBody($order_id);
-
-        if ($this->pay_code == 'weixin' && $_SESSION['openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
+		$wxInfo = session('wxInfo');
+        if ($this->pay_code == 'weixin' && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
             exit($code_str);
@@ -89,11 +91,11 @@ class Payment extends ClientbaseController
         //手机端在线充值
         //C('TOKEN_ON',false); // 关闭 TOKEN_ON 
         header("Content-type:text/html;charset=utf-8");
-        $order_id = I('order_id/d'); //订单id
-        $user = session('user');
-        $data['account'] = I('account');
+        $order_id = input('order_id/d'); //订单id
+      
+        $data['account'] = input('account');
         if ($order_id > 0) {
-            M('recharge')->where(array('order_id' => $order_id, 'user_id' => $user['user_id']))->save($data);
+             Db::name('users_recharge_log')->where(array('log_id' => $order_id, 'user_id' => $user['user_id']))->save($data);
         } else {
         	$data['buy_vip'] = I('buy_vip',0);
         	if($data['buy_vip'] == 1){
@@ -110,10 +112,10 @@ class Payment extends ClientbaseController
         	$data['nickname'] = $user['nickname'];
         	$data['order_sn'] = 'recharge'.get_rand_str(10,0,1);
         	$data['ctime'] = time();
-        	$order_id = M('recharge')->add($data);
+        	$order_id = Db::name('users_recharge_log')->save($data);
         }
         if ($order_id) {
-            $order = M('recharge')->where("order_id", $order_id)->find();
+            $order = Db::name('users_recharge_log')->where("order_id", $order_id)->find();
             if (is_array($order) && $order['pay_status'] == 0) {
                 $order['order_amount'] = $order['account'];
                 $pay_radio = $_REQUEST['pay_radio'];

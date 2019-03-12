@@ -569,6 +569,22 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为已确认');
         return $this->success();
     }
+	 /*------------------------------------------------------ */
+    //-- 重新计算分佣
+    /*------------------------------------------------------ */
+    public function upDividend()
+    {
+		$order_id = input('id', 0, 'intval');
+		$orderInfo = $this->Model->info($order_id);
+		$config = config('config.');
+        if ($orderInfo['shipping_status'] == $config['SS_SIGN']) return $this->error('订单已签收后不能修改！');
+		$data['is_dividend'] = 0;
+		$data['order_id'] = $order_id;
+		$res = $this->Model->upInfo($data);
+		if ($res < 1) return $this->error();
+		$this->Model->_log($orderInfo, '重新计算分佣');
+		return $this->success('重新计算分佣成功！', url('info', array('order_id' => $order_id)));
+    }
     /*------------------------------------------------------ */
     //-- 查询主页
     /*------------------------------------------------------ */
