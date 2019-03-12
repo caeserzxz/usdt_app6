@@ -4234,3 +4234,928 @@
   5 => 'setting',
   6 => 'shippingFunction',
 ) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:47:57+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.109006s] [吞吐率：9.17req/s] [内存消耗：2,695.45kb] [文件加载：89]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:47:58+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html
+[运行时间：0.054003s] [吞吐率：18.52req/s] [内存消耗：1,893.27kb] [文件加载：81]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\setting\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'setting',
+  6 => 'shippingFunction',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:18+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.goods/index.html
+[运行时间：0.155009s] [吞吐率：6.45req/s] [内存消耗：3,090.37kb] [文件加载：95]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.setting/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\goods\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'is_delete',
+  6 => 'data',
+  7 => 'search',
+  8 => 'classListOpt',
+  9 => 'brandListOpt',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_goods` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `shop_goods` WHERE  `store_id` = 0  AND `is_delete` = 0 ORDER BY `goods_id` DESC LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_goods` WHERE  `store_id` = 0  AND `is_delete` = 0 ORDER BY `goods_id` DESC LIMIT 0,10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_goods_brand` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_goods_brand` ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ error ] [8]Undefined property: app\shop\controller\sys_admin\Goods::$_field[D:\phpStudy\WWW\moduleshop\application\shop\controller\sys_admin\Goods.php:72]
+[ error ] [8]Undefined property: app\shop\controller\sys_admin\Goods::$_pagesize[D:\phpStudy\WWW\moduleshop\application\shop\controller\sys_admin\Goods.php:72]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:256]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:291]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:291]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:256]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:256]
+[ error ] [8]未定义数组索引: pid[D:\phpStudy\WWW\moduleshop\application\common.php:291]
+[ error ] [8]Only variables should be passed by reference[D:\phpStudy\WWW\moduleshop\application\shop\controller\sys_admin\Goods.php:77]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+[ error ] [8]未定义数组索引: shipping_code[D:\phpStudy\WWW\moduleshop\application\common.php:327]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:19+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/index.html
+[运行时间：0.141008s] [吞吐率：7.09req/s] [内存消耗：3,247.23kb] [文件加载：98]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.goods/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\index.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'start_date',
+  6 => 'end_date',
+  7 => 'is_cancel',
+  8 => 'orderLang',
+  9 => 'data',
+  10 => 'search',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549943419 AND 1552362619 ORDER BY `order_id` DESC LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `order_id` FROM `shop_order_info` WHERE  `store_id` = 0  AND `add_time` BETWEEN 1549943419 AND 1552362619 ORDER BY `order_id` DESC LIMIT 0,10 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 9 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 9 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 8 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 8 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 7 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 7  AND `is_dividend` = 1 [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552362619  WHERE  `order_id` = 7 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 6 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 6 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 5 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 5 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 4 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 4 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 3 LIMIT 1 [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 3 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 2 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 2 ORDER BY `rec_id` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 1  AND `is_dividend` = 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] UPDATE `distribution_dividend_log`  SET `status` = 1 , `update_time` = 1552362619  WHERE  `order_id` = 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:20+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.040002s] [吞吐率：25.00req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:50:21+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190305/5c7df3af3ae24_thumb.png
+[运行时间：0.036002s] [吞吐率：27.78req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:50:21+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.119007s] [吞吐率：8.40req/s] [内存消耗：3,109.34kb] [文件加载：99]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.008000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_level` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT *,level_id as id,level_name as name FROM `users_level` ORDER BY `min` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_admin_user` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_admin_user` [ RunTime:0.001000s ]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:21+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.032001s] [吞吐率：31.25req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:50:23+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/shipping/id/10.html?ishtml=1&_=1552362623244
+[运行时间：0.099006s] [吞吐率：10.10req/s] [内存消耗：2,839.46kb] [文件加载：89]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'accept' => 'text/html, */*; q=0.01',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'ishtml' => '1',
+  '_' => '1552362623244',
+  'id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\shipping.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'shippingOpt',
+  6 => 'kdnpingopt',
+  7 => 'orderInfo',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping` [ RunTime:0.014000s ]
+[ sql ] [ SQL ] SELECT *,shipping_id as id,shipping_name as name FROM `shop_shipping` [ RunTime:0.001001s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:32+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/sys_admin.order/shipping.html
+[运行时间：0.214012s] [吞吐率：4.67req/s] [内存消耗：2,728.12kb] [文件加载：90]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'content-length' => '97',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'kd_type' => '3',
+  'shipping_id' => '',
+  'invoice_no' => '',
+  'kdn_shipping_id' => '6',
+  'kdeorder_goods_name' => '测试',
+  'id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT `kdn_code` FROM `shop_shipping` WHERE  `shipping_id` = 6 LIMIT 1 [ RunTime:0.001000s ]
+[ error ] [10501]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'data' in 'field list'[D:\phpStudy\WWW\moduleshop\thinkphp\library\think\db\Connection.php:699]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:40+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.105006s] [吞吐率：9.52req/s] [内存消耗：3,073.30kb] [文件加载：97]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.013001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.014000s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:40+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.046002s] [吞吐率：21.74req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:50:41+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.093005s] [吞吐率：10.75req/s] [内存消耗：3,073.30kb] [文件加载：97]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011001s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+---------------------------------------------------------------
+[ 2019-03-12T11:50:41+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.039002s] [吞吐率：25.64req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:51:01+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.160009s] [吞吐率：6.25req/s] [内存消耗：3,129.31kb] [文件加载：100]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.011001s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.013001s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:01+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.041002s] [吞吐率：24.39req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:51:02+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/shipping/id/10.html?ishtml=1&_=1552362662297
+[运行时间：0.051003s] [吞吐率：19.61req/s] [内存消耗：2,052.66kb] [文件加载：82]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'accept' => 'text/html, */*; q=0.01',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'ishtml' => '1',
+  '_' => '1552362662297',
+  'id' => '10',
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\shipping.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'shippingOpt',
+  6 => 'kdnpingopt',
+  7 => 'orderInfo',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:10+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/sys_admin.order/shipping.html
+[运行时间：0.099006s] [吞吐率：10.10req/s] [内存消耗：2,728.48kb] [文件加载：90]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'content-length' => '97',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'kd_type' => '3',
+  'shipping_id' => '',
+  'invoice_no' => '',
+  'kdn_shipping_id' => '7',
+  'kdeorder_goods_name' => '衣服',
+  'id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT `kdn_code` FROM `shop_shipping` WHERE  `shipping_id` = 7 LIMIT 1 [ RunTime:0.000000s ]
+[ error ] [10501]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'data' in 'field list'[D:\phpStudy\WWW\moduleshop\thinkphp\library\think\db\Connection.php:699]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:39+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.189011s] [吞吐率：5.29req/s] [内存消耗：3,160.01kb] [文件加载：101]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/index.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_menu_list` [ RunTime:0.018001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = '0'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'mainadmin'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'adminUser'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'setting'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'smsManage'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'payment'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'sysLog'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'article'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'backupDb'  AND `group` = 'mainadmin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixin'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'weixinMaterial'  AND `group` = 'weixin'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shop'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopOrder'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopGoods'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopPromotion'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'groupBuy'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'spike'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'integral'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'defIndex'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'shopComment'  AND `group` = 'shop'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'distribution'  AND `group` = 'distribution'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'member'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `main_menu_list` WHERE  `parent` = 'memberLog'  AND `group` = 'member'  AND `status` = 1 ORDER BY `sort_order` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.010001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users` [ RunTime:0.009000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `users_account` [ RunTime:0.008001s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29892 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `users_account` WHERE  `user_id` = 29891 LIMIT 1 [ RunTime:0.000000s ]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+[ error ] [8]未定义数组索引: total_integral[D:\phpStudy\WWW\moduleshop\application\member\model\UsersModel.php:297]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:39+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.046003s] [吞吐率：21.74req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:51:41+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/shipping/id/10.html?ishtml=1&_=1552362701613
+[运行时间：0.053003s] [吞吐率：18.87req/s] [内存消耗：2,052.66kb] [文件加载：82]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'accept' => 'text/html, */*; q=0.01',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'ishtml' => '1',
+  '_' => '1552362701613',
+  'id' => '10',
+)
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\shipping.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'shippingOpt',
+  6 => 'kdnpingopt',
+  7 => 'orderInfo',
+) ]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:49+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/sys_admin.order/shipping.html
+[运行时间：1.102027s] [吞吐率：0.91req/s] [内存消耗：2,927.63kb] [文件加载：96]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'content-length' => '97',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'kd_type' => '3',
+  'shipping_id' => '',
+  'invoice_no' => '',
+  'kdn_shipping_id' => '6',
+  'kdeorder_goods_name' => '测试',
+  'id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping` [ RunTime:0.019001s ]
+[ sql ] [ SQL ] SELECT `kdn_code` FROM `shop_shipping` WHERE  `shipping_id` = 6 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `main_settings` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_appid' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_apikey' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_apiurl' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_name' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_phone' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_province' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_city' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_area' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `data` FROM `main_settings` WHERE  `name` = 'kdn_address' LIMIT 1 [ RunTime:0.001001s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.040000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.010000s ]
+[ sql ] [ SQL ] UPDATE `shop_order_info`  SET `shipping_id` = 6 , `invoice_no` = '444071189294' , `shipping_status` = 1 , `shipping_time` = 1552362708 , `update_time` = 1552362708  WHERE  `order_id` = 10 [ RunTime:0.030000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.041000s ]
+[ sql ] [ SQL ] INSERT INTO `shop_order_log` (`order_id` , `admin_id` , `order_status` , `shipping_status` , `pay_status` , `log_info` , `log_time`) VALUES (10 , 10002 , 1 , 1 , 1 , '操作发货' , 1552362709) [ RunTime:0.010000s ]
+[ error ] [8]未定义数组索引: is_del[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:219]
+[ error ] [8]未定义数组索引: order_status[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:228]
+[ error ] [8]未定义数组索引: order_status[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:245]
+[ error ] [8]未定义数组索引: pay_status[D:\phpStudy\WWW\moduleshop\application\shop\model\OrderModel.php:261]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:51+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.207012s] [吞吐率：4.83req/s] [内存消耗：3,100.54kb] [文件加载：98]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'no-cache',
+  'pragma' => 'no-cache',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_info` [ RunTime:0.023002s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_info` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_goods` [ RunTime:0.012001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_goods` WHERE  `order_id` = 10 ORDER BY `rec_id` ASC [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.014001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.018001s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ error ] [8]未定义数组索引: isCancel[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:203]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+---------------------------------------------------------------
+[ 2019-03-12T11:51:51+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.036002s] [吞吐率：27.78req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:51:51+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/api.shipping/getlog.html
+[运行时间：0.126007s] [吞吐率：7.94req/s] [内存消耗：2,599.27kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'content-length' => '11',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ error ] [2]Declaration of app\shop\model\ShippingLogModel::getInfo(&$orderInfo) should be compatible with app\BaseModel::getInfo($condition = '', $field = '*', $order = '')[D:\phpStudy\WWW\moduleshop\application\shop\model\ShippingLogModel.php:48]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping_log` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_shipping_log` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.001000s ]
+---------------------------------------------------------------
+[ 2019-03-12T11:52:00+08:00 ] 127.0.0.1 GET www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html
+[运行时间：0.087005s] [吞吐率：11.49req/s] [内存消耗：3,074.48kb] [文件加载：97]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ VIEW ] D:\phpStudy\WWW\moduleshop\application\shop\view\sys_admin\order\info.html [ array (
+  0 => 'menus',
+  1 => 'top_menus',
+  2 => '_module',
+  3 => 'admin',
+  4 => 'menus_group',
+  5 => 'orderLog',
+  6 => 'orderLang',
+  7 => 'operating',
+  8 => 'orderInfo',
+  9 => 'dividend_log',
+) ]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_order_log` [ RunTime:0.009001s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_order_log` WHERE  `order_id` = 10 ORDER BY `log_id` DESC [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `distribution_dividend_log` [ RunTime:0.008001s ]
+[ sql ] [ SQL ] SELECT * FROM `distribution_dividend_log` WHERE  `order_id` = 10 ORDER BY `level` ASC [ RunTime:0.001000s ]
+[ error ] [8]未定义数组索引: isCancel[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:203]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:413]
+[ error ] [8]未定义变量: row[D:\phpStudy\WWW\moduleshop\runtime\temp\d643b399db502e022cf6bb78cf917feb.php:483]
+---------------------------------------------------------------
+[ 2019-03-12T11:52:00+08:00 ] 127.0.0.1 GET www.moduleshop.top/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg
+[运行时间：0.037002s] [吞吐率：27.03req/s] [内存消耗：985.47kb] [文件加载：51]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+---------------------------------------------------------------
+[ 2019-03-12T11:52:00+08:00 ] 127.0.0.1 POST www.moduleshop.top/admin.php/shop/api.shipping/getlog.html
+[运行时间：0.141007s] [吞吐率：7.09req/s] [内存消耗：2,599.43kb] [文件加载：91]
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] D:\phpStudy\WWW\moduleshop\application\shop\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=n78m2a6m5paifetr1jr8sl17j5',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8,und;q=0.7',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.moduleshop.top/admin.php/shop/sys_admin.order/info/order_id/10.html',
+  'content-type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+  'x-requested-with' => 'XMLHttpRequest',
+  'origin' => 'http://www.moduleshop.top',
+  'accept' => 'application/json, text/javascript, */*; q=0.01',
+  'content-length' => '11',
+  'connection' => 'close',
+  'host' => 'www.moduleshop.top',
+)
+[ info ] [ PARAM ] array (
+  'order_id' => '10',
+)
+[ info ] [ DB ] INIT mysql
+[ error ] [2]Declaration of app\shop\model\ShippingLogModel::getInfo(&$orderInfo) should be compatible with app\BaseModel::getInfo($condition = '', $field = '*', $order = '')[D:\phpStudy\WWW\moduleshop\application\shop\model\ShippingLogModel.php:48]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000000s ] mysql:host=127.0.0.1;dbname=main_obj_db;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `shop_shipping_log` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `shop_shipping_log` WHERE  `order_id` = 10 LIMIT 1 [ RunTime:0.000000s ]
