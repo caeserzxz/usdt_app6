@@ -92,8 +92,7 @@ class OrderModel extends BaseModel
         if ($info['order_id'] < 1){
             $info = $this->where('order_id', $order_id)->find();
             if (empty($info)) return array();
-            $info = $info->toArray();
-            list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);			
+            $info = $info->toArray();           
 			
 			if ($info['is_dividend'] == 0){//提成处理
 				Db::startTrans();//启动事务
@@ -104,13 +103,14 @@ class OrderModel extends BaseModel
 					$res = $this->upInfo($resData,'sys');					
 					unset($resData);
 					if ($res > 0){
-						$info['is_dividend'] = 1;
+						 $info = $this->where('order_id', $order_id)->find();
 						Db::commit();// 提交事务
 					}else{
 						Db::rollback();// 回滚事务
 					}					
-				}
+				}				
 			}
+			list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);			
 			//end
             Cache::set($this->mkey . $order_id, $info, 30);
         }

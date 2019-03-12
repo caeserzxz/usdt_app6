@@ -96,9 +96,11 @@ class DividendModel extends BaseModel {
 		if ($parentId < 1)  return ['dividend_amount'=>$dividend_amount];
 		$order_goods_ids = [];
 		$order_goods_num = 0;
+		$goods_buy_num = [];//购买商品的数量
 		foreach ($goodsList as $goods){
 			$order_goods_ids[] = $goods['goods_id'];
 			$order_goods_num += $goods['goods_number'];
+			$goods_buy_num[$goods['goods_id']] = $goods['goods_number'];
 		}
 		
 		$DividendInfo = settings('DividendInfo');
@@ -116,18 +118,58 @@ class DividendModel extends BaseModel {
 		do {
 			$nowLevel += 1;
 			$userInfo = $this->UsersModel->info($parentId);//获取会员信息
+			
 			$parentId = $userInfo['pid'];//优先记录下次循环用户ID
 			if ($userInfo['role_id'] < 1){				
 				continue;//无身份，跳出
 			} 
-			foreach ($awardList as $key=>$award){				
+			
+			foreach ($awardList as $key=>$award){						
 				//判断身份是否满足条件
-				$award['limit_role'] = explode(',',$award['limit_role']);
-				if (in_array($userInfo['role_id'],$award['limit_role']) == false){
+				$limit_role = explode(',',$award['limit_role']);
+				
+				if (in_array($userInfo['role_id'],$limit_role) == false){
 					if($award['award_type'] == 2){//平推奖，如果当前用户不满足条件，此奖项终止
 						unset($awardList[$key]);//移除已结束的奖项
 					}
 					continue;
+				}
+				
+				$awardBuyNum = 0;//订购限制商品数量
+				if ($award['goods_limit'] == 2){//购买全部指定分销商品
+					$award_limit_buy_goods = explode(',',$award['buy_goods_id']);
+					$isOk = true;
+					foreach ($award_limit_buy_goods as $goods_id){						
+						if (in_array($goods_id,$order_goods_ids) == false){//限制商品不存在购买中，失败跳过						
+							$isOk =false;
+							continue;
+						}
+						$awardBuyNum += $goods_buy_num[$goods_id];
+					}
+					if ($isOk == false){//不满足购买限制，跳出					
+						continue;
+					}				
+					$goods_num = count($buy_goods_id) * $award['goods_limit_num'];
+					if ($order_goods_num < $goods_num){
+						continue;
+					}
+				}elseif ($award['goods_limit'] == 3){//购买任意指定分销商品
+					$award_limit_buy_goods= explode(',',$award['buy_goods_id']);
+					$isOk = false;
+					foreach ($award_limit_buy_goods as $goods_id){
+						if (in_array($goods_id,$order_goods_ids) == false){//限制商品存在购买中，成功跳出
+							$isOk = true;
+							$awardBuyNum += $goods_buy_num[$goods_id];
+						}
+					}
+					if ($isOk == false){//不满足购买限制，跳出
+						continue;
+					}
+					if ($order_goods_num < $award['goods_limit_num']){
+						continue;
+					}
+				}else{//购买任意分销商品
+					$awardBuyNum = $order_goods_num;
 				}
 				
 				$awardValue = json_decode($award['award_value'],true);	//奖项内容	
@@ -165,38 +207,6 @@ class DividendModel extends BaseModel {
 					$awardVal = $awardValue[$nowLevel];				
 				}
 				
-				if ($award['goods_limit'] == 2){//购买全部指定分销商品
-					$award_limit_buy_goods = explode(',',$award['buy_goods_id']);
-					$isOk = true;
-					foreach ($award_limit_buy_goods as $goods_id){						
-						if (in_array($goods_id,$order_goods_ids) == false){//限制商品不存在购买中，失败跳出						
-							$isOk =false;
-							continue;
-						}
-					}
-					if ($isOk == false){//不满足购买限制，跳出					
-						continue;
-					}				
-					$goods_num = count($buy_goods_id) * $award['goods_limit_num'];
-					if ($order_goods_num < $goods_num){
-						continue;
-					}
-				}elseif ($award['goods_limit'] == 3){//购买任意指定分销商品
-					$award_limit_buy_goods= explode(',',$award['buy_goods_id']);
-					$isOk = false;
-					foreach ($award_limit_buy_goods as $goods_id){
-						if (in_array($goods_id,$order_goods_ids) == false){//限制商品存在购买中，成功跳出
-							$isOk = true;
-							continue;
-						}
-					}
-					if ($isOk == false){//不满足购买限制，跳出
-						continue;
-					}
-					if ($order_goods_num < $award['goods_limit_num']){
-						continue;
-					}
-				}
 				
 				if ($award['award_type'] > 1 && empty($award['repeat_goods_id']) == false){//限制复购判断
 					$repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
@@ -215,19 +225,19 @@ class DividendModel extends BaseModel {
 				//满足条件执行奖项处理		
 				$inArr = [];			
 				if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
-					$dividend_amount += $awardVal['num'];//计算总佣金	
+					$dividend_amount += $awardVal['num'] * $awardBuyNum;//计算总佣金	
 					if ($awardVal['type'] == 'gold'){
-						$inArr['dividend_amount'] = $awardVal['num'];
+						$inArr['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
 					}else{
-						$inArr['dividend_bean'] = $awardVal['num'];
+						$inArr['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
 					}				
 				}elseif($award['award_type'] == 3){//管理奖				
 					$assignAwardNum[$award['award_id']] += $award_num;
-					$dividend_amount += $award_num;//计算总佣金
+					$dividend_amount += $award_num * $awardBuyNum;//计算总佣金
 					if ($awardVal['type'] == 'gold'){
-						$inArr['dividend_amount'] = $award_num;
+						$inArr['dividend_amount'] = $award_num * $awardBuyNum;
 					}else{
-						$inArr['dividend_bean'] = $award_num;
+						$inArr['dividend_bean'] = $award_num * $awardBuyNum;
 					}
 				}
 				$inArr['order_id'] = $orderInfo['order_id'];
@@ -242,11 +252,12 @@ class DividendModel extends BaseModel {
 				$inArr['award_name']   = $award['award_name'];
 				$inArr['level_award_name']   = $awardVal['name'];	
 				$inArr['add_time'] = $inArr['update_time'] = time();
-				$res = $this->save($inArr);
+				$res = self::create($inArr);
 				if ($res < 1) return false;
 				//执行模板消息通知
 			}
-			if (empty($awardList) == true){//没有奖项可分了，终止			
+			if (empty($awardList) == true){//没有奖项可分了，终止
+					
 				$parentId = 0;
 			}
 		}while($parentId > 0);

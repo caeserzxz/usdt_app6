@@ -92,7 +92,7 @@ class Users extends ApiController
 			makeDir($file_path);
 			$png = $QRcode::png($value, $file, "L", 10,1,2,true);		
 		}
-		$return['file'] = config('config.host_path').trim($file,'.');
+		$return['file'] = config('config.host_path').'/'.trim($file,'.');
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
