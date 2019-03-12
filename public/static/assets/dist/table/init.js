@@ -194,7 +194,7 @@ function(a) {
         function(a) {
 			$('#fallr-wrapper').remove();
             $.post(e,'',function(res){
-					G.ui.tips.suc(res.error,res.errno == 0?'reload':'');	
+					G.ui.tips.suc(res.msg,res.code == 0?'reload':'');	
 			 });
         }),
         !f && g()

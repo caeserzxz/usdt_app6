@@ -214,7 +214,7 @@ class DividendModel extends BaseModel {
 					$where[] = ['o.user_id','=',$userInfo['user_id']];
 					$where[] = ['o.add_time','>',$repeat_buy_day];
 					$where[] = ['o.order_status','=',$OrderModel->config['OS_CONFIRMED']];
-					$count = $OrderGoodsModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
+					$count = $OrderModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
 					if ($count < 1){
 						//模板消息通知
 						 continue;//不满足复购限制，跳出

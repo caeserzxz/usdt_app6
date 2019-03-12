@@ -103,11 +103,11 @@ class OrderModel extends BaseModel
 					$res = $this->upInfo($resData,'sys');					
 					unset($resData);
 					if ($res > 0){
-						 $info = $this->where('order_id', $order_id)->find();
 						Db::commit();// 提交事务
+						$info = $this->where('order_id', $order_id)->find()->toArray();
 					}else{
 						Db::rollback();// 回滚事务
-					}					
+					}		
 				}				
 			}
 			list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);			
