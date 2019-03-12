@@ -50,8 +50,10 @@ class DividendModel extends BaseModel {
 				$this->UsersModel->regUserBind($orderInfo['user_id']);
 			}
 			$log = $this->saveLog($orderInfo,$goodsList);//佣金计算				
-			if ($orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']){//如果订单状态已支付时调用				
+			if ($orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']){//如果订单状态已支付时调用		
+				
 				$res = $this->evalLevelUp($orderInfo,$goodsList,$orderInfo['user_id']);
+				
 				if ($res == false) return false;
 			}			
 			return $log;
@@ -109,6 +111,7 @@ class DividendModel extends BaseModel {
 		$roleInfo = $DividendRoleModel->info($orderInfo['role_id']);//获取用户下单时分销身份
 		$lastRole = $roleInfo['level'];//下级会员分佣身份级别
 		
+		$this->where('order_id',$orderInfo['order_id'])->delete();//清理旧的提成记录，重新计算
 		
 		do {
 			$nowLevel += 1;
@@ -254,7 +257,7 @@ class DividendModel extends BaseModel {
 	/*------------------------------------------------------ */ 
 	public function evalLevelUp(&$orderInfo,&$goodsList,$user_id=0){
 		//执行分销身份升级处理
-		$roleList = (new DividendRoleModel)->order('level ASC')->select();	
+		$roleList = (new DividendRoleModel)->getRows();	
 		$LogSysModel = new \app\member\model\LogSysModel();	
 		$oldFun = '';	
 		do {

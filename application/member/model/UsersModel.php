@@ -295,6 +295,9 @@ class UsersModel extends BaseModel
 		unset($info['password']);
 		$info['shareUrl'] = config('config.host_path').'/?share_token='.$info['token'];//分享链接
         $info['level'] = userLevel($info['total_integral'],false);//获取等级信息
+		if ($info['role_id'] > 0){
+			$info['role'] =$dividendRole = (new DividendRoleModel)->info($info['role_id']);	
+		}
 		Cache::set($this->mkey.$val,$info,30);
 		return $info;
 	}

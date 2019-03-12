@@ -221,10 +221,10 @@ class WeiXinModel extends BaseModel {
 	//-- 获取微信openid
 	/*------------------------------------------------------ */
 	function getWxOpenId(){
-		$code = I('code','','trim');
+		$code = input('code','','trim');
 		if (empty($code)){
 			//获取code
-			$redirect_uri = urlencode(get_url());
+			$redirect_uri = urlencode(getUrl());
 			//$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
 			return header("location:".$url);	

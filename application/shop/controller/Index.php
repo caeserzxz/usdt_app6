@@ -15,6 +15,7 @@ class Index  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index($isIndex = false){
+		
 		//调用自定义首页
 		if ($isIndex == false && settings('shop_index_tpl') == 1){
 			return $this->shopIndex();

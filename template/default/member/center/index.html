@@ -136,7 +136,11 @@
             }
             $('.nick_name').html(res.userInfo.nick_name);
 			$('.signature').html(res.userInfo.signature);
-            $('.level_name').html(res.userInfo.level.level_name);
+			if (typeof(res.userInfo.role) != 'undefined'){
+            	$('.level_name').html(res.userInfo.role.role_name);
+			}else{
+				$('.level_name').html(res.userInfo.level.level_name);				
+			}
             $('.balance_money').html(res.userInfo.account.balance_money);
             $('.use_integral').html(res.userInfo.account.use_integral);
             $('#headimgurl').attr('src',res.userInfo.headimgurl?res.userInfo.headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');

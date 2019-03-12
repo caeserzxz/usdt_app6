@@ -29,14 +29,9 @@ class Payment extends AdminController
 	//-- 信息页调用
 	//-- $data array 自动读取对应的数据
 	/*------------------------------------------------------ */
-	public function asInfo($data){
+	public function asInfo($data){	
 		if (empty($data['def_config']) == false){
-			$def_config = explode(',',$data['def_config']);
-			
-			foreach ($def_config as $key=>$prow){
-				$def_config[$key] = explode('|',$prow);
-			}
-			$this->assign("def_config", $def_config);
+			$data['def_config'] = json_decode($data['def_config'],true);		
 		}
 		$data['pay_config'] = json_decode(urldecode($data['pay_config']),true);
 		return $data;
