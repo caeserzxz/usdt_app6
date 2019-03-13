@@ -14,6 +14,9 @@ class Index  extends BaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index($isIndex = false){
+		/*$arr = (new WeiXinKeywordsModel)->checkKey(1,123);		
+		print_r($arr);
+		exit;*/
 		$WeiXinModel = new WeiXinModel();
 		$this->logResult('upload/1.txt','接收');
 		// 关注验证

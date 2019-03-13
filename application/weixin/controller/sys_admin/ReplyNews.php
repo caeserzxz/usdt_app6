@@ -167,6 +167,8 @@ class ReplyNews extends AdminController
    
 	/*------------------------------------------------------ */
 	//-- ajax快速修改
+	//-- id int 修改ID
+	//-- data array 修改字段
 	/*------------------------------------------------------ */
 	public function afterAjax($id,$data){
 		if (isset($data['status'])){
@@ -175,16 +177,16 @@ class ReplyNews extends AdminController
 			$info = '微信文本素材快速修改关注回复:'.($data['subscribe']==1?'启用':'停用');
 			if ($data['subscribe']==1){
 				$where[] = ['id','<>',$id];
-				$where[] = ['subscribe','=',1];
+				$where['subscribe'] = ['default','=',1];
 				$uparr['subscribe'] = 0;
 				$uparr['update_time'] = time();
-				$this->Model->where($where)->update($uparr);
+				$this->Model->where($map)->update($uparr);
 			}
 		}elseif (isset($data['default'])){
 			$info = '微信文本素材,快速修改默认回复:'.($data['default']==1?'启用':'停用');
 			if ($data['default'] == 1){
 				$where[] = ['id','<>',$id];
-				$where[] = ['default','=',1];
+				$where['default'] = ['default','=',1];
 				$uparr['default'] = 0;
 				$uparr['update_time'] = time();
 				$this->Model->where($where)->update($uparr);

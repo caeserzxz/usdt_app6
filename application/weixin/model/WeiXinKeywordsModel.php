@@ -36,7 +36,8 @@ class WeiXinKeywordsModel extends BaseModel
 		}else{
 			$where[] = ['','exp',Db::raw("FIND_IN_SET($keyword,keyword)")];
 		}
-        $_mkey = $this->mkey.'_'.$keyword;
+		$keyword = trim($keyword);
+        $_mkey = self::$mkey.'_'.$keyword;
 		$row = Cache::get($_mkey);
 		if ($row) return $row;
         $row = $this->where($where)->find();
@@ -61,7 +62,7 @@ class WeiXinKeywordsModel extends BaseModel
 			}else{
 				$rows[] = $row;
 			}
-			$domain = $this->request->domain();
+			
 			$Articles = array();
 			foreach ($rows as $key=>$row)
 			{

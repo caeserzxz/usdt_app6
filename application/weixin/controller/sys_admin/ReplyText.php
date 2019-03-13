@@ -98,20 +98,20 @@ class ReplyText extends AdminController
 		}elseif (isset($data['subscribe'])){
 			$info = '微信文本素材快速修改关注回复:'.($data['subscribe']==1?'启用':'停用');
 			if ($data['subscribe']==1){
-				$map['id'] = array('neq',$id);
-				$map['subscribe'] = 1;
+				$where[] = ['id','<>',$id];
+				$where['subscribe'] = ['default','=',1];
 				$uparr['subscribe'] = 0;
 				$uparr['update_time'] = time();
-				$this->Model->where($map)->save($uparr);
+				$this->Model->where($map)->update($uparr);
 			}
 		}elseif (isset($data['default'])){
 			$info = '微信文本素材,快速修改默认回复:'.($data['default']==1?'启用':'停用');
 			if ($data['default'] == 1){
-				$map['id'] = array('neq',$id);
-				$map['default'] = 1;
+				$where[] = ['id','<>',$id];
+				$where['default'] = ['default','=',1];
 				$uparr['default'] = 0;
 				$uparr['update_time'] = time();
-				$this->Model->where($map)->save($uparr);
+				$this->Model->where($where)->update($uparr);
 			}
 		}else{
 			return false;	
