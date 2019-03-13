@@ -53,10 +53,10 @@ class ReplyText extends AdminController
 		if (empty($data['keyword'])) return $this->error('关键字不能为空！');
 		$data['keyword'] = str_replace('，',',',$data['keyword']);
 		$keyword = explode(',',$data['keyword']);
-		foreach ($keyword as $key){
-			$where = [];
-			$where[] = ['','exp',Db::raw("FIND_IN_SET($key,keyword)")];
+		foreach ($keyword as $key){			
+			$where[] = ['','exp',Db::raw("FIND_IN_SET('".$key."',keyword)")];
 			if ($data['id'] > 0) $where[] = ['id','<>',$data['id']];
+			
 			$count = $this->Model->where($where)->count('id');
 			if ($count > 0) return $this->error($key.' - 已存在相同的关键字，不允许重复添加！');
 		}		

@@ -3,6 +3,7 @@
 namespace app\weixin\model;
 use app\BaseModel;
 use think\facade\Cache;
+use think\Db;
 //*------------------------------------------------------ */
 //-- 素材库
 /*------------------------------------------------------ */
@@ -10,7 +11,7 @@ class WeiXinKeywordsModel extends BaseModel
 {
 	protected $table = 'weixin_keywords';
 	public  $pk = 'id';
-	protected $mkey =  'mem_weixin_keywords_';
+	protected static $mkey =  'mem_weixin_keywords_';
 	 /*------------------------------------------------------ */
 	//-- 清除缓存
 	/*------------------------------------------------------ */ 
@@ -33,7 +34,7 @@ class WeiXinKeywordsModel extends BaseModel
             $where[] = ['subscribe','=',1];
 			$where[] = ['pid','=',0];
 		}else{
-			$where[] = ['','exp',Db::raw("FIND_IN_SET('".$keyword."',keyword)")];
+			$where[] = ['','exp',Db::raw("FIND_IN_SET($keyword,keyword)")];
 		}
         $_mkey = $this->mkey.'_'.$keyword;
 		$row = Cache::get($_mkey);
@@ -74,7 +75,7 @@ class WeiXinKeywordsModel extends BaseModel
 						$Articles[$key]['Url'] = $row['data'];
 					break;
 					case 'article':
-						$Articles[$key]['Url'] = _url('Shop/Article/info',array('id'=>$row['ext_id'],'plc_id'=>$plc_arr['plc_id']),false,true);
+						$Articles[$key]['Url'] = _url('shop/article/info',array('id'=>$row['ext_id']),false,true);
 					break;
 					case 'tel':
 						$Articles[$key]['Url'] = 'tel:'.$row['data'];
