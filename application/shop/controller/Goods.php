@@ -53,10 +53,14 @@ class Goods extends ClientbaseController{
     }
 	
 	/*------------------------------------------------------ */
-    //-- 商品评论页
+    //-- 商品分享页
     /*------------------------------------------------------ */
     public function myCode(){
 		$this->checkLogin(false);//验证白名单
+		$DividendShareByRole = settings('DividendShareByRole');
+		if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
+			return $this->error('请升级身份后再操作.');
+		}
 		$this->assign('title', '商品二维码');
 		$goods_id = input('goods_id',0,'intval');
 		$goods = $this->Model->info($goods_id);

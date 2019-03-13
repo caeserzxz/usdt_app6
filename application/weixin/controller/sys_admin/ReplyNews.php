@@ -177,7 +177,7 @@ class ReplyNews extends AdminController
 			$info = '微信文本素材快速修改关注回复:'.($data['subscribe']==1?'启用':'停用');
 			if ($data['subscribe']==1){
 				$where[] = ['id','<>',$id];
-				$where['subscribe'] = ['default','=',1];
+				$where['subscribe'] = ['subscribe','=',1];
 				$uparr['subscribe'] = 0;
 				$uparr['update_time'] = time();
 				$this->Model->where($map)->update($uparr);

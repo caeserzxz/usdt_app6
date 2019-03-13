@@ -25,9 +25,9 @@ class Setting extends AdminController
 	{
 		$Dividend = settings('DividendInfo');
 		$Dividend['status'] = settings('DividendSatus');
+		$Dividend['share_by_role'] = settings('DividendShareByRole');
 		$this->assign('Dividend',$Dividend);
-		$this->assign('share_bg',settings('share_bg'));
-		
+		$this->assign('share_bg',settings('share_bg'));		
 		return $this->fetch();
 	}
    
@@ -35,23 +35,10 @@ class Setting extends AdminController
 	//-- 保存配置
 	/*------------------------------------------------------ */
     public function save(){
-		$Dividend = input();
-		if ($this->Dividend['account_limit_money']) $Dividend['account_limit_money']=$this->Dividend['account_limit_money'];
-		$d_value = 51;
-		$max_point = 0;
-		$einfo = '系统限制了最高提成不能高于70%！';
-		foreach ($Dividend['LevelRow'] as $key=>$row){
-			if ($Dividend['dividend_model'] == 1 ){
-				if ($row['money'] >= $d_value) return $this->error($einfo);
-				$max_point += $row['money'] * 1;
-			}
-			
-		}
-		if ($Dividend['dividend_model'] == 1 ){
-			if ($max_money > 70 || $max_point > 70) return $this->error('系统限制了总提成不能高于70%！');	
-		}
+		$Dividend = input();		
 		$arr['DividendSatus'] = $Dividend['status'];
-		unset($Dividend['status'],$Dividend['share_bg']);
+		$arr['DividendShareByRole'] = $Dividend['share_by_role'] * 1;
+		unset($Dividend['status'],$DividendSatus['DividendShareByRole'],$Dividend['share_bg']);
 		$arr['DividendInfo'] = json_encode($Dividend);
 		$arr['share_bg'] = input('share_bg','','trim');
 		$res = $this->Model->editSave($arr);

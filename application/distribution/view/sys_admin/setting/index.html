@@ -40,7 +40,17 @@
                         </label>
                       </div>
                  </div>
-              	
+              	<div class="form-group m-t">
+                      <label class=" control-label">分享权限：</label>
+                      <div class="controls">
+                        <label class="radio-inline">
+                          <input name="share_by_role" value="0" {$Dividend['share_by_role']==0?'checked':''} type="radio" > 无需身份
+                        </label>
+                        <label class="radio-inline">
+                          <input name="share_by_role" value="1" {$Dividend['share_by_role']==1?'checked':''} type="radio"> 需分佣身份
+                        </label>
+                      </div>
+                 </div>
                 <div class="form-group">
                           <label class=" control-label">结算时间间隔：</label>
                           <div class="col-sm-4 controls">
