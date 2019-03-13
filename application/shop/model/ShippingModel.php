@@ -21,15 +21,15 @@ class ShippingModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 列表
 	/*------------------------------------------------------ */
-	public static function getRows(){
-		$data = Cache::get(self::$mkey);
-		if ($data) return $data;
-		$rows = self::field('*,shipping_id as id,shipping_name as name')->select()->toArray();
-		foreach ($rows as $row){
+	public static function getRows($where_filed ='shipping_code'){
+        $data = Cache::get(self::$mkey . $where_filed);
+        if ($data) return $data;
+        $rows = self::field('*,shipping_id as id,shipping_name as name')->where($where_filed . " != ''")->select()->toArray();
+        foreach ($rows as $row) {
             $data[$row['shipping_id']] = $row;
-		}
-		Cache::set(self::$mkey,$data,600);
-		return $data;
+        }
+        Cache::set(self::$mkey . $where_filed, $data, 600);
+        return $data;
 	}
     /*------------------------------------------------------ */
     //-- 运费模板调用
