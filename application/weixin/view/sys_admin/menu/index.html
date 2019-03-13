@@ -49,7 +49,7 @@
                     <input type="text" class="input-medium" size="15" value="{$vo.name}"  name="ps[{$vo.id}][name]" data-rule-required="true" data-rule-maxlength="30" style="width:150px;" />
                   </td>
                   <td>
-                    <select name="ps[{$vo.id}][type]" id="ps_type_{$vo.id}" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,'ps',{$vo.id});">
+                    <select name="ps[{$vo.id}][type]" id="ps_type_{$vo.id}" class="input-small" style="width:150px;" onChange="getKeywordSelect(this,'ps',{$vo.id});">
                         <option value="0">--请选择--</option>
                         {$vo.event_select|raw}
                     </select>
@@ -76,7 +76,7 @@
             <div class="form-group m-t">
               <a href="javascript:void(0)" id="add_menu" class="btn  btn-default m-r" style=" margin-left:20px;"><i class="fa fa-plus m-r-xs"></i>添加主菜单</a>
               <button id="bsubmit" type="submit" data-loading-text="提交中..." class="btn btn-primary">保存</button>
-              <button id="create_menu" type="button" class="btn btn-primary" style="margin:0px 20px;">生成自定义菜单</button>
+              <button id="create_menu" type="button" class="btn btn-primary" style="margin:0px 20px;">推送菜单到微信公众号(先保存)</button>
               <button id="remove_menu" type="button" class="btn">撤销自定义菜单</button>
                 
             </div>
@@ -99,9 +99,9 @@
 						   + '<td><input name="new[sort][' + _menu_index + ']" size="3" type="text" value="0" class="input-ssmall"  /></td>'
 						   + '<td><i class="fa fa-plus cursor_p add" title="添加子菜单" rel="'+_menu_index+'" style="float:right; padding-right:10px; padding-top:8px;"></i><input name="new[name][' + _menu_index + ']" size="15" type="text" class="input-medium" data-rule-required="true" data-rule-maxlength="30" style="width:150px;" /></td>'
 						   + '<td>'
-						   + '<select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
+						   + '<select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:100%" onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
 						   + '    <option value="0">--请选择--</option>'
-						   + '	{$WeixinEventType_opt}'
+						   + '	{$WeixinEventType_opt|raw}'
 						   + '</select>'
 						   + '</td>'
 						   + '<td>'
@@ -109,7 +109,7 @@
 						   + '</td><td>'
 						   + '<input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
 						   + '<input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '" type="hidden" >'
-						   + '<input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium"  type="text"  style="width:60%">'
+						   + '<input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium"  type="text"  style="width:100%">'
 						   + '</td>'
 						   + '<td><label class="m-t"><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'
 						   + '<td><a href="javascript:void(0)" class="del fa fa-trash"></a></td>'
@@ -125,7 +125,7 @@
 						  + '<td><input name="new[sort][' + _menu_index + ']" size="3" type="text" value="0" class="input-ssmall"   /></td>'
 						  + '<td><i class="board"></i><input name="new[name][' + _menu_index + ']" size="15" type="text" class="input-medium" data-rule-required="true" data-rule-maxlength="30" style="width:150px;"/></td>'
 						  + '<td>'
-						  + '  <select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:120px;" onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
+						  + '  <select name="new[type][' + _menu_index + ']" id="new_type_' + _menu_index + '" class="input-small" style="width:150px"  onChange="getKeywordSelect(this,-1,' + _menu_index + ');">'
 						  + '    <option value="0">--请选择--</option>'
 						   + '	{$WeixinEventType_opt|raw}'
 						  + '  </select>'
@@ -134,7 +134,7 @@
 						+ '</td><td>'
 						  + '  <input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
 						  + '  <input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '"   type="hidden"   >'
-						  + '  <input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium" type="text"   style="width:60%">'
+						  + '  <input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium" type="text"   style="width:100%">'
 						
 						  + '</td>'
 						  + '<td><label><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'

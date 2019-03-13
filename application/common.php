@@ -314,73 +314,41 @@ function returnRecArr(&$rows){
 //-- @param   int     $kd_type           快递类型：0 快递100； 1 快递鸟
 //-- @return  string
 /*------------------------------------------------------ */
-function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0,$kd_type = 0 ){
+function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 ){
 	$select = '';
 	$selected = explode(',',$selected);
 	foreach ($rows AS $key=>$val){
 		if (is_array($val) == false){
 			$selected = (in_array($key,$selected)) ? "selected='selected'" : '';
 			$select .= '<option value="'.$key.'" '.$selected.'>'.$val.'</option>';
-			 continue;
+			 continue;	
 		}
-		if ($level > 0 && $val['level'] > $level) continue;
-		if ($kd_type == 0 && $val['shipping_code']) {
-			//快递100
-			$select .= '<option ';
-			if ($islimit === true && $val['children'] != $val['id']) {
-				$val['id'] = '';
-				$select .= ' style="background:#999;" ';
-			}
-
-			if (isset($val['status']) && $val['status'] == 0) {
-				$select .= ' style="color:#CCC;" ';
-			} elseif (isset($val['is_sys']) && $val['is_sys'] == 1) {
-				$select .= ' style="color:#ff0000;"  ';
-			}
-			$text = htmlspecialchars(strip_tags($val['name']));
-			if (empty($val['dict_val']) == false) {
-				$select .= ' value="' . $val['ext_val'] . '"  ';
-				$selval = $val['ext_val'];
-			} else {
-				$select .= ' value="' . $val['id'] . '" ';
-				$selval = $val['id'];
-
-			}
-			$select .= (in_array($selval, $selected)) ? "selected='selected'" : '';
-			$select .= ' data-text="' . $text . '" label="' . $text . '" >';
-			if (isset($val['icon'])) $select .= $val['icon'];
-			$select .= $text;
-			$select .= '</option>';
+		if ($level > 0 && $val['level'] > $level) continue;		
+		$select .= '<option ';
+		if ($islimit === true && $val['children'] != $val['id'] ){
+			$val['id'] = '';
+			$select .=  ' style="background:#999;" ';
 		}
-		if ($kd_type == 1 && $val['kdn_code']) {
-			//快递100
-			$select .= '<option ';
-			if ($islimit === true && $val['children'] != $val['id']) {
-				$val['id'] = '';
-				$select .= ' style="background:#999;" ';
-			}
-
-			if (isset($val['status']) && $val['status'] == 0) {
-				$select .= ' style="color:#CCC;" ';
-			} elseif (isset($val['is_sys']) && $val['is_sys'] == 1) {
-				$select .= ' style="color:#ff0000;"  ';
-			}
-			$text = htmlspecialchars(strip_tags($val['name']));
-			if (empty($val['dict_val']) == false) {
-				$select .= ' value="' . $val['ext_val'] . '"  ';
-				$selval = $val['ext_val'];
-			} else {
-				$select .= ' value="' . $val['id'] . '" ';
-				$selval = $val['id'];
-
-			}
-			$select .= (in_array($selval, $selected)) ? "selected='selected'" : '';
-			$select .= ' data-text="' . $text . '" label="' . $text . '" >';
-			if (isset($val['icon'])) $select .= $val['icon'];
-			$select .= $text;
-			$select .= '</option>';
+		
+		if (isset($val['status']) && $val['status'] == 0){
+			$select .=  ' style="color:#CCC;" ';
+		}elseif (isset($val['is_sys']) && $val['is_sys'] == 1){
+			$select .=  ' style="color:#ff0000;"  ';
 		}
-
+	    $text = htmlspecialchars(strip_tags($val['name']));
+		if (empty($val['dict_val']) == false){
+			$select .= ' value="'.$val['ext_val'].'"  ';
+			$selval = $val['ext_val'];
+		}else{
+			$select .= ' value="'.$val['id'].'" ';
+			$selval = $val['id'];
+			
+		}
+		$select .= (in_array($selval,$selected)) ? "selected='selected'" : '';
+		$select .= ' data-text="'.$text.'" label="'.$text.'" >';		
+		if (isset($val['icon'])) $select .= $val['icon'];
+		$select .= $text;
+		$select .= '</option>';
 	}
 	return $select;
 }

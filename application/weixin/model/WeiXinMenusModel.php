@@ -57,9 +57,9 @@ class WeiXinMenusModel extends BaseModel
 			}else{
 				$up_arr['is_show'] = 0;
 			}
-			$up_arr['update_time'] = gmtime();
+			$up_arr['update_time'] = time();
 			$up_arr['type'] = $up_menu['type'];
-			$res = $this->where($where)->save($up_arr);
+			$res = $this->where($where)->update($up_arr);
 		}		
 		if ($res < 1)  return array('res'=>1,'error'=>'保存失败！');
 		// 更新清除用户memcache

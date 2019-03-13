@@ -43,7 +43,7 @@ class OrderModel extends BaseModel
         $user_id = $user_id * 1;
         $mkey = $this->mkey . '_user_stat_' . $user_id;
         $info = Cache::get($mkey);
-        if (empty($info)) return $info;
+        if (empty($info) == false) return $info;
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['order_status', 'in', [0, 1]];
         $info['all_num'] = $this->where($where)->count('order_id');//全部非取消订单

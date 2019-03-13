@@ -49,7 +49,7 @@ class Menu extends AdminController
 	//-- update by yxb
 	/*------------------------------------------------------ */
     public function delete(){
-	   $mapb['pid'] = $map['id'] = I('id',0,'intval');
+	   $mapb['pid'] = $map['id'] = input('id',0,'intval');
 	   if($map['id'] < 1) return $this->error('非法操作！');
 	   $res = $this->Model->where($map)->delete();
        if ($res <　1) return $this->error();
@@ -62,22 +62,19 @@ class Menu extends AdminController
 	function push(){		
 		$where[] = ['pid','=',0];
 		$where[] = ['is_show','=',1];
-		$rows = $this->Model->where()->order('sort,id ASC')->limit(3)->select();
+		$rows = $this->Model->where($where)->order('sort,id ASC')->limit(3)->select()->toArray();
 		$bntarr = array();
 		foreach ($rows as $row){			
 			unset($p_row,$where);
 			$where[] = ['pid','=',$row['id']];
 			$where[] = ['is_show','=',1];
-			$rowsb = $this->Model->where($where)->order('sort,id ASC')->limit(5)->select();
+			$rowsb = $this->Model->where($where)->order('sort,id ASC')->limit(5)->select()->toArray();
 			$p_row['name'] = urlencode($row['name']);	
-			if ($rowsb){
+			if (empty($rowsb) == false){
 				foreach ($rowsb as $rowb){
 					$_row['type'] = $rowb['type'];
 					if ($rowb['type'] == 'click'){
-						$_row['key'] =  urlencode($rowb['keyword_value']);
-					}elseif ($rowb['type'] == 'OnlineService'){//在线客服
-						$_row['type'] = 'click';		
-						$_row['key'] = urlencode('【在线客服】');
+						$_row['key'] =  urlencode($rowb['keyword_value']);					
 					}else{
 						if ($rowb['keyword'] >= 1){							
 							$_row['url'] = _url('shop/article/info',array('id'=>$rowb['keyword']),false,true);
@@ -91,13 +88,10 @@ class Menu extends AdminController
 			}else{	
 			    $p_row['type'] = $row['type'];
 				if ($row['type'] == 'click'){
-					$p_row['key'] = urlencode($row['keyword_value']);
-				}elseif ($row['type'] == 'OnlineService'){//在线客服
-					$p_row['type'] = 'click';		
-					$p_row['key'] = urlencode('【在线客服】');
+					$p_row['key'] = urlencode($row['keyword_value']);			
 				}else{
 					if ($row['keyword'] >= 1){
-						$p_row['url'] = _url('Shop/article/info',array('id'=>$row['keyword']),false,true);
+						$p_row['url'] = _url('shop/article/info',array('id'=>$row['keyword']),false,true);
 					}else{
 						$p_row['url'] = $p_row['type'] == 'view' ? $row['keyword_value'] : urlencode($row['keyword_value']);
 					}
@@ -114,7 +108,7 @@ class Menu extends AdminController
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
 		
-		return $this->success();
+		return $this->success('推送微信菜单成功.');
 	}
 	/*------------------------------------------------------ */
 	//-- 撤销微信菜单

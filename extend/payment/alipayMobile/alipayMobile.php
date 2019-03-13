@@ -31,7 +31,7 @@ class alipayMobile
         unset($_REQUEST['pay_code']);// 删除掉 以免被进入签名
         
         $payment =  (new PaymentModel)->where('pay_code', 'alipayMobile')->find(); // 找到支付插件的配置
-        $config_value = json_decode(urldecode($payment['pay_config']),true); // 配置反序列化     
+        $config_value = json_decode(urldecode($payment['pay_config']),true);    
 		
         $this->alipay_config['alipay_pay_method']= $config_value['alipay_pay_method']; // 1 使用担保交易接口  2 使用即时到帐交易接口s
         $this->alipay_config['partner']       = $config_value['alipay_partner'];//合作身份者id，以2088开头的16位纯数字
@@ -65,8 +65,8 @@ class alipayMobile
                         'seller_id'=> trim($this->alipay_config['partner']), //收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
                         "key" => trim($this->alipay_config['key']), // MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
                         // "seller_email" => trim($this->alipay_config['seller_email']),                                            
-                        "notify_url"	=>  config('config.host_path').url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile')) , //服务器异步通知页面路径 //必填，不能修改
-                        "return_url"	=> config('config.host_path').url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
+                        "notify_url"	=>  url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile'),'',true,true) , //服务器异步通知页面路径 //必填，不能修改
+                        "return_url"	=>  url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
                         "sign_type"     => strtoupper('MD5'), //签名方式
                         "input_charset" =>strtolower('utf-8'), //字符编码格式 目前支持utf-8
                         "cacert"	=>  getcwd().'\\cacert.pem',
