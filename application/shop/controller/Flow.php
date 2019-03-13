@@ -28,12 +28,18 @@ class Flow extends ClientbaseController{
     /*------------------------------------------------------ */
     public function done(){
         $order_id = input('order_id',0,'intval');
+		$type = input('type','','trim');
         $this->assign('title', '订单支付');
         $OrderModel = new OrderModel();
         $orderInfo = $OrderModel->info($order_id);
         if (empty($orderInfo) || $orderInfo['user_id'] != $this->userInfo['user_id']){
             $this->error('订单不存在.');
         }
+		$goPay = 0;
+		if ($type == 'add' && $orderInfo['pay_status'] == config('config.PS_UNPAYED')){
+			$goPay = 1;
+		}
+		$this->assign('goPay', $goPay);
         $this->assign('orderInfo', $orderInfo);
         return $this->fetch('done');
     }

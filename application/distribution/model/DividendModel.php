@@ -78,6 +78,8 @@ class DividendModel extends BaseModel {
 			$upData['status'] = $OrderModel->config['DD_RETURNED'];
 		}		
 		if (empty($upData) == false){//更新分佣状态
+			$count = $this->where('order_id',$orderInfo['order_id'])->count();
+			if ($count < 1) return true;//如果没有佣金记录不执行
 			$upData['update_time'] = time();
 			$res = $this->where('order_id',$orderInfo['order_id'])->update($upData);
 			if ($res < 1) return false;

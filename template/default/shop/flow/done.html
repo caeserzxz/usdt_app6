@@ -90,6 +90,7 @@
 {/block}
 {block name="footer"}
 <script type="text/javascript">
+var goPay = {$goPay};
   //选择支付方式
   $('.gopay').on('click',function(){
 	  jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
@@ -113,5 +114,8 @@
 		var pay_code = obj.data("pay_code");
 	  window.location.href = '{:_url("shop/payment/getCode",["order_id"=>$orderInfo['order_id'],"pay_code"=>"【pay_code】"])}';
   });
+  if (goPay == 1){
+	   window.location.href = '{:_url("shop/payment/getCode",["order_id"=>$orderInfo['order_id'],"pay_code"=>$orderInfo['pay_code']])}';
+ }
 </script>
 {/block}

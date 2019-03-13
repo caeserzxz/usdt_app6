@@ -8,7 +8,7 @@ use think\Db;
 use app\member\model\RechargeLogModel;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
-
+use app\member\model\AccountLogModel;
 class Payment extends ClientbaseController
 {
     public $payment; //  具体的支付类
@@ -29,11 +29,12 @@ class Payment extends ClientbaseController
         if (empty($this->pay_code)) {
             exit('pay_code 不能为空');
         }
-
-        // 导入具体的支付类文件
-		$code = str_replace('/','\\',"/payment/{$this->pay_code}/{$this->pay_code}");
-       
-        $this->payment = new $code();
+		if ($this->pay_code != 'balance') {
+			// 导入具体的支付类文件
+			$code = str_replace('/','\\',"/payment/{$this->pay_code}/{$this->pay_code}");
+		   
+			$this->payment = new $code();
+		}
     }
 
     /**
@@ -49,12 +50,32 @@ class Payment extends ClientbaseController
 		$OrderModel = new OrderModel();
         $order = $OrderModel->where("order_id", $order_id)->find();
         if ($order['pay_status'] == 1) {
-            $this->error('此订单，已完成支付!');
+            $this->error('此订单，已完成支付!',url('shop/flow/done',['order_id'=>$order_id]));
         }
+		 if ($order['order_status'] == 2) {
+            $this->error('此订单，已取消不能执行支付!',url('shop/flow/done',['order_id'=>$order_id]));
+        }
+		$payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
 		
+		if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
+            if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
+                return $this->error('余额不足，请使用其它支付方式.',url('shop/flow/done',['order_id'=>$order_id]));
+            }
+            //余额完成支付
+			$upArr['order_id'] = $order_id;
+			$upArr['pay_code'] = $this->pay_code;
+			$upArr['pay_id'] = $payment['pay_id'];
+			$upArr['pay_name'] = $payment['pay_name'];			     
+			$res = $OrderModel->updatePay($upArr,'余额支付成功.');
+			if ($res !== true){				
+				 return $this->error($res);
+			}	
+			return $this->redirect('shop/flow/done',['order_id'=>$order_id]);
 
-        $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
-        $OrderModel->where("order_id", $order_id)->update(['pay_code'=>$this->pay_code,'pay_id'=>$payment['pay_id'],'pay_name'=>$payment['pay_name']]);
+        }
+
+        
+        $OrderModel->where("order_id", $order_id)->update(['is_pay'=>$payment['is_pay'],'pay_code'=>$this->pay_code,'pay_id'=>$payment['pay_id'],'pay_name'=>$payment['pay_name']]);
 
         // 订单支付提交
         $config = parseUrlParam($this->pay_code); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
@@ -68,7 +89,7 @@ class Payment extends ClientbaseController
             //微信H5支付
             $return = $this->payment->get_code($order, $config);
             if ($return['status'] != 1) {
-                $this->error($return['msg']);
+                $this->error($return['msg'],url('shop/flow/done',['order_id'=>$order_id]));
             }
             $this->assign('deeplink', $return['result']);
         } else {

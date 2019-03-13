@@ -235,10 +235,10 @@ class Flow extends ApiController
             if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.');
             }
-            $orderConfig = (include Env::get('app_path') . "shop/config/config.php");
+            
             //余额完成支付
-            $inArr['order_status'] = $orderConfig['OS_CONFIRMED'];
-            $inArr['pay_status'] = $orderConfig['PS_PAYED'];
+            $inArr['order_status'] = config('config.OS_CONFIRMED');
+            $inArr['pay_status'] = config('config.PS_PAYED');
             $inArr['money_paid'] = $inArr['order_amount'];
             $inArr['pay_time'] = $time;
             $_log .= ',余额支付成功.';

@@ -126,6 +126,7 @@ class OrderModel extends BaseModel
                 $info['isPay'] = 1;
                 $info['ostatus'] = '待付款';
                 $shop_order_auto_cancel = settings('shop_order_auto_cancel');
+				
                 if ($shop_order_auto_cancel > 0 ) {//下单时间，超过未付款的自动取消订单
                     $info['countdown'] = 1;
                     $info['last_time'] =  $info['add_time'] + ($shop_order_auto_cancel * 60) - $time;
@@ -133,8 +134,8 @@ class OrderModel extends BaseModel
                         $upData['order_id'] = $order_id;
                         $upData['order_status'] = $this->config['OS_CANCELED'];
                         $upData['cancel_time'] = $time;
-                        $res = $this->upInfo($upData);
-                        if ($res > 0) {
+                        $res = $this->upInfo($upData,'sys');					
+                        if ($res == true) {
                             $info['ostatus'] = '已取消';
                         }
                     }
@@ -211,7 +212,7 @@ class OrderModel extends BaseModel
         if (empty($orderInfo)) return '订单不存在.';
 		$orderInfo = $orderInfo->toArray();
         if (defined('AUID') == false && $extType != 'sys'){
-            if($this->userInfo['user_id'] != $orderInfo['user_id']){
+            if($this->userInfo['user_id'] != $orderInfo['user_id']){				
                 return '无权操作';
             }
         }
@@ -225,7 +226,8 @@ class OrderModel extends BaseModel
         $OrderGoodsModel = new OrderGoodsModel();
         $AccountLogModel = new AccountLogModel();
 
-        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单			
+        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单		
+		
             //订单支付成功
             if ($upData['pay_status'] == $this->config['PS_PAYED']){
                 if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
@@ -236,6 +238,21 @@ class OrderModel extends BaseModel
                         return '支付扣库存失败.';
                     }
                 }
+				
+				if ($orderInfo['pay_code'] == 'balance' || $upData['pay_code'] == 'balance'){					
+					$upData['money_paid'] = $orderInfo['order_amount'];
+					$upData['pay_time'] = time();
+					
+					$changedata['change_desc'] = '订单余额支付';
+					$changedata['change_type'] = 3;
+					$changedata['by_id'] = $order_id;
+					$changedata['balance_money'] = $orderInfo['order_amount'] * -1;
+					$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+					if ($res !== true) {
+						Db::rollback();// 回滚事务
+						return '支付失败，更新余额失败.';
+					}				
+				}
 				$res = $this->distribution($orderInfo,'pay');//提成处理
 				if ($res !== true) {
 					Db::rollback();// 回滚事务
@@ -478,9 +495,15 @@ class OrderModel extends BaseModel
 	 /*------------------------------------------------------ */
     //-- 订单在线支付成功处理
     /*------------------------------------------------------ */
-	public function updatePay($upData = []){
+	public function updatePay($upData = [],$_log = '支付成功'){
 		$upData['pay_status'] = $this->config['PS_PAYED'];
 		$upData['order_status'] = $this->config['OS_CONFIRMED'];
-		return $this->upInfo($upData);
+		$res = $this->upInfo($upData,'sys');
+		if ($res == true){			
+			$orderInfo = $this->info($upData['order_id']);
+		 	$this->_log($orderInfo,$_log);	
+			return true;	
+		}
+		return $res;
 	}
 }

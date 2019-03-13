@@ -223,7 +223,7 @@
                     _alert(res.msg);
                     return false;
                 }
-                window.location.href = '{:_url("done",["order_id"=>"【res.order_id】"])}';
+                window.location.href = '{:_url("done",["order_id"=>"【res.order_id】","type"=>"add"])}';
             })
         })
     })

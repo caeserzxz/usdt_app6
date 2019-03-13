@@ -32,12 +32,14 @@ class ClientbaseController extends BaseController
 	/*------------------------------------------------------ */
     public function initialize()
     {
+		global $userInfo;
 		parent::initialize();
 		$share_token = input('share_token','','trim');
 		if (empty($share_token) == false){
 			session('share_token',$share_token);
 		}
-        $this->userInfo = $this->getLoginInfo();
+        $userInfo = $this->getLoginInfo();
+        $this->userInfo = $userInfo;
          // 当前路由信息
         $this->getRouteinfo();
         //验证登陆
