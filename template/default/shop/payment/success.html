@@ -1,0 +1,42 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+        <img src="__STATIC__/mobile/default/images/payY.png" alt="">
+        <p class="fs34 fw_b color_3">订单支付成功 </p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">已支付订单金额</span>   
+    </div>
+    <div class="cellBox">
+        <div class="line"></div>
+        <div class="cell">
+            <span class="fs28 color_3">积分抵扣</span><span class="fs34 num color_3">0</span>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">优惠券</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">折扣</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.discount}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">运费</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em></div>
+        </div>
+    </div>
+    <div class="button">
+        <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
+        <a href="{:url('order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
+           </div>
+</div>
+
+
+
+{/block}
+{block name="footer"}
+
+{/block}
+

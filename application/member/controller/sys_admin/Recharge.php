@@ -106,7 +106,7 @@ class Recharge extends AdminController
 	//-- 修改后处理
 	/*------------------------------------------------------ */
     public function afterEdit($data){
-		if ($data['status'] == 9){//拒绝提现，退回帐户
+		if ($data['status'] == 9){
 			$info = $this->Model->find($data['log_id']);
 			$AccountLogModel = new AccountLogModel();
 			$changedata['change_desc'] = '充值到帐';

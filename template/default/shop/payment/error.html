@@ -1,0 +1,60 @@
+<include file="public/header" title="支付失败"/>
+<div class="completionpay">
+    <div class="maleri30">
+        <div class="llog"><img src="{$tpshop_config['shop_info_store_logo']}"/></div>
+        <div class="heses">
+            <div class="zbzim"><img src="__STATIC__/images/icogantanhao-sb.png"/></div>
+            <p class="success"><span class="red">抱歉订单支付失败！</span></p>
+            <p class="ddnum"><span>订单号：</span><span>{$order['order_sn']}</span></p>
+            <p class="ddnum"><span>付款金额：</span><span class="red">{$order['order_amount']}</span><span>元</span></p>
+            <p class="ddnum"><span>您可以重新支付</span></p>
+            <div class="ddxq-succ">
+                <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">订单详情</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+       
+        <p class="fs34 fw_b color_3">抱歉订单支付失败 </p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">待支付订单金额</span>   
+    </div>
+    <div class="cellBox">
+        <div class="line"></div>
+        <div class="cell">
+            <span class="fs28 color_3">积分抵扣</span><span class="fs34 num color_3">0</span>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">优惠券</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">折扣</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.discount}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">运费</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em></div>
+        </div>
+    </div>
+    <div class="button">
+        <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
+        <a href="{:url('order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
+           </div>
+</div>
+
+
+
+{/block}
+{block name="footer"}
+
+{/block}
+

@@ -241,7 +241,9 @@ class OrderModel extends BaseModel
 					Db::rollback();// 回滚事务
 					return '佣金处理失败.';
                 }
+				$upData['pay_time'] = time();
             }
+			$upData['confirm_time'] = time();
         }elseif ($upData['order_status'] == $this->config['OS_CANCELED'] ) {//取消订单
             
 			$res = $this->distribution($orderInfo,'cancel');//提成处理
@@ -459,5 +461,26 @@ class OrderModel extends BaseModel
 			return (new \app\distribution\model\DividendModel)->_eval($orderInfo,$type);
 		}
 		return true;
+	}
+	/**
+	 * 订单支付时, 获取订单商品名称
+	 * @param unknown $order_id
+	 * @return string|Ambigous <string, unknown>
+	 */
+	function getPayBody($order_id){
+	
+		if(empty($order_id))return "订单ID参数错误";
+		$goodsNames = (new OrderGoodsModel)->where('order_id' , $order_id)->column('goods_name');
+		$gns = implode($goodsNames, ',');
+		$payBody = getSubstr($gns, 0, 18);
+		return $payBody;
+	}
+	 /*------------------------------------------------------ */
+    //-- 订单在线支付成功处理
+    /*------------------------------------------------------ */
+	public function updatePay($upData = []){
+		$upData['pay_status'] = $this->config['PS_PAYED'];
+		$upData['order_status'] = $this->config['OS_CONFIRMED'];
+		return $this->upInfo($upData);
 	}
 }

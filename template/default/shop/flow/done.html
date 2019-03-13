@@ -12,10 +12,14 @@
         <p class="fs34 fw_b color_3">待支付订单</p>
         <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
         <span class="fs24 color_9">待支付订单金额</span>
+        {elseif condition="$orderInfo.pay_code == 'cod'" /}
+        	<p class="fs34 fw_b color_3">订单提交成功</p>
+        	<div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        	<span class="fs24 color_9">订单金额</span>
         {else/}
-        <p class="fs34 fw_b color_3">订单支付成功 </p>
-        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-        <span class="fs24 color_9">已支付订单金额</span>
+            <p class="fs34 fw_b color_3">订单支付成功 </p>
+            <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+            <span class="fs24 color_9">已支付订单金额</span>
         {/if}
 
     </div>
@@ -54,7 +58,7 @@
 
         </div>
         <div class="buttBox">
-            <span class="fs32 fw_b color_w BGcolor_r ">确认支付</span>
+            <span class="fs32 fw_b color_w BGcolor_r payBtn">确认支付</span>
         </div>
     </div>
 </div>
@@ -75,7 +79,7 @@
         </label>
         <label for="{{item.pay_code}}">
             <div class="iconBox">
-                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" id="{{item.pay_code}}" >
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" data-pay_code="{{item.pay_code}}" id="{{item.pay_code}}" >
                 <i class="icon_checked"></i>
             </div>
         </label>
@@ -97,8 +101,17 @@
 		  $('.model').show();
 	  });
   });
-    $('.closeBox').on('click',function(){
+  $('.closeBox').on('click',function(){
             $('.model').hide();
-        });
+  });
+  $('.payBtn').on('click',function(){	  
+ 		var obj = $('input:radio[name="pay_id"]:checked');      	
+		if (typeof(obj.val()) == 'undefined') {
+		    _alert('请选择支付方式.');
+			return false;
+		}
+		var pay_code = obj.data("pay_code");
+	  window.location.href = '{:_url("shop/payment/getCode",["order_id"=>$orderInfo['order_id'],"pay_code"=>"【pay_code】"])}';
+  });
 </script>
 {/block}

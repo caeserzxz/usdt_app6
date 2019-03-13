@@ -1,44 +1,38 @@
 <?php
 /**
- * tpshop 支付宝插件
- * ============================================================================
- * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.tp-shop.cn
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
- * ============================================================================
- * Author: IT宇宙人
- * Date: 2015-09-09
+ *  支付宝插件
+
  */
 
-//namespace plugins\payment\alipay;
+namespace payment\alipayMobile;
 
-use app\BaseModel;
+
 use think\Request;
 use think\Db;
+use app\member\model\RechargeLogModel;
+use app\shop\model\OrderModel;
+use app\mainadmin\model\PaymentModel;
 /**
  * 支付 逻辑定义
  * Class AlipayPayment
  * @package Home\Payment
  */
 
-class alipayMobile extends BaseModel
-{    
-    public $tableName = 'main_payment'; // 支付表        
+class alipayMobile 
+{       
     public $alipay_config = array();// 支付宝支付配置参数
     
     /**
      * 析构流函数
      */
     public function  __construct() {   
-        parent::__construct();      
+       
         unset($_GET['pay_code']);   // 删除掉 以免被进入签名
         unset($_REQUEST['pay_code']);// 删除掉 以免被进入签名
         
-        $payment =  $this->where('code', 'alipayMobile')->find(); // 找到支付插件的配置
-        $config_value = json_decode(urldecode($payment['pay_config'])); // 配置反序列化        
+        $payment =  (new PaymentModel)->where('pay_code', 'alipayMobile')->find(); // 找到支付插件的配置
+        $config_value = json_decode(urldecode($payment['pay_config']),true); // 配置反序列化     
+		
         $this->alipay_config['alipay_pay_method']= $config_value['alipay_pay_method']; // 1 使用担保交易接口  2 使用即时到帐交易接口s
         $this->alipay_config['partner']       = $config_value['alipay_partner'];//合作身份者id，以2088开头的16位纯数字
         $this->alipay_config['seller_email']  = $config_value['alipay_account'];//收款支付宝账号，一般情况下收款账号就是签约账号
@@ -71,7 +65,7 @@ class alipayMobile extends BaseModel
                         'seller_id'=> trim($this->alipay_config['partner']), //收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
                         "key" => trim($this->alipay_config['key']), // MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
                         // "seller_email" => trim($this->alipay_config['seller_email']),                                            
-                        "notify_url"	=> = config('config.host_path').url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile')) , //服务器异步通知页面路径 //必填，不能修改
+                        "notify_url"	=>  config('config.host_path').url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile')) , //服务器异步通知页面路径 //必填，不能修改
                         "return_url"	=> config('config.host_path').url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
                         "sign_type"     => strtoupper('MD5'), //签名方式
                         "input_charset" =>strtolower('utf-8'), //字符编码格式 目前支持utf-8
@@ -118,23 +112,40 @@ class alipayMobile extends BaseModel
                     $trade_status = $_POST['trade_status']; //交易状态
 
 					//用户在线充值
-					if (stripos($order_sn, 'recharge') !== false)
-						$order_amount = M('recharge')->where(['order_sn' => $order_sn, 'pay_status' => 0])->value('account');
-					else
-	                    $order_amount = M('order')->where(['order_sn'=>"$order_sn"])->value('order_amount');
-                      if($order_amount!=$_POST['price']) 
-                          exit("fail"); //验证失败                    
+					if (stripos($order_sn, 'recharge') !== false){	
+						$RechargeLogModel = new RechargeLogModel();				
+						$orderInfo = $RechargeLogModel->where(['order_sn' => $order_sn, 'status' => 0])->field('log_id,amount,user_id')->find();
+						if($orderInfo['amount']!=$_POST['price'])  exit("fail"); //验证失败
+						$orderInfo['transaction_id'] = $trade_no;
+						// 支付宝解释: 交易成功且结束，即不可再做任何操作。
+						if($_POST['trade_status'] == 'TRADE_FINISHED') 
+						{                         
+							  $RechargeLogModel->updatePay($orderInfo);// 修改订单支付状态
+						}
+						//支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
+						elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') 
+						{ 
+								$RechargeLogModel->updatePay($orderInfo); // 修改订单支付状态
+						}
+					}else{
+						$OrderModel = new OrderModel();
+	                    $orderInfo = $OrderModel->where(['order_sn'=>"$order_sn",'pay_status'=>0])->field('order_id,order_amount')->find();
+						if($orderInfo['order_amount']!=$_POST['price'])  exit("fail"); //验证失败 
+						
+						 // 支付宝解释: 交易成功且结束，即不可再做任何操作。
+						if($_POST['trade_status'] == 'TRADE_FINISHED') 
+						{                         
+							  $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no));// 修改订单支付状态
+						}
+						//支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
+						elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') 
+						{ 
+								$OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no)); // 修改订单支付状态
+						}
+					}
+                                         
                     
-                    // 支付宝解释: 交易成功且结束，即不可再做任何操作。
-                    if($_POST['trade_status'] == 'TRADE_FINISHED') 
-                    {                         
-                          update_pay_status($order_sn,array('transaction_id'=>$trade_no)); // 修改订单支付状态
-                    }
-                    //支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
-                    elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') 
-                    { 
-                            update_pay_status($order_sn,array('transaction_id'=>$trade_no)); // 修改订单支付状态
-                    }
+                   
                     echo "success"; // 告诉支付宝处理成功
             }
             else 

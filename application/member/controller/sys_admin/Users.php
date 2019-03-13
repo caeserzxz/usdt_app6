@@ -229,9 +229,9 @@ class Users extends AdminController
 	//-- 上级名单
 	/*------------------------------------------------------ */
     public function getSuperiorList(){
-		$pid = input('pid',0,'intval');
+		$user_id = input('user_id',0,'intval');
 		$result['code'] = 1;
-		$result['list'] = $this->Model->getSuperior($pid);
+		$result['list'] = $this->Model->getSuperiorList($user_id);
 		return $this->ajaxReturn($result);		
 	}
 }

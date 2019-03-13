@@ -257,6 +257,7 @@ class Flow extends ApiController
         $inArr['user_id'] = $this->userInfo['user_id'];
         $inArr['dividend_role_id'] = $this->userInfo['role_id'];
         $inArr['pay_id'] = $payment['pay_id'];
+		$inArr['pay_code'] = $payment['pay_code'];
         $inArr['pay_name'] = $payment['pay_name'];
         $inArr['discount'] = $cartList['totalDiscount'];
         $inArr['goods_amount'] = $cartList['totalGoodsPrice'];
