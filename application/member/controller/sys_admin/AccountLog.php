@@ -26,7 +26,7 @@ class AccountLog extends AdminController
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);
-		$this->assign("account",model(UsersModel)->getAccount($this->search['user_id']));
+		$this->assign("account",(new UsersModel)->getAccount($this->search['user_id']));
         return $this->fetch();
     }  
 	/*------------------------------------------------------ */

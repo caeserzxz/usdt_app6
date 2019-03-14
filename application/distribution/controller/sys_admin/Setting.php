@@ -1,9 +1,11 @@
 <?php
 namespace app\distribution\controller\sys_admin;
+use think\Db;
+
 use app\AdminController;
-
 use app\mainadmin\model\SettingsModel;
-
+use app\distribution\model\DividendModel;
+use app\distribution\model\EvalArrivalLogModel;
 /**
  * 分销设置
  * Class Index
@@ -25,9 +27,10 @@ class Setting extends AdminController
 	{
 		$Dividend = settings('DividendInfo');
 		$Dividend['status'] = settings('DividendSatus');
-		$Dividend['share_by_role'] = settings('DividendShareByRole');
+		$Dividend['share_by_role'] = settings('DividendShareByRole');		
 		$this->assign('Dividend',$Dividend);
-		$this->assign('share_bg',settings('share_bg'));		
+		$this->assign('share_bg',settings('share_bg'));	
+		$this->assign('shop_after_sale_limit',settings('shop_after_sale_limit'));	
 		return $this->fetch();
 	}
    
@@ -45,5 +48,26 @@ class Setting extends AdminController
 		if ($res == false) return $this->error();
 		return $this->success('设置成功.');
     }
+	/*------------------------------------------------------ */
+	//-- 手动结算
+	/*------------------------------------------------------ */
+    public function evalArrival(){
+		$inData['log_time'] = time();
+		$inData['admin_id'] = AUID;
+		$EvalArrivalLogModel = new EvalArrivalLogModel();
+		Db::startTrans();//事务启用
+		$res = $EvalArrivalLogModel->save($inData);
+		if ($res < 1){
+			Db::rollback();//事务回滚
+			return $this->error('执行失败-1，请重试.');
+		}
+		$res = (new DividendModel)->evalArrival(0,$EvalArrivalLogModel->log_id);
+		if ($res == false){
+			Db::rollback();//事务回滚
+			return $this->error('执行失败-2，请重试.');
+		}
+		Db::commit();//事务提交
+		return $this->success('操作成功.');
+	}
 
 }

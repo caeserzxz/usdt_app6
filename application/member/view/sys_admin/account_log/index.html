@@ -46,8 +46,8 @@
   <tr>
     <td>用户ID：{$account.user_id}</td>
     <td>注册手机：{$account.mobile}</td>
-    <td>帐户余额：{$account.balance_money|priceFormat=true}</td>
-    <td>提现冻结：{$account.frozen_money|priceFormat=true}</td>
+    <td>帐户余额（金币）：{$account.balance_money|priceFormat=true}</td>
+    <td>旅游豆：{$account.bean_value}</td>
     <td>历史总佣金：{$account.total_dividend|priceFormat=true}</td>
     <td>历史总积分：{$account.total_integral|intval}</td>
     <td>消费积分：{$account.use_integral|intval}</td>

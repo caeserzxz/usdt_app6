@@ -319,7 +319,7 @@ class UsersModel extends BaseModel
 		$mkey = $this->mkey.'account_'.$user_id;
 		if ($isCache == true) $info = Cache::get($mkey);
 		if (empty($info) == false) return $info;
-		$info = $this->where('u.user_id',$user_id)->alias('u')->field('u.user_id,u.mobile,ua.total_integral,ua.total_dividend,ua.balance_money,ua.use_integral')->join('users_account ua','u.user_id = ua.user_id','left')->find()->toArray();
+		$info = $this->where('u.user_id',$user_id)->alias('u')->field('u.user_id,u.mobile,ua.*')->join('users_account ua','u.user_id = ua.user_id','left')->find()->toArray();
 		Cache::set($mkey,$info,600);
 		return $info;
 	}	

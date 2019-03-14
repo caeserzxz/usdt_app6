@@ -347,9 +347,9 @@ class Goods extends AdminController
 			$imgwhere[] = ['sku_val','=',''];
 			$imgwhere[] = ['store_id','=',$this->store_id];
 			$imgwhere[] = ['admin_id','=',AUID];
-			$uparr['sort_order'] = $key;
-			$uparr['goods_id'] = $row['goods_id'];
-			$GoodsImgsModel->where($imgwhere)->update($uparr);
+			$upData['sort_order'] = $key;
+			$upData['goods_id'] = $row['goods_id'];
+			$GoodsImgsModel->where($imgwhere)->update($upData);
 		}
 		unset($imgwhere);	
 		
@@ -362,33 +362,35 @@ class Goods extends AdminController
 			foreach ($Products as $prow){
 				$_arr = $prow['Price'].$prow['ProductSn'].$prow['Store'];
 				if (empty($_arr)) continue;//空值跳过,不执行生成sku
-				$inarr['sku'] = $sku;
-				$inarr['goods_id'] = $row['goods_id'];
-				$inarr['market_price'] = $prow['MarketPrice'];
-				$inarr['shop_price'] = $prow['Price'];
-				$inarr['goods_sn'] = $prow['ProductSn'];
-				$inarr['bar_code'] = $prow['ProductCode'];
-				$inarr['goods_number'] = $prow['Store'];
-				$inarr['goods_weight'] = $prow['Weight'];				
-				$inarr['add_time'] = $inarr['update_time'] = time();
+				$inData['sku'] = $sku;
+				$inData['goods_id'] = $row['goods_id'];
+				$inData['market_price'] = $prow['MarketPrice'];
+				$inData['shop_price'] = $prow['Price'];
+				$inData['goods_sn'] = $prow['ProductSn'];
+				$inData['bar_code'] = $prow['ProductCode'];
+				$inData['goods_number'] = $prow['Store'];
+				$inData['goods_weight'] = $prow['Weight'];				
+				$inData['add_time'] = $inData['update_time'] = time();
 				$sku_val = array_values($prow['SpecVal']['key']);
-				$inarr['sku_val'] = join(':',$sku_val);
+				$inData['sku_val'] = join(':',$sku_val);
 				if (empty($inarr['sku_val'])){
 					return $this->error('操作失败:获取商品SKU值失败，请重试.');
-				}
-				$inarr['store_id'] = $this->store_id;
-				$inarr['sku_model'] = $row['sku_model'];
-				$res = $GoodsSkuModel::create($inarr);
+				}				
+				$res = $GoodsSkuModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:子商品写入失败，请重试.');
 				}
+				unset($upData);
+				$upData['store_id'] = $this->store_id;
+				$upData['sku_model'] = $row['sku_model'];
+				$upData['goods_id'] = $row['goods_id'];
 				$imgwhere = array();
 				$imgwhere[] = ['goods_id','=',0];
 				$imgwhere[] = ['sku_val','=',$inarr['sku_val']];
 				$imgwhere[] = ['store_id','=',$this->store_id];
 				$imgwhere[] = ['admin_id','=',AUID];
-				$GoodsImgsModel->where($imgwhere)->update($uparr);
+				$GoodsImgsModel->where($imgwhere)->update($upData);
 			}			
 		}
 		//处理优惠价格阶梯
@@ -398,11 +400,11 @@ class Goods extends AdminController
 			$GoodsVolumePriceModel = new GoodsVolumePriceModel();
 			foreach ($volume_number as $key=>$pval){
 				if ($pval < 1 || $volume_price[$key] <= 0) continue;				
-				unset($inarr);
-				$inarr['goods_id'] = $row['goods_id'];
-				$inarr['number']   = $pval;
-				$inarr['price']    = $volume_price[$key];
-				$res = $GoodsVolumePriceModel::create($inarr);
+				unset($inData);
+				$inData['goods_id'] = $row['goods_id'];
+				$inData['number']   = $pval;
+				$inData['price']    = $volume_price[$key];
+				$res = $GoodsVolumePriceModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:写入阶梯价格失败，请重试.');
@@ -416,11 +418,11 @@ class Goods extends AdminController
 			foreach ($attr_value_list as $key=>$attrVal){	
 				unset($inarr);
 				$attrVal = is_array($attrVal) ? trim(join(',',$attrVal),',') : $attrVal;
-				$inarr['goods_id'] = $row['goods_id'];
-				$inarr['model_id']   = $row['type_model'];
-				$inarr['attr_id']  = $key;
-				$inarr['attr_value'] = $attrVal;
-				$res = $AttributeValModel::create($inarr);
+				$inData['goods_id'] = $row['goods_id'];
+				$inData['model_id']   = $row['type_model'];
+				$inData['attr_id']  = $key;
+				$inData['attr_value'] = $attrVal;
+				$res = $AttributeValModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:处理商品属性失败，请重试.');
@@ -433,12 +435,12 @@ class Goods extends AdminController
 			$level_price = input('post.level_price');
 			foreach ($level_price as $key=>$price){
 				if ($price <= 0) continue;
-				unset($inarr);
-				$inarr['goods_id']       = $row['goods_id'];
-				$inarr['type']           = 'level';
-				$inarr['by_id']          = $key;
-				$inarr['price']          = $price * 1;
-				$res = $GoodsPricesModel::create($inarr);
+				unset($inData);
+				$inData['goods_id']       = $row['goods_id'];
+				$inData['type']           = 'level';
+				$inData['by_id']          = $key;
+				$inData['price']          = $price * 1;
+				$res = $GoodsPricesModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:处理会员价格失败，请重试.');
@@ -450,12 +452,12 @@ class Goods extends AdminController
 			$role_price = input('post.role_price');
 			foreach ($role_price as $key=>$price){
 				if ($price <= 0) continue;
-				unset($inarr);
-				$inarr['goods_id']       = $row['goods_id'];
-				$inarr['type']           = 'role';
-				$inarr['by_id']          = $key;
-				$inarr['price']          = $price * 1;
-				$res = $GoodsPricesModel::create($inarr);
+				unset($inData);
+				$inData['goods_id']       = $row['goods_id'];
+				$inData['type']           = 'role';
+				$inData['by_id']          = $key;
+				$inData['price']          = $price * 1;
+				$res = $GoodsPricesModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:处理身份价格失败，请重试.');
@@ -475,11 +477,7 @@ class Goods extends AdminController
 		if ($row['is_spec'] == 0){
 			$goods_number = $row['goods_number'];
             unset($row['goods_number']);
-			if ($goods_number > 0){
-				$row['goods_number'] = Db::raw('goods_number +'.$goods_number);
-			}elseif ($goods_number < 0){
-				$row['goods_number'] = Db::raw('goods_number '.$goods_number);
-			}
+			$row['goods_number'] = ['INC',$goods_number];
 		}else{
             $row['shop_price'] =  $row['show_price'];
         }
@@ -516,32 +514,28 @@ class Goods extends AdminController
 			foreach ($Products as $prow){
 				$_arr = $prow['Price'].$prow['ProductSn'].$prow['Store'];
 				if (empty($_arr)) continue;//空值跳过,不执行生成sku
-				$inarr['sku'] = $sku;			
-				$inarr['market_price'] = $prow['MarketPrice'];
-				$inarr['shop_price'] = $prow['Price'];
-				$inarr['goods_sn'] = $prow['ProductSn'];
-				$inarr['bar_code'] = $prow['ProductCode'];				
-				$inarr['goods_weight'] = $prow['Weight'];
+				$upData['sku'] = $sku;			
+				$upData['market_price'] = $prow['MarketPrice'];
+				$upData['shop_price'] = $prow['Price'];
+				$upData['goods_sn'] = $prow['ProductSn'];
+				$upData['bar_code'] = $prow['ProductCode'];				
+				$upData['goods_weight'] = $prow['Weight'];
 				$sku_val = array_values($prow['SpecVal']['key']);
-				$inarr['sku_val'] = join(':',$sku_val);
+				$upData['sku_val'] = join(':',$sku_val);
 				if (empty($inarr['sku_val'])){
 					return $this->error('操作失败:获取商品SKU值失败，请重试.');
 				}
-				$inarr['store_id'] = $this->store_id;
-				$inarr['update_time'] = time();
+				$upData['store_id'] = $this->store_id;
+				$upData['update_time'] = time();
 				if ($prow['SkuId'] > 0){
-					if ($prow['Store'] > 0){
-						$inarr['goods_number'] = Db::raw('goods_number +'.$prow['Store']);
-					}elseif ($prow['Store'] < 0){
-						$inarr['goods_number'] = Db::raw('goods_number '.$prow['Store']);
-					}
-					$res = $GoodsSkuModel->where('sku_id',$prow['SkuId'])->update($inarr);
+					$upData['goods_number'] = ['INC',$prow['Store']];				
+					$res = $GoodsSkuModel->where('sku_id',$prow['SkuId'])->update($upData);
 				}else{
-					$inarr['goods_id'] = $row['goods_id'];
-					$inarr['sku_model'] = $row['sku_model'];
-					$inarr['add_time'] = $inarr['update_time'];
-					$inarr['goods_number'] = $prow['Store'];
-					$res = $GoodsSkuModel::create($inarr);					
+					$inData['goods_id'] = $row['goods_id'];
+					$inData['sku_model'] = $row['sku_model'];
+					$inData['add_time'] = time();
+					$inData['goods_number'] = $prow['Store'];
+					$res = $GoodsSkuModel::create($inData);					
 				}
 				if ($res < 1){
 					Db::rollback();// 回滚事务
@@ -556,11 +550,11 @@ class Goods extends AdminController
 		$GoodsVolumePriceModel->where('goods_id',$row['goods_id'])->delete();	
 		foreach ($volume_number as $key=>$pval){
 			if ($pval < 1) continue;
-			$inarr = array();
-			$inarr['goods_id']    = $row['goods_id'];
-			$inarr['number']  = $pval;
-			$inarr['price'] = $volume_price[$key];
-			$res = $GoodsVolumePriceModel::create($inarr);
+			$inData = array();
+			$inData['goods_id']    = $row['goods_id'];
+			$inData['number']  = $pval;
+			$inData['price'] = $volume_price[$key];
+			$res = $GoodsVolumePriceModel::create($inData);
 			if ($res < 1){
 				Db::rollback();// 回滚事务
 				return $this->error('操作失败:写入阶梯价格失败，请重试.');
@@ -571,12 +565,12 @@ class Goods extends AdminController
 		$AttributeValModel = new AttributeValModel();
 		$AttributeValModel->where('goods_id',$row['goods_id'])->delete();
 		foreach ($attr_value_list as $key=>$attrVal){	
-			$inarr = array();
-			$inarr['goods_id'] = $row['goods_id'];
-			$inarr['model_id']   = $row['type_model'];
-			$inarr['attr_id']  = $key;
-			$inarr['attr_value'] = is_array($attrVal) ? trim(join(',',$attrVal),',') : $attrVal;
-			$res = $AttributeValModel::create($inarr);
+			$inData = array();
+			$inData['goods_id'] = $row['goods_id'];
+			$inData['model_id']   = $row['type_model'];
+			$inData['attr_id']  = $key;
+			$inData['attr_value'] = is_array($attrVal) ? trim(join(',',$attrVal),',') : $attrVal;
+			$res = $AttributeValModel::create($inData);
 			if ($res < 1){
 				Db::rollback();// 回滚事务
 				return $this->error('操作失败:写入商品属性失败，请重试.');
@@ -589,12 +583,12 @@ class Goods extends AdminController
 		if ($row['level_price_type'] > 0){
 			$level_price = input('post.level_price');
 			foreach ($level_price as $key=>$price){
-				$inarr = array();
-				$inarr['goods_id'] = $row['goods_id'];
-				$inarr['type']     = 'level';
-				$inarr['by_id']    = $key;
-				$inarr['price']    = $price * 1;
-				$res = $GoodsPricesModel::create($inarr);
+				$inData = array();
+				$inData['goods_id'] = $row['goods_id'];
+				$inData['type']     = 'level';
+				$inData['by_id']    = $key;
+				$inData['price']    = $price * 1;
+				$res = $GoodsPricesModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:处理会员价格失败，请重试.');
@@ -606,12 +600,12 @@ class Goods extends AdminController
 			$role_price = input('post.role_price');
 			foreach ($role_price as $key=>$price){
 				if ($price <= 0) continue;
-				unset($inarr);
-				$inarr['goods_id']       = $row['goods_id'];
-				$inarr['type']           = 'role';
-				$inarr['by_id']          = $key;
-				$inarr['price']          = $price * 1;
-				$res = $GoodsPricesModel::create($inarr);
+				unset($inData);
+				$inData['goods_id']       = $row['goods_id'];
+				$inData['type']           = 'role';
+				$inData['by_id']          = $key;
+				$inData['price']          = $price * 1;
+				$res = $GoodsPricesModel::create($inData);
 				if ($res < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:处理身份价格失败，请重试.');

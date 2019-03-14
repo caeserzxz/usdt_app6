@@ -28,6 +28,9 @@ class AccountModel extends BaseModel
 		if (isset($data['use_integral'])){
 			$updata['use_integral'] = ['INC',$data['use_integral']];
 		}
+		if (isset($data['bean_value'])){
+			$updata['bean_value'] = ['INC',$data['bean_value']];
+		}
     	return $updata;
 	}
 }

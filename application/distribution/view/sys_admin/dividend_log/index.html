@@ -13,7 +13,7 @@
              <select name="status"  style="width: 200px;" data-toggle="select2"  data-notsearch="true" data-chang="submit">
                    <option value="-1">所有状态</option>
                    {volist name="divdend_satus" id="dsval"}
-                   		 <option value="{$key}">{$dsval}</option>
+                   		 <option value="{$key}" {$search['status'] == $key?'selected':''}>{$dsval}</option>
                    {/volist}
               </select>
               <div class="form-group">

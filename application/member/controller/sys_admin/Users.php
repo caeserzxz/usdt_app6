@@ -8,6 +8,8 @@ use app\member\model\UsersLevelModel;
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\distribution\model\DividendModel;
+use app\weixin\model\WeiXinUsersModel;
+
 use think\Db;
 /**
  * 会员管理
@@ -133,15 +135,22 @@ class Users extends AdminController
 		if ($user_id < 1) return $this->error('获取用户ID传值失败！');
 		$row = $this->Model->info($user_id);		
 		if (empty($row)) return $this->error('用户不存在！');
-		$row['wx'] = Db::table('weixin_users')->where('user_id',$user_id)->find();		
+		$row['wx'] = (new WeiXinUsersModel)->where('user_id',$user_id)->find();		
 		$this->assign("userShareStats", $this->Model->userShareStats($user_id));
 		$row['user_address'] = Db::table('users_address')->where('user_id',$user_id)->select();	
-		$this->assign('row',$row);
-		$this->assign('Dividend',DividendModel::level());
+		$this->assign('row',$row);		
 		$this->assign('d_level',config('config.dividend_level'));
 		$DividendRoleModel = new DividendRoleModel(); 
 		$this->assign("roleList", $DividendRoleModel->getRows());
 		$this->assign("teamCount", (new UsersBindModel)->where('pid',$user_id)->count());	
+		$where[] = ['dividend_uid','=',$user_id];
+		$where[] = ['status','in',[2,3]];
+		$DividendModel = new DividendModel();
+		$dividend_amount =  $DividendModel->where($where)->sum('dividend_amount');
+		$dividend_bean =  $DividendModel->where($where)->sum('dividend_bean');
+		$this->assign("wait_money", $dividend_amount + $dividend_bean);
+	
+		
 		return $this->fetch('sys_admin/users/info');
 	}
 	/*------------------------------------------------------ */

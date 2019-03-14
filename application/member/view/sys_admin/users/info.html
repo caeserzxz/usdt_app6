@@ -65,14 +65,13 @@
                                     <div class="col-sm-3">
                                         <label>
                                             {$row.account.balance_money|priceFormat=true} 
-                                            <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id'],'account_type'=>'balance_money'))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
+                                            <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id']))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
                                         </label>
                                     </div>
                                      <label class="control-label">待到帐佣金：</label>
                                     <div class="col-sm-3">
-                                        <label>{$wait_money|priceFormat=true}                                        
-                                        <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id'],'account_type'=>'total_dividend'))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
-                                        </label>
+                                        <label>{$wait_money|priceFormat=true}</label>
+                                        <a href="{:url('distribution/sys_admin.dividend_log/index',array('keyword'=>$row['user_id'],'status'=>2))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
                                     </div>
                                 </div>   
                                 <div class="form-group">
@@ -99,8 +98,8 @@
                                 </div>   
                                <div class="form-group">
                                   <label class="control-label">下级数量：</label>
-                                  <div class="col-sm-5"  >
-                                  <label> {volist name="Dividend" id="dval" }
+                                  <div class="col-sm-9"  >
+                                  <label> {volist name="d_level" id="dval" }
                                      {$d_level[$key]}：<strong>{$userShareStats[$key]|intval}</strong>；　 
                                    {/volist}</label>
                                   </div>

@@ -226,18 +226,20 @@ class OrderModel extends BaseModel
         $OrderGoodsModel = new OrderGoodsModel();
         $AccountLogModel = new AccountLogModel();
 
+	
         if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单		
 		
-            //订单支付成功
-            if ($upData['pay_status'] == $this->config['PS_PAYED']){
-                if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
+			if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
                     $goodsList = $this->orderGoods($order_id);
                     $res = $GoodsModel->evalGoodsStore($goodsList['goodsList']);
                     if ($res !== true) {
                         Db::rollback();// 回滚事务
                         return '支付扣库存失败.';
                     }
-                }
+            }
+            //订单支付成功
+            if ($upData['pay_status'] == $this->config['PS_PAYED']){
+                
 				
 				if ($orderInfo['pay_code'] == 'balance' || $upData['pay_code'] == 'balance'){					
 					$upData['money_paid'] = $orderInfo['order_amount'];
@@ -277,7 +279,7 @@ class OrderModel extends BaseModel
                 }
                 $upData['is_stock'] = 0;
             }
-		}elseif ($upData['pay_status'] == $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
+		}elseif ($upData['pay_status'] === $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
 			 
 		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
 			if ($orderInfo['money_paid'] > 0) {
@@ -291,13 +293,13 @@ class OrderModel extends BaseModel
                     return '订单退款到余额失败.';
                 }
             }			
-        }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED']) {//发货
+        }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] ==  $this->config['SS_UNSHIPPED']) {//发货		
 			$res = $this->distribution($orderInfo,'shipping');//提成处理
 			if ($res != true) {
 					Db::rollback();// 回滚事务
 					return '佣金处理失败.';
              }
-        }elseif ($upData['shipping_status'] == $this->config['SS_UNSHIPPED']) {//未发货            
+        }elseif ($upData['shipping_status'] === $this->config['SS_UNSHIPPED']) {//未发货            
 			$res = $this->distribution($orderInfo,'unshipping');//提成处理
             if ($res !== true) {
 				Db::rollback();// 回滚事务
@@ -326,10 +328,10 @@ class OrderModel extends BaseModel
             }
             //修改订单商品为待评价           
             $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
-            if ($res < 1) {
+           /* if ($res < 1) {
                 Db::rollback();//回滚
                 return '修改订单商品为待评价失败.';
-            }
+            }*/
         }elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
            $res = $this->distribution($orderInfo,'returned');//提成处理
 		   if ($res != true) {
@@ -351,6 +353,7 @@ class OrderModel extends BaseModel
 				return '佣金处理失败.';
             }
         }elseif ($extType == 'unsign' ) {//撤销签收
+		
             unset($where);
             //查询通过订单获取的积分,扣除
             $where[] = ['by_id','=',$orderInfo['order_id']];
@@ -373,13 +376,20 @@ class OrderModel extends BaseModel
                     return '退还积分失败.';
                 }
             }
-			 $res = $this->distribution($orderInfo,'unsign');//提成处理
+			//修改订单商品为待评价           
+            $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
+           /* if ($res < 1) {
+                Db::rollback();//回滚
+                return '修改订单商品评价状态失败.';
+            }*/
+			 $res = $this->distribution($orderInfo,'unsign');//提成处理			
 			 if ($res != true) {
 				Db::rollback();// 回滚事务
 				return '佣金处理失败.';
             }
         }
         $upData['update_time'] = time();
+		
         $res = $this->where('order_id', $order_id)->update($upData);
         if ($res < 1) {
             Db::rollback();
@@ -474,7 +484,7 @@ class OrderModel extends BaseModel
 	public function distribution(&$orderInfo,$type = ''){
 		if (empty($orderInfo)) return false;
 		//判断分销模块是否存在
-		if(class_exists('app\distribution\model\DividendModel')){
+		if(class_exists('app\distribution\model\DividendModel')){		
 			return (new \app\distribution\model\DividendModel)->_eval($orderInfo,$type);
 		}
 		return true;

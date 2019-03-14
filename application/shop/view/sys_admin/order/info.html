@@ -147,7 +147,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">购买会员：</label>
                                     <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.user_id} - {$orderInfo.user_id|userInfo}
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
                                     </div>
                                 </div>
 
@@ -181,14 +181,14 @@
                                         {$orderInfo.cancel_time|dateTpl}
                                     </div>
                                 </div>
-                            </div>
+                            
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">买家留言：</label>
                                 <div class="col-sm-8 form-control-static">
                                     {$orderInfo.buyer_message}
                                 </div>
                             </div>
-
+							</div>
                         </div>
                         <div class="col-sm-12 table-responsive">
 
@@ -399,7 +399,7 @@
                                 <tbody>
                                 {volist name="dividend_log" id="dlog"}
                                     <tr>
-                                        <td>{$dlog.dividend_uid}-{$dlog.dividend_uid|userInfo}</td>
+                                        <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$dlog['dividend_uid']])}" target="_blank">{$dlog.dividend_uid}-{$dlog.dividend_uid|userInfo}</a></td>
                                         <td>{$dlog.role_name}</td>
                                         <td>{$dlog.award_name} - {$dlog.level_award_name}</td>
                                         <td>{$dlog.dividend_amount|priceFormat}</td>

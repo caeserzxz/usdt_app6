@@ -325,7 +325,7 @@ class Order extends AdminController
                 }
                 $data['shipping_id'] = $kdn_shipping_id;
                 $data['invoice_no'] = $logisticcode;
-            } else {
+            } elseif ($kd_type == 1) {
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
                 if ($shipping_id == "") return $this->error("请选择快递公司");
@@ -337,7 +337,7 @@ class Order extends AdminController
             $data['shipping_status'] = $config['SS_SHIPPED'];
             $data['shipping_time'] = time();
             $res = $this->Model->upInfo($data);
-            if ($res < 1) return $this->error();
+            if ($res != true) return $this->error($res);
             $orderInfo['shipping_status'] = $data['shipping_status'];
             $this->Model->_log($orderInfo, '操作发货');
             return $this->success('操作发货成功！', url('info', array('order_id' => $order_id)));
@@ -465,7 +465,7 @@ class Order extends AdminController
         $data['shipping_status'] = $config['SS_SIGN'];
         $data['sign_time'] = time();
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['shipping_status'] = $data['shipping_status'];
         $this->Model->_log($orderInfo, '设为签收');
         return $this->success('设为签收成功！', url('info', array('order_id' => $order_id)));
@@ -563,6 +563,8 @@ class Order extends AdminController
         $data['money_paid'] = 0;
         $data['tuikuan_money'] = 0;
         $data['tuikuan_time'] = 0;
+		$shop_reduce_stock = settings('shop_reduce_stock');
+        $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
         $res = $this->_mod->upInfo($data);
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];

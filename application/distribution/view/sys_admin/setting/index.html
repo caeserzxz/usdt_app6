@@ -51,19 +51,45 @@
                         </label>
                       </div>
                  </div>
-                <div class="form-group">
-                          <label class=" control-label">结算时间间隔：</label>
-                          <div class="col-sm-4 controls">
-                           <input type="text" value="{$Dividend['settlement_day']|intval}" min=1  max="30" size="5" data-rule-required="true" data-rule-integer="true" name="settlement_day">
-                            <span class="help-inline">天（订单签收后指定天数间隔返旅游豆，即执行到帐时间）</span>
+                   <div class="form-group">
+                          <label class=" control-label">佣金到帐时间：</label>
+                          <div class="col-sm-8 controls">
+                           <strong>{$shop_after_sale_limit==0?'订单签收到帐':$shop_after_sale_limit.'天'}</strong>
+                            <span class="help-inline">（与订单申请售后时间一致，即签收后过了此时间即到帐，如需修改请前往【商城-商城设置】中修改）</span>
+                           
                           </div>
                  </div>
-                 
+                <div class="form-group">
+                          <label class=" control-label">结算间隔：</label>
+                          <div class="col-sm-8 controls">
+                           		<select name="settlement_day" style="width:100px;">
+                                    <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
+                                    {for start="1" end="31" name="day" }
+                                    <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
+                                    {/for}
+                                </select>
+                            <span class="help-inline">天（订单过售后期超过指定天数后执行旅游豆到帐）</span>
+                           
+                          </div>
+                 </div>
+                  <div class="form-group">
+                          <label class=" control-label">手动结算：</label>
+                          <div class="col-sm-8 controls">
+                          	<input type="text" id="arrival_code"  class="input-mini" placeholder="校验码" value="">
+                            <a href="javascript:;"  class="btn btn-sm btn-danger" id="evalArrival"><i class="fa fa-hand-pointer-o m-r-xs"></i>执行结算</a>
+                            <span class="help-inline">操作此项将针对过了售后期的订单立即执行旅游豆到帐，操作请输入校检码：<em id="sarrival_code_em"></em></span>
+                          </div>
+                 </div>
                   
                   <div class="form-group">
                       <label class=" control-label">复购限制：</label>
-                      <div class="col-sm-7 controls">
-                       <input type="text" value="{$Dividend['repeat_buy_day']|intval}" min=0  max="30" size="5" data-rule-required="true" data-rule-integer="true" name="repeat_buy_day">
+                      <div class="col-sm-9 controls">
+                       <select name="repeat_buy_day" style="width:100px;">
+                                    <option value="0" {$Dividend['repeat_buy_day']==0?'selected':''}>不限制</option>
+                                    {for start="1" end="31" name="day" }
+                                    <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
+                                    {/for}
+                                </select>
                         <span class="help-inline">天（成为合伙人及以上会员，从成会合伙人的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
                       </div>
                   </div>
@@ -90,5 +116,24 @@
   
 </section>
 
-
+<script type="text/javascript">
+var arrival_code = Math.ceil(Math.random()*1000)+1000;
+$('#sarrival_code_em').html(arrival_code);
+$('#evalArrival').click(function(){
+	var _arrival_code = $('#arrival_code').val();
+	if (_arrival_code == ''){
+		_alert('请输入校验码，后再操作.',true);
+		return false;
+	}
+	if (_arrival_code != arrival_code){
+		_alert('校验码为'+arrival_code+'，请核实输入是否正确.',true);
+		return false;
+	}
+	_confirm('确定执行 - 手动执行结算？',function(){
+		jq_ajax('{:url("evalArrival")}','',function(res){
+			_alert(res.msg,true);			
+		});
+	});
+})
+</script>
 {/block}

@@ -393,7 +393,10 @@ G.ui.tips = {
                 button1: {
                     text: '确定',
                     danger: true,
-                    onclick: f
+                    onclick: function(){
+						$.fallr('hide');
+						f();						
+					}
                 },
                 button2: {
                     text: '取消'
