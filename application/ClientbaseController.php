@@ -70,6 +70,26 @@ class ClientbaseController extends BaseController
     //-- 验证登录状态
     /*------------------------------------------------------ */
     protected function checkLogin($isAllow = true){
+		global $userInfo;
+	
+		if (empty($this->userInfo)){  
+			//微信网页访问执行
+			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){						
+				$access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId		
+				if (empty($access_token['openid'])){//获取openid，跳转登陆
+					 return true;
+				}				
+				$wxInfo = (new \app\weixin\model\WeiXinUsersModel)->login($access_token);//用户存在进行登陆，否则进行注册操作
+				if (empty($wxInfo) == false){
+					session('wxInfo',$wxInfo);
+					if ($wxInfo['user_id'] > 0 ){						
+						session('userId',$wxInfo['user_id']);
+           				$this->userInfo = $userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);					
+					}
+				}
+				return true;
+			}			
+        }
         // 验证当前请求是否在白名单
         if ($isAllow == true && in_array($this->module.'/'.$this->routeUri, $this->allowAllAction) || in_array($this->module.'/'.$this->controller,$this->allowAllAction)) 		{
             //记录分享
@@ -79,24 +99,7 @@ class ClientbaseController extends BaseController
             }
             return true;
         }
-        if (empty($this->userInfo)){  
-			//微信网页访问执行
-			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){				
-				$access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId		
-				if (empty($access_token['openid'])){//获取openid，跳转登陆
-					 return $this->redirect('member/passport/login');
-				}
-				$wxInfo = $WeiXinUsers->login($access_token);//用户存在进行登陆，否则进行注册操作
-				if (is_array($wxInfo) == true){
-					session('wxInfo',$wxInfo);
-					if ($wxInfo['user_id'] > 0 ){
-						session('userId',$wxInfo['user_id']);
-           				$this->userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);					
-					}
-				}
-				return true;
-			}
-			//end
+        if (empty($this->userInfo)){ 			
             return $this->redirect('member/passport/login');
         }
 		

@@ -230,9 +230,9 @@ class WeiXinModel extends BaseModel {
 			return header("location:".$url);	
 		}
 		//获取access_token
-	    $access_token = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$this->SetConfig['weixin_appid']."&secret=".$this->SetConfig['weixin_appsecret']."&code=".$code."&grant_type=authorization_code");
-	    $access_token = json_decode($access_token,true);
-		return $access_token;		
+	     $access_token = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$this->SetConfig['weixin_appid']."&secret=".$this->SetConfig['weixin_appsecret']."&code=".$code."&grant_type=authorization_code");		
+	   
+		return json_decode($access_token,true);
 	}
 	
 	

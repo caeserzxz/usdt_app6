@@ -3,6 +3,7 @@
 namespace app\weixin\model;
 use app\BaseModel;
 use think\facade\Cache;
+use think\Db;
 use app\weixin\model\WeiXinModel;
 use app\member\model\UsersModel;
 //*------------------------------------------------------ */
@@ -68,6 +69,8 @@ class WeiXinUsersModel extends BaseModel
 		if ($type == 'user') $where['user_id'] = ['user_id','=',$id];
 		else $where[] = ['wxuid','=',$id];
 		$info = $this->where($where)->find();
+		if (empty($info)) return [];
+		$info = $info->toArray();
 		Cache::set($this->mkey.$type.$id,$info,60);
 		return $info;//如何存直接返回
 	}
