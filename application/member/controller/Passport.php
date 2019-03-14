@@ -25,13 +25,18 @@ class Passport  extends ClientbaseController{
 	/*------------------------------------------------------ */
 	public function login(){
         $this->assign('title', '会员登录');
+		$this->assign('register_status',settings('register_status'));		
 		return $this->fetch('login');
 	}
 	/*------------------------------------------------------ */
     //-- 注册
     /*------------------------------------------------------ */
-    public function register(){
-        $this->assign('title', '会员注册');
+    public function register(){       
+		$register_status = settings('register_status');
+		if ($register_status != 1){
+			return $this->error('暂不开放注册.');
+		}
+		 $this->assign('title', '会员注册');
         return $this->fetch('register');
     }
     /*------------------------------------------------------ */

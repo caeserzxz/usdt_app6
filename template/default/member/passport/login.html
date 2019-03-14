@@ -32,7 +32,9 @@
         {/if}
         <a href="{:url('forgetPwd')}" class="fs30 color_9 remPassword">忘记密码</a>
         <div class="loginbutton fs32 fw_b color_w BGcolor_r login">登录</div>
-      <div class="fs30 goregister"><span class="color_9">还没有账号，</span><a href="{:url('register')}" class="fw_b color_3">立即注册</a></div>
+        {eq name="$register_status" value="1"}
+          <div class="fs30 goregister"><span class="color_9">还没有账号，</span><a href="{:url('register')}" class="fw_b color_3">立即注册</a></div>
+         {/eq}
       </div>
 
 {/block}
