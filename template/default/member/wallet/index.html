@@ -9,13 +9,15 @@
     <div class="top">
         <div class="money">
             <p class="fs48 num color_w balance_money">0.00</p>
-            
-            <a href="{:url('withdraw/index')}" class="fs24 color_w withdrwa_btn hide">提现</a>
-            
+            <a href="{:url('withdraw/index')}" class="fs24 color_w withdrwa_btn ">提现</a>
+            <span class="fs26 color_w">旅游豆</span><p class="fs48 num color_w bean_value">0.00</p>
+            <a href="{:url('change')}" class="fs24 color_w withdrwa_btn ">兑换</a>
+
         </div>
-        <span class="fs26 color_w">余额（元）</span>
+        <span class="fs26 color_w">金币</span>
+
         <div class="tips">
-            <div class="color_w fs26">可提现金额 ￥<p class="fs30 balance_money">0.00</p>, 冻结金额 ￥<p class="fs30 frozen_amount">0.00</p></div>
+            <div class="color_w fs26">可提现金币 ￥<p class="fs30 balance_money">0.00</p>, 待到帐 ￥<p class="fs30 frozen_amount">0.00</p></div>
         </div>
     </div>
     <div class="moneyInfo">
@@ -34,10 +36,14 @@
     </div>
     <div class="cellBox">
         <a href="{:url('mylog')}">
-            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">收益明细</span></div>
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">帐户明细</span></div>
             <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
         </a>
-        <a href="{:url('leaderboard')}">
+        <a href="{:url('dividendLog')}">
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">佣金明细</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+        <a href="{:url('leaderboard')}" class="hide">
             <div><img src="__STATIC__/mobile/default/images/wallet02.png" alt=""><span class="fs30 fw_b color_3">排行榜</span></div>
             <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
         </a>
@@ -61,6 +67,7 @@
             $('.balance_money').html(res.account.balance_money);
 			$('.total_income').html(res.account.total_dividend);
             $('.frozen_amount').html(res.frozen_amount);
+             $('.bean_value').html(res.account.bean_value);
 			$('.today_income').html(res.today_income);
 			$('.month_income').html(res.month_income);
 			if (res.withdraw_status == 1){

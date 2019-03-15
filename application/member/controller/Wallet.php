@@ -15,6 +15,13 @@ class Wallet  extends ClientbaseController{
         $this->assign('title', '我的钱包');
 		return $this->fetch('index');
 	}
+    /*------------------------------------------------------ */
+    //-- 旅游豆转换
+    /*------------------------------------------------------ */
+    public function change(){
+        $this->assign('title', '旅游豆兑换');
+        return $this->fetch('change');
+    }
 	/*------------------------------------------------------ */
     //-- 充值
     /*------------------------------------------------------ */
@@ -28,6 +35,13 @@ class Wallet  extends ClientbaseController{
     public function mylog(){
         $this->assign('title', '余额明细');
         return $this->fetch('mylog');
+    }
+    /*------------------------------------------------------ */
+    //-- 佣金明细
+    /*------------------------------------------------------ */
+    public function dividendLog(){
+        $this->assign('title', '佣金明细');
+        return $this->fetch('dividend_log');
     }
     /*------------------------------------------------------ */
     //-- 排行榜

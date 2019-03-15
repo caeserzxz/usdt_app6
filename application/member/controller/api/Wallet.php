@@ -3,7 +3,9 @@
 namespace app\member\controller\api;
 
 use app\ApiController;
+use think\Db;
 
+use app\member\model\AccountLogModel;
 use app\member\model\RechargeLogModel;
 /*------------------------------------------------------ */
 //-- 会员钱包相关
@@ -59,7 +61,33 @@ class Wallet extends ApiController
 		}		
         return $this->success('提交成功.');
     }
+    /*------------------------------------------------------ */
+    //-- 旅游豆转换
+    /*------------------------------------------------------ */
+    public function postChange()
+    {
+        $inArr['amount'] = input('amount') * 1;
+        if ($inArr['amount'] <= 0){
+            return $this->errot('请输入兑换数量.');
+        }
+        if ($this->userInfo['account']['bean_value'] < $inArr['amount']){
+            return $this->error('旅游豆不足，请核实旅游豆兑换数量.');
+        }
+        Db::startTrans();//启动事务
+        $AccountLogModel = new AccountLogModel();
+        $changedata['change_desc'] = '旅游豆兑换';
+        $changedata['change_type'] = 8;
+        $changedata['by_id'] = 0;
+        $changedata['balance_money'] = $inArr['amount'];
+        $changedata['bean_value'] = $inArr['amount'] * -1;
+        $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+        if ($res !== true) {
+            Db::rollback();// 回滚事务
+            return $this->error('未知错误，兑换失败.');
+        }
+        Db::commit();// 提交事务
+        return $this->success('兑换成功.');
+    }
 
-    
 	
 }

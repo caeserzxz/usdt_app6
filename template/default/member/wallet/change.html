@@ -1,0 +1,60 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css"/>
+{/block}
+{block name='pageType'}chongzhi{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="inputBlock">
+        <div class="tips fs60 fw_b color_9">需兑换的旅游豆数量</div>
+        <input type="text" class="fs60 num textBox" id="amount">
+        
+    </div>
+    <div class="money">
+        <div class="fs26 color_9">可兑换旅游豆数量： <span class="color_3 bean_value">{$userInfo['account']['bean_value']}</span></div>
+
+        <p class="fs24 tag_active">全部兑换</p>
+    </div>
+    <div class="button fs32 fw_b color_w BGcolor_r postBtn">确认兑换</div>
+
+</div>
+
+{/block}
+
+{block name="footer"}
+<script>
+$(function() {
+    $('.textBox').on('click',function(){
+        $(this).siblings("div").animate({'fontSize':'0.173333rem','top':'0.2666666rem'})
+        $(this).siblings("span").show()
+    })
+    $('.inputBlock input').blur(function(){
+        if($(this).val()==''){
+            $(this).siblings("div").animate({'fontSize':'0.4rem','top':'0.386667rem'})
+            $(this).siblings("span").hide()
+        }
+    })
+    $('.tag_active').click(function(){
+        $('#amount').val($('.bean_value').html()).trigger('click');
+    })
+    //提交申请
+	$('.postBtn').click(function(){
+		var arr = new Object;
+		arr.amount = $('#amount').val();
+		if (arr.amount < 1){
+			_alert('请输入旅游豆兑换数量.');
+			return false;	
+		}
+
+		jq_ajax('{:url("member/api.wallet/postChange")}',arr,function(res){
+			if (res.code == 0){
+				_alert(res.msg);
+				return false;
+			}
+			_alert(res.msg,'{:url("member/wallet/index")}')
+		})
+	})	
+})
+</script>
+{/block}

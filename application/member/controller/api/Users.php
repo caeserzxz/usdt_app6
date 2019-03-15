@@ -106,22 +106,24 @@ class Users extends ApiController
 		$WithdrawModel = new WithdrawModel();
 		$where[] = ['user_id','=',$this->userInfo['user_id']];
 		$where[] = ['status','=',0];
-		$return['frozen_amount'] = $WithdrawModel->where($where)->sum('amount');  
+		$return['frozen_amount'] = $WithdrawModel->where($where)->sum('amount');
 		//end
-		$DividendModel = new DividendModel();
+        $AccountLogModel = new AccountLogModel();
 		//今天收益		
 		unset($where);
-		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
-		$where[] = ['status','<=',9];
-		$where[] = ['add_time','>=',strtotime("today")];
-		$return['today_income'] = $DividendModel->where($where)->sum('dividend_amount'); 
+		$where[] = ['user_id','=',$this->userInfo['user_id']];
+		$where[] = ['change_type','=',4];
+		$where[] = ['change_time','>=',strtotime("today")];
+		$return['today_income'] = $AccountLogModel->where($where)->sum('balance_money');
+        $return['today_income'] += $AccountLogModel->where($where)->sum('bean_value');
 		//end
 		//本月收益
 		unset($where);
-		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
-		$where[] = ['status','<=',9];
-		$where[] = ['add_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
-		$return['month_income'] = $DividendModel->where($where)->sum('dividend_amount'); 
+		$where[] = ['user_id','=',$this->userInfo['user_id']];
+        $where[] = ['change_type','=',4];
+		$where[] = ['change_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
+		$return['month_income'] = $AccountLogModel->where($where)->sum('balance_money');
+        $return['month_income'] += $AccountLogModel->where($where)->sum('bean_value');
 		//end
 		$return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
         $return['code'] = 1;
@@ -161,13 +163,19 @@ class Users extends ApiController
 		}
 		$where[] = ['change_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
 		$rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
-		foreach ($rows as $key=>$row){			
+		foreach ($rows as $key=>$row){
+            if ($row['bean_value'] > 0) {
+                $return['income'] += $row['balance_money'];
+            }
 			if ($row['balance_money'] != 0){
 				if ( $row['balance_money'] > 0){
+                    if ($row['change_type'] == 4){
+                        $return['income'] += $row['balance_money'];
+                    }
 					$return['expend'] += $row['balance_money'];
 					$row['value'] = '+'.$row['balance_money'];
 				}else{
-					$return['income'] += $row['balance_money'];
+
 					$row['value'] = $row['balance_money'];
 				}
 			}elseif ($row['use_integral'] != 0){
@@ -186,7 +194,46 @@ class Users extends ApiController
 		}
         return $this->ajaxReturn($return);
 	}
-	
+    /*------------------------------------------------------ */
+    //-- 获取会员佣金日志
+    /*------------------------------------------------------ */
+    public function getDividendLog()
+    {
+        $type = input('type','balance_money','trim');
+        $time = input('time','','trim');
+        if (empty($time)){
+            $time = date('Y年m月');
+        }
+        $return['time'] = $time;
+        $_time = strtotime(str_replace(array('年','月'),array('-',''),$time));
+        $return['code'] = 1;
+        $DividendModel = new DividendModel();
+        $where[] = ['dividend_uid','=',$this->userInfo['user_id']];
+        switch($type){
+            case 'balance_money'://佣金
+                $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+                $where[] = ['dividend_amount','<>',0];
+                break;
+            case 'dividend_bean'://旅游豆
+                $where[] = ['dividend_bean','<>',0];
+                $where[] = ['status','=',9];
+                $where[] = ['update_time','>',time() - 172800];//只显示最近两到帐的佣金
+                break;
+            default:
+                return $this->error('类型错误.');
+                break;
+        }
+        $return['income']  = 0;
+        $rows = $DividendModel->where($where)->order('add_time DESC')->select();
+        foreach ($rows as $key=>$row){
+            $income = $row['dividend_amount'] > 0 ? $row['dividend_amount'] : $row['dividend_bean'];
+            $return['income'] += $income;
+            $row['_time'] = timeTran($row['add_time']);
+            $row['value'] = $income;
+            $return['list'][] = $row;
+        }
+        return $this->ajaxReturn($return);
+    }
 	/*------------------------------------------------------ */
     //-- 修改会员信息
     /*------------------------------------------------------ */

@@ -184,7 +184,10 @@ class Withdraw extends ApiController
 			return $this->errot('暂不开放提现.');
 		}
 		$inArr['amount'] = input('amount') * 1;
-		$inArr['withdraw_fee'] = $this->checkWithdraw($amount,true);
+		if ($inArr['amount'] <= 0){
+            return $this->errot('请输入提现金额.');
+        }
+		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
 		$inArr['account_id'] = input('account_id') * 1;
 		if ($inArr['account_id'] < 1){
 			return $this->error('选择提现方式.');
@@ -201,6 +204,10 @@ class Withdraw extends ApiController
 				return $this->error('每天最多只能提现'.$withdraw_num.'次.');
 			}
 		}
+        $withdraw_money =  $inArr['amount'] + $inArr['withdraw_fee'];
+		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
+            return $this->error('余额不足，请核实提现金现.');
+        }
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
 		Db::startTrans();//启动事务
@@ -214,7 +221,7 @@ class Withdraw extends ApiController
 	    $changedata['change_desc'] = '提现扣除';
 		$changedata['change_type'] = 5;
 		$changedata['by_id'] = $WithdrawModel->log_id;
-		$changedata['balance_money'] = ($inArr['amount'] + $inArr['withdraw_fee']) * -1;
+		$changedata['balance_money'] = $withdraw_money * -1;
 		$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
 		if ($res !== true) {
 			Db::rollback();// 回滚事务

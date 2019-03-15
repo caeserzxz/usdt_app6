@@ -20,7 +20,7 @@
         <div class="title fs34 color_3 fw_b">请选择提现银行</div>
         <div class="cells">
         	<div class="banklist">
-                
+
            </div>
             <a href="{:url('bankAdd')}" class="cell">
                 <div class="cell_hd"><img src="__STATIC__/mobile/default/images/add.png" alt=""></div>
@@ -83,14 +83,7 @@ $(function() {
 		$('.banklist').html(template('liTpl', res));
 		container();
 	});
-	//提交提现
-	$('.postBtn').click(function(){
-		var amount = $('#amount').val();
-		if (amount < 1){
-				
-		}
-	})
-		
+
 	//验证提现
 	function evalFee(){
 		var amount = $('#amount').val();

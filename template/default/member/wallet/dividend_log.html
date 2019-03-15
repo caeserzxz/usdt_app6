@@ -9,12 +9,12 @@
     <div class="dataBox">
         <div class="left">
             <input type="text" class="fs28 fw_b color_3" readonly value="" id="nowValue"/>
-            <span class="fs24 color_9">支出：￥<em class="expend">0</em>  收入：￥<em class="income">0</em></span>
+            <span class="fs24 color_9">  <em class="income"></em> </span>
         </div>
         <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
     </div>
     <div class="title">
-        <span class="fs26 color_6">商城消费</span>
+        <span class="fs26 color_6">金币收入</span>
         <div><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0" class="typeimg"></div>
 
     </div>
@@ -29,34 +29,20 @@
     <div class="modelBg"></div>
     <div class="modelbd">
         <label for="s11">
-            <span class="fs28 color_3 fw_b">商城消费</span>
+            <span class="fs28 color_3 fw_b">金币收入</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="order" name="radiobox" id="s11" checked>
+                <input type="radio" class="check" value="balance_money" name="radiobox" id="s11" checked>
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s12">
-            <span class="fs28 color_3 fw_b">提现相关</span>
+            <span class="fs28 color_3 fw_b">旅游豆收入</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="withdraw" name="radiobox" id="s12">
+                <input type="radio" class="check" value="dividend_bean" name="radiobox" id="s12">
                 <i class="icon_checked"></i>
             </div>
         </label>
-       
-        <label for="s14">
-            <span class="fs28 color_3 fw_b">佣金收入</span>
-            <div class="iconBox">
-                <input type="radio" class="check" value="brokerage" name="radiobox" id="s14">
-                <i class="icon_checked"></i>
-            </div>
-        </label>
-        <label for="s15">
-            <span class="fs28 color_3 fw_b">积分兑换</span>
-            <div class="iconBox">
-                <input type="radio" class="check" value="integral"  name="radiobox" id="s15">
-                <i class="icon_checked"></i>
-            </div>
-        </label>
+
     </div>
 </div>
 {literal}
@@ -64,7 +50,7 @@
 {{each list as item index}}
 <div class="cell">
 	<div class="left">
-		<p class="fs28 fw_b color_2">{{item.change_desc}}</p>
+		<p class="fs28 fw_b color_2">{{item.award_name}}-{{item.level_award_name}}</p>
 		<span class="fs24 color_9">{{item._time}}</span>
 	</div>
 	<div class="right fs34 num {{item.value > 0 ? 'color_r' : 'color_3' }}">
@@ -83,15 +69,19 @@
 		var arr = new Object;
 		arr.time = $('#nowValue').val();
 		arr.type = $("input[name='radiobox']:checked").val();
-		jq_ajax('{:url("member/api.Users/getAccountLog")}',arr,function(res){
-            if (res.code == 0){
-                _alert(res.msg);
-                return false;
+		jq_ajax('{:url("member/api.Users/getDividendLog")}',arr,function(res){
+		    if (res.code == 0){
+		        _alert(res.msg);
+		        return false;
             }
 			$('.list').html(template('logTpl', res));
 			$('#nowValue').val(res.time);
-			$('.expend').html(res.expend);
-			$('.income').html(res.income);
+			if (arr.type == 'balance_money'){
+                $('.income').html('金币收入：￥'+res.income);
+            }else{
+                $('.income').html('旅游豆收入：'+res.income);
+            }
+
 		});
 	}
     $(function(){		
