@@ -150,8 +150,8 @@ class DividendModel extends BaseModel {
 					}
 					if ($isOk == false){//不满足购买限制，跳出					
 						continue;
-					}				
-					$goods_num = count($buy_goods_id) * $award['goods_limit_num'];
+					}
+					$goods_num = count($order_goods_ids) * $award['goods_limit_num'];
 					if ($order_goods_num < $goods_num){
 						continue;
 					}
@@ -208,12 +208,13 @@ class DividendModel extends BaseModel {
 					}
 					$awardVal = $awardValue[$nowLevel];				
 				}
-				
-				
+
 				if ($award['award_type'] > 1 && empty($award['repeat_goods_id']) == false){//限制复购判断
+
 					$repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
 					$where = [];
 					$where[] = ['o.user_id','=',$userInfo['user_id']];
+                    $where[] = ['o.add_time','<',$orderInfo['add_time']];
 					$where[] = ['o.add_time','>',$repeat_buy_day];
 					$where[] = ['o.order_status','=',$OrderModel->config['OS_CONFIRMED']];
 					$count = $OrderModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
@@ -222,9 +223,10 @@ class DividendModel extends BaseModel {
 						 continue;//不满足复购限制，跳出
 					}
 				}
-				
-				
-				//满足条件执行奖项处理		
+
+
+
+				//满足条件执行奖项处理
 				$inArr = [];			
 				if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
 					$dividend_amount += $awardVal['num'] * $awardBuyNum;//计算总佣金	
