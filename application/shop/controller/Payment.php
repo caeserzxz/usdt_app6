@@ -2,13 +2,17 @@
 /*------------------------------------------------------ */
 //-- 支付相关
 /*------------------------------------------------------ */
+
 namespace app\shop\controller;
+
 use app\ClientbaseController;
+use function Couchbase\defaultEncoder;
 use think\Db;
 use app\member\model\RechargeLogModel;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
 use app\member\model\AccountLogModel;
+
 class Payment extends ClientbaseController
 {
     public $payment; //  具体的支付类
@@ -29,12 +33,14 @@ class Payment extends ClientbaseController
         if (empty($this->pay_code)) {
             exit('pay_code 不能为空');
         }
-		if ($this->pay_code != 'balance') {
-			// 导入具体的支付类文件
-			$code = str_replace('/','\\',"/payment/{$this->pay_code}/{$this->pay_code}");
-		   
-			$this->payment = new $code();
-		}
+        if ($this->pay_code != 'balance') {
+            define('SITE_URL',config('config.host_path'));
+            // 导入具体的支付类文件
+            $code = str_replace('/', '\\', "/payment/{$this->pay_code}/{$this->pay_code}");
+
+            $this->payment = new $code();
+        }
+
     }
 
     /**
@@ -43,44 +49,44 @@ class Payment extends ClientbaseController
     public function getCode()
     {
         header("Content-type:text/html;charset=utf-8");
-        
+
 
         // 修改订单的支付方式
         $order_id = input('order_id/d'); // 订单id
-		$OrderModel = new OrderModel();
+        $OrderModel = new OrderModel();
         $order = $OrderModel->where("order_id", $order_id)->find();
         if ($order['pay_status'] == 1) {
-            $this->error('此订单，已完成支付!',url('shop/flow/done',['order_id'=>$order_id]));
+            $this->error('此订单，已完成支付!', url('shop/flow/done', ['order_id' => $order_id]));
         }
-		 if ($order['order_status'] == 2) {
-            $this->error('此订单，已取消不能执行支付!',url('shop/flow/done',['order_id'=>$order_id]));
+        if ($order['order_status'] == 2) {
+            $this->error('此订单，已取消不能执行支付!', url('shop/flow/done', ['order_id' => $order_id]));
         }
-		$payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
-		
-		if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
-            if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
-                return $this->error('余额不足，请使用其它支付方式.',url('shop/flow/done',['order_id'=>$order_id]));
+        $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
+
+        if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
+            if ($order['order_amount'] > $this->userInfo['account']['balance_money']) {
+                return $this->error('余额不足，请使用其它支付方式.', url('shop/flow/done', ['order_id' => $order_id]));
             }
             //余额完成支付
-			$upArr['order_id'] = $order_id;
-			$upArr['pay_code'] = $this->pay_code;
-			$upArr['pay_id'] = $payment['pay_id'];
-			$upArr['pay_name'] = $payment['pay_name'];			     
-			$res = $OrderModel->updatePay($upArr,'余额支付成功.');
-			if ($res !== true){				
-				 return $this->error($res);
-			}	
-			return $this->redirect('shop/flow/done',['order_id'=>$order_id]);
+            $upArr['order_id'] = $order_id;
+            $upArr['pay_code'] = $this->pay_code;
+            $upArr['pay_id'] = $payment['pay_id'];
+            $upArr['pay_name'] = $payment['pay_name'];
+            $res = $OrderModel->updatePay($upArr, '余额支付成功.');
+            if ($res !== true) {
+                return $this->error($res);
+            }
+            return $this->redirect('shop/flow/done', ['order_id' => $order_id]);
 
         }
 
-        
-        $OrderModel->where("order_id", $order_id)->update(['is_pay'=>$payment['is_pay'],'pay_code'=>$this->pay_code,'pay_id'=>$payment['pay_id'],'pay_name'=>$payment['pay_name']]);
+
+        $OrderModel->where("order_id", $order_id)->update(['is_pay' => $payment['is_pay'], 'pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name']]);
 
         // 订单支付提交
         $config = parseUrlParam($this->pay_code); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
         $config['body'] = $OrderModel->getPayBody($order_id);
-		$wxInfo = session('wxInfo');
+        $wxInfo = session('wxInfo');
         if ($this->pay_code == 'weixin' && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
@@ -89,7 +95,7 @@ class Payment extends ClientbaseController
             //微信H5支付
             $return = $this->payment->get_code($order, $config);
             if ($return['status'] != 1) {
-                $this->error($return['msg'],url('shop/flow/done',['order_id'=>$order_id]));
+                $this->error($return['msg'], url('shop/flow/done', ['order_id' => $order_id]));
             }
             $this->assign('deeplink', $return['result']);
         } else {
@@ -107,40 +113,31 @@ class Payment extends ClientbaseController
         //手机端在线充值
         //C('TOKEN_ON',false); // 关闭 TOKEN_ON 
         header("Content-type:text/html;charset=utf-8");
-        $log_id = input('log_id/d'); //订单id
-      	$RechargeLogModel = new RechargeLogModel();
-		if ($order_id < 1){
-			$data['amount'] = input('amount') * 1;
-			$data['user_id'] = $this->userInfo['user_id'];
-			$data['order_sn'] = 'recharge'.date('Ymdhis').rand(100,999);
-			$data['add_time'] = time();
-			$order_id = $RechargeLogModel->save($data);
-		}
-        $order = $RechargeLogModel->where("log_id", $log_id)->find();
-		if (empty($order)){
-			return $this->error('提交失败,参数有误!');	
-		}
-		
-        if ($order['pay_status'] == 0) {
-                $order['order_amount'] = $order['amount'];
-                $pay_radio = $_REQUEST['pay_radio'];
-                $config_value = parseUrlParam($pay_radio); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
-                $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
-                $RechargeLogModel->where("order_id", $order_id)->save(array('pay_code' => $this->pay_code, 'pay_name' => $payment['pay_name'],'pay_id' => $payment['pay_id']));
-				$wxInfo = session('wxInfo');
-                //微信JS支付
-                if ($this->pay_code == 'weixin' && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
-                    $code_str = $this->payment->getJSAPI($order);
-                    exit($code_str);
-                } else {
-                    $code_str = $this->payment->get_code($order, $config_value);
-                }
-		} else {
-			return $this->error('此充值订单，已完成支付!');
-		}
-       
+        $order_id = input('order_id/d'); //订单id
+        $RechargeLogModel = new RechargeLogModel();
+
+        $order = $RechargeLogModel->where("order_id", $order_id)->find();
+        if (empty($order)) {
+            return $this->error('提交失败,参数有误!');
+        }
+        if ($order['status'] != 0) {
+            return $this->error('此充值订单，状态非待支付，不能完成操作.');
+        }
+
+        $pay_radio = $_REQUEST['pay_radio'];
+        $config_value = parseUrlParam($pay_radio); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
+        $wxInfo = session('wxInfo');
+        //微信JS支付
+        if (($this->pay_code == 'weixin' || $this->pay_code == 'weixinH5') && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
+            $code_str = $this->payment->getJSAPI($order);
+            exit($code_str);
+        } else {
+            $code_str = $this->payment->get_code($order, $config_value);
+        }
+
+
         $this->assign('code_str', $code_str);
-        $this->assign('order_id', $order_id);
+        $this->assign('order_id', $log_id);
         return $this->fetch('recharge'); //分跳转 和不 跳转
     }
 
@@ -156,7 +153,7 @@ class Payment extends ClientbaseController
     {
         $result = $this->payment->respond2(); // $result['order_sn'] = '201512241425288593';
         if (stripos($result['order_sn'], 'recharge') !== false) {
-			$RechargeLogModel = new RechargeLogModel();
+            $RechargeLogModel = new RechargeLogModel();
             $order = $RechargeLogModel->where("order_sn", $result['order_sn'])->find();
             $this->assign('order', $order);
             if ($result['status'] == 9)

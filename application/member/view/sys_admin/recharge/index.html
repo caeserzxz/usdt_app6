@@ -14,11 +14,11 @@
              <option value="-1">所有状态</option>
              {$userRechargeTypeOpt|raw}
             </select>
-             <select name="pay_type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
+             <select name="pay_id"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
              <option value="">所有充值方式</option>
              {volist name="payList" id="vo" }
              	{eq name="vo.is_recharge" value="1"}
-             		<option value="{$vo.pay_code}">{$vo.pay_name}</option>
+             		<option value="{$vo.pay_id}" {$search['pay_id']==$vo['pay_id']?'selected':''}>{$vo.pay_name}</option>
                 {/eq}
              {/volist}
             </select>

@@ -26,6 +26,7 @@ class Wallet  extends ClientbaseController{
     //-- 充值
     /*------------------------------------------------------ */
     public function recharge(){
+        $order_id = input('order_id',0,'intval');
         $this->assign('title', '充值');
         return $this->fetch('recharge');
     }

@@ -20,7 +20,16 @@ class Pay extends ApiController{
 	//-- 获取支付列表
 	/*------------------------------------------------------ */
  	public function getList(){
-        $return['data'] = $this->Model->getRows(true);
+        $payList = $this->Model->getRows(true,'pay_code');
+        $type = input('type','','trim');
+        if ($type == 'is_recharge'){
+            foreach ($payList as $key=>$pay){
+                if ($pay['is_recharge'] == 0){
+                    unset($payList[$key]);
+                }
+            }
+        }
+        $return['data'] = $payList;
         $return['balance_money'] = $this->userInfo['account']['balance_money'];
 		$return['code'] = 1;
 		return $this->ajaxReturn($return);

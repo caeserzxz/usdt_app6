@@ -5,59 +5,25 @@
 {block name="pageType"}chongzhi{/block}
 {block name="main" }
 <div class="page-bd">
-        <!-- 页面内容-->  
+        <!-- 页面内容-->
           <div class="inputBlock">
             <div class="tips fs60 fw_b color_9">充值金额(元)</div>
-            <input type="text" class="fs60 num textBox" id="amount"> 
+            <input type="text" class="fs60 num textBox" id="order_amount">
           </div>
           <div class="paytype">
               <div class="title fs34 color_3 fw_b">请选择支付方式</div>
               <div class="cells">
-                <div class="cell">
-                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/weixinPay.png" alt=""></div>
-                    <div class="cell_bd"><span class="fs30 color_3">微信支付</span></div>
-                    <div class="cell_ft">
-                    <label for="s11">
-                        <div class="iconBox">
-                          <input type="radio" class="check" value="wxpay" name="pay_type" id="s11" checked>
-                          <i class="icon_checked"></i>
-                        </div>
-                    </label>
-                  </div>
-                </div>
-                <div class="cell">
-                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""></div>
-                    <div class="cell_bd"><span class="fs30 color_3">支付宝</span></div>
-                    <div class="cell_ft">
-                      <label for="s12">
-                          <div class="iconBox">
-                            <input type="radio" class="check" value="alipay" name="pay_type" id="s12">
-                            <i class="icon_checked"></i>
-                          </div>
-                      </label>
-                    </div>
-                </div>
-                <div class="cell">
-                    <div class="cell_hd"><img src="__STATIC__/mobile/default/images/offlinePay.png" alt=""></div>
-                    <div class="cell_bd"><span class="fs30 color_3">线下打款</span></div>
-                    <div class="cell_ft">
-                    <label for="s13">
-                        <div class="iconBox">
-                          <input type="radio" class="check" value="offline" name="pay_type" id="s13" >
-                          <i class="icon_checked"></i>
-                        </div>
-                    </label>
-                    </div>
-                </div>
+
+
               </div>
               <div class="uploading">
                   <div class="title fs28 fw_b color_3">上传凭证</div>
                   <div class="uploadBox">
-                     
+
                      <div class="Box">
                         <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
-                        <input type="file" class="uploadInput" onchange="uploadFile(this,event)">    
-                        
+                        <input type="file" class="uploadInput" onchange="uploadFile(this,event)">
+
                       </div>
                   </div>
                 </div>
@@ -67,13 +33,36 @@
 
     </div>
     </div>
-
+{literal}
+<script type="text/html" id="payListTpl">
+    {{each data as item index}}
+    <div class="cell">
+        <div class="cell_hd"><img src="__STATIC__/mobile/default/images/{{item.img}}" alt=""></div>
+        <div class="cell_bd"><span class="fs30 color_3">{{item.pay_name}}</span></div>
+        <div class="cell_ft">
+            <label for="pay{{item.pay_id}}">
+                <div class="iconBox">
+                    <input type="radio" class="check" value="{{item.pay_code}}" name="pay_type" id="pay{{item.pay_id}}" >
+                    <i class="icon_checked"></i>
+                </div>
+            </label>
+        </div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
 {/block}
-
 {block name="footer"}
 <script type="text/javascript">
- 
 $(function(){
+    //加载支付列表中
+    jq_ajax('{:url("publics/api.pay/getList",["type"=>"is_recharge"])}','',function(res){
+        if (res.code==0){
+            _alert(res.msg);
+            return false;
+        }
+        $('.cells').html(template('payListTpl',res));
+    });
 	$('.textBox').on('click',function(){
 	  $(this).siblings().animate({'fontSize':'0.173333rem','top':'0.2666666rem'})
 	})
@@ -82,26 +71,26 @@ $(function(){
 		$(this).siblings().animate({'fontSize':'0.4rem','top':'0.386667rem'})
 	  }
 	})
-	$(".check").on('click',function(){
-	  if ($('#s13').is(":checked")) {
+	$(document).on('click',".check",function(){
+        $('.uploading').hide();
+	  if ($(this).is(":checked") && $(this).val() == 'offline') {
 		  $('.uploading').show()
-	  }else{
-		$('.uploading').hide()
 	  }
-	}) 
+	})
 })
-	  
+
 var isPost = false
 var fd = new FormData();
 var imgNum = 0;
 $('.postBtn').click(function(){
-	var amount = $('#amount').val();
-	if (amount < 1){
+	var order_amount = $('#order_amount').val();
+
+	if (order_amount < 1){
 		_alert('充值金额不能少于1.');
 		return false;
 	}
-	fd.append("pay_type", $('input:radio[name="pay_type"]:checked').val());	
-	fd.append("amount", amount);	
+	fd.append("pay_code", $('input:radio[name="pay_type"]:checked').val());
+	fd.append("order_amount", order_amount);
 	$.ajax({
 		  url: '{:url("member/api.Wallet/recharge")}',
 		  type: 'post',
@@ -111,9 +100,14 @@ $('.postBtn').click(function(){
 		  success: function (res) {
 			 if (res.code == 0){
 				  _alert(res.msg);
-				  return false;	
+				  return false;
 			  }
-			  _alert(res.msg,'{:url("member/wallet/index")}');			  
+			  if (pay_code ==  'offline'){
+                  _alert(res.msg,'{:url("member/wallet/index")}');
+                  return false;
+              }
+
+              window.location.href = '{:_url("shop/payment/getPay",["order_id"=>"【res.data.order_id】")}';
 		  }
 	})
 
@@ -125,11 +119,11 @@ $('.uploadBox').on('click','.closeImg',function(){
 	fd.delete("imgfile["+$(this).data('imgnum')+"]");
 })
 //选择上传图片
-function uploadFile(_this,e){	
+function uploadFile(_this,e){
 	compress(e, function(base64Img){
 		if (imgNum > 6){
 			_alert('最多允许上传6张图片.');
-			return false;	
+			return false;
 		}
 		imgNum++;
 		fd.append("imgfile["+imgNum+"]", base64Img);

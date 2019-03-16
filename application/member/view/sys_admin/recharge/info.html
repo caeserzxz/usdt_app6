@@ -21,7 +21,7 @@
                      <div class="form-group">
                         <label class="col-sm-3 control-label">充值金额：</label>
                         <div class="col-sm-6 m-t-mc">
-                            ￥{$row.amount}
+                            ￥{$row.order_amount}
                         </div>
                     </div> 
                     
@@ -61,7 +61,7 @@
                     {/gt}
             </div>
             <div class="modal-footer">
-                <input type="hidden" name="log_id" value="{$row.log_id|intval}"/>
+                <input type="hidden" name="order_id" value="{$row.order_id|intval}"/>
                 <input type="hidden" name="operating" id="operating" value=""/>                
                 {eq name="row.status" value="0"}
                     <button type="button" class="btn btn-primary operatbtn" data-type='refuse'>审核失败</button>

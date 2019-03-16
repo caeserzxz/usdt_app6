@@ -24,7 +24,7 @@ class PaymentModel extends BaseModel
 	public function getRows($status = false,$type='pay_id'){
 		$data = Cache::get($this->mkey.$type);
 		if (empty($data)){		
-			$rows = $this->field('*,pay_id AS id,pay_name AS name')->order('status DESC,sort_order DESC')->select()->toArray();		
+			$rows = $this->field('*,pay_id AS id,pay_name AS name')->order('is_pay DESC,sort_order DESC')->select()->toArray();
 			foreach ($rows as $row){
 				if ($type == 'pay_id'){
 					$data[$row['pay_id']] = $row;

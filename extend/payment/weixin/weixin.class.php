@@ -85,16 +85,16 @@ class weixin
     function getJSAPI($order)
     {
     	if(stripos($order['order_sn'],'recharge') !== false){
-    		$go_url = U('Mobile/User/recharge_list',array('type'=>'recharge'));
-    		$back_url = U('Mobile/User/recharge',array('order_id'=>$order['order_id']));
+    		$go_url = url('member/wallet/index',array('type'=>'recharge'));
+    		$back_url = url('member/wallet/recharge',array('order_id'=>$order['order_id']));
     	}else{
-    		$go_url = U('Mobile/Order/order_detail',array('id'=>$order['order_id']));
-    		$back_url = U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']));
+    		$go_url = url('shop/order/info',array('order_id'=>$order['order_id']));
+    		$back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));
     	}
         //①、获取用户openid
         $tools = new JsApiPay();
         //$openId = $tools->GetOpenid();
-        $openId = $_SESSION['openid'];
+        $openId = $_SESSION['wxInfo']['wx_openid'];
         //②、统一下单
         $input = new WxPayUnifiedOrder();
         $input->SetBody("支付订单：".$order['order_sn']);
@@ -104,7 +104,7 @@ class weixin
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("tp_wx_pay");
-        $input->SetNotify_url(SITE_URL.'/index.php/Home/Payment/notifyUrl/pay_code/weixin');
+        $input->SetNotify_url(SITE_URL.'/index.php/shop/Payment/notifyUrl/pay_code/weixin');
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order2 = WxPayApi::unifiedOrder($input);
@@ -221,7 +221,7 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
      // 微信订单退款原路退回
     public function payment_refund($data){
     header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
+exit("暂不支持.");
     }
 
 }

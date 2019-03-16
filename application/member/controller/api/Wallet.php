@@ -28,17 +28,20 @@ class Wallet extends ApiController
     /*------------------------------------------------------ */
     public function recharge()
     {
-    	$inArr['pay_type'] = input('pay_type','','trim');
-		$inArr['amount'] = input('amount') * 1;
-		if ($inArr['amount'] < 1){
+    	$inArr['pay_code'] = input('pay_code','','trim');
+		$inArr['order_amount'] = input('order_amount') * 1;
+		if ($inArr['order_amount'] < 1){
 			return $this->error('充值金额不能少于1.');
 		}
+        $payList = $this->Model->getRows(true,'pay_code');
+		if (empty($payList[$inArr['pay_code']])){
+            return $this->error('支付方式不存在.');
+        }
 		if ($inArr['pay_type'] == 'offline'){
 			//处理图片
 			$imgfile = input('imgfile');
 			if (empty($imgfile)){
 				return $this->error('线下打款，须上传打款凭证图片.');
-				return false;
 			}
 			$imgs = array();
 			$file_path = config('config._upload_').'recharge/'.date('Ymd').'/';
@@ -50,16 +53,22 @@ class Wallet extends ApiController
 			}
 			$inArr['imgs'] = join(',',$imgs);
 		}
+        $payment = $payList[$inArr['pay_code']];
+        $inArr['order_sn'] = 'recharge'.date('Ymdhis').rand(1000,9999);
+		$inArr['pay_id'] = $payment['pay_id'];
+        $inArr['pay_name'] = $payment['pay_name'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
-		$res = (new RechargeLogModel)->save($inArr);
+		$RechargeLogModel = new RechargeLogModel();
+		$res = $RechargeLogModel->save($inArr);
 		if ($res < 1){
 			foreach ($imgs as $img){
 				@unlink('.'.$img);
 			}
 			return $this->error('写入数据失败.');	
-		}		
-        return $this->success('提交成功.');
+		}
+
+        return $this->success('提交成功.','',['order_id'=>$RechargeLogModel->order_id]);
     }
     /*------------------------------------------------------ */
     //-- 旅游豆转换

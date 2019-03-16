@@ -69,6 +69,7 @@ class weixinH5
         if ($return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS') {
             return ['status' => 1, 'msg' => $return['return_msg'], 'result' => $return['mweb_url']];
         } else {
+
             return ['status' => -1, 'msg' => $return['return_msg'], 'result' => $return];
         }
     }

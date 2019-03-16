@@ -38,7 +38,7 @@ class Recharge extends AdminController
 		$this->payList = (new PaymentModel)->getRows(false,'pay_code');
 		$search['keyword'] = input('keyword','','trim');
 		$search['status'] = input('status',0,'intval');
-		$search['pay_type'] = input('pay_type','','trim');
+		$search['pay_id'] = input('pay_id',0,'intval');
 		$reportrange = input('reportrange');
 		$where = [];
 		if (empty($reportrange) == false){
@@ -50,8 +50,8 @@ class Recharge extends AdminController
 		if ($search['status'] >= 0){
 			$where[] = ['status','=',$search['status']];
 		}
-		if (empty($search['pay_type']) == false){
-			$where[] = ['pay_type','=',$search['pay_type']];
+		if ($search['pay_id'] > 0){
+			$where[] = ['pay_code','=',$search['pay_id']];
 		}
 		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
@@ -107,12 +107,12 @@ class Recharge extends AdminController
 	/*------------------------------------------------------ */
     public function afterEdit($data){
 		if ($data['status'] == 9){
-			$info = $this->Model->find($data['log_id']);
+			$info = $this->Model->find($data['order_id']);
 			$AccountLogModel = new AccountLogModel();
 			$changedata['change_desc'] = '充值到帐';
 			$changedata['change_type'] = 6;
-			$changedata['by_id'] = $info['log_id'];
-			$changedata['balance_money'] = $info['amount'];
+			$changedata['by_id'] = $info['order_id'];
+			$changedata['balance_money'] = $info['order_amount'];
 			$res = $AccountLogModel->change($changedata, $info['user_id'], false);
 			if ($res !== true) {
 				Db::rollback();// 回滚事务
