@@ -42,7 +42,7 @@
         <div class="cell_ft">
             <label for="pay{{item.pay_id}}">
                 <div class="iconBox">
-                    <input type="radio" class="check" value="{{item.pay_code}}" name="pay_type" id="pay{{item.pay_id}}" >
+                    <input type="radio" class="check" value="{{item.pay_code}}" name="pay_code" id="pay{{item.pay_id}}" >
                     <i class="icon_checked"></i>
                 </div>
             </label>
@@ -84,12 +84,12 @@ var fd = new FormData();
 var imgNum = 0;
 $('.postBtn').click(function(){
 	var order_amount = $('#order_amount').val();
-
+    var pay_code =  $('input:radio[name="pay_code"]:checked').val();
 	if (order_amount < 1){
 		_alert('充值金额不能少于1.');
 		return false;
 	}
-	fd.append("pay_code", $('input:radio[name="pay_type"]:checked').val());
+	fd.append("pay_code",pay_code);
 	fd.append("order_amount", order_amount);
 	$.ajax({
 		  url: '{:url("member/api.Wallet/recharge")}',
@@ -107,7 +107,7 @@ $('.postBtn').click(function(){
                   return false;
               }
 
-              window.location.href = '{:_url("shop/payment/getPay",["order_id"=>"【res.data.order_id】")}';
+              window.location.href = '{:_url("shop/payment/getPay",["order_id"=>"【res.data.order_id】","pay_code"=>"【pay_code】"])}';
 		  }
 	})
 

@@ -128,7 +128,7 @@ class Payment extends ClientbaseController
         $config_value = parseUrlParam($pay_radio); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
         $wxInfo = session('wxInfo');
         //微信JS支付
-        if (($this->pay_code == 'weixin' || $this->pay_code == 'weixinH5') && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
+        if ($this->pay_code == 'weixin'  && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
             $code_str = $this->payment->getJSAPI($order);
             exit($code_str);
         } else {

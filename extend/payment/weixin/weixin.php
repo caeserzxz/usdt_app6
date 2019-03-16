@@ -12,7 +12,8 @@
  * Author: IT宇宙人
  * Date: 2015-09-09
  */
-
+namespace payment\weixin;
+use app\mainadmin\model\PaymentModel;
 /**
  * 支付 逻辑定义
  * Class 
@@ -31,13 +32,13 @@ class weixin
 	   if(!$code){
             $code = 'weixin';
         }
-        $paymentPlugin = M('Plugin')->where(['code'=>$code , 'type' => 'payment'])->find(); // 找到微信支付插件的配置
-        $config_value = unserialize($paymentPlugin['config_value']); // 配置反序列化        
-        WxPayConfig::$appid = $config_value['appid']; // * APPID：绑定支付的APPID（必须配置，开户邮件中可查看）
-        WxPayConfig::$mchid = $config_value['mchid']; // * MCHID：商户号（必须配置，开户邮件中可查看）
-        WxPayConfig::$key = $config_value['key']; // KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
-        WxPayConfig::$appsecret = $config_value['appsecret']; // 公众帐号secert（仅JSAPI支付的时候需要配置)，                                      
-        WxPayConfig::$app_type = $code;
+        $payment =  (new PaymentModel)->where('pay_code', 'weixin')->find();
+        $config = json_decode(urldecode($payment['pay_config']),true);
+        \WxPayConfig::$appid = $config['appid']; // * APPID：绑定支付的APPID（必须配置，开户邮件中可查看）
+        \WxPayConfig::$mchid = $config['mchid']; // * MCHID：商户号（必须配置，开户邮件中可查看）
+        \WxPayConfig::$key = $config['key']; // KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
+        \WxPayConfig::$appsecret = $config['appsecret']; // 公众帐号secert（仅JSAPI支付的时候需要配置)，
+        \WxPayConfig::$app_type = $code;
     }    
     /**
      * 生成支付代码
@@ -48,7 +49,7 @@ class weixin
     {
         $notify_url = SITE_URL . '/index.php/Home/Payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 
-        $input = new WxPayUnifiedOrder();
+        $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
         $input->SetAttach("weixin"); // 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
         $input->SetOut_trade_no($order['order_sn'] . time()); // 商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
@@ -56,7 +57,7 @@ class weixin
         $input->SetNotify_url($notify_url); // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         $input->SetTrade_type("NATIVE"); // 交易类型   取值如下：JSAPI，NATIVE，APP，详细说明见参数规定    NATIVE--原生扫码支付
         $input->SetProduct_id("123456789"); // 商品ID trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
-        $notify = new NativePay();
+        $notify = new \NativePay();
         $result = $notify->GetPayUrl($input); // 获取生成二维码的地址
         $url2 = $result["code_url"];
         if (empty($url2))
@@ -70,7 +71,7 @@ class weixin
     function response()
     {                        
         require_once("example/notify.php");  
-        $notify = new PayNotifyCallBack();
+        $notify = new \PayNotifyCallBack();
         $notify->Handle(false);       
     }
     

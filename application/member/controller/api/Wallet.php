@@ -7,6 +7,7 @@ use think\Db;
 
 use app\member\model\AccountLogModel;
 use app\member\model\RechargeLogModel;
+use app\mainadmin\model\PaymentModel;
 /*------------------------------------------------------ */
 //-- 会员钱包相关
 /*------------------------------------------------------ */
@@ -33,7 +34,7 @@ class Wallet extends ApiController
 		if ($inArr['order_amount'] < 1){
 			return $this->error('充值金额不能少于1.');
 		}
-        $payList = $this->Model->getRows(true,'pay_code');
+        $payList = (new PaymentModel)->getRows(true,'pay_code');
 		if (empty($payList[$inArr['pay_code']])){
             return $this->error('支付方式不存在.');
         }
