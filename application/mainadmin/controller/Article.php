@@ -35,6 +35,7 @@ class Article extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $runJson = input('runJson',0,'intval');
 		$ArticleCategoryModel = new ArticleCategoryModel();        
 		$where = [];
 		$this->cg_list = $ArticleCategoryModel->getRows();
@@ -49,7 +50,9 @@ class Article extends AdminController
 		$this->assign("data", $this->data);
 		$this->assign("search", $search);
 		$this->assign("cg_list", $this->cg_list);
-		if ($runData == false){
+        if ($runJson == 1){
+            return $this->success('','',$this->data);
+        }elseif ($runData == false){
             $this->data['content'] = $this->fetch('list');
 			unset($this->data['list']);
 			return $this->success('','', $this->data);
@@ -63,9 +66,9 @@ class Article extends AdminController
 	/*------------------------------------------------------ */
 	public function asInfo($data){
 		$ArticleCategoryModel = new ArticleCategoryModel(); 
-		$cg_list = $ArticleCategoryModel->getRows();
-		$this->assign("cg_list", $cg_list);
-		$this->assign("cg_opt", arrToSel($cg_list,$row['cid']));
+		$catList = $ArticleCategoryModel->getRows();
+		$this->assign("catList", $catList);
+		$this->assign("catOpt", arrToSel($catList,$data['cid']));
 		if (empty($data['add_time'])) $data['add_time'] = time();
 		return $data;
 	}

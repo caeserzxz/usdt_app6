@@ -41,6 +41,7 @@ class Goods extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
+        $runJson = input('runJson',0,'intval');
 		$where[] = ['store_id','=',$this->store_id];
 		$where[] = ['is_delete','=',$is_delete];
 		$search['status'] = input('status',0,'intval');
@@ -75,7 +76,9 @@ class Goods extends AdminController
 		$this->assign("search", $search);
 		$this->assign("classListOpt", arrToSel($this->classList,$search['cid']));
 		$this->assign("brandListOpt", arrToSel($this->Model->getBrandList()));
-		if ($runData == false){
+		if ($runJson == 1){
+            return $this->success('','',$this->data);
+        }elseif ($runData == false){
             $this->data['content'] = $this->fetch('list');
 			unset($this->data['list']);
 			return $this->success('','',$this->data);
@@ -682,11 +685,11 @@ class Goods extends AdminController
 	//-- 根据关键字查询
 	/*------------------------------------------------------ */
 	public function pubSearch() {
-		$keyword =  input('keyword','','trim');			
+		$keyword =  input('keyword','','trim');
 		if (!empty($keyword)){
 			 $where = "( goods_name LIKE '%".$keyword."%' OR goods_sn LIKE '%".$keyword."%' )";
 		}
-		$_list = $this->Model->where($where)->field("goods_id,goods_name,is_spec,goods_sn")->limit(20)->select();
+		$_list = $this->Model->where($where)->field("goods_id,goods_name,is_spec,goods_sn,goods_thumb")->limit(20)->select();
 		foreach ($_list as $key=>$row){
 			$_list[$key] = $row;
 		}

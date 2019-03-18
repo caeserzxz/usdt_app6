@@ -27,7 +27,7 @@ function toUnderScore($str)
  * 自定义URL
 */
 function _url($url,$arr,$isNotHtml=true,$domain = false){
-	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D',$_SERVER['SCRIPT_NAME']),array("'+","+'",'{{','}}',''),url($url,$arr,$isNotHtml,$domain));
+	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D',$domain==ture?$_SERVER['SCRIPT_NAME']:''),array("'+","+'",'{{','}}',''),url($url,$arr,$isNotHtml,$domain));
 }
 /**
  * 后台生成密码hash值
@@ -488,11 +488,11 @@ function getUrl($val='',$valb='',$var=array()){
 	}elseif($valb == 'url'){
 		$var['token'] = $GLOBALS['userinfo']['token']; 
 		if (strstr($val,'http:')) return $val;	
-		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').U($val,$var);	
+		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
 	}elseif($valb == '_url'){
 		$var['token'] = $GLOBALS['userinfo']['token']; 
 		if (strstr($val,'http:')) return $val;	
-		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').U($val,$var);	
+		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
 	}
 	$php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];		
 	$path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';

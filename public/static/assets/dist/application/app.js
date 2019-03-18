@@ -489,6 +489,24 @@ function(a) {
 				if (fn) eval(fn+'(data)');
          })
     }),
+    b(document).on("click", '[data-toggle="iframeModal"]',
+            function(c) {
+                var d = b(this);
+                b("#iframeModal").remove(),
+                    c.preventDefault();
+                var d = b(this),
+                    url = d.data("url"),
+                    g = b('<div class="modal fade" id="ajaxModal"><div class="modal-body "></div></div>');
+                b(document).append(g),
+                g.modal(),
+                g.append2('<div class="modal-dialog"><div class="modal-content" style="min-width: 700px;">' +
+                    '<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                    '<h4 class="modal-title"><i class="icon-table"></i>选择链接</h4></div> ' +
+                    '<div class="modal-body"><iframe src="'+url+'" style="width:100%; height:100%;min-height: 300px; border:0px;"></iframe></div>' +
+                    '</div></div>',function(){});
+
+
+     }),
 	b(document).on("click", '[data-toggle="ajaxEditInput"]',
     function(c) {
         var d = b(this);

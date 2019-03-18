@@ -58,7 +58,7 @@ class SkuCustom extends AdminController
 		$skuModelId = input('skuModelId',0,'intval');
 		$spe = input('spe','','trim');
 		$speval = input('speval');
-		if ($cid < 0) return $this->error('商品类目ID传参错误！');
+		if ($skuModelId < 0) return $this->error('商品类目ID传参错误！');
 		if (empty($spe)) return $this->error('规格名称传参错误！');
 		if (empty($speval)) return $this->error('规格值传参错误！');
 		

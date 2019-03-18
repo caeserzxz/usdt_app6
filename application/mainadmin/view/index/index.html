@@ -16,11 +16,11 @@
                                   data-update="5000"></span>
                         </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="t_day_order_num">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="t_day_order_num">{$stats.today.all_add_num}</strong></span>
                     <small class="text-muted text-uc">今天下单数</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="y_day_order_num">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="y_day_order_num">{$stats.yesterday.all_add_num}</strong></span>
                     <small class="text-muted text-uc">昨天下单数</small>
                 </a>
             </div>
@@ -33,11 +33,11 @@
                                   data-animate="2000" data-target="#bugs" data-update="3000"></span>
                         </span>
                 <a class="fl">
-                    <span class="h3 block m-t-xs"><strong id="t_day_clinch_money">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="t_day_clinch_money">{$stats.today.order_pay_num}</strong></span>
                     <small class="text-muted text-uc">今天成交金额</small>
                 </a>
                 <a class="fr">
-                    <span class="h3 block m-t-xs"><strong id="y_day_clinch_money">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="y_day_clinch_money">{$stats.yesterday.order_pay_num}</strong></span>
                     <small class="text-muted text-uc" >昨天成交金额</small>
                 </a>
             </div>
@@ -47,11 +47,11 @@
                             <i class="fa fa-truck fa-stack-1x text-white"></i>
                         </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="t_day_wait_shipping_num"> 0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="t_day_wait_shipping_num">{$stats.wait_shipping_num}</strong></span>
                     <small class="text-muted text-uc">待发货订单</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num"> 0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num">{$stats.yesterday.order_pay_num}</strong></span>
                     <small class="text-muted text-uc">昨天发货订单</small>
                 </a>
             </div>
@@ -165,7 +165,7 @@
                         <span class="h4 font-bold m-t block">0 </span>
                         <small class="text-muted m-b block">待支付总数</small>
                     </div>
-                    <div class="col-xs-3 b-light">
+                    <div class="col-xs-3 b-r b-light">
                         <span class="h4 font-bold m-t block">0</span>
                         <small class="text-muted m-b block">待签收总数</small>
                     </div>
@@ -233,13 +233,16 @@
             },
             series: [{
                 name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
-                data: [[0], [0], [0], [0], [0], [0], [0]]
-            }, {
+                data: {$stats.all_add_num|json_encode|raw}
+            },{
+                name: '成交数 <span style="color:gray" >(点击隐藏)</span>',
+                data: {$stats.order_pay_num|json_encode|raw}
+            },{
                 name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
-                data: [[0], [0], [0], [0], [0], [0], [0]]
+                data: {$stats.shipping_order_num|json_encode|raw}
             }, {
-                name: '待签收数 <span style="color:gray" >(点击隐藏)</span>',
-                data: [[0], [0], [0], [0], [0], [0], [0]]
+                name: '签收数 <span style="color:gray" >(点击隐藏)</span>',
+                data:  {$stats.sign_order_num|json_encode|raw}
             }]
         });
 

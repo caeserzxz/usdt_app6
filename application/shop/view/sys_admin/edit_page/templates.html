@@ -32,7 +32,7 @@
                 </a>
             </div>
             <div id="select-wrapper">
-                <a class="back-to-page" href="{:U('index')}"><img src="__STATIC__/EditPage/images/return-to-edit.png" width="80%"></a>
+                <a class="back-to-page" href="{:url('index')}"><img src="__STATIC__/EditPage/images/return-to-edit.png" width="80%"></a>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@
                              <div class="template-image"><img src="{$temp.img}"></div>
                              <div class="template-name">{$temp.name}</div>
                              <if condition="($theme_type eq $_theme_type) AND ($select_theme eq $key) "><div class="cur-page-icon"></div></if>
-                             <div class="preview-cover <if condition="($theme_type eq $_theme_type) AND ($select_theme eq $key) ">cur-page</if>">{$_theme_type}<a class="use-button" href="{:U('index',array('theme_type'=>$_theme_type,'select_theme'=>$key))}">立即使用</a></div>
+                             <div class="preview-cover <if condition="($theme_type eq $_theme_type) AND ($select_theme eq $key) ">cur-page</if>">{$_theme_type}<a class="use-button" href="{:url('index',array('theme_type'=>$_theme_type,'select_theme'=>$key))}">立即使用</a></div>
                          </div>
                      </volist>  
         		</div>

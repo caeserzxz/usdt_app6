@@ -64,7 +64,7 @@
                           <div class="col-sm-8 controls">
                            		<select name="settlement_day" style="width:100px;">
                                     <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
-                                    {for start="1" end="31" name="day" }
+                                    {for start="1" end="121" name="day" }
                                     <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
                                     {/for}
                                 </select>
@@ -86,7 +86,7 @@
                       <div class="col-sm-9 controls">
                        <select name="repeat_buy_day" style="width:100px;">
                                     <option value="0" {$Dividend['repeat_buy_day']==0?'selected':''}>不限制</option>
-                                    {for start="1" end="31" name="day" }
+                                    {for start="1" end="121" name="day" }
                                     <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
                                     {/for}
                                 </select>

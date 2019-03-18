@@ -57,9 +57,10 @@
                   <td>
                     <input type="hidden" value="{$vo.pid}" name="ps[{$vo.id}][parent_id]"/>
                     <input name="ps[{$vo.id}][keyword]" id="ps_keyword_{$vo.id}" class="input-text {$vo['keyword_value']==''?'hide':''}" style="width:50px;" value="{$vo.keyword}" type="hidden" >
-                    <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}"  data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'}" id="ps_Article_btn_{$vo.id}" >绑定文章</a>
-                                          
-                    <a href="javascript:;" data-remote="{:url('sys_admin.replyText/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='click'?'':'hide'}" id="ps_ReplyText_btn_{$vo.id}">绑定关键字</a>
+                    <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}"  data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'} ps_Article_btn_{$vo.id}" >绑定文章</a>
+                      <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="iframeModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'} ps_Article_btn_{$vo.id}" >绑定URL</a>
+
+                      <a href="javascript:;" data-remote="{:url('sys_admin.replyText/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="ps_bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='click'?'':'hide'}" id="ps_ReplyText_btn_{$vo.id}">绑定关键字</a>
                   </td>
                   <td><input name="ps[{$vo.id}][keyword_value]" id="ps_keyword_value_{$vo.id}"  style="width:100%" value="{$vo.keyword_value}" type="text" class="input-text {$vo['keyword_value']==''?'hide':''}" ></td>
                   <td>
@@ -105,11 +106,13 @@
 						   + '</select>'
 						   + '</td>'
 						   + '<td>'
-						   + '<a href="javascript:;" data-remote="{:url("MAdmin/Article/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'"  data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_Article_btn_' + _menu_index + '" >绑定文章</a> <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'						 
+						   + ' <a href="javascript:;" data-remote="{:_url("mainadmin/article/searchBox",array("searchType"=>"new","_menu_index"=>"【_menu_index】"))}"  data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide new_Article_btn_' + _menu_index + '" >绑定文章</a>'
+                           + ' <a href="javascript:;" data-url="{:_url("publics/sys_admin.links/index",array("searchType"=>"new","_menu_index"=>"【_menu_index】"))}"  data-toggle="iframeModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide new_Article_btn_' + _menu_index + '" >绑定URL</a>'
+                           + ' <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'
 						   + '</td><td>'
 						   + '<input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
 						   + '<input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '" type="hidden" >'
-						   + '<input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium"  type="text"  style="width:100%">'
+						   + '<input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide "  type="text"  style="width:100%">'
 						   + '</td>'
 						   + '<td><label class="m-t"><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'
 						   + '<td><a href="javascript:void(0)" class="del fa fa-trash"></a></td>'
@@ -130,11 +133,13 @@
 						   + '	{$WeixinEventType_opt|raw}'
 						  + '  </select>'
 						  + '</td><td>'
-						  + '  <a href="javascript:;" data-remote="{:url("MAdmin/Article/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'"  data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_Article_btn_' + _menu_index + '" >绑定文章</a> <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'
-						+ '</td><td>'
+						  + '  <a href="javascript:;" data-remote="{:_url("mainadmin/article/searchBox",array("searchType"=>"new","_menu_index"=>"【_menu_index】"))}"   data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide new_Article_btn_' + _menu_index + '" >绑定文章</a> '
+                          + '  <a href="javascript:;" data-url="{:_url("publics/sys_admin.links/index",array("searchType"=>"new","_menu_index"=>"【_menu_index】"))}"   data-toggle="iframeModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide new_Article_btn_' + _menu_index + '" >绑定URL</a> '
+                          +  ' <a href="javascript:;" data-remote="{:url("ReplyText/searchBox",array("searchType"=>"new"))}&_menu_index='+_menu_index+'" data-toggle="ajaxModal" class="new_bding_btn_' + _menu_index + ' btn btn-sm btn-default hide" id="new_ReplyText_btn_' + _menu_index + '">绑定关键字</a>'
+						  + '</td><td>'
 						  + '  <input type="hidden" name="new[parent_id][' + _menu_index + ']" value="{pid}" />'
 						  + '  <input name="new[keyword][' + _menu_index + ']" id="new_keyword_' + _menu_index + '"   type="hidden"   >'
-						  + '  <input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide input-medium" type="text"   style="width:100%">'
+						  + '  <input name="new[keyword_value][' + _menu_index + ']" id="new_keyword_value_' + _menu_index + '" class="hide " type="text"   style="width:100%">'
 						
 						  + '</td>'
 						  + '<td><label><input class="checkbox-slider colored-blue" name="new[is_show][' + _menu_index + ']" type="checkbox" value="1" checked ><span class="text"></span></label></td>'
@@ -146,11 +151,11 @@
 		 
 	  });
 	  
-	  $("#listTable .del").live("click", (function () {
+	  $("#listTable .del").on("click", (function () {
 		  $(this).parents("tr").remove();
 	  }));
 	  
-	  $("input.type").live("change", function () {
+	  $("input.type").on("change", function () {
 		  var $this = $(this);
 		  var $val = $this.val();
 		  var $nex = $this.nextAll("input.key_type");
@@ -181,7 +186,7 @@
 	 $("."+type+"_bding_btn_"+id).addClass('hide');
 	 $("#"+type+"_keyword_value_"+id).addClass('hide');
 	 if(obj.value == 'view'){
-	   $("#"+type+"_Article_btn_"+id).removeClass('hide');
+	   $("."+type+"_Article_btn_"+id).removeClass('hide');
 	   $("#"+type+"_keyword_value_"+id).removeClass('hide');
 	   $("#"+type+"_keyword_value_"+id).val('http://');
 	 }else if(obj.value == 'click'){
@@ -196,5 +201,11 @@
 	  $("#"+type+"_keyword_"+type_id).val(id);
 	  $(".modal-dialog .close").trigger("click");
   }
+var McMore = {
+    selectUrlCallback: function (url,type,type_id) {
+       $("#"+type+"_keyword_value_"+type_id).val(url);
+       $(".modal-dialog .close").trigger("click");
+   }
+ }
 </script>
 {/block}

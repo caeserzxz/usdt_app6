@@ -38,7 +38,7 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 获取会员订单信息汇总
     /*------------------------------------------------------ */
-    function userOrderStats($user_id = 0)
+    public function userOrderStats($user_id = 0)
     {
         $user_id = $user_id * 1;
         $mkey = $this->mkey . '_user_stat_' . $user_id;

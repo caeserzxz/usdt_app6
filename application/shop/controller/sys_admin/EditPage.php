@@ -7,7 +7,7 @@ use think\facade\Cache;
 
 use app\shop\model\ShopPageTheme;
 use app\shop\model\GoodsModel;
-use app\mainadmin\model\ArticleCategoryModel;
+
 /*------------------------------------------------------ */
 //-- 商城装修
 /*------------------------------------------------------ */
@@ -325,84 +325,6 @@ class EditPage extends AdminController
 		return $this->ajaxReturn($result);
 	}
 	
-    /*------------------------------------------------------ */
-    //-- link
-    /*------------------------------------------------------ */
-    public function links(){
-        $result['status']= 0;
-        $result['data'] =Array(
-			  0 =>array
-				  (
-					  'id' => 1,
-					  'name' => '首页',
-					  'url' => '/'
-				  ),
-			  1 =>array
-				  (
-					  'id' => 2,
-					  'name' => '用户中心',
-					  'url' => U('mobile/User/index')
-				  ),
-			  2 =>array
-				  (
-					  'id' => 3,
-					  'name' => '所有商品',
-					  'url' => U('mobile/Goods/goodsList')
-				  ),
-			  3 =>array
-				  (
-					  'id' => 4,
-					  'name' => '购物车',
-					  'url' => U('mobile/Cart/index')
-				  ),
-			  4 =>array
-				  (
-					  'id' => 5,
-					  'name' => '商品分类',
-					  'url' => U('mobile/Goods/categoryList')
-				  ),
-			  5 =>array
-				  (
-					  'id' => 6,
-					  'name' => '我的订单',
-					  'url' => U('mobile/Order/order_list')
-				  ),                           
-			  7 =>array
-				  (
-					  'id' => 8,
-					  'name' => '地址管理',
-					  'url' => U('mobile/User/address_list')
-				  ),
-			  8 =>array
-				  (
-					  'id' => 9,
-					  'name' => '我的信息',
-					  'url' => U('mobile/User/userinfo')
-				  ),
-			  9 =>array
-				  (
-					  'id' => 10,
-					  'name' => '我的分销',
-					  'url' => U('mobile/User/zpdistribution_list')
-				  ),
-			  10 =>array
-				  (
-					  'id' => 11,
-					  'name' => '账户与安全',
-					  'url' => U('mobile/User/accountSafe')
-				  )
-			  
-			  );
-		//$this->assign('http_host', 'http://'.$_SERVER['SERVER_NAME']);
-		$this->assign('http_host', '');
-		$this->assign('links', $result['data']);
-		$GoodsModel = new GoodsModel();
-        $classList = $GoodsModel->getClassList();
-		$this->assign('classList',$classList);
-		$ArticleCategoryModel = ArticleCategoryModel();
-		$this->assign("ArticleCatOpt", arrToSel($ArticleCategoryModel->getRows()));
-		return $this->fetch();
-    }
 
   
 

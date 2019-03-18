@@ -139,6 +139,6 @@ class ShippingTpl extends AdminController
 		if ($res < 1) return $this->error();
 		$this->Model->cleanMemcache();
 		$this->_Log($map['sf_id'],'删除运费模板');//记录日志
-		return $this->success('删除成功',U('index'));
+		return $this->success('删除成功',url('index'));
 	}
 }
