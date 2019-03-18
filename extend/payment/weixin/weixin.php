@@ -93,11 +93,11 @@ class weixin
     		$back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));
     	}
         //①、获取用户openid
-        $tools = new JsApiPay();
+        $tools = new \JsApiPay();
         //$openId = $tools->GetOpenid();
         $openId = $_SESSION['wxInfo']['wx_openid'];
         //②、统一下单
-        $input = new WxPayUnifiedOrder();
+        $input = new \WxPayUnifiedOrder();
         $input->SetBody("支付订单：".$order['order_sn']);
         $input->SetAttach("weixin");
         $input->SetOut_trade_no($order['order_sn'].time());
@@ -108,7 +108,7 @@ class weixin
         $input->SetNotify_url(SITE_URL.'/index.php/shop/Payment/notifyUrl/pay_code/weixin');
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
-        $order2 = WxPayApi::unifiedOrder($input);
+        $order2 = \WxPayApi::unifiedOrder($input);
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //printf_info($order);exit;  
         $jsApiParameters = $tools->GetJsApiParameters($order2);

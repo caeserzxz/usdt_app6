@@ -24,7 +24,7 @@ class Index extends AdminController
 			if ($DividendInfo['settlement_day'] > 0){
 				$EvalArrivalLogModel = new \app\distribution\model\EvalArrivalLogModel();
 				$log_time = $EvalArrivalLogModel->order('log_id DESC')->value('log_time');//获取最近操作的时间
-				if (time() > $log_time + $settlement_day * 86400){					
+				if (time() > $log_time + $DividendInfo['settlement_day'] * 86400){
 					$inData['log_time'] = time();					
 					Db::startTrans();//事务启用
 					$res = $EvalArrivalLogModel->save($inData);
@@ -39,6 +39,20 @@ class Index extends AdminController
 				}
 			}
 		}
+		//统计相关
+        $time = time();
+		$start_day = date("Y-m-d",strtotime("-1 week"));
+		$this->assign('start_day',$start_day);
+		$end_day = date('Y-m-d', strtotime('-1 day',$time) );
+        $this->assign('end_day',$end_day);
+        $dt_start = strtotime($start_day);
+        $riqi = [];
+        while ($dt_start <=  strtotime($end_day)){
+            $riqi[] = date('Y-m-d',$dt_start);
+            $dt_start = strtotime('+1 day',$dt_start);
+        }
+
+        $this->assign('riqi',json_encode($riqi));
         return $this->fetch('index');
     }
 

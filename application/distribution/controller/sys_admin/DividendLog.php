@@ -20,7 +20,7 @@ class DividendLog extends AdminController{
 	//-- 首页
 	/*------------------------------------------------------ */
     public function index(){
-		
+
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);

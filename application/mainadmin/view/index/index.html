@@ -1,16 +1,268 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
-<div class="row-content am-cf">
-    <div class="widget am-cf">
-        <div class="widget-body">
-            <div class="tpl-page-state am-margin-top-xl">
-                <div class="tpl-page-state-title am-text-center"></div>
-                <div class="tpl-error-title-info">Welcome To System</div>
-                <div class="tpl-page-state-content tpl-error-content">
-                    <p>管理后台</p>
-                </div>
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
+<section class="scrollable wrapper  ">
+    <section class="panel panel-default ">
+        <div class="row m-l-none m-r-none bg-light lter">
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
+
+                <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                            <i class="fa fa-clipboard  fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
+                                  data-update="5000"></span>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="t_day_order_num">0</strong></span>
+                    <small class="text-muted text-uc">今天下单数</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="y_day_order_num">0</strong></span>
+                    <small class="text-muted text-uc">昨天下单数</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa fa-yen fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
+                                  data-animate="2000" data-target="#bugs" data-update="3000"></span>
+                        </span>
+                <a class="fl">
+                    <span class="h3 block m-t-xs"><strong id="t_day_clinch_money">0</strong></span>
+                    <small class="text-muted text-uc">今天成交金额</small>
+                </a>
+                <a class="fr">
+                    <span class="h3 block m-t-xs"><strong id="y_day_clinch_money">0</strong></span>
+                    <small class="text-muted text-uc" >昨天成交金额</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                       <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-info"></i>
+                            <i class="fa fa-truck fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="t_day_wait_shipping_num"> 0</strong></span>
+                    <small class="text-muted text-uc">待发货订单</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num"> 0</strong></span>
+                    <small class="text-muted text-uc">昨天发货订单</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                            <i class="fa fa-legal fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="t_day_sign_num">0</strong></span>
+                    <small class="text-muted text-uc">今天签收订单</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="y_day_sign_num">0</strong></span>
+                    <small class="text-muted text-uc">昨天签收订单</small>
+                </a>
             </div>
         </div>
+    </section>
+
+    <section class="panel panel-default ">
+        <div class="row m-l-none m-r-none bg-light lter">
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
+                <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                            <i class="fa fa-yen  fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
+                                  data-update="5000"></span>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="balance_total">0</strong></span>
+                    <small class="text-muted text-uc">金币余额总数</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="bean_total">0</strong></span>
+                    <small class="text-muted text-uc">旅游豆总数</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa fa-user fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
+                                  data-animate="2000" data-target="#bugs" data-update="3000"></span>
+                        </span>
+                <a class="fl">
+                    <span class="h3 block m-t-xs"><strong id="t_day_new_user">0</strong></span>
+                    <small class="text-muted text-uc">今天新增会员</small>
+                </a>
+                <a class="fr">
+                    <span class="h3 block m-t-xs"><strong id="y_day_new_user">0</strong></span>
+                    <small class="text-muted text-uc">昨天新增会员</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                       <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-info"></i>
+                            <i class="fa fa-users fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="user_num"> 0</strong></span>
+                    <small class="text-muted text-uc">会员总数</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="user_role_num"> 0</strong></span>
+                    <small class="text-muted text-uc">身份会员总数</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                            <i class="fa fa-yen fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="wait_pay">0</strong></span>
+                    <small class="text-muted text-uc">支付待审核</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="wait_withdraw">0</strong></span>
+                    <small class="text-muted text-uc">提现待审核</small>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="col-md-8">
+        <section class="panel panel-default ">
+            <header class="panel-heading font-bold">
+                7天订单数据
+                <small>（{$start_day}至{$end_day}）</small>
+                <a href="javascript:;" data-toggle="popover" data-html="true" data-placement="bottom"
+                   data-trigger="hover"
+                   data-content="<p style='color:#999'><strong style='color:#333'>下单数：</strong>每日提交的订单数；</p><p style='color:#999'><strong style='color:#333'>待签收数：</strong>每日待签收订单数；</p><p style='color:#999'><strong style='color:#333'>发货数：</strong>每天发货的订单数。</p>"
+                   data-original-title="" title=""><i class="fa fa-question-circle fa-lg m-l-xs"></i></a>
+            </header>
+            <div class="panel-body">
+                <!--   style="height: 210px"  -->
+                <div id="container"></div>
+            </div>
+            <footer class="panel-footer bg-white no-padder">
+                <div class="row text-center no-gutter">
+
+                    <div class="col-xs-3 b-r b-light">
+                        <span class="h4 font-bold m-t block">0</span>
+                        <small class="text-muted m-b block">下单总数</small>
+                    </div>
+                    <div class="col-xs-3 b-r b-light">
+                        <span class="h4 font-bold m-t block">0 </span>
+                        <small class="text-muted m-b block">待支付总数</small>
+                    </div>
+                    <div class="col-xs-3 b-light">
+                        <span class="h4 font-bold m-t block">0</span>
+                        <small class="text-muted m-b block">待签收总数</small>
+                    </div>
+                    <div class="col-xs-3">
+                        <span class="h4 font-bold m-t block">0</span>
+                        <small class="text-muted m-b block">待分佣总数</small>
+                    </div>
+                </div>
+            </footer>
+        </section>
     </div>
-</div>
+    <div class="col-md-4">
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">
+                7天交易数据
+                <small>（{$start_day}至{$end_day}）</small>
+                <a href="javascript:;" data-toggle="popover" data-html="true" data-placement="bottom"
+                   data-trigger="hover"
+                   data-content="<p style='color:#999'><strong style='color:#333'>成交金额：</strong>7天内总的成交金额（线上支付的统计7天内已支付的实收款，线下支付的统计7天内确认收货的实收款）；</p><p style='color:#999'><strong style='color:#333'>退款金额：</strong>7天内退货订单的金额总数；</p><p style='color:#999'><strong style='color:#333'>实际收入：</strong>7天内的实际收入=成交金额—退款金额。</p>"
+                   data-original-title="" title=""><i class="fa fa-question-circle fa-lg m-l-xs"></i></a>
+            </header>
+            <div class="bg-light dk wrapper">
+                <!--  style="height: 150px" -->
+                <div class="text-center m-b-n m-t-sm">
+                    <div id="total_money"></div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row m-t-sm">
+                    <div class="col-xs-3 m-l fl">
+                        <small class="text-muted block">成交金额</small>
+                        <span class="money">0</span>
+                    </div>
+                    <div class="col-xs-3 m-l fl">
+                        <small class="text-muted block">实收金额</small>
+                        <span class="money">0</span>
+                    </div>
+                    <div class="col-xs-3 m-l fl">
+                        <small class="text-muted block">佣金金额</small>
+                        <span class="money">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</section>
+<script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: {$riqi|raw}},
+            yAxis: {
+                title: {text: ''},
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
+                data: [[0], [0], [0], [0], [0], [0], [0]]
+            }, {
+                name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
+                data: [[0], [0], [0], [0], [0], [0], [0]]
+            }, {
+                name: '待签收数 <span style="color:gray" >(点击隐藏)</span>',
+                data: [[0], [0], [0], [0], [0], [0], [0]]
+            }]
+        });
+
+
+        $('#total_money').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: {$riqi|raw}},
+            yAxis: {
+                title: {text: ''},
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '成交额',
+                data: [[0], [0], [0], [0], [0], [0], [0]]
+            }]
+        });
+    });
+</script>
 {/block}
