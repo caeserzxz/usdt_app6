@@ -279,6 +279,9 @@ class OrderModel extends BaseModel
                 }
                 $upData['is_stock'] = 0;
             }
+
+
+
 		}elseif ($upData['pay_status'] === $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
 			 
 		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
@@ -396,6 +399,25 @@ class OrderModel extends BaseModel
             return '订单更新失败.';
         }
         Db::commit();// 提交事务
+        
+        if ($upData['order_status'] == $this->config['OS_CANCELED'] ) {
+            //系统超时取消订单
+            if ($extType == 'sys') {
+                //发送模板消息
+                $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+                $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+                $sendData['send_scene'] = 'order_cancel_msg';
+                $sendData['wx_openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
+                $sendData['order_id'] = $orderInfo['order_id'];
+                $sendData['order_sn'] = $orderInfo['order_sn'];
+                $sendData['consignee'] = $orderInfo['consignee'];
+                $sendData['order_amount'] = $orderInfo['order_amount'];
+                $sendData['add_time'] = $orderInfo['add_time'];
+                $sendData['shipping_name'] = $orderInfo['shipping_name'];
+                $sendData['invoice_no'] = $orderInfo['invoice_no'];
+                $WeiXinMsgTplModel->send($sendData);
+            }
+        }
         $this->cleanMemcache($order_id);
         return true;
     }

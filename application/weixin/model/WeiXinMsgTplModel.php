@@ -58,7 +58,6 @@ class WeiXinMsgTplModel extends BaseModel
                     'buy_nick_name'=> '[下单会员昵称]',
                     'order_sn'=> '[订单编号]',
                     'now_time'=>'[当前时间]'
-
                 ]
             ],
             'withdraw'=>[

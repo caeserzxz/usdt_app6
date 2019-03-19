@@ -399,7 +399,7 @@ class UsersModel extends BaseModel
         $spid[] = $user_id;
         sort($spid);
         $this->where('user_id',$user_id)->update(['pid'=>$pid,'is_bind'=>1,'spid'=>join(',',$spid)]);
-        //发送下级捆绑消息
+        //发送模板消息
         $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
         $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
         $wxInfo = $WeiXinUsersModel->info($user_id);

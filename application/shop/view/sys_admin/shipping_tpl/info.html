@@ -128,15 +128,15 @@ border-bottom: 4px solid #000000;
                                                     {/notempty}
                                                     </td>
                                                     <td style="position:relative;">
-                                                        <input class="form-control" data-rule-required="true" data-rule-decimal="2" name="{$fs_type}[{$key}][start]" type="text" value="{$rowc.start}"></td>
+                                                        <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][start]" type="text" value="{$rowc.start}"></td>
                                                     <td style="position:relative;">
-                                                        <input class="form-control" data-rule-required="true" data-rule-decimal="2" name="{$fs_type}[{$key}][postage]" type="text" value="{$rowc.postage|number_format=2}">
+                                                        <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postage]" type="text" value="{$rowc.postage|number_format=2}">
                                                     </td>
                                                     <td style="position:relative;">
-                                                        <input class="form-control" data-rule-required="true" data-rule-decimal="2" name="{$fs_type}[{$key}][plus]" type="text" value="{$rowc.plus}">
+                                                        <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][plus]" type="text" value="{$rowc.plus}">
                                                     </td>
                                                     <td style="position:relative;">
-                                                        <input class="form-control" data-rule-required="true" data-rule-decimal="2" name="{$fs_type}[{$key}][postageplus]" type="text" value="{$rowc.postageplus|number_format=2}">
+                                                        <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postageplus]" type="text" value="{$rowc.postageplus|number_format=2}">
                                                     </td>
 
                                                 </tr>
@@ -210,12 +210,12 @@ border-bottom: 4px solid #000000;
 
     <script type="text/html" id="edit_fee_tpl">
         <td style="position:relative;">
-            <input type="text" class="form-control" data-rule-required="true" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][start]" /></td>
+            <input type="text" class="form-control" data-rule-required="true" min="1" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][start]" /></td>
         <td style="position:relative;">
             <input type="text" class="form-control" data-rule-required="true" data-rule-decimal="2" name="{{delivery}}[{{index}}][postage]" />
         </td>
         <td style="position:relative;">
-            <input type="text" class="form-control" data-rule-required="true" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][plus]" />
+            <input type="text" class="form-control" data-rule-required="true" min="1" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][plus]" />
         </td>
         <td style="position:relative;">
             <input type="text" class="form-control" data-rule-required="true" data-rule-decimal="2" name="{{delivery}}[{{index}}][postageplus]" />
