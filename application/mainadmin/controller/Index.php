@@ -65,20 +65,20 @@ class Index extends AdminController
             $searchtime =  $dt_start.','.($dt_start+86399);
             $data = $this->orderStats($OrderModel,['add_time','between',$searchtime]);
             if ($dt_start == $today){
-                $stats['today']['all_add_num'] = $data['all_add_num'];
-                $stats['today']['order_pay_num'] = $data['wait_shipping_num'];
-                $stats['today']['sign_num'] = $data['sign_num'];
+                $stats['today']['all_add_num'] = $data['all_add_num'] * 1;
+                $stats['today']['order_pay_num'] = $data['wait_shipping_num'] * 1;
+                $stats['today']['sign_num'] = $data['sign_num'] * 1;
             }elseif ($dt_start == $yesterday){
-                $stats['yesterday']['all_add_num'] = $data['all_add_num'];
-                $stats['yesterday']['order_pay_num'] = $data['wait_shipping_num'];
-                $stats['yesterday']['sign_num'] = $data['sign_num'];
+                $stats['yesterday']['all_add_num'] = $data['all_add_num'] * 1;
+                $stats['yesterday']['order_pay_num'] = $data['wait_shipping_num'] * 1;
+                $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
             }
 
             if ($dt_start <  strtotime($end_day)){
-                $stats['all_add_num'][$i][] = $data['all_add_num'];
-                $stats['order_pay_num'][$i][] = $data['order_pay_num'];
-                $stats['shipping_order_num'][$i][] = $data['shipping_order_num'];
-                $stats['sign_order_num'][$i][] = $data['sign_order_num'];
+                $stats['all_add_num'][$i][] = $data['all_add_num'] * 1;
+                $stats['order_pay_num'][$i][] = $data['order_pay_num'] * 1;
+                $stats['shipping_order_num'][$i][] = $data['shipping_order_num'] * 1;
+                $stats['sign_order_num'][$i][] = $data['sign_order_num'] * 1;
             }
             $dt_start = strtotime('+1 day',$dt_start);
             $i++;
