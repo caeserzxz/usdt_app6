@@ -387,7 +387,7 @@ class UsersModel extends BaseModel
         foreach ($d_level as $key=>$val){
             if ($_pid < 1) break;
             $spid[] = $_pid;
-            if ($key<=2){
+            if ($key<=2){//只记录前两级发送通知
                 $sendUids[$_pid] = $val;
             }
             $inArr['level'] = $key;
@@ -399,6 +399,24 @@ class UsersModel extends BaseModel
         $spid[] = $user_id;
         sort($spid);
         $this->where('user_id',$user_id)->update(['pid'=>$pid,'is_bind'=>1,'spid'=>join(',',$spid)]);
+        //发送下级捆绑消息
+        $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+        $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+        $wxInfo = $WeiXinUsersModel->info($user_id);
+
+        $data['user_id']    = $user_id;
+        $data['nickname']   = $wxInfo['wx_nickname'];
+        $data['sex']        = $wxInfo['sex']==1?'男':'女';
+        $data['region']     = $wxInfo['wx_province'].$wxInfo['wx_city'];
+        $data['send_scene'] = 'bind_user_msg';
+        unset($wxInfo);
+        foreach ($sendUids as $uid=>$val) {
+            $wx_openid = $WeiXinUsersModel->where('user_id',$uid)->value('wx_openid');
+            $data['level']   = $val;
+            $data['openid']  = $wx_openid;
+            $WeiXinMsgTplModel->send($data);
+        }
+
 		return true;
 	}
 	/*------------------------------------------------------ */

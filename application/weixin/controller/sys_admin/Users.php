@@ -18,7 +18,7 @@ class Users extends AdminController
 	//-- 主页
 	/*------------------------------------------------------ */
     public function index(){
-		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
+		$this->assign("start_date", date('Y/m/01',strtotime("-2 year")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);
 		return $this->fetch();
@@ -32,9 +32,9 @@ class Users extends AdminController
 		$where = [];
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
-			$where[] = ['wx_subscribe_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+			$where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
 		}else{
-			$where[] = ['wx_subscribe_time','between',[strtotime("-1 months"),time()]];
+			$where[] = ['add_time','between',[strtotime("-2 year"),time()]];
 		}	
 		$search['keyword'] =  input('keyword','','trim');
 		if (empty($search['keyword']) == false){

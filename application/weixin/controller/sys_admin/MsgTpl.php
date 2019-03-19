@@ -20,7 +20,7 @@ class MsgTpl extends AdminController
     public function index()
     {		
 		$this->getList(true);
-		$this->assign('search',$this->search);
+
         return $this->fetch('index');
     }  
 	/*------------------------------------------------------ */
@@ -28,13 +28,15 @@ class MsgTpl extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $this->assign('msgTplReplace',$this->Model->msgTplReplace);
 		$where = [];
-		$this->search['type'] = input('type','','trim');
-		if (empty($this->search['type']) == false){
-				$where[] = ['type','=',$this->search['type']];
+		$search['type'] = input('type','','trim');
+		if (empty($search['type']) == false){
+				$where[] = ['type','=',$search['type']];
 		}
         $data = $this->getPageList($this->Model,$where);			
 		$this->assign("data", $data);
+        $this->assign('search',$search);
 		if ($runData == false){
 			$data['content']= $this->fetch('list');
 			unset($data['list']);
@@ -60,6 +62,8 @@ class MsgTpl extends AdminController
 		}else{
 			$data['tpl_keys'] = array();
 		}
+
+		$this->assign('msgTplReplace',$this->Model->msgTplReplace[$data['type']]);
 		return $data;		
 	}
 	

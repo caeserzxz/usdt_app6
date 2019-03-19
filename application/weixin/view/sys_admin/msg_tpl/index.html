@@ -10,12 +10,14 @@
                     <i class="fa fa-ellipsis-v"></i>
                     <strong>模板列表</strong>
                 </li>                                  
-            </ul>
+            </ul> {volist name="typeList" id="type"}
+
+         {/volist}
             <select name="type"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
                    <option value="">全部类型</option>
-                   <option value="dividend" {$search['type']=='dividend'?'selected':''}>分佣相关</option>
-                   <option value="withdraw" {$search['type']=='dividend'?'selected':''}>提现相关</option>
-                   <option value="order" {$search['type']=='order'?'selected':''}>订单相关</option>
+                {volist name="msgTplReplace" id="type"}
+                   <option value="{$key}" {$key==$search['type']?'selected':''}>{$type['name']}</option>
+                {/volist}
             </select>
       </div>
       </form>
