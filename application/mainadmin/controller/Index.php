@@ -63,22 +63,26 @@ class Index extends AdminController
         while ($dt_start <=  strtotime($end_day)){
             $riqi[] = date('Y-m-d',$dt_start);
             $searchtime =  $dt_start.','.($dt_start+86399);
-            $data = $this->orderStats($OrderModel,['add_time','between',$searchtime]);
+            $data = $this->orderStats($OrderModel,$searchtime);
             if ($dt_start == $today){
                 $stats['today']['all_add_num'] = $data['all_add_num'] * 1;
-                $stats['today']['order_pay_num'] = $data['wait_shipping_num'] * 1;
+                $stats['today']['order_pay_num'] = $data['order_pay_num'] * 1;
                 $stats['today']['sign_num'] = $data['sign_num'] * 1;
             }elseif ($dt_start == $yesterday){
                 $stats['yesterday']['all_add_num'] = $data['all_add_num'] * 1;
-                $stats['yesterday']['order_pay_num'] = $data['wait_shipping_num'] * 1;
+                $stats['yesterday']['order_pay_num'] = $data['order_pay_num'] * 1;
                 $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
             }
 
             if ($dt_start <  strtotime($end_day)){
+                $stats['seven_shpping_num'] += $data['shipping_num'] * 1;
+                $stats['seven_pay_num'] += $data['order_pay_num'] * 1;
+                $stats['seven_add_num'] += $data['all_add_num'] * 1;
+                $stats['seven_sign_num'] += $data['sign_num'] * 1;
                 $stats['all_add_num'][$i][] = $data['all_add_num'] * 1;
                 $stats['order_pay_num'][$i][] = $data['order_pay_num'] * 1;
-                $stats['shipping_order_num'][$i][] = $data['shipping_order_num'] * 1;
-                $stats['sign_order_num'][$i][] = $data['sign_order_num'] * 1;
+                $stats['shipping_order_num'][$i][] = $data['shipping_num'] * 1;
+                $stats['sign_order_num'][$i][] = $data['sign_num'] * 1;
             }
             $dt_start = strtotime('+1 day',$dt_start);
             $i++;
@@ -96,24 +100,26 @@ class Index extends AdminController
         $mkey = 'main_order_stat'.md5(json_encode($timeWhere));
         $info = Cache::get($mkey);
         if (empty($info) == false) return $info;
-        $where[] = $timeWhere;
+
+        $where[] = ['add_time','between',$timeWhere];
         $rows = $OrderModel->field('order_id,order_status,pay_status,shipping_status,is_pay,order_amount')->where($where)->select();
         foreach ($rows as $row){
             $info['all_add_num'] += 1;//全部订单
             if ($row['order_status'] == 1){
-                if ($row['shipping_status'] == 0) {
-                    $info['wait_shipping_num'] += 1;//待发货
-                }else if ($row['shipping_status'] == 1) {
-                    $info['wait_sign_num'] +=1;//待签收
-                }
                 $info['order_pay_num'] += 1;//成交数
-            }elseif ($row['order_status'] == 0) {
-                if ($row['is_pay'] == 1 && $row['pay_status'] == 0){
-                    $info['wait_pay_num'] += 1;//待支付
-                }
             }
         }
-        Cache::set($mkey, $info, 30);
+        //发货数量
+        unset($where);
+        $where[] = ['shipping_time','between',$timeWhere];
+        $where[] = ['shipping_status','=',1];
+        $info['shipping_num'] = $OrderModel->where($where)->count('order_id');
+        //发货数量
+        unset($where);
+        $where[] = ['sign_time','between',$timeWhere];
+        $where[] = ['shipping_status','=',2];
+        $info['sign_num'] = $OrderModel->where($where)->count('order_id');
+        Cache::set($mkey, $info, 20);
         return $info;
     }
 

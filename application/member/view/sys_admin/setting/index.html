@@ -17,6 +17,7 @@
               <ul class="nav nav-tabs">
                   <li class="active"><a href="#basic" data-toggle="tab">基本设置</a></li>
                   <li><a href="#withdraw" data-toggle="tab">提现设置</a></li>
+                  <li><a href="#register" data-toggle="tab">注册协议</a></li>
               </ul>
             </header>
             <div class="tab-content">
@@ -109,6 +110,11 @@
                             <span class="help-line"> （注：单人每日累计提现次数达到该值时，本日将不支持继续提现,为0时则不限）</span>
                           </div>
                      </div>
+                </div>
+                <div class="tab-pane " id="register">
+                    <textarea rows="13" class="hd" data-toggle="kindeditor"  data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[1,50000]" data-rule-required="true" data-msg-required="注册协议不能为空"  name="register_agreement" style="visibility:hidden;">{$setting['register_agreement']}</textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+
+
                 </div>
            </div>
             <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>

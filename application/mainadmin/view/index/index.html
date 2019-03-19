@@ -61,11 +61,11 @@
                             <i class="fa fa-legal fa-stack-1x text-white"></i>
                         </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="t_day_sign_num">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="t_day_sign_num">{$stats.today.sign_num}</strong></span>
                     <small class="text-muted text-uc">今天签收订单</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="y_day_sign_num">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="y_day_sign_num">{$stats.yesterday.sign_num}</strong></span>
                     <small class="text-muted text-uc">昨天签收订单</small>
                 </a>
             </div>
@@ -158,20 +158,20 @@
                 <div class="row text-center no-gutter">
 
                     <div class="col-xs-3 b-r b-light">
-                        <span class="h4 font-bold m-t block">0</span>
+                        <span class="h4 font-bold m-t block">{$stats.seven_add_num|intval}</span>
                         <small class="text-muted m-b block">下单总数</small>
                     </div>
                     <div class="col-xs-3 b-r b-light">
-                        <span class="h4 font-bold m-t block">0 </span>
-                        <small class="text-muted m-b block">待支付总数</small>
+                        <span class="h4 font-bold m-t block">{$stats.seven_pay_num|intval}</span>
+                        <small class="text-muted m-b block">成交总数</small>
                     </div>
                     <div class="col-xs-3 b-r b-light">
-                        <span class="h4 font-bold m-t block">0</span>
-                        <small class="text-muted m-b block">待签收总数</small>
+                        <span class="h4 font-bold m-t block">{$stats.seven_shpping_num|intval}</span>
+                        <small class="text-muted m-b block">发货总数</small>
                     </div>
                     <div class="col-xs-3">
-                        <span class="h4 font-bold m-t block">0</span>
-                        <small class="text-muted m-b block">待分佣总数</small>
+                        <span class="h4 font-bold m-t block">{$stats.seven_sign_num|intval}</span>
+                        <small class="text-muted m-b block">签收总数</small>
                     </div>
                 </div>
             </footer>
