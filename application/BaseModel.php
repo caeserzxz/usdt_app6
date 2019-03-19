@@ -146,7 +146,7 @@ class BaseModel extends Model
             $page_count = 1;
         } else {
 			$start_row = $page_size * ($page - 1);
-			$sql = $viewObj->field($field)->limit($start_row . "," . $page_size)->order($sqlOrder)->select(false);			
+			$sql = $viewObj->field($field)->limit($start_row . "," . $page_size)->order($sqlOrder)->select(false);
 			$count = Db::query($viewObj->count());
 			$count = $count[0]['tp_count'];
             $list = Db::query($sql);

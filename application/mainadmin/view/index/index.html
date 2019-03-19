@@ -15,11 +15,11 @@
                                   data-line-cap="butt" data-animate="3000" data-target="#firers"
                                   data-update="5000"></span>
                         </span>
-                <a class="fl" href="#">
+                <a class="fl" href="{:url('shop/sys_admin.order/index',['reportrange'=>$today.'-'.$today])}">
                     <span class="h3 block m-t-xs"><strong id="t_day_order_num">{$stats.today.all_add_num}</strong></span>
                     <small class="text-muted text-uc">今天下单数</small>
                 </a>
-                <a class="fr" href="#">
+                <a class="fr" href="{:url('shop/sys_admin.order/index',['reportrange'=>$yesterday.'-'.$yesterday])}">
                     <span class="h3 block m-t-xs"><strong id="y_day_order_num">{$stats.yesterday.all_add_num}</strong></span>
                     <small class="text-muted text-uc">昨天下单数</small>
                 </a>
@@ -32,7 +32,7 @@
                                   data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
                                   data-animate="2000" data-target="#bugs" data-update="3000"></span>
                         </span>
-                <a class="fl">
+                <a class="fl" >
                     <span class="h3 block m-t-xs"><strong id="t_day_clinch_money">{$stats.today.order_pay_num}</strong></span>
                     <small class="text-muted text-uc">今天成交金额</small>
                 </a>
@@ -46,12 +46,12 @@
                             <i class="fa fa-circle fa-stack-2x text-info"></i>
                             <i class="fa fa-truck fa-stack-1x text-white"></i>
                         </span>
-                <a class="fl" href="#">
+                <a class="fl"  href="{:url('shop/sys_admin.order/index',['state'=>3])}">
                     <span class="h3 block m-t-xs"><strong id="t_day_wait_shipping_num">{$stats.wait_shipping_num}</strong></span>
                     <small class="text-muted text-uc">待发货订单</small>
                 </a>
-                <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num">{$stats.yesterday.order_pay_num}</strong></span>
+                <a class="fr" href="{:url('shop/sys_admin.order/index',['time_type'=>'shipping_time','start_time'=>$yesterday,'end_time'=>$yesterday])}">
+                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num">{$stats.yesterday.order_shipping_num}</strong></span>
                     <small class="text-muted text-uc">昨天发货订单</small>
                 </a>
             </div>
@@ -60,11 +60,11 @@
                             <i class="fa fa-circle fa-stack-2x icon-muted"></i>
                             <i class="fa fa-legal fa-stack-1x text-white"></i>
                         </span>
-                <a class="fl" href="#">
+                <a class="fl" href="{:url('shop/sys_admin.order/index',['time_type'=>'sign_time','start_time'=>$today,'end_time'=>$today])}">
                     <span class="h3 block m-t-xs"><strong id="t_day_sign_num">{$stats.today.sign_num}</strong></span>
                     <small class="text-muted text-uc">今天签收订单</small>
                 </a>
-                <a class="fr" href="#">
+                <a class="fr" href="{:url('shop/sys_admin.order/index',['time_type'=>'sign_time','start_time'=>$yesterday,'end_time'=>$yesterday])}">
                     <span class="h3 block m-t-xs"><strong id="y_day_sign_num">{$stats.yesterday.sign_num}</strong></span>
                     <small class="text-muted text-uc">昨天签收订单</small>
                 </a>
@@ -76,20 +76,16 @@
         <div class="row m-l-none m-r-none bg-light lter">
             <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
                 <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
-                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                            <i class="fa fa-yen  fa-stack-1x text-white"></i>
-                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
-                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
-                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
-                                  data-update="5000"></span>
+                            <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                            <i class="fa fa-yen fa-stack-1x text-white"></i>
                         </span>
-                <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="balance_total">0</strong></span>
-                    <small class="text-muted text-uc">金币余额总数</small>
+                <a class="fl" href="{:url('member/sys_admin.recharge/index')}">
+                    <span class="h3 block m-t-xs"><strong id="wait_pay">{$rchargeLogNum}</strong></span>
+                    <small class="text-muted text-uc">充值待审核</small>
                 </a>
-                <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="bean_total">0</strong></span>
-                    <small class="text-muted text-uc">旅游豆总数</small>
+                <a class="fr" href="{:url('member/sys_admin.withdraw/index')}">
+                    <span class="h3 block m-t-xs"><strong id="wait_withdraw">{$withdrawLogNum}</strong></span>
+                    <small class="text-muted text-uc">提现待审核</small>
                 </a>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
@@ -101,11 +97,11 @@
                                   data-animate="2000" data-target="#bugs" data-update="3000"></span>
                         </span>
                 <a class="fl">
-                    <span class="h3 block m-t-xs"><strong id="t_day_new_user">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="t_day_new_user">{$userStats['today_reg']}</strong></span>
                     <small class="text-muted text-uc">今天新增会员</small>
                 </a>
                 <a class="fr">
-                    <span class="h3 block m-t-xs"><strong id="y_day_new_user">0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="y_day_new_user">{$userStats['yesterday_reg']}</strong></span>
                     <small class="text-muted text-uc">昨天新增会员</small>
                 </a>
             </div>
@@ -115,26 +111,30 @@
                             <i class="fa fa-users fa-stack-1x text-white"></i>
                         </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="user_num"> 0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="user_num">{$userStats['all_num']}</strong></span>
                     <small class="text-muted text-uc">会员总数</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="user_role_num"> 0</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="user_role_num">{$userStats['role_num']}</strong></span>
                     <small class="text-muted text-uc">身份会员总数</small>
                 </a>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
-                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
-                            <i class="fa fa-circle fa-stack-2x icon-muted"></i>
-                            <i class="fa fa-yen fa-stack-1x text-white"></i>
+                  <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                            <i class="fa fa-yen  fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
+                                  data-update="5000"></span>
                         </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="wait_pay">0</strong></span>
-                    <small class="text-muted text-uc">支付待审核</small>
+                    <span class="h3 block m-t-xs"><strong id="balance_total">{$account.balance_money}</strong></span>
+                    <small class="text-muted text-uc">金币余额总数</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="wait_withdraw">0</strong></span>
-                    <small class="text-muted text-uc">提现待审核</small>
+                    <span class="h3 block m-t-xs"><strong id="bean_total">{$account.bean_value}</strong></span>
+                    <small class="text-muted text-uc">旅游豆总数</small>
                 </a>
             </div>
         </div>
@@ -198,16 +198,16 @@
 
                 <div class="row m-t-sm">
                     <div class="col-xs-3 m-l fl">
-                        <small class="text-muted block">成交金额</small>
-                        <span class="money">0</span>
+                        <small class="text-muted block">成交</small>
+                        <span class="money">{$stats.seven_order_amount_all}</span>
                     </div>
                     <div class="col-xs-3 m-l fl">
-                        <small class="text-muted block">实收金额</small>
-                        <span class="money">0</span>
+                        <small class="text-muted block">实收</small>
+                        <span class="money">{$stats.seven_real_amount_all}</span>
                     </div>
                     <div class="col-xs-3 m-l fl">
-                        <small class="text-muted block">佣金金额</small>
-                        <span class="money">0</span>
+                        <small class="text-muted block">佣金</small>
+                        <span class="money">{$stats.seven_dividend_amount_all}</span>
                     </div>
                 </div>
             </div>
@@ -262,9 +262,16 @@
                 }
             },
             series: [{
-                name: '成交额',
-                data: [[0], [0], [0], [0], [0], [0], [0]]
-            }]
+                name: '成交',
+                data: {$stats.seven_order_amount|json_encode|raw}
+            },{
+                name: '实收',
+                data: {$stats.seven_real_amount|json_encode|raw}
+            },{
+                name: '佣金',
+                data: {$stats.seven_dividend_amount|json_encode|raw}
+            }
+            ]
         });
     });
 </script>

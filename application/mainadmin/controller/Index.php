@@ -5,6 +5,10 @@ use app\AdminController;
 use think\facade\Cache;
 
 use app\shop\model\OrderModel;
+use app\member\model\UsersModel;
+use app\member\model\AccountModel;
+use app\member\model\RechargeLogModel;
+use app\member\model\WithdrawModel;
 /**
  * 后台首页
  * Class Index
@@ -42,16 +46,51 @@ class Index extends AdminController
 				}
 			}
 		}
-		//统计相关
+
         $time = time();
-		$start_day = date("Y-m-d",strtotime("-1 week"));
-		$this->assign('start_day',$start_day);
-		$end_day = date('Y-m-d', $time );
+        $start_day = date("Y-m-d",strtotime("-1 week"));
+        $this->assign('start_day',$start_day);
+        $end_day = date('Y-m-d', $time );
         $this->assign('end_day',$end_day);
         $dt_start = strtotime($start_day);
         $today = strtotime(date("Y-m-d"));
+        $this->assign('today',date('Y_m_d',$today));
         $yesterday = strtotime('-1 day',$today);
+        $this->assign('yesterday',date('Y_m_d',$yesterday));
         $riqi = [];
+
+        //帐户统计
+        $AccountModel = new AccountModel();
+        $account['balance_money'] = $AccountModel->sum('balance_money');
+        $account['bean_value'] = $AccountModel->sum('bean_value');
+        $this->assign('account',$account);
+        //end
+        //充值&提现审核
+        $rchargeLogNum = (new RechargeLogModel)->where('status',0)->count('order_id');
+        $this->assign('rchargeLogNum',$rchargeLogNum);
+        $withdrawLogNum = (new WithdrawModel)->where('status',0)->count('log_id');
+        $this->assign('withdrawLogNum',$withdrawLogNum);
+        //end
+        $AccountModel = new AccountModel();
+        $account['balance_money'] = $AccountModel->sum('balance_money');
+        $account['bean_value'] = $AccountModel->sum('bean_value');
+        $this->assign('account',$account);
+        //end
+        //会员统计
+        $UsersModel = new UsersModel();
+        $userStats['all_num'] = $UsersModel->count('user_id');
+        $userStats['ordinary_num'] = $UsersModel->where('role_id',0)->count('user_id');
+        $userStats['role_num'] =  $userStats['all_num'] - $userStats['ordinary_num'];
+        strtotime(date("Y-m-d"));
+        $userWhere[] = ['reg_time','>',$today];
+        $userStats['today_reg'] =  $UsersModel->where($userWhere)->count('user_id');
+        unset($userWhere);
+        $userWhere[] = ['reg_time','between',$yesterday.','.$today-1];
+        $userStats['yesterday_reg'] =  $UsersModel->where($userWhere)->count('user_id');
+        $this->assign('userStats',$userStats);
+        //end
+		//订单统计相关
+
         $OrderModel = new OrderModel();
         $stats = [];
         $i = 0;
@@ -67,14 +106,22 @@ class Index extends AdminController
             if ($dt_start == $today){
                 $stats['today']['all_add_num'] = $data['all_add_num'] * 1;
                 $stats['today']['order_pay_num'] = $data['order_pay_num'] * 1;
+                $stats['today']['order_shipping_num'] = $data['shipping_num'] * 1;
                 $stats['today']['sign_num'] = $data['sign_num'] * 1;
             }elseif ($dt_start == $yesterday){
                 $stats['yesterday']['all_add_num'] = $data['all_add_num'] * 1;
                 $stats['yesterday']['order_pay_num'] = $data['order_pay_num'] * 1;
+                $stats['yesterday']['order_shipping_num'] = $data['shipping_num'] * 1;
                 $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
             }
 
             if ($dt_start <  strtotime($end_day)){
+                $stats['seven_order_amount_all'] += $data['order_amount'] * 1;
+                $stats['seven_real_amount_all'] += $data['order_amount'] - $data['dividend_amount'];
+                $stats['seven_dividend_amount_all'] += $data['dividend_amount'] * 1;
+                $stats['seven_order_amount'][$i][] = $data['order_amount'] * 1;
+                $stats['seven_real_amount'][$i][] = $data['order_amount'] - $data['dividend_amount'];
+                $stats['seven_dividend_amount'][$i][] = $data['dividend_amount'] * 1;
                 $stats['seven_shpping_num'] += $data['shipping_num'] * 1;
                 $stats['seven_pay_num'] += $data['order_pay_num'] * 1;
                 $stats['seven_add_num'] += $data['all_add_num'] * 1;
@@ -87,6 +134,8 @@ class Index extends AdminController
             $dt_start = strtotime('+1 day',$dt_start);
             $i++;
         }
+        //订单统计相关end
+
         $this->assign('stats',$stats);
         $this->assign('riqi',json_encode($riqi));
         return $this->fetch('index');
@@ -102,11 +151,13 @@ class Index extends AdminController
         if (empty($info) == false) return $info;
 
         $where[] = ['add_time','between',$timeWhere];
-        $rows = $OrderModel->field('order_id,order_status,pay_status,shipping_status,is_pay,order_amount')->where($where)->select();
+        $rows = $OrderModel->field('order_id,order_status,pay_status,shipping_status,is_pay,order_amount,dividend_amount')->where($where)->select();
         foreach ($rows as $row){
             $info['all_add_num'] += 1;//全部订单
             if ($row['order_status'] == 1){
                 $info['order_pay_num'] += 1;//成交数
+                $info['order_amount'] += $row['order_amount'];//成交金额
+                $info['dividend_amount'] += $row['dividend_amount'];//分佣金额
             }
         }
         //发货数量

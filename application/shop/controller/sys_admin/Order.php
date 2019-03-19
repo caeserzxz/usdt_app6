@@ -39,8 +39,16 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
-        $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
-        $this->assign("end_date", date('Y/m/d'));
+        $reportrange = input('reportrange', '', 'trim');
+        if (empty($reportrange) == false) {
+            $reportrange = str_replace('_','/',$reportrange);
+            $dtime = explode('-', $reportrange);
+            $this->assign("start_date", $dtime[0]);
+            $this->assign("end_date", $dtime[1]);
+        }else{
+            $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
+            $this->assign("end_date", date('Y/m/d'));
+        }
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -52,17 +60,20 @@ class Order extends AdminController
     {
         $where[] = ['store_id', '=', $this->store_id];
         $time_type = input('time_type', '', 'trim');
-        $export = input('export', 0, 'intval');
         if (empty($time_type) == false) {
             $search['start_time'] = input('start_time', '', 'trim');
             $search['end_time'] = input('end_time', '', 'trim');
+            $search['start_time'] = str_replace('_','-',$search['start_time']);
+            $search['end_time'] = str_replace('_','-',$search['end_time']);
             $start_time = $search['start_time'] ? strtotime($search['start_time']) : strtotime("-1 months");
             $end_time = $search['end_time'] ? strtotime($search['end_time']) : time();
+            if ($start_time == $end_time) $end_time += 86399;
             $where[] = [$time_type, 'between', array($start_time, $end_time)];
         } else {
             $search['state'] = input('state', 0, 'intval');
             $reportrange = input('reportrange', '', 'trim');
             if (empty($reportrange) == false) {
+                $reportrange = str_replace('_','/',$reportrange);
                 $dtime = explode('-', $reportrange);
                 $where[] = ['add_time', 'between', [strtotime($dtime[0]), strtotime($dtime[1]) + 86399]];
             } else {
