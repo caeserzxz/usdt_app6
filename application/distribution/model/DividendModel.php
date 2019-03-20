@@ -12,6 +12,9 @@ use app\shop\model\OrderModel;
 use app\shop\model\OrderGoodsModel;
 use app\member\model\AccountLogModel;
 
+use app\weixin\model\WeiXinMsgTplModel;
+use app\weixin\model\WeiXinUsersModel;
+
 class DividendModel extends BaseModel {
 	protected $table = 'distribution_dividend_log'; 
 	public $pk = 'log_id';
@@ -56,7 +59,6 @@ class DividendModel extends BaseModel {
 			}
 			$res = $this->evalLevelUp($orderInfo,$goodsList,$orderInfo['user_id']);
 			if ($res == false) return false;
-			return true;
 		}elseif ($type == 'cancel'){//订单取消
 			$upData['status'] = $OrderModel->config['DD_CANCELED'];
 		}elseif ($type == 'shipping'){//发货
@@ -209,6 +211,11 @@ class DividendModel extends BaseModel {
 					$awardVal = $awardValue[$nowLevel];				
 				}
 
+
+
+
+               $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
+
 				if ($award['award_type'] > 1 && empty($award['repeat_goods_id']) == false){//限制复购判断
 
 					$repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
@@ -219,38 +226,58 @@ class DividendModel extends BaseModel {
 					$where[] = ['o.order_status','=',$OrderModel->config['OS_CONFIRMED']];
 					$count = $OrderModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
 					if ($count < 1){
-						//模板消息通知
+                        if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
+                            if ($awardVal['type'] == 'gold'){
+                                $sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
+                            }else{
+                                $sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
+                            }
+                        }elseif($award['award_type'] == 3){//管理奖
+                            if ($awardVal['type'] == 'gold'){
+                                $sendData['dividend_amount'] = $award_num * $awardBuyNum;
+                            }else{
+                                $sendData['dividend_bean'] = $award_num * $awardBuyNum;
+                            }
+                        }
+                        $sendData['award_name']         = $award['award_name'];
+                        $sendData['level_award_name']   = $awardVal['name'];
+                        $sendData['level']              = $nowLevel;
+                        $sendData['role_name']          = $role_name;
+                        $sendData['order_sn']           = $orderInfo['order_sn'];
+                        $sendData['add_time']           = $orderInfo['add_time'];
+                        $sendData['send_scene']         = 'dividend_loss_msg';//dividend_loss_msg
+                        $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+						(new WeiXinMsgTplModel)->send($sendData);//模板消息通知
 						 continue;//不满足复购限制，跳出
 					}
 				}
 
+				//执行奖项处理
+                $inArr = [];
+                if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
+                    $dividend_amount += $awardVal['num'] * $awardBuyNum;//计算总佣金
+                    if ($awardVal['type'] == 'gold'){
+                        $inArr['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
+                    }else{
+                        $inArr['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
+                    }
+                }elseif($award['award_type'] == 3){//管理奖
+                    $assignAwardNum[$award['award_id']] += $award_num;
+                    $dividend_amount += $award_num * $awardBuyNum;//计算总佣金
+                    if ($awardVal['type'] == 'gold'){
+                        $inArr['dividend_amount'] = $award_num * $awardBuyNum;
+                    }else{
+                        $inArr['dividend_bean'] = $award_num * $awardBuyNum;
+                    }
+                }
 
-
-				//满足条件执行奖项处理
-				$inArr = [];			
-				if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
-					$dividend_amount += $awardVal['num'] * $awardBuyNum;//计算总佣金	
-					if ($awardVal['type'] == 'gold'){
-						$inArr['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
-					}else{
-						$inArr['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
-					}				
-				}elseif($award['award_type'] == 3){//管理奖				
-					$assignAwardNum[$award['award_id']] += $award_num;
-					$dividend_amount += $award_num * $awardBuyNum;//计算总佣金
-					if ($awardVal['type'] == 'gold'){
-						$inArr['dividend_amount'] = $award_num * $awardBuyNum;
-					}else{
-						$inArr['dividend_bean'] = $award_num * $awardBuyNum;
-					}
-				}
 				$inArr['order_id'] = $orderInfo['order_id'];
 				$inArr['order_sn'] = $orderInfo['order_sn'];
 				$inArr['buy_uid']  = $orderInfo['user_id'];
 				$inArr['order_amount'] = $orderInfo['order_amount'];
 				$inArr['dividend_uid'] = $userInfo['user_id'];
 				$inArr['role_id']      = $userInfo['role_id'];
-				$inArr['role_name']    = $DividendRoleModel->info($userInfo['role_id'],true);
+				$inArr['role_name']    = $role_name;
 				$inArr['level']        = $nowLevel;
 				$inArr['award_id']     = $award['award_id'];
 				$inArr['award_name']   = $award['award_name'];
@@ -259,9 +286,12 @@ class DividendModel extends BaseModel {
 				$res = self::create($inArr);
 				if ($res < 1) return false;
 				//执行模板消息通知
+                $inArr['send_scene']  = 'dividend_add_msg';//佣金产生通知
+                $inArr['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+                (new WeiXinMsgTplModel)->send($inArr);//模板消息通知
 			}
+
 			if (empty($awardList) == true){//没有奖项可分了，终止
-					
 				$parentId = 0;
 			}
 		}while($parentId > 0);
@@ -338,7 +368,8 @@ class DividendModel extends BaseModel {
 		
 		if (empty($rows)) return true;//没有找到相关佣金记录
 		
-		$AccountLogModel = new AccountLogModel();		
+		$AccountLogModel = new AccountLogModel();
+		$log_id = [];
 		foreach ($rows as $row){			
 			if ($limit_id == 0 && $row['dividend_bean'] > 0){				
 				continue;
@@ -360,8 +391,9 @@ class DividendModel extends BaseModel {
 			if ($res < 1) {
 				return false;
 			}
-		}		
-		return true;
+            $log_id[] = $row['log_id'];
+		}
+		return $log_id;
 	}
 	/*------------------------------------------------------ */
 	//-- 退回分佣到帐
@@ -375,7 +407,9 @@ class DividendModel extends BaseModel {
 		
 		if (empty($rows)) return true;//没有找到相关佣金记录
 		
-		$AccountLogModel = new AccountLogModel();		
+		$AccountLogModel = new AccountLogModel();
+        $WeiXinUsersModel = new WeiXinUsersModel();
+        $WeiXinMsgTplModel = new WeiXinMsgTplModel();
 		foreach ($rows as $row){
 			$upDate['status'] = $type == 'unsign' ? $OrderModel->config['DD_SHIPPED'] : $OrderModel->config['DD_RETURNED'];
 			$upDate['limit_id'] = 0;
@@ -396,8 +430,12 @@ class DividendModel extends BaseModel {
 				if ($res !== true) {
 					return false;
 				}
+                //执行模板消息通知
+                $row['send_scene']  = 'dividend_return_msg';//佣金退回通知
+                $row['wx_openid'] = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->value('wx_openid');
+                $WeiXinMsgTplModel->send($row);//模板消息通知
 			}
-			
+
 		}
 		return true;
 	}

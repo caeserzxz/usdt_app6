@@ -133,6 +133,16 @@ class Withdraw extends AdminController
 			}			
 		}
 		Db::commit();// 提交事务
+        //模板消息通知
+        $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+        $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+        if ($data['status'] == 1) {
+            $data['send_scene'] = 'withdraw_fail_msg';//提现拒绝通知
+        }elseif ($data['status'] == 9) {
+            $data['send_scene'] = 'withdraw_ok_msg';//提现打款通知
+        }
+        $data['wx_openid'] = $WeiXinUsersModel->where('user_id', $data['user_id'])->value('wx_openid');
+        $WeiXinMsgTplModel->send($inArr);//模板消息通知
 		return $this->success('操作成功.',url('index'));
 	}
 

@@ -399,14 +399,18 @@ class OrderModel extends BaseModel
             return '订单更新失败.';
         }
         Db::commit();// 提交事务
-        
-        if ($upData['order_status'] == $this->config['OS_CANCELED'] ) {
+
+        if ($upData['order_status'] == $this->config['OS_CANCELED']  || $orderInfo['shipping_status'] ==  $this->config['SS_UNSHIPPED']) {
             //系统超时取消订单
             if ($extType == 'sys') {
-                //发送模板消息
+                //发送模板消息，给买家
                 $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
                 $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
-                $sendData['send_scene'] = 'order_cancel_msg';
+                if ($upData['order_status'] == $this->config['OS_CANCELED']){
+                    $sendData['send_scene'] = 'order_cancel_msg';//订单取消通知
+                }else{
+                    $sendData['send_scene'] = 'order_shipping_msg';//订单发货通知
+                }
                 $sendData['wx_openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
                 $sendData['order_id'] = $orderInfo['order_id'];
                 $sendData['order_sn'] = $orderInfo['order_sn'];

@@ -55,7 +55,6 @@ class WeiXinMsgTplModel extends BaseModel
                     'dividend_bean'=> '[旅游豆数]',
                     'role_name'=> '[分佣身份]',
                     'add_time'=> '[产生时间]',
-                    'buy_nick_name'=> '[下单会员昵称]',
                     'order_sn'=> '[订单编号]',
                     'now_time'=>'[当前时间]'
                 ]
@@ -66,7 +65,6 @@ class WeiXinMsgTplModel extends BaseModel
                     'amount'=> '[提现金额]',
                     'refuse_time'=> '[拒绝时间]',
                     'admin_note'=> '[客服备注]',
-                    'account_info'=> '[提现帐号信息]',
                     'add_time'=> '[申请时间]',
                     'user_id'=> '[会员ID]',
                     'nick_name'=> '[会员昵称]',

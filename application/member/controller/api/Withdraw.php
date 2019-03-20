@@ -228,6 +228,12 @@ class Withdraw extends ApiController
 			return $this->error('未知错误，提现扣除用户余额失败.');
 		}
 		Db::commit();// 提交事务
+        $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+        $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+        $inArr['send_scene']  = 'withdraw_apply_msg';//提现申请通知
+        $inArr['wx_openid'] = $WeiXinUsersModel->where('user_id', $this->userInfo['user_id'])->value('wx_openid');
+        $WeiXinMsgTplModel->send($inArr);//模板消息通知
+
 		return $this->success('提现成功.');
 	}
 }

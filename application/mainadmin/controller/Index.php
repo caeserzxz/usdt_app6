@@ -36,12 +36,23 @@ class Index extends AdminController
 					Db::startTrans();//事务启用
 					$res = $EvalArrivalLogModel->save($inData);
 					if ($res >= 1){
-						$res = (new \app\distribution\model\DividendModel)->evalArrival(0,$EvalArrivalLogModel->log_id);
-						if ($res == true){
+					    $DividendModel = new \app\distribution\model\DividendModel();
+						$log_ids = $DividendModel->evalArrival(0,$EvalArrivalLogModel->log_id);
+						if ($res != false){
 							Db::commit();//事务提交						
-						}			
-					}					
-					Db::rollback();//事务回滚		
+						}
+						//发送佣金到帐号通知
+                        $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+                        $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+                        foreach ($log_ids as $log_id){
+                            $log = $DividendModel->find($log_id);
+                            //执行模板消息通知
+                            $log['send_scene']  = 'dividend_arrival_msg';//佣金到帐通知
+                            $log['wx_openid'] = $WeiXinUsersModel->where('user_id', $log['dividend_uid'])->value('wx_openid');
+                            $WeiXinMsgTplModel->send($log);//模板消息通知
+                        }
+					}
+					Db::rollback();//事务回滚
 					
 				}
 			}
