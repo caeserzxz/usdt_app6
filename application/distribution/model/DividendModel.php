@@ -161,7 +161,7 @@ class DividendModel extends BaseModel {
 					$award_limit_buy_goods= explode(',',$award['buy_goods_id']);
 					$isOk = false;
 					foreach ($award_limit_buy_goods as $goods_id){
-						if (in_array($goods_id,$order_goods_ids) == false){//限制商品存在购买中，成功跳出
+						if (in_array($goods_id,$order_goods_ids) == true){//限制商品存在购买中，成功跳出
 							$isOk = true;
 							$awardBuyNum += $goods_buy_num[$goods_id];
 						}

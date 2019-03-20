@@ -81,7 +81,7 @@ class Comment extends ApiController
 		$this->checkLogin();//验证登陆
 		$shop_goods_comment = settings('shop_goods_comment');
 		if ($shop_goods_comment < 1){
-			return $this->errot('暂不开放评论.');
+			return $this->error('暂不开放评论.');
 		}		
 		$rec_id = input('rec_id',0,'intval');
 		if ($rec_id < 1) return $this->error('传参失败.');
@@ -141,8 +141,8 @@ class Comment extends ApiController
 				$file_name = $file_path.random_str(12).'.jpg';
 				file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$file)));
 				$imgInArr['comment_id'] = $comment_id;
-				$imgInArr['image'] = trim($file_name,'.');
-				$imgInArr['thumbnail'] = trim($file_name,'.');
+				$imgInArr['image'] = '/'.trim($file_name,'.');
+				$imgInArr['thumbnail'] = '/'.trim($file_name,'.');
 				$res = $GoodsCommentImagesModel->save($imgInArr);
 				if ($res < 1){
 					@unlink($file_name);
