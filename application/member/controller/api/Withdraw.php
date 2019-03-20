@@ -199,7 +199,7 @@ class Withdraw extends ApiController
 			$where[] = ['user_id','=',$this->userInfo['user_id']];
 			$where[] = ['status','<',3];
 			$where[] = ['add_time','>',strtotime(date('Y-m-d'))];
-			$wnum = $WithdrawModel->where($where)->count('id');
+			$wnum = $WithdrawModel->where($where)->count('log_id');
 			if ($wnum >= $withdraw_num){
 				return $this->error('每天最多只能提现'.$withdraw_num.'次.');
 			}

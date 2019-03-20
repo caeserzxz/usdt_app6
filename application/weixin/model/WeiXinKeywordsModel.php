@@ -34,7 +34,7 @@ class WeiXinKeywordsModel extends BaseModel
             $where[] = ['subscribe','=',1];
 			$where[] = ['pid','=',0];
 		}else{
-			$where[] = ['','exp',Db::raw("FIND_IN_SET($keyword,keyword)")];
+			$where[] = ['','exp',Db::raw("FIND_IN_SET('".$keyword."',keyword)")];
 		}
 		$keyword = trim($keyword);
         $_mkey = self::$mkey.'_'.$keyword;
@@ -69,7 +69,7 @@ class WeiXinKeywordsModel extends BaseModel
 				$Articles[$key]['Title'] = $row['title'];
 				if ($key == 0) $Articles[$key]['Description'] = $row['description'];
 				if (strstr($row['imgurl'],'http://') == false){
-					$Articles[$key]['PicUrl'] = $domain .$row['imgurl'];
+					$Articles[$key]['PicUrl'] = _url('/',false,true) .$row['imgurl'];
 				}
 				switch($row['bind_type']){
 					case 'link':

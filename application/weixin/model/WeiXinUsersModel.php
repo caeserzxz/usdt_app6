@@ -24,8 +24,10 @@ class WeiXinUsersModel extends BaseModel
 	//-- 微信用户查询，不存在写入数据
 	/*------------------------------------------------------ */
     public function login($access_token){
-		if (empty($access_token)) return false;		
-		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();		
+		if (empty($access_token)) return false;
+
+		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();
+
 		if (empty($wx_info)== false){
 			return $wx_info;
 		}
@@ -44,18 +46,19 @@ class WeiXinUsersModel extends BaseModel
 		$inarr['wx_province'] = $wx_arr['province'];	
 		if (settings('register_status') == 2){//微信自动注册会员
 			Db::startTrans();		
-			$wxuid = $this->save($inarr);		
-			if ($wxuid < 1) return false;
+			$res = $this->save($inarr);
+			if ($res < 1) return false;
+
 			$userInArr['sex'] = $wx_arr['sex'] == '男' ? 1 : 2;
 			$userInArr['nick_name'] = $wx_arr['nickname'];
 			$userInArr['headimgurl'] = $wx_arr['headimgurl'];
 			$res = (new UsersModel)->register($userInArr,$this->wxuid);//注册会员
 			if ($res != true) return $res;
-			return $this->info($wxuid,'wx');
+			return $this->info($this->wxuid,'wx');
 		}
-		$wxuid = $this->save($inarr);		
-		if ($wxuid < 1) return false;
-		return $this->info($wxuid,'wx');
+		$res = $this->save($inarr);
+		if ($res < 1) return false;
+		return $this->info($this->wxuid,'wx');
 	}
 		
 	
@@ -64,10 +67,14 @@ class WeiXinUsersModel extends BaseModel
 	/*------------------------------------------------------ */
     public function info($id=0,$type='user'){
 		if (empty($id)) return false;
+
 		$info = Cache::get($this->mkey.$type.$id);
 		if ($info) return $info;
-		if ($type == 'user') $where['user_id'] = ['user_id','=',$id];
-		else $where[] = ['wxuid','=',$id];
+		if ($type == 'user'){
+            $where[] = ['user_id','=',$id];
+        }else{
+            $where[] = ['wxuid','=',$id];
+        }
 		$info = $this->where($where)->find();
 		if (empty($info)) return [];
 		$info = $info->toArray();

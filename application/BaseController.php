@@ -1,6 +1,7 @@
 <?php
 namespace app;
 use think\Controller;
+use think\Container;
 use think\facade\Session;
 use think\facade\Cache;
 use think\exception\HttpResponseException;

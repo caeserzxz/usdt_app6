@@ -9,6 +9,7 @@
         <div class="left">
             <img id="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
             <a href="{:url('userInfo')}" class="userInfo">
+                <span class="fs26 color_9 user_id"></span>
                 <div><p class="fs34 color_3 fw_b nick_name"></p><em class="fs22 color_w fw_b BGcolor_r level_name"></em></div>
                 <span class="fs26 color_9 signature"></span>
             </a>
@@ -134,6 +135,7 @@
                 _alert(res.msg);
                 return false;
             }
+             $('.user_id').html('会员ID：'+res.userInfo.user_id);
             $('.nick_name').html(res.userInfo.nick_name);
 			$('.signature').html(res.userInfo.signature);
 			if (typeof(res.userInfo.role) != 'undefined'){

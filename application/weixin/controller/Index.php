@@ -13,12 +13,10 @@ class Index  extends BaseController{
 	/*------------------------------------------------------ */
 	//-- 首页
 	/*------------------------------------------------------ */
-	public function index($isIndex = false){
-		/*$arr = (new WeiXinKeywordsModel)->checkKey(1,123);		
-		print_r($arr);
-		exit;*/
+	public function index(){
+
 		$WeiXinModel = new WeiXinModel();
-		$this->logResult('upload/1.txt','接收');
+		$this->logResult('接收');
 		// 关注验证
 		if ($_GET["echostr"]) die($WeiXinModel->valid($_GET["echostr"]));
 		// 验证微信请求
@@ -32,15 +30,15 @@ class Index  extends BaseController{
 		// 关注/取消关注定义
 		if ($WeiXinModel->keyword == 'subscribe' || $WeiXinModel->keyword == 'unsubscribe'){
 			$WeiXinUsersModel = new WeiXinUsersModel();
-			$wxuid = $WeiXinUsersModel->where('wx_openid',$WeiXinModel->fromUsername)->getField('wxuid');
-						
-			if ($wxuid < 1 && $_arr['subscribe'] == 1 ){
-				$inArr['subscribe'] = $WeiXinModel->keyword == 'subscribe' ? 1 : 2;
+			$wxuid = $WeiXinUsersModel->where('wx_openid',$WeiXinModel->fromUsername)->value('wxuid');
+            $subscribe = $WeiXinUsersModel->keyword == 'subscribe' ? 1 : 2;
+			if ($wxuid < 1  ){
+				$inArr['subscribe'] = $subscribe;
 				$inArr['wx_openid'] = $WeiXinModel->fromUsername;	
 				$inArr['add_time'] = $inArr['update_time'] = time();
 				$WeiXinUsersModel->save($inArr);
 			}else{
-				$upArr['subscribe'] = $WeiXinModel->keyword == 'subscribe' ? 1 : 2;
+				$upArr['subscribe'] = $subscribe;
 				$upArr['wx_subscribe_time'] = time();
 				$upArr['update_time'] = time();
 				$WeiXinUsersModel->where('wxuid',$wxuid)->update($upArr);
@@ -49,16 +47,15 @@ class Index  extends BaseController{
 			if ($WeiXinModel->keyword == 'unsubscribe') return false;
 		}
 		
-		$this->logResult('upload/1.txt',$WeiXinModel->keyword);
+		$this->logResult($WeiXinModel->keyword);
 		$arr = (new WeiXinKeywordsModel)->checkKey($WeiXinModel->keyword,$WeiXinModel->fromUsername);		
-		$this->logResult('upload/1.txt',$WeiXinModel->keyword.$WeiXinModel->fromUsername.json_encode($arr));
+		$this->logResult($WeiXinModel->keyword.$WeiXinModel->fromUsername.json_encode($arr));
 		die($WeiXinModel->responseMsg($arr));
 	}
 	// 打印log
-	function  logResult($file,$word) 
+	function  logResult($word)
 	{
-		return false;
-	    $fp = fopen($file,"a");
+	    $fp = fopen('upload/1.txt',"a");
 	    flock($fp, LOCK_EX) ;
 	    fwrite($fp,"执行日期：".strftime("%Y-%m-%d %H:%M:%S",time())."\n".$word."\n\n");
 	    flock($fp, LOCK_UN);
