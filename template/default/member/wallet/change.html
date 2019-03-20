@@ -8,10 +8,10 @@
     <!-- 页面内容-->
     <div class="inputBlock">
         <div class="tips fs60 fw_b color_9">需兑换的旅游豆数量</div>
-        <input type="text" class="fs60 num textBox" id="amount">
+        <input type="text" class="fs60 num textBox" value="{$userInfo['account']['bean_value']}" readonly id="amount">
         
     </div>
-    <div class="money">
+    <div class="money hide">
         <div class="fs26 color_9">可兑换旅游豆数量： <span class="color_3 bean_value">{$userInfo['account']['bean_value']}</span></div>
 
         <p class="fs24 tag_active">全部兑换</p>

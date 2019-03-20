@@ -217,6 +217,7 @@ class Users extends ApiController
             case 'dividend_bean'://旅游豆
                 $where[] = ['dividend_bean','<>',0];
                 $where[] = ['status','=',9];
+                $where[] = ['is_hide','=',0];
                 $where[] = ['update_time','>',time() - 172800];//只显示最近两到帐的佣金
                 break;
             default:

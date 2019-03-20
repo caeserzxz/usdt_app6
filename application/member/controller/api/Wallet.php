@@ -8,6 +8,7 @@ use think\Db;
 use app\member\model\AccountLogModel;
 use app\member\model\RechargeLogModel;
 use app\mainadmin\model\PaymentModel;
+use app\distribution\model\DividendModel;
 /*------------------------------------------------------ */
 //-- 会员钱包相关
 /*------------------------------------------------------ */
@@ -94,6 +95,16 @@ class Wallet extends ApiController
         if ($res !== true) {
             Db::rollback();// 回滚事务
             return $this->error('未知错误，兑换失败.');
+        }
+        $where = [];
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+        $where[] = ['status','=',9];
+        $where[] = ['is_hide','=',0];
+        $where[] = ['dividend_bean','>',0];
+        $res = (new DividendModel)->where($where)->update(['is_hide'=>1]);
+        if ($res < 1) {
+            Db::rollback();// 回滚事务
+            return $this->error('未知错误-2，兑换失败.');
         }
         Db::commit();// 提交事务
         return $this->success('兑换成功.');
