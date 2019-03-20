@@ -22,7 +22,8 @@
                             <li><a href="#tabbank" data-toggle="tab">会员资料</a></li>
                             <li><a href="#tabdescribe" data-toggle="tab">地址信息</a></li>
                             <li><a href="#superior" class="superior_tab" data-toggle="tab">上级关系树</a></li>
-                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>                           
+                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>
+                            
                         </ul>
                     </header>
                     
@@ -259,7 +260,7 @@
                                     </table>
                                 </div>                                
                             </div>
-                            
+
                             <!--上级关系树-->
                             <div class="tab-pane" id="superior" style="overflow: hidden">
                                	<div class="table-responsive"></div>
@@ -279,16 +280,17 @@
          
         </section>
     </section>
+{literal}
 <script type="text/html" id="chainlist">
 {{each list as item index}}
-<div class="form-group" style=" margin-left:0px;">                                            
-	<div class="col-sm-8">	
-		<a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" ><i class="fa fa-search m-r"></i>{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.role_name?item.role_name:'普通会员'}} - 团队数（{{item.teamCount}}）</a>	
-	</div>
-	<div class="nextList" id="next_box_{{item.user_id}}" style="padding-left:50px; padding-top:10px;clear:both;"></div>
+<div  style="margin-left:0px;padding-top:5px;">
+		{{icon}}
+        <a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" >{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.role_name?item.role_name:'普通会员'}} - 团队数（{{item.teamCount}}）</a>
+        <div class="nextList" id="next_box_{{item.user_id}}" data-nextlevel="{{nextlevel}}" style="clear:both;"></div>
 </div>
 {{/each}}
 </script>
+{/literal}
 <script type="text/html" id="superiorlist">
 {{each list as item index}}
  <div class="form-group" style=" margin-left:0px;">                                            
@@ -324,20 +326,37 @@
 			
 		});
 	}
+
 	//加载下级
 	function getChainList(uid,next){
+        if ($("#next_box_"+uid).html() != '' && typeof($("#next_box_"+uid).html()) != 'undefined'){
+            if ($("#next_box_"+uid).is(':visible')){
+                $("#next_box_"+uid).addClass('hide');
+            }else{
+                $("#next_box_"+uid).removeClass('hide');
+            }
+            return false;
+        }
 		jq_ajax('{:url("sys_admin.users/getChainList")}','user_id='+uid,function(res){
-			if (res.list.length < 1){
-				if (next == true){				
-				}else{
-					$('#tabchain .table-responsive').html('没有了');
-				}
-				return false;
-			}
 			if (next == true){
-				$('#next_box_'+uid).html(template('chainlist',res));
+			    if (res.list.length > 0){
+                    res.nextlevel = $('#next_box_'+uid).data('nextlevel') + 1;
+                    res.icon = '';
+                    for (var i=0;i<res.nextlevel;i++){
+                        res.icon += '&nbsp;|-- &nbsp;';
+                    }
+                    console.log(res.icon)
+				    $('#next_box_'+uid).html(template('chainlist',res));
+                }else{
+                    $('#next_box_'+uid).html(' ');
+                }
 			}else{
-				$('#tabchain .table-responsive').html(template('chainlist',res));
+                if (res.list.length > 0) {
+                    res.nextlevel = 0;
+                    $('#tabchain .table-responsive').html(template('chainlist', res));
+                }else{
+                    $('#tabchain .table-responsive').html('没有下级');
+                }
 			}
 		});
 	}

@@ -223,12 +223,16 @@ class Users extends AdminController
 	/*------------------------------------------------------ */
     public function getChainList(){
 		$user_id = input('user_id',0,'intval');
+		if ($user_id < 1){
+            $result['list'] = [];
+            return $this->ajaxReturn($result);
+        }
 		$DividendRole = (new DividendRoleModel)->getRows();
 		$UsersBindModel = new UsersBindModel();
 		$rows = $this->Model->field('user_id,nick_name,role_id')->where('pid',$user_id)->select();
 		foreach ($rows as $key=>$row){
 			$row['role_name'] = $DividendRole[$row['role_id']]['role_name'];
-			$row['teamCount'] = $UsersBindModel->where('pid',$user_id)->count();
+			$row['teamCount'] = $UsersBindModel->where('pid',$row['user_id'])->count()+1;
 			$rows[$key] = $row;
 		}
 		$result['list'] = $rows;

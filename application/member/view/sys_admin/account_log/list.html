@@ -15,7 +15,13 @@
 {volist name="data.list" id="row" }
 <tr>
 <td align="center">{$row.change_time|dateTpl}</td>
-<td>{eq name="row.change_type" value="1"} <i class="fa fa-laptop text-muted"></i>人工调整：{/eq}{$row.change_desc}</td>
+<td>
+    {eq name="row.change_type" value="1"} <i class="fa fa-laptop text-muted"></i>人工调整：{/eq}
+    {$row.change_desc}
+
+     <a href="{:url('shop/sys_admin.order/info',['order_id'=>$row['by_id']])}" target="_blank" class="{:in_array($row['change_type'],[2,3,4])?'':'hide'}">【查看订单】</a>
+
+</td>
 <td style="{$row['balance_money']>0?'color:#F00;':''}{$row['balance_money']<0?'color:#390;':''}">{$row.balance_money} / {$row['balance_money']+$row['old_balance_money']}</td>
 <td style="{$row['bean_value']>0?'color:#F00;':''}{$row['bean_value']<0?'color:#390;':''}">{$row.bean_value} / {$row['bean_value']+$row['old_bean_value']}</td>
 <td  style="{$row['use_integral']>0?'color:#F00;':''}{$row['use_integral']<0?'color:#390;':''}">{$row.use_integral} / {$row['use_integral']+$row['old_use_integral']}</td>
