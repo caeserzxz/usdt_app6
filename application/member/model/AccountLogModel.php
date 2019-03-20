@@ -59,7 +59,7 @@ class AccountLogModel extends BaseModel
                 Db::rollback();
             }
 			return false;	
-		}		
+		}
 	    $AccountModel = new AccountModel();
 		$upData = $AccountModel->returnUpData($data);
 		if (empty($upData)){

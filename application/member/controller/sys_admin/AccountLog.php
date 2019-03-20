@@ -96,6 +96,11 @@ class AccountLog extends AdminController
 			if ($balance_money > 0){
 				$data['balance_money'] = $balance_money_type == 'add' ? $balance_money : $balance_money * -1;
 			}
+            $bean_value_type = input('bean_value_type','add','trim');
+            $bean_value = input('bean_value',0,'float');
+            if ($bean_value > 0){
+                $data['bean_value'] = $bean_value_type == 'add' ? $bean_value : $bean_value * -1;
+            }
 			$total_integral_type = input('total_integral_type','add','trim');
 			$total_integral = input('total_integral',0,'intval');
 			if ($total_integral > 0){

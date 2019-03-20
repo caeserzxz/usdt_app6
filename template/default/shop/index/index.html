@@ -100,6 +100,7 @@
         </div>
         <!-- 分类 -->
         {volist name="classGoods" id="cg" }
+        {notempty name="cg.gooodsList"}
         <div class="trademark">
            <img  src="__STATIC__/mobile/default/images/loading.svg" data-original="{$cg.cover}" alt="" class="lazy trademarkBG">
            <div class="googslist">
@@ -113,6 +114,7 @@
            </div>
            <a href="{:url('goods/index',['cid'=>$cg['id']])}" class="fs26 color_3 trademarkMore">查看更多</a>
         </div>
+         {/notempty}
         {/volist}
         <!-- 猜你喜欢 -->
         <div class="youLike">
