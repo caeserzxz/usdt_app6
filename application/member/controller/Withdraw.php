@@ -12,9 +12,20 @@ class Withdraw  extends ClientbaseController{
 	//-- 提现管理
 	/*------------------------------------------------------ */
 	public function index(){
+	    if (empty($this->userInfo['mobile']) == true){//没有注册手机，须绑定手机后才能操作提现
+            return $this->redirect('bindMobile');
+        }
         $this->assign('title', '提现管理');
 		return $this->fetch('index');
 	}
+    /*------------------------------------------------------ */
+    //-- 绑定手机
+    /*------------------------------------------------------ */
+    public function bindMobile(){
+        $this->assign('title', '绑定手机');
+        $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
+        return $this->fetch('bindMobile');
+    }
 	/*------------------------------------------------------ */
     //-- 银行卡
     /*------------------------------------------------------ */

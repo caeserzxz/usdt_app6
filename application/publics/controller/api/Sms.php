@@ -15,6 +15,7 @@ class Sms extends ApiController{
 	/*------------------------------------------------------ */
  	public function sendCode(){
  	    $this->checkPostLimit('sendCode');//验证请求次数
+        $time = time();
 		$type = input('type','','trim');
       	$sms_fun = settings('sms_fun');
 		if ($sms_fun[$type] != 1) return $this->error('相关短信未开通.');
@@ -46,7 +47,7 @@ class Sms extends ApiController{
         $Class  = new $fun($sms_fun['function_val']);
         //生成随机码
         $code = rand(1000,9999);
-        $res = true;
+
         $res = $Class->send($mobile,$smsTpl['sms_tpl_code'],['code'=>$code]);
         if ($res !== true) $this->error($res);
         Cache::set($codemkey,$code,300);//验证码缓存

@@ -44,8 +44,17 @@ class Users extends ApiController
     public function editPwd()
     {
         $res = $this->Model->editPwd(input(),$this);
-        if ($res !== true) return $this->error($res);		
+        if ($res !== true) return $this->error($res);
         return $this->success('密码已重置，请用新密码登陆.');
+    }
+    //*------------------------------------------------------ */
+    //-- 绑定会员手机
+    /*------------------------------------------------------ */
+    public function bindMobile(){
+        $this->checkCode('login',input('mobile'),input('code'));//验证短信验证
+        $res = $this->Model->bindMobile(input(),$this);
+        if ($res !== true) return $this->error($res);
+        return $this->success('绑定手机成功.');
     }
     /*------------------------------------------------------ */
     //-- 获取会员中心首页所需数据
@@ -267,4 +276,5 @@ class Users extends ApiController
 		}
 		 return $this->success('修改成功.');
 	}
+
 }

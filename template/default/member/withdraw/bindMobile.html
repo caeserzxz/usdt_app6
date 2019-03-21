@@ -12,10 +12,10 @@
                 <span class="fs28 color_3 fw_b">手机号</span>
              </div>
               <div class="cell_bd">
-                <input type="text" class="fs28 fw_b  color_3" placeholder="请输入注册手机号" id="mobile">
+                <input type="text" class="fs28 fw_b  color_3" placeholder="请输入绑定手机号" id="mobile">
             </div>
           </div>
-          {if condition="$sms_fun['forget_password']==1"}
+            {if condition="$sms_fun['bind_mobile']==1"}
              <div class="cell">
              <div class="cell_hd">
                   <span class="fs28 color_3 fw_b">验证码</span>
@@ -27,13 +27,13 @@
                 <input type="text" value="获取验证码" id="code" class="color_r fs28 fw_b" readonly onclick="codeButton()">
               </div>
           </div>
-           {/if}
+            {/if}
           <div class="cell">
               <div class="cell_hd">
-                  <span class="fs28 color_3 fw_b">新密码</span>
+                  <span class="fs28 color_3 fw_b">用户密码</span>
                </div>
                <div class="cell_bd">   
-                  <input type="password" class="fs28 fw_b  color_3" placeholder="请输入新密码" id="password">
+                  <input type="password" class="fs28 fw_b  color_3" placeholder="请输入密码" id="password">
               </div>
             </div>
             <div class="cell">
@@ -42,7 +42,7 @@
                </div>
                 <div class="cell_bd">
                     
-                    <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入新密码" id="cfm_password">
+                    <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入密码" id="cfm_password">
                 </div>
               </div>
         </div> 
@@ -73,11 +73,11 @@
         }
         
         if (arr.password == '' ){
-            _alert('请输入新密码.');
+            _alert('请输入密码.');
             return false;
         }
         if (arr.password.length < 8){
-            _alert('新密码长度不能小于八位.');
+            _alert('密码长度不能小于八位.');
             return false;
         }
 		if (arr.password !== arr.cfm_password){
@@ -85,17 +85,17 @@
 			return false;	
 		}
         
-        jq_ajax('{:url("member/api.passport/forgetPwd")}',arr,function (res) {
+        jq_ajax('{:url("member/api.users/bindMobile")}',arr,function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;
             }
-            _alert(res.msg,'{:url("member/passport/login")}');
+            _alert(res.msg,'{:url("member/withdraw/index")}');
         })
     })
       function codeButton(){
         var arr = new Object();
-        arr.type = 'forget_password';
+        arr.type = 'bind_mobile';
         arr.mobile = $('#mobile').val();
         if (arr.mobile == ''){
             _alert('请输入手机号码');

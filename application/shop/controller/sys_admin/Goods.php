@@ -533,11 +533,11 @@ class Goods extends AdminController
 					$upData['goods_number'] = ['INC',$prow['Store']];				
 					$res = $GoodsSkuModel->where('sku_id',$prow['SkuId'])->update($upData);
 				}else{
-					$inData['goods_id'] = $row['goods_id'];
-					$inData['sku_model'] = $row['sku_model'];
-					$inData['add_time'] = time();
-					$inData['goods_number'] = $prow['Store'];
-					$res = $GoodsSkuModel::create($inData);					
+                    $upData['goods_id'] = $row['goods_id'];
+                    $upData['sku_model'] = $row['sku_model'];
+                    $upData['add_time'] = time();
+                    $upData['goods_number'] = $prow['Store'];
+					$res = $GoodsSkuModel::create($upData);
 				}
 				if ($res < 1){
 					Db::rollback();// 回滚事务

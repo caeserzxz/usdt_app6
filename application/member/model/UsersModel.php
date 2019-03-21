@@ -266,7 +266,30 @@ class UsersModel extends BaseModel
 		}                
         $res = $this->where('user_id',$user['user_id'])->update($upArr);
         if ($res < 1) return '未知错误，修改会员密码失败.';
-		$obj->_log($res,'用户修改密码.','member');		
+		$obj->_log($user['user_id'],'用户修改密码.','member');
+        return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 绑定会员手机
+    /*------------------------------------------------------ */
+    public function bindMobile($data = array(),&$obj)
+    {
+        if (empty($data)){
+            return '获取数据失败.';
+        }
+        $res = $this->checkPwd($data['password']);//验证密码强度
+        if ($res !== true){
+            return $res;
+        }
+        $count = $this->where('mobile',$data['mobile'])->count('user_id');
+        if ($count > 0){
+            return $data['mobile'].'此手机号码已绑定其它帐号.';
+        }
+        $upArr['mobile'] = $data['mobile'];
+        $upArr['password'] = f_hash($data['password']);
+        $res = $this->where('user_id',$this->userInfo['user_id'])->update($upArr);
+        if ($res < 1) return '未知错误，绑定手机失败.';
+        $obj->_log($this->userInfo['user_id'],'用户绑定手机号码.','member');
         return true;
     }
 	/*------------------------------------------------------ */
