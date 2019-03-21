@@ -392,9 +392,12 @@ class CartModel extends BaseModel
         $CategoryModel = new CategoryModel();
         $Category = $CategoryModel->getRows();
         $sf_id = array();
+        $isUsdDef = false;//是否使用默认模板
         foreach ($cartList['goodsList'] as $goods) {
             $goods = $GoodsModel->info($goods['goods_id']);
-            if ($goods['freight_template'] > 0) {//判断商品运模板
+            if ($goods['freight_template'] == -1) {
+                $isUsdDef = true;
+            }elseif ($goods['freight_template'] > 0) {//判断商品运模板
                 $sf_id[$goods['freight_template']] = 1;
             } else {//判断分类运费模板
                 $class = $Category[$goods['cid']];
@@ -408,8 +411,10 @@ class CartModel extends BaseModel
         $shippingList = $ShippingModel->getToSTRows();
         $ShippingTplModel = new \app\shop\model\ShippingTplModel();
         $shippingTpl = $ShippingTplModel->getRows();//获取全部运费模板
-        $defShippingTpl = reset($shippingTpl);//获取默认模板
-        $sf_id[$defShippingTpl['sf_id']] = 1;//写入默认模板ID
+        if ($isUsdDef == true){
+            $defShippingTpl = reset($shippingTpl);//获取默认模板
+            $sf_id[$defShippingTpl['sf_id']] = 1;//写入默认模板ID
+        }
 
         $sf_info = array();
         //获取最贵的运费模板，根据起步价判断
@@ -465,8 +470,9 @@ class CartModel extends BaseModel
                 if ($row['consume'] > 0 && $cartList['totalGoodsPrice'] > $row['consume']) {
                     $n_info[$code]['shipping_fee'] = 0;
                 } else {
-                    if ($cartList['buyGoodsWeight'] > $row['start']) {
-                        $d_num = $cartList['buyGoodsWeight'] - $row['start'];
+                    $buyGoodsWeight = $cartList['buyGoodsWeight'] / 1000;
+                    if ($buyGoodsWeight > $row['start']) {
+                        $d_num = $buyGoodsWeight - $row['start'];
                         $d_num = ceil($d_num / $row['plus']);
                         $n_info[$code]['shipping_fee'] = $row['postage'] + ($d_num * $row['postageplus']);
                     } else {
