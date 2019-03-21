@@ -2,7 +2,7 @@
 namespace app\weixin\controller\sys_admin;
 
 use app\AdminController;
-use think\Cache;
+use think\facade\Cache;
 
 
 use app\mainadmin\model\SettingsModel;
@@ -37,6 +37,7 @@ class Setting extends AdminController
         $set = input('post.setting');
 		$res = $this->Model->editSave($set);
 		if ($res == false) return $this->error();
+        Cache::rm('weixin_access_token');
 		return $this->success('设置成功.');
     }
 }

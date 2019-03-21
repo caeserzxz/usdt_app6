@@ -25,10 +25,11 @@ class Setting extends AdminController
 	/*------------------------------------------------------ */
     public function index()
 	{
-        $settings = settings();
+	    $settings = settings();
+        $Dividend = json_decode($settings['DividendInfo'],true);
 		$Dividend['status'] = $settings['DividendSatus'];
 		$Dividend['share_by_role'] = $settings['DividendShareByRole'];
-		$this->assign('Dividend',$settings['DividendInfo']);
+		$this->assign('Dividend',$Dividend);
 		$this->assign('share_bg',$settings['share_bg']);
 		$this->assign('shop_after_sale_limit',$settings['shop_after_sale_limit']);
         $this->assign('setting',$settings);

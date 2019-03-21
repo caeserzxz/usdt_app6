@@ -273,6 +273,17 @@
                            <!--统计-->
                            <div class="tab-pane" id="stat" style="overflow: hidden">
 
+                               <div class="form-group fl m-r">
+                                   <a class="btn btn-default " data-toggle="reportrange" >
+                                       <i class="fa fa-calendar fa-lg"></i>
+                                       <small>下单时间</small>
+                                       <span></span> <b class="caret"></b>
+                                       <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                                   </a>
+                               </div>
+                                <button class="btn evalStat" type="button"  ><i class="fa fa-search"></i>执行统计</button>
+                               <div class="clearfix"></div>
+                               <div id="evalStatBox" class="form-horizontal"></div>
                            </div>
 
 
@@ -304,7 +315,59 @@
   </div>
 {{/each}}
 </script>
+<script type="text/html" id="evalStatTpl">
+    <header class="panel-heading bg-light">
+        团队购买统计(包括个人)，时间：{{reportrange}}，总共【{{buy_user_num}}】会员下单：【{{order_num}}】张,订单金额：【￥{{order_amount}}】，产生佣金：【{{dividend_amount}}】
+    </header>
 
+    <div class="form-group m-t" >
+        <table class="table table-striped  m-b-none">
+            <thead>
+            <tr>
+                <th >商品名称</th>
+                <th width="150">购买数量</th>
+                <th width="150">平均单价</th>
+                <th width="150">总金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{each buyGoods as item index}}
+            <tr>
+                <td>{{item.goods_name}}</td>
+                <td>{{item.num}}</td>
+                <td>{{item.price / item.num}}</td>
+                <td>{{item.price}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <header class="panel-heading bg-light">
+        个人统计，时间：{{reportrange}}，总共下单：【{{nowUser.order_num}}】张,订单金额：【￥{{nowUser.order_amount}}】，产生佣金：【{{nowUser.dividend_amount}}】
+    </header>
+    <div class="form-group m-t" >
+        <table class="table table-striped  m-b-none">
+            <thead>
+            <tr>
+                <th >商品名称</th>
+                <th width="150">购买数量</th>
+                <th width="150">平均单价</th>
+                <th width="150">总金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{each nowUser.buyGoods as item index}}
+            <tr>
+                <td>{{item.goods_name}}</td>
+                <td>{{item.num}}</td>
+                <td>{{item.price / item.num}}</td>
+                <td>{{item.price}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</script>
 <script type="text/javascript">
 	$('.superior_tab').click(function(){
 		if ($('#superior').find('.table-responsive').html() == ''){
@@ -364,6 +427,12 @@
 			}
 		});
 	}
+	//执行统计
+    $('.evalStat').click(function(){
+        jq_ajax('{:url("evalStat")}','user_id={$row.user_id}&reportrange='+$('#reportrange').val(),function(res) {
+            $('#evalStatBox').html(template('evalStatTpl', res));
+        })
+    })
 </script>
 
    

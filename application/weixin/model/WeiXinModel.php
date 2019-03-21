@@ -140,7 +140,7 @@ class WeiXinModel extends BaseModel {
 				return curl_error($ch);
 			}
 			curl_close($ch);
-			
+
 			$josn = json_decode($tmpInfo,true);
 			$access_token = $josn['access_token'];	
 			Cache::set('weixin_access_token',$access_token,3600);		

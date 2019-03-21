@@ -79,7 +79,8 @@
                         <label class=" control-label">结算间隔：</label>
                         <div class="col-sm-8 controls">
                             <select name="settlement_day" style="width:100px;">
-                                <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
+                                <option value="0" {$Dividend[
+                                'settlement_day']==0?'selected':''}>不限制</option>
                                 {for start="1" end="121" name="day" }
                                 <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
                                 {/for}
@@ -102,9 +103,11 @@
                         <label class=" control-label">复购限制：</label>
                         <div class="col-sm-9 controls">
                             <select name="repeat_buy_day" style="width:100px;">
-                                <option value="0" {$Dividend['repeat_buy_day']==0?'selected':''}>不限制</option>
+                                <option value="0" {$Dividend[
+                                'repeat_buy_day']==0?'selected':''}>不限制</option>
                                 {for start="1" end="121" name="day" }
-                                <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
+                                <option value="{$day}" {$Dividend[
+                                'repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
                                 {/for}
                             </select>
                             <span class="help-inline">天（成为合伙人及以上会员，从成会合伙人的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
@@ -127,12 +130,12 @@
                         <label class="control-label">是否显示：</label>
                         <div class="controls">
                             <label class="radio-inline">
-                                <input name="setting[dividend_directions_status]" value="0" class="js_undertake"
-                                       type="radio" {$setting['dividend_directions_status']|tplckval='=0','checked',true}>隐藏
+                                <input name="setting[about_us_status]" value="0" class="js_undertake"
+                                       type="radio" {$setting['about_us_status']|tplckval='=0','checked',true}>隐藏
                             </label>
                             <label class="radio-inline">
-                                <input name="setting[dividend_directions_status]" value="1" class="js_undertake "
-                                       type="radio" {$setting['dividend_directions_status']|tplckval='=1','checked'}>
+                                <input name="setting[about_us_status]" value="1" class="js_undertake "
+                                       type="radio" {$setting['about_us_status']|tplckval='=1','checked'}>
                                 显示
                             </label>
                         </div>
@@ -141,26 +144,26 @@
 
                     <div class="form-group publicnote_status">
                         <label class="control-label">分佣说明：</label>
-                        <div class="col-sm-9 " style="padding-left:0px;">
+                        <div class="controls " style="padding-left:0px;">
                             <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
                                       data-kdheight="150" data-tongji="remain"
                                       data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d
-                                      name="setting[dividend_directions]" style="visibility:hidden;">{$setting.dividend_directions}</textarea>
+                                      name="setting[about_us]" style="visibility:hidden;">{$setting.about_us}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane " id="byrole">
                     <div class="form-group">
-                        <label class="control-label">是否显示：</label>
+                        <label class="col-sm-2 control-label">是否显示：</label>
                         <div class="controls">
                             <label class="radio-inline">
-                                <input name="setting[role_directions_status]" value="0" class="js_undertake"
-                                       type="radio" {$setting['role_directions_status']|tplckval='=0','checked',true}>隐藏
+                                <input name="setting[about_us_status]" value="0" class="js_undertake"
+                                       type="radio" {$setting['about_us_status']|tplckval='=0','checked',true}>隐藏
                             </label>
                             <label class="radio-inline">
-                                <input name="setting[role_directions_status]" value="1" class="js_undertake "
-                                       type="radio" {$setting['role_directions_status']|tplckval='=1','checked'}>
+                                <input name="setting[about_us_status]" value="1" class="js_undertake "
+                                       type="radio" {$setting['about_us_status']|tplckval='=1','checked'}>
                                 显示
                             </label>
                         </div>
@@ -168,18 +171,17 @@
                     </div>
 
                     <div class="form-group publicnote_status">
-                        <label class="control-label">身份升级说明：</label>
-                        <div class="col-sm-9 " style="padding-left:0px;">
+                        <label class="col-sm-2 control-label">关于我们：</label>
+                        <div class="controls " style="padding-left:0px;">
                             <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
                                       data-kdheight="150" data-tongji="remain"
                                       data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d
-                                      name="setting[role_directions]" style="visibility:hidden;">{$setting.role_directions}</textarea>
+                                      name="setting[about_us]" style="visibility:hidden;">{$setting.about_us}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
             <div class="form-group">
                 <label class=" control-label"></label>
                 <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
