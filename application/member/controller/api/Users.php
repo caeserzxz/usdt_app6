@@ -295,5 +295,26 @@ class Users extends ApiController
 		}
 		 return $this->success('修改成功.');
 	}
+    /*------------------------------------------------------ */
+    //-- 获取远程会员头像到本地
+    /*------------------------------------------------------ */
+    public function getHeadImg()
+    {
+        $headimgurl = $this->userInfo['headimgurl'];
+        if (empty($headimgurl) == false){
+            if (strstr($headimgurl,'http')){
+                $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
+                makeDir($file_path);
+                $file_name = $file_path.random_str(12).'.jpg';
+                file_put_contents($file_name,file_get_contents($this->userInfo['headimgurl']));
+                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
+                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
+            }
+        }
+        $return['headimgurl'] = $headimgurl;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+
 
 }

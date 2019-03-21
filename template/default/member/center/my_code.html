@@ -17,7 +17,7 @@
               <img src="{:settings('share_bg')}" alt="" class="goodsimg">
               <div class="info">
                 <div class="left">
-                  <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                  <img class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                   <div>
                     <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                     <span class="fs26 color_9">{$userInfo['signature']}</span>
@@ -33,7 +33,7 @@
               <div class="two capture">
                 <div class="info">
                     <div class="left">
-                      <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                      <img  class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                       <div>
                         <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                         <span class="fs26 color_9">{$userInfo['signature']}</span>
@@ -45,12 +45,12 @@
                     <img src="" class="qcode" alt="">
                 </div>
               </div>
-              
+
           </div>
           <div class="block">
             <div class="three capture">
               <div class="info">
-                <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                <img  class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                 <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                 <span class="fs26 color_9">{$userInfo['signature']}</span>
               </div>
@@ -92,7 +92,12 @@
 function hidemodel(){
     $('.model').hide()
 }
- 
+function getHeadImg(){
+    jq_ajax('{:url("member/api.users/getHeadImg")}','',function(res){
+        $('.headimgurl').attr('src',res.headimgurl);
+    })
+}
+{:strstr($userInfo['headimgurl'],'http')?'getHeadImg();':''}
 $(function(){
    $('.tablist').on('click',function(){
 	 let index=$(this).index()

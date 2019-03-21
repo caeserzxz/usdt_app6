@@ -27,20 +27,6 @@ class Center  extends ClientbaseController{
 			return $this->error('请升级身份后再操作.');
 		}
         $this->assign('title', '我的二维码');
-
-        if (empty($this->userInfo['headimgurl']) == false){
-            if (strstr($this->userInfo['headimgurl'],'http')){
-               echo $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
-                makeDir($file_path);
-                $file_name = $file_path.random_str(12).'.jpg';
-                file_put_contents($file_name,file_get_contents($this->userInfo['headimgurl']));
-                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
-                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
-            }else{
-                $headimgurl = $this->userInfo['headimgurl'];
-            }
-        }
-        $this->assign('headimgurl', $headimgurl);
         return $this->fetch('my_code');
     }
     /*------------------------------------------------------ */
