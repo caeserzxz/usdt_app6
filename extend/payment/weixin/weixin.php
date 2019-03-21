@@ -95,7 +95,7 @@ class weixin
         //①、获取用户openid
         $tools = new \JsApiPay();
         //$openId = $tools->GetOpenid();
-        $openId = $_SESSION['wxInfo']['wx_openid'];
+        $openId = session('wxInfo.wx_openid');
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         $input->SetBody("支付订单：".$order['order_sn']);
