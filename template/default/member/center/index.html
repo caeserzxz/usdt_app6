@@ -1,16 +1,18 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
 {/block}
 {block name="main" }
 <div class="page-bd my">
     <!-- 页面内容-->
     <div class="top">
         <div class="left">
-            <img id="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+            <img id="headimgurl"
+                 src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
             <a href="{:url('userInfo')}" class="userInfo">
                 <span class="fs26 color_9 user_id"></span>
-                <div><p class="fs34 color_3 fw_b nick_name"></p><em class="fs22 color_w fw_b BGcolor_r level_name"></em></div>
+                <div><p class="fs34 color_3 fw_b nick_name"></p><em class="fs22 color_w fw_b BGcolor_r level_name"></em>
+                </div>
                 <span class="fs26 color_9 signature"></span>
             </a>
         </div>
@@ -19,9 +21,11 @@
         </div>
     </div>
     <div class="moneyInfo">
-        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 balance_money">0</p><span class="fs26 color_6">金币</span></a>
-        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 bean_value">0</p><span class="fs26 color_6">旅游豆</span></a>
-       
+        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 balance_money">0</p><span
+                class="fs26 color_6">金币</span></a>
+        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 bean_value">0</p><span
+                class="fs26 color_6">旅游豆</span></a>
+
     </div>
     <div class="myOrder">
         <div class="title">
@@ -32,10 +36,18 @@
             </a>
         </div>
         <div class="list">
-            <a href="{:url('shop/order/index',['type'=>'waitPay'])}" class="wait_pay_num"><img src="__STATIC__/mobile/default/images/myIcon03.png" alt=""><p class="fs22 color_6">待付款</p></a>
-            <a href="{:url('shop/order/index',['type'=>'waitShipping'])}" class="wait_shipping_num"><img src="__STATIC__/mobile/default/images/myIcon04.png" alt=""><p class="fs22 color_6">待发货</p></a>
-            <a href="{:url('shop/order/index',['type'=>'waitSign'])}" class="wait_sign_num"><img src="__STATIC__/mobile/default/images/myIcon05.png" alt=""><p class="fs22 color_6">待收货</p></a>
-            <a href="{:url('shop/order/index',['type'=>'sign'])}"><img src="__STATIC__/mobile/default/images/myIcon06.png" alt=""><p class="fs22 color_6">已完成</p></a>
+            <a href="{:url('shop/order/index',['type'=>'waitPay'])}" class="wait_pay_num"><img
+                    src="__STATIC__/mobile/default/images/myIcon03.png" alt="">
+                <p class="fs22 color_6">待付款</p></a>
+            <a href="{:url('shop/order/index',['type'=>'waitShipping'])}" class="wait_shipping_num"><img
+                    src="__STATIC__/mobile/default/images/myIcon04.png" alt="">
+                <p class="fs22 color_6">待发货</p></a>
+            <a href="{:url('shop/order/index',['type'=>'waitSign'])}" class="wait_sign_num"><img
+                    src="__STATIC__/mobile/default/images/myIcon05.png" alt="">
+                <p class="fs22 color_6">待收货</p></a>
+            <a href="{:url('shop/order/index',['type'=>'sign'])}"><img
+                    src="__STATIC__/mobile/default/images/myIcon06.png" alt="">
+                <p class="fs22 color_6">已完成</p></a>
 
         </div>
     </div>
@@ -64,7 +76,7 @@
                 <span class="fs30 fw_b color_3">优惠券</span>
             </div>
             <div class="right">
-                <p class="color_w fs20 BGcolor_3" ><em class="unusedNum">0</em>张可用</p>
+                <p class="color_w fs20 BGcolor_3"><em class="unusedNum">0</em>张可用</p>
                 <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
             </div>
         </a>
@@ -110,16 +122,42 @@
             </div>
         </a>
 
-        <a href="">
+        {if condition ="$setting.about_us_status == 1"}
+        <a href="{:url('shop/article/aboutUs')}">
             <div class="left">
                 <img src="__STATIC__/mobile/default/images/myIcon15.png" alt="">
                 <span class="fs30 fw_b color_3">关于我们</span>
             </div>
             <div class="right">
-                <span class="fs26 color_9">可更新</span>
+                <span class="fs26 color_9"></span>
                 <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
             </div>
         </a>
+        {/if}
+        {if condition ="$setting.dividend_directions_status == 1"}
+        <a href="{:url('shop/article/dividendDirections')}">
+            <div class="left">
+                <img src="__STATIC__/mobile/default/images/myIcon15.png" alt="">
+                <span class="fs30 fw_b color_3">分佣说明</span>
+            </div>
+            <div class="right">
+                <span class="fs26 color_9"></span>
+                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+            </div>
+        </a>
+        {/if}
+        {if condition ="$setting.role_directions_status == 1"}
+        <a href="{:url('shop/article/roleDirections')}">
+            <div class="left">
+                <img src="__STATIC__/mobile/default/images/myIcon15.png" alt="">
+                <span class="fs30 fw_b color_3">身份升级说明</span>
+            </div>
+            <div class="right">
+                <span class="fs26 color_9"></span>
+                <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+            </div>
+        </a>
+        {/if}
     </div>
     <a href="{:url('logout')}" class="return fs28 color_3 fw_b">退出登录</a>
 </div>
@@ -130,34 +168,34 @@
 <script type="text/javascript">
     $(function () {
         //加载会员数据
-        jq_ajax('{:url("member/api.users/getCenterInfo")}','',function (res) {
-            if (res.code==0){
+        jq_ajax('{:url("member/api.users/getCenterInfo")}', '', function (res) {
+            if (res.code == 0) {
                 _alert(res.msg);
                 return false;
             }
-             $('.user_id').html('会员ID：'+res.userInfo.user_id);
+            $('.user_id').html('会员ID：' + res.userInfo.user_id);
             $('.nick_name').html(res.userInfo.nick_name);
-			$('.signature').html(res.userInfo.signature);
-			if (typeof(res.userInfo.role) != 'undefined'){
-            	$('.level_name').html(res.userInfo.role.role_name);
-			}else{
-				$('.level_name').html(res.userInfo.level.level_name);				
-			}
+            $('.signature').html(res.userInfo.signature);
+            if (typeof(res.userInfo.role) != 'undefined') {
+                $('.level_name').html(res.userInfo.role.role_name);
+            } else {
+                $('.level_name').html(res.userInfo.level.level_name);
+            }
             $('.balance_money').html(res.userInfo.account.balance_money);
             $('.bean_value').html(res.userInfo.account.bean_value);
-            $('#headimgurl').attr('src',res.userInfo.headimgurl?res.userInfo.headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');
-            
+            $('#headimgurl').attr('src', res.userInfo.headimgurl ? res.userInfo.headimgurl : '__STATIC__/mobile/default/images/defheadimg.jpg');
+
 
             $('.unusedNum').html(res.unusedNum);
 
-            if (res.orderStats.wait_pay_num > 0){               
-                $('.wait_pay_num').append('<em>'+res.orderStats.wait_pay_num+'</em>');
+            if (res.orderStats.wait_pay_num > 0) {
+                $('.wait_pay_num').append('<em>' + res.orderStats.wait_pay_num + '</em>');
             }
-            if (res.orderStats.wait_shipping_num > 0){
-                $('.wait_shipping_num').append('<em>'+res.orderStats.wait_shipping_num+'</em>');
+            if (res.orderStats.wait_shipping_num > 0) {
+                $('.wait_shipping_num').append('<em>' + res.orderStats.wait_shipping_num + '</em>');
             }
-            if (res.orderStats.wait_sign_num > 0){
-                $('.wait_sign_num').append('<em>'+res.orderStats.wait_sign_num+'</em>');
+            if (res.orderStats.wait_sign_num > 0) {
+                $('.wait_sign_num').append('<em>' + res.orderStats.wait_sign_num + '</em>');
             }
 
         })

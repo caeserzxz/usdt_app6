@@ -25,12 +25,13 @@ class Setting extends AdminController
 	/*------------------------------------------------------ */
     public function index()
 	{
-		$Dividend = settings('DividendInfo');
-		$Dividend['status'] = settings('DividendSatus');
-		$Dividend['share_by_role'] = settings('DividendShareByRole');		
-		$this->assign('Dividend',$Dividend);
-		$this->assign('share_bg',settings('share_bg'));	
-		$this->assign('shop_after_sale_limit',settings('shop_after_sale_limit'));	
+        $settings = settings();
+		$Dividend['status'] = $settings['DividendSatus'];
+		$Dividend['share_by_role'] = $settings['DividendShareByRole'];
+		$this->assign('Dividend',$settings['DividendInfo']);
+		$this->assign('share_bg',$settings['share_bg']);
+		$this->assign('shop_after_sale_limit',$settings['shop_after_sale_limit']);
+        $this->assign('setting',$settings);
 		return $this->fetch();
 	}
    
@@ -38,10 +39,11 @@ class Setting extends AdminController
 	//-- 保存配置
 	/*------------------------------------------------------ */
     public function save(){
-		$Dividend = input();		
+		$Dividend = input();
+        $arr = input('post.setting');
 		$arr['DividendSatus'] = $Dividend['status'];
 		$arr['DividendShareByRole'] = $Dividend['share_by_role'] * 1;
-		unset($Dividend['status'],$DividendSatus['DividendShareByRole'],$Dividend['share_bg']);
+		unset($Dividend['setting'],$Dividend['status'],$Dividend['DividendShareByRole'],$Dividend['share_bg']);
 		$arr['DividendInfo'] = json_encode($Dividend);
 		$arr['share_bg'] = input('share_bg','','trim');
 		$res = $this->Model->editSave($arr);

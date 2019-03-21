@@ -1,6 +1,6 @@
 <?php
 /*------------------------------------------------------ */
-//-- 商品收藏相关
+//-- 文章
 //-- Author: iqgmy
 /*------------------------------------------------------ */
 namespace app\shop\controller;
@@ -38,5 +38,33 @@ class Article extends ClientbaseController{
         $this->assign('content', $content);
         return $this->fetch('register');
     }
-   
+    /*------------------------------------------------------ */
+    //-- 关于我们
+    /*------------------------------------------------------ */
+    public function aboutUs(){
+
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('about_us'));
+
+        $this->assign('title','关于我们');
+        $this->assign('content', $content);
+        return $this->fetch('other');
+    }
+    /*------------------------------------------------------ */
+    //-- 分佣说明
+    /*------------------------------------------------------ */
+    public function dividendDirections(){
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('dividend_directions'));
+        $this->assign('title','分佣说明');
+        $this->assign('content', $content);
+        return $this->fetch('other');
+    }
+    /*------------------------------------------------------ */
+    //-- 身份升级说明
+    /*------------------------------------------------------ */
+    public function roleDirections(){
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('role_directions'));
+        $this->assign('title','身份升级说明');
+        $this->assign('content', $content);
+        return $this->fetch('other');
+    }
 }?>

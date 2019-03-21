@@ -3,137 +3,213 @@
 {block name="main" }
 <header>
     <div class="page-breadcrumbs">
-        <ul class="breadcrumb" >
-         	<li>
+        <ul class="breadcrumb">
+            <li>
                 <i class="fa fa-ellipsis-v"></i>
                 <strong>提成设置</strong>
-            </li>                                  
-          </ul> 
-           <div style="float:right; padding-right:10px;">
-           <a class="refresh" id="refresh-toggler" href=""><i class="fa fa-refresh"></i></a>
-           </div>
-     </div>
+            </li>
+        </ul>
+        <div style="float:right; padding-right:10px;">
+            <a class="refresh" id="refresh-toggler" href=""><i class="fa fa-refresh"></i></a>
+        </div>
+    </div>
 </header>
-        <section class="scrollable  wrapper">
-            <section class="panel panel-default">
-             <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
-               <div class="form-group m-t">
-                      <label class=" control-label">是否开启推荐：</label>
-                      <div class="controls">
-                        <label class="radio-inline">
-                          <input name="status" value="0" {$Dividend['status']==0?'checked':''} type="radio" >停用
-                        </label>
-                        <label class="radio-inline">
-                          <input name="status" value="1" {$Dividend['status']==1?'checked':''} type="radio">启用
-                        </label>
-                        <span class="help-inline">（停用后，将不执行推荐关系绑定）</span>
-                      </div>
-                 </div>
-                 <div class="form-group m-t">
-                      <label class=" control-label">绑定关系时间：</label>
-                      <div class="controls">
-                        <label class="radio-inline">
-                          <input name="bind_type" value="0" {$Dividend['bind_type']==0?'checked':''} type="radio" > 注册
-                        </label>
-                        <label class="radio-inline">
-                          <input name="bind_type" value="1" {$Dividend['bind_type']==1?'checked':''} type="radio"> 订单支付后
-                        </label>
-                      </div>
-                 </div>
-              	<div class="form-group m-t">
-                      <label class=" control-label">分享权限：</label>
-                      <div class="controls">
-                        <label class="radio-inline">
-                          <input name="share_by_role" value="0" {$Dividend['share_by_role']==0?'checked':''} type="radio" > 无需身份
-                        </label>
-                        <label class="radio-inline">
-                          <input name="share_by_role" value="1" {$Dividend['share_by_role']==1?'checked':''} type="radio"> 需分佣身份
-                        </label>
-                      </div>
-                 </div>
-                   <div class="form-group">
-                          <label class=" control-label">佣金到帐时间：</label>
-                          <div class="col-sm-8 controls">
-                           <strong>{$shop_after_sale_limit==0?'订单签收到帐':$shop_after_sale_limit.'天'}</strong>
-                            <span class="help-inline">（与订单申请售后时间一致，即签收后过了此时间即到帐，如需修改请前往【商城-商城设置】中修改）</span>
-                           
-                          </div>
-                 </div>
-                <div class="form-group">
-                          <label class=" control-label">结算间隔：</label>
-                          <div class="col-sm-8 controls">
-                           		<select name="settlement_day" style="width:100px;">
-                                    <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
-                                    {for start="1" end="121" name="day" }
-                                    <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
-                                    {/for}
-                                </select>
-                            <span class="help-inline">天（订单过售后期超过指定天数后执行旅游豆到帐）</span>
-                           
-                          </div>
-                 </div>
-                  <div class="form-group">
-                          <label class=" control-label">手动结算：</label>
-                          <div class="col-sm-8 controls">
-                          	<input type="text" id="arrival_code"  class="input-mini" placeholder="校验码" value="">
-                            <a href="javascript:;"  class="btn btn-sm btn-danger" id="evalArrival"><i class="fa fa-hand-pointer-o m-r-xs"></i>执行结算</a>
-                            <span class="help-inline">操作此项将针对过了售后期的订单立即执行旅游豆到帐，操作请输入校检码：<em id="sarrival_code_em"></em></span>
-                          </div>
-                 </div>
-                  
-                  <div class="form-group">
-                      <label class=" control-label">复购限制：</label>
-                      <div class="col-sm-9 controls">
-                       <select name="repeat_buy_day" style="width:100px;">
-                                    <option value="0" {$Dividend['repeat_buy_day']==0?'selected':''}>不限制</option>
-                                    {for start="1" end="121" name="day" }
-                                    <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
-                                    {/for}
-                                </select>
-                        <span class="help-inline">天（成为合伙人及以上会员，从成会合伙人的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
-                      </div>
-                  </div>
-                 
-                <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                 <div class="form-group">
-                        <label class=" control-label">分享海报：</label>
-                        <div class="controls col-sm-6">                               
-                              <img class="thumb_img" src="{$share_bg}" style="max-height: 100px;" /><br>
-                              <input class="hide" type="text" name="share_bg" value="{$share_bg}" />
-                              <button class="btn btn-default" type="button" data-toggle="selectimg">选择分享背景图</button>
-                      		<span class="help-inline">建议图片尺寸：320*320像素</span><br>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+        <section class="panel panel-default">
+            <header>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
+                    <li><a href="#bydividend" data-toggle="tab">分佣说明</a></li>
+                    <li><a href="#byrole" data-toggle="tab">身份升级说明</a></li>
+                </ul>
+            </header>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="basic">
+                    <div class="form-group m-t">
+                        <label class=" control-label">是否开启推荐：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="status" value="0" {$Dividend['status']==0?'checked':''} type="radio" >停用
+                            </label>
+                            <label class="radio-inline">
+                                <input name="status" value="1" {$Dividend['status']==1?'checked':''} type="radio">启用
+                            </label>
+                            <span class="help-inline">（停用后，将不执行推荐关系绑定）</span>
                         </div>
-                 </div>
-                
-                 <div class="form-group">
-                      <label class=" control-label"></label>
-                      <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
-                     
+                    </div>
+                    <div class="form-group m-t">
+                        <label class=" control-label">绑定关系时间：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="bind_type" value="0" {$Dividend['bind_type']==0?'checked':''} type="radio"
+                                > 注册
+                            </label>
+                            <label class="radio-inline">
+                                <input name="bind_type" value="1" {$Dividend['bind_type']==1?'checked':''} type="radio">
+                                订单支付后
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group m-t">
+                        <label class=" control-label">分享权限：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="share_by_role" value="0" {$Dividend['share_by_role']==0?'checked':''}
+                                type="radio"
+                                > 无需身份
+                            </label>
+                            <label class="radio-inline">
+                                <input name="share_by_role" value="1" {$Dividend['share_by_role']==1?'checked':''}
+                                type="radio">
+                                需分佣身份
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">佣金到帐时间：</label>
+                        <div class="col-sm-8 controls">
+                            <strong>{$shop_after_sale_limit==0?'订单签收到帐':$shop_after_sale_limit.'天'}</strong>
+                            <span class="help-inline">（与订单申请售后时间一致，即签收后过了此时间即到帐，如需修改请前往【商城-商城设置】中修改）</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">结算间隔：</label>
+                        <div class="col-sm-8 controls">
+                            <select name="settlement_day" style="width:100px;">
+                                <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
+                                {for start="1" end="121" name="day" }
+                                <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
+                                {/for}
+                            </select>
+                            <span class="help-inline">天（订单过售后期超过指定天数后执行旅游豆到帐）</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">手动结算：</label>
+                        <div class="col-sm-8 controls">
+                            <input type="text" id="arrival_code" class="input-mini" placeholder="校验码" value="">
+                            <a href="javascript:;" class="btn btn-sm btn-danger" id="evalArrival"><i
+                                    class="fa fa-hand-pointer-o m-r-xs"></i>执行结算</a>
+                            <span class="help-inline">操作此项将针对过了售后期的订单立即执行旅游豆到帐，操作请输入校检码：<em id="sarrival_code_em"></em></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class=" control-label">复购限制：</label>
+                        <div class="col-sm-9 controls">
+                            <select name="repeat_buy_day" style="width:100px;">
+                                <option value="0" {$Dividend['repeat_buy_day']==0?'selected':''}>不限制</option>
+                                {for start="1" end="121" name="day" }
+                                <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
+                                {/for}
+                            </select>
+                            <span class="help-inline">天（成为合伙人及以上会员，从成会合伙人的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
+                        </div>
+                    </div>
+
+                    <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class=" control-label">分享海报：</label>
+                        <div class="controls col-sm-6">
+                            <img class="thumb_img" src="{$share_bg}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="share_bg" value="{$share_bg}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择分享背景图</button>
+                            <span class="help-inline">建议图片尺寸：320*320像素</span><br>
+                        </div>
+                    </div>
                 </div>
-             </form>
+                <div class="tab-pane " id="bydividend">
+                    <div class="form-group">
+                        <label class="control-label">是否显示：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="setting[dividend_directions_status]" value="0" class="js_undertake"
+                                       type="radio" {$setting['dividend_directions_status']|tplckval='=0','checked',true}>隐藏
+                            </label>
+                            <label class="radio-inline">
+                                <input name="setting[dividend_directions_status]" value="1" class="js_undertake "
+                                       type="radio" {$setting['dividend_directions_status']|tplckval='=1','checked'}>
+                                显示
+                            </label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">分佣说明：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                            <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                      data-kdheight="150" data-tongji="remain"
+                                      data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d
+                                      name="setting[dividend_directions]" style="visibility:hidden;">{$setting.dividend_directions}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane " id="byrole">
+                    <div class="form-group">
+                        <label class="control-label">是否显示：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="setting[role_directions_status]" value="0" class="js_undertake"
+                                       type="radio" {$setting['role_directions_status']|tplckval='=0','checked',true}>隐藏
+                            </label>
+                            <label class="radio-inline">
+                                <input name="setting[role_directions_status]" value="1" class="js_undertake "
+                                       type="radio" {$setting['role_directions_status']|tplckval='=1','checked'}>
+                                显示
+                            </label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">身份升级说明：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                            <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                      data-kdheight="150" data-tongji="remain"
+                                      data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" d
+                                      name="setting[role_directions]" style="visibility:hidden;">{$setting.role_directions}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
+            <div class="form-group">
+                <label class=" control-label"></label>
+                <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
+
+            </div>
+
         </section>
-    </section>
-  
+    </form>
+</section>
+
 </section>
 
 <script type="text/javascript">
-var arrival_code = Math.ceil(Math.random()*1000)+1000;
-$('#sarrival_code_em').html(arrival_code);
-$('#evalArrival').click(function(){
-	var _arrival_code = $('#arrival_code').val();
-	if (_arrival_code == ''){
-		_alert('请输入校验码，后再操作.',true);
-		return false;
-	}
-	if (_arrival_code != arrival_code){
-		_alert('校验码为'+arrival_code+'，请核实输入是否正确.',true);
-		return false;
-	}
-	_confirm('确定执行 - 手动执行结算？',function(){
-		jq_ajax('{:url("evalArrival")}','',function(res){
-			_alert(res.msg,true);			
-		});
-	});
-})
+    var arrival_code = Math.ceil(Math.random() * 1000) + 1000;
+    $('#sarrival_code_em').html(arrival_code);
+    $('#evalArrival').click(function () {
+        var _arrival_code = $('#arrival_code').val();
+        if (_arrival_code == '') {
+            _alert('请输入校验码，后再操作.', true);
+            return false;
+        }
+        if (_arrival_code != arrival_code) {
+            _alert('校验码为' + arrival_code + '，请核实输入是否正确.', true);
+            return false;
+        }
+        _confirm('确定执行 - 手动执行结算？', function () {
+            jq_ajax('{:url("evalArrival")}', '', function (res) {
+                _alert(res.msg, true);
+            });
+        });
+    })
 </script>
 {/block}

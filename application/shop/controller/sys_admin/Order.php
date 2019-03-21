@@ -10,7 +10,7 @@ use app\shop\model\ShippingModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
 use think\Lang;
-use Kuaidi\Kdapieorder;
+use kuaidi\Kdapieorder;
 
 /**
  * 订单相关

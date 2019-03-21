@@ -376,7 +376,7 @@ class Goods extends AdminController
 				$inData['add_time'] = $inData['update_time'] = time();
 				$sku_val = array_values($prow['SpecVal']['key']);
 				$inData['sku_val'] = join(':',$sku_val);
-				if (empty($inarr['sku_val'])){
+				if (empty($inData['sku_val'])){
 					return $this->error('操作失败:获取商品SKU值失败，请重试.');
 				}				
 				$res = $GoodsSkuModel::create($inData);
@@ -386,11 +386,10 @@ class Goods extends AdminController
 				}
 				unset($upData);
 				$upData['store_id'] = $this->store_id;
-				$upData['sku_model'] = $row['sku_model'];
 				$upData['goods_id'] = $row['goods_id'];
 				$imgwhere = array();
 				$imgwhere[] = ['goods_id','=',0];
-				$imgwhere[] = ['sku_val','=',$inarr['sku_val']];
+				$imgwhere[] = ['sku_val','=',$inData['sku_val']];
 				$imgwhere[] = ['store_id','=',$this->store_id];
 				$imgwhere[] = ['admin_id','=',AUID];
 				$GoodsImgsModel->where($imgwhere)->update($upData);
@@ -525,7 +524,7 @@ class Goods extends AdminController
 				$upData['goods_weight'] = $prow['Weight'];
 				$sku_val = array_values($prow['SpecVal']['key']);
 				$upData['sku_val'] = join(':',$sku_val);
-				if (empty($inarr['sku_val'])){
+				if (empty($upData['sku_val'])){
 					return $this->error('操作失败:获取商品SKU值失败，请重试.');
 				}
 				$upData['store_id'] = $this->store_id;
