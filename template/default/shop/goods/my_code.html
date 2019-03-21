@@ -15,7 +15,7 @@
         <div class="info">
           <div class="left">
             <div class="color_r fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
-            <div class="user"><img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt=""><p class="fs28 color_3 fw_b">{$userInfo['nick_name']}</p></div>
+            <div class="user"><img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt=""><p class="fs28 color_3 fw_b">{$userInfo['nick_name']}</p></div>
           </div>
           <div class="right"><img class="qcode" src="" alt=""></div>
         </div>
@@ -37,38 +37,39 @@
 {/block}
 {block name="footer"}
 <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+
 <script>
 function hidemodel(){
     $('.model').hide()
 }
 //保存图片
 $(".saveImg").on("click", function (event) {
-        event.preventDefault();
-        html2canvas($('.show'), {
-            allowTaint: true,
-            scale:1,
-            ureCORS:true,
-            taintTest: false,
-            onrendered: function (canvas) {
-				var url = canvas.toDataURL();
-                $('.model').find('img').attr('src',url);
-                $('.model').show()
-				/*var u = navigator.userAgent, app = navigator.appVersion;
-				var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    event.preventDefault();
+    html2canvas($('.show'), {
+        allowTaint: true,
+        scale:2,
+        ureCORS:true,
+        taintTest: false,
+        onrendered: function (canvas) {
+            $('.model').show();
+            var url = canvas.toDataURL();
+            $('.model').find('img').attr('src',url);
 
-				if (isIOS){
-					$('.model').find('img').attr('src',url);
-					$('.model').show()
-				}else{
-				   //以下代码为下载此图片功能
-					var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
-					triggerDownload[0].click();
-					triggerDownload.remove();
-				}*/
-            }
-        });
- });
+            /*var u = navigator.userAgent, app = navigator.appVersion;
+             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+             if (isIOS){
+             $('.model').find('img').attr('src',url);
+             $('.model').show()
+             }else{
+             //以下代码为下载此图片功能
+             var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
+             triggerDownload[0].click();
+             triggerDownload.remove();
+             }*/
+        }
+    });
+});
 	 //获取二维码
    	jq_ajax('{:url("member/api.users/goodsCode")}','goods_id={$goods.goods_id}',function(res){	
 	   if (res.code == 0){

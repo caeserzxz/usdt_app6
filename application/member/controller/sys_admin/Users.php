@@ -337,6 +337,7 @@ class Users extends AdminController
             if ($select_user < 1){
                 return $this->error('请选择需要修改的上级.');
             }
+            return $this->error('开发中.');
            /* $UsersBindModel = new UsersBindModel();
             $where[] = ['uesr_id','=',];
             $UsersBindModel->where();

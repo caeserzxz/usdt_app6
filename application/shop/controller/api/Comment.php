@@ -141,8 +141,8 @@ class Comment extends ApiController
 				$file_name = $file_path.random_str(12).'.jpg';
 				file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$file)));
 				$imgInArr['comment_id'] = $comment_id;
-				$imgInArr['image'] = '/'.trim($file_name,'.');
-				$imgInArr['thumbnail'] = '/'.trim($file_name,'.');
+				$imgInArr['image'] = trim($file_name,'.');
+				$imgInArr['thumbnail'] = trim($file_name,'.');
 				$res = $GoodsCommentImagesModel->save($imgInArr);
 				if ($res < 1){
 					@unlink($file_name);

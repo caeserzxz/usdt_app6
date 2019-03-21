@@ -17,7 +17,7 @@
               <img src="{:settings('share_bg')}" alt="" class="goodsimg">
               <div class="info">
                 <div class="left">
-                  <img src="{:settings('share_bg')}" alt="">
+                  <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                   <div>
                     <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                     <span class="fs26 color_9">{$userInfo['signature']}</span>
@@ -33,7 +33,7 @@
               <div class="two capture">
                 <div class="info">
                     <div class="left">
-                      <img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                      <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                       <div>
                         <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                         <span class="fs26 color_9">{$userInfo['signature']}</span>
@@ -50,7 +50,7 @@
           <div class="block">
             <div class="three capture">
               <div class="info">
-                <img src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                <img src="{$headimgurl|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                 <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
                 <span class="fs26 color_9">{$userInfo['signature']}</span>
               </div>
@@ -87,7 +87,6 @@
 
 {block name="footer"}
 <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
 <script src="__STATIC__/js/clipboard.min.js"></script>
 <script>
 function hidemodel(){
