@@ -451,6 +451,8 @@ class UsersModel extends BaseModel
 		if ($chain) return $chain;
 		$dividendRole = (new DividendRoleModel)->getRows();	
 		$i = 1;
+        $user_id = $this->where('user_id',$user_id)->value('pid');
+        if ($user_id < 1) return [];
 		do {
 			$info = $this->where('user_id',$user_id)->field('user_id,nick_name,pid,role_id,reg_time')->find();
 			$chain[$user_id]['level']     = $i;

@@ -15,8 +15,9 @@
           <div class="swiper-pagination pagination1"></div>
           <a href="{:url('index/search')}" class="selech"><img src="__STATIC__/mobile/default/images/index_01.png" class="lazy"  alt="" /><span class="fs32 color_w">{$setting.shop_index_search_text}</span></a>
         </div>
-        <!-- 功能入口 -->
-        <div class="girdBox">
+        <!-- 功能入口-->
+        {notempty name="navMenuList"}
+          <div class="girdBox ">
           <div class="gird">
             <div class="row">
              {volist name="navMenuList" id="nav" }
@@ -31,11 +32,12 @@
             </div>
           </div>
         </div>
-        <!-- 秒杀 -->
+        {/notempty}
+        <!-- 秒杀
         <div class="seckill" style="display:none;">
             <div class="title">
               <div class="left"><p class="fs36 color_3 fw_b">今日秒杀</p><div class="time"><div>00</div><span>:</span><div>30</div><span>:</span><div>10</div></div></div>
-              <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></a>    
+              <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt=""></a>
             </div>
             <div class="seckilllist">
                 <a href="商品.html" class="box">
@@ -65,7 +67,7 @@
                         </div>
             </div>
         </div>
-        <!-- 拼团 -->
+        <!-- 拼团
         <div class="group" style="display:none;">
             <div class="swiper-container swiper2" id="swiper02">
                 <div class="swiper-wrapper">
@@ -94,7 +96,7 @@
                       </div>
                   </a>
                 </div>
-                <div class="swiper-pagination pagination2"></div>                
+                <div class="swiper-pagination pagination2"></div>
               </div>
               <a href="#" class="fs26 color_3 groupMore">查看更多拼团</a>
         </div>

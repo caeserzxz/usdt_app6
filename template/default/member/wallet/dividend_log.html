@@ -14,7 +14,7 @@
         <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
     </div>
     <div class="title">
-        <span class="fs26 color_6">金币收入</span>
+        <span class="fs26 color_6">金币全部明细</span>
         <div><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0" class="typeimg"></div>
 
     </div>
@@ -29,16 +29,37 @@
     <div class="modelBg"></div>
     <div class="modelbd">
         <label for="s11">
-            <span class="fs28 color_3 fw_b">金币收入</span>
+            <span class="fs28 color_3 fw_b">金币全部明细</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="balance_money" name="radiobox" id="s11" checked>
+                <input type="radio" class="check" value="all_balance_money" name="radiobox" id="s11" checked>
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s12">
-            <span class="fs28 color_3 fw_b">旅游豆收入</span>
+            <span class="fs28 color_3 fw_b">金币待到帐明细</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="dividend_bean" name="radiobox" id="s12">
+                <input type="radio" class="check" value="wait_balance_money" name="radiobox" id="s12" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s13">
+            <span class="fs28 color_3 fw_b">金币已到帐明细</span>
+            <div class="iconBox">
+                <input type="radio" class="check" value="arrival_balance_money" name="radiobox" id="s13" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s14">
+            <span class="fs28 color_3 fw_b">金币失效明细</span>
+            <div class="iconBox">
+                <input type="radio" class="check" value="cancel_balance_money" name="radiobox" id="s14" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <label for="s199">
+            <span class="fs28 color_3 fw_b">旅游豆到帐明细</span>
+            <div class="iconBox">
+                <input type="radio" class="check" value="dividend_bean" name="radiobox" id="s199">
                 <i class="icon_checked"></i>
             </div>
         </label>
@@ -51,10 +72,12 @@
 <div class="cell">
 	<div class="left">
 		<p class="fs28 fw_b color_2">{{item.award_name}}-{{item.level_award_name}}</p>
-		<span class="fs24 color_9">{{item._time}}</span>
+		<span class="fs24 color_9">{{item._time}} </span>
+
 	</div>
 	<div class="right fs34 num {{item.value > 0 ? 'color_r' : 'color_3' }}">
 		{{item.value}}
+        <p class="fs24 color_9" >状态：{{item.status}}</p>
 	</div>
 </div>
 {{/each}}
@@ -74,12 +97,17 @@
 		        _alert(res.msg);
 		        return false;
             }
-			$('.list').html(template('logTpl', res));
-			$('#nowValue').val(res.time);
-			if (arr.type == 'balance_money'){
-                $('.income').html('金币收入：￥'+res.income);
+            if (typeof(res.list) == 'undefined'){
+                $('.list').html('暂无没有相关数据.');
             }else{
+                $('.list').html(template('logTpl', res));
+            }
+
+			$('#nowValue').val(res.time);
+			if (arr.type == 'dividend_bean'){
                 $('.income').html('旅游豆收入：'+res.income);
+            }else{
+                $('.income').html('金币收入：￥'+res.income);
             }
 
 		});
@@ -113,6 +141,7 @@
         $('.modelbd label').on('click',function(){
             if ($(this).find('input').is(':checked')) {
                 let val=$(this).find('span').text()
+                console.log(val);
                 $('.title span').text(val)
 				getList();
 				$('.model').hide();

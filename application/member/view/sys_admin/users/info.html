@@ -264,6 +264,11 @@
                             <!--上级关系树-->
                             <div class="tab-pane" id="superior" style="overflow: hidden">
                                	<div class="table-responsive"></div>
+                                <div class="form-group" style=" margin-left:0px;">
+                                    <div class="col-sm-8">
+                                        <button class="btn " type="button"  data-remote="{:url('editSuperior',array('user_id'=>$row['user_id']))}" data-toggle="ajaxModal"  ><i class="fa fa-edit"></i>修改所属上级</button>
+                                    </div>
+                                </div>
                              </div>
                              
                               <!--下级关系树-->
@@ -386,7 +391,7 @@
 	function getSuperiorList(uid){
 		jq_ajax('{:url("sys_admin.users/getSuperiorList")}','user_id='+uid,function(res){
 			if (res.list.length < 1){
-				$('#superior .table-responsive').html('没有相关信息.');
+				$('#superior .table-responsive').html('没有相关上级.');
 				return false;
 			}
 			$('#superior .table-responsive').html(template('superiorlist',res));

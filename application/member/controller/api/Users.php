@@ -3,7 +3,8 @@
 namespace app\member\controller\api;
 
 use app\ApiController;
-
+use think\facade\Lang;
+use think\facade\Env;
 use app\member\model\UsersModel;
 use app\member\model\WithdrawModel;
 use app\member\model\AccountLogModel;
@@ -208,7 +209,7 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function getDividendLog()
     {
-        $type = input('type','balance_money','trim');
+        $type = input('type','all_balance_money','trim');
         $time = input('time','','trim');
         if (empty($time)){
             $time = date('Y年m月');
@@ -219,9 +220,24 @@ class Users extends ApiController
         $DividendModel = new DividendModel();
         $where[] = ['dividend_uid','=',$this->userInfo['user_id']];
         switch($type){
-            case 'balance_money'://佣金
+            case 'all_balance_money'://佣金
                 $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
                 $where[] = ['dividend_amount','<>',0];
+                break;
+            case 'wait_balance_money'://等待分佣金
+                $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+                $where[] = ['dividend_amount','<>',0];
+                $where[] = ['status','=',3];
+                break;
+            case 'arrival_balance_money'://金币已到帐明细
+                $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+                $where[] = ['dividend_amount','<>',0];
+                $where[] = ['status','=',9];
+                break;
+            case 'cancel_balance_money'://金币失效明细
+                $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+                $where[] = ['dividend_amount','<>',0];
+                $where[] = ['status','in',[1,4]];
                 break;
             case 'dividend_bean'://旅游豆
                 $where[] = ['dividend_bean','<>',0];
@@ -235,11 +251,14 @@ class Users extends ApiController
         }
         $return['income']  = 0;
         $rows = $DividendModel->where($where)->order('add_time DESC')->select();
+
+        $lang = lang('order');
         foreach ($rows as $key=>$row){
             $income = $row['dividend_amount'] > 0 ? $row['dividend_amount'] : $row['dividend_bean'];
             $return['income'] += $income;
             $row['_time'] = timeTran($row['add_time']);
             $row['value'] = $income;
+            $row['status'] = $lang['ds'][$row['status']];
             $return['list'][] = $row;
         }
         return $this->ajaxReturn($return);

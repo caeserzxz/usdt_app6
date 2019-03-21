@@ -322,4 +322,30 @@ class Users extends AdminController
         $result['nowUser'] = $nowUser;
         return $this->ajaxReturn($result);
     }
+ /*------------------------------------------------------ */
+    //-- 修改所属上级
+    /*------------------------------------------------------ */
+    public function editSuperior()
+    {
+        $user_id = input('user_id', 0, 'intval');
+        $row = $this->Model->info($user_id);
+        if ($row['pid'] > 0){
+            $row['puser'] = $this->Model->info($row['pid']);
+        }
+        if ($this->request->isPost()) {
+            $select_user = input('select_user', 0, 'intval');
+            if ($select_user < 1){
+                return $this->error('请选择需要修改的上级.');
+            }
+           /* $UsersBindModel = new UsersBindModel();
+            $where[] = ['uesr_id','=',];
+            $UsersBindModel->where();
+            if (){
+
+            }*/
+            return $this->success('修改所属上级成功！', 'reload');
+        }
+        $this->assign("row", $row);
+        return response($this->fetch('sys_admin/users/edit_superior'));
+    }
 }

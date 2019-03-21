@@ -1,0 +1,51 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('editSuperior')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">修改所属上级</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户ID：</label>
+                    <div class="col-sm-6 m-t-md">
+                        {$row.user_id}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户手机：</label>
+                    <div class="col-sm-6 m-t-md">
+                        {$row.mobile}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">用户身份：</label>
+                    <div class="col-sm-6 m-t-md">
+                        {$row.role.role_name}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">当前所属上级：</label>
+                    <div class="col-sm-6 m-t-md">
+                        {$row.puser.user_id} - {$row.puser.mobile} - {$row.puser.role.role_name}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">修改上级：</label>
+                    <div class="col-sm-9 " >
+                        <input type="text" class="input-small"  id="user_keyword" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchuser('user_keyword','select_user');"><i class="fa fa-search text-muted"></i></a>
+                        <select id="select_user" name="select_user"  style="width: 180px; " >
+                            <option value="">选择用户</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" value="{$row.user_id}" name="user_id" />
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>确定修改</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
+

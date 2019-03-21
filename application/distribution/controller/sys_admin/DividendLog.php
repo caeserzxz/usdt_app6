@@ -31,7 +31,8 @@ class DividendLog extends AdminController{
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_cancel = false){
-		$this->assign("divdend_satus", lang('divdend_satus'));
+        $orderlang = lang('order');
+		$this->assign("divdend_satus", $orderlang['ds']);
 		$search['status'] = input('status','-1','intval');
 		$search['keyword'] = input('keyword','','trim');
 		$reportrange = input('reportrange');
