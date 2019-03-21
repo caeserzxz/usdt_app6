@@ -139,7 +139,7 @@ function searchuser(keyword,selects) {
 	if (res.code == 0) return false	
     var arr = res.list;
 	$.each(res.list,function(i,val){
-		$("#"+selects).append("<option value='"+val.user_id+"'>"+val.user_id+'-'+val.mobile+'-'+val.user_name+"</option>"); 
+		$("#"+selects).append("<option value='"+val.user_id+"'>"+val.user_id+'-'+val.mobile+'-'+val.nick_name+"</option>");
 	}); 
 	   
 }

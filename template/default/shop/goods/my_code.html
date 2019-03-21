@@ -23,7 +23,7 @@
 </div>
 <div class="page-fd">
   <div class="BGcolor_3 saveImg"><img src="__STATIC__/mobile/default/images/goodsIcon04.png" alt=""><span class="fs28 fw_b color_w">保存图片</span></div>
-  <div class="BGcolor_r"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
+  <div class="BGcolor_r hide"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
 </div>
 <div class="model">
       <div class="modelBg" onclick="hidemodel()"></div>
@@ -47,10 +47,14 @@ $(".saveImg").on("click", function (event) {
         event.preventDefault();
         html2canvas($('.show'), {
             allowTaint: true,
+            scale:1,
+            ureCORS:true,
             taintTest: false,
             onrendered: function (canvas) {
 				var url = canvas.toDataURL();
-				var u = navigator.userAgent, app = navigator.appVersion;
+                $('.model').find('img').attr('src',url);
+                $('.model').show()
+				/*var u = navigator.userAgent, app = navigator.appVersion;
 				var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 				if (isIOS){
@@ -61,7 +65,7 @@ $(".saveImg").on("click", function (event) {
 					var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
 					triggerDownload[0].click();
 					triggerDownload.remove();
-				}
+				}*/
             }
         });
  });

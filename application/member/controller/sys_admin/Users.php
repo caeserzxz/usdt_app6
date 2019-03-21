@@ -219,7 +219,7 @@ class Users extends AdminController
         $keyword = input('keyword', '', 'trim');
 
         if (!empty($keyword)) {
-            $where = "( mobile LIKE '%" . $keyword . "%' OR user_name LIKE '%" . $keyword . "%' OR nick_name LIKE '%" . $keyword . "%' OR mobile LIKE '%" . $keyword . "%')";
+            $where = "( mobile LIKE '%" . $keyword . "%' OR user_id = '" . $keyword . "' OR nick_name LIKE '%" . $keyword . "%' OR mobile LIKE '%" . $keyword . "%')";
         }
         $_list = $this->Model->where($where)->field("user_id,mobile,nick_name,user_name")->limit(20)->select();
         foreach ($_list as $key => $row) {
