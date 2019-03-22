@@ -34,7 +34,11 @@
                                     <label class="control-label">注册手机：</label>
                                     <div class="col-sm-3"><label>{$row.mobile}</label></div>
                                     <label class="control-label">会员等级：</label>
-                                    <div class="col-sm-3"><label>{$row.total_integral|userLevel}</label></div>
+                                    <div class="col-sm-3"><label>{$row.total_integral|userLevel}</label>
+                                        <a href="{:url('member/sys_admin.log_operate/index',array('edit_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
+                                            <i class="fa fa-search"></i> 查看会员日志
+                                        </a>
+                                    </div>
                                 </div>
                                  <div class="form-group">
                                     <label class="control-label">真实姓名：</label>
@@ -191,41 +195,7 @@
                                                 </label>
                                             </div>
                         			</div>
-                                	<header class="panel-heading bg-light">
-                                        银行卡信息
-                                    </header>
-                                	 <div class="form-group m-t-md">
-                                        <label class="control-label">帐号姓名：</label>
-                                        <div class="col-sm-8 "  >
-                                            <label>{$row.bank_user_name|default='未填写'}</label>
-                                        </div>
-                        			</div>
-                                     <div class="form-group">
-                                        <label class="control-label">银行帐号：</label>
-                                        <div class="col-sm-8 "  >
-                                            <label>{$row.service_bank_no|default='未填写'}</label>
-                                        </div>
-                        			</div>
-                                    <div class="form-group">
-                                        <label class="control-label">开户银行：</label>
-                                        <div class="col-sm-8 "  >
-                                            <label>{$row.service_bank_name|default='未填写'}</label>
-                                        </div>
-                        			</div>
-                                    <div class="form-group">
-                                        <label class="control-label">地区：</label>
-                                        <div class="col-sm-8">
-                                        <label>
-                                        	{$row['bank_region_name']}
-                                        </label>
-                                        </div>
-                        			</div>
-                                    <div class="form-group">
-                                        <label class="control-label">所属分行：</label>
-                                        <div class="col-sm-8">
-                                        <label>{$row.service_bank_address|default='未填写'}</label>
-                                        </div>
-                        			</div>
+
                                  </div>
                                  
                             </div>
@@ -315,7 +285,7 @@
 {{each list as item index}}
  <div class="form-group" style=" margin-left:0px;">                                            
 	  <div class="col-sm-8">
-	  {{item.level}}级 - 会员ID:{{item.user_id}} - 昵称：{{item.nick_name}} - 身份：{{item.role_name}}
+	  <a href="{:_url('member/sys_admin.users/info',['user_id'=>'[[item.user_id]]'])}" target="_blank"> {{item.level}}级 - 会员ID:{{item.user_id}} - 昵称：{{item.nick_name}} - 身份：{{item.role_name}}</a>
 	  </div>
   </div>
 {{/each}}

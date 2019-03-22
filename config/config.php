@@ -14,6 +14,7 @@ return [
 	'_upload_'=> './upload/',
 	'apikey'=>'eb5c6b3e4505c1fd7878bde2ed8544cf',
 	'host_path'=> 'http://'.$_SERVER['SERVER_NAME'],//指定域名
+    'bind_max_level' => 50,//绑定指定层数关系链
 	'dividend_level' => array(1=>'一级',2=>'二级',3=>'三级',4=>'四级',5=>'五级',6=>'六级',7=>'七级',8=>'八级',9=>'九级'),//提成等级
     // 是否开启多语言
     'lang_switch_on'         => true,
