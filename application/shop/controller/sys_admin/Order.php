@@ -282,6 +282,8 @@ class Order extends AdminController
                 $eorder = [];
                 $eorder["ShipperCode"] = $shippinginfo; //发件地邮编
                 $eorder["OrderCode"] = $orderInfo['order_sn'];
+                $eorder["CustomerName"] = "511057_0032";
+                $eorder["CustomerPwd"] = "511057";
                 $eorder["PayType"] = 1;
                 $eorder["ExpType"] = 1;
 
