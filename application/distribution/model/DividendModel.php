@@ -113,6 +113,7 @@ class DividendModel extends BaseModel {
 		$DividendRoleModel = new DividendRoleModel();
 		
 		$nowLevel = 0;//当前处理级别
+        $nowLevelOrdinary = 0;//普通分销当前处理级别，普通分销有逐级计算和无限级计算，如果无限级，不满条件将一直最后的上级
 		$assignAwardNum = [];//记录已分出去的管理奖金额
 		$roleInfo = $DividendRoleModel->info($orderInfo['role_id']);//获取用户下单时分销身份
 		$lastRole = $roleInfo['level'];//下级会员分佣身份级别
@@ -121,6 +122,7 @@ class DividendModel extends BaseModel {
 		
 		do {
 			$nowLevel += 1;
+            $nowLevelOrdinary += 1;
 			$userInfo = $this->UsersModel->info($parentId);//获取会员信息
 			
 			$parentId = $userInfo['pid'];//优先记录下次循环用户ID
@@ -128,58 +130,74 @@ class DividendModel extends BaseModel {
 				continue;//无身份，跳出
 			} 
 			
-			foreach ($awardList as $key=>$award){						
+			foreach ($awardList as $key=>$award){
+                $awardValue = json_decode($award['award_value'],true);	//奖项内容
+                $awardBuyNum = 0;//订购限制商品数量
+                if ($award['goods_limit'] == 2){//购买全部指定分销商品
+                    $award_limit_buy_goods = explode(',',$award['buy_goods_id']);
+                    $isOk = true;
+                    foreach ($award_limit_buy_goods as $goods_id){
+                        if (in_array($goods_id,$order_goods_ids) == false){//限制商品不存在购买中，失败跳过
+                            $isOk =false;
+                            continue;
+                        }
+                        $awardBuyNum += $goods_buy_num[$goods_id];
+                    }
+                    if ($isOk == false){//不满足购买限制，跳出
+                        continue;
+                    }
+                    $goods_num = count($order_goods_ids) * $award['goods_limit_num'];
+                    if ($order_goods_num < $goods_num){
+                        continue;
+                    }
+                }elseif ($award['goods_limit'] == 3){//购买任意指定分销商品
+                    $award_limit_buy_goods= explode(',',$award['buy_goods_id']);
+                    $isOk = false;
+                    foreach ($award_limit_buy_goods as $goods_id){
+                        if (in_array($goods_id,$order_goods_ids) == true){//限制商品存在购买中，成功跳出
+                            $isOk = true;
+                            $awardBuyNum += $goods_buy_num[$goods_id];
+                        }
+                    }
+                    if ($isOk == false){//不满足购买限制，跳出
+                        continue;
+                    }
+                    if ($order_goods_num < $award['goods_limit_num']){
+                        continue;
+                    }
+                }else{//购买任意分销商品
+                    $awardBuyNum = $order_goods_num;
+                }
+
 				//判断身份是否满足条件
 				$limit_role = explode(',',$award['limit_role']);
-				
+                $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
 				if (in_array($userInfo['role_id'],$limit_role) == false){
 					if($award['award_type'] == 2){//平推奖，如果当前用户不满足条件，此奖项终止
 						unset($awardList[$key]);//移除已结束的奖项
-					}
-					continue;
-				}
-				
-				$awardBuyNum = 0;//订购限制商品数量
-				if ($award['goods_limit'] == 2){//购买全部指定分销商品
-					$award_limit_buy_goods = explode(',',$award['buy_goods_id']);
-					$isOk = true;
-					foreach ($award_limit_buy_goods as $goods_id){						
-						if (in_array($goods_id,$order_goods_ids) == false){//限制商品不存在购买中，失败跳过						
-							$isOk =false;
-							continue;
+					}elseif($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
+                        $awardVal = $awardValue[$nowLevelOrdinary];
+						if ($awardVal['type'] == 'gold'){
+							$sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
+						}else{
+							$sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
 						}
-						$awardBuyNum += $goods_buy_num[$goods_id];
-					}
-					if ($isOk == false){//不满足购买限制，跳出					
-						continue;
-					}
-					$goods_num = count($order_goods_ids) * $award['goods_limit_num'];
-					if ($order_goods_num < $goods_num){
-						continue;
-					}
-				}elseif ($award['goods_limit'] == 3){//购买任意指定分销商品
-					$award_limit_buy_goods= explode(',',$award['buy_goods_id']);
-					$isOk = false;
-					foreach ($award_limit_buy_goods as $goods_id){
-						if (in_array($goods_id,$order_goods_ids) == true){//限制商品存在购买中，成功跳出
-							$isOk = true;
-							$awardBuyNum += $goods_buy_num[$goods_id];
-						}
-					}
-					if ($isOk == false){//不满足购买限制，跳出
-						continue;
-					}
-					if ($order_goods_num < $award['goods_limit_num']){
-						continue;
-					}
-				}else{//购买任意分销商品
-					$awardBuyNum = $order_goods_num;
+
+                        $sendData['award_name']         = $award['award_name'];
+                        $sendData['level_award_name']   = $awardVal['name'];
+                        $sendData['level']              = $nowLevel;
+                        $sendData['role_name']          = $role_name;
+                        $sendData['order_sn']           = $orderInfo['order_sn'];
+                        $sendData['add_time']           = $orderInfo['add_time'];
+                        $sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
+                        $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+                        (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+                        $nowLevelOrdinary -= 1;
+                    }
+                    continue;
 				}
-				
-				$awardValue = json_decode($award['award_value'],true);	//奖项内容	
-				$endAward = end($awardValue);//获取最后奖项		
-				
-				
+
+				$endAward = end($awardValue);//获取最后奖项
 				if($award['award_type'] == 3){//判断管理奖是否享受					
 					if (empty($awardValue[$userInfo['role_id']])){//没有找到相应奖项级别跳出
 						continue;
@@ -193,7 +211,7 @@ class DividendModel extends BaseModel {
 					}					
 					$awardVal = $awardValue[$userInfo['role_id']];//获取对应角色奖项					
 					$roleInfo = $DividendRoleModel->info($userInfo['role_id']);//获取当前用户分销身份
-					if ($roleInfo['level'] <= $lastRole){//上级低于下级或平级时跳出，同时执行模板消息
+					if ($roleInfo['level'] <= $lastRole){//上级低于下级或平级时跳出
 						//执行模板通知
 						continue;
 					}					
@@ -203,21 +221,23 @@ class DividendModel extends BaseModel {
 						unset($awardList[$key]);//移除已结束的奖项
 						continue;
 					}
-				}else{		
-					if (empty($awardValue[$nowLevel])){//没有找到相应奖项级别跳出，并移除奖项
-						unset($awardList[$key]);//移除奖项
-						continue;
-					}
-					$awardVal = $awardValue[$nowLevel];				
+				}else{
+					if($award['award_type'] == 1 && $award['ordinary_type'] == 1){//普通分销，无限级计算时，会员判断级别方式不一样
+                        if (empty($awardValue[$nowLevelOrdinary])){//没有找到相应奖项级别跳出，并移除奖项
+                            unset($awardList[$key]);//移除奖项
+                            continue;
+                        }
+                        $awardVal = $awardValue[$nowLevelOrdinary];
+                    }else{
+						if (empty($awardValue[$nowLevel])){//没有找到相应奖项级别跳出，并移除奖项
+							unset($awardList[$key]);//移除奖项
+							continue;
+						}
+                        $awardVal = $awardValue[$nowLevel];
+                    }
 				}
 
-
-
-
-               $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
-
-				if ($award['award_type'] > 1 && empty($award['repeat_goods_id']) == false){//限制复购判断
-
+				if (empty($award['repeat_goods_id']) == false){//限制复购判断
 					$repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
 					$where = [];
 					$where[] = ['o.user_id','=',$userInfo['user_id']];
@@ -245,7 +265,7 @@ class DividendModel extends BaseModel {
                         $sendData['role_name']          = $role_name;
                         $sendData['order_sn']           = $orderInfo['order_sn'];
                         $sendData['add_time']           = $orderInfo['add_time'];
-                        $sendData['send_scene']         = 'dividend_loss_msg';//dividend_loss_msg
+                        $sendData['send_scene']         = 'dividend_loss_buy_msg';//佣金损失通知
                         $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
 						(new WeiXinMsgTplModel)->send($sendData);//模板消息通知
 						 continue;//不满足复购限制，跳出
@@ -304,16 +324,25 @@ class DividendModel extends BaseModel {
 		//执行分销身份升级处理
 		$roleList = (new DividendRoleModel)->getRows();	
 		$LogSysModel = new \app\member\model\LogSysModel();	
-		$oldFun = '';	
+		$oldFun = '';
+        $DividendInfo = settings('DividendInfo');
+
+        $userRoleLevel = 0;//初始会员身份等级
 		do {
 			$usersInfo = $this->UsersModel->info($user_id);//获取会员信息
-			$userRoleLevel = 0;//初始会员身份等级
-			if ($usersInfo['role_id'] > 0){
-				$userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
-			}
-			
+            if ($usersInfo['role_id'] > 0){
+                $userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
+            }
+            $upRole = [];
 			foreach ($roleList as $role){
-				if ($role['level'] <= $userRoleLevel) continue;//当前分销身份低于用户现身份，跳过
+                if ($DividendInfo['level_up_type'] == 0){//逐级升时调用
+					if ($role['level'] != $userRoleLevel + 1){//身份层级不等于下级级别时，跳过
+                        continue;
+					}
+                }elseif ($role['level'] <= $userRoleLevel ){//当前分销身份低于等于用户现身份，跳过
+                    continue;
+                }
+
 				$role['upleve_value'] = json_decode($role['upleve_value'],true);
 				
 				$fun = str_replace('/','\\','/distribution/'.$role['upleve_function']);
@@ -323,19 +352,27 @@ class DividendModel extends BaseModel {
 				}
 				
 				$res = $Class->judgeIsUp($user_id,$role,$orderInfo,$goodsList);//判断是否能升级
-				if ($res == false){//当前会员不执行升级，终止					
-					return true;
+
+				if ($res == false){//当前会员不执行升级，终止
+                    continue;//可跨级升级时调用
 				}
-				break;//跳出循环进行升级操作
-			}			
+                $upRole = $role;
+				if ($DividendInfo['level_up_type'] == 0){//逐级升时调用
+                    break;//跳出循环进行升级操作
+				}
+
+			}
+			if (empty($upRole) == true){
+                break;//没有找到可升级的身份终止
+			}
 			$upData['last_up_role_time'] = time();
-			$upData['role_id'] = $role['role_id'];
+			$upData['role_id'] = $upRole['role_id'];
 			$res = $this->UsersModel->upInfo($user_id,$upData);
 			if ($res < 1){
 				return false;
 			}
 			$inData['edit_id'] = $user_id;
-			$inData['log_info'] = '【'.($usersInfo['role_id']==0?'粉丝':$roleList[$usersInfo['role_id']]['role_name']).'】升级为【'.$role['role_name'].'】';
+			$inData['log_info'] = '【'.($usersInfo['role_id']==0?'粉丝':$roleList[$usersInfo['role_id']]['role_name']).'】升级为【'.$upRole['role_name'].'】';
 			$inData['module'] = request()->path();
 			$inData['log_ip'] = request()->ip();
 			$inData['log_time'] = time();

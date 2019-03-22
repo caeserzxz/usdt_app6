@@ -12,6 +12,7 @@ use app\distribution\model\DividendModel;
 use app\weixin\model\WeiXinUsersModel;
 
 use think\Db;
+use think\facade\Cache;
 
 /**
  * 会员管理
@@ -322,31 +323,74 @@ class Users extends AdminController
         $result['nowUser'] = $nowUser;
         return $this->ajaxReturn($result);
     }
- /*------------------------------------------------------ */
+     /*------------------------------------------------------ */
     //-- 修改所属上级
     /*------------------------------------------------------ */
     public function editSuperior()
     {
+
         $user_id = input('user_id', 0, 'intval');
-        $row = $this->Model->info($user_id);
-        if ($row['pid'] > 0){
-            $row['puser'] = $this->Model->info($row['pid']);
-        }
+        $userInfo = $this->Model->info($user_id);
         if ($this->request->isPost()) {
-            $select_user = input('select_user', 0, 'intval');
-            if ($select_user < 1){
+            $mkey = 'evaleditSuperior';
+            $cache = Cache::get($mkey);
+            if (empty($cache) == false){
+                return $this->error('当前正在有人操作调整，请稍后再操作.');
+            }
+            Cache::get($mkey,true,60);
+            $select_user_id = input('select_user', 0, 'intval');
+            if ($select_user_id < 1){
                 return $this->error('请选择需要修改的上级.');
             }
-            return $this->error('开发中.');
-           /* $UsersBindModel = new UsersBindModel();
-            $where[] = ['uesr_id','=',];
-            $UsersBindModel->where();
-            if (){
+            if ($select_user_id == $userInfo['pid']){
+                return $this->error('当前选择与当前会员上级一致，请核实.');
+            }
+            $where[] = ['pid','=',$user_id];
+            $where[] = ['user_id','=',$select_user_id];
+            $count = (new UsersBindModel)->where($where)->count();
+            if ($count > 0){
+                return $this->error('不能选择自己的下级作为上级.');
+            }
+            Db::startTrans();//启动事务
 
-            }*/
+            $res = $this->Model->upInfo($user_id,['pid'=>$select_user_id]);
+
+            if ($res < 1){
+                return $this->error('修改会员所属上级失败.');
+            }
+
+            $this->Model->regUserBind($user_id,$select_user_id,true);//重新绑定当前用户的关系链
+            $this->evaleditSuperior($user_id);//执行重新生成所有下属的关系链
+            Db::commit();//事务，提交
+            Cache::rm($mkey);
+            $this->_log($user_id, '调整会员所属上级，原所属上级ID：'.$userInfo['pid'], 'member');
             return $this->success('修改所属上级成功！', 'reload');
         }
-        $this->assign("row", $row);
+        if ($userInfo['pid'] > 0){
+            $userInfo['puser'] = $this->Model->info($userInfo['pid']);
+        }
+        $this->assign("row", $userInfo);
         return response($this->fetch('sys_admin/users/edit_superior'));
     }
+
+    /*------------------------------------------------------ */
+    //-- 循执行调用更新关系链
+    /*------------------------------------------------------ */
+    protected function evaleditSuperior($pid,$level = 1){
+        $bind_max_level = config('config.bind_max_level');
+        if ($level > $bind_max_level){//循环到指定绑定层级跳出
+            return true;
+        }
+        $users = $this->Model->where('pid',$pid)->field('user_id,pid')->select();
+        if (empty($users)){
+            return true;//没有找到下级不执行
+        }
+        foreach ($users as $user){
+            $this->Model->regUserBind($user['user_id'],$pid,true);
+            $this->evaleditSuperior($user['user_id'],$level + 1);
+        }
+        return true;
+    }
+}
+{
 }

@@ -10,7 +10,7 @@
                         <label class="col-sm-2 control-label">分销身份</label>
                         <div class="col-sm-6 must">
                             <select class="input-xlarge" name="role_id" data-rule-required="true">
-                              <option value="0" {$row['role_id']==0?'selected':''} >普通会员</option>
+                              <option value="0" {$row['role_id']==0?'selected':''} >粉丝</option>
                               {volist name="roleList" id="arr" }
                                 <option value="{$arr.role_id}" {$arr['role_id']==$row['role_id']?'selected':''} >{$arr.role_name}</option>
                               {/volist}
