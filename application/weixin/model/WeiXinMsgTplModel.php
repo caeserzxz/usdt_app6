@@ -56,6 +56,7 @@ class WeiXinMsgTplModel extends BaseModel
                     'role_name'=> '[分佣身份]',
                     'add_time'=> '[产生时间]',
                     'order_sn'=> '[订单编号]',
+                    'buy_nick_name'=> '[下单会员呢称]',
                     'now_time'=>'[当前时间]'
                 ]
             ],
@@ -122,7 +123,6 @@ class WeiXinMsgTplModel extends BaseModel
         $msgTemp['data']['remark']['value'] = empty($remark)?'如有问题，请联系客服.':$remark;
 
         $msgTemp = urldecode(json_encode($msgTemp));
-
         $res = (new WeiXinModel)->weiXinCurl('https://api.weixin.qq.com/cgi-bin/message/template/send?',$msgTemp);
         if ($res['errmsg'] != 'ok') return '操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg'];
         return true;
