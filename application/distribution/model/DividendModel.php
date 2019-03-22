@@ -113,6 +113,7 @@ class DividendModel extends BaseModel {
 		$DividendRoleModel = new DividendRoleModel();
 		
 		$nowLevel = 0;//当前处理级别
+        $nowLevelOrdinary = 0;//普通分销当前处理级别，普通分销有逐级计算和无限级计算，如果无限级，不满条件将一直最后的上级
 		$assignAwardNum = [];//记录已分出去的管理奖金额
 		$roleInfo = $DividendRoleModel->info($orderInfo['role_id']);//获取用户下单时分销身份
 		$lastRole = $roleInfo['level'];//下级会员分佣身份级别
@@ -121,6 +122,7 @@ class DividendModel extends BaseModel {
 		
 		do {
 			$nowLevel += 1;
+            $nowLevelOrdinary += 1;
 			$userInfo = $this->UsersModel->info($parentId);//获取会员信息
 			
 			$parentId = $userInfo['pid'];//优先记录下次循环用户ID
@@ -203,21 +205,26 @@ class DividendModel extends BaseModel {
 						unset($awardList[$key]);//移除已结束的奖项
 						continue;
 					}
-				}else{		
-					if (empty($awardValue[$nowLevel])){//没有找到相应奖项级别跳出，并移除奖项
-						unset($awardList[$key]);//移除奖项
-						continue;
-					}
-					$awardVal = $awardValue[$nowLevel];				
+				}else{
+					if($award['award_type'] == 1 && $award['ordinary_type'] == 1){//普通分销，无限级计算时，会员判断级别方式不一样
+                        if (empty($awardValue[$nowLevelOrdinary])){//没有找到相应奖项级别跳出，并移除奖项
+                            unset($awardList[$key]);//移除奖项
+                            continue;
+                        }
+                        $awardVal = $awardValue[$nowLevelOrdinary];
+                    }else{
+						if (empty($awardValue[$nowLevel])){//没有找到相应奖项级别跳出，并移除奖项
+							unset($awardList[$key]);//移除奖项
+							continue;
+						}
+                        $awardVal = $awardValue[$nowLevel];
+                    }
+
 				}
-
-
-
 
                $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
 
-				if ($award['award_type'] > 1 && empty($award['repeat_goods_id']) == false){//限制复购判断
-
+				if (empty($award['repeat_goods_id']) == false){//限制复购判断
 					$repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
 					$where = [];
 					$where[] = ['o.user_id','=',$userInfo['user_id']];
@@ -227,6 +234,9 @@ class DividendModel extends BaseModel {
 					$count = $OrderModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
 					if ($count < 1){
                         if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
+                            if($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
+                                $nowLevelOrdinary -= 1;
+                            }
                             if ($awardVal['type'] == 'gold'){
                                 $sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
                             }else{
@@ -245,9 +255,10 @@ class DividendModel extends BaseModel {
                         $sendData['role_name']          = $role_name;
                         $sendData['order_sn']           = $orderInfo['order_sn'];
                         $sendData['add_time']           = $orderInfo['add_time'];
-                        $sendData['send_scene']         = 'dividend_loss_msg';//dividend_loss_msg
+                        $sendData['send_scene']         = 'dividend_loss_msg';//佣金损失通知
                         $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
 						(new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+
 						 continue;//不满足复购限制，跳出
 					}
 				}

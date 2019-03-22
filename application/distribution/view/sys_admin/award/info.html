@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <label class=" control-label">奖项类型：</label>
                     <div class="col-sm-9" >
-                    <label><input type="radio"  name="award_type" value="1" class="js_radio_undertake" data-class="award_setting" {$row['award_type']<=1?'checked':''}> 普通分销</label>                   
+                    <label><input type="radio"  name="award_type" value="1" class="js_radio_undertake" data-class="award_setting|ordinary_type" {$row['award_type']<=1?'checked':''}> 普通分销</label>
                     <label><input type="radio" name="award_type" value="2"  class="js_radio_undertake" data-class="repeat_limit_val|award_setting" {$row['award_type']==2?'checked':''}> 平推奖</label>
                     <label><input type="radio" name="award_type" value="3" class="js_radio_undertake" data-class="repeat_limit_val|assigned_manage_val|award_manage_setting" {$row['award_type']==3?'checked':''}> 管理奖</label>
                     <label class="radio_undertake_award_type assigned_manage_val  {$row['award_type']==3?'':'hide'}">
@@ -55,6 +55,15 @@
         			</label>
                   </div>
             	</div>
+                    <div class="form-group radio_undertake_award_type ordinary_type {$row['award_type']==1?'':'hide'}">
+                        <label class=" control-label">普通分销模式：</label>
+                        <div class="col-sm-9" >
+                            <label><input type="radio"  name="ordinary_type" value="0" {$row['ordinary_type']==0?'checked':''}> 逐级计算（一级奖项对应第一级上级会员，不满足条件奖项不分配，逐级判断）</label>
+                            <br>
+                            <label><input type="radio" name="ordinary_type" value="1"   {$row['ordinary_type']==1?'checked':''}> 无限级计算（不满足条件，跳过，一直向上找直到奖项分完或没有上级终止）</label>
+
+                        </div>
+                    </div>
                 <div class="form-group radio_undertake_award_type repeat_limit_val {$row['award_type']>=1?'':'hide'}">
                      <label class="control-label">指定复购商品：</label>
                      <div class="col-sm-6 repeat_goods">
