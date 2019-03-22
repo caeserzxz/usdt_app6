@@ -28,6 +28,19 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="basic">
                     <div class="form-group m-t">
+                        <label class=" control-label">身份升级机制：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="level_up_type" value="0" {$Dividend['level_up_type']==0?'checked':''} type="radio">
+                                逐级升级
+                            </label>
+                            <label class="radio-inline">
+                                <input name="level_up_type" value="1" {$Dividend['level_up_type']==1?'checked':''} type="radio">
+                                可跨级升级（满条件即可）
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group m-t">
                         <label class=" control-label">是否开启推荐：</label>
                         <div class="controls">
                             <label class="radio-inline">

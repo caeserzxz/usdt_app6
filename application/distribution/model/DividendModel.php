@@ -315,16 +315,25 @@ class DividendModel extends BaseModel {
 		//执行分销身份升级处理
 		$roleList = (new DividendRoleModel)->getRows();	
 		$LogSysModel = new \app\member\model\LogSysModel();	
-		$oldFun = '';	
+		$oldFun = '';
+        $DividendInfo = settings('DividendInfo');
+
+        $userRoleLevel = 0;//初始会员身份等级
 		do {
 			$usersInfo = $this->UsersModel->info($user_id);//获取会员信息
-			$userRoleLevel = 0;//初始会员身份等级
-			if ($usersInfo['role_id'] > 0){
-				$userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
-			}
-			
+            if ($usersInfo['role_id'] > 0){
+                $userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
+            }
+            $upRole = [];
 			foreach ($roleList as $role){
-				if ($role['level'] <= $userRoleLevel) continue;//当前分销身份低于用户现身份，跳过
+                if ($DividendInfo['level_up_type'] == 0){//逐级升时调用
+					if ($role['level'] != $userRoleLevel + 1){//身份层级不等于下级级别时，跳过
+                        continue;
+					}
+                }elseif ($role['level'] <= $userRoleLevel ){//当前分销身份低于等于用户现身份，跳过
+                    continue;
+                }
+
 				$role['upleve_value'] = json_decode($role['upleve_value'],true);
 				
 				$fun = str_replace('/','\\','/distribution/'.$role['upleve_function']);
@@ -334,19 +343,27 @@ class DividendModel extends BaseModel {
 				}
 				
 				$res = $Class->judgeIsUp($user_id,$role,$orderInfo,$goodsList);//判断是否能升级
-				if ($res == false){//当前会员不执行升级，终止					
-					return true;
+
+				if ($res == false){//当前会员不执行升级，终止
+                    continue;//可跨级升级时调用
 				}
-				break;//跳出循环进行升级操作
-			}			
+                $upRole = $role;
+				if ($DividendInfo['level_up_type'] == 0){//逐级升时调用
+                    break;//跳出循环进行升级操作
+				}
+
+			}
+			if (empty($upRole) == true){
+                break;//没有找到可升级的身份终止
+			}
 			$upData['last_up_role_time'] = time();
-			$upData['role_id'] = $role['role_id'];
+			$upData['role_id'] = $upRole['role_id'];
 			$res = $this->UsersModel->upInfo($user_id,$upData);
 			if ($res < 1){
 				return false;
 			}
 			$inData['edit_id'] = $user_id;
-			$inData['log_info'] = '【'.($usersInfo['role_id']==0?'粉丝':$roleList[$usersInfo['role_id']]['role_name']).'】升级为【'.$role['role_name'].'】';
+			$inData['log_info'] = '【'.($usersInfo['role_id']==0?'粉丝':$roleList[$usersInfo['role_id']]['role_name']).'】升级为【'.$upRole['role_name'].'】';
 			$inData['module'] = request()->path();
 			$inData['log_ip'] = request()->ip();
 			$inData['log_time'] = time();

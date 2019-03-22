@@ -44,7 +44,7 @@
                                     <label class="control-label">真实姓名：</label>
                                     <div class="col-sm-3"><label>{$row.real_name|default='未填写'}</label></div>
                                    <label class="control-label">分销身份：</label>
-                                    <div class="col-sm-3"><label>{$row['role_id']==0?'普通会员':$roleList[$row['role_id']]['role_name']}</label>
+                                    <div class="col-sm-3"><label>{$row['role_id']==0?'粉丝':$roleList[$row['role_id']]['role_name']}</label>
                                     <a href="javascript:;" title="修改分销身份" data-remote="{:url('editRole',array('user_id'=>$row['user_id']))}" data-toggle="ajaxModal" class="m-xs" >
                 <i class="fa fa-edit"></i>
             </a>
