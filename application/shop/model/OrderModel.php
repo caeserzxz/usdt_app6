@@ -411,7 +411,7 @@ class OrderModel extends BaseModel
                 }else{
                     $sendData['send_scene'] = 'order_shipping_msg';//订单发货通知
                 }
-                $sendData['wx_openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
+                $sendData['openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
                 $sendData['order_id'] = $orderInfo['order_id'];
                 $sendData['order_sn'] = $orderInfo['order_sn'];
                 $sendData['consignee'] = $orderInfo['consignee'];

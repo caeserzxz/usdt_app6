@@ -462,9 +462,8 @@ class UsersModel extends BaseModel
             $data['send_scene'] = 'bind_user_msg';
             unset($wxInfo);
             foreach ($sendUids as $uid => $val) {
-                $wx_openid = $WeiXinUsersModel->where('user_id', $uid)->value('wx_openid');
                 $data['level'] = $val;
-                $data['openid'] = $wx_openid;
+                $data['openid'] = $WeiXinUsersModel->where('user_id', $uid)->value('wx_openid');
                 $WeiXinMsgTplModel->send($data);
             }
         }

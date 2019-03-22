@@ -440,7 +440,7 @@ class Order extends AdminController
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '取消订单');
-        return $this->success();
+        return $this->success('取消订单成功.');
     }
     /*------------------------------------------------------ */
     //-- 未发货
@@ -570,7 +570,6 @@ class Order extends AdminController
         if ($orderInfo['order_status'] == $config['OS_CONFIRMED']) return $this->error('订单已经是已确认，无需修改！');
         $data['order_id'] = $order_id;
         $data['order_status'] = $config['OS_CONFIRMED'];
-        $data['pay_status'] = $config['PS_UNPAYED'];
         $data['confirm_time'] = time();
         $data['cancel_time'] = 0;
         $data['money_paid'] = 0;
@@ -578,12 +577,12 @@ class Order extends AdminController
         $data['tuikuan_time'] = 0;
 		$shop_reduce_stock = settings('shop_reduce_stock');
         $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
-        $res = $this->_mod->upInfo($data);
+        $res = $this->Model->upInfo($data);
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];
         $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为已确认');
-        return $this->success();
+        return $this->success('设为已确认成功.');
     }
     /*------------------------------------------------------ */
     //-- 重新计算分佣
