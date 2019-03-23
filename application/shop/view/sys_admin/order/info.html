@@ -58,6 +58,12 @@
                                    data-remote="{:url('changePrice',array('id'=>$orderInfo['order_id']))}"
                                    data-toggle="ajaxModal" class="btn btn-default btn-sm" title="修改价格">修改价格</a></td>
                         {/notempty}
+                        {notempty name="operating.editConsignee"}
+                        <td>&nbsp;</td>
+                        <td><a href="javascript:;"
+                               data-remote="{:url('editConsignee',array('id'=>$orderInfo['order_id']))}"
+                               data-toggle="ajaxModal" class="btn btn-default btn-sm" title="修改收货信息">修改收货信息</a></td>
+                        {/notempty}
                         {notempty name="operating.cfmCodPay"}
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"

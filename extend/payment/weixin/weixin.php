@@ -1,16 +1,7 @@
 <?php
 /**
- * tpshop 微信支付插件
- * ============================================================================
- * 版权所有 2015-2027 深圳搜豹网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.tp-shop.cn
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
- * ============================================================================
- * Author: IT宇宙人
- * Date: 2015-09-09
+ *  微信支付插件
+ 
  */
 namespace payment\weixin;
 use app\mainadmin\model\PaymentModel;
@@ -47,7 +38,7 @@ class weixin
      */
     function get_code($order, $config)
     {
-        $notify_url = SITE_URL . '/index.php/Home/Payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $notify_url = SITE_URL . '/index.php/shop/payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 
         $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
@@ -62,15 +53,17 @@ class weixin
         $url2 = $result["code_url"];
         if (empty($url2))
             return '没有获取到支付地址, 请检查支付配置' . print_r($result, true);
-        return '<img alt="模式二扫码支付" src="/index.php?m=Home&c=Index&a=qr_code&data='.urlencode($url2).'" style="width:110px;height:110px;"/>';
+        return '<img alt="模式二扫码支付" src="/index.php?m=shop&c=index&a=qr_code&data='.urlencode($url2).'" style="width:110px;height:110px;"/>';
     }    
     /**
      * 服务器点对点响应操作给支付接口方调用
      * 
      */
     function response()
-    {                        
-        require_once("example/notify.php");  
+    {
+        file_get_contents('php://input');
+
+        require_once("example/notify.php");
         $notify = new \PayNotifyCallBack();
         $notify->Handle(false);       
     }
@@ -112,10 +105,7 @@ class weixin
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //printf_info($order);exit;  
         $jsApiParameters = $tools->GetJsApiParameters($order2);
-        if(tpCache("debug.wx_mp_pay_debug")){
-            $is_alert ="alert(res.err_code+res.err_desc+res.err_msg);" ;
-        }
-        
+
         $html = <<<EOF
 	<script type="text/javascript">
 	//调用微信JS api 支付
@@ -127,8 +117,7 @@ class weixin
 				//WeixinJSBridge.log(res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok") {
 				    location.href='$go_url';
-				 }else{
-				    $is_alert;
+				 }else{				    
 				 	alert(res.err_code+res.err_desc+res.err_msg);
 				    location.href='$back_url';
 				 }
@@ -159,7 +148,7 @@ EOF;
     // 微信提现批量转账
     function transfer($data){
     header("Content-type: text/html; charset=utf-8");
-exit("请联系TPshop官网客服购买高级版支持此功能");
+exit("暂不支持");
     }
     
     /**
