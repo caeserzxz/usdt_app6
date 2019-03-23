@@ -19,6 +19,7 @@ class ClientbaseController extends BaseController
         'shop/goods',//商城商品相关
         'shop/flow/cart',//购物车
         'shop/article',//文章相关
+        'shop/payment',//支付相关
     ];
 
     /* @var array $notLayoutAction 无需全局layout */

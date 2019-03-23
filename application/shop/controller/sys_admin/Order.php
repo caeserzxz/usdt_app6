@@ -405,6 +405,7 @@ class Order extends AdminController
             if ($orderInfo['confirm_time'] < 1) {
                 $data['confirm_time'] = time();
             }
+            $data['transaction_id'] = input('transaction_id','','trim');
             $data['pay_time'] = time();
             $data['money_paid'] = $orderInfo['order_amount'];
             $data['cfmpay_user'] = AUID;
@@ -414,8 +415,6 @@ class Order extends AdminController
             if ($res < 1) return $this->error();
             $orderInfo['order_status'] = $data['order_status'];
             $orderInfo['pay_status'] = $data['pay_status'];
-            // 根据购买金额，判断是否升级分销身份
-            // $res = D('DividendRole')->evalUpLevel($row);
             $this->Model->_log($orderInfo, '线下支付收款确认：' . input('pay_no', '', 'trim'));
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
@@ -580,7 +579,6 @@ class Order extends AdminController
         $res = $this->Model->upInfo($data);
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];
-        $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为已确认');
         return $this->success('设为已确认成功.');
     }

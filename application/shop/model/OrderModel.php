@@ -532,6 +532,7 @@ class OrderModel extends BaseModel
     //-- 订单在线支付成功处理
     /*------------------------------------------------------ */
 	public function updatePay($upData = [],$_log = '支付成功'){
+
 		$upData['pay_status'] = $this->config['PS_PAYED'];
 		$upData['order_status'] = $this->config['OS_CONFIRMED'];
 		$res = $this->upInfo($upData,'sys');

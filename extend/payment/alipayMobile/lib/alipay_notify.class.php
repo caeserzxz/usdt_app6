@@ -84,7 +84,7 @@ class AlipayNotify {
 			//获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
 			$responseTxt = 'false';
 			if (! empty($_GET["notify_id"])) {$responseTxt = $this->getResponse($_GET["notify_id"]);}
-			
+
 			//写日志记录
 			//if ($isSign) {
 			//	$isSignStr = 'true';
