@@ -42,13 +42,13 @@ class PayNotifyCallBack extends WxPayNotify
 
         if (!array_key_exists("transaction_id", $data)) {
             $msg = "输入参数不正确";
-            Log::DEBUG("call back:" . $msg);
+            //Log::DEBUG("call back:" . $msg);
             return false;
         }
         //查询订单，判断订单真实性
         if (!$this->Queryorder($data["transaction_id"])) {
             $msg = "订单查询失败";
-            Log::DEBUG("call back:" . $msg);
+            //Log::DEBUG("call back:" . $msg);
             return false;
         }
 
@@ -64,7 +64,7 @@ class PayNotifyCallBack extends WxPayNotify
             if (strlen($order_sn) > 21) {
                 $order_sn = substr($order_sn, 0, 21);
             }
-            Log::DEBUG("充值验证:" . $order_sn);
+            //Log::DEBUG("充值验证:" . $order_sn);
             $RechargeLogModel = new RechargeLogModel();
             $orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,amount,user_id,status')->find();
             if (empty($orderInfo)) return false;
@@ -92,7 +92,7 @@ class PayNotifyCallBack extends WxPayNotify
                 return false; //验证失败
             }
             //Log::DEBUG("call back:开始更新订单状态.");
-            $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$data["transaction_id"]),'微信支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
+            $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$data["transaction_id"]),'微信支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
         }
 
 

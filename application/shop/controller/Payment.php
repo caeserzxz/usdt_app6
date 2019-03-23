@@ -72,6 +72,7 @@ class Payment extends ClientbaseController
             $upArr['pay_code'] = $this->pay_code;
             $upArr['pay_id'] = $payment['pay_id'];
             $upArr['pay_name'] = $payment['pay_name'];
+            $upArr['money_paid'] = $order['order_amount'];
             $res = $OrderModel->updatePay($upArr, '余额支付成功.');
             if ($res !== true) {
                 return $this->error($res);

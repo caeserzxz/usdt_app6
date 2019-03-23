@@ -139,12 +139,12 @@ class alipayMobile
 						 // 支付宝解释: 交易成功且结束，即不可再做任何操作。
 						if($_POST['trade_status'] == 'TRADE_FINISHED')
 						{
-							  $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
+							  $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
 						}
 						//支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
 						elseif ($_POST['trade_status'] == 'TRADE_SUCCESS')
 						{ 
-								$OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
+								$OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
 						}
 					}
                                          
