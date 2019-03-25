@@ -147,6 +147,7 @@ class OrderModel extends BaseModel
         }elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
             if ($info['shipping_status'] == $this->config['SS_UNSHIPPED']) {
                 $info['ostatus'] = '待发货';
+                $info['isCancel'] = 1;
             }elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
                 $info['ostatus'] = '已发货';
                 $info['isSign'] = 1;
@@ -164,8 +165,12 @@ class OrderModel extends BaseModel
             $info['ostatus'] = '退货';
         } else {            
 			if ($info['is_del'] == 0){
-				 $info['isDel'] = 1;     
-				 $info['ostatus'] = '已取消'; 
+				 if ($info['pay_status'] == 1){
+                     $info['ostatus'] = '取消待退款';
+                 }else{
+                     $info['isDel'] = 1;
+                     $info['ostatus'] = '已取消';
+                 }
 			}else{
 				$info['ostatus'] = '已删除';
 			}
