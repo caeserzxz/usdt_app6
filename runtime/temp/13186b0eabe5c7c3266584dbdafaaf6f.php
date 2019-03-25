@@ -1,4 +1,4 @@
-<?php /*a:3:{s:41:"../template/default/shop\index\index.html";i:1552460093;s:37:"../template/default/layouts\base.html";i:1552631572;s:39:"../template/default/layouts\bottom.html";i:1552460093;}*/ ?>
+<?php /*a:3:{s:41:"../template/default/shop\index\index.html";i:1553217360;s:37:"../template/default/layouts\base.html";i:1552631572;s:39:"../template/default/layouts\bottom.html";i:1552460093;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
   <head>
@@ -66,8 +66,9 @@
           <div class="swiper-pagination pagination1"></div>
           <a href="<?php echo url('index/search'); ?>" class="selech"><img src="/static/mobile/default/images/index_01.png" class="lazy"  alt="" /><span class="fs32 color_w"><?php echo htmlentities($setting['shop_index_search_text']); ?></span></a>
         </div>
-        <!-- 功能入口 -->
-        <div class="girdBox">
+        <!-- 功能入口-->
+        <?php if(!(empty($navMenuList) || (($navMenuList instanceof \think\Collection || $navMenuList instanceof \think\Paginator ) && $navMenuList->isEmpty()))): ?>
+          <div class="girdBox ">
           <div class="gird">
             <div class="row">
              <?php if(is_array($navMenuList) || $navMenuList instanceof \think\Collection || $navMenuList instanceof \think\Paginator): $i = 0; $__LIST__ = $navMenuList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$nav): $mod = ($i % 2 );++$i;?>
@@ -81,11 +82,12 @@
             </div>
           </div>
         </div>
-        <!-- 秒杀 -->
+        <?php endif; ?>
+        <!-- 秒杀
         <div class="seckill" style="display:none;">
             <div class="title">
               <div class="left"><p class="fs36 color_3 fw_b">今日秒杀</p><div class="time"><div>00</div><span>:</span><div>30</div><span>:</span><div>10</div></div></div>
-              <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="/static/mobile/default/images/rightIcon.png" alt=""></a>    
+              <a href="#" class="right"><span class="fs26 color_9">更多</span><img src="/static/mobile/default/images/rightIcon.png" alt=""></a>
             </div>
             <div class="seckilllist">
                 <a href="商品.html" class="box">
@@ -115,7 +117,7 @@
                         </div>
             </div>
         </div>
-        <!-- 拼团 -->
+        <!-- 拼团
         <div class="group" style="display:none;">
             <div class="swiper-container swiper2" id="swiper02">
                 <div class="swiper-wrapper">
@@ -144,12 +146,12 @@
                       </div>
                   </a>
                 </div>
-                <div class="swiper-pagination pagination2"></div>                
+                <div class="swiper-pagination pagination2"></div>
               </div>
               <a href="#" class="fs26 color_3 groupMore">查看更多拼团</a>
         </div>
         <!-- 分类 -->
-        <?php if(is_array($classGoods) || $classGoods instanceof \think\Collection || $classGoods instanceof \think\Paginator): $i = 0; $__LIST__ = $classGoods;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$cg): $mod = ($i % 2 );++$i;?>
+        <?php if(is_array($classGoods) || $classGoods instanceof \think\Collection || $classGoods instanceof \think\Paginator): $i = 0; $__LIST__ = $classGoods;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$cg): $mod = ($i % 2 );++$i;if(!(empty($cg['gooodsList']) || (($cg['gooodsList'] instanceof \think\Collection || $cg['gooodsList'] instanceof \think\Paginator ) && $cg['gooodsList']->isEmpty()))): ?>
         <div class="trademark">
            <img  src="/static/mobile/default/images/loading.svg" data-original="<?php echo htmlentities($cg['cover']); ?>" alt="" class="lazy trademarkBG">
            <div class="googslist">
@@ -163,7 +165,7 @@
            </div>
            <a href="<?php echo url('goods/index',['cid'=>$cg['id']]); ?>" class="fs26 color_3 trademarkMore">查看更多</a>
         </div>
-        <?php endforeach; endif; else: echo "" ;endif; ?>
+         <?php endif; endforeach; endif; else: echo "" ;endif; ?>
         <!-- 猜你喜欢 -->
         <div class="youLike">
             <div class="title">

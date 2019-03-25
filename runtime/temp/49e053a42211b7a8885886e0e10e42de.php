@@ -1,4 +1,5 @@
-<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+<?php /*a:1:{s:75:"D:\phpStudy\WWW\mainshop\application\shop\view\sys_admin\shipping\info.html";i:1553477539;}*/ ?>
+<form class="form-horizontal form-validate form-modal" method="post" action="<?php echo url('info'); ?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,31 +10,31 @@
                 		<div class="form-group">
                             <label class="col-sm-2 control-label">快递名称</label>
                             <div class="col-sm-6 must">
-                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_name" value="{$row.shipping_name}" >
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_name" value="<?php echo htmlentities($row['shipping_name']); ?>" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">快递代码</label>
                             <div class="col-sm-6 must">
-                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_code" value="{$row.shipping_code}" >
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_code" value="<?php echo htmlentities($row['shipping_code']); ?>" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电子面单客户号（快递鸟）</label>
-                            <div class="col-sm-6"><input type="text" class="input-xlarge" name="customer_name" value="{$row.customer_name}" ></div>
+                            <div class="col-sm-6"><input type="text" class="input-xlarge" name="customer_name" value="<?php echo htmlentities($row['customer_name']); ?>" ></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电子面单密码（快递鸟）</label>
-                            <div class="col-sm-6"><input type="text" class="input-xlarge" name="customer_pwd" value="{$row.customer_pwd}" ></div>
+                            <div class="col-sm-6"><input type="text" class="input-xlarge" name="customer_pwd" value="<?php echo htmlentities($row['customer_pwd']); ?>" ></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">是否启用</label>
                             <div class="col-sm-6">
                              <label class="radio-inline">
-                                  <input name="status" value="1" {$row.status|tplckval='=1','checked',true} type="radio">是
+                                  <input name="status" value="1" <?php echo htmlentities(tplckval($row['status'],'=1','checked',true)); ?> type="radio">是
                               </label>
                               <label class="radio-inline">
-                                  <input name="status" value="0" {$row.status|tplckval='=0','checked'} type="radio">否
+                                  <input name="status" value="0" <?php echo htmlentities(tplckval($row['status'],'=0','checked')); ?> type="radio">否
                               </label>
                               </div>
                         </div>
@@ -41,10 +42,10 @@
                             <label class="col-sm-2 control-label">前台开放</label>
                             <div class="col-sm-3">
                              <label class="radio-inline">
-                                  <input name="is_front" value="1" {$row.is_front|tplckval='=1','checked',true} type="radio">是
+                                  <input name="is_front" value="1" <?php echo htmlentities(tplckval($row['is_front'],'=1','checked',true)); ?> type="radio">是
                               </label>
                               <label class="radio-inline">
-                                  <input name="is_front" value="0" {$row.is_front|tplckval='=0','checked'} type="radio">否
+                                  <input name="is_front" value="0" <?php echo htmlentities(tplckval($row['is_front'],'=0','checked')); ?> type="radio">否
                               </label>
                               </div>
                               <p class="help-inline">是否开放前台用户下单选择</p>
@@ -53,11 +54,11 @@
                             <label class="col-sm-2 control-label">货到付款</label>
                             <div class="col-sm-6">
                                   <label class="radio-inline">
-                                      <input name="support_cod" value="1" {$row.support_cod|tplckval='=1','checked'} type="radio">
+                                      <input name="support_cod" value="1" <?php echo htmlentities(tplckval($row['support_cod'],'=1','checked')); ?> type="radio">
                                       是
                                   </label>
                                   <label class="radio-inline">
-                                      <input name="support_cod" value="0" type="radio" {$row.support_cod|tplckval='=0','checked',true} >
+                                      <input name="support_cod" value="0" type="radio" <?php echo htmlentities(tplckval($row['support_cod'],'=0','checked',true)); ?> >
                                       否
                                   </label>
                               </div>
@@ -65,18 +66,18 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">排序</label>
                             <div class="col-sm-2 ">
-                                <input type="text" class="input-max"  data-rule-required="true" name="sort_order" value="{$row.sort_order|intval}" >
+                                <input type="text" class="input-max"  data-rule-required="true" name="sort_order" value="<?php echo htmlentities(intval($row['sort_order'])); ?>" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">快递描述</label>
                             <div class="col-sm-6 ">
-                              <textarea name="shipping_desc" class="input-xlarge" >{$row.shipping_desc}</textarea>
-                            </div><input name="shipping_id" type="hidden" value="{$row.shipping_id|intval}" />
+                              <textarea name="shipping_desc" class="input-xlarge" ><?php echo htmlentities($row['shipping_desc']); ?></textarea>
+                            </div><input name="shipping_id" type="hidden" value="<?php echo htmlentities(intval($row['shipping_id'])); ?>" />
                         </div> 
             </div>
             <div class="modal-footer">
-                <input  type="hidden" name="id" value="{$row.shipping_id|intval}"/>
+                <input  type="hidden" name="id" value="<?php echo htmlentities(intval($row['shipping_id'])); ?>"/>
                 <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>

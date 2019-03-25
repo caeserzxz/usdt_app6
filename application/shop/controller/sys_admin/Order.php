@@ -278,12 +278,14 @@ class Order extends AdminController
                 $kd_config['ke_requrl'] = $kdn_apiurl;
                 $kdapiorder = new Kdapieorder($kd_config);
 
+                $customer_name = $this->shipping_model->getVal(['shipping_id' => $kdn_shipping_id], 'customer_name');
+                $customer_pwd = $this->shipping_model->getVal(['shipping_id' => $kdn_shipping_id], 'customer_pwd');
                 //构造电子面单提交信息
                 $eorder = [];
                 $eorder["ShipperCode"] = $shippinginfo; //发件地邮编
                 $eorder["OrderCode"] = $orderInfo['order_sn'];
-                $eorder["CustomerName"] = "511057_0032";
-                $eorder["CustomerPwd"] = "511057";
+                $eorder["CustomerName"] = $customer_name;
+                $eorder["CustomerPwd"] = $customer_pwd;
                 $eorder["PayType"] = 1;
                 $eorder["ExpType"] = 1;
 
