@@ -50,44 +50,43 @@ class ShippingModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 快递鸟发货
     /*------------------------------------------------------ */
-    public function kdnShipping($kdn_shipping_id = 0,$kdeorder_goods_name= '',&$orderInfo = []){
+    public function kdnShipping(&$shipping,$kdeorder_goods_name= '',&$orderInfo = []){
         static $kdapiorder;
-        if ($kdn_shipping_id < 1) return "请选择快递公司";
-        $shippinginfo = $this->getVal(['shipping_id' => $kdn_shipping_id], 'kdn_code');
-        if (empty($shippinginfo)) return "请选择快递公司";
+        if (empty($shipping)) return "请选择快递公司";
         if (empty($kdeorder_goods_name)) return "请输入货物名称";
+        $kdn_appid = settings('kdn_appid');
+        $kdn_apikey = settings('kdn_apikey');
+        $kdn_apiurl = settings('kdn_apiurl');
+        $kdn_name = settings('kdn_name');
+        $kdn_phone = settings('kdn_phone');
+        $kdn_province = settings('kdn_province');
+        $kdn_city = settings('kdn_city');
+        $kdn_area = settings('kdn_area');
+        $kdn_address = settings('kdn_address');
+        if ($kdn_appid == "") return "请先配置电商ID（快递鸟）";
+        if ($kdn_apikey == "") return "请先配置电商加密私钥（快递鸟）";
+        if ($kdn_apiurl == "") return "请先配置接口地址（快递鸟）";
+        if ($kdn_name == "") return "请先配置寄件人名称（快递鸟）";
+        if ($kdn_phone == "") return "请先配置联系电话（快递鸟）";
+        if ($kdn_province == "") return "请先配置地区（快递鸟）";
+        if ($kdn_city == "") return "请先配置地区（快递鸟）";
+        if ($kdn_area == "") return "请先配置地区（快递鸟）";
+        if ($kdn_address == "") return "请先配置详情地址（快递鸟）";
         if (!isset($kdapiorder)) {
-            $kdn_appid = settings('kdn_appid');
-            $kdn_apikey = settings('kdn_apikey');
-            $kdn_apiurl = settings('kdn_apiurl');
-            $kdn_name = settings('kdn_name');
-            $kdn_phone = settings('kdn_phone');
-            $kdn_province = settings('kdn_province');
-            $kdn_city = settings('kdn_city');
-            $kdn_area = settings('kdn_area');
-            $kdn_address = settings('kdn_address');
-            if ($kdn_appid == "") return "请先配置电商ID（快递鸟）";
-            if ($kdn_apikey == "") return "请先配置电商加密私钥（快递鸟）";
-            if ($kdn_apiurl == "") return "请先配置接口地址（快递鸟）";
-            if ($kdn_name == "") return "请先配置寄件人名称（快递鸟）";
-            if ($kdn_phone == "") return "请先配置联系电话（快递鸟）";
-            if ($kdn_province == "") return "请先配置地区（快递鸟）";
-            if ($kdn_city == "") return "请先配置地区（快递鸟）";
-            if ($kdn_area == "") return "请先配置地区（快递鸟）";
-            if ($kdn_address == "") return "请先配置详情地址（快递鸟）";
             $kd_config = [];
             $kd_config['kd_id'] = $kdn_appid; //电商ID
             $kd_config['ke_appkey'] = $kdn_apikey; //电商加密私钥
             $kd_config['ke_requrl'] = $kdn_apiurl;
             $kdapiorder = new Kdapieorder($kd_config);
         }
+        $customer_name = $this->field('customer_name','customer_pwd')->where(['shipping_id' => $kdn_shipping_id])->find();
 
         //构造电子面单提交信息
         $eorder = [];
-        $eorder["ShipperCode"] = $shippinginfo; //发件地邮编
+        $eorder["ShipperCode"] = $shipping['kdn_code']; //发件地邮编
         $eorder["OrderCode"] = $orderInfo['order_sn'];
-        $eorder["CustomerName"] = "511057_0032";
-        $eorder["CustomerPwd"] = "511057";
+        $eorder["CustomerName"] = $shipping['customer_name'];
+        $eorder["CustomerPwd"] = $shipping['customer_pwd'];
         $eorder["PayType"] = 1;
         $eorder["ExpType"] = 1;
 
