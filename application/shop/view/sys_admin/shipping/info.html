@@ -14,8 +14,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">快递代码</label>
-                            <div class="col-sm-6 must">
-                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="shipping_code" value="{$row.shipping_code}" >
+                            <div class="col-sm-6">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20"name="shipping_code" value="{$row.shipping_code}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">快递代码（快递鸟）</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" name="kdn_code" value="{$row.kdn_code}" >
                             </div>
                         </div>
                         <div class="form-group">
