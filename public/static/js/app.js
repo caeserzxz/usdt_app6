@@ -166,3 +166,17 @@ $(document).on('click','.js_radio_undertake',function(){
 	
 	
 })
+
+//全选定义
+$(document).on('click','.checkboxAll',function(){
+	var input_name = $(this).data("name");
+	if ($(this).is(':checked')){
+        $('input[name="'+input_name+'"]').each(function(){
+            $(this).attr("checked",true);
+        });
+    }else{
+        $('input[name="'+input_name+'"]').each(function(){
+            $(this).attr("checked",false);
+        });
+	}
+})

@@ -11,7 +11,7 @@
                 </li>                                  
             </ul>
           {if condition="$is_cancel != true"}  
-         <select name="state" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+         <select name="state" class="state_select" style="width: 100px;" data-toggle="select2"  onchange="state_select(this)" data-chang="submit">
              <option value="0" {$search['state']==0?'selected':''} >全部订单</option>
              <option value="1" {$search['state']==1?'selected':''} >待确认</option>
              <option value="2" {$search['state']==2?'selected':''} >待支付</option>
@@ -41,8 +41,7 @@
 
           <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="输入相关内容筛选" data-rule-required="true" />
            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
-      
-         
+
     </div>
 </form>
 </header>
@@ -52,7 +51,28 @@
         <div class="table-responsive " id="list_box">
             {include file="sys_admin/order/list" /}
         </div>
+
     </section>
 </section>
 
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function state_select(obj){
+        if (typeof(obj) == 'undefined'){
+            var val = $('.state_select').val();
+        }else{
+            var val = obj.options[obj.selectedIndex].value;
+        }
+        if (val == 3){
+            $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
+                '<a href="javascript:;" class="btn btn-sm m-t" data-remote="{:url('batchShipping')}" data-toggle="ajaxModal"><i class="fa fa-truck "></i> 勾选订单批量发货</a>');
+        }else{
+            $('.footer_other').html('');
+        }
+    }
+    state_select();
+
+</script>
 {/block}
