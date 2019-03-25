@@ -11,7 +11,7 @@ use app\shop\model\ShippingModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
 use think\Lang;
-
+use kuaidi\Kdapieorder;
 
 /**
  * 订单相关
@@ -245,16 +245,102 @@ class Order extends AdminController
         if ($this->request->isPost()) {
             $config = config('config.');
             $operating = $this->Model->operating($orderInfo);//订单操作权限
-            if ($operating['shipping'] !== true) return $this->error('订单当前状态不能操作发货.');
+            if ($operating['shipping'] !== true) return $this->error('订单当前状态不能操作改价.');
             $data['order_id'] = $order_id;
             $kd_type = input('post.kd_type', '1', 'intval');
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
             $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
             if ($kd_type == 3) {
-                $res = $ShippingModel->kdnShipping($kdn_shipping_id,$kdeorder_goods_name,$orderInfo);
-                if (is_array($res) == false) return $this->error($res);
-                $data['shipping_id'] = $res['shipping_id'];
-                $data['invoice_no'] = $res['invoice_no'];
+                $shippinginfo = $this->shipping_model->getVal(['shipping_id' => $kdn_shipping_id], 'kdn_code');
+                if ($kdn_shipping_id == "") return $this->error("请选择快递公司");
+                if ($shippinginfo == "") return $this->error("请选择快递公司");
+                if ($kdeorder_goods_name == "") return $this->error("请输入货物名称");
+                $kdn_appid = $this->setting_model->getVal(['name' => 'kdn_appid'], 'data');
+                $kdn_apikey = $this->setting_model->getVal(['name' => 'kdn_apikey'], 'data');
+                $kdn_apiurl = $this->setting_model->getVal(['name' => 'kdn_apiurl'], 'data');
+                $kdn_name = $this->setting_model->getVal(['name' => 'kdn_name'], 'data');
+                $kdn_phone = $this->setting_model->getVal(['name' => 'kdn_phone'], 'data');
+                $kdn_province = $this->setting_model->getVal(['name' => 'kdn_province'], 'data');
+                $kdn_city = $this->setting_model->getVal(['name' => 'kdn_city'], 'data');
+                $kdn_area = $this->setting_model->getVal(['name' => 'kdn_area'], 'data');
+                $kdn_address = $this->setting_model->getVal(['name' => 'kdn_address'], 'data');
+                if ($kdn_appid == "") return $this->error("请先配置电商ID（快递鸟）");
+                if ($kdn_apikey == "") return $this->error("请先配置电商加密私钥（快递鸟）");
+                if ($kdn_apiurl == "") return $this->error("请先配置接口地址（快递鸟）");
+                if ($kdn_name == "") return $this->error("请先配置寄件人名称（快递鸟）");
+                if ($kdn_phone == "") return $this->error("请先配置联系电话（快递鸟）");
+                if ($kdn_province == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_city == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_area == "") return $this->error("请先配置地区（快递鸟）");
+                if ($kdn_address == "") return $this->error("请先配置详情地址（快递鸟）");
+                $kd_config = [];
+                $kd_config['kd_id'] = $kdn_appid; //电商ID
+                $kd_config['ke_appkey'] = $kdn_apikey; //电商加密私钥
+                $kd_config['ke_requrl'] = $kdn_apiurl;
+                $kdapiorder = new Kdapieorder($kd_config);
+
+                $customer_name = $this->shipping_model->getVal(['shipping_id' => $kdn_shipping_id], 'customer_name');
+                $customer_pwd = $this->shipping_model->getVal(['shipping_id' => $kdn_shipping_id], 'customer_pwd');
+                //构造电子面单提交信息
+                $eorder = [];
+                $eorder["ShipperCode"] = $shippinginfo; //发件地邮编
+                $eorder["OrderCode"] = $orderInfo['order_sn'];
+                $eorder["CustomerName"] = $customer_name;
+                $eorder["CustomerPwd"] = $customer_pwd;
+                $eorder["PayType"] = 1;
+                $eorder["ExpType"] = 1;
+
+                //寄件人
+                $sender = [];
+                $sender["Name"] = $kdn_name;
+                $sender["Mobile"] = $kdn_phone;
+                $sender["ProvinceName"] = $kdn_province;
+                $sender["CityName"] = $kdn_city;
+                $sender["ExpAreaName"] = $kdn_area;
+                $sender["Address"] = $kdn_address;
+
+                //收件人
+                list($ProvinceName, $CityName, $ExpAreaName) = $merger_name = explode(',', $orderInfo['merger_name']);
+                $receiver = [];
+                $receiver["Name"] = $orderInfo['consignee'];
+                $receiver["Mobile"] = $orderInfo['mobile'];
+                $receiver["ProvinceName"] = $ProvinceName;
+                $receiver["CityName"] = $CityName;
+                $receiver["ExpAreaName"] = $ExpAreaName;
+                $receiver["Address"] = $orderInfo['address'];
+
+                $commodityOne = [];
+                $commodityOne["GoodsName"] = $kdeorder_goods_name; //商品名称【必填写】
+                $commodityOne["GoodsCode"] = ""; //商品编码【可填写】
+                $commodityOne["Goodsquantity"] = ""; //商品数量【可填写】
+                $commodityOne["GoodsPrice"] = ""; //商品价格【可填写】
+                $commodityOne["GoodsWeight"] = ""; //商品重量kg【可填写】
+                $commodityOne["GoodsDesc"] = ""; //商品描述【可填写】
+                $commodityOne["GoodsVol"] = ""; //商品体积m3【可填写】
+                $commodity = [];
+                $commodity[] = $commodityOne;
+                $eorder["Sender"] = $sender;
+                $eorder["Receiver"] = $receiver;
+                $eorder["Commodity"] = $commodity;
+                //调用电子面单
+
+                $returndata = $kdapiorder->submitEOrder($eorder);
+                $returndata = json_decode($returndata, true);
+                //$returndata = json_decode('{ "EBusinessID": "1350174","Success": true,"Order": {"OrderCode": "1552293275", "ShipperCode": "SF", "LogisticCode": "444071155508", "OriginCode": "755", "DestinatioCode": "755", "KDNOrderCode": "KDN1903111600000041"},"Reason": "成功","ResultCode": "100"}', true);
+                if ($returndata['Success'] == false) {
+                    //$reason = $returndata['Reason']; //错误信息 //{ "EBusinessID": "1350174","Success": false,"Reason": "远程服务器返回错误: (404) 未找到。","ResultCode": "105"}
+                    return $this->error($returndata['Reason']);
+                } else {
+                    $kdorder = $returndata['Order'];
+                    $ordercode = $kdorder['OrderCode'];//订单号
+                    $shippercode = $kdorder['ShipperCode'];//物流编号
+                    $logisticcode = $kdorder['LogisticCode'];//物流订单号
+                    $origincode = $kdorder['OriginCode'];//物流状态码
+                    $destinatiocode = $kdorder['DestinatioCode'];
+                    $kdnordercode = $kdorder['KDNOrderCode'];
+                }
+                $data['shipping_id'] = $kdn_shipping_id;
+                $data['invoice_no'] = $logisticcode;
             } elseif ($kd_type == 1) {
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
@@ -273,63 +359,10 @@ class Order extends AdminController
             return $this->success('操作发货成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('shippingOpt', arrToSel($shipping, $orderInfo['shipping_id']));
-        $kdnpingopt =  $ShippingModel->getRows('kdn_code');
+        $kdnpingopt = $shipping = $ShippingModel->getRows('kdn_code');
         $this->assign('kdnpingopt', arrToSel($kdnpingopt, $orderInfo['shipping_id']));
         $this->assign('orderInfo', $orderInfo);
         return response($this->fetch('shipping'));
-    }
-    /*------------------------------------------------------ */
-    //-- 批量发货管理
-    /*------------------------------------------------------ */
-    public function batchShipping()
-    {
-        if ($this->request->isPost()) {
-            $order_ids = input('order_ids','','trim');
-            if (empty($order_ids)){
-                return $this->error("请选择需要发货的订单.");
-            }
-            $order_ids = explode(',',$order_ids);
-            $kd_type = input('post.kd_type', '3', 'intval');
-            $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
-            $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
-            $ShippingModel = new ShippingModel();
-            $config = config('config.');
-            $error = [];
-            $okNum = 0;
-            foreach ($order_ids as $order_id){
-                $orderInfo = $this->Model->find($order_id);
-                $operating = $this->Model->operating($orderInfo);//订单操作权限
-                if ($operating['shipping'] !== true){
-                    $error[] = '订单'.$orderInfo['order_sn'].',操作失败';
-                    continue;
-                }
-                if ($kd_type == 3) {
-                    $res = $ShippingModel->kdnShipping($kdn_shipping_id, $kdeorder_goods_name, $orderInfo);
-                    if (is_array($res) == false){
-                        $error[] = '订单'.$orderInfo['order_sn'].':'.$res;
-                        continue;
-                    }
-                    $upData['shipping_id'] = $res['shipping_id'];
-                    $upData['invoice_no'] = $res['invoice_no'];
-                }
-                $upData['shipping_status'] = $config['SS_SHIPPED'];
-                $upData['shipping_time'] = time();
-                $res = $this->Model->upInfo($upData);
-                if ($res != true){
-                    $error[] = '订单'.$orderInfo['order_sn'].',操作失败.';
-                    continue;
-                }
-                $orderInfo['shipping_status'] = $upData['shipping_status'];
-                $this->Model->_log($orderInfo, '批量发货');
-                $okNum += 1;
-            }
-
-            return $this->success('提交'.count($order_ids).'张订单,共成功'.$okNum.'张订单<br>'.join('<br>',$error));
-        }
-        $ShippingModel = new ShippingModel();
-        $kdnpingopt = $ShippingModel->getRows('kdn_code');
-        $this->assign('kdnpingopt', arrToSel($kdnpingopt));
-        return response($this->fetch('batch_shipping'));
     }
     /*------------------------------------------------------ */
     //-- 改价
