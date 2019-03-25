@@ -11,10 +11,15 @@
         <input type="text" class="fs60 num textBox" id="amount">
         
     </div>
+
     <div class="money">
         <div class="fs26 color_9">可提现金额￥<span class="color_3 balance_money">{$userInfo['account']['balance_money']}</span></div>
         <span class="fs24 fw_b color_3">手续费<em class="withdraw_fee">0</em>元</span>
         <p class="fs24 tag_active">全部提现</p>
+    </div>
+    <div class="inputBlock">
+        <div class="tips fs60 fw_b color_9">支付密码</div>
+        <input type="text" class="fs60 num textBox" id="pay_password">
     </div>
     <div class="paytype">
         <div class="title fs34 color_3 fw_b">请选择提现银行</div>
@@ -110,13 +115,18 @@ $(function() {
 	//end
 	//提交提现申请
 	$('.postBtn').click(function(){
-		var arr = new Object;
+		var arr = new Object();
 		arr.account_id = $('input[name="account_id"]:checked').val();
 		arr.amount = $('#amount').val();
+		arr.pay_password = $('#pay_password').val();
 		if (arr.amount < 1){
 			_alert('请输入提现金额.');
 			return false;	
 		}
+        if (arr.pay_password.length != 6){
+            _alert('请写6位长度的支付密码.');
+            return false;
+        }
 		if (arr.account_id < 1){
 			_alert('请选择提现方式.');
 			return false;	

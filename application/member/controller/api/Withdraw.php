@@ -181,11 +181,16 @@ class Withdraw extends ApiController
     {
 		$withdraw_status = settings('withdraw_status');
 		if ($withdraw_status < 1){
-			return $this->errot('暂不开放提现.');
+			return $this->error('暂不开放提现.');
 		}
 		$inArr['amount'] = input('amount') * 1;
 		if ($inArr['amount'] <= 0){
-            return $this->errot('请输入提现金额.');
+            return $this->error('请输入提现金额.');
+        }
+        $pay_password = input('pay_password') * 1;
+        $pay_password = f_hash($pay_password.$this->userInfo['user_id']);
+        if ($pay_password != $this->userInfo['pay_password']){
+            return $this->error('支付密码错误，请核实.');
         }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
 		$inArr['account_id'] = input('account_id') * 1;

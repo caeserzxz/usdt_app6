@@ -22,6 +22,9 @@ class Withdraw  extends ClientbaseController{
     //-- 绑定手机
     /*------------------------------------------------------ */
     public function bindMobile(){
+        if (empty($this->userInfo['mobile']) == false){
+            return $this->redirect('index');
+        }
         $this->assign('title', '绑定手机');
         $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
         return $this->fetch('bindMobile');

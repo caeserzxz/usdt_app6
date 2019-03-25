@@ -712,9 +712,13 @@ function(a) {
         g && G.ui.tips.confirm_flag(g?g:title,
         function(a) {
 			$('#fallr-wrapper').remove();
-			$.post(f,'',function(data){
-				G.ui.tips.suc(data.msg,data.url);
-				if (fn) eval(fn+'(data)');
+			$.post(f,'',function(res){
+			    if (res.data.alert == 1){
+                    G.ui.tips.info(res.msg,res.url);
+                }else{
+                    G.ui.tips.suc(res.msg,res.url);
+                }
+				if (fn) eval(fn+'(res)');
 			 });
         },0,icon)
     }),

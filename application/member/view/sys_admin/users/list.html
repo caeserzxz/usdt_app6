@@ -8,7 +8,7 @@
     <th width="150">等级/身份</th> 
     <th width="100">帐户余额</th> 
     <th width="130">最近登陆</th>    
-    <th width="150">操作</th>
+    <th width="160">操作</th>
 </tr>
 </thead>
 <tbody>
@@ -32,7 +32,9 @@
 
 <td> 
 
-<a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456" data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-wrench text-muted"></i></a>
+<a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456" data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-rotate-left text-muted"></i></a>
+<a title="重置支付密码"  data-confirm="您确定要重置该会员支付密码" data-toggle="cfmAjax" href="{:url('restPayPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa  fa-rotate-right text-muted"></i></a>
+
 {eq name="is_ban" value="0"}
 <a title="封禁会员"  data-confirm="您确定要封禁该会员，封禁后则会员则无法登陆? " data-toggle="cfmAjax" href="{:url('evelBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-lock text-muted"></i></a>
 {else/}

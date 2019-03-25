@@ -134,6 +134,24 @@ class Users extends AdminController
         return $this->success('操作成功.');
     }
     /*------------------------------------------------------ */
+    //-- 重置支付密码
+    /*------------------------------------------------------ */
+    public function restPayPassword()
+    {
+        $user_id = input("user_id/d");
+        if ($user_id < 0) {
+            return $this->error('获取用户ID传值失败！');
+        }
+        $pay_password = rand(100000,999999);
+        $data['pay_password'] = f_hash($pay_password.$user_id);
+        $res = $this->Model->where('user_id', $user_id)->update($data);
+        if ($res < 1) {
+            return $this->error('未知错误，处理失败.');
+        }
+        $this->_log($user_id, '重置用户支付密码.', 'member');
+        return $this->success('操作成功,新支付密码：'.$pay_password,'',['alert'=>1]);
+    }
+    /*------------------------------------------------------ */
     //-- 会员管理
     /*------------------------------------------------------ */
     public function info()

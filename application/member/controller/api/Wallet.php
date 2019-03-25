@@ -79,7 +79,7 @@ class Wallet extends ApiController
     {
         $inArr['amount'] = input('amount') * 1;
         if ($inArr['amount'] <= 0){
-            return $this->errot('请输入兑换数量.');
+            return $this->error('请输入兑换数量.');
         }
         if ($this->userInfo['account']['bean_value'] < $inArr['amount']){
             return $this->error('旅游豆不足，请核实旅游豆兑换数量.');

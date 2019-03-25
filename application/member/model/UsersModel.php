@@ -287,12 +287,16 @@ class UsersModel extends BaseModel
         if ($res !== true) {
             return $res;
         }
+        if (is_numeric($data['pay_password']) == false){
+            return '请填写6位数字的支付密码.';
+        }
         $count = $this->where('mobile', $data['mobile'])->count('user_id');
         if ($count > 0) {
             return $data['mobile'] . '此手机号码已绑定其它帐号.';
         }
         $upArr['mobile'] = $data['mobile'];
         $upArr['password'] = f_hash($data['password']);
+        $upArr['pay_password'] = f_hash($data['pay_password'].$this->userInfo['user_id']);
         $res = $this->where('user_id', $this->userInfo['user_id'])->update($upArr);
         if ($res < 1) return '未知错误，绑定手机失败.';
         $obj->_log($this->userInfo['user_id'], '用户绑定手机号码.', 'member');

@@ -45,6 +45,23 @@
                     <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入密码" id="cfm_password">
                 </div>
               </div>
+            <div class="cell">
+                <div class="cell_hd">
+                    <span class="fs28 color_3 fw_b">提现密码</span>
+                </div>
+                <div class="cell_bd">
+                    <input type="password" class="fs28 fw_b  color_3" placeholder="支付密码" id="pay_password">
+                </div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd">
+                    <span class="fs28 color_3 fw_b">确认提现密码</span>
+                </div>
+                <div class="cell_bd">
+
+                    <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入支付密码" id="cfm_pay_password">
+                </div>
+            </div>
         </div> 
         <div class="page-ft">
             <span class="fs32 color_w fw_b BGcolor_r forgetpwd">确定</span>
@@ -59,6 +76,8 @@
         arr.mobile = $('#mobile').val();
         arr.password = $('#password').val();
 		arr.cfm_password = $('#cfm_password').val();
+        arr.pay_password = $('#pay_password').val();
+        arr.cfm_pay_password = $('#cfm_pay_password').val();
         if (arr.mobile == ''){
             _alert('请输入手机号码.');
             return false;
@@ -84,7 +103,22 @@
 			_alert('两次输入的密码不一致.');
 			return false;	
 		}
-        
+         if (arr.pay_password == '' ){
+             _alert('请输入支付密码.');
+             return false;
+         }
+         if (arr.pay_password.length != 6){
+             _alert('支付密码长度为6位.');
+             return false;
+         }
+         if(/^[0-9]+$/.test(arr.pay_password) == false){
+             _alert('请填写6位数字的支付密码.');
+             return false;
+         }
+         if (arr.pay_password !== arr.cfm_pay_password){
+             _alert('两次输入的支付密码不一致.');
+             return false;
+         }
         jq_ajax('{:url("member/api.users/bindMobile")}',arr,function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
