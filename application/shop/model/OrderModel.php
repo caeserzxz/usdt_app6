@@ -411,7 +411,7 @@ class OrderModel extends BaseModel
                 }else{
                     $sendData['send_scene'] = 'order_shipping_msg';//订单发货通知
                 }
-                $sendData['wx_openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
+                $sendData['openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
                 $sendData['order_id'] = $orderInfo['order_id'];
                 $sendData['order_sn'] = $orderInfo['order_sn'];
                 $sendData['consignee'] = $orderInfo['consignee'];
@@ -437,6 +437,7 @@ class OrderModel extends BaseModel
             $operating['isCancel'] = true;//取消
             if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认           
             $operating['changePrice'] = true; //改价
+            $operating['editConsignee'] = true; //修改收货信息
             $operating['editGoods'] = true; //修改商品
 			if ($order['is_pay'] == 2) $operating['cfmCodPay'] = true;//设为已付款
         }elseif ($os == $this->config['OS_CONFIRMED']){ //已确认
@@ -451,6 +452,7 @@ class OrderModel extends BaseModel
 						$operating['setUnPay'] = true;//设为未付款
 					}
 				}
+                $operating['editConsignee'] = true; //修改收货信息
             }elseif ($ss == $this->config['SS_SHIPPED']){//已发货
                 $operating['sign'] = true;
                 $operating['unshipping'] = true;//设为未发货
@@ -532,6 +534,7 @@ class OrderModel extends BaseModel
     //-- 订单在线支付成功处理
     /*------------------------------------------------------ */
 	public function updatePay($upData = [],$_log = '支付成功'){
+
 		$upData['pay_status'] = $this->config['PS_PAYED'];
 		$upData['order_status'] = $this->config['OS_CONFIRMED'];
 		$res = $this->upInfo($upData,'sys');

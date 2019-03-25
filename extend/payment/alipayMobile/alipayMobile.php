@@ -65,8 +65,8 @@ class alipayMobile
                         'seller_id'=> trim($this->alipay_config['partner']), //收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
                         "key" => trim($this->alipay_config['key']), // MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
                         // "seller_email" => trim($this->alipay_config['seller_email']),                                            
-                        "notify_url"	=>  url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile'),'',true,true) , //服务器异步通知页面路径 //必填，不能修改
-                        "return_url"	=>  url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile')),  //页面跳转同步通知页面路径
+                        "notify_url"	=>  _url('shop/payment/notifyUrl',array('pay_code'=>'alipayMobile'),'',true,true) , //服务器异步通知页面路径 //必填，不能修改
+                        "return_url"	=>  _url('shop/payment/returnUrl',array('pay_code'=>'alipayMobile'),true,true),  //页面跳转同步通知页面路径
                         "sign_type"     => strtoupper('MD5'), //签名方式
                         "input_charset" =>strtolower('utf-8'), //字符编码格式 目前支持utf-8
                         "cacert"	=>  getcwd().'\\cacert.pem',
@@ -99,22 +99,24 @@ class alipayMobile
      * 
      */
     function response()
-    {                
+    {
         require_once("lib/alipay_notify.class.php");  // 请求返回
         //计算得出通知验证结果
-        $alipayNotify = new AlipayNotify($this->alipay_config); // 使用支付宝原生自带的累 和方法 这里只是引用了一下 而已
+        $alipayNotify = new \AlipayNotify($this->alipay_config); // 使用支付宝原生自带的累 和方法 这里只是引用了一下 而已
         $verify_result = $alipayNotify->verifyNotify();
-        
+
             if($verify_result) //验证成功
             {
-                    $order_sn = $out_trade_no = $_POST['out_trade_no']; //商户订单号                    
-                    $trade_no = $_POST['trade_no']; //支付宝交易号                   
+                    $order_sn = $out_trade_no = $_POST['out_trade_no']; //商户订单号
+                    $trade_no = $_POST['trade_no']; //支付宝交易号
                     $trade_status = $_POST['trade_status']; //交易状态
 
 					//用户在线充值
-					if (stripos($order_sn, 'recharge') !== false){	
+					if (stripos($order_sn, 'recharge') !== false){
 						$RechargeLogModel = new RechargeLogModel();				
-						$orderInfo = $RechargeLogModel->where(['order_sn' => $order_sn, 'status' => 0])->field('log_id,amount,user_id')->find();
+						$orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,amount,user_id,status')->find();
+                        if (empty($orderInfo)) exit("fail");
+						if ($orderInfo['status'] == 9) exit("success");
 						if($orderInfo['amount']!=$_POST['price'])  exit("fail"); //验证失败
 						$orderInfo['transaction_id'] = $trade_no;
 						// 支付宝解释: 交易成功且结束，即不可再做任何操作。
@@ -129,22 +131,24 @@ class alipayMobile
 						}
 					}else{
 						$OrderModel = new OrderModel();
-	                    $orderInfo = $OrderModel->where(['order_sn'=>"$order_sn",'pay_status'=>0])->field('order_id,order_amount')->find();
-						if($orderInfo['order_amount']!=$_POST['price'])  exit("fail"); //验证失败 
-						
+	                    $orderInfo = $OrderModel->where('order_sn',"$order_sn")->field('order_id,order_amount,pay_status')->find();
+	                    if (empty($orderInfo)) exit("fail");
+	                    if ($orderInfo['pay_status'] == 1) exit("success");
+						if($orderInfo['order_amount']!=$_POST['price'])  exit("fail"); //验证失败
+
 						 // 支付宝解释: 交易成功且结束，即不可再做任何操作。
-						if($_POST['trade_status'] == 'TRADE_FINISHED') 
-						{                         
-							  $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no),'支付宝支付成功.');// 修改订单支付状态
+						if($_POST['trade_status'] == 'TRADE_FINISHED')
+						{
+							  $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
 						}
 						//支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
-						elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') 
+						elseif ($_POST['trade_status'] == 'TRADE_SUCCESS')
 						{ 
-								$OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'transaction_id'=>$trade_no),'支付宝支付成功.'); // 修改订单支付状态
+								$OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$trade_no),'支付宝支付成功，流水号：'.$trade_no);// 修改订单支付状态
 						}
 					}
                                          
-                    
+
                    
                     echo "success"; // 告诉支付宝处理成功
             }
@@ -161,9 +165,9 @@ class alipayMobile
     {
         require_once("lib/alipay_notify.class.php");  // 请求返回
         //计算得出通知验证结果
-        $alipayNotify = new AlipayNotify($this->alipay_config);
+        $alipayNotify = new \AlipayNotify($this->alipay_config);
         $verify_result = $alipayNotify->verifyReturn();
-        
+
             if($verify_result) //验证成功
             {
                     $order_sn = $out_trade_no = $_GET['out_trade_no']; //商户订单号

@@ -458,7 +458,8 @@ function(a) {
                     b("button[type='submit']", g).length && b("button[type='submit']", g).removeAttr("disabled"),
                     a.init(c)
                 }),
-                d.trigger("init", g);				
+                d.trigger("init", g);
+                region_sel();
 				if (fn) eval(fn+'()');
             })
         })

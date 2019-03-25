@@ -47,7 +47,7 @@ class RegionModel extends BaseModel
 	public function getBySel($pid = 0){
 		$list = Cache::get($this->mkeySel);
 		if (empty($list[$pid]) == false) return $list[$pid];
-		$rows = $this->field('id,pid,name')->select()->toArray();
+		$rows = $this->field('id,pid,name')->where('pid',$pid)->select();
 		foreach ($rows as $row){
 			$list[$row['pid']][$row['id']] = $row['name'];
 		}

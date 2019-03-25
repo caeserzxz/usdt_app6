@@ -1,4 +1,5 @@
 <?php
+
 namespace app\shop\controller\sys_admin;
 
 use app\AdminController;
@@ -41,11 +42,11 @@ class Order extends AdminController
     {
         $reportrange = input('reportrange', '', 'trim');
         if (empty($reportrange) == false) {
-            $reportrange = str_replace('_','/',$reportrange);
+            $reportrange = str_replace('_', '/', $reportrange);
             $dtime = explode('-', $reportrange);
             $this->assign("start_date", $dtime[0]);
             $this->assign("end_date", $dtime[1]);
-        }else{
+        } else {
             $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
             $this->assign("end_date", date('Y/m/d'));
         }
@@ -63,8 +64,8 @@ class Order extends AdminController
         if (empty($time_type) == false) {
             $search['start_time'] = input('start_time', '', 'trim');
             $search['end_time'] = input('end_time', '', 'trim');
-            $search['start_time'] = str_replace('_','-',$search['start_time']);
-            $search['end_time'] = str_replace('_','-',$search['end_time']);
+            $search['start_time'] = str_replace('_', '-', $search['start_time']);
+            $search['end_time'] = str_replace('_', '-', $search['end_time']);
             $start_time = $search['start_time'] ? strtotime($search['start_time']) : strtotime("-1 months");
             $end_time = $search['end_time'] ? strtotime($search['end_time']) : time();
             if ($start_time == $end_time) $end_time += 86399;
@@ -73,7 +74,7 @@ class Order extends AdminController
             $search['state'] = input('state', 0, 'intval');
             $reportrange = input('reportrange', '', 'trim');
             if (empty($reportrange) == false) {
-                $reportrange = str_replace('_','/',$reportrange);
+                $reportrange = str_replace('_', '/', $reportrange);
                 $dtime = explode('-', $reportrange);
                 $where[] = ['add_time', 'between', [strtotime($dtime[0]), strtotime($dtime[1]) + 86399]];
             } else {
@@ -343,7 +344,7 @@ class Order extends AdminController
             } elseif ($kd_type == 1) {
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
-                if ($shipping_id == "") return $this->error("请选择快递公司");
+                if ($shipping_id < 1) return $this->error("请选择快递公司");
                 if ($kdeorder_goods_name == "") return $this->error("请输入快递单号");
                 $data['shipping_id'] = $shipping_id;
                 $data['shipping_name'] = $shipping[$data['shipping_id']]['shipping_name'];
@@ -371,7 +372,6 @@ class Order extends AdminController
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
         if ($this->request->isPost()) {
-            $config = config('config.');
             $operating = $this->Model->operating($orderInfo);//订单操作权限
             if ($operating['changePrice'] !== true) return $this->error('订单当前状态不能操作改价.');
             $data['shipping_fee'] = input('fee', 0, 'intval');
@@ -388,6 +388,48 @@ class Order extends AdminController
         }
         $this->assign('orderInfo', $orderInfo);
         return response($this->fetch('change_price'));
+    }
+    /*------------------------------------------------------ */
+    //-- 修改收货信息
+    /*------------------------------------------------------ */
+    public function editConsignee()
+    {
+        $order_id = input('id', 0, 'intval');
+        $orderInfo = $this->Model->info($order_id);
+        if ($this->request->isPost()) {
+            $operating = $this->Model->operating($orderInfo);//订单操作权限
+            if ($operating['editConsignee'] !== true) return $this->error('订单当前状态不能操作收货信息.');
+            $data['consignee'] = input('consignee', '', 'trim');
+            $data['mobile'] = input('mobile', '', 'trim');
+            $data['province'] = input('province', 0, 'intval');
+            $data['city'] = input('city', 0, 'intval');
+            $data['district'] = input('district', 0, 'intval');
+            $data['address'] = input('address', '', 'trim');
+            if (empty($data['consignee']) == true){
+                return $this->error('请填写收货人.');
+            }
+            if (empty($data['mobile']) == true ){
+                return $this->error('请填写联系手机.');
+            }
+            if (checkMobile($data['mobile']) == false){
+                return $this->error('联系手机格式不正确.');
+            }
+            if ($data['district'] < 1){
+                return $this->error('请选择区域地址.');
+            }
+            if (empty($data['address']) == true ){
+                return $this->error('请填写详细地址.');
+            }
+            $regionInfo = (new \app\mainadmin\model\RegionModel)->info($data['district']);
+            $data['merger_name'] = $regionInfo['merger_name'];
+            $data['order_id'] = $order_id;
+            $res = $this->Model->upInfo($data);
+            if ($res < 1) return $this->error();
+            $this->Model->_log($orderInfo, '修改收货信息，原信息：'.$orderInfo['consignee'].'- '.$orderInfo['mobile'].'- '.$orderInfo['merger_name'].'-'.$orderInfo['address']);
+            return $this->success('修改收货信息成功！', url('info', array('order_id' => $order_id)));
+        }
+        $this->assign('orderInfo', $orderInfo);
+        return response($this->fetch('edit_consignee'));
     }
 
     /*------------------------------------------------------ */
@@ -407,6 +449,7 @@ class Order extends AdminController
             if ($orderInfo['confirm_time'] < 1) {
                 $data['confirm_time'] = time();
             }
+            $data['transaction_id'] = input('transaction_id', '', 'trim');
             $data['pay_time'] = time();
             $data['money_paid'] = $orderInfo['order_amount'];
             $data['cfmpay_user'] = AUID;
@@ -416,14 +459,13 @@ class Order extends AdminController
             if ($res < 1) return $this->error();
             $orderInfo['order_status'] = $data['order_status'];
             $orderInfo['pay_status'] = $data['pay_status'];
-            // 根据购买金额，判断是否升级分销身份
-            // $res = D('DividendRole')->evalUpLevel($row);
             $this->Model->_log($orderInfo, '线下支付收款确认：' . input('pay_no', '', 'trim'));
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
         return response($this->fetch('cfm_cod_pay'));
     }
+
     /*------------------------------------------------------ */
     //-- 取消订单
     /*------------------------------------------------------ */
@@ -442,8 +484,9 @@ class Order extends AdminController
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '取消订单');
-        return $this->success();
+        return $this->success('取消订单成功.');
     }
+
     /*------------------------------------------------------ */
     //-- 未发货
     /*------------------------------------------------------ */
@@ -466,6 +509,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为未发货,原发货信息：' . $orderInfo['shipping_name'] . '，单号：' . $data['invoice_no']);
         return $this->success('设为未发货成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 设置为已签收
     /*------------------------------------------------------ */
@@ -485,6 +529,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为签收');
         return $this->success('设为签收成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 设置为未签收
     /*------------------------------------------------------ */
@@ -504,6 +549,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为未签收');
         return $this->success('设为未签收成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 设置为退货
     /*------------------------------------------------------ */
@@ -523,6 +569,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为退货');
         return $this->success('设为退货成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 设置为未付款
     /*------------------------------------------------------ */
@@ -542,6 +589,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为未付款');
         return $this->success('设为未付款成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 设置为退款
     /*------------------------------------------------------ */
@@ -561,6 +609,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为退款');
         return $this->success('设为退款成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 订单确认
     /*------------------------------------------------------ */
@@ -572,21 +621,20 @@ class Order extends AdminController
         if ($orderInfo['order_status'] == $config['OS_CONFIRMED']) return $this->error('订单已经是已确认，无需修改！');
         $data['order_id'] = $order_id;
         $data['order_status'] = $config['OS_CONFIRMED'];
-        $data['pay_status'] = $config['PS_UNPAYED'];
         $data['confirm_time'] = time();
         $data['cancel_time'] = 0;
         $data['money_paid'] = 0;
         $data['tuikuan_money'] = 0;
         $data['tuikuan_time'] = 0;
-		$shop_reduce_stock = settings('shop_reduce_stock');
+        $shop_reduce_stock = settings('shop_reduce_stock');
         $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
-        $res = $this->_mod->upInfo($data);
+        $res = $this->Model->upInfo($data);
         if ($res < 1) return $this->error();
         $orderInfo['order_status'] = $data['order_status'];
-        $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为已确认');
-        return $this->success();
+        return $this->success('设为已确认成功.');
     }
+
     /*------------------------------------------------------ */
     //-- 重新计算分佣
     /*------------------------------------------------------ */
@@ -603,6 +651,7 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '重新计算分佣');
         return $this->success('重新计算分佣成功！', url('info', array('order_id' => $order_id)));
     }
+
     /*------------------------------------------------------ */
     //-- 查询主页
     /*------------------------------------------------------ */
@@ -626,6 +675,7 @@ class Order extends AdminController
         $this->trashList(true, true);
         return $this->fetch('index');
     }
+
     /*------------------------------------------------------ */
     //-- 商品回收站查询
     /*------------------------------------------------------ */
@@ -639,7 +689,6 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function exportOrder($where)
     {
-
         $count = $this->Model->where($where)->count('order_id');
 
         if ($count < 1) return $this->error('没有找到可导出的订单资料！');

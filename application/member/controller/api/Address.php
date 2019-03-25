@@ -101,8 +101,8 @@ class Address extends ApiController
         $data['city'] = $regionIds[1];
         $data['district'] = $regionIds[2];
         if ($data['district'] < 1) return $this->error('请选择所在地区.');
-        $RegionModel = new \app\mainadmin\model\RegionModel();
-        $regionInfo = $RegionModel->info($data['district']);
+
+        $regionInfo = (new \app\mainadmin\model\RegionModel)->info($data['district']);
         $data['merger_name'] = $regionInfo['merger_name'];
         return $data;
     }

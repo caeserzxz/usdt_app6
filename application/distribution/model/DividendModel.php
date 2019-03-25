@@ -40,6 +40,7 @@ class DividendModel extends BaseModel {
 		$DividendInfo = settings('DividendInfo');
 		$upData = [];//更新分佣记录状态
 		$OrderModel = new OrderModel();
+        $send_scene = $order_operating = '';
 		//先计算佣金再执行升级处理
 		if ($type == 'add'){//写入分佣		
 			if ($DividendInfo['bind_type'] == 1 && $orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']){//支付成功时绑定关系
@@ -60,6 +61,8 @@ class DividendModel extends BaseModel {
 			$res = $this->evalLevelUp($orderInfo,$goodsList,$orderInfo['user_id']);
 			if ($res == false) return false;
 		}elseif ($type == 'cancel'){//订单取消
+            $send_scene = 'dividend_cancel_msg';
+            $order_operating = '订单取消';
 			$upData['status'] = $OrderModel->config['DD_CANCELED'];
 		}elseif ($type == 'shipping'){//发货
 			$upData['status'] = $OrderModel->config['DD_SHIPPED'];
@@ -67,10 +70,10 @@ class DividendModel extends BaseModel {
 			$upData['status'] = $OrderModel->config['DD_UNCONFIRMED'];
 		}elseif ($type == 'sign'){//签收
 			$upData['status'] = $OrderModel->config['DD_SIGN'];			
-		}elseif ($type == 'unsign'){//撤销签收		
-			return $this->returnArrival($orderInfo['order_id'],'unsign');
+		}elseif ($type == 'unsign'){//撤销签收
+			return $this->returnArrival($orderInfo['order_id'],'unsign',$orderInfo['user_id']);
 		}elseif ($type == 'returned'){//退货
-			return $this->returnArrival($orderInfo['order_id'],'returned');
+			return $this->returnArrival($orderInfo['order_id'],'returned',$orderInfo['user_id']);
 		}
 		if (empty($upData) == false){//更新分佣状态
 			$count = $this->where('order_id',$orderInfo['order_id'])->count();
@@ -78,7 +81,19 @@ class DividendModel extends BaseModel {
 			
 			$upData['update_time'] = time();
 			$res = $this->where('order_id',$orderInfo['order_id'])->update($upData);
+
 			if ($res < 1) return false;
+            if (empty($send_scene) == false){//发送模板消息
+                $buy_nick_name = $this->UsersModel->where('user_id',$orderInfo['user_id'])->value('nick_name');//获取购买会员昵称
+				$rows = $this->where('order_id',$orderInfo['order_id'])->select()->toArray();
+				foreach ($rows as $row){
+                    $row['send_scene'] = $send_scene;
+                    $row['buy_nick_name'] = $buy_nick_name;
+                    $row['order_operating'] = $order_operating;
+                    $row['openid'] = (new WeiXinUsersModel)->where('user_id', $row['dividend_uid'])->value('wx_openid');
+                    $res = (new WeiXinMsgTplModel)->send($row);//模板消息通知
+				}
+            }
 		}
 		if ($type == 'sign'){//签收
 			$shop_after_sale_limit = settings('shop_after_sale_limit');
@@ -117,7 +132,7 @@ class DividendModel extends BaseModel {
 		$assignAwardNum = [];//记录已分出去的管理奖金额
 		$roleInfo = $DividendRoleModel->info($orderInfo['role_id']);//获取用户下单时分销身份
 		$lastRole = $roleInfo['level'];//下级会员分佣身份级别
-		
+        $buyUserInfo = $this->UsersModel->info($orderInfo['user_id']);//获取购买会员信息
 		$this->where('order_id',$orderInfo['order_id'])->delete();//清理旧的提成记录，重新计算
 		
 		do {
@@ -176,22 +191,25 @@ class DividendModel extends BaseModel {
 					if($award['award_type'] == 2){//平推奖，如果当前用户不满足条件，此奖项终止
 						unset($awardList[$key]);//移除已结束的奖项
 					}elseif($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
-                        $awardVal = $awardValue[$nowLevelOrdinary];
-						if ($awardVal['type'] == 'gold'){
-							$sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
-						}else{
-							$sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
-						}
+						if ($nowLevel <=3 ){
+							$awardVal = $awardValue[$nowLevelOrdinary];
+							if ($awardVal['type'] == 'gold'){
+								$sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
+							}else{
+								$sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
+							}
 
-                        $sendData['award_name']         = $award['award_name'];
-                        $sendData['level_award_name']   = $awardVal['name'];
-                        $sendData['level']              = $nowLevel;
-                        $sendData['role_name']          = $role_name;
-                        $sendData['order_sn']           = $orderInfo['order_sn'];
-                        $sendData['add_time']           = $orderInfo['add_time'];
-                        $sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
-                        $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
-                        (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+							$sendData['award_name']         = $award['award_name'];
+							$sendData['level_award_name']   = $awardVal['name'];
+							$sendData['level']              = $nowLevel;
+							$sendData['role_name']          = $role_name;
+							$sendData['order_sn']           = $orderInfo['order_sn'];
+							$sendData['add_time']           = $orderInfo['add_time'];
+							$sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
+							$sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
+							$sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+							$res = (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+                        }
                         $nowLevelOrdinary -= 1;
                     }
                     continue;
@@ -265,8 +283,9 @@ class DividendModel extends BaseModel {
                         $sendData['role_name']          = $role_name;
                         $sendData['order_sn']           = $orderInfo['order_sn'];
                         $sendData['add_time']           = $orderInfo['add_time'];
+                        $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                         $sendData['send_scene']         = 'dividend_loss_buy_msg';//佣金损失通知
-                        $sendData['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+                        $sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
 						(new WeiXinMsgTplModel)->send($sendData);//模板消息通知
 						 continue;//不满足复购限制，跳出
 					}
@@ -307,7 +326,7 @@ class DividendModel extends BaseModel {
 				if ($res < 1) return false;
 				//执行模板消息通知
                 $inArr['send_scene']  = 'dividend_add_msg';//佣金产生通知
-                $inArr['wx_openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+                $inArr['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
                 (new WeiXinMsgTplModel)->send($inArr);//模板消息通知
 			}
 
@@ -436,7 +455,7 @@ class DividendModel extends BaseModel {
 	//-- 退回分佣到帐
 	//-- order_id int 订单ID
 	/*------------------------------------------------------ */ 
-	public function returnArrival($order_id = 0,$type = ''){
+	public function returnArrival($order_id = 0,$type = '',$buy_user_id = 0){
 		$time = time();		
 		$OrderModel = new OrderModel();
 		
@@ -447,6 +466,7 @@ class DividendModel extends BaseModel {
 		$AccountLogModel = new AccountLogModel();
         $WeiXinUsersModel = new WeiXinUsersModel();
         $WeiXinMsgTplModel = new WeiXinMsgTplModel();
+        $buy_nick_name = $this->UsersModel->where('user_id',$buy_user_id)->value('nick_name');//获取购买会员昵称
 		foreach ($rows as $row){
 			$upDate['status'] = $type == 'unsign' ? $OrderModel->config['DD_SHIPPED'] : $OrderModel->config['DD_RETURNED'];
 			$upDate['limit_id'] = 0;
@@ -457,7 +477,7 @@ class DividendModel extends BaseModel {
 			}
 			
 			if ($row['status'] == $OrderModel->config['DD_DIVVIDEND']){				
-				$changedata['change_desc'] = $type == 'unsign' ?'订单取消签收-退回佣金':'订单退货-退回佣金';
+				$changedata['change_desc'] = $type == 'unsign' ?'订单撤销签收-退回佣金':'订单退货-退回佣金';
 				$changedata['change_type'] = 4;
 				$changedata['by_id'] = $row['order_id'];
 				$changedata['balance_money'] = $row['dividend_amount'] * -1;
@@ -468,8 +488,10 @@ class DividendModel extends BaseModel {
 					return false;
 				}
                 //执行模板消息通知
+                $row['buy_nick_name'] = $buy_nick_name;
+                $row['order_operating'] = $type == 'unsign' ?'撤销签收':'订单退货';
                 $row['send_scene']  = 'dividend_return_msg';//佣金退回通知
-                $row['wx_openid'] = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->value('wx_openid');
+                $row['openid'] = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->value('wx_openid');
                 $WeiXinMsgTplModel->send($row);//模板消息通知
 			}
 

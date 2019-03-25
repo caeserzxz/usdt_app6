@@ -72,6 +72,7 @@ class Payment extends ClientbaseController
             $upArr['pay_code'] = $this->pay_code;
             $upArr['pay_id'] = $payment['pay_id'];
             $upArr['pay_name'] = $payment['pay_name'];
+            $upArr['money_paid'] = $order['order_amount'];
             $res = $OrderModel->updatePay($upArr, '余额支付成功.');
             if ($res !== true) {
                 return $this->error($res);
@@ -137,7 +138,7 @@ class Payment extends ClientbaseController
 
 
         $this->assign('code_str', $code_str);
-        $this->assign('order_id', $log_id);
+        $this->assign('order_id', $order_id);
         return $this->fetch('recharge'); //分跳转 和不 跳转
     }
 
@@ -161,8 +162,8 @@ class Payment extends ClientbaseController
             else
                 return $this->fetch('recharge_error');
         }
-        $order = (new OrderModel)->where("order_sn", $result['order_sn'])->find();
-        $this->assign('order', $order);
+        $this->assign('title','支付结果');
+
         if ($result['status'] == 1)
             return $this->fetch('success');
         else
