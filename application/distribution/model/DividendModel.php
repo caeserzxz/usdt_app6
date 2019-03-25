@@ -189,29 +189,29 @@ class DividendModel extends BaseModel {
                 $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
 				if (in_array($userInfo['role_id'],$limit_role) == false){
 					if($award['award_type'] == 2){//平推奖，如果当前用户不满足条件，此奖项终止
+                        $awardVal = $awardValue[$nowLevel];
 						unset($awardList[$key]);//移除已结束的奖项
 					}elseif($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
 						if ($nowLevel <=3 ){
 							$awardVal = $awardValue[$nowLevelOrdinary];
-							if ($awardVal['type'] == 'gold'){
-								$sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
-							}else{
-								$sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
-							}
-
-							$sendData['award_name']         = $award['award_name'];
-							$sendData['level_award_name']   = $awardVal['name'];
-							$sendData['level']              = $nowLevel;
-							$sendData['role_name']          = $role_name;
-							$sendData['order_sn']           = $orderInfo['order_sn'];
-							$sendData['add_time']           = $orderInfo['add_time'];
-							$sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
-							$sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
-							$sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
-							$res = (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
                         }
                         $nowLevelOrdinary -= 1;
                     }
+                    if ($awardVal['type'] == 'gold'){
+                        $sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
+                    }else{
+                        $sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
+                    }
+                    $sendData['award_name']         = $award['award_name'];
+                    $sendData['level_award_name']   = $awardVal['name'];
+                    $sendData['level']              = $nowLevel;
+                    $sendData['role_name']          = $role_name;
+                    $sendData['order_sn']           = $orderInfo['order_sn'];
+                    $sendData['add_time']           = $orderInfo['add_time'];
+                    $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
+                    $sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
+                    $sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
+                    $res = (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
                     continue;
 				}
 
