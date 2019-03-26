@@ -107,7 +107,7 @@ class Setting extends AdminController
                     foreach ($log_ids as $log_id) {
                         $log = $DividendModel->find($log_id);
                         //执行模板消息通知
-                        $log['send_scene'] = 'dividend_arrival_msg';//佣金到帐通知
+                        $log['send_scene'] = $log['dividend_bean'] > 0 ? 'dividend_bean_arrival_msg' :'dividend_arrival_msg';//佣金到帐通知
                         $wxInfo = $WeiXinUsersModel->where('user_id', $log['dividend_uid'])->field('wx_openid','wx_nickname')->find();
                         $log['openid'] = $wxInfo['wx_openid'];
                         $log['send_nick_name'] = $wxInfo['wx_nickname'];
@@ -121,8 +121,11 @@ class Setting extends AdminController
         if ($DividendInfo['repeat_buy_msg_day'] > 0){
             $where = [];
             $where[] = ['u.last_buy_time','>',0];
-            $where[] = ['u.last_buy_time','>',time() - ($DividendInfo['repeat_buy_msg_day'] * 86400)];
-            $rows = (new UsersModel)->where($where)->alias('u')->join('weixin_users wxu', 'u.user_id = wxu.user_id', 'left')->field('wxu.wx_openid,wxu.user_id,wxu.wx_nickname')->select();
+            $repeat_buy_msg_time = time() - ($DividendInfo['repeat_buy_msg_day'] * 86400);
+            $where[] = ['u.last_buy_time','>',$repeat_buy_msg_time];
+            $where[] = ['u.send_repeat_buy_msg_time','>',$repeat_buy_msg_time];
+            $UsersModel = new UsersModel();
+            $rows = $UsersModel->where($where)->alias('u')->join('weixin_users wxu', 'u.user_id = wxu.user_id', 'left')->field('wxu.wx_openid,wxu.user_id,wxu.wx_nickname')->select();
             foreach ($rows as $row){
                 if (empty($wx_openid) == false) continue;
                 //执行模板消息通知
@@ -130,6 +133,7 @@ class Setting extends AdminController
                 $row['openid'] = $row['wx_openid'];
                 $row['send_nick_name'] = $row['wx_nickname'];
                 $WeiXinMsgTplModel->send($row);//模板消息通知
+                $UsersModel->upInfo($row['user_id'],['send_repeat_buy_msg_time'=>time()]);
             }
         }
     }

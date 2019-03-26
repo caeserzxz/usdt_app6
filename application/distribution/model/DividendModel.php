@@ -39,7 +39,8 @@ class DividendModel extends BaseModel {
 		$DividendInfo = settings('DividendInfo');
 		$upData = [];//更新分佣记录状态
 		$OrderModel = new OrderModel();
-        $send_scene = $order_operating = '';
+        $send_msg = false;
+		$order_operating = '';
 		//先计算佣金再执行升级处理
 		if ($type == 'add'){//写入分佣		
 			if ($DividendInfo['bind_type'] == 1 && $orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']){//支付成功时绑定关系
@@ -60,7 +61,7 @@ class DividendModel extends BaseModel {
 			$res = $this->evalLevelUp($orderInfo,$goodsList,$orderInfo['user_id']);
 			if ($res == false) return false;
 		}elseif ($type == 'cancel'){//订单取消
-            $send_scene = 'dividend_cancel_msg';
+            $send_msg = true;
             $order_operating = '订单取消';
 			$upData['status'] = $OrderModel->config['DD_CANCELED'];
 		}elseif ($type == 'shipping'){//发货
@@ -82,14 +83,16 @@ class DividendModel extends BaseModel {
 			$res = $this->where('order_id',$orderInfo['order_id'])->update($upData);
 
 			if ($res < 1) return false;
-            if (empty($send_scene) == false){//发送模板消息
+            if ($send_msg == true){//发送模板消息
                 $WeiXinUsersModel = new WeiXinUsersModel();
                 $WeiXinMsgTplModel = new WeiXinMsgTplModel();
                 $buy_nick_name = $this->UsersModel->where('user_id',$orderInfo['user_id'])->value('nick_name');//获取购买会员昵称
 				$rows = $this->where('order_id',$orderInfo['order_id'])->select()->toArray();
 				foreach ($rows as $row){
                     $row['buy_user_id'] = $orderInfo['user_id'];
-                    $row['send_scene'] = $send_scene;
+                    if ($type == 'cancel'){
+                        $row['send_scene'] = $row['dividend_bean'] > 0 ? 'dividend_bean_cancel_msg' : 'dividend_cancel_msg';
+					}
                     $row['buy_nick_name'] = $buy_nick_name;
                     $row['order_operating'] = $order_operating;
                     $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid','wx_nickname')->find();
@@ -193,6 +196,7 @@ class DividendModel extends BaseModel {
 				$limit_role = explode(',',$award['limit_role']);
                 $role_name = $DividendRoleModel->info($userInfo['role_id'],true);
 				if (in_array($userInfo['role_id'],$limit_role) == false){
+                    $sendData['dividend_amount'] = $sendData['dividend_bean'] = 0;
 					if($award['award_type'] == 2){//平推奖，如果当前用户不满足条件，此奖项终止
                         $awardVal = $awardValue[$nowLevel];
 						unset($awardList[$key]);//移除已结束的奖项
@@ -216,7 +220,7 @@ class DividendModel extends BaseModel {
                     $sendData['add_time']           = $orderInfo['add_time'];
                     $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                     $sendData['send_nick_name']      = $userInfo['nick_name'];
-                    $sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
+                    $sendData['send_scene']         = $sendData['dividend_bean'] > 0 ? 'dividend_bean_loss_role_msg' : 'dividend_loss_role_msg';//佣金损失通知
                     $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
                     $sendData['openid'] = $wxInfo['wx_openid'];
                     $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
@@ -272,6 +276,7 @@ class DividendModel extends BaseModel {
 					$where[] = ['o.order_status','=',$OrderModel->config['OS_CONFIRMED']];
 					$count = $OrderModel->alias('o')->join($OrderGoodsModel->table().' og','o.order_id = og.order_id AND og.goods_id IN ('.$award['repeat_goods_id'].')')->where($where)->count();
 					if ($count < 1){
+                        $sendData['dividend_amount'] = $sendData['dividend_bean'] = 0;
                         if (in_array($award['award_type'],[1,2])){//普通分销奖&平推奖
                             if ($awardVal['type'] == 'gold'){
                                 $sendData['dividend_amount'] = $awardVal['num'] * $awardBuyNum;
@@ -294,7 +299,7 @@ class DividendModel extends BaseModel {
                         $sendData['add_time']           = $orderInfo['add_time'];
                         $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                         $sendData['send_nick_name']      = $userInfo['nick_name'];
-                        $sendData['send_scene']         = 'dividend_loss_buy_msg';//佣金损失通知
+                        $sendData['send_scene']         = $sendData['dividend_bean'] > 0 ? 'dividend_bean_loss_buy_msg' : 'dividend_loss_buy_msg';//佣金损失通知
                         $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
                         $sendData['openid'] = $wxInfo['wx_openid'];
                         $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
@@ -315,6 +320,7 @@ class DividendModel extends BaseModel {
                 }elseif($award['award_type'] == 3){//管理奖
                     $assignAwardNum[$award['award_id']] += $award_num;
                     $dividend_amount += $award_num * $awardBuyNum;//计算总佣金
+                    $inArr['dividend_amount'] = $inArr['dividend_bean'] = 0;
                     if ($awardVal['type'] == 'gold'){
                         $inArr['dividend_amount'] = $award_num * $awardBuyNum;
                     }else{
@@ -337,12 +343,12 @@ class DividendModel extends BaseModel {
 				$res = self::create($inArr);
 				if ($res < 1) return false;
 				//执行模板消息通知
-                $inArr['send_scene']  = 'dividend_add_msg';//佣金产生通知
+                $inArr['send_scene']  = $inArr['dividend_bean'] > 0 ? 'dividend_bean_add_smg':'dividend_add_msg';//佣金产生通知
                 $inArr['buy_user_id'] = $orderInfo['user_id'];
                 $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
                 $inArr['openid'] = $wxInfo['wx_openid'];
                 $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
-                $res = $WeiXinMsgTplModel->send($inArr);//模板消息通知
+                $WeiXinMsgTplModel->send($inArr);//模板消息通知
 			}
 
 			if (empty($awardList) == true){//没有奖项可分了，终止

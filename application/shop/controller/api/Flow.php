@@ -167,7 +167,7 @@ class Flow extends ApiController
 		$cartList = $this->Model->getCartList(1, true,$recids);
         $shippingFee = $this->Model->evalShippingFee($address,$cartList);
         $shippingFee = reset($shippingFee);//现在只返回默认快递
-        $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee']);
+        $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee'] * 1);
         if ($is_return == true) return $shippingFee;
         $return['shippingFee'] = $shippingFee;
         return $this->ajaxReturn($return);
