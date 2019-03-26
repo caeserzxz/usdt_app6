@@ -374,10 +374,15 @@ class Users extends AdminController
             $res = $this->Model->upInfo($user_id,['pid'=>$select_user_id]);
 
             if ($res < 1){
+                Db::rollback();
                 return $this->error('修改会员所属上级失败.');
             }
 
-            $this->Model->regUserBind($user_id,$select_user_id,true);//重新绑定当前用户的关系链
+            $res = $this->Model->regUserBind($user_id,$select_user_id,true);//重新绑定当前用户的关系链
+            if ($res == false){
+                Db::rollback();
+                return $this->error('绑定当前会员系链失败.');
+            }
             $this->evaleditSuperior($user_id);//执行重新生成所有下属的关系链
             Db::commit();//事务，提交
             Cache::rm($mkey);

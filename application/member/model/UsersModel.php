@@ -449,7 +449,8 @@ class UsersModel extends BaseModel
             $inArr['level'] = $level;
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $_pid;
-            $UsersBindModel::create($inArr);
+            $res = $UsersBindModel::create($inArr);
+            if ($is_edit == true && $res < 1) return false;
             $_pid = $this->where('user_id', $_pid)->value('pid');
         }
 
