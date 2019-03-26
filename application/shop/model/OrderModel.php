@@ -305,10 +305,10 @@ class OrderModel extends BaseModel
                 }else{//在线退款
                     $code = str_replace('/', '\\', "/payment/".$orderInfo['pay_code']."/".$orderInfo['pay_code']);
                     $payment = new $code();
-                    $res = $payment->transfer($orderInfo);
-                    if ($res != true){
+                    $res = $payment->refund($orderInfo);
+                    if ($res !== true){
                         Db::rollback();//回滚
-                        return'请求退款接口失败.';
+                        return'请求退款接口失败：'.$res;
                     }
                 }
                 $upData['pay_status'] = 0;

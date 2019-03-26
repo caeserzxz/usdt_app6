@@ -191,7 +191,7 @@ class alipayMobile
     /**
      * 退款
      */
-    public function transfer($orderInfo = []){
+    public function refund($orderInfo = []){
         require_once("aop/AopClient.php");
         require_once("aop/request/AlipayTradeRefundRequest.php");
         $aop = new \AopClient ();

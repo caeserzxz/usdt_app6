@@ -145,11 +145,7 @@ EOF;
     return $html;
 
     }
-    // 微信提现批量转账
-    function transfer($data){
-    header("Content-type: text/html; charset=utf-8");
-exit("暂不支持");
-    }
+
     
     /**
      * 将一个数组转换为 XML 结构的字符串
@@ -209,9 +205,27 @@ exit("暂不支持");
     }
     
      // 微信订单退款原路退回
-    public function payment_refund($data){
-    header("Content-type: text/html; charset=utf-8");
-exit("暂不支持.");
+    public function refund($data){
+        if(!empty($data["transaction_id"])){
+            $input = new \WxPayRefund();
+            $input->SetTransaction_id($data["transaction_id"]);
+            $input->SetTotal_fee($data["order_amount"]*100);
+            $input->SetRefund_fee($data["money_paid"]*100);
+            $input->SetOut_refund_no(\WxPayConfig::$mchid.date("YmdHis"));
+            $input->SetOp_user_id(\WxPayConfig::$mchid);
+            $res = \WxPayApi::refund($input);
+
+            if ($res['return_code'] == 'FAIL'){
+                return $res['return_msg'];
+            }
+            if($res['result_code'] == 'FAIL'){
+                return $res['err_code_des'];
+            }
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
 }

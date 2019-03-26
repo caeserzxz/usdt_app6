@@ -575,7 +575,7 @@ class Order extends AdminController
         $data['tuikuan_money'] = $orderInfo['money_paid'];
         $data['tuikuan_time'] = time();
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true ) return $this->error($res);
         $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为退款');
         return $this->success('设为退款成功！', url('info', array('order_id' => $order_id)));
