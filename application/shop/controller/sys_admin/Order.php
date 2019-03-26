@@ -255,8 +255,8 @@ class Order extends AdminController
             if ($kd_type == 3) {
                 $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id],$kdeorder_goods_name,$orderInfo);
                 if (is_array($res) == false) return $this->error($res);
-                $data['shipping_id'] = $res['shipping_id'];
-                $data['invoice_no'] = $res['invoice_no'];
+                $data['shipping_id'] = $res[0];
+                $data['invoice_no'] = $res[1];
             } elseif ($kd_type == 1) {
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
@@ -312,9 +312,10 @@ class Order extends AdminController
                         $error[] = '订单'.$orderInfo['order_sn'].':'.$res;
                         continue;
                     }
-                    $upData['shipping_id'] = $res['shipping_id'];
-                    $upData['invoice_no'] = $res['invoice_no'];
+                    $upData['shipping_id'] = $res[0];
+                    $upData['invoice_no'] = $res[1];
                 }
+                $upData['order_id'] = $order_id;
                 $upData['shipping_status'] = $config['SS_SHIPPED'];
                 $upData['shipping_time'] = time();
                 $res = $this->Model->upInfo($upData);

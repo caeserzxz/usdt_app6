@@ -140,6 +140,6 @@ class ShippingModel extends BaseModel
             $kdnordercode = $kdorder['KDNOrderCode'];
         }
 
-        return [$kdn_shipping_id,$logisticcode];
+        return [$shipping['shipping_id'],$logisticcode];
     }
 }

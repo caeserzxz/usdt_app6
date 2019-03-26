@@ -79,9 +79,11 @@ class Order extends ApiController
         switch ($type){
             case 'cancel'://取消
                 $upData['order_status'] = $config['OS_CANCELED'];
+                $upData['cancel_time'] = time();
                 break;
             case 'sign'://签收
                 $upData['shipping_status'] = $config['SS_SIGN'];
+                $upData['sign_time'] = time();
                 break;
             case 'del'://删除
                 $upData['is_del'] = 1;
