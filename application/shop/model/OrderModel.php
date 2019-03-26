@@ -278,7 +278,8 @@ class OrderModel extends BaseModel
              }
             //执行商品库存和销量处理
             if ($orderInfo['is_stock'] == 1) {
-                $res = $GoodsModel->evalGoodsStore($orderInfo['goodsList'], 'cancel');
+                $goodsList = $this->orderGoods($order_id);
+                $res = $GoodsModel->evalGoodsStore($goodsList['goodsList'], 'cancel');
                 if ($res != true) {
                     Db::rollback();//回滚
                     return '取消订单退库存失败.';

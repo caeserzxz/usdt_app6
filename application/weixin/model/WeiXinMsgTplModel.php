@@ -57,6 +57,7 @@ class WeiXinMsgTplModel extends BaseModel
                     'add_time'=> '[产生时间]',
                     'order_sn'=> '[订单编号]',
                     'order_amount'=> '[订单金额]',
+                    'buy_goods_name'=> '[订单商品]',
                     'buy_nick_name'=> '[下单会员昵称]',
                     'buy_user_id'=> '[下单会员ID]',
                     'send_nick_name'=> '[分佣会员昵称]',

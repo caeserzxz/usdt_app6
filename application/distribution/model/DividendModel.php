@@ -88,6 +88,11 @@ class DividendModel extends BaseModel {
                 $WeiXinMsgTplModel = new WeiXinMsgTplModel();
                 $buy_nick_name = $this->UsersModel->where('user_id',$orderInfo['user_id'])->value('nick_name');//获取购买会员昵称
 				$rows = $this->where('order_id',$orderInfo['order_id'])->select()->toArray();
+				$buy_goods_name = [];
+				foreach ($goodsList as $goods){
+                    $buy_goods_name[] = $goods['goods_name'];
+				}
+                $buy_goods_name = join('，',$buy_goods_name);
 				foreach ($rows as $row){
                     $row['buy_user_id'] = $orderInfo['user_id'];
                     $sendData['order_sn']       = $orderInfo['order_sn'];
@@ -97,9 +102,10 @@ class DividendModel extends BaseModel {
 					}
                     $row['buy_nick_name'] = $buy_nick_name;
                     $row['order_operating'] = $order_operating;
-                    $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid','wx_nickname')->find();
-                    $sendData['openid'] = $wxInfo['wx_openid'];
-                    $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
+                    $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid,wx_nickname')->find();
+                    $row['openid'] = $wxInfo['wx_openid'];
+                    $row['send_nick_name'] = $wxInfo['wx_nickname'];
+                    $row['buy_goods_name'] = $buy_goods_name;
                     $WeiXinMsgTplModel->send($row);//模板消息通知
 				}
             }
@@ -125,12 +131,14 @@ class DividendModel extends BaseModel {
 		$order_goods_ids = [];
 		$order_goods_num = 0;
 		$goods_buy_num = [];//购买商品的数量
+        $buy_goods_name = [];
 		foreach ($goodsList as $goods){
 			$order_goods_ids[] = $goods['goods_id'];
 			$order_goods_num += $goods['goods_number'];
 			$goods_buy_num[$goods['goods_id']] = $goods['goods_number'];
+            $buy_goods_name[] = $goods['goods_name'];
 		}
-		
+        $buy_goods_name = join('，',$buy_goods_name);
 		$DividendInfo = settings('DividendInfo');
 		$OrderModel = new OrderModel();
 		$OrderGoodsModel = new OrderGoodsModel();
@@ -214,17 +222,18 @@ class DividendModel extends BaseModel {
                         $sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
                     }
                     $sendData['buy_user_id']        = $orderInfo['user_id'];
+                    $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                     $sendData['award_name']         = $award['award_name'];
                     $sendData['level_award_name']   = $awardVal['name'];
                     $sendData['level']              = $nowLevel;
                     $sendData['role_name']          = $role_name;
                     $sendData['order_sn']       = $orderInfo['order_sn'];
                     $sendData['order_amount']   = $orderInfo['order_amount'];
+                    $sendData['buy_goods_name']   = $buy_goods_name;
                     $sendData['add_time']           = $orderInfo['add_time'];
-                    $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                     $sendData['send_nick_name']      = $userInfo['nick_name'];
                     $sendData['send_scene']         = $sendData['dividend_bean'] > 0 ? 'dividend_bean_loss_role_msg' : 'dividend_loss_role_msg';//佣金损失通知
-                    $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                    $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid,wx_nickname')->find();
                     $sendData['openid'] = $wxInfo['wx_openid'];
                     $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
                     $WeiXinMsgTplModel->send($sendData);//模板消息通知
@@ -293,6 +302,7 @@ class DividendModel extends BaseModel {
                                 $sendData['dividend_bean'] = $award_num * $awardBuyNum;
                             }
                         }
+                        $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                         $sendData['buy_user_id']       = $orderInfo['user_id'];
                         $sendData['award_name']         = $award['award_name'];
                         $sendData['level_award_name']   = $awardVal['name'];
@@ -301,11 +311,11 @@ class DividendModel extends BaseModel {
                         $sendData['order_sn']       = $orderInfo['order_sn'];
                         $sendData['order_amount']   = $orderInfo['order_amount'];
                         $sendData['order_amount']       = $orderInfo['order_amount'];
+                        $sendData['buy_goods_name']   = $buy_goods_name;
                         $sendData['add_time']           = $orderInfo['add_time'];
-                        $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                         $sendData['send_nick_name']      = $userInfo['nick_name'];
                         $sendData['send_scene']         = $sendData['dividend_bean'] > 0 ? 'dividend_bean_loss_buy_msg' : 'dividend_loss_buy_msg';//佣金损失通知
-                        $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                        $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid,wx_nickname')->find();
                         $sendData['openid'] = $wxInfo['wx_openid'];
                         $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
                         $WeiXinMsgTplModel->send($sendData);//模板消息通知
@@ -348,9 +358,11 @@ class DividendModel extends BaseModel {
 				$res = self::create($inArr);
 				if ($res < 1) return false;
 				//执行模板消息通知
+                $inArr['buy_goods_name']   = $buy_goods_name;
                 $inArr['send_scene']  = $inArr['dividend_bean'] > 0 ? 'dividend_bean_add_smg':'dividend_add_msg';//佣金产生通知
                 $inArr['buy_user_id'] = $orderInfo['user_id'];
-                $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                $inArr['buy_nick_name']      = $buyUserInfo['nick_name'];
+                $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid,wx_nickname')->find();
                 $inArr['openid'] = $wxInfo['wx_openid'];
                 $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
                 $WeiXinMsgTplModel->send($inArr);//模板消息通知
@@ -518,7 +530,7 @@ class DividendModel extends BaseModel {
                 $row['buy_nick_name'] = $buy_nick_name;
                 $row['order_operating'] = $type == 'unsign' ?'撤销签收':'订单退货';
                 $row['send_scene']  = 'dividend_return_msg';//佣金退回通知
-                $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid','wx_nickname')->find();
+                $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid,wx_nickname')->find();
                 $row['openid'] = $wxInfo['wx_openid'];
                 $row['send_nick_name'] = $wxInfo['wx_nickname'];
                 $WeiXinMsgTplModel->send($row);//模板消息通知
