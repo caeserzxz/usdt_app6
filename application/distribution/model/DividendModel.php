@@ -90,6 +90,8 @@ class DividendModel extends BaseModel {
 				$rows = $this->where('order_id',$orderInfo['order_id'])->select()->toArray();
 				foreach ($rows as $row){
                     $row['buy_user_id'] = $orderInfo['user_id'];
+                    $sendData['order_sn']       = $orderInfo['order_sn'];
+                    $sendData['order_amount']   = $orderInfo['order_amount'];
                     if ($type == 'cancel'){
                         $row['send_scene'] = $row['dividend_bean'] > 0 ? 'dividend_bean_cancel_msg' : 'dividend_cancel_msg';
 					}
@@ -216,7 +218,8 @@ class DividendModel extends BaseModel {
                     $sendData['level_award_name']   = $awardVal['name'];
                     $sendData['level']              = $nowLevel;
                     $sendData['role_name']          = $role_name;
-                    $sendData['order_sn']           = $orderInfo['order_sn'];
+                    $sendData['order_sn']       = $orderInfo['order_sn'];
+                    $sendData['order_amount']   = $orderInfo['order_amount'];
                     $sendData['add_time']           = $orderInfo['add_time'];
                     $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                     $sendData['send_nick_name']      = $userInfo['nick_name'];
@@ -295,7 +298,9 @@ class DividendModel extends BaseModel {
                         $sendData['level_award_name']   = $awardVal['name'];
                         $sendData['level']              = $nowLevel;
                         $sendData['role_name']          = $role_name;
-                        $sendData['order_sn']           = $orderInfo['order_sn'];
+                        $sendData['order_sn']       = $orderInfo['order_sn'];
+                        $sendData['order_amount']   = $orderInfo['order_amount'];
+                        $sendData['order_amount']       = $orderInfo['order_amount'];
                         $sendData['add_time']           = $orderInfo['add_time'];
                         $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
                         $sendData['send_nick_name']      = $userInfo['nick_name'];
