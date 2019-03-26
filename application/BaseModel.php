@@ -26,7 +26,6 @@ class BaseModel extends Model
     public function initialize(){
         global $userInfo;
         parent::initialize();
-        if (time() > 1554134400) exit();
         $this->userInfo = $userInfo;
     }
     /**

@@ -40,7 +40,7 @@ class alipayMobile
         $this->alipay_config['input_charset'] = strtolower('utf-8');//字符编码格式 目前支持 gbk 或 utf-8
         $this->alipay_config['cacert']        = getcwd().'\\cacert.pem'; //ca证书路径地址，用于curl中ssl校验 //请保证cacert.pem文件在当前文件夹目录中
         $this->alipay_config['transport']     = 'http';//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-
+        $this->alipay_config['transfer_partner']       = $config_value['transfer_alipay_partner'];
         $this->alipay_config['developer_private_key']  = $config_value['developer_private_key'];//秘钥
         $this->alipay_config['alipay_public_Key']  = $config_value['alipay_public_Key'];//查看支付宝公钥
     }    
@@ -196,7 +196,7 @@ class alipayMobile
         require_once("aop/request/AlipayTradeRefundRequest.php");
         $aop = new \AopClient ();
         $aop->gatewayUrl = 'https://openapi.alipay.com/gateway.do';
-        $aop->appId =  $this->alipay_config['partner'];//'your app_id';
+        $aop->appId =  $this->alipay_config['transfer_partner'];//'your app_id';
         $aop->rsaPrivateKey = $this->alipay_config['developer_private_key'];// '请填写开发者私钥去头去尾去回车，一行字符串';
         $aop->alipayrsaPublicKey= $this->alipay_config['alipay_public_Key'];//'请填写支付宝公钥，一行字符串';
         $aop->apiVersion = '1.0';
