@@ -40,6 +40,8 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+
+
         $reportrange = input('reportrange', '', 'trim');
         if (empty($reportrange) == false) {
             $reportrange = str_replace('_', '/', $reportrange);
@@ -566,7 +568,8 @@ class Order extends AdminController
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if ($orderInfo['pay_status'] != $config['PS_PAYED']) return $this->error('订单不是付款状态，无法设为退款！');
+        if ($orderInfo['pay_status'] != $config['PS_PAYED']) return $this->error('订单不是付款状态，无法设为退款.');
+
         $data['order_id'] = $order_id;
         $data['pay_status'] = $config['PS_RUNPAYED'];
         $data['tuikuan_money'] = $orderInfo['money_paid'];

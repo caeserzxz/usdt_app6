@@ -36,7 +36,7 @@ class Payment extends ClientbaseController
         if ($this->pay_code != 'balance') {
             define('SITE_URL',config('config.host_path'));
             // 导入具体的支付类文件
-            $code = str_replace('/', '\\', "/payment/{$this->pay_code}/{$this->pay_code}");
+           $code = str_replace('/', '\\', "/payment/{$this->pay_code}/{$this->pay_code}");
 
             $this->payment = new $code();
         }
@@ -155,8 +155,8 @@ class Payment extends ClientbaseController
         $result = $this->payment->respond2(); // $result['order_sn'] = '201512241425288593';
         if (stripos($result['order_sn'], 'recharge') !== false) {
             $RechargeLogModel = new RechargeLogModel();
-            $order = $RechargeLogModel->where("order_sn", $result['order_sn'])->find();
-            $this->assign('order', $order);
+            $orderInfo = $RechargeLogModel->where("order_sn", $result['order_sn'])->find();
+            $this->assign('orderInfo', $orderInfo);
             if ($result['status'] == 9)
                 return $this->fetch('recharge_success');
             else

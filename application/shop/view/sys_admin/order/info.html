@@ -49,7 +49,7 @@
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"
                                    data-remote="{:url('returnPay',array('id'=>$orderInfo['order_id']))}"
-                                   data-toggle="ajaxRemove" data-msg="确定设为退款，支付金额退回帐户余额？" class="btn btn-default btn-sm"
+                                   data-toggle="ajaxRemove" data-msg="确定设为退款？" class="btn btn-default btn-sm"
                                    title="设为退款">设为退款</a></td>
                         {/notempty}
                         {notempty name="operating.changePrice"}
@@ -435,9 +435,9 @@
                                 <tr>
                                     <td>{$log.log_time|dateTpl}</td>
                                     <td>{$log.admin_id|adminInfo}</td>
-                                    <td>{$orderLang['os'][$log['order_status']]}</td>
-                                    <td>{$orderLang['ps'][$log['pay_status']]}</td>
-                                    <td>{$orderLang['ss'][$log['shipping_status']]}</td>
+                                    <td>{$orderLang['os'][$log['order_status']]|raw}</td>
+                                    <td>{$orderLang['ps'][$log['pay_status']]|raw}</td>
+                                    <td>{$orderLang['ss'][$log['shipping_status']]|raw}</td>
                                     <td>{$log.log_info}</td>
                                 </tr>
                             {/volist}

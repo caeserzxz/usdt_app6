@@ -291,15 +291,27 @@ class OrderModel extends BaseModel
 			 
 		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
 			if ($orderInfo['money_paid'] > 0) {
-				$inData['balance_money'] = $orderInfo['money_paid'];           
-                $inData['change_type'] = 3;
-                $inData['by_id'] = $orderInfo['order_id'];
-                $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
-                $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
-                if ($res != true) {
-                    Db::rollback();//回滚
-                    return '订单退款到余额失败.';
+			    if ($orderInfo['pay_code'] == 'balance'){
+                    $inData['balance_money'] = $orderInfo['money_paid'];
+                    $inData['change_type'] = 3;
+                    $inData['by_id'] = $orderInfo['order_id'];
+                    $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
+                    $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
+
+                    if ($res != true) {
+                        Db::rollback();//回滚
+                        return '订单退款到余额失败.';
+                    }
+                }else{//在线退款
+                    $code = str_replace('/', '\\', "/payment/".$orderInfo['pay_code']."/".$orderInfo['pay_code']);
+                    $payment = new $code();
+                    $res = $payment->transfer($orderInfo);
+                    if ($res != true){
+                        Db::rollback();//回滚
+                        return'请求退款接口失败.';
+                    }
                 }
+                $upData['pay_status'] = 0;
             }			
         }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] ==  $this->config['SS_UNSHIPPED']) {//发货		
 			$res = $this->distribution($orderInfo,'shipping');//提成处理

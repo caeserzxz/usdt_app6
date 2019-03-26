@@ -7,8 +7,7 @@
 namespace payment\alipayMobile;
 
 
-use think\Request;
-use think\Db;
+
 use app\member\model\RechargeLogModel;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
@@ -41,7 +40,9 @@ class alipayMobile
         $this->alipay_config['input_charset'] = strtolower('utf-8');//字符编码格式 目前支持 gbk 或 utf-8
         $this->alipay_config['cacert']        = getcwd().'\\cacert.pem'; //ca证书路径地址，用于curl中ssl校验 //请保证cacert.pem文件在当前文件夹目录中
         $this->alipay_config['transport']     = 'http';//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-        
+
+        $this->alipay_config['developer_private_key']  = $config_value['developer_private_key'];//秘钥
+        $this->alipay_config['alipay_public_Key']  = $config_value['alipay_public_Key'];//查看支付宝公钥
     }    
     /**
      * 生成支付代码
@@ -187,5 +188,41 @@ class alipayMobile
                 return array('status'=>0,'order_sn'=>$_GET['out_trade_no']);//跳转至失败页面
             }
     }
-    
+    /**
+     * 退款
+     */
+    public function transfer($orderInfo = []){
+        require_once("aop/AopClient.php");
+        require_once("aop/request/AlipayTradeRefundRequest.php");
+        $aop = new \AopClient ();
+        $aop->gatewayUrl = 'https://openapi.alipay.com/gateway.do';
+        $aop->appId =  $this->alipay_config['partner'];//'your app_id';
+        $aop->rsaPrivateKey = $this->alipay_config['developer_private_key'];// '请填写开发者私钥去头去尾去回车，一行字符串';
+        $aop->alipayrsaPublicKey= $this->alipay_config['alipay_public_Key'];//'请填写支付宝公钥，一行字符串';
+        $aop->apiVersion = '1.0';
+        $aop->signType = 'RSA2';
+        $aop->postCharset='UTF-8';
+        $aop->format='json';
+        $request = new \AlipayTradeRefundRequest();
+        $array=array(
+            'out_trade_no'=>$orderInfo['order_sn'],//订单支付时传入的商户订单号,不能和 trade_no同时为空。
+            'trade_no'=>$orderInfo['transaction_id'],//支付宝交易号，和商户订单号不能同时为空
+            'refund_amount'=>$orderInfo['money_paid'],//需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+            'refund_reason'=>'退款',//退款的原因说明
+            'out_request_no'=>$orderInfo['order_sn'],//标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+            'operator_id'=>AUID,//商户的操作员编号
+
+        );
+        $list=json_encode($array);
+        $request->setBizContent($list);
+        $result = $aop->execute ( $request);
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        $resultCode = $result->$responseNode->code;
+
+        if(!empty($resultCode)&&$resultCode == 10000){
+           return true;
+        } else {
+            return false;
+        }
+    }
 }
