@@ -8,6 +8,7 @@ use think\facade\Env;
 use think\Db;
 
 use app\member\model\AccountLogModel;
+use app\member\model\UsersModel;
 //*------------------------------------------------------ */
 //-- 订单表
 /*------------------------------------------------------ */
@@ -236,9 +237,7 @@ class OrderModel extends BaseModel
         $OrderGoodsModel = new OrderGoodsModel();
         $AccountLogModel = new AccountLogModel();
 
-	
-        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单		
-		
+        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单
 			if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
                     $goodsList = $this->orderGoods($order_id);
                     $res = $GoodsModel->evalGoodsStore($goodsList['goodsList']);
@@ -249,12 +248,9 @@ class OrderModel extends BaseModel
             }
             //订单支付成功
             if ($upData['pay_status'] == $this->config['PS_PAYED']){
-                
-				
 				if ($orderInfo['pay_code'] == 'balance' || $upData['pay_code'] == 'balance'){					
 					$upData['money_paid'] = $orderInfo['order_amount'];
 					$upData['pay_time'] = time();
-					
 					$changedata['change_desc'] = '订单余额支付';
 					$changedata['change_type'] = 3;
 					$changedata['by_id'] = $order_id;
@@ -289,9 +285,6 @@ class OrderModel extends BaseModel
                 }
                 $upData['is_stock'] = 0;
             }
-
-
-
 		}elseif ($upData['pay_status'] === $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
 			 
 		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
@@ -544,7 +537,6 @@ class OrderModel extends BaseModel
 	 * @return string|Ambigous <string, unknown>
 	 */
 	function getPayBody($order_id){
-	
 		if(empty($order_id))return "订单ID参数错误";
 		$goodsNames = (new OrderGoodsModel)->where('order_id' , $order_id)->column('goods_name');
 		$gns = implode($goodsNames, ',');
@@ -555,13 +547,13 @@ class OrderModel extends BaseModel
     //-- 订单在线支付成功处理
     /*------------------------------------------------------ */
 	public function updatePay($upData = [],$_log = '支付成功'){
-
 		$upData['pay_status'] = $this->config['PS_PAYED'];
 		$upData['order_status'] = $this->config['OS_CONFIRMED'];
 		$res = $this->upInfo($upData,'sys');
 		if ($res == true){			
 			$orderInfo = $this->info($upData['order_id']);
-		 	$this->_log($orderInfo,$_log);	
+		 	$this->_log($orderInfo,$_log);
+            (new UsersModel)->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
 			return true;	
 		}
 		return $res;

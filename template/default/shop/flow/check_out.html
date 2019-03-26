@@ -31,7 +31,9 @@
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">-￥</p><em class="fs34 totalDiscount">0.00</em></div>
         </div>
         <!-- 优惠券 -->
+        {eq name="$setting.shop_used_bonus" value="1"}
         {include file="flow/bonus" /}
+        {/eq}
         <div class="color_3 cell">
             <span class="fs28">运费</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 shippingFee">0.00</em></div>

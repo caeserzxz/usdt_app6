@@ -58,10 +58,12 @@
             </a>
             {/volist}
         </div>
+        {eq name="$setting.shop_used_bonus" value="1"}
         <div class="cell">
             <span class="fs28 color_3">优惠券</span>
             <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
         </div>
+        {/eq}
         <div class="cell">
             <span class="fs28 color_3">折扣</span>
             <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.discount}</em></div>

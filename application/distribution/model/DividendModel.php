@@ -24,8 +24,7 @@ class DividendModel extends BaseModel {
     /*------------------------------------------------------ */
     public function initialize(){
         parent::initialize();
-		$this->UsersModel = new UsersModel();	
-		
+		$this->UsersModel = new UsersModel();
     }
 
     /*------------------------------------------------------ */
@@ -84,14 +83,19 @@ class DividendModel extends BaseModel {
 
 			if ($res < 1) return false;
             if (empty($send_scene) == false){//发送模板消息
+                $WeiXinUsersModel = new WeiXinUsersModel();
+                $WeiXinMsgTplModel = new WeiXinMsgTplModel();
                 $buy_nick_name = $this->UsersModel->where('user_id',$orderInfo['user_id'])->value('nick_name');//获取购买会员昵称
 				$rows = $this->where('order_id',$orderInfo['order_id'])->select()->toArray();
 				foreach ($rows as $row){
+                    $row['buy_user_id'] = $orderInfo['user_id'];
                     $row['send_scene'] = $send_scene;
                     $row['buy_nick_name'] = $buy_nick_name;
                     $row['order_operating'] = $order_operating;
-                    $row['openid'] = (new WeiXinUsersModel)->where('user_id', $row['dividend_uid'])->value('wx_openid');
-                    $res = (new WeiXinMsgTplModel)->send($row);//模板消息通知
+                    $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid','wx_nickname')->find();
+                    $sendData['openid'] = $wxInfo['wx_openid'];
+                    $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
+                    $WeiXinMsgTplModel->send($row);//模板消息通知
 				}
             }
 		}
@@ -126,7 +130,8 @@ class DividendModel extends BaseModel {
 		$OrderModel = new OrderModel();
 		$OrderGoodsModel = new OrderGoodsModel();
 		$DividendRoleModel = new DividendRoleModel();
-		
+        $WeiXinUsersModel = new WeiXinUsersModel();
+        $WeiXinMsgTplModel = new WeiXinMsgTplModel();
 		$nowLevel = 0;//当前处理级别
         $nowLevelOrdinary = 0;//普通分销当前处理级别，普通分销有逐级计算和无限级计算，如果无限级，不满条件将一直最后的上级
 		$assignAwardNum = [];//记录已分出去的管理奖金额
@@ -134,7 +139,7 @@ class DividendModel extends BaseModel {
 		$lastRole = $roleInfo['level'];//下级会员分佣身份级别
         $buyUserInfo = $this->UsersModel->info($orderInfo['user_id']);//获取购买会员信息
 		$this->where('order_id',$orderInfo['order_id'])->delete();//清理旧的提成记录，重新计算
-		
+
 		do {
 			$nowLevel += 1;
             $nowLevelOrdinary += 1;
@@ -202,6 +207,7 @@ class DividendModel extends BaseModel {
                     }else{
                         $sendData['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
                     }
+                    $sendData['buy_user_id']        = $orderInfo['user_id'];
                     $sendData['award_name']         = $award['award_name'];
                     $sendData['level_award_name']   = $awardVal['name'];
                     $sendData['level']              = $nowLevel;
@@ -209,28 +215,30 @@ class DividendModel extends BaseModel {
                     $sendData['order_sn']           = $orderInfo['order_sn'];
                     $sendData['add_time']           = $orderInfo['add_time'];
                     $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
+                    $sendData['send_nick_name']      = $userInfo['nick_name'];
                     $sendData['send_scene']         = 'dividend_loss_role_msg';//佣金损失通知
-                    $sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
-                    $res = (new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+                    $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                    $sendData['openid'] = $wxInfo['wx_openid'];
+                    $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
+                    $WeiXinMsgTplModel->send($sendData);//模板消息通知
                     continue;
 				}
 
-				$endAward = end($awardValue);//获取最后奖项
-				if($award['award_type'] == 3){//判断管理奖是否享受					
+				if($award['award_type'] == 3){//判断管理奖是否享受
 					if (empty($awardValue[$userInfo['role_id']])){//没有找到相应奖项级别跳出
 						continue;
 					}
 					if (isset($assignAwardNum[$award['award_id']]) == false){//未定义附值为0
 						$assignAwardNum[$award['award_id']] = 0;
 					}
+                    $endAward = end($awardValue);//获取最后奖项
 					if ($assignAwardNum[$award['award_id']] >= $endAward['num']){
 						unset($awardList[$key]);//管理奖已达最大分配值，终止，跳出
 						continue;
-					}					
+					}
 					$awardVal = $awardValue[$userInfo['role_id']];//获取对应角色奖项					
 					$roleInfo = $DividendRoleModel->info($userInfo['role_id']);//获取当前用户分销身份
 					if ($roleInfo['level'] <= $lastRole){//上级低于下级或平级时跳出
-						//执行模板通知
 						continue;
 					}					
 					$lastRole = $roleInfo['level'];					
@@ -277,6 +285,7 @@ class DividendModel extends BaseModel {
                                 $sendData['dividend_bean'] = $award_num * $awardBuyNum;
                             }
                         }
+                        $sendData['buy_user_id']       = $orderInfo['user_id'];
                         $sendData['award_name']         = $award['award_name'];
                         $sendData['level_award_name']   = $awardVal['name'];
                         $sendData['level']              = $nowLevel;
@@ -284,9 +293,12 @@ class DividendModel extends BaseModel {
                         $sendData['order_sn']           = $orderInfo['order_sn'];
                         $sendData['add_time']           = $orderInfo['add_time'];
                         $sendData['buy_nick_name']      = $buyUserInfo['nick_name'];
+                        $sendData['send_nick_name']      = $userInfo['nick_name'];
                         $sendData['send_scene']         = 'dividend_loss_buy_msg';//佣金损失通知
-                        $sendData['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
-						(new WeiXinMsgTplModel)->send($sendData);//模板消息通知
+                        $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                        $sendData['openid'] = $wxInfo['wx_openid'];
+                        $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
+                        $WeiXinMsgTplModel->send($sendData);//模板消息通知
 						 continue;//不满足复购限制，跳出
 					}
 				}
@@ -326,8 +338,11 @@ class DividendModel extends BaseModel {
 				if ($res < 1) return false;
 				//执行模板消息通知
                 $inArr['send_scene']  = 'dividend_add_msg';//佣金产生通知
-                $inArr['openid'] = (new WeiXinUsersModel)->where('user_id', $userInfo['user_id'])->value('wx_openid');
-                (new WeiXinMsgTplModel)->send($inArr);//模板消息通知
+                $inArr['buy_user_id'] = $orderInfo['user_id'];
+                $wxInfo = $WeiXinUsersModel->where('user_id', $userInfo['user_id'])->field('wx_openid','wx_nickname')->find();
+                $inArr['openid'] = $wxInfo['wx_openid'];
+                $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
+                $res = $WeiXinMsgTplModel->send($inArr);//模板消息通知
 			}
 
 			if (empty($awardList) == true){//没有奖项可分了，终止
@@ -488,13 +503,15 @@ class DividendModel extends BaseModel {
 					return false;
 				}
                 //执行模板消息通知
+                $row['buy_user_id'] = $buy_user_id;
                 $row['buy_nick_name'] = $buy_nick_name;
                 $row['order_operating'] = $type == 'unsign' ?'撤销签收':'订单退货';
                 $row['send_scene']  = 'dividend_return_msg';//佣金退回通知
-                $row['openid'] = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->value('wx_openid');
+                $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid','wx_nickname')->find();
+                $row['openid'] = $wxInfo['wx_openid'];
+                $row['send_nick_name'] = $wxInfo['wx_nickname'];
                 $WeiXinMsgTplModel->send($row);//模板消息通知
 			}
-
 		}
 		return true;
 	}

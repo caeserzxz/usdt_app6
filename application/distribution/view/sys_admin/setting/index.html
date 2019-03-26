@@ -92,8 +92,7 @@
                         <label class=" control-label">结算间隔：</label>
                         <div class="col-sm-8 controls">
                             <select name="settlement_day" style="width:100px;">
-                                <option value="0" {$Dividend[
-                                'settlement_day']==0?'selected':''}>不限制</option>
+                                <option value="0" {$Dividend['settlement_day']==0?'selected':''}>不限制</option>
                                 {for start="1" end="121" name="day" }
                                 <option value="{$day}" {$Dividend['settlement_day']==$day?'selected':''}>{$day} 天</option>
                                 {/for}
@@ -119,14 +118,24 @@
                                 <option value="0" {$Dividend[
                                 'repeat_buy_day']==0?'selected':''}>不限制</option>
                                 {for start="1" end="121" name="day" }
-                                <option value="{$day}" {$Dividend[
-                                'repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
+                                <option value="{$day}" {$Dividend['repeat_buy_day']==$day?'selected':''}>{$day} 天</option>
                                 {/for}
                             </select>
                             <span class="help-inline">天（成为合伙人及以上会员，从成会合伙人的那天开始计算，达指定天数需要复购一次，否则不享受管理奖和平推奖资格）</span>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class=" control-label">复购通知：</label>
+                        <div class="col-sm-9 controls">
+                            <select name="repeat_buy_msg_day" style="width:100px;">
+                                <option value="0" {$Dividend['repeat_buy_msg_day']==0?'selected':''}>不推送</option>
+                                {for start="1" end="121" name="day" }
+                                <option value="{$day}" {$Dividend['repeat_buy_msg_day']==$day?'selected':''}>{$day} 天</option>
+                                {/for}
+                            </select>
+                            <span class="help-inline">天（会员指定天数没有复购，自动发微信消息通知）</span>
+                        </div>
+                    </div>
                     <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
                     <div class="form-group">
                         <label class=" control-label">分享海报：</label>

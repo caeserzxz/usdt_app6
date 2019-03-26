@@ -4,7 +4,7 @@ namespace app\shop\controller\api;
 
 use app\ApiController;
 use think\Db;
-use think\facade\Env;
+
 use app\shop\model\CartModel;
 use app\mainadmin\model\PaymentModel;
 use app\member\model\UserAddressModel;
@@ -13,7 +13,7 @@ use app\shop\model\BonusModel;
 use app\shop\model\OrderModel;
 use app\shop\model\GoodsModel;
 use app\shop\model\BonusListModel;
-
+use app\member\model\UsersModel;
 /*------------------------------------------------------ */
 //-- 购物相关API
 /*------------------------------------------------------ */
@@ -235,7 +235,6 @@ class Flow extends ApiController
             if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.');
             }
-            
             //余额完成支付
             $inArr['order_status'] = config('config.OS_CONFIRMED');
             $inArr['pay_status'] = config('config.PS_PAYED');
@@ -295,6 +294,7 @@ class Flow extends ApiController
                 Db::rollback();// 回滚事务
                 return $this->error('未知错误，更新用户余额失败.');
             }
+            (new UsersModel)->upInfo($this->userInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
         }//end
         //执行扣库存
         if ($inArr['is_stock'] == 1) {
