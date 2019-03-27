@@ -69,15 +69,16 @@
 {literal}
 <script type="text/html" id="logTpl">
 {{each list as item index}}
-<div class="cell">
+<div class="cell"  style="height: auto !important; margin-bottom: 0.2rem;">
 	<div class="left">
 		<p class="fs28 fw_b color_2">{{item.award_name}}-{{item.level_award_name}}</p>
 		<span class="fs24 color_9">{{item._time}} </span>
-
+        <p class="fs24 color_9">购买会员：{{item.buy_uid}} - {{item.nick_name}}</p>
 	</div>
 	<div class="right fs34 num {{item.value > 0 ? 'color_r' : 'color_3' }}">
 		{{item.value}}
         <p class="fs24 color_9" >状态：{{item.status}}</p>
+        <p class="fs24 color_9">单号：{{item.order_sn}} </p>
 	</div>
 </div>
 {{/each}}

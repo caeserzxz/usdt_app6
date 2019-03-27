@@ -259,6 +259,7 @@ class Users extends ApiController
             $return['income'] += $income;
             $row['_time'] = timeTran($row['add_time']);
             $row['value'] = $income;
+            $row['nick_name'] = userInfo($row['buy_uid']);
             $row['status'] = $lang['ds'][$row['status']];
             $return['list'][] = $row;
         }
