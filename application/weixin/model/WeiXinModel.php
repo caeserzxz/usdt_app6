@@ -198,12 +198,12 @@ class WeiXinModel extends BaseModel {
 		return $str;
 	}
 	/*------------------------------------------------------ */
-	//-- 获取微信用户信息
+	//-- 获取微信用户信息，非关注也可以调用
 	/*------------------------------------------------------ */
 	function getWxUserInfo($access_token,$curlagain = false){
-		if (empty($access_token)) return array();			
+		if (empty($access_token)) return array();
 		$userinfo = file_get_contents("https://api.weixin.qq.com/sns/userinfo?access_token=".$access_token['access_token']."&openid=".$access_token['openid']."&lang=zh_CN");
-		$userinfo = json_decode($userinfo,true);		
+		$userinfo = json_decode($userinfo,true);
 		
 		if ($userinfo['errcode'] == '40001'){		
 			$ref = file_get_contents("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=".$this->SetConfig['weixin_appid']."&grant_type=refresh_token&refresh_token=".$access_token['refresh_token']);
@@ -217,6 +217,15 @@ class WeiXinModel extends BaseModel {
 		
 		return $userinfo;
 	}
+    /*------------------------------------------------------ */
+    //-- 获取微信用户信息关注才能调用
+    /*------------------------------------------------------ */
+    function getWxUserInfoSubscribe($openid){
+        $access_token = $this->getAccessToken();
+        $userinfo = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$openid."&lang=zh_CN");
+        $userinfo = json_decode($userinfo,true);
+        return $userinfo;
+    }
 	/*------------------------------------------------------ */
 	//-- 获取微信openid
 	/*------------------------------------------------------ */
@@ -227,7 +236,7 @@ class WeiXinModel extends BaseModel {
 			$redirect_uri = urlencode(getUrl());
 			//$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-			return header("location:".$url);	
+			return header("location:".$url);
 		}
 		//获取access_token
 	     $access_token = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$this->SetConfig['weixin_appid']."&secret=".$this->SetConfig['weixin_appsecret']."&code=".$code."&grant_type=authorization_code");		

@@ -25,28 +25,34 @@ class WeiXinUsersModel extends BaseModel
 	/*------------------------------------------------------ */
     public function login($access_token){
 		if (empty($access_token)) return false;
+
 		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();
+
 		if (empty($wx_info) == false){
-		    if ($wx_info['subscribe'] == 0 && $wx_info['update_time'] < time() - 86400 * 7){
+		    if ($wx_info['update_time'] < time() - 86400 ){
                 $WeiXinModel = new WeiXinModel();
-                $wx_arr = $WeiXinModel->getWxUserInfo($access_token);
-                $upArr['wx_openid'] = $access_token['openid'];
-                $upArr['update_time'] = time();
-                $upArr['sex'] = $wx_arr['sex'];
-                $upArr['subscribe'] = $wx_arr['subscribe'] * 1;
-                $upArr['wx_nickname'] = $wx_arr['nickname'];
-                $upArr['wx_headimgurl'] = $wx_arr['headimgurl'];
-                $upArr['wx_city'] = $wx_arr['city'];
-                $upArr['wx_province'] = $wx_arr['province'];
-                $this->where('wxuid',$wx_info['wxuid'])->update($upArr);
-                $wx_info = $this->where('wxuid',$wx_info['wxuid'])->find();
+                $wx_arr = $WeiXinModel->getWxUserInfoSubscribe($wx_info['wx_openid']);
+                if ($wx_arr['subscribe'] == 1){
+                    $upArr['update_time'] = time();
+                    $upArr['sex'] = $wx_arr['sex'];
+                    $upArr['subscribe'] = $wx_arr['subscribe'] * 1;
+                    $upArr['wx_nickname'] = $wx_arr['nickname'];
+                    $upArr['wx_headimgurl'] = $wx_arr['headimgurl'];
+                    $upArr['wx_city'] = $wx_arr['city'];
+                    $upArr['wx_province'] = $wx_arr['province'];
+                    $this->where('wxuid',$wx_info['wxuid'])->update($upArr);
+                    $wx_info = $this->where('wxuid',$wx_info['wxuid'])->find();
+                }
             }
 			return $wx_info->toArray();
 		}
 		//没有数据，执行注册会员
 		$WeiXinModel = new WeiXinModel();
 		//获取相关微信帐号信息
-		$wx_arr = $WeiXinModel->getWxUserInfo($access_token);
+        $wx_arr = $WeiXinModel->getWxUserInfoSubscribe($access_token['wx_openid']);
+        if ($wx_arr['subscribe'] == 0) {//没有关注，上面的无法获取微信信息调用
+            $wx_arr = $WeiXinModel->getWxUserInfo($access_token);
+        }
 		$inarr['user_id'] = 0;
 		$inarr['wx_openid'] = $access_token['openid'];		
 		$inarr['add_time'] = $inarr['update_time'] = time();

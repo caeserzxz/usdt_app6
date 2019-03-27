@@ -20,6 +20,13 @@ class Index  extends ClientbaseController{
 		if ($isIndex == false && settings('shop_index_tpl') == 1){
 			return $this->shopIndex();
 		}
+		$tipsubscribe = 0;//是否显示提示关注
+        //微信网页访问执行
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
+            $subscribe = (new \app\weixin\model\WeiXinUsersModel)->where('user_id',$this->userInfo['user_id'])->value('subscribe');
+            $tipsubscribe = $subscribe == 0 ? 1 : 0;
+        }
+        $this->assign('tipsubscribe', $tipsubscribe);
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
 		$this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单

@@ -63,8 +63,7 @@ class BaseController extends Controller
             }
         }
         if ($userId > 0){
-            $UsersModel = new \app\member\model\UsersModel();
-            return $UsersModel->info($userId);
+            return (new \app\member\model\UsersModel)->info($userId);
         }
         return [];
     }

@@ -31,19 +31,12 @@ class Index  extends BaseController{
 		if ($WeiXinModel->keyword == 'subscribe' || $WeiXinModel->keyword == 'unsubscribe'){
 			$WeiXinUsersModel = new WeiXinUsersModel();
 			$wxuid = $WeiXinUsersModel->where('wx_openid',$WeiXinModel->fromUsername)->value('wxuid');
-            $subscribe = $WeiXinUsersModel->keyword == 'subscribe' ? 1 : 2;
-			if ($wxuid < 1  ){
-				$inArr['subscribe'] = $subscribe * 1;
-				$inArr['wx_openid'] = $WeiXinModel->fromUsername;	
-				$inArr['add_time'] = $inArr['update_time'] = time();
-				$WeiXinUsersModel->save($inArr);
-			}else{
-				$upArr['subscribe'] = $subscribe * 1;
+			if ($wxuid > 0){
+				$upArr['subscribe'] = $WeiXinModel->keyword == 'subscribe' ? 1 : 2;
 				$upArr['wx_subscribe_time'] = time();
 				$upArr['update_time'] = time();
 				$WeiXinUsersModel->where('wxuid',$wxuid)->update($upArr);
 			}
-			
 			if ($WeiXinModel->keyword == 'unsubscribe') return false;
 		}
 		
@@ -55,7 +48,8 @@ class Index  extends BaseController{
 	// 打印log
 	function  logResult($word)
 	{
-	    $fp = fopen('upload/1.txt',"a");
+	    return false;
+	    $fp = fopen('upload/wxmsg-'.date('Y-m-d').'.txt',"a");
 	    flock($fp, LOCK_EX) ;
 	    fwrite($fp,"执行日期：".strftime("%Y-%m-%d %H:%M:%S",time())."\n".$word."\n\n");
 	    flock($fp, LOCK_UN);

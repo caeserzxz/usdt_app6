@@ -72,11 +72,11 @@ class ClientbaseController extends BaseController
     /*------------------------------------------------------ */
     protected function checkLogin($isAllow = true){
 		global $userInfo;
-	
+
 		if (empty($this->userInfo)){  
 			//微信网页访问执行
-			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){						
-				$access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId		
+			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
+				$access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId
 				if (empty($access_token['openid'])){//获取openid，跳转登陆
 					 return true;
 				}				
@@ -85,9 +85,10 @@ class ClientbaseController extends BaseController
 					session('wxInfo',$wxInfo);
 					if ($wxInfo['user_id'] > 0 ){						
 						session('userId',$wxInfo['user_id']);
-           				$this->userInfo = $userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);					
+           				$this->userInfo = $userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);
 					}
 				}
+
 				return true;
 			}			
         }
