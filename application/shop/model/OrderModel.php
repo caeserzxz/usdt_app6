@@ -121,6 +121,7 @@ class OrderModel extends BaseModel
         $info['isPay'] = 0;
         $info['isDel'] = 0;
         $info['isSign'] = 0;
+        $info['isRefund'] = 0;
         if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {
             if ($info['is_pay'] > 0  && $info['pay_status'] == $this->config['PS_UNPAYED']) {
                 $info['isCancel'] = 1;
@@ -149,7 +150,7 @@ class OrderModel extends BaseModel
 
             if ($info['shipping_status'] == $this->config['SS_UNSHIPPED']) {
                 $info['ostatus'] = '待发货';
-                $info['isCancel'] = 1;
+                $info['isRefund'] = 1;
             }elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
                 $info['ostatus'] = '已发货';
                 $info['isSign'] = 1;
@@ -356,12 +357,14 @@ class OrderModel extends BaseModel
 				Db::rollback();// 回滚事务
 				return '佣金处理失败.';
             }
-            //修改订单商品未评价的设为不需要评价
-           $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
-            if ($res < 1) {
-                Db::rollback();//回滚
-                return '取消订单商品评价失败.';
-            }
+           if($orderInfo['is_evaluate'] == 1) {
+               //修改订单商品未评价的设为不需要评价
+               $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
+               if ($res < 1) {
+                   Db::rollback();//回滚
+                   return '取消订单商品评价失败.';
+               }
+           }
         }
 
         if ($extType == 'changePrice' || $extType == 'editGoods' ) {//改价或修改商品

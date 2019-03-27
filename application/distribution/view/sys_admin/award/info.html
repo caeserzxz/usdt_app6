@@ -132,7 +132,7 @@
 <tr class="d_level_tr">
 	<td align="center">{{val}}<input name="award_value[{{key}}][level]" type="hidden" value="{{key}}" /></td>
 	<td align="center"><input type="text" name="award_value[{{key}}][name]" class="input-max" data-rule-required="true" value="{{name}}"></td>
-	<td align="center"><input type="text" name="award_value[{{key}}][num]" class="input-ssmall" min=1 data-rule-integer="true"  value="{{num}}"><select name="award_value[{{key}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
+	<td align="center"><input type="text" name="award_value[{{key}}][num]" class="input-ssmall" min="0.01" data-rule-ismoney="true"  value="{{num}}"><select name="award_value[{{key}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
 	<td align="center"><a href="javascript:;" title="删除" onClick="delLevel({{key}});"><i class="fa fa-trash-o text-muted"></i></a></td>
 </tr>
 </script>
@@ -140,7 +140,7 @@
 <tr >
 	<td align="center">{{role_name}}<input name="role_award_value[{{role_id}}][role_id]" type="hidden" value="{{role_id}}" /></td>
 	<td align="center"><input type="text" name="role_award_value[{{role_id}}][name]" class="input-max" data-rule-required="true" value="{{name}}"></td>
-	<td align="center"><input type="text" name="role_award_value[{{role_id}}][num]" class="input-ssmall" min=1 data-rule-integer="true"  value="{{num}}"><select name="role_award_value[{{role_id}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
+	<td align="center"><input type="text" name="role_award_value[{{role_id}}][num]" class="input-ssmall" min="0.01" data-rule-ismoney="true"   value="{{num}}"><select name="role_award_value[{{role_id}}][type]"><option value="gold" {{type=='gold'?'selected':''}}>金币</option><option value="bean" {{type=='bean'?'selected':''}}>旅游豆</option></select>/盒</td>
 </tr>
 </script>
 {/block}

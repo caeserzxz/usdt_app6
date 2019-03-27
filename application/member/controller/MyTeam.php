@@ -12,7 +12,7 @@ class MyTeam  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
-        $this->assign('title', '我的粉丝');
+        $this->assign('title', '我的团队');
 		return $this->fetch('index');
 	}
 	
@@ -20,7 +20,7 @@ class MyTeam  extends ClientbaseController{
 	//-- 详细
 	/*------------------------------------------------------ */
 	public function info(){
-        $this->assign('title', '粉丝详细');
+        $this->assign('title', '成员详细');
 		return $this->fetch('info');
 	}
 

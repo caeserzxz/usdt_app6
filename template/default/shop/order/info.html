@@ -32,6 +32,12 @@
                 class="fs34 fw_b color_w">已取消</span></div>
         <p class="fs26 color_w">该订单您已取消</p>
     </div>
+    {elseif condition="$orderInfo.ostatus == '取消待退款'"}
+    <div class="top">
+        <div><img src="__STATIC__/mobile/default/images/orderIcon02.png" alt=""><span
+                class="fs34 fw_b color_w">取消待退款</span></div>
+        <p class="fs26 color_w">该订单您已取消，正在等待退款</p>
+    </div>
     {/if}
 
 
@@ -93,6 +99,9 @@
         {if condition="$orderInfo.isCancel == 1"}
         <span class="fs28 fw_b color_3 bor_e" data-type="cancel">取消订单</span>
         {/if}
+        {if condition="$orderInfo.isRefund == 1"}
+        <span class="fs28 fw_b color_3 bor_e" data-type="refund">退款</span>
+        {/if}
         {if condition="$orderInfo.isDel == 1"}
         <span class="fs28 fw_b color_r bor " data-type="del">删除订单</span>
         {/if}
@@ -124,7 +133,13 @@ $(function(){
 		if (arr.type == 'cancel'){
 			_alert('确定取消此订单？',function(){action(arr)});
 			return false;
-		}
+		}else if(arr.type == 'refund'){
+            _alert('确定申请退款？',function(){
+                arr.type = 'cancel';
+                action(arr)
+            });
+            return false;
+        }
 		return action(arr);
     })
 	function action(arr){

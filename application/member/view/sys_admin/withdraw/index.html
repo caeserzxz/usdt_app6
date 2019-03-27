@@ -29,10 +29,11 @@
           </div>
           <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID/帐号/手机" data-rule-required="true" />
           <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
-      
+
+         <button class="btn" type="submit" id="export_btn" ><i class="fa fa-cloud-download"></i>导出报表</button>
          
     </div>
-</form>
+    </form>
 </header>
 
 <section class="scrollable wrapper w-f ">
@@ -42,5 +43,10 @@
         </div>
     </section>
 </section>
-
+<script type="text/javascript">
+    $('#export_btn').click(function(){
+         $('.talbe-search').append('<input type="hidden" name="is_export" id="is_export" value="1">').submit();
+         $('#is_export').remove();
+    })
+</script>
 {/block}

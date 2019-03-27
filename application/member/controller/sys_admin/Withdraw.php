@@ -58,7 +58,12 @@ class Withdraw extends AdminController
 		if (empty($search['type']) == false){
 			$where[] = ['uwa.type','=',$search['type']];
 		}
-		$viewObj = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where);	
+        $is_export =  input('is_export',0,'intval');
+        if ($is_export > 0) {
+            return $this->export($where);
+        }
+		$viewObj = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where);
+
         $data = $this->getPageList($this->Model,$viewObj);
 		$this->assign("userWithdrawType", $this->userWithdrawType);
 		$this->assign("search", $search);		
@@ -141,9 +146,65 @@ class Withdraw extends AdminController
         }elseif ($data['status'] == 9) {
             $data['send_scene'] = 'withdraw_ok_msg';//提现打款通知
         }
-        $data['wx_openid'] = $WeiXinUsersModel->where('user_id', $data['user_id'])->value('wx_openid');
+        $wxInfo = $WeiXinUsersModel->where('user_id', $data['user_id'])->field('wx_openid,wx_nickname')->find();
+        $data['openid'] = $wxInfo['wx_openid'];
+        $data['send_nick_name'] = $wxInfo['wx_nickname'];
         $WeiXinMsgTplModel->send($inArr);//模板消息通知
 		return $this->success('操作成功.',url('index'));
 	}
+    /*------------------------------------------------------ */
+    //-- 导出
+    /*------------------------------------------------------ */
+    public function export(&$where)
+    {
+        $export_arr['会员ID'] = 'user_id';
+        $export_arr['会员名称'] = 'user_name';
+        $export_arr['申请日期'] = 'add_time';
+        $export_arr['提现金额'] = 'amount';
+        $export_arr['处理状态'] = 'status';
+        $export_arr['提现方式'] = 'type';
+        $export_arr['支付宝账户姓名'] = 'alipay_account';
+        $export_arr['支付宝帐号'] = 'alipay_user_name';
 
+        $export_arr['银行'] = 'bank_name';
+        $export_arr['持卡人'] = 'bank_cardholder';
+        $export_arr['卡号'] = 'bank_card_number';
+        $export_arr['持卡人电话'] = 'bank_cardholder_phone';
+        $export_arr['网点所在地'] = 'bank_location_outlet';
+        $export_arr['支行名称'] = 'bank_branch_name';
+
+        $page = 0;
+        $page_size = 500;
+        $page_count = 100;
+        $title = join("\t", array_keys($export_arr)) . "\t";
+
+        $data = '';
+        do {
+            $rows = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where)->limit($page * $page_size, $page_size)->select();
+
+            if (empty($rows)) break;
+            foreach ($rows as $row) {
+                foreach ($export_arr as $val) {
+                    if (strstr($val, '_time')) {
+                        $data .= dateTpl($row[$val]) . "\t";
+                    } elseif ($val == 'user_name') {
+                        $data .= userInfo($row['user_id']). "\t";
+                    } elseif ($val == 'type') {
+                        $data .= ($row['type']=='alipay'?'支付宝':'银行卡'). "\t";
+                    } else {
+                        $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
+                    }
+                }
+                $data .= "\n";
+            }
+            $page++;
+        } while ($page <= $page_count);
+
+        $filename = '提现资料_' . date("YmdHis") . '.xls';
+        $filename = iconv('utf-8', 'GBK//IGNORE', $filename);
+        header("Content-type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=$filename");
+        echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
+        exit;
+    }
 }

@@ -236,7 +236,9 @@ class Withdraw extends ApiController
         $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
         $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
         $inArr['send_scene']  = 'withdraw_apply_msg';//提现申请通知
-        $inArr['wx_openid'] = $WeiXinUsersModel->where('user_id', $this->userInfo['user_id'])->value('wx_openid');
+        $wxInfo = $WeiXinUsersModel->where('user_id', $inArr['user_id'])->field('wx_openid,wx_nickname')->find();
+        $inArr['openid'] = $wxInfo['wx_openid'];
+        $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
         $WeiXinMsgTplModel->send($inArr);//模板消息通知
 
 		return $this->success('提现成功.');

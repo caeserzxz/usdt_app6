@@ -261,7 +261,7 @@ class Order extends AdminController
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
                 if ($shipping_id < 1) return $this->error("请选择快递公司");
-                if ($kdeorder_goods_name == "") return $this->error("请输入快递单号");
+                if (empty($invoice_no)) return $this->error("请输入快递单号");
                 $data['shipping_id'] = $shipping_id;
                 $data['shipping_name'] = $shipping[$data['shipping_id']]['shipping_name'];
                 $data['invoice_no'] = $invoice_no;
@@ -452,7 +452,7 @@ class Order extends AdminController
         $data['order_status'] = $config['OS_CANCELED'];
         $data['cancel_time'] = time();
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '取消订单');
         return $this->success('取消订单成功.');
@@ -475,7 +475,7 @@ class Order extends AdminController
         $data['shipping_name'] = '';
         $data['shipping_id'] = 0;
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['shipping_status'] = $config['SS_UNSHIPPED'];
         $this->Model->_log($orderInfo, '设为未发货,原发货信息：' . $orderInfo['shipping_name'] . '，单号：' . $data['invoice_no']);
         return $this->success('设为未发货成功！', url('info', array('order_id' => $order_id)));
@@ -515,7 +515,7 @@ class Order extends AdminController
         $data['shipping_status'] = $config['SS_SHIPPED'];
         $data['sign_time'] = 0;
         $res = $this->Model->upInfo($data, 'unsign');
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['shipping_status'] = $data['shipping_status'];
         $this->Model->_log($orderInfo, '设为未签收');
         return $this->success('设为未签收成功！', url('info', array('order_id' => $order_id)));
@@ -535,7 +535,7 @@ class Order extends AdminController
         $data['order_status'] = $config['OS_RETURNED'];
         $data['returned_time'] = time();
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '设为退货');
         return $this->success('设为退货成功！', url('info', array('order_id' => $order_id)));
@@ -555,7 +555,7 @@ class Order extends AdminController
         $data['pay_time'] = 0;
         $data['money_paid'] = 0;
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为未付款');
         return $this->success('设为未付款成功！', url('info', array('order_id' => $order_id)));
@@ -601,7 +601,7 @@ class Order extends AdminController
         $shop_reduce_stock = settings('shop_reduce_stock');
         $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '设为已确认');
         return $this->success('设为已确认成功.');
@@ -619,7 +619,7 @@ class Order extends AdminController
         $data['is_dividend'] = 0;
         $data['order_id'] = $order_id;
         $res = $this->Model->upInfo($data);
-        if ($res < 1) return $this->error();
+        if ($res !== true) return $this->error($res);
         $this->Model->_log($orderInfo, '重新计算分佣');
         return $this->success('重新计算分佣成功！', url('info', array('order_id' => $order_id)));
     }
