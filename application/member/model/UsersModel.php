@@ -488,11 +488,11 @@ class UsersModel extends BaseModel
         if ($user_id < 1) return [];
         do {
             $info = $this->where('user_id', $user_id)->field('user_id,nick_name,pid,role_id,reg_time')->find();
-            $chain[$user_id]['level'] = $i;
-            $chain[$user_id]['user_id'] = $info['user_id'];
-            $chain[$user_id]['reg_time'] = dateTpl($info['reg_time']);
-            $chain[$user_id]['nick_name'] = empty($info['nick_name']) ? '未填写' : $info['nick_name'];
-            $chain[$user_id]['role_name'] = $info['role_id'] > 0 ? $dividendRole[$info['role_id']]['role_name'] : '无身份';
+            $chain[$i]['level'] = $i;
+            $chain[$i]['user_id'] = $info['user_id'];
+            $chain[$i]['reg_time'] = dateTpl($info['reg_time']);
+            $chain[$i]['nick_name'] = empty($info['nick_name']) ? '未填写' : $info['nick_name'];
+            $chain[$i]['role_name'] = $info['role_id'] > 0 ? $dividendRole[$info['role_id']]['role_name'] : '无身份';
             $user_id = $info['pid'];
             $i++;
         } while ($user_id > 0);
