@@ -122,7 +122,7 @@ class Users extends ApiController
 		//今天收益
 		unset($where);
 		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
-		$where[] = ['status','<>',1];
+		$where[] = ['status','in',[1,2,3,9]];
 		$where[] = ['add_time','>=',strtotime("today")];
 		$return['today_income'] = $DividendModel->where($where)->sum('dividend_amount');
         $return['today_income'] += $DividendModel->where($where)->sum('dividend_bean');
@@ -130,7 +130,7 @@ class Users extends ApiController
 		//本月收益
 		unset($where);
 		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
-        $where[] = ['status','<>',1];
+        $where[] = ['status','in',[1,2,3,9]];
 		$where[] = ['add_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
 		$return['month_income'] = $DividendModel->where($where)->sum('dividend_amount');
         $return['month_income'] += $DividendModel->where($where)->sum('dividend_bean');

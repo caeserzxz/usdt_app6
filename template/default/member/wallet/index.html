@@ -11,7 +11,7 @@
             <p class="fs48 num color_w balance_money">0.00</p>
             <a href="{:url('withdraw/index')}" class="fs24 color_w withdrwa_btn ">提现</a>
             <span class="fs26 color_w">旅游豆</span><p class="fs48 num color_w bean_value">0.00</p>
-            <a href="{:url('change')}" class="fs24 color_w withdrwa_btn ">兑换</a>
+            <a href="{:url('change')}" class="fs24 color_w withdrwa_btn hide">兑换</a>
 
         </div>
         <span class="fs26 color_w">金币</span>
@@ -67,7 +67,10 @@
             $('.balance_money').html(res.account.balance_money);
 			$('.total_income').html(res.account.total_dividend);
             $('.frozen_amount').html(res.frozen_amount);
-             $('.bean_value').html(res.account.bean_value);
+            $('.bean_value').html(res.account.bean_value);
+            if (res.account.bean_value > 0){
+                 $('.withdrwa_btn').removeClass('hide');
+             }
 			$('.today_income').html(res.today_income);
 			$('.month_income').html(res.month_income);
 			if (res.withdraw_status == 1){

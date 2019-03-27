@@ -37,9 +37,10 @@ return [
 
     //提成状态
     'DD_UNCONFIRMED' => 0, // 待处理
-    'DD_CANCELED' => 1, // 已取消
+    'DD_PAYED' => 1, // 已支付
     'DD_SHIPPED' => 2, // 已发货
     'DD_SIGN' => 3, // 已签收,待分成
-    'DD_RETURNED' => 4, // 退货
     'DD_DIVVIDEND' => 9, // 已分成
+    'DD_RETURNED' => 11, // 退货
+    'DD_CANCELED' => 10, // 已取消
 ];

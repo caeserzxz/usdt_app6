@@ -42,6 +42,7 @@ class DividendModel extends BaseModel
         $DividendInfo = settings('DividendInfo');
         $upData = [];//更新分佣记录状态
         $OrderModel = new OrderModel();
+
         $send_msg = false;
         $order_operating = '';
         //先计算佣金再执行升级处理
@@ -49,13 +50,20 @@ class DividendModel extends BaseModel
             if ($DividendInfo['bind_type'] == 1 && $orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']) {//支付成功时绑定关系
                 $this->UsersModel->regUserBind($orderInfo['user_id']);
             }
-            $log = $this->saveLog($orderInfo, $goodsList);//佣金计算
+            $status = 0;
+            if ($orderInfo['shipping_status'] == $OrderModel->config['DD_SHIPPED']) {
+                $status = $OrderModel->config['DD_SHIPPED'];
+            }elseif ($orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']) {
+                $status = $OrderModel->config['DD_PAYED'];
+            }
+            $log = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
+            if (is_array($log) == false) return false;
+
             if ($orderInfo['pay_status'] == $OrderModel->config['PS_PAYED']) {//如果订单状态已支付时调用，正常是使用余额支付时生效
                 $res = $this->evalLevelUp($orderInfo, $goodsList, $orderInfo['user_id']);
                 if ($res == false) return false;
                 $send_msg = true;
             }
-
         } elseif ($type == 'pay') {//订单支付成功
             if ($DividendInfo['bind_type'] == 1) {//支付成功时绑定关系
                 $this->UsersModel->regUserBind($orderInfo['user_id']);
@@ -63,14 +71,17 @@ class DividendModel extends BaseModel
             $res = $this->evalLevelUp($orderInfo, $goodsList, $orderInfo['user_id']);
             if ($res == false) return false;
             $send_msg = true;
+            $upData['status'] = $OrderModel->config['DD_PAYED'];
         } elseif ($type == 'cancel') {//订单取消
-            $send_msg = true;
+            if ($orderInfo['pay_status'] == 1) $send_msg = true;
             $order_operating = '订单取消';
             $upData['status'] = $OrderModel->config['DD_CANCELED'];
+        } elseif ($type == 'unpayed') {//未付款
+            $upData['status'] = $OrderModel->config['DD_UNCONFIRMED'];
         } elseif ($type == 'shipping') {//发货
             $upData['status'] = $OrderModel->config['DD_SHIPPED'];
         } elseif ($type == 'unshipping') {//未发货
-            $upData['status'] = $OrderModel->config['DD_UNCONFIRMED'];
+            $upData['status'] = $OrderModel->config['DD_PAYED'];
         } elseif ($type == 'sign') {//签收
             $upData['status'] = $OrderModel->config['DD_SIGN'];
         } elseif ($type == 'unsign') {//撤销签收
@@ -130,7 +141,7 @@ class DividendModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 计算提成并记录或更新
     /*------------------------------------------------------ */
-    public function saveLog(&$orderInfo, &$goodsList)
+    public function saveLog(&$orderInfo, &$goodsList,$status = 0)
     {
         $awardList = (new DividendAwardModel)->select();//获取全部奖项目
         if (empty($awardList)) return false;
@@ -353,6 +364,7 @@ class DividendModel extends BaseModel
                     }
                 }
 
+                $inArr['status'] = $status;
                 $inArr['order_id'] = $orderInfo['order_id'];
                 $inArr['order_sn'] = $orderInfo['order_sn'];
                 $inArr['buy_uid'] = $orderInfo['user_id'];

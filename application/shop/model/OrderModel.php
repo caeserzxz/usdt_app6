@@ -22,7 +22,7 @@ class OrderModel extends BaseModel
 
     public function initialize(){
         parent::initialize();
-        $this->config = (include Env::get('app_path') . "shop/config/config.php");
+        $this->config = config('config.');
     }
     /*------------------------------------------------------ */
     //-- 清除缓存
@@ -249,7 +249,7 @@ class OrderModel extends BaseModel
             }
             //订单支付成功
             if ($upData['pay_status'] == $this->config['PS_PAYED']){
-				if ($orderInfo['pay_code'] == 'balance' || $upData['pay_code'] == 'balance'){					
+				if ($orderInfo['pay_code'] == 'balance' ){
 					$upData['money_paid'] = $orderInfo['order_amount'];
 					$upData['pay_time'] = time();
 					$changedata['change_desc'] = '订单余额支付';
@@ -288,7 +288,11 @@ class OrderModel extends BaseModel
                 $upData['is_stock'] = 0;
             }
 		}elseif ($upData['pay_status'] === $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
-			 
+            $res = $this->distribution($orderInfo,'unpayed');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
+            }
 		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
 			if ($orderInfo['money_paid'] > 0) {
 			    if ($orderInfo['pay_code'] == 'balance'){

@@ -32,11 +32,13 @@ return [
 		],
 		'ds'=>[
 			$config['DD_UNCONFIRMED']=>'待确定',
-			$config['DD_CANCELED']=>'已取消',
+            $config['DD_PAYED']=>'已支付',
 			$config['DD_SHIPPED']=>'已发货',
 			$config['DD_SIGN']=>'已签收,待分成',
+            $config['DD_DIVVIDEND']=>'已到帐',
 			$config['DD_RETURNED']=>'已退货',
-			$config['DD_DIVVIDEND']=>'已到帐',
+            $config['DD_CANCELED']=>'已取消'
+
 		]
 	
 	],

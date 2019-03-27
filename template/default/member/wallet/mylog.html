@@ -88,7 +88,11 @@
                 _alert(res.msg);
                 return false;
             }
-			$('.list').html(template('logTpl', res));
+            if (typeof(res.list) == 'undefined'){
+                $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+            }else{
+                $('.list').html(template('logTpl', res));
+            }
 			$('#nowValue').val(res.time);
 			$('.expend').html(res.expend);
 			$('.income').html(res.income);

@@ -98,7 +98,7 @@
 		        return false;
             }
             if (typeof(res.list) == 'undefined'){
-                $('.list').html('暂无没有相关数据.');
+                $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
             }else{
                 $('.list').html(template('logTpl', res));
             }
