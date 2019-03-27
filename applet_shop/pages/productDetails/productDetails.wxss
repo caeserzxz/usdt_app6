@@ -1,0 +1,645 @@
+.page-scroll {
+  position: fixed;
+  top: 0;
+  bottom: 120rpx;
+  left: 0;
+  right: 0;
+}
+
+.pagetop {
+  padding-top: 30rpx;
+  background-color: #fff;
+  padding-bottom: 20rpx;
+}
+
+.pagetop .slide-image {
+  width: 646rpx;
+  height: 646rpx;
+  display: block;
+  margin: 0 auto;
+  padding: 10rpx;
+  background-color: #fff;
+  box-shadow: 0px 20rpx 40rpx 0px rgba(0, 0, 0, 0.05);
+}
+
+.pagetop .swiper-box {
+  height: 700rpx;
+  position: relative;
+}
+
+.icon_btns {
+  z-index: 9;
+  width: 80rpx;
+  position: absolute;
+  background-color: #333;
+  text-align: center;
+  top: 100%;
+  right: 40rpx;
+  transform: translateY(-40%);
+}
+
+.icon_btns>view {
+  padding: 16rpx 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.icon_btns image {
+  width: 34rpx;
+  height: 34rpx;
+}
+
+.pagetop .swiper-box swiper {
+  height: 700rpx;
+}
+
+.pagetop .swiper-box .wx-swiper-dot {
+  width: 10rpx;
+  display: inline-flex;
+  height: 10rpx;
+  justify-content: space-between;
+  border-radius: 0;
+  position: relative;
+  top: -70rpx;
+  z-index: 8;
+}
+
+.pagetop  .swiper-box .wx-swiper-dot::before {
+  content: '';
+  flex-grow: 1;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0;
+}
+
+.pagetop .swiper-box .wx-swiper-dot-active {
+  width: 28rpx;
+}
+
+.pagetop .swiper-box .wx-swiper-dot-active::before {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 0;
+}
+
+.fs52 {
+  font-size: 52rpx;
+}
+
+.sprice {
+  text-decoration: line-through;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.badge {
+  background-color: #f65236;
+  color: #fff;
+  line-height: 1em;
+  height: 30rpx;
+  padding: 0 10rpx;
+  font-size: 22rpx;
+  vertical-align: middle;
+  margin: 0 10rpx;
+}
+
+.offset {
+  position: relative;
+  top: -6rpx;
+}
+
+.weui-cell {
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+}
+
+.ml30 {
+  margin-left: 30rpx;
+}
+
+.pplogo {
+  width: 70rpx;
+  height: 70rpx;
+  margin-right: 16rpx;
+  margin-top: -4rpx;
+  margin-bottom: -4rpx;
+}
+
+.bor_left0::before {
+  left: 0;
+}
+
+.pl_tx {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 14rpx;
+}
+
+.pl_text {
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.pl_imgs image {
+  width: 130rpx;
+  height: 130rpx;
+  margin-right: 14rpx;
+}
+
+.icon_wen {
+  display: inline-block;
+  color: #fff;
+  background-color: #f65236;
+  width: 30rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 20rpx;
+  text-align: center;
+  margin-right: 14rpx;
+}
+
+.flex-start {
+  align-items: flex-start !important;
+}
+
+.border-none.weui-cell__ft_in-access::after {
+  display: block;
+}
+
+.details_content {
+  margin-top: 20rpx;
+}
+
+.details_content image {
+  width: 100%;
+}
+
+.bottom_btns {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120rpx;
+  background-color: #fff;
+  z-index: 9;
+  display: flex;
+  box-shadow: 0px -10rpx 20rpx 0rpx rgba(0, 0, 0, 0.03);
+}
+
+.bottom_btns .left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.bottom_btns .left>view {
+  text-align: center;
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.bottom_btns .left .icon {
+  position: relative;
+  width: 48rpx;
+  height: 48rpx;
+  margin: 0 auto;
+}
+
+.bottom_btns .left .text {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.bottom_btns .left .icon image {
+  width: 100%;
+  height: 100%;
+}
+
+.bottom_btns .left .icon .num {
+  position: absolute;
+  color: #fff;
+  font-size: 18rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  background: rgba(246, 82, 54, 1);
+  border-radius: 30rpx;
+  right: -10rpx;
+  top: -4rpx;
+}
+
+.bottom_btns .right {
+  width: 440rpx;
+  display: flex;
+  align-items: center;
+  padding-right: 20rpx;
+  padding-left: 20rpx;
+}
+
+.bottom_btns .right .btns {
+  display: flex;
+}
+
+.bottom_btns .right .btns>view {
+  width: 220rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #333;
+  font-size: 28rpx;
+}
+
+.bottom_btns .right .btns .btn2 {
+  background-color: #f65236;
+}
+
+/* 弹窗部分 */
+
+.model {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  transition: all 0.3s;
+  transform: translateY(100%);
+}
+
+.model_show{
+  transform: translateY(0);
+}
+.modelBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 889;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.model .modelContent {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  height: 70vh;
+  z-index: 999;
+}
+
+.model .closeBox {
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+}
+
+.model .closeBox image {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.model .top {
+  display: flex;
+}
+
+.model .top .left {
+  margin-left: 38rpx;
+}
+
+.model .top .left image {
+  width: 260rpx;
+  height: 260rpx;
+  box-shadow: 0px 20rpx 40rpx 0px rgba(0, 0, 0, 0.1);
+  margin-top: -56rpx;
+  padding: 6rpx;
+  background-color: #fff;
+}
+
+.model .top .right {
+  margin-left: 34rpx;
+}
+
+.model .top .right .money {
+  display: flex;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.model .top .right .money text {
+  width: 78rpx;
+  margin-left: 12rpx;
+  text-align: center;
+}
+
+.model .top .right .money div {
+  display: flex;
+  align-items: baseline;
+}
+
+.model .top .right .moneyPrimary {
+  text-decoration: line-through;
+}
+
+.model .top .right p {
+  margin-top: 10rpx;
+}
+
+.model .cantre {
+  position: absolute;
+  left: 0;
+  top: 230rpx;
+  bottom: 120rpx;
+  width: 100%;
+  padding: 0 30rpx;
+  overflow-y: scroll;
+}
+
+.model .cantre .block {
+  margin-top: 40rpx;
+}
+
+.model .cantre .list {
+  margin-top: 30rpx;
+  overflow: hidden;
+}
+
+.model .cantre .list text {
+  height: 70rpx;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+  float: left;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+  border: 1px solid #e5e5e5;
+}
+
+.model .cantre .numberBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.model .cantre .numberBox .number {
+  display: flex;
+  align-items: center;
+}
+
+.model .cantre .numberBox input {
+  width: 60rpx;
+  margin: 0 20rpx;
+  text-align: center;
+}
+
+.model .tag_active {
+  color: #f65236;
+  border: 1px solid #f65236;
+}
+
+.model .tag_active::before {
+  border-color: #f65236;
+}
+
+.model .cantre .block:last-child {
+  margin-bottom: 30rpx;
+}
+
+.model .buttBox {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 120rpx;
+  width: 100%;
+  padding: 16rpx 30rpx 24rpx;
+  display: flex;
+}
+
+.model .buttBox text {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model .shareBox {
+  background-color: transparent;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.shareBox .share {
+  width: 610rpx;
+  background-color: #fff;
+}
+
+.shareBox .goodsImg {
+  width: 570rpx;
+  height: 570rpx;
+  margin: 20rpx;
+  background-color: #fff;
+  padding: 10rpx;
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.shareBox .name {
+  padding: 0 30rpx;
+  line-height: 36rpx;
+  margin-top: 10rpx;
+}
+
+.shareBox .money {
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.shareBox .codeBox {
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+}
+
+.shareBox .codeBox image {
+  width: 130rpx;
+  height: 130rpx;
+  margin-right: 20rpx;
+}
+
+.shareBox .bottBtn {
+  display: flex;
+  height: 80rpx;
+  margin-top: 30rpx;
+}
+
+.shareBox .bottBtn>view {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareBox .bottBtn image {
+  width: 38rpx;
+  height: 38rpx;
+  margin-right: 10rpx;
+}
+
+.shareBox .bottBtn .saveImg {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.shareBox .close {
+  width: 72rpx;
+  height: 72rpx;
+  margin-top: 10rpx;
+}
+
+.shareBox .close image {
+  width: 100%;
+  height: 100%;
+}
+
+.group {
+  margin: -50rpx 20rpx 0 20rpx;
+  background-color: #fff;
+  padding: 0;
+  border: 1rpx solid #eee;
+  border-top: none;
+  width: 710rpx;
+}
+
+.group .top {
+  padding: 0 30rpx;
+  margin-top: 0;
+  height: 100rpx;
+  justify-content: space-between;
+}
+
+.group .top .type {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.groupMoney {
+  display: flex;
+  align-items: center;
+  height: 60rpx;
+  margin-top: 4rpx;
+}
+
+.groupMoney text {
+  margin-top: -6rpx;
+}
+
+.group .original {
+  margin-top: -14rpx;
+  opacity: 0.5;
+}
+
+.group .time {
+  margin-left: 16rpx;
+  display: flex;
+}
+
+.group .time text {
+  margin-right: 10rpx;
+  opacity: 0.5;
+}
+
+.group .time span {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42rpx;
+  width: 12rpx;
+  color: rgba(255, 255, 255, 1);
+}
+
+.group .time view {
+  width: 42rpx;
+  height: 46rpx;
+  line-height: 56rpx;
+  background: rgba(255, 255, 255, 1);
+  display: flex;
+  justify-content: center;
+  font-family: 'num';
+  font-size: 30rpx;
+  color: #f65236;
+}
+
+.group .goodstext {
+  padding: 0 30rpx;
+}
+
+.group .name {
+  width: 540rpx;
+}
+
+.group .nameBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.group .nameBox image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.group .tipsText {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0 30rpx;
+}
+
+.group .tipsText image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+
+.swiper-box {
+  position: relative;
+}
+
+.groupsign {
+  position: absolute;
+  top: 0;
+  width: 670rpx;
+  margin: 0 40rpx;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+.groupsign .boxBG {
+  width: 220rpx;
+  height: 220rpx;
+  background: rgba(98, 98, 98, 0.3);
+  border: 8rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+view{
+  box-sizing: border-box;
+}
+.BGcolor_3 {
+  background-color: #333;
+}
+.color_w{
+  color: #fff;
+}
+.BGcolor_r {
+  background-color: #f65236;
+}

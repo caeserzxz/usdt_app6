@@ -1,0 +1,60 @@
+/* pages/evaluates/evaluates.wxss */
+
+.hd_img image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-right: 20rpx;
+}
+
+.pj_title {
+  font-size: 28rpx;
+  flex-wrap: 500;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.pj_box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30rpx;
+}
+
+.sp_title {
+  font-size: 32rpx;
+  color: #333;
+  padding: 30rpx 0 0 30rpx;
+}
+
+.upload_img {
+  width: 180rpx;
+  height: 180rpx;
+}
+
+.delete_img {
+  width: 30rpx;
+  height: 30rpx;
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+}
+
+.upload {
+  position: relative;
+  margin-right: 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.add_img {
+  width: 180rpx;
+  height: 180rpx;
+  border: 3rpx dashed #eee;
+  margin-bottom: 28rpx;
+}
+.price{
+  display: flex;
+    align-items: baseline;
+}

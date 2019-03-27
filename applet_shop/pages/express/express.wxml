@@ -1,0 +1,72 @@
+<!--pages/express/express.wxml-->
+<view class="page">
+  <view class="weui-cell bg-fff pl40 pr40">
+    <view class="weui-cell__bd">
+      <view class="weui-cell__title">
+        <image src="/images/wl_img1.png" class="wl_img1"></image>
+        <text class="fs34 fw600">顺丰速运</text>
+      </view>
+      <view class="weui-cell__desc">
+        <text class="text-muted fs30">2369512364896325</text>
+      </view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class="btn1">
+        复制
+      </view>
+    </view>
+  </view>
+  <view class="weui-cells b-items border-before mt20 border-after" style="">
+    <view class="weui-cell b-item pt0 pb0">
+      <view class="weui-cell__hd fs24 text-muted tr b-item_hd">
+        <view class="mb10 text-default">09:45</view>
+        <view>2019.01.03</view>
+      </view>
+      <view class="weui-cell__bd b-item_bd">
+          <view class="weui-cell__title fs30 fw800 mb10">已签收</view>
+          <view class="fs26 text-default">广东省广州市天河区棠下裕富科贸园C栋</view>
+      </view>
+    </view>
+      <view class="weui-cell b-item border-before pt0 pb0">
+      <view class="weui-cell__hd fs20 text-muted tr b-item_hd">
+        <view class="mb10" >10:20</view>
+        <view>2019.01.03</view>
+      </view>
+      <view class="weui-cell__bd b-item_bd">
+          <view class="weui-cell__title fs26 mb10">派送中</view>
+          <view class="fs24 text-muted">到达目的地网点浙江杭州滨江区公司，快件
+  很快进行派送，请保持电话通畅</view>
+      </view>
+    </view>
+     <view class="weui-cell b-item border-before pt0 pb0">
+      <view class="weui-cell__hd fs20 text-muted tr b-item_hd">
+        <view class="mb10">10:20</view>
+        <view>2019.01.03</view>
+      </view>
+      <view class="weui-cell__bd b-item_bd">
+          <view class="weui-cell__title fs26 mb10">运输中</view>
+          <view class="fs24 text-muted">到达目的地网点浙江杭州滨江区公司，快件
+  很快进行派送，请保持电话通畅</view>
+      </view>
+    </view>
+     <view class="weui-cell b-item border-before pt0 pb0">
+      <view class="weui-cell__hd fs20 text-muted tr b-item_hd">
+        <view class="mb10">10:20</view>
+        <view>2019.01.03</view>
+      </view>
+      <view class="weui-cell__bd b-item_bd">
+          <view class="weui-cell__title fs26 mb10">运输中</view>
+          <view class="fs24 text-muted">包裹正在等待揽收</view>
+      </view>
+    </view>
+     <view class="weui-cell b-item border-before pt0 pb0">
+      <view class="weui-cell__hd fs20 text-muted tr b-item_hd">
+        <view class="mb10">10:20</view>
+        <view>2019.01.02</view>
+      </view>
+      <view class="weui-cell__bd b-item_bd">
+          <view class="weui-cell__title fs26 mb10">已揽件</view>
+      </view>
+    </view>
+  </view>
+</view>

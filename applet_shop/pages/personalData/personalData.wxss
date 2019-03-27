@@ -1,0 +1,26 @@
+/* pages/personalData/personalData.wxss */
+
+.photo image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+.wx-switch-input{
+width:88rpx !important;
+height:48rpx !important;
+margin:0 !important;
+padding: 0 !important;
+}
+/*白色样式（false的样式）*/
+.wx-switch-input::before{
+width:84rpx !important;
+height:44rpx !important;
+}
+/*绿色样式（true的样式）*/
+.wx-switch-input::after{
+width:44rpx !important;
+height:44rpx !important;
+}
+.weui-cell__ft picker{
+  width: 300rpx;
+}

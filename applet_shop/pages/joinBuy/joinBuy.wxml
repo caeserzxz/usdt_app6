@@ -1,0 +1,90 @@
+<view class="page2">
+
+  <view class='weui-cells border-none seckill_cells'>
+    <view class='cell_title'>商品信息</view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__hd'>
+        <view class='hd_img_box'>
+          <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+        </view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='title ellipsisLn2'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+        <view class='weui-flex flex-center mt10'>
+          <view class='weui-flex__item'>
+
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='badge'>3人团</text>
+          </view>
+          <view>
+            <view class='text-muted fs26'>已团15623件</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd countdown_box'>
+        <text class='fs32 fw500 text-red'>还差2人</text>
+        <text class='fs32 fw500'>，距离结束还剩</text>
+        <view class='countdown'>
+          <text>00</text>:
+          <text>45</text>:
+          <text>38</text>
+        </view>
+      </view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+        <view class='avatar_group'>
+          <view class='avatar'>
+            <image src="{{imgBase}}goods01.png" />
+            <view class='badge2'>团长</view>
+          </view>
+          <view class='avatar avatar_df'>
+            <image src="/images/df_tx.png" />
+          </view>
+          <view class='avatar avatar_df'>
+            <image src="/images/df_tx.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd'>
+        <text class='fs32 fw500'>拼团规则</text>
+      </view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+        <view class='weui-flex'>
+          <view class='num'>1</view>
+          <view class='weui-flex__item text-muted'>
+            拼团抽奖，规定时间内集齐拼团规定人数即可开奖，团内任 意1人开出免单，全团都可免单
+          </view>
+        </view>
+        <view class='weui-flex mt20'>
+          <view class='num'>2</view>
+          <view class='weui-flex__item text-muted'>
+            如规定时间内团内人数不足3人，则订单取消，原路返还
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <view class='btn_box'>
+    <navigator url='' hover-class="none" class='btn_primary'>参与拼团</navigator>
+  </view>
+</view>

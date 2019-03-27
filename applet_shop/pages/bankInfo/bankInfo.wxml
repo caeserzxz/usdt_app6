@@ -1,0 +1,96 @@
+<!--pages/bankInfo/bankInfo.wxml-->
+<!-- 银行卡 -->
+<view class="weui-cells mt0" wx:if='{{type==1}}'>
+  <view class="weui-cell weui-cell__ft_in-access">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>银行类型</view>
+    </view>
+    <view class="weui-cell__ft ">
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class='fs28 fw600 text-default'>{{array[index]}}</view>
+      </picker>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>持卡人</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='张信哲' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>卡号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='2489 6259 1458 3652' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>持卡人电话</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='15920994177' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>网点所在地</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='广州市天河区岗顶146号一楼' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>支行名称</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='广州市天河区岗顶分行' />
+    </view>
+  </view>
+</view>
+<!-- 支付宝 -->
+<view class="weui-cells mt0" wx:if='{{type==2}}'>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>姓名</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='张信哲' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>支付宝账号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='13235452331' />
+    </view>
+  </view>
+</view>
+<!-- 微信 -->
+<view class="weui-cells mt0" wx:if='{{type==3}}'>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>姓名</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='张信哲' />
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='fs28 text-muted'>微信账号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input tr fs28" type="tel" value='1235648131' />
+    </view>
+  </view>
+</view>
+
+<view class='btn_box mt100'>
+  <text class='btn_primary'>保存更改</text>
+</view>

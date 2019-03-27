@@ -1,0 +1,154 @@
+<!--pages/rank/rank.wxml-->
+<view class='page'>
+  <view class='top'>
+    <image src='/images/rankBG.png' class='topBG'></image>
+    <view class='rankinfo'>
+      <text class='text-white'>排行榜</text>
+      <picker bindchange="bindPickerChange" mode="date" value="{{date}}" start="2000-01-01" end="2050-01-01" bindchange="bindDateChange">
+        <view class='fs34 text-white ff'>{{dateTime}}
+          <image src="/images/rank01.png" class="img1"></image>
+        </view>
+      </picker>
+    </view>
+  </view>
+  <view class="weui-tab">
+    <view class="weui-navbar">
+      <block wx:for="{{tabs}}" wx:key="*this">
+        <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+          <view class="weui-navbar__title">{{item}}</view>
+        </view>
+      </block>
+      <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+    </view>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+        <view class='weui-cells'>
+          <view class='weui-cell'>
+            <view class='weui-cell__hd ff fs34 text-muted'>12</view>
+            <view class='weui-cell__bd'>
+              <image src='/images/df_tx.png'></image>
+              <text class='fs28 fw_b'>狂风扫落叶</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>10236.00</view>
+              <text class='fs26 text-muted'>元</text>
+            </view>
+          </view>
+        </view>
+        <scroll-view scroll-y='true' class='weui-cells my'>
+          <view class='weui-cell' wx:for='{{commissionList}}' wx:key=''>
+            <view class='weui-cell__hd'>
+              <image wx:if='{{index<3}}' src='{{item.rankimg}}'></image>
+              <view wx:if='{{index>=3}}' class='ff fs34 text-muted'>
+                <text wx:if='{{index<9}}'>0</text>{{index+1}}</view>
+            </view>
+            <view class='weui-cell__bd'>
+              <image src='{{item.userimg}}'></image>
+              <text class='fs28 fw_b'>{{item.userNmae}}</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>{{item.money}}</view>
+              <text class='fs26 text-muted'>元</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+        <view class='weui-cells'>
+          <view class='weui-cell'>
+            <view class='weui-cell__hd ff fs34 text-muted'>12</view>
+            <view class='weui-cell__bd'>
+              <image src='/images/df_tx.png'></image>
+              <text class='fs28 fw_b'>狂风扫落叶</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>10236.00</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </view>
+        <scroll-view scroll-y='true' class='weui-cells my'>
+          <view class='weui-cell' wx:for='{{commissionList}}' wx:key=''>
+            <view class='weui-cell__hd'>
+              <image wx:if='{{index<3}}' src='{{item.rankimg}}'></image>
+              <view wx:if='{{index>=3}}' class='ff fs34 text-muted'>
+                <text wx:if='{{index<9}}'>0</text>{{index+1}}</view>
+            </view>
+            <view class='weui-cell__bd'>
+              <image src='{{item.userimg}}'></image>
+              <text class='fs28 fw_b'>{{item.userNmae}}</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>{{item.money}}</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
+        <view class='weui-cells'>
+          <view class='weui-cell'>
+            <view class='weui-cell__hd ff fs34 text-muted'>12</view>
+            <view class='weui-cell__bd'>
+              <image src='/images/df_tx.png'></image>
+              <text class='fs28 fw_b'>狂风扫落叶</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>10236.00</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </view>
+        <scroll-view scroll-y='true' class='weui-cells my'>
+          <view class='weui-cell' wx:for='{{commissionList}}' wx:key=''>
+            <view class='weui-cell__hd'>
+              <image wx:if='{{index<3}}' src='{{item.rankimg}}'></image>
+              <view wx:if='{{index>=3}}' class='ff fs34 text-muted'>
+                <text wx:if='{{index<9}}'>0</text>{{index+1}}</view>
+            </view>
+            <view class='weui-cell__bd'>
+              <image src='{{item.userimg}}'></image>
+              <text class='fs28 fw_b'>{{item.userNmae}}</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>{{item.money}}</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 3}}">
+        <view class='weui-cells'>
+          <view class='weui-cell'>
+            <view class='weui-cell__hd ff fs34 text-muted'>12</view>
+            <view class='weui-cell__bd'>
+              <image src='/images/df_tx.png'></image>
+              <text class='fs28 fw_b'>狂风扫落叶</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>10236.00</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </view>
+        <scroll-view scroll-y='true' class='weui-cells my'>
+          <view class='weui-cell' wx:for='{{commissionList}}' wx:key=''>
+            <view class='weui-cell__hd'>
+              <image wx:if='{{index<3}}' src='{{item.rankimg}}'></image>
+              <view wx:if='{{index>=3}}' class='ff fs34 text-muted'>
+                <text wx:if='{{index<9}}'>0</text>{{index+1}}</view>
+            </view>
+            <view class='weui-cell__bd'>
+              <image src='{{item.userimg}}'></image>
+              <text class='fs28 fw_b'>{{item.userNmae}}</text>
+            </view>
+            <view class='weui-cell__ft'>
+              <view class='fs34 ff text-default'>{{item.money}}</view>
+              <text class='fs26 text-muted'>人</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+</view>

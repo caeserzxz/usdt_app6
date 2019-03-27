@@ -1,0 +1,55 @@
+<view class='page2'>
+  <view class='withdraw_list'>
+    <view class='weui-cells cell_swiped' wx:for="{{list}}" wx:key='' style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove" bindtouchend="onTableCellTouchEnd" bindtouchcancel="onTableCellTouchEnd"
+      data-index="{{index}}">
+      <navigator url='/pages/bankInfo/bankInfo?type={{item.type}}' class='weui-cell weui-cell__ft_in-access'>
+        <view class='weui-cell__hd'>
+          <image class='hd_img' src='/images/{{item.icon}}.png'></image>
+        </view>
+        <view class='weui-cell__bd'>{{item.bank}}</view>
+      </navigator>
+      <view class='weui-cell pt0 border-none'>
+        <view class='weui-cell__bd'>
+          <text class='fs38 ff'>{{item.num}}</text>
+        </view>
+        <view class='fs28 text-muted'>{{item.name}}</view>
+      </view>
+      <view class='swipeout_btns'>
+        <view class='btn1' id='{{item.id}}' bindtap='del'>
+          <image src='/images/delectIcon.png' />
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class='mask' wx:if="{{panelShow}}" bindtap='closePanle'></view>
+<view class='weui-panel select_panel {{panelShow?"panel_show":""}}'>
+  <view class='weui-panel__hd border-none'>
+    <text class='text-default fs36 fw600'>请选择账号类型</text>
+    <view class='close_x' bindtap='closePanle'>×</view>
+  </view>
+  <view class='weui-panel__bd'>
+    <view class='weui-cells'>
+      <view class='weui-cell border-none' bindtap='addbank'>
+        <view class='weui-cell__hd'>
+          <image class='panel_hd_img' src='/images/offlinePay.png'></image>
+        </view>
+        <view class='weui-cell__bd fs30'>银行卡账号</view>
+        <view class='weui-cell__ft'><text class='icon_ok'></text></view>
+      </view>
+      <view class='weui-cell border-none' bindtap='addzfb'>
+        <view class='weui-cell__hd'>
+          <image class='panel_hd_img' src='/images/AliPay.png'></image>
+        </view>
+        <view class='weui-cell__bd fs30'>支付宝账号</view>
+        <view class='weui-cell__ft'><text class='icon_ok'></text></view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class='btn_box'>
+  <view bindtap='openPanle' class='btn_primary'>添加提现方式</view>
+</view>

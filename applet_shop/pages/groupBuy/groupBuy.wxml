@@ -1,0 +1,57 @@
+<view class="page">
+  <view class='weui-cells__title'><text class='date'>2018年03月</text></view>
+  <view class='weui-cells groupbuy'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='imgbox'>
+          <image src='{{imgBase}}group01.png'></image><!--690x338-->
+          <text>已有156人参与</text>
+        </view>
+        <view class='fs28 fw600'><text class='text-red'>[4人团] </text>连帽系腰带鹅绒羽绒服大毛领手工刺绣大毛领羽绒服纯色酒红色</view>
+        <view class='weui-flex flex-center mt10'>
+          <view class='weui-flex__item'>
+            <text class='fs24'>￥</text><text class='fs42 ff'>369</text> <text class='fs24 sprice'>￥2635.00</text> <text class='fs24 ml10'>单买价</text> <text class='fs24'>￥399.00</text>
+          </view>
+          <view> <view class='gobtn'>去拼团</view></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='weui-cells groupbuy'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='imgbox'>
+          <image src='{{imgBase}}group01.png'></image><!--690x338-->
+          <text>已有156人参与</text>
+        </view>
+        <view class='fs28 fw600'><text class='text-red'>[4人团] </text>连帽系腰带鹅绒羽绒服大毛领手工刺绣大毛领羽绒服纯色酒红色</view>
+        <view class='weui-flex flex-center mt10'>
+          <view class='weui-flex__item'>
+            <text class='fs24'>￥</text><text class='fs42 ff'>369</text> <text class='fs24 sprice'>￥2635.00</text> <text class='fs24 ml10'>单买价</text> <text class='fs24'>￥399.00</text>
+          </view>
+          <view> <view class='gobtn'>去拼团</view></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='weui-cells groupbuy'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='imgbox'>
+          <image src='{{imgBase}}group01.png'></image><!--690x338-->
+          <text>已有156人参与</text>
+        </view>
+        <view class='fs28 fw600'><text class='text-red'>[4人团] </text>连帽系腰带鹅绒羽绒服大毛领手工刺绣大毛领羽绒服纯色酒红色</view>
+        <view class='weui-flex flex-center mt10'>
+          <view class='weui-flex__item'>
+            <text class='fs24'>￥</text><text class='fs42 ff'>369</text> <text class='fs24 sprice'>￥2635.00</text> <text class='fs24 ml10'>单买价</text> <text class='fs24'>￥399.00</text>
+          </view>
+          <view> <view class='gobtn'>去拼团</view></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

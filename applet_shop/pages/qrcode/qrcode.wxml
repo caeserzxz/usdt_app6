@@ -1,0 +1,26 @@
+<view class='page'>
+  <view class='bottom_box'>
+    <view>
+      <image src='/images/goodsIcon04.png' />保存图片</view>
+    <view>
+      <image src='/images/myCode01.png' />发送好友</view>
+    <view>
+      <image src='/images/mycode05.png' />分享链接</view>
+  </view>
+
+  <view class='bigqrcode'>
+    <block wx:for="{{imgs}}">
+      <view class='{{item.select?"active":""}}'>
+        <image src='{{imgBase}}{{item.url}}' mode='widthFix' />
+      </view>
+    </block>
+  </view>
+
+  <view class='smallqrcode'>
+    <block wx:for="{{imgs}}">
+      <view class='{{item.select?"active":""}}'>
+        <image id='{{item.id}}' bindtap='changeImg' src='{{imgBase}}{{item.url}}' mode='widthFix' />
+      </view>
+    </block>
+  </view>
+</view>

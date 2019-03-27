@@ -1,0 +1,174 @@
+.page{
+  padding-top: 100rpx;
+}
+.time_scroll {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 999;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0px 10rpx 20rpx 0px rgba(0, 0, 0, 0.04);
+}
+
+
+.tab_hd {
+  height: 100rpx;
+  background-color: #fff;
+  display: flex;
+}
+
+.tab_hd >view {
+  flex: 1;
+  height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.tab_hd .text {
+  font-size: 32rpx;
+  line-height: 1em;
+  color: #999;
+  font-weight: 600;
+}
+
+.tab_hd .curr {
+  color: #333;
+  position: relative;
+}
+.tab_hd .curr::after{
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left:50%;
+  transform: translateX(-50%);
+  width:24rpx;
+  height:6rpx;
+  background:#f65236;
+}
+
+.tab_hd .curr .text {
+  color: #333;
+}
+
+.progress {
+  width: 140rpx;
+  height: 10rpx;
+  background: rgba(246, 82, 54, 0.12);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.mt5{
+  margin-top: 5rpx;
+}
+.progress_inner {
+  height: 10rpx;
+  background: rgba(246, 82, 54, 1);
+  border-radius: 5px;
+}
+
+.sprice {
+  text-decoration: line-through;
+  margin-left: 20rpx;
+}
+
+.gobtn {
+  text-align: center;
+  color: #fff;
+  width: 160rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background: rgba(246, 82, 54, 1);
+}
+.gobtn_gray{
+  background:rgba(238,238,238,1);
+}
+.seckill_cells .hd_img{
+  width: 100%;
+  height: 100%;
+}
+.seckill_cells .title{
+  line-height: 1.6em;
+}
+.seckill_cells .weui-cell{
+  padding: 20rpx;
+}
+.progress_box{
+  display: flex;
+  align-items: center;
+}
+.ml20{
+  margin-left: 20rpx;
+}
+
+.hd_img_box{
+  position: relative;
+    margin-right: 20rpx;
+    width: 200rpx;
+    height: 200rpx;
+}
+.hd_img_box .mask{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hd_img_box .mask::before{
+  content:"";
+  position: absolute;
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  opacity: 0
+}
+
+.cell_title{
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  margin-bottom: -20rpx;
+}
+
+
+
+.countdown {
+  position: relative;
+  margin-left: 10rpx;
+  font-size: 24rpx;
+  top: -3rpx;
+}
+
+.countdown text {
+  display: inline-block;
+  background-color: #333;
+  color: #fff;
+  font-size: 24rpx;
+  padding: 0 10rpx;
+  margin: 0 4rpx;
+  vertical-align: middle;
+  position: relative;
+  top:3rpx;
+  font-family: "num";
+}
+.countdown_box{
+  display: flex;
+  align-items: center;
+}
+
+.progress_gray{
+  background:rgba(153,153,153,0.12);
+}
+.progress_gray .progress_inner{
+  background:rgba(153,153,153,1);
+}

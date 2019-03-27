@@ -1,0 +1,301 @@
+<view class="page">
+  <scroll-view class='time_scroll' scroll-x>
+    <view class='tab_hd'>
+      <block wx:key="item" wx:for="{{times}}">
+        <view bindtap='changeTime' data-id='{{item.id}}' data-type='{{item.type}}' class='{{item.curr? "curr":""}}'>
+          <view class='time'>{{item.time}}</view>
+          <view class='text'>{{item.text}}</view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+
+  <view class='tab01' wx:if="{{type==1}}">
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 50%'></view>
+            </view>
+            <view class='text-muted fs26 ml20'>已售3652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 50%'></view>
+            </view>
+            <view class='text-muted fs26 ml20'>已售3652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>                                                     
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <view class='mask'>抢光了</view>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 100%'></view>
+            </view>
+            <view class='text-red fs26 ml20'>已售罄</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn gobtn_gray'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='tab02' wx:if="{{type==2}}">
+    <view class='weui-cell cell_title'>
+      <view class='weui-cell__bd'>抢购正在进行中</view>
+      <view class='countdown_box'>
+        <text>距结束</text>
+        <view class='countdown'>
+          <text>00</text>:
+          <text>45</text>:
+          <text>38</text>
+        </view>
+      </view>
+    </view>
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 50%'></view>
+            </view>
+            <view class='text-muted fs26 ml20'>已售3652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 50%'></view>
+            </view>
+            <view class='text-muted fs26 ml20'>已售3652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <view class='mask'>抢光了</view>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='progress'>
+              <view class='progress_inner' style='width: 100%'></view>
+            </view>
+            <view class='text-red fs26 ml20'>已售罄</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn gobtn_gray'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='tab03' wx:if="{{type==3}}">
+    <view class='weui-cell cell_title'>
+      <view class='weui-cell__bd'>特惠即将开始</view>
+      <view class='countdown_box'>
+        <text>距开始</text>
+        <view class='countdown'>
+          <text>00</text>:
+          <text>45</text>:
+          <text>38</text>
+        </view>
+      </view>
+    </view>
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='text-red'>限量9652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='text-red'>限量9652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn gobtn_gray'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn2'>元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装</view>
+          <view class='mt10 progress_box'>
+            <view class='text-red'>限量9652件</view>
+          </view>
+          <view class='weui-flex mt20'>
+            <view class='weui-flex__item'>
+              <text class='price_Y fs24'>￥</text>
+              <text class='price fs42 ff'>899.00</text>
+              <text class='sprice fs24 text-muted'>￥999</text>
+            </view>
+            <view>
+              <view class='gobtn gobtn_gray'>马上抢</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+</view>

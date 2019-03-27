@@ -1,0 +1,26 @@
+/* pages/message/message.wxss */
+
+.notice {
+  width: 16rpx;
+  height: 16rpx;
+  background: rgba(246, 82, 54, 1);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.message_box {
+  margin: 20rpx;
+}
+
+.active {
+  display: flex;
+  padding: 10rpx;
+  margin: 0 30rpx;
+  background: rgba(245, 245, 245, 1);
+}
+
+.active_img image {
+  width: 130rpx;
+  height: 130rpx;
+  margin-right: 20rpx;
+}

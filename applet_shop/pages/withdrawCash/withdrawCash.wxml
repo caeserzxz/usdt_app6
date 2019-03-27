@@ -1,0 +1,95 @@
+<view class="page">
+  <view class="weui-cells mt0 bg-none border-after">
+    <view class="bg-fff mb20">
+      <view class="weui-cell" style="padding-top: 1rem; padding-bottom: 1rem;">
+        <view class="weui-cell__bd">
+          <view class="fs26 text-muted">提现金额（元）</view>
+            <view class="txflex weui-cell border-before pl0" style=" align-items: center;">
+              <view class="weui-cell__bd">
+                <input value="36962.00" type='digit' placeholder="请输入金额" class="ff"/>
+              </view>
+              <view class="weui-cell__ft">
+                <text class="fs24 text-default">手续费0.1元</text>  
+              </view>
+            </view>
+            <view class="weui-cell pl0 pr0 pb0 pt0 border-before">
+              <view class="weui-cell__bd">
+                  <view class="text-muted fs26">可提现金额<text class="text-default fs26 fs500 ff">￥369.00</text></view>
+              </view>
+              <view class="weui-cell__ft">
+                <navigator url='' class="tx-btn">全部提现</navigator>
+              </view>
+            </view>
+        </view>
+      </view>
+    </view>
+    <view class="bg-fff">
+     <view class="weui-cell tbornone mb10">
+      <view class="weui-cell__bd fs34">请选择提现银行</view>
+      </view>
+      <radio-group>
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x12">
+          <view class="weui-cell__hd">
+            <image class="hd_icon" src="/images/AliPay.png" alt="" />
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs30">支付宝</view>
+          </view>
+          <view class="weui-cell__ft">
+            <radio id='x12' color='#f8584f'/>
+          </view>
+        </label>
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x11">
+          <view class="weui-cell__hd">
+            <image class="hd_icon" src="/images/weixinPay.png" alt=""/>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs30">微信支付(134***5236)</view>
+          </view>
+          <view class="weui-cell__ft">
+            <radio id='x11' color='#f8584f'/>
+          </view>
+        </label>
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x13">
+          <view class="weui-cell__hd">
+            <image class="hd_icon" src="/images/GSBank.png" alt="" class="img45"/>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs30">中国工商银行(622***9945)</view>
+          </view>
+          <view class="weui-cell__ft">
+            <radio id='x13' color='#f8584f'/>
+          </view>
+        </label>
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x14">
+          <view class="weui-cell__hd">
+            <image class="hd_icon" src="/images/JSBank.png" alt=""  class="img45"/>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs30">中国建设银行(622***7356)</view>
+          </view>
+          <view class="weui-cell__ft">
+            <radio id='x14' color='#f8584f'/>
+          </view>
+        </label>
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x15">
+          <view class="weui-cell__hd">
+            <image class="hd_icon" src="/images/ZSBank.png" alt=""  class="img45"/>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs30">招商银行(622***6323)</view>
+          </view>
+          <view class="weui-cell__ft">
+            <radio id='x15' color='#f8584f'/>
+          </view>
+        </label>
+      </radio-group>
+      <navigator url="/pages/addBank/addBank" class="weui-cell border-before pb60">
+        <view class="weui-cell__bd fs30 addBank"><text class="fs40 fw600">+</text>添加银行卡</view>
+      </navigator>
+    </view>
+  </view>
+<view class='btn_box'>
+  <text class='btn_primary'>确认提现</text>
+</view>
+</view>

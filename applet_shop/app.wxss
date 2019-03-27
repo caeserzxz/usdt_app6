@@ -1,0 +1,65 @@
+@import 'weui.wxss';
+@import 'comm.wxss';
+@import 'font.wxss';
+
+image {
+    width: 100rpx;
+    height: 100rpx;
+    vertical-align: middle;
+}
+
+page {
+    background-color: #f4f4f4;
+    font-size: 24rpx;
+}
+
+.hr {
+    height: 0;
+    overflow: hidden;
+    border-top: 1px solid #e7e7e7;
+    margin: 20rpx 0;
+}
+
+.weui-cell {
+    font-size: 28rpx;
+}
+
+input::placeholder {
+    color: #b9b9b9;
+}
+
+.weui-btn-area {
+    margin-bottom: 15px;
+}
+
+.btn {
+    background-color: #ffcc04;
+    border-radius: 20rpx;
+    border: 0px;
+    font-size: 26rpx;
+    padding: 8px 0;
+}
+
+.weui-btn-area {
+    margin-bottom: 15px;
+}
+
+checkbox .wx-checkbox-input {
+    width: 16px;
+    height: 16px;
+}
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+    border: 1px solid #259b24;
+    background-color: #259b24;
+}
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
+    color: #fff;
+    font-size: 14px;
+}
+
+radio .wx-radio-input {
+    width: 16px;
+    height: 16px;
+}

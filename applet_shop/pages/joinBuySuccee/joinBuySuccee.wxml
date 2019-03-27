@@ -1,0 +1,70 @@
+<view class="page2">
+
+  <view class='succee_topbox'>
+    <view class='icon'>
+      <image class='zt_img' src='/images/zt_img01.png'/>
+    </view>
+    <view class='fs34 mt30'>参团成功</view>
+    <view class='fs26 text-muted mt10'>您与参团成功，满团即可发货！</view>
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd countdown_box'>
+        <text class='fs32 fw500 text-red'>还差2人</text>
+        <text class='fs32 fw500'>，距离结束还剩</text>
+        <view class='countdown'>
+          <text>00</text>:
+          <text>45</text>:
+          <text>38</text>
+        </view>
+      </view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+        <view class='avatar_group'>
+          <view class='avatar'>
+            <image src="{{imgBase}}goods01.png" />
+            <view class='badge2'>团长</view>
+          </view>
+          <view class='avatar avatar_df'>
+            <image src="/images/df_tx.png" />
+          </view>
+          <view class='avatar avatar_df'>
+            <image src="/images/df_tx.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd'>
+        <text class='fs32 fw500'>拼团规则</text>
+      </view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+        <view class='weui-flex'>
+          <view class='num'>1</view>
+          <view class='weui-flex__item text-muted'>
+            拼团抽奖，规定时间内集齐拼团规定人数即可开奖，团内任 意1人开出免单，全团都可免单
+          </view>
+        </view>
+        <view class='weui-flex mt20'>
+          <view class='num'>2</view>
+          <view class='weui-flex__item text-muted'>
+            如规定时间内团内人数不足3人，则订单取消，原路返还
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='btn_box'>
+    <view class='btn_primary'>查看订单详情</view>
+  </view>
+</view>

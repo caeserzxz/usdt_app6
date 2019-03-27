@@ -1,0 +1,41 @@
+<view>
+ <view class='search_bar'>
+    <view class='input_box'>
+     <image src='/images/selech01.png'></image>
+     <input placeholder='圣诞礼物1500减150' class='input'></input>
+    </view>
+    <view class='qx'>取消</view>
+  </view>
+  <view class='weui-cells mt0'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='fs34 fw600'>历史搜索</view>
+        <view class='tags'>
+          <view class='tag'><text>苹果手机</text></view>
+          <view class='tag'><text>限量款</text></view>
+          <view class='tag'><text>经典包袋</text></view>
+          <view class='tag'><text>羽绒服</text></view>
+          <view class='tag'><text>围巾</text></view>
+          <view class='tag'><text>GUCCI</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='weui-cells'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='fs34 fw600'>热门搜索</view>
+        <view class='tags'>
+          <view class='tag top1'><text>圣诞送女神好礼</text></view>
+          <view class='tag top1'><text>时髦衣橱必buy单品</text></view>
+          <view class='tag'><text>苹果手机</text></view>
+          <view class='tag'><text>限量款</text></view>
+          <view class='tag'><text>经典包袋</text></view>
+          <view class='tag'><text>羽绒服</text></view>
+          <view class='tag'><text>围巾</text></view>
+          <view class='tag'><text>GUCCI</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

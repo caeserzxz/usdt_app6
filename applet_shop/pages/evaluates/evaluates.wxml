@@ -1,0 +1,44 @@
+<!--pages/evaluates/evaluates.wxml-->
+<view class="weui-cells mt0">
+  <view class='sp_title'>商品信息</view>
+  <navigator url='/pages/productDetails/productDetails' class="weui-cell flex-start border-none">
+    <view class="weui-cell__hd hd_img">
+      <image src="{{imgBase}}goods01.png" />
+    </view>
+    <view class="weui-cell__bd">
+      <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
+      <view class='fs28 text-muted mt10'>铁锈红-M码</view>
+      <view class='pj_box'>
+        <view class='price'>
+                                <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
+        </view>
+      </view>
+    </view>
+  </navigator>
+</view>
+
+<view class="weui-cells weui-cells_form">
+  <view class='sp_title fw_b'>评价</view>
+  <view class="weui-cell border-none">
+    <view class="weui-cell__bd">
+      <textarea class="weui-textarea" maxlength='140' bindinput='getWordsNum' placeholder="请输入您的评价~" rows="2" style='height:150rpx;'></textarea>
+      <view class="weui-textarea-counter">
+        <text>{{wordsNum}}</text>/100</view>
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells">
+  <view class='sp_title'>上传照片</view>
+  <view class="weui-cell border-none" style="flex-wrap:wrap;">
+    <view class='upload'>
+      <image src="{{imgBase}}goods01.png" class='upload_img' />
+      <image src="/images/closeImg.png" class='delete_img' />
+    </view>
+    <view class='add'>
+      <image src="/images/addImg.png" class='add_img' />
+    </view>
+  </view>
+</view>
+
+<navigator class='btn_primary' ho style='margin:50rpx 30rpx;'>提交</navigator>

@@ -1,0 +1,21 @@
+<!--pages/messageDetail/messageDetail.wxml-->
+<view class='article'>
+  <view class='fw600 fs34'>情人节狂欢日，送您星拼悦享蛋糕礼盒</view>
+  <view class='fs28 text-muted'>2019.02.14</view>
+  <view class='article_p'>
+  <view class='p'>
+    2月14日，一年一度围观情侣虐狗的节日又双叒叕来了各路客户爸爸们早已开始召唤设计师，准备情人节营销计划。
+  </view>
+  <view class='p'>
+    在这样一个日子里，最虐的不是没对象，而是身为单身狗还要做情人节设计；最惨的不是不能陪男/女朋友，而是要为了广大情侣的过节体验加班加点…… 春节假期的放空不知道能否带给你新的创意，就算没有想法也不用担心，这篇指南会为你带来最实用的情人节设计灵感。
+  </view>
+  <view class='article_img'>
+    <image src="{{imgBase}}swiperimg01.png" mode='widthFix'/>
+  </view>
+  <view class='p'>
+    复古的霓虹灯在今日被赋予了更多的未来感，作为经久不衰的视觉符号出现于各种艺术领域。迷幻的灯光效果与绚丽的色彩，配合着恰到好处的暧昧，最适合用于传单或海报设计中，为你点亮情人节的夜晚。
+  </view>
+</view>
+
+  </view>
+  

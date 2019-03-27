@@ -1,0 +1,54 @@
+<!--pages/message/message.wxml-->
+<view>
+  <navigator url='/pages/messageDetail/messageDetail' class="weui-cells message_box mt0">
+    <view class="weui-cell flex-start">
+      <view class="weui-cell__bd fs28">
+        <view class='fw600'>送您一张无门槛20元优惠券！</view>
+        <view class='text-muted mt10'>全店商品无门槛优惠券，只要消费即可使用！</view>
+        <view class='text-muted mt10'>2019.02.14</view>
+      </view>
+      <view class="weui-cell__ft">
+        <text class='notice'></text>
+      </view>
+    </view>
+  </navigator>
+  <navigator url='/pages/messageDetail/messageDetail' class="weui-cells message_box mt0">
+    <view class="weui-cell flex-start">
+      <view class="weui-cell__bd fs28">
+        <view class='fw600'>红包过期提醒</view>
+        <view class='text-muted mt10'>您的红包将于2019年02月15日过期24点过期</view>
+        <view class='text-muted mt10'>2019.02.12</view>
+      </view>
+      <view class="weui-cell__ft">
+        <text class='notice'></text>
+      </view>
+    </view>
+  </navigator>
+  <navigator url='/pages/messageDetail/messageDetail' class="weui-cells message_box mt0">
+    <view class="weui-cell flex-start">
+      <view class="weui-cell__bd fs28">
+        <view class='fw600'>圣诞狂欢日，送您星拼悦享蛋糕礼盒超级</view>
+        <view class='text-muted mt10'>今天只要进入店铺，消费满1元，即可获赠美味蛋糕一 盒，快去你的个人中心领取吧！</view>
+        <view class='text-muted mt10'>2019.02.10</view>
+      </view>
+      <view class="weui-cell__ft">
+      </view>
+    </view>
+  </navigator>
+  <navigator url='/pages/messageDetail/messageDetail' class="weui-cells message_box mt0 pb30">
+    <view class="weui-cell flex-start">
+      <view class="weui-cell__bd fs28">
+        <view class='fw600'>能量兑换红包提醒</view>
+      </view>
+      <view class="weui-cell__ft">
+        <text class='text-muted fs28'>2019.02.08</text>
+      </view>
+    </view>
+    <view class='active'>
+      <view class='active_img'>
+        <image src="{{imgBase}}goods01.png" />
+      </view>
+      <text class='fs26'>您参与活动获取的能力可以兑换0.5元红 包，前往兑换，不然到期即将作废，千万 不要错过机会！</text>
+    </view>
+  </navigator>
+</view>

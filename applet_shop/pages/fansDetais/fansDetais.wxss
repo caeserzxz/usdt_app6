@@ -1,0 +1,72 @@
+/* pages/fansDetais/fansDetais.wxss */
+.top{
+  width:100vw;
+height:360rpx;
+background:rgba(51,51,51,1);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.top image{
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 20rpx;
+  border-radius: 50%;
+}
+.top .name{
+  display: flex;
+  align-items: center;
+}
+.btn1 {
+  display: inline-block;
+  width:60rpx;
+  height:30rpx;
+  background:rgba(246,82,54,1);
+  line-height: 30rpx;
+  color:rgba(255,255,255,1);
+  text-align: center;
+  margin-left: 13rpx;
+}
+.btn2{
+  width:90rpx;
+height:30rpx;
+border:1px solid rgba(255,255,255,0.5);
+text-align: center;
+line-height: 30rpx;
+margin-top: 10rpx;
+}
+.data{
+  background-color: #fff;
+  padding: 40rpx;
+  height: 220rpx;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.data .row text:nth-child(1){
+  width: 380rpx;
+  display: inline-block;
+}
+.fanslist{
+  margin-top: 20rpx;
+  display: flex;
+  height: 100rpx;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40rpx;
+  background-color: #fff;
+}
+.weui-cells{
+  margin-top: 0;
+  padding-bottom: 10rpx;
+}
+.weui-cell{
+  padding: 0 40rpx;
+  height: 100rpx;
+}
+.weui-cell::before{
+  display: none;
+}

@@ -1,0 +1,4 @@
+/* pages/editAddress/editAddress.wxss */
+.weui-cell__hd{
+  margin-right: 20rpx;
+}

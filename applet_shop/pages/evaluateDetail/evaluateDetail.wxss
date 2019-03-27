@@ -1,0 +1,39 @@
+/* pages/evaluateDetail/evaluateDetail.wxss */
+
+.upload {
+  position: relative;
+  margin-right: 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.upload_img {
+  width: 180rpx;
+  height: 180rpx;
+}
+
+.hd_img image {
+  width: 130rpx;
+  height: 130rpx;
+  margin-right: 20rpx;
+}
+
+.pj_title {
+  font-size: 28rpx;
+  flex-wrap: 500;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.pj_box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10rpx;
+}
+.price{
+  display: flex;
+  align-items: baseline;
+}

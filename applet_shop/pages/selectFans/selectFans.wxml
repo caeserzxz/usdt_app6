@@ -1,0 +1,41 @@
+<!--pages/selectFans/selectFans.wxml-->
+<view class="page">
+  <view class="h-search weui-cell bg-fff border-after">
+    <view class="h-search_input weui-cell__bd">
+      <image src="/images/selech01.png" bindtap='selectFans'></image>
+      <input class='fs30' placeholder='请输入ID号' value='7896542' confirm-type="search"></input>
+    </view>
+    <view class="fs30 weui-cell__ft text-default">取消</view>
+  </view>
+  <view class="weui-cells border-after bg-none mt0">
+    <navigator url="/pages/fansDetais/fansDetais" hover-class="none" class="weui-cell border-before bg-fff mt10">
+      <view class="weui-cell__hd">
+        <image src="{{imgUrl}}proimg.jpg" class="tx-img"></image>
+      </view>
+      <view class="weui-cell__bd">
+        <view class="weui-cell__title">
+          <text class="fs28 fw800">胖子的自我修养</text>
+          <text class="btn1 fs22 fw800">VIP</text>
+          <text class="btn2 fs22 fw800">第二层</text>
+        </view>
+        <view class="weui-cell__tips">
+          <text class="text-muted fs26 mt10">ID 41561556</text>
+        </view>
+      </view>
+    </navigator>
+          <view class='info fs26 text-muted'>
+        <view class='row'>
+          <text>ETC:287</text>
+          <text>ETC:27</text>
+        </view>
+        <view class='row'>
+          <text>ETH:5257</text>
+          <text>USDT:752</text>
+        </view>
+        <view class='row'>
+          <text>我的佣金:8857</text>
+          <text>我的积分:552</text>
+        </view>
+      </view>
+  </view>
+</view>

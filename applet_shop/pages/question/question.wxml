@@ -1,0 +1,48 @@
+<!--pages/question/question.wxml-->
+<view class="weui-cells mt0">
+  <view class="weui-cell flex-start ">
+    <view class="weui-cell__hd mr20">
+      <view class='question'>问</view>
+    </view>
+    <view class="weui-cell__bd">
+     <view class='fs28 fw600'> 这款衣服色差大吗？</view>       
+     <view class='fs28 mt20'>不知道是不是马海毛，摸着很舒服；不会显胖哦，挺百 搭的，比较薄，初秋可以穿，推荐入手~</view>
+     <view class='ques_time'>
+      <text>全部12个回答</text>
+      <text>更新于7天前</text>
+     </view>
+    </view>   
+  </view>
+</view>
+
+<view class="weui-cells">
+  <view class="weui-cell flex-start ">
+    <view class="weui-cell__hd mr20">
+      <view class='question'>问</view>
+    </view>
+    <view class="weui-cell__bd">
+     <view class='fs28 fw600'> 会起球吗？</view>       
+     <view class='fs28 mt20'>穿过5次，暂时还没有起球~</view>
+     <view class='ques_time'>
+      <text>全部12个回答</text>
+      <text>更新于15天前</text>
+     </view>
+    </view>   
+  </view>
+</view>
+
+<view class="weui-cells">
+  <view class="weui-cell flex-start ">
+    <view class="weui-cell__hd mr20">
+      <view class='question'>问</view>
+    </view>
+    <view class="weui-cell__bd">
+     <view class='fs28 fw600'> 会起球吗？</view>       
+     <view class='fs28 mt20'>穿过5次，暂时还没有起球~</view>
+     <view class='ques_time'>
+      <text>全部12个回答</text>
+      <text>更新于15天前</text>
+     </view>
+    </view>   
+  </view>
+</view>

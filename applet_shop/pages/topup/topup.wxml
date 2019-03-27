@@ -1,0 +1,75 @@
+<view class="page">
+  <view class="weui-cells mt10 border-after" style="background-color:transparent;">
+    <view class="weui-cell mb20 bg-fff" style="padding-top:73rpx; padding-bottom: 73rpx;">
+      <view class="weui-cell__bd">
+        <view class="fs26 text-muted mb30" wx:if="{{inputVal}}">充值金额(元)</view>
+        <view class="weui-flex czflex">
+          <view class="weui-flex__item">
+            <input value="{{inputVal}}" type='digit' placeholder="请输入充值金额" bindinput='onFocus' class="ff" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-cell border-before tbornone  bg-fff pb30 pt30">
+      <view class="weui-cell__bd fs34">请选择支付方式</view>
+    </view>
+    <radio-group class='bg-fff' bindchange="radioChange">
+      <label class="weui-cell weui-check__label border-before pt30 pb30" for="x11">
+        <view class="weui-cell__hd">
+          <image class="hd_icon" src="/images/weixinPay.png" alt="" />
+        </view>
+        <view class="weui-cell__bd">
+          <view class="fs30">微信</view>
+        </view>
+        <view class="weui-cell__ft">
+          <radio id='x11' color='#f8584f' value="1" checked='true' />
+        </view>
+      </label>
+      <label class="weui-cell weui-check__label border-before pt30 pb30" for="x12">
+        <view class="weui-cell__hd">
+          <image class="hd_icon" src="/images/AliPay.png" alt="" />
+        </view>
+        <view class="weui-cell__bd">
+          <view class="fs30">支付宝</view>
+        </view>
+        <view class="weui-cell__ft">
+          <radio id='x12' color='#f8584f' value="2" />
+        </view>
+      </label>
+      <label class="weui-cell weui-check__label border-before pt30 pb30" for="x13">
+        <view class="weui-cell__hd">
+          <image class="hd_icon" src="/images/offlinePay.png" alt="" />
+        </view>
+        <view class="weui-cell__bd">
+          <view class="fs30">线下打款</view>
+        </view>
+        <view class="weui-cell__ft">
+          <radio id='x13' color='#f8584f' value="3" />
+        </view>
+      </label>
+    </radio-group>
+    <view class="weui-cell border-before bg-fff" wx:if='{{active == 3}}'>
+      <view class="weui-cell__bd">
+        <view class="weui-uploader">
+          <view class="weui-uploader__bd">
+            <!-- 图片盒子 -->
+            <view class="weui-uploader__files" id="uploaderFiles">
+              <view class="weui-uploader__file">
+                <image src="{{imgUrl}}proimg.jpg" class="imgup" />
+                <view class="dele-btn"></view>
+              </view>
+            </view>
+            <!-- 图片盒子 -->
+            <view class="weui-uploader__input-box">
+              <input id="uploaderInput" class="weui-uploader__input" disabled type="file" accept="image/*" multiple="" />
+              <view class='text-muted fs26 tc'>上传凭证</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='btn_box'>
+    <navigator url="/pages/topupSucceed/topupSucceed" class='btn_primary'>确认充值</navigator>
+  </view>
+</view>

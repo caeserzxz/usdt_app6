@@ -1,0 +1,116 @@
+<view class="page3">
+
+  <view class='succee_topbox'>
+    <view class='icon'>
+      <image class='zt_img' src='/images/zt_img01.png' />
+    </view>
+    <view class='fs34 mt30'>拼团成功</view>
+    <view class='fs26 text-muted mt10'>商家按照付款付款顺序发货中，请耐心等待！</view>
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd countdown_box'>
+        <text class='fs32 fw500'>3人团已成团</text>
+      </view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+        <view class='avatar_group'>
+          <view class='avatar'>
+            <image src="{{imgBase}}goods01.png" />
+            <view class='badge2'>团长</view>
+          </view>
+          <view class='avatar'>
+            <image src="{{imgBase}}goods01.png" />
+          </view>
+          <view class='avatar'>
+            <image src="{{imgBase}}goods01.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <view class='weui-cells default'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='fs30'>
+          <text>周杰伦</text>
+          <text class='ml10'>15984568411</text>
+        </view>
+        <view class='fs28 text-muted mt30'>广州市海珠区客村新南港西路丽影广场4栋105室</view>
+      </view>
+    </view>
+  </view>
+
+  <view class='weui-cells border-none seckill_cells pb0'>
+    <view class='cell_title'>商品信息</view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__hd'>
+        <view class='hd_img_box'>
+          <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+        </view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='title ellipsisLn2'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+        <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+        <view class='weui-flex flex-center mt5'>
+          <view class='weui-flex__item'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='badge'>3人团</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='weui-cell'>
+      <view class='weui-cell__hd'>我的留言：</view>
+      <view class='weui-cell__bd'>请检查清楚再给我发货谢谢！</view>
+    </view>
+  </view>
+
+  <view class='weui-cells border-none'>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__bd'>拼团金额</view>
+      <view> <text class='fs28'>￥</text> <text class='fs34 ff'>982.00</text></view>
+    </view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__bd'>优惠券</view>
+      <view> <text class='fs28'>-￥</text> <text class='fs34 ff'>20.00</text></view>
+    </view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__bd'>会员折扣</view>
+      <view> <text class='fs28'>-￥</text> <text class='fs34 ff'>30.00</text></view>
+    </view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__bd'>运费</view>
+      <view> <text class='fs28'>￥</text> <text class='fs34 ff'>10.00</text></view>
+    </view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__bd fs28'>实付金额</view>
+      <view> <text class='fs28'>￥</text> <text class='fs40 ff'>982.00</text></view>
+    </view>
+  </view>
+
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell '>
+      <view class='weui-cell__bd'>
+
+        <view class='text-muted fs28'>下单时间:2018.26 12:32</view>
+        <view class='text-muted fs28 mt10'>发货时间:2018.26 12:32</view>
+        <view class='text-muted fs28 mt10'>确认收货时间:2018.26 12:32</view>
+      </view>
+    </view>
+  </view>
+
+  <view class='bottom_btnbox'>
+    <view class='btn1'>申请售后</view>
+    <view class='btn2'>查看物流</view>
+    <view class='btn3'>确认收货</view>
+  </view>
+
+</view>

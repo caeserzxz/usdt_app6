@@ -1,0 +1,48 @@
+<view class='page'>
+
+ <!--支付失败-->
+  <view class='payN' hidden='{{true}}'>
+    <view class='topbox'>
+      <image src="/images/payN.png" mode='widthFix'></image>
+      <view class='fs34 fw500 mt10'>订单支付失败</view>
+      <view class='fs72 ff mt40'>198.00</view>
+      <view class='fs24 text-muted'>待支付订单金额</view>
+    </view>
+    <view class='btn_box'>
+      <view class='btn_primary'>重新支付</view>
+    </view>
+  </view>
+
+  <!--支付成功-->
+  <view class='payY'>
+    <view class='topbox'>
+      <image src="/images/payY.png" mode='widthFix'></image>
+      <view class='fs34 fw500 mt10'>订单支付成功</view>
+      <view class='fs72 ff mt40'>198.00</view>
+      <view class='fs24 text-muted'>已支付订单金额</view>
+      <view class='hr2'></view>
+      <view class='weui-cells'>
+        <view class='weui-cell'>
+          <view class='weui-cell__bd'>积分抵扣</view>
+          <view class='weui-cell__ft'>862</view>
+        </view>
+        <view class='weui-cell'>
+          <view class='weui-cell__bd'>优惠券</view>
+          <view class='weui-cell__ft'>-￥10.00</view>
+        </view>
+        <view class='weui-cell'>
+          <view class='weui-cell__bd'>会员折扣</view>
+          <view class='weui-cell__ft'>-￥30.00</view>
+        </view>
+        <view class='weui-cell'>
+          <view class='weui-cell__bd'>运费</view>
+          <view class='weui-cell__ft'>10</view>
+        </view>
+      </view>
+    </view>
+    <view class='btn_box'>
+      <navigator class='btn1'>查看订单</navigator>
+      <navigator class='btn2'>继续逛逛</navigator>
+    </view>
+  </view>
+</view>

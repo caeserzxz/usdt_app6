@@ -1,0 +1,99 @@
+/* pages/rank/rank.wxss */
+.top{
+  position: relative;
+  box-sizing: border-box;
+}
+.top .topBG{
+  width: 100vw;
+  height: 360rpx;
+}
+.rankinfo{
+  position: absolute;
+  width: 100vw;
+  height: 360rpx;
+  top: 0;
+  left: 0;
+  padding-top: 30rpx;
+  box-sizing: border-box;
+}
+.rankinfo text{
+  font-size: 72rpx;
+  padding: 0 0 0 40rpx;
+}
+.rankinfo picker{
+  padding-left: 40rpx;
+  display: flex;
+  align-items: center;
+  margin-top: -10rpx;
+}
+.rankinfo picker image{
+  width: 20rpx;
+  height: 20rpx;
+  margin-left: 14rpx;
+}
+.weui-tab{
+  margin-top: -120rpx;
+  height: auto;
+}
+.weui-tab__panel{
+  padding-top: 86rpx;
+  height:auto;
+}
+.weui-navbar__item {
+  padding: 8rpx 0;
+}
+.weui-navbar__title{
+  color:rgba(255,255,255,0.5);
+}
+.weui-bar__item_on .weui-navbar__title{
+  color: #fff;
+}
+.weui-navbar{
+  border: none
+}
+.weui-navbar__slider{
+  background-color: #fff;
+  width: 30rpx;
+}
+.weui-cells{
+    margin: 0 20rpx 0;
+}
+.weui-cells .weui-cell__ft{
+  display: flex;
+  align-items: center;
+
+}
+.weui-cell{
+  padding-left: 0;
+}
+.weui-cells .weui-cell__ft text{
+  margin-left: 8rpx;
+}
+.weui-cells .weui-cell__bd image{
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 20rpx;
+}
+.weui-cells .weui-cell__hd{
+  width: 120rpx;
+  display: flex;
+  justify-content: center;
+}
+.weui-cells .ff{
+  line-height: 0;
+  padding-top: 14rpx;
+}
+.weui-cell__hd image{
+  width: 50rpx;
+  height: 50rpx;
+}
+.my{
+  margin-top: 14rpx;
+}
+.weui-cell::before{
+  display: none;
+}
+scroll-view{
+  width: auto;
+  height: 67vh;
+}

@@ -1,0 +1,22 @@
+<view class='page'>
+  <view class="coupon_list_box">
+    <block wx:for="{{coupons}}" wx:key="*this">
+      <view id='{{item.id}}' class="big_coupon {{item.select? 'active': ''}}" bindtap='selectCoupon'>
+        <view class='rtok'>
+          <image src="/images/useing.png" />
+        </view>
+        <view class="bd">
+          <view class="fs30">{{item.name}}</view>
+          <view class="fs26 text-muted">{{item.stitle}}</view>
+          <view class="fs24 text-muted mt20">{{item.time}}</view>
+        </view>
+        <view class="hd">
+          ￥
+          <text>{{item.money}}</text>
+        </view>
+      </view>
+    </block>
+
+
+  </view>
+</view>
