@@ -23,8 +23,10 @@ class Index  extends ClientbaseController{
 		$tipsubscribe = 0;//是否显示提示关注
         //微信网页访问执行
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
-            $subscribe = (new \app\weixin\model\WeiXinUsersModel)->where('user_id',$this->userInfo['user_id'])->value('subscribe');
-            $tipsubscribe = $subscribe == 0 ? 1 : 0;
+            if ($this->userInfo['user_id'] > 0){
+                $subscribe = (new \app\weixin\model\WeiXinUsersModel)->where('user_id',$this->userInfo['user_id'])->value('subscribe');
+                $tipsubscribe = $subscribe == 1 ? 0 : 1;
+            }
         }
         $this->assign('tipsubscribe', $tipsubscribe);
 		$this->assign('title', '首页');

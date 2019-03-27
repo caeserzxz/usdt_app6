@@ -118,22 +118,23 @@ class Users extends ApiController
 		$where[] = ['status','=',0];
 		$return['frozen_amount'] = $WithdrawModel->where($where)->sum('amount');
 		//end
-        $AccountLogModel = new AccountLogModel();
-		//今天收益		
+        $DividendModel = new DividendModel();
+		//今天收益
 		unset($where);
-		$where[] = ['user_id','=',$this->userInfo['user_id']];
-		$where[] = ['change_type','=',4];
-		$where[] = ['change_time','>=',strtotime("today")];
-		$return['today_income'] = $AccountLogModel->where($where)->sum('balance_money');
-        $return['today_income'] += $AccountLogModel->where($where)->sum('bean_value');
+		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
+		$where[] = ['status','<>',1];
+		$where[] = ['add_time','>=',strtotime("today")];
+		$return['today_income'] = $DividendModel->where($where)->sum('dividend_amount');
+        $return['today_income'] += $DividendModel->where($where)->sum('dividend_bean');
 		//end
 		//本月收益
 		unset($where);
-		$where[] = ['user_id','=',$this->userInfo['user_id']];
-        $where[] = ['change_type','=',4];
-		$where[] = ['change_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
-		$return['month_income'] = $AccountLogModel->where($where)->sum('balance_money');
-        $return['month_income'] += $AccountLogModel->where($where)->sum('bean_value');
+		$where[] = ['dividend_uid','=',$this->userInfo['user_id']];
+        $where[] = ['status','<>',1];
+		$where[] = ['add_time','>',strtotime(date('Y-m-01', strtotime('-1 month')))];
+		$return['month_income'] = $DividendModel->where($where)->sum('dividend_amount');
+        $return['month_income'] += $DividendModel->where($where)->sum('dividend_bean');
+
 		//end
 		$return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
         $return['code'] = 1;

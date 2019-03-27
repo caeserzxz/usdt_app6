@@ -191,6 +191,8 @@ class Withdraw extends AdminController
                         $data .= userInfo($row['user_id']). "\t";
                     } elseif ($val == 'type') {
                         $data .= ($row['type']=='alipay'?'支付宝':'银行卡'). "\t";
+                    } elseif ($val == 'bank_card_number') {
+                        $data .= "'".$row['bank_card_number']. "\t";
                     } else {
                         $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
                     }
