@@ -33,12 +33,12 @@ class Index  extends BaseController{
 			$wxuid = $WeiXinUsersModel->where('wx_openid',$WeiXinModel->fromUsername)->value('wxuid');
             $subscribe = $WeiXinUsersModel->keyword == 'subscribe' ? 1 : 2;
 			if ($wxuid < 1  ){
-				$inArr['subscribe'] = $subscribe;
+				$inArr['subscribe'] = $subscribe * 1;
 				$inArr['wx_openid'] = $WeiXinModel->fromUsername;	
 				$inArr['add_time'] = $inArr['update_time'] = time();
 				$WeiXinUsersModel->save($inArr);
 			}else{
-				$upArr['subscribe'] = $subscribe;
+				$upArr['subscribe'] = $subscribe * 1;
 				$upArr['wx_subscribe_time'] = time();
 				$upArr['update_time'] = time();
 				$WeiXinUsersModel->where('wxuid',$wxuid)->update($upArr);
