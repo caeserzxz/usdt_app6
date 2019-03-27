@@ -1,0 +1,23 @@
+/* pages/messageDetail/messageDetail.wxss */
+
+page {
+  background-color: #fff;
+}
+
+.article {
+  padding: 40rpx;
+}
+
+.article_p{
+  margin: 30rpx 0;
+}
+
+.p {
+  font-size: 26rpx;
+  line-height: 45rpx;
+  text-indent: 50rpx;
+}
+.article_img image{
+  width: 100%;
+  margin: 30rpx 0;
+}

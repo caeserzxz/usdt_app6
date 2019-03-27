@@ -1,0 +1,112 @@
+<!--pages/personalData/personalData.wxml-->
+<view class="weui-cells mt0">
+  <view class="weui-cell weui-cell__ft_in-access">
+    <view class="weui-cell__bd">
+      <view class='fs34 fw600'>个人资料</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='photo'>
+        <image src="/images/df_tx.png" />
+      </view>
+    </view>
+  </view>
+  <view class="weui-cell border-none">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>昵称</view>
+    </view>
+    <view class="weui-cell__ft">
+      <input class='fs28 text-default' value='你的男神'></input>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>会员号</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 fw_b text-default'>YY5741</view>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>性别</view>
+    </view>
+    <view class="weui-cell__ft">
+      <picker bindchange="bindPickerChange" class='fs28 text-default' value="{{index}}" range="{{sexArr}}">
+          <view class="picker">
+           {{sexArr[index]}}
+    </view>
+  </picker>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>生日</view>
+    </view>
+    <view class="weui-cell__ft">
+      <picker
+    mode="date"
+    value="{{timeDate}}"
+    start="1930-01-01"
+    end="2050-01-01"
+    bindchange="bindDateChange"
+  >
+    <view class="picker fs28 text-default">{{timeDate}}</view>
+  </picker>
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells">
+  <navigator url='/pages/address/address' class="weui-cell weui-cell__ft_in-access">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>收货地址管理</view>
+    </view>
+    <view class="weui-cell__ft"></view>
+  </navigator>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>绑定手机号</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 fw_b text-default'>15963263254</view>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>是否公开手机号</view>
+    </view>
+    <view class="weui-cell__ft">
+      <switch name="switch" color='#f65236'/>
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells">
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>上级昵称</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 fw_b text-default'>狂风扫落叶</view>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>上级手机号</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 fw_b text-default'>15963263254</view>
+    </view>
+  </view>
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs28 text-muted'>关注时间</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 fw_b text-default'>2018.05.23</view>
+    </view>
+  </view>
+</view>
+<view class='btn_box mt30'>
+  <text class='btn_primary'>保存</text>
+</view>

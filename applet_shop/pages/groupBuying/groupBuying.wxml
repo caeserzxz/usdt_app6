@@ -1,0 +1,76 @@
+<view class="page">
+
+  <view class='weui-cells border-none seckill_cells'>
+    <view class='cell_title'>商品信息</view>
+    <view class='weui-cell border-none'>
+      <view class='weui-cell__hd'>
+        <view class='hd_img_box'>
+          <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+        </view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='title ellipsisLn2'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+        <view class='weui-flex flex-center mt10'>
+          <view class='weui-flex__item'>
+
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='badge'>3人团</text>
+          </view>
+          <view>
+            <view class='text-muted fs26'>已团15623件</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <view class='weui-cells group_cells'>
+    <view class='weui-cell pb0'>
+      <view class='weui-cell__bd'><text class='fs32 fw500'>4人在拼单</text></view>
+      <view class='weui-cell__ft'><text class='arrow_r'>更多</text></view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__hd'>
+        <view class='avatar'><image src="{{imgBase}}goods01.png"/></view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='fs28'>狂风扫落叶</view>
+        <view class='fs24 text-muted mt10'>还差1人 剩余23:26:41</view>
+      </view>
+      <view class='weui-cell__ft'><text class='gobtn'>去拼团</text></view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__hd'>
+        <view class='avatar'><image src="{{imgBase}}goods01.png"/></view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='fs28'>胖子的境界</view>
+        <view class='fs24 text-muted mt10'>还差1人 剩余23:26:41</view>
+      </view>
+      <view class='weui-cell__ft'><text class='gobtn'>去拼团</text></view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__hd'>
+        <view class='avatar'><image src="{{imgBase}}goods01.png"/></view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='fs28'>流泪的鱼</view>
+        <view class='fs24 text-muted mt10'>还差1人 剩余23:26:41</view>
+      </view>
+      <view class='weui-cell__ft'><text class='gobtn'>去拼团</text></view>
+    </view>
+    <view class='weui-cell '>
+      <view class='weui-cell__hd'>
+        <view class='avatar'><image src="{{imgBase}}goods01.png"/></view>
+      </view>
+      <view class='weui-cell__bd'>
+        <view class='fs28'>你的女孩</view>
+        <view class='fs24 text-muted mt10'>还差1人 剩余23:26:41</view>
+      </view>
+      <view class='weui-cell__ft'><text class='gobtn'>去拼团</text></view>
+    </view>
+    
+  </view>
+</view>

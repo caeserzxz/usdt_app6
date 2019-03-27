@@ -1,0 +1,123 @@
+/* pages/topupDetails/topupDetails.wxss */
+.destination-mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 290rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 8;
+}
+.page{
+  background-color: #fff;
+}
+.line{
+  width: 100vw;
+  height: 20rpx;
+  background-color: #F5F5F5;
+}
+.allshow__title{
+  background-color: #F8F8F8;
+}
+.destination {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 0 4px 10px 4px;
+}
+.destination .weui-cell {
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+.destination > view {
+  width: 25%;
+}
+
+
+.destination label.active {
+  color: #f38346;
+  border: 1px solid #f8584f;
+  background-color: #ffecec;
+}
+
+.allshow__title {
+  height: 90rpx;
+  line-height: 90rpx;
+  padding: 0 15px;
+  font-size: 24rpx;
+}
+
+
+.cell-flex {
+  text-align: center;
+}
+
+.arrow-down {
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    font-size: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #818181 transparent transparent;
+    margin-left: 4px;
+    right: 15px;
+}
+.money{
+  font-weight: bold;
+}
+.date_cells {
+  margin-top: 0;
+  border-top: 2rpx solid #eee
+}
+
+.date-boxs {
+  display: inline-block;
+  margin: 0 auto;
+  position: relative;
+}
+
+.date-boxs::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: 3px;
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  border-width: 2px 2px 0 0;
+  border-color: #c8c8cd;
+  border-style: solid;
+  transform: rotate(135deg);
+}
+.weui-cell::after,.weui-cells::before,.weui-cell::before{
+  display: none
+}
+.img1 {
+  width: 40rpx;
+  height:40rpx;
+}
+.top{
+  margin-top: 0rpx;
+}
+.emptyDataBox{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 200rpx;
+  flex-direction: column;
+  align-items: center;
+}
+.emptyDataBox image{
+  width: 100vw;
+  height: 380rpx;
+}

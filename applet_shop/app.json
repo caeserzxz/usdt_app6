@@ -1,0 +1,105 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/goodsList/goodsList",
+    "pages/productDetails/productDetails",
+    "pages/myorders/myorders",
+    "pages/orderDetails/orderDetails",
+    "pages/express/express",
+    "pages/saleAfter/saleAfter",
+    "pages/sales/sales",
+    "pages/mycoupons/mycoupons",
+    "pages/myfavorite/myfavorite",
+    "pages/withdrawManage/withdrawManage",
+    "pages/joinBuy/joinBuy",
+    "pages/joinBuySuccee/joinBuySuccee",
+    "pages/groupBuyNow/groupBuyNow",
+    "pages/groupBuySuccee/groupBuySuccee",
+    "pages/groupBuyFail/groupBuyFail",
+    "pages/groupBuying/groupBuying",
+    "pages/groupBuy/groupBuy",
+    "pages/mygroupBuy/mygroupBuy",
+    "pages/classify/classify",
+    "pages/qrcode/qrcode",
+    "pages/cart/cart",
+    "pages/my/my",
+    "pages/message/message",
+    "pages/messageDetail/messageDetail",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/search/search",
+    "pages/goodsQR/goodsQR",
+    "pages/address/address",
+    "pages/coupons/coupons",
+    "pages/payResult/payResult",
+    "pages/evaluate/evaluate",
+    "pages/bindReferrer/bindReferrer",
+    "pages/seckill/seckill",
+    "pages/evaluates/evaluates",
+    "pages/evaluateDetail/evaluateDetail",
+    "pages/changePassword/changePassword",
+    "pages/forgetPassword/forgetPassword",
+    "pages/personalData/personalData",
+    "pages/bankInfo/bankInfo",
+    "pages/addBank/addBank",
+    "pages/zfbAccount/zfbAccount",
+    "pages/addAddress/addAddress",
+    "pages/editAddress/editAddress",
+    "pages/set/set",
+    "pages/question/question",
+    "pages/questionDetail/questionDetail",
+    "pages/myBalance/myBalance",
+    "pages/balanceDetail/balanceDetail",
+    "pages/withdrawCash/withdrawCash",
+    "pages/topup/topup",
+    "pages/myfans/myfans",
+    "pages/topupDetails/topupDetails",
+    "pages/rank/rank",
+    "pages/fansDetais/fansDetais",
+    "pages/selectFans/selectFans"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#F2F2F2",
+    "navigationBarTitleText": "正品商城",
+    "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#313131",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/tabbar_icon01.png",
+        "selectedIconPath": "images/tabbar_icon01_hl.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/classify/classify",
+        "iconPath": "images/tabbar_icon02.png",
+        "selectedIconPath": "images/tabbar_icon02_hl.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/qrcode/qrcode",
+        "iconPath": "images/tabbar_icon03.png",
+        "selectedIconPath": "images/tabbar_icon03_hl.png",
+        "text": "二维码"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "images/tabbar_icon04.png",
+        "selectedIconPath": "images/tabbar_icon04_hl.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "images/tabbar_icon05.png",
+        "selectedIconPath": "images/tabbar_icon05_hl.png",
+        "text": "我的"
+      }
+    ]
+  }
+}

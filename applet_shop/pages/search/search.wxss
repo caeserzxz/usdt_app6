@@ -1,0 +1,59 @@
+.search_bar {
+  background-color: #fff;
+  display: flex;
+  height: 116rpx;
+  align-items: center;
+  padding: 0 30rpx;
+}
+
+.search_bar .input_box {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 60rpx;
+  background: rgba(244, 244, 244, 1);
+}
+
+.search_bar .input_box image {
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx 0 40rpx;
+}
+
+.search_bar .qx {
+  width: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -10rpx;
+  margin-right: -10rpx;
+  margin-top: 20rpx;
+}
+
+.tags .tag {
+  width: 33.33%;
+}
+.tags .tag.top1{
+  width: 50%;
+
+}
+
+.tags .tag text {
+  display: block;
+  height: 70rpx;
+  background: rgba(244, 244, 244, 1);
+  line-height: 70rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #333;
+  margin: 10rpx;
+}
+
+.tags .tag.top1 text{
+    color: #F65236;
+    background:rgba(250,246,245,1);
+}

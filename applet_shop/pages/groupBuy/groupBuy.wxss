@@ -1,0 +1,52 @@
+.gobtn {
+  text-align: center;
+  color: #fff;
+  width: 160rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background: rgba(246, 82, 54, 1);
+}
+.gobtn_gray{
+  background:rgba(238,238,238,1);
+}
+.sprice{
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 10rpx;
+}
+.groupbuy .imgbox{
+  height: 338rpx;
+  background-color: #f9f9f9;
+  margin-bottom: 40rpx;
+  position: relative;
+}
+.groupbuy .imgbox image{
+  height: 100%;
+  width: 100%;
+}
+.groupbuy .imgbox text{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 10rpx 20rpx;
+  background:rgba(51,51,51,0.6);
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.date{
+  position: relative;
+  color: #333;
+}
+.date::after{
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10rpx;
+  border-color: #333 transparent transparent transparent;
+  position: relative;
+  left: 4rpx;
+  top: 4rpx;
+}

@@ -1,0 +1,20 @@
+<view class='page'>
+  <view class='top'>
+     <view class='avatar'>
+       <image src='/images/df_tx.png'></image>
+     </view>
+     <view class='fs34 mt10'>狂风扫落叶</view>
+     <view class='fs30 text-muted mt5'>159****5968 </view>
+     <view class='mt5'><text class='badge'>VIP</text></view>
+  </view>
+
+  <view class='middle'>
+    <view class='fs34 fw600'>确定此人为您的推荐人</view>
+    <view class='fs28 text-muted'>注册后完成绑定，没注册不会绑定成功</view>
+  </view>
+
+  <view class='bottom'>
+    <view class='btn_box'><view class='btn_primary'>确定</view></view>
+    <view class='fs28 text-muted'>非此推荐人， <text class='text-default'>手动填写</text></view>
+  </view>
+</view>

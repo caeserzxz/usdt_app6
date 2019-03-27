@@ -1,0 +1,108 @@
+<view class="page {{popin? 'ovhidden':''}}">
+  <view class='topfix'>
+    <view class='search_bar'>
+      <view class='input_box'>
+        <image src='/images/selech01.png'></image>
+        <input placeholder='请输入关键词' class='input' bindfocus='goSearch'></input>
+      </view>
+      <view class='qx'>取消</view>
+    </view>
+    <view class="filtrate_box">
+      <view bindtap='changeTab' data-curr='1' class="item {{curr==1? 'active':''}}">综合</view>
+      <view bindtap='changeTab' data-curr='2' class="item {{curr==2? 'active':''}}">销量
+        <text class='arrow {{up?"up":"down"}}'></text>
+      </view>
+      <view bindtap='changeTab' data-curr='3' class="item {{curr==3? 'active':''}}">价格
+        <text class='arrow {{up?"up":"down"}}'></text>
+      </view>
+      <view bindtap='openPopup' class="item">筛选
+        <image class='icon_filtrate' src='/images/goodslist04.png' />
+      </view>
+    </view>
+  </view>
+
+
+  <view class="panel list_panel">
+    <view class="panel_bd">
+      <view class="card-flex grid2">
+        <navigator url="/pages/productDetails/productDetails" class="flex_item" wx:for="{{list}}" wx:key="">
+          <view class="goods_item">
+            <view class="goods_hd">
+              <view class="imgbox">
+                <image src='{{imgBase}}{{item.img}}'></image>
+              </view>
+            </view>
+            <view class="goods_bd">
+              <view class="goods_title">{{item.title}}</view>
+              <view class='price'>
+                <text class='fs24 fw_b'>￥</text>
+                <text class='fs36 ff'>{{item.price1}}</text>
+                <text class='fs24 ff'>{{item.price1_part}}</text>
+              </view>
+              <view class="weui-flex">
+                <view class="weui-flex__item">
+                  <text class="fs24 text-muted sprice">￥{{item.price2}}</text>
+                </view>
+                <view>
+                  <text class='fs24 text-muted'>已售 {{item.sale}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </navigator>
+
+
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class='filtrate_popup {{popin?"in":""}}'>
+  <scroll-view scroll-y class='popup-scroll'>
+    <view class='scroll_inner'>
+      <view class='block price_search'>
+      <view class='block_hd'><view>价格区间</view><view class='arrow-donw'></view></view>
+      <view class='block_bd'>
+        <view class='weui-flex'>
+          <view class='weui-flex__item'>
+            <input type='text' placeholder='最低价' class='weui-input' />
+          </view>
+          <view class='hs'>-</view>
+          <view class='weui-flex__item'>
+            <input type='text' placeholder='最高价' class='weui-input' />
+          </view>
+        </view>
+      </view>
+    </view>
+    
+
+    <view class='block'>
+      <view class='block_hd'>分类</view>
+      <view class='block_bd'>
+        <view class='tags'>
+          <view wx:for="{{fenlei}}" wx:key="" id='{{item.id}}' bindtap='flradio' class='tag {{item.select?"active":""}}'>
+            <text>{{item.text}}</text>
+          </view>
+          
+        </view>
+      </view>
+    </view>
+    <view class='block'>
+      <view class='block_hd'>品牌</view>
+      <view class='block_bd'>
+        <view class='tags'>
+           <view wx:for="{{pinpai}}" wx:key="" id='{{item.id}}' bindtap='ppradio' class='tag {{item.select?"active":""}}'>
+            <text>{{item.text}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    </view>
+  </scroll-view>
+
+  <view class='btns'>
+    <view class='btn1' bindtap='clean'>清除</view>
+    <view class='btn2' bindtap='closePopup'>确定</view>
+  </view>
+</view>
+<view wx:if="{{popin}}" class='mask' bindtap='closePopup'></view>

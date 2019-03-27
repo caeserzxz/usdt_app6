@@ -1,0 +1,66 @@
+/* pages/login/login.wxss */
+
+page {
+  background-color: #fff;
+}
+
+.logo {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login_logo image {
+  margin-top: 60rpx;
+  width: 140rpx;
+  height: 140rpx;
+}
+
+.login_box {
+  padding: 75rpx;
+}
+
+.input_box input {
+  border-bottom: 1rpx solid #eee;
+  font-size: 34rpx;
+  font-weight: 500;
+  padding: 0 0 20rpx 0;
+}
+
+.input_box {
+  position: relative;
+}
+
+.eye_img {
+  position: absolute;
+  right: 0;
+  bottom: 30rpx;
+  z-index: 100;
+}
+
+.eye_img image {
+  width: 34rpx;
+  height: 24rpx;
+}
+
+.mt100 {
+  margin-top: 100rpx;
+}
+
+.label {
+  font-size: 34rpx;
+  color: #999;
+  position: relative;
+  top: 50rpx;
+  transition: all 0.3s;
+}
+
+.fly_out {
+  font-size: 28rpx;
+  color: #999;
+  position: relative;
+  top: 0;
+}
+
+.login_btn {
+  padding: 0 75rpx;
+}

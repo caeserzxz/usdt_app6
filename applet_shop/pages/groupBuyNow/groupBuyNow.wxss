@@ -1,0 +1,39 @@
+@import '../joinBuy/joinBuy.wxss';
+.page3{
+  margin-bottom: 120rpx;
+}
+.succee_topbox {
+  padding: 100rpx 0;
+  text-align: center;
+  background-color: #fff;
+}
+
+.bottom_btnbox {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  background-color: #fff;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 40rpx;
+}
+
+.bottom_btnbox>view {
+  display: inline-block;
+  width: 160rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background: #fff;
+  border: 1px solid #E5E5E5;
+  text-align: center;
+  margin-left: 10rpx;
+  font-size: 28rpx;
+}
+.bottom_btnbox>view.btn3{
+  color: #F65236;
+  border-color: #F65236;
+}

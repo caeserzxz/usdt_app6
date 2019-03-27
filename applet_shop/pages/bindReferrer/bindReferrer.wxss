@@ -1,0 +1,29 @@
+.page{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+}
+page{
+  background-color: #fff;
+}
+.avatar{
+  margin: 0 auto;
+  width: 140rpx;
+  height: 140rpx;
+}
+.badge{
+  width:60px;
+height:30px;
+background:rgba(246,82,54,1);
+text-align: center;
+color: #fff;
+line-height: 1em;
+padding: 0 10rpx;
+}
+.btn_box{
+  padding: 30rpx 70rpx;
+}
+.mt5{
+  margin-top: 5rpx;
+}

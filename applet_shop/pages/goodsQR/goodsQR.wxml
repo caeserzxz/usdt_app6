@@ -1,0 +1,29 @@
+<view class='page'>
+  <view class='bottom_box'>
+    <view>
+      <image src='/images/goodsIcon04.png' />保存图片</view>
+    <view class='vux-1px-l'>
+      <image src='/images/goodsIcon01.png' />分享链接</view>
+  </view>
+
+  <view class='weui-cells'>
+    <view class='weui-cell'>
+      <view class='weui-cell__bd'>
+        <view class='imgbox'>
+          <image src="{{imgBase}}goods01.png" />
+        </view>
+        <view class='fs34 mt30'>冬季新款羽绒服宽松面包服休闲百搭短款羽绒服女红色喜庆</view>
+        <view class='weui-flex flex-center'>
+          <view class='weui-flex__item'>
+            <view class='price'><text class='fs30'>￥</text><text class='fs54 ff'>369.00</text></view>
+            <view class='user mt30'><image src='/images/df_tx.png'/>狂风扫落叶</view>
+          </view>
+          <view class='rwmbox'>
+            <image src="/images/code.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

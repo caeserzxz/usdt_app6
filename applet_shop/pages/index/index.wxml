@@ -1,0 +1,256 @@
+<view class='page'>
+  <view class='toptis' wx:if="{{toptis}}">
+    <view class='tx'><image class='avatar' src='/images/ZGBank.png'/></view>
+    <view class='text'>您当前还未关注微信公众号</view>
+    <view class='gzbtn' bindtap='switchCode'>立即关注</view>
+    <view class='close' bindtap='closeToptis'>×</view>
+  </view>
+  <view class='index_popup' wx:if="{{codePop}}">
+    <view class='popup_inner'>
+      <view class='rwmbox'>
+        <image src='/images/code.png'></image>
+        <view class='fs28 mt20'>长按二维码识别关注</view>
+      </view>
+      <view class='tc'><image class='close_wy' bindtap='switchCode' src='/images/close_wy.png'></image></view>
+    </view>
+  </view>
+  <view class='pagetop'>
+    <view class='gosearch' bindtap='goSearch'>圣诞礼物1500减150</view>
+    <view class='swiper-box'>
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{imgUrls}}" wx:key="sw">
+          <swiper-item>
+            <image wx:if="{{item}}" src="{{imgBase}}{{item}}" class="slide-image" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class='card-flex grid3 index_card_01'>
+      <view class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon01.png" />
+        </view>
+        <view class='text'>领券专区</view>
+      </view>
+      <navigator url='/pages/seckill/seckill' class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon02.png" />
+        </view>
+        <view class='text'>秒杀活动</view>
+      </navigator>
+      <view class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon03.png" />
+        </view>
+        <view class='text'>满减活动</view>
+      </view>
+      <navigator url='/pages/goodsList/goodsList' class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon04.png" />
+        </view>
+        <view class='text'>新品首发</view>
+      </navigator>
+      <view class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon05.png" />
+        </view>
+        <view class='text'>排行榜</view>
+      </view>
+      <view class='flex_item'>
+        <view class='icon'>
+          <image src="/images/index_icon06.png" />
+        </view>
+        <view class='text'>会员专享</view>
+      </view>
+    </view>
+    <view class='jrms_box'>
+      <view class='jrms_hd'>
+        <view class='left'>
+          <text>今日秒杀</text>
+          <view class='countdown'>
+            <text>{{showTime[0]}}</text>:
+            <text>{{showTime[1]}}</text>:
+            <text>{{showTime[2]}}</text>
+          </view>
+        </view>
+        <view class='more'>更多</view>
+      </view>
+      <view class='jrms_bd'>
+        <swiper display-multiple-items="3.2" interval="{{interval}}" duration="{{duration}}">
+          <block wx:for="{{imgUrls2}}" wx:key="sw2">
+            <swiper-item>
+              <view class='mspor_item'>
+                <view class='imgbox'>
+                  <image src=" {{imgBase}}{{item}}" class="slide2-image" />
+                </view>
+                <view class='textbox'>
+                  <view class='title ellipsisLn1'>补水保湿套装</view>
+                  <view class='price'>
+                    <text class='fs20 fw_b'>￥</text>
+                    <text class='fs30 ff'>189.</text>
+                    <text class='fs20 ff'>00</text>
+                  </view>
+                </view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+    </view>
+  </view>
+
+  <view class='groupbuy'>
+    <view class='swiper-box'>
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{imgUrls3}}" wx:key="sw3">
+          <swiper-item>
+            <view class='sw_item'>
+              <view class='imgbox'>
+                <image src="{{imgBase}}{{item}}" class="slide-image" />
+              </view>
+              <view class='textbox'>
+                <view class='title ellipsisLn1'>KENZO/高田贤三春夏新款</view>
+                <view class='weui-flex mt10'>
+                  <view class='weui-flex__item stitle'>韩系时髦搭配指南</view>
+                  <view class='price'>
+                    <text class='fs22 fw_b'>￥</text>
+                    <text class='fs40 ff'>189.</text>
+                    <text class='fs22 ff'>00</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+
+    </view>
+    <view class='tcmore'>
+      <text class='arrow_r'>查看更多拼团</text>
+    </view>
+  </view>
+
+  <view class='goods_hot'>
+    <view class='topimg'>
+      <image src='/images/trademarkBg.png' mode='widthFix' />
+    </view>
+    <view class='card-flex grid3'>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="/images/trademark01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>                    
+              <text class='fs22 fw_b'>￥</text>
+              <text class='fs40 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="/images/trademark01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>                    
+              <text class='fs22 fw_b'>￥</text>
+              <text class='fs40 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="/images/trademark01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>
+                          <text class='fs22 fw_b'>￥</text>
+              <text class='fs40 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='tcmore'>
+      <navigator url='/pages/goodsList/goodsList' class='arrow_r'>查看更多</navigator>
+    </view>
+  </view>
+
+  <view class='goods_like'>
+    <view class='weui-flex flex-center'>
+      <view  class='weui-flex__item fs36 fw600'>猜你喜欢</view>
+      <view><text class='arrow_r text-muted'>更多</text></view>
+    </view>
+    <view class='card-flex grid2'>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="{{imgBase}}/youLike01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>
+                          <text class='fs22 fw_b'>￥</text>
+              <text class='fs36 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="{{imgBase}}/youLike01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>
+                          <text class='fs22 fw_b'>￥</text>
+              <text class='fs36 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="{{imgBase}}/youLike01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>
+                          <text class='fs22 fw_b'>￥</text>
+              <text class='fs36 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="{{imgBase}}/youLike01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>              <text class='fs22 fw_b'>￥</text>
+              <text class='fs36 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,222 @@
+<view class="page">
+  <scroll-view class='time_scroll'>
+    <view class='tab_hd'>
+      <block wx:key="item" wx:for="{{times}}">
+        <view bindtap='changeTab' data-id='{{item.id}}' data-type='{{item.type}}' class='{{item.curr? "curr":""}}'>
+          <view class='text'>{{item.text}}</view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+
+  <view class='tab01' wx:if="{{type==1}}">
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress'>
+                  <view class='progress_inner' style='width: 50%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>3/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-red fs26'>进行中</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress'>
+                  <view class='progress_inner' style='width: 100%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>4/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-muted fs26'>拼团成功</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <view class='mask'></view>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>经典百搭纯色围巾</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress progress_gray'>
+                  <view class='progress_inner' style='width: 70%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>3/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-muted fs26'>拼团失败</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+  <view class='tab02' wx:if="{{type==2}}">
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>玉兰油OLAY 新生塑颜臻粹修护精华颜臻粹修护精华</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress'>
+                  <view class='progress_inner' style='width: 50%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>3/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-red fs26'>进行中</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>秋季新品简约通勤圆领女装T恤</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress'>
+                  <view class='progress_inner' style='width: 100%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>4/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-muted fs26'>拼团成功</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class='weui-cells border-none seckill_cells'>
+      <view class='weui-cell border-none'>
+        <view class='weui-cell__hd'>
+          <view class='hd_img_box'>
+            <view class='mask'></view>
+            <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+          </view>
+        </view>
+        <view class='weui-cell__bd'>
+          <view class='title ellipsisLn1'>经典百搭纯色围巾</view>
+          <view class='fs28 text-muted mt5'>铁锈红-M码</view>
+          <view class='mt20'>
+            <text class='price_Y fs24'>￥</text>
+            <text class='price fs42 ff'>899.00</text>
+            <text class='sprice fs24 text-muted'>￥999</text>
+          </view>
+          <view class='weui-flex flex-center mt10'>
+            <view class='weui-flex__item'>
+              <view class='progress_box'>
+                <view class='progress progress_gray'>
+                  <view class='progress_inner' style='width: 70%'></view>
+                </view>
+                <view class='text-muted fs26 ml20'>3/4</view>
+              </view>
+
+            </view>
+            <view>
+              <view class='text-muted fs26'>拼团失败</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+</view>

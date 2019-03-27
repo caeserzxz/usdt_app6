@@ -1,0 +1,71 @@
+<view class="page">
+  <view class="weui-cells mt0 pd20  border-before border-after">
+    <view class="weui-cell lbbg tl" style=" flex-flow: column;">
+      <view class="weui-cell__bd w100">
+        <view class="weui-cell border-before p0" style="justify-content: space-between;align-items: flex-start;">
+          <view class="weui-cell__bd">
+            <view class="fs48 text-white fw500 ff">36962.00</view>
+            <view class="text-muted fs26">余额(元)</view>
+          </view>
+          <view class="weui-cell__ft">
+            <navigator url='/pages/withdrawCash/withdrawCash' class="tx-btn">
+              提现
+            </navigator>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cell__ft w100">
+        <view class="text-muted fs26 tl">可提现金额
+          <text class="fs26 ff fw500">￥1587.00</text>, 冻结金额
+          <text class="fs26 ff fw500">￥3652.00</text>
+        </view>
+      </view>
+    </view>
+    <view class="weui-flex mt40 mb30">
+      <view class="weui-flex__item tc">
+        <view class="fs40 fw500 ff">962.00</view>
+        <view class="fs26 text-muted mt5">今日收益(元)</view>
+      </view>
+      <view class="weui-flex__item tc">
+        <view class="fs40 fw500 ff">1365.32</view>
+        <view class="fs26 text-muted mt5">本月收益(元)</view>
+      </view>
+      <view class="weui-flex__item tc">
+        <view class="fs40 fw500 ff">1365.32</view>
+        <view class="fs26 text-muted mt5">累计收益(元)</view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-cells mt20 border-before border-after">
+    <navigator url="/pages/balanceDetail/balanceDetail" class="weui-cell weui-cell__ft_in-access">
+      <view class="weui-cell__hd">
+        <image src="/images/wallet01.png" class="img2" style="vertical-align:sub;"></image>
+      </view>
+      <view class="weui-cell__bd ml10">
+        <text class="fs30">收益明细</text>
+      </view>
+      <view class="weui-cell__ft"></view>
+    </navigator>
+    <navigator url="/pages/rank/rank" class="weui-cell weui-cell__ft_in-access border-before">
+      <view class="weui-cell__hd">
+        <image src="/images/wallet02.png" class="img2" style="vertical-align:sub;"></image>
+      </view>
+      <view class="weui-cell__bd ml10">
+        <text class="fs30">排行榜</text>
+      </view>
+      <view class="weui-cell__ft"></view>
+    </navigator>
+    <navigator url="/pages/topupDetails/topupDetails" class="weui-cell weui-cell__ft_in-access border-before">
+      <view class="weui-cell__hd">
+        <image src="/images/wallet03.png" class="img2" style="vertical-align:sub;"></image>
+      </view>
+      <view class="weui-cell__bd ml10">
+        <text class="fs30">充值明细</text>
+      </view>
+      <view class="weui-cell__ft"></view>
+    </navigator>
+  </view>
+  <view class='btn_box'>
+    <navigator url='/pages/topup/topup' class='btn_primary'>充值</navigator>
+  </view>
+</view>

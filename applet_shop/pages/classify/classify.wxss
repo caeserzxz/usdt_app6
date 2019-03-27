@@ -1,0 +1,111 @@
+.classify_box{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 118rpx;
+  bottom: 20rpx;
+  display: flex;
+  background-color: #fff;
+}
+
+.classify_box .left{
+  position: relative;
+  width: 170rpx;
+  top: -1rpx;
+}
+.classify_box .left::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  border-right: 1px solid #eee;
+}
+.classify_box .left .left_item{
+  height:  90rpx;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  text-align: center;
+}
+.classify_box .left .active{
+  position: relative;
+  color: #F65236;
+  font-weight: 600;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  z-index: 9;
+}
+.classify_box .left .active::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 28rpx;
+  width: 6rpx;
+  background-color: #F65236;
+  margin-top: -18rpx;
+}
+.classify_box .right{
+  padding: 0 10rpx;
+   flex: 1;
+   overflow: hidden;
+   position: relative;
+}
+.classify_box .right .card-flex .flex_item{
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+.classify_box .right .title{
+  padding-top: 20rpx;
+   text-align: center;
+   font-size: 28rpx;
+   font-weight: 600;
+   line-height: 80rpx;
+   height: 80rpx;
+}
+.classify_box .right .flex_item .icon{
+  width: 150rpx;
+  height: 150rpx;
+ 
+}
+.right_scroll{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.left_scroll{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.search_bar{
+  background-color: #fff;
+  display: flex;
+  height: 116rpx;
+  align-items: center;
+  padding: 0 30rpx;
+}
+
+.search_bar .input_box{
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height:60rpx;
+  background:rgba(244,244,244,1);
+}
+.search_bar .input_box image{
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0 20rpx 0 40rpx;
+}
+.search_bar .qx{
+  width: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+}

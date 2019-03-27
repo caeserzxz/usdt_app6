@@ -1,0 +1,102 @@
+.avatar {
+  margin-right: 20rpx;
+}
+
+.fs46 {
+  font-size: 46rpx;
+  line-height: 1em;
+}
+
+.logout {
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.menu_cells image {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 20rpx;
+}
+
+.menu_cells .weui-cell::before {
+  display: none;
+}
+.menu_cells .weui-cell__bd{
+  font-size: 30rpx;
+}
+.menu_cells .badge {
+  padding: 4rpx 10rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  background-color: #333;
+  color: #fff;
+  font-size: 20rpx;
+}
+.my_order .card-flex .icon{
+  width: 50rpx;
+  height: 50rpx;
+}
+.my_order .title{
+  color: #040404;
+}
+.my_order .weui-panel__bd{
+  padding-bottom: 20rpx;
+}
+.user_info{
+  padding-bottom: 20rpx;
+  background-color: #fff;
+}
+.user_info .weui-cell__ft{
+  display: flex;
+}
+.user_info .weui-cell__ft .icon{
+  margin-left: 30rpx;
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+}
+.user_info .weui-cell__ft .icon image{
+  width: 100%;
+  height: 100%;
+}
+.user_info .weui-cell__ft .icon .dot{
+  display: inline-block;
+  position: absolute;
+  right: -5rpx;
+  top: 0;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background-color: #F65236;
+}
+.user_info .badge{
+  background-color: #F65236;
+  color: #fff;
+  height: 30rpx;
+  line-height: 30rpx;
+  padding: 0rpx 10rpx;
+  font-size: 22rpx;
+}
+
+.my_grids{
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+.my_grids .flex_item .icon{
+  width: 76rpx;
+  height: 76rpx;
+}
+.flex_item{
+  position: relative;
+}
+.flex_item .dot{
+  display: inline-block;
+  position: absolute;
+  right: 30%;
+  top: 18%;
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background-color: #F65236;
+}

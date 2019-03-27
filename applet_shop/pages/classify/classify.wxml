@@ -1,0 +1,102 @@
+<view class='page'>
+  <view class='search_bar'>
+    <view class='input_box'>
+     <image src='/images/selech01.png'></image>
+     <input placeholder='请输入关键词' class='input' bindfocus='goSearch'></input>
+    </view>
+    <view class='qx'>取消</view>
+  </view>
+  <view class='classify_box'>
+    <view class='left'>
+      <scroll-view class='right_scroll' scroll-y>
+        <block wx:for="{{leftData}}" wx:key="left">
+           <view id='{{item.id}}' bindtap='changeMenu' class='left_item {{item.select?"active":""}}'>{{item.name}}</view>
+        </block>
+      </scroll-view>
+    </view>
+    <view class='right'>
+      <scroll-view class='right_scroll' scroll-y>
+        <view class='title'>-全部裙装-</view>
+        <view class='card-flex grid3'>
+          <navigator url="/pages/goodsList/goodsList" class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>半身裙</view>
+          </navigator>
+          <navigator url="/pages/goodsList/goodsList" class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>长裙</view>
+          </navigator>
+          <navigator url="/pages/goodsList/goodsList" class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>长裙</view>
+          </navigator>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>针织裙</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>外套</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>毛衣</view>
+          </view>
+
+        </view>
+        <view class='title'>-时髦上装-</view>
+        <view class='card-flex grid3'>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>半身裙</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>长裙</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>长裙</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>针织裙</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>外套</view>
+          </view>
+          <view class='flex_item'>
+            <view class='icon'>
+              <image src="{{imgBase}}seckillimg.png" />
+            </view>
+            <view class='text'>毛衣</view>
+          </view>
+
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

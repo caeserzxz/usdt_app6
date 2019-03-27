@@ -1,0 +1,42 @@
+<!--pages/evaluateDetail/evaluateDetail.wxml-->
+<view class="weui-cells mt0">
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class='fs32 fw600'>评价</view>
+    </view>
+    <view class="weui-cell__ft">
+      <view class='fs28 text-muted'>2019.02.14</view>
+    </view>
+  </view>
+  <view class="weui-cell border-none pt0" style="flex-wrap:wrap;">
+    <view class='fs28'>
+    大衣是A字型的，有暗扣，系腰带效果一般，12.17买的，以为低价了，结果刚买完又降价了，预料不到的促销
+    </view>
+    <view class='upload mt20'>
+      <image src="{{imgBase}}goods01.png" class='upload_img' />
+    </view>
+     <view class='upload mt20'>
+      <image src="{{imgBase}}goods01.png" class='upload_img' />
+    </view>
+     <view class='upload mt20'>
+      <image src="{{imgBase}}goods01.png" class='upload_img' />
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells">
+  <navigator url='/pages/productDetails/productDetails' class="weui-cell flex-start border-none">
+    <view class="weui-cell__hd hd_img">
+      <image src="{{imgBase}}goods01.png" />
+    </view>
+    <view class="weui-cell__bd">
+      <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfffddfdfff</view>
+      <view class='fs28 text-muted mt10'>铁锈红-M码</view>
+      <view class='pj_box'>
+        <view class='price'>
+                      <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
+        </view>
+      </view>
+    </view>
+  </navigator>
+</view>

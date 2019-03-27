@@ -1,0 +1,49 @@
+<view class="page2">
+  <view class='weui-cells default'>
+    <navigator url='/pages/editAddress/editAddress' class='weui-cell weui-cell__ft_in-access'>
+      <view class='weui-cell__bd'>
+        <view class='fs30'>
+          <text>周杰伦</text>
+          <text class='ml10'>15984568411</text>
+          <text class='badge'>默认</text>
+        </view>
+        <view class='fs28 text-muted mt30'>广州市海珠区客村新南港西路丽影广场4栋105室</view>
+      </view>
+    </navigator>
+  </view>
+
+  <block wx:for="{{list}}" wx:key="addr">
+<view class='weui-cells'>
+    <view class='weui-cell cell_swiped weui-cell__ft_in-access' style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove" bindtouchend="onTableCellTouchEnd" bindtouchcancel="onTableCellTouchEnd"
+      data-index="{{index}}">
+      <view class='weui-cell__bd'>
+        <navigator url='/pages/editAddress/editAddress'>
+        <view class='fs30'>
+          <text>{{item.name}}</text>
+          <text class='ml10'>15984568411</text>
+        </view>
+        <view class='fs28 text-muted mt30'>{{item.addr}}</view>
+        </navigator>
+        <view class='mt40'>
+          <label class="checkbox">
+            <checkbox value="all" checked="{{item.default}}" />设为默认地址
+          </label>
+        </view>
+      </view>
+      <view class='swipeout_btns'>
+        <view class='btn1' id='{{item.id}}' bindtap='del'>
+          <image src='/images/delectIcon.png' />
+        </view>
+      </view>
+    </view>
+  </view>
+  </block>
+  
+  
+
+
+</view>
+
+<view class='btn_box'>
+  <navigator url="/pages/addAddress/addAddress" class='btn_primary'>新增收货地址</navigator>
+</view>

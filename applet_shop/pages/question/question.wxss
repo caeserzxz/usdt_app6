@@ -1,0 +1,17 @@
+/* pages/question/question.wxss */
+
+.question {
+  width: 30rpx;
+  height: 30rpx;
+  background: #f65236;
+  font-size: 20rpx;
+  text-align: center;
+  color: #fff;
+}
+.ques_time{
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}

@@ -1,0 +1,74 @@
+<!--pages/questionDetail/questionDetail.wxml-->
+<view class="weui-cells mt0">
+  <view class="weui-cell flex-start ">
+    <view class="weui-cell__hd mr20">
+      <view class='question'>问</view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class='fs28 fw600'> 这款衣服色差大吗？</view>
+      <view class='fs28 mt20 text-muted'>提问于2018.10.12</view>
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells">
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='ques_tx mr20'>
+        <image src='/images/df_tx.png'></image>
+      </view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class='fs28 fw600'> 胖子的自我修养</view>
+      <view class='fs24 text-muted'>2018.12.22 10:20</view>
+    </view>
+  </view>
+  <view class="weui-cell border-none pt0">
+    <view class="weui-cell__bd">
+      <view class='fs28'> 不知道是不是马海毛，摸着很舒服，不会显胖，挺百搭的，比较薄，初秋可以穿，推荐入手~</view>
+    </view>
+  </view>
+
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='ques_tx mr20'>
+        <image src='/images/df_tx.png'></image>
+      </view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class='fs28 fw600'> 胖子的自我修养</view>
+      <view class='fs24 text-muted'>2018.12.22 10:20</view>
+    </view>
+  </view>
+  <view class="weui-cell border-none pt0">
+    <view class="weui-cell__bd">
+      <view class='fs28'> 不知道是不是马海毛，摸着很舒服，不会显胖，挺百搭的，比较薄，初秋可以穿，推荐入手~</view>
+    </view>
+  </view>
+
+  <view class="weui-cell">
+    <view class="weui-cell__hd">
+      <view class='ques_tx mr20'>
+        <image src='/images/df_tx.png'></image>
+      </view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class='fs28 fw600'> 胖子的自我修养</view>
+      <view class='fs24 text-muted'>2018.12.22 10:20</view>
+    </view>
+  </view>
+  <view class="weui-cell border-none pt0">
+    <view class="weui-cell__bd">
+      <view class='fs28'> 不知道是不是马海毛，摸着很舒服，不会显胖，挺百搭的，比较薄，初秋可以穿，推荐入手~</view>
+    </view>
+  </view>
+</view>
+
+<view class='{{ques_all?"ques_all":""}}'>
+  <view class='ques_box {{top?"top":""}}'>
+    <view class='ques_input'>
+      <input placeholder="向3461位已买过的人提问" bindfocus="focus" bindblur='blur' />
+    </view>
+    <button>发送</button>
+  </view>
+</view>

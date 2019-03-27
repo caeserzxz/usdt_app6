@@ -1,0 +1,6 @@
+@import '../joinBuy/joinBuy.wxss';
+.succee_topbox{
+  padding: 100rpx 0;
+  text-align: center;
+  background-color: #fff;
+}

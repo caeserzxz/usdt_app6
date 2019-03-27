@@ -1,0 +1,63 @@
+<!--pages/fansDetais/fansDetais.wxml-->
+<view class='top'>
+  <image src='/images/df_tx.png'></image>
+  <view class='name'>
+    <text class="fs32 text-white fw_b">胖子的自我修养</text>
+    <text class="btn1 fs22 fw_b">VIP</text>
+  </view>
+  <text class='fs26 text-white'>ID 159206</text>
+  <view class='btn2 fs22 text-white'>第二层</view>
+</view>
+<view class='data fs28 text-default'>
+  <view class='row'>
+    <text>ETC:552</text>
+    <text>ETB:455</text>
+  </view>
+  <view class='row'>
+    <text>ETH:8452</text>
+    <text>USDT:51</text>
+  </view>
+  <view class='row'>
+    <text>我的佣金:4651</text>
+    <text>我的积分:4566</text>
+  </view>
+</view>
+<view class='fanslist'>
+  <text class='fs32 text-default fw_b'>所有粉丝</text>
+  <view class='fs24 text-muted'>
+    <text class='ff fs34 text-default'>52</text>人</view>
+</view>
+<view class='weui-cells'>
+  <view class='weui-cell'>
+    <view class='weui-cell__bd fs28 text-default'>
+      第一层
+    </view>
+    <view class='weui-cell__ft fs24'>
+      <text class='ff fs34 text-default'>5</text>人
+    </view>
+  </view>
+    <view class='weui-cell'>
+    <view class='weui-cell__bd fs28 text-default'>
+      第二层
+    </view>
+    <view class='weui-cell__ft fs24'>
+      <text class='ff fs34 text-default'>5</text>人
+    </view>
+  </view>
+    <view class='weui-cell'>
+    <view class='weui-cell__bd fs28 text-default'>
+      第三层
+    </view>
+    <view class='weui-cell__ft fs24'>
+      <text class='ff fs34 text-default'>5</text>人
+    </view>
+  </view>
+    <view class='weui-cell'>
+    <view class='weui-cell__bd fs28 text-default'>
+      第四层
+    </view>
+    <view class='weui-cell__ft fs24'>
+      <text class='ff fs34 text-default'>5</text>人
+    </view>
+  </view>
+</view>

@@ -1,0 +1,69 @@
+.bottom_box {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  height: 90rpx;
+  line-height: 90rpx;
+}
+
+.bottom_box view {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  position: relative;
+}
+.bottom_box .vux-1px-l::after{
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  top: 20rpx;
+  bottom: 20rpx;
+}
+
+.bottom_box image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 6rpx;
+  position: relative;
+  top: -2rpx;
+}
+.imgbox{
+height:670rpx;
+background:rgba(236,233,228,1);
+border:10px solid rgba(255, 255, 255, 1);
+box-shadow:0rpx 20rpx 40rpx 0px rgba(0, 0, 0, 0.1);
+padding: 10rpx;
+background-color: #fff;
+box-sizing: border-box;
+}
+.imgbox image{
+  width: 100%;
+  height: 100%;
+}
+.price{
+  color:#F65236;
+
+}
+.fs54{
+  font-size: 54rpx;
+}
+
+.rwmbox{
+  width: 230rpx;
+  height: 230rpx;
+}
+.rwmbox image{
+  width: 100%;
+  height: 100%;
+}
+.user {
+  font-size: 28rpx;
+}
+.user image{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
