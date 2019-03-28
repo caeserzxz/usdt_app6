@@ -4,17 +4,14 @@
         <view class='login_logo'>
             <image src="/images/APPLOGO.png" />
         </view>
-        <view class='fs34 mt20'>
-            微潮新商城
-        </view>
+        <view class='fs34 mt20'>微潮新商城</view>
     </view>
     <view class='login_box'>
         <view class='input_box'>
             <input type='text' placeholder='请输入手机号码' bindfocus='focus' name="user_account" value='{{user_account}}' bindblur='blur' bindinput='account' />
         </view>
          <view wx:if="{{isloginsms == 1}}" class='input_box mt10'>
-            <view class='label {{fly_out1?"fly_out":""}}'>验证码</view>
-            <input type='text' name="user_code" bindinput='password' />
+            <input type='text' name="user_code" placeholder='验证码' />
             <view bindtap='sendcode' class='eye_img fs28 fw600 text-main'>{{code_title}}</view>
         </view>
         <view class='input_box mt10'>

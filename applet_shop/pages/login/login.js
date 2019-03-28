@@ -62,15 +62,11 @@ Page({
             //   url: '/pages/my/my',
             //})
         }
-        api.fetchPost(api.https_path + '/publics/api.index/setting', {}, function(err, res) {
-            if (res.code == 1) {
-                const smsfun = JSON.parse(res.data.sms_fun)
-                That.setData({
-                    isloginsms: smsfun.login
-                })
-                console.log(smsfun)
-            }
-        });
+        api.getconfig('sms_fun', function (err, data){
+            That.setData({
+                isloginsms: data.login
+            })
+        })
     },
 
     /**
@@ -98,7 +94,9 @@ Page({
         }
     },
 
-
+    /**
+     * 账号登录
+     */
     dologin: function(options) {
         const That = this
         const user_account = options.detail.value.user_account
@@ -124,12 +122,10 @@ Page({
                     api.error_msg(res.msg)
                     return false
                 } else {
-                    //api.putcache('user_devtoken', '123123123')
-                    //api.putcache('user_id', '123123123')
-                    //api.putcache('user_name', '123123123')
-                    //wx.reLaunch({
-                    //    url: '/pages/my/my',
-                    //})
+                    api.putcache('user_devtoken', res.developers)
+                    wx.reLaunch({
+                        url: '/pages/my/my',
+                    })
                 }
             });
         }
