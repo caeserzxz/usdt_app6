@@ -263,13 +263,18 @@ class DividendModel extends BaseModel
 
 
                 if ($award['award_type'] == 2) {//平推奖是否享受
-                    if (empty($assignAwardUser[$award['award_id']]) == false){
-                        if (in_array($userInfo['user_id'],$assignAwardUser[$award['award_id']])){
+                    if (empty($assignAwardUser) == false){
+                        if (in_array($userInfo['user_id'],$assignAwardUser)){
                             continue;//已拿过管理奖的不享受平级奖
                         }
                     }
                     $nowLevelSame += 1;
+                    if (empty($awardValue[$nowLevelSame])){
+                        unset($awardList[$key]);//移除已结束的奖项
+                        continue;
+                    }
                     $awardVal = $awardValue[$nowLevelSame];
+
                 }elseif ($award['award_type'] == 3) {//判断管理奖是否享受
 
                     if ($userInfo['role']['level'] <= $lastRole) {//上级身份低于下级身份或平级时跳出
@@ -361,9 +366,7 @@ class DividendModel extends BaseModel
                         continue;//不满足复购限制，跳出
                     }
                 }
-                if ($award['award_type'] == 3) {//记录已拿管理奖的会员
-                    $assignAwardUser[$award['award_id']][] = $userInfo['user_id'];
-                }
+
                 //执行奖项处理
                 $inArr = [];
                 if (in_array($award['award_type'], [1, 2])) {//普通分销奖&平推奖
@@ -374,6 +377,7 @@ class DividendModel extends BaseModel
                         $inArr['dividend_bean'] = $awardVal['num'] * $awardBuyNum;
                     }
                 } elseif ($award['award_type'] == 3) {//管理奖
+                    $assignAwardUser[] = $userInfo['user_id'];
                     $assignAwardNum[$award['award_id']] += $award_num;
                     $dividend_amount += $award_num * $awardBuyNum;//计算总佣金
                     $inArr['dividend_amount'] = $inArr['dividend_bean'] = 0;

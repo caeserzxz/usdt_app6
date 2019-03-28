@@ -79,8 +79,8 @@ class UsersModel extends BaseModel
 
         if (empty($data['source']) == false){
             if ($data['source'] == 'developers'){
-                $devtoken = 'user_'.random_str(10).date(s);
-                Cache::set($devtoken,$userInfo['user_id']);
+                $devtoken = random_str(10).date(s);
+                Cache::set('devlogin_'.$devtoken,$userInfo['user_id'],86400 * 7);
                 return [$data['source'],$devtoken];
             }
         }

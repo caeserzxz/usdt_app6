@@ -55,7 +55,7 @@ class BaseController extends Controller
             if (empty($devtoken) == false) {
 				header('Content-type: text/json'); 
 				//判断接口请求是否合法
-				$timeStamp = input('timeStamp/s');
+                $timeStamp = input('timeStamp/s');
 				$sign = input('sign/s');
 				if (md5($devtoken.$timeStamp.config('config.apikey')) !== $sign) return $this->error('接口验证失败！');
 				if (time() - intval($timeStamp/1000) > 60) return $this->error('请求超时.');
