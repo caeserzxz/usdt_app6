@@ -1,32 +1,33 @@
 <!--pages/login/login.wxml-->
-<view class='logo'>
-  <view class='login_logo'>
-    <image src="/images/APPLOGO.png" />
-  </view>
-  <view class='fs34 mt20'>
-    微潮新商城
-  </view>
-</view>
-<view class='login_box'>
-  <view class='input_box'>
-    <view class='label {{fly_out?"fly_out":""}}'>账号</view>
-    <input type='text' bindfocus='focus' bindblur='blur' bindinput='account' />
-  </view>
-  <view class='input_box mt30'>
-    <view class='label {{fly_out1?"fly_out":""}}'>密码</view>
-    <input type='{{eyes?"text":"password"}}' bindfocus='focus' bindblur='blur' bindinput='password' />
-    <view class='eye_img' bindtap='open_eyes'>
-      <image wx:if="{{eyes}}" src="/images/login02.png" />
-      <image wx:else src="/images/login01.png" />
+<form bindsubmit='dologin'>
+    <view class='logo'>
+        <view class='login_logo'>
+            <image src="/images/APPLOGO.png" />
+        </view>
+        <view class='fs34 mt20'>
+            微潮新商城
+        </view>
     </view>
-  </view>
-  <view class='fs30 text-muted tr mt20'>忘记密码 </view>
-</view>
-<view class='btn_box login_btn mt100'>
-  <navigator class='btn_primary'>登录</navigator>
-</view>
+    <view class='login_box'>
+        <view class='input_box'>
+            <view class='label {{fly_out?"fly_out":""}}'>账号</view>
+            <input type='text' bindfocus='focus' name="user_account" value='15625077763' bindblur='blur' bindinput='account' />
+        </view>
+        <view class='input_box mt10'>
+            <view class='label {{fly_out1?"fly_out":""}}'>密码</view>
+            <input type='{{eyes?"text":"password"}}' name="user_passwrod" value='Abc123456' bindfocus='focus' bindblur='blur' bindinput='password' />
+            <view class='eye_img' bindtap='open_eyes'>
+                <image wx:if="{{eyes}}" src="/images/login02.png" />
+                <image wx:else src="/images/login01.png" />
+            </view>
+        </view>
+        <view class='fs30 text-muted tr mt20'>忘记密码 </view>
+    </view>
+    <view class='btn_box login_btn mt100'>
+        <button  form-type="submit" class='btn_primary'>登录</button>
+    </view>
+</form>
 
-
-<view class='tc fs30 text-muted fw600 mt30'>还没有账号，
-  <navigator url='/pages/register/register' class='text-default inblock'>立即注册</navigator>
+<view class='tc fs30 text-muted fw600 mt10'>还没有账号，
+    <navigator url='/pages/register/register' class='text-default inblock'>立即注册</navigator>
 </view>
