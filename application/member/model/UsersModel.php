@@ -77,7 +77,7 @@ class UsersModel extends BaseModel
             (new \app\shop\model\CartModel)->loginUpCart($userInfo['user_id']);//更新购物车
         }
 
-        if (empty($data['source'])){
+        if (empty($data['source']) == false){
             if ($data['source'] == 'developers'){
                 $devtoken = 'user_'.random_str(10).date(s);
                 Cache::set($devtoken,$userInfo['user_id']);
