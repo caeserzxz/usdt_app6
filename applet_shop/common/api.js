@@ -4,9 +4,22 @@ var sms = require("smscode.js")
 var keys = 'eb5c6b3e4505c1fd7878bde2ed8544cf'
 var util = require("../utils/util.js")
 //GET方法获取数据或提交数据
-function fetchGet(url, callback) {
+function fetchGet(url, _data, callback) {
+    var user_devtoken = getcache('user_devtoken')
+    var timestamp = (new Date()).getTime()
+    var new_time = timestamp
+    if (user_devtoken) {
+        _data.devtoken = user_devtoken
+        _data.source = 'developers'
+        _data.timeStamp = new_time
+        _data.sign = md5.hexMD5(user_devtoken + new_time + keys)
+    }
+    let par = ''
+    for (var i in _data) {
+        par += i + '=' + _data[i] + '&'
+    }
     wx.request({
-        url: url,
+        url: url + '?' + par,
         header: {
             'Content-Type': 'application/json'
         },
@@ -14,7 +27,6 @@ function fetchGet(url, callback) {
             callback(null, res.data)
         },
         fail(e) {
-            console.error(e)
             callback(e)
         }
     })
@@ -185,6 +197,9 @@ function islogin(_name) {
     }
 }
 
+/**
+ * 读取公共配置项
+ */
 function getconfig(_name, callback) {
     wx.request({
         method: 'POST',
@@ -204,11 +219,37 @@ function getconfig(_name, callback) {
     })
 }
 
+/**_mobile  发送的号码
+ * _types  发送类型
+ * 发送验证码
+ */
+function sendsms(_mobile, _types, callback) {
+    const _data = {
+        'mobile': _mobile,
+        'type': _types,
+    }
+    wx.request({
+        method: 'POST',
+        url: https_path + '/publics/api.sms/sendCode',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: _data,
+        success(res) {
+            callback(null, res.data)
+        },
+        fail(e) {
+            callback(e)
+        }
+    })
+}
+
 //模块化
 module.exports = {
-    fetchPostOther: fetchPostOther,
-    getconfig: getconfig,
-    islogin: islogin,
+    sendsms: sendsms, //发送验证码
+    fetchPostOther: fetchPostOther, // POST请求，不带验证
+    getconfig: getconfig, //读取配置项
+    islogin: islogin, //
     pagelist: pagelist, //加载更多数据
     getcache: getcache, //读取缓存中数据
     putcache: putcache, //写入数据到缓存中
