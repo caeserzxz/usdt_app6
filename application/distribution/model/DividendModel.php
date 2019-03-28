@@ -234,6 +234,8 @@ class DividendModel extends BaseModel
                     } elseif ($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
                         if ($nowLevel <= 3) {
                             $awardVal = $awardValue[$nowLevelOrdinary];
+                        }else{
+                            continue;
                         }
                         $nowLevelOrdinary -= 1;
                     }

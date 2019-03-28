@@ -133,12 +133,12 @@ class ShippingTpl extends AdminController
 	//-- 删除
 	/*------------------------------------------------------ */
 	public function delete(){
-		$map['sf_id'] = input('sf_id',0,'intval');
-		if ($map['sf_id']<1) return $this->error('传递参数失败！');
-		$res = $this->_mod->where($map)->delete();
+        $sf_id = input('sf_id',0,'intval');
+		if ($sf_id<1) return $this->error('传递参数失败！');
+		$res = $this->Model->where('sf_id',$sf_id)->delete();
 		if ($res < 1) return $this->error();
 		$this->Model->cleanMemcache();
-		$this->_Log($map['sf_id'],'删除运费模板');//记录日志
+		$this->_Log($sf_id,'删除运费模板');//记录日志
 		return $this->success('删除成功',url('index'));
 	}
 }
