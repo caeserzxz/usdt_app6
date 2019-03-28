@@ -30,7 +30,7 @@ class Passport extends ApiController
         $res = $this->Model->login(input());
         if (is_array($res) == false) return $this->error($res);
         $data['code'] = 1;
-        $data['msg'] = '登陆成功.';
+        $data['msg'] = '登录成功.';
         if ($res[0] == 'developers'){
             $data['developers'] = $res[1];
         }

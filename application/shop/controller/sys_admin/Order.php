@@ -10,8 +10,8 @@ use app\shop\model\OrderLogModel;
 use app\shop\model\ShippingModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
-use think\Lang;
 
+use app\distribution\model\DividendRoleModel;
 
 /**
  * 订单相关
@@ -230,6 +230,7 @@ class Order extends AdminController
         $this->assign("orderLang", lang('order'));
         $operating = $this->Model->operating($orderInfo);//订单操作权限
         $this->assign("operating", $operating);
+        $orderInfo['dividend_role_name'] =  (new DividendRoleModel)->info($orderInfo['dividend_role_id'],true);
         $this->assign('orderInfo', $orderInfo);
         $dividend_log = (new DividendModel)->where('order_id', $order_id)->order('level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);
