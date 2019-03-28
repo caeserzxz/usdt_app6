@@ -1,5 +1,6 @@
 // pages/login/login.js
 const app = getApp()
+var util = require("../../utils/util.js")
 var api = require("../../common/api.js")
 var md5 = require("../../common/md5.js")
 var sms = require("../../common/smscode.js")
@@ -116,7 +117,7 @@ Page({
                 'code': user_code,
                 'source': 'developers',
             }
-            api.fetchPost(loginurl, _data, function(err, res) {
+            api.fetchPostOther(loginurl, _data, function(err, res) {
                 console.log(res)
                 if (res.code == 0) {
                     api.error_msg(res.msg)
