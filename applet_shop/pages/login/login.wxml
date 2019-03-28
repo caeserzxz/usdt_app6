@@ -10,7 +10,12 @@
     </view>
     <view class='login_box'>
         <view class='input_box'>
-            <input type='text' placeholder='请输入手机号码' bindfocus='focus' name="user_account" value='15625077763' bindblur='blur' bindinput='account' />
+            <input type='text' placeholder='请输入手机号码' bindfocus='focus' name="user_account" value='{{user_account}}' bindblur='blur' bindinput='account' />
+        </view>
+         <view wx:if="{{isloginsms == 1}}" class='input_box mt10'>
+            <view class='label {{fly_out1?"fly_out":""}}'>验证码</view>
+            <input type='text' name="user_code" bindinput='password' />
+            <view bindtap='sendcode' class='eye_img fs28 fw600 text-main'>{{code_title}}</view>
         </view>
         <view class='input_box mt10'>
             <input type='{{eyes?"text":"password"}}' placeholder='请输入登录密码' name="user_passwrod" value='Abc123456' bindfocus='focus' bindblur='blur' bindinput='password' />

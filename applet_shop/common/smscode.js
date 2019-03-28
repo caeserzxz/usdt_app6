@@ -1,4 +1,4 @@
-var countdown_time = 10
+var countdown_time = 60
 var is_send_code = 1
 
 function sendcode(_that) {
@@ -7,7 +7,7 @@ function sendcode(_that) {
             code_title: "重新获取验证码",
         })
         is_send_code = 1
-        countdown_time = 10
+        countdown_time = 60
         return false
     } else {
         countdown_time--
