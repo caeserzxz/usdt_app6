@@ -152,8 +152,22 @@ function islogin(_name) {
     }
 }
 
+function getconfig(_name, callback) {
+    let return_data = ""
+    fetchPost(https_path + '/publics/api.index/setting', {
+        key_str: 'sms_fun'
+    }, function(err, res) {
+        if (res.code == 1) {
+            callback(null, res.data)
+        } else {
+            callback(null)
+        }
+    })
+}
+
 //模块化
 module.exports = {
+    getconfig: getconfig,
     islogin: islogin,
     pagelist: pagelist, //加载更多数据
     getcache: getcache, //读取缓存中数据
