@@ -13,7 +13,10 @@ Page({
         label: true,
         label1: true,
         fly_out: false,
-        fly_out1: false
+        fly_out1: false,
+        code_title: "获取验证码",
+        isloginsms: 0,
+        user_account: '15625077763',
     },
 
 
@@ -26,9 +29,9 @@ Page({
 
     account: function(e) {
         var that = this
-        var val = e.detail.value;
+        var val = e.detail.value
         that.setData({
-            account: val
+            user_account: val
         });
     },
 
@@ -53,21 +56,56 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
+        const That = this
         if (api.islogin('user_id')) {
             //wx.switchTab({
             //   url: '/pages/my/my',
             //})
         }
-
-        console.log(sms.new_time());
+        api.fetchPost(api.https_path + '/publics/api.index/setting', {}, function(err, res) {
+            if (res.code == 1) {
+                const smsfun = JSON.parse(res.data.sms_fun)
+                That.setData({
+                    isloginsms: smsfun.login
+                })
+                console.log(smsfun)
+            }
+        });
     },
+
+    /**
+     * 发送验证码
+     */
+    sendcode: function() {
+        const That = this
+        const user_account = That.data.user_account
+        if (user_account) {
+            const _data = {
+                'mobile': user_account,
+                'type': 'login',
+            }
+            api.fetchPost(api.https_path + '/publics/api.sms/sendCode', _data, function(err, res) {
+                if (res.code == 1) {
+                    if (sms.is_send_code == 1) {
+                        sms.is_send_code = 0
+                        sms.sendcode(That)
+                    }
+                }
+            });
+        } else {
+            api.error_msg("请输入手机号码")
+            return false
+        }
+    },
+
 
     dologin: function(options) {
         const That = this
         const user_account = options.detail.value.user_account
         const user_passwrod = options.detail.value.user_passwrod
+        const user_code = options.detail.value.user_code
         if (user_account == "") {
-            api.error_msg("请输入登录账号")
+            api.error_msg("请输入手机号码")
             return false
         } else if (user_passwrod == "") {
             api.error_msg("请输入登录密码")
@@ -77,6 +115,7 @@ Page({
             const _data = {
                 'mobile': user_account,
                 'password': user_passwrod,
+                'code': user_code,
                 'source': 'developers',
             }
             api.fetchPost(loginurl, _data, function(err, res) {
