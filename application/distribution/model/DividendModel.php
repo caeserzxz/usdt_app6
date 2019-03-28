@@ -77,7 +77,13 @@ class DividendModel extends BaseModel
             $order_operating = '订单取消';
             $upData['status'] = $OrderModel->config['DD_CANCELED'];
         } elseif ($type == 'unpayed') {//未付款
-            $upData['status'] = $OrderModel->config['DD_UNCONFIRMED'];
+            if ($orderInfo['order_status'] == $OrderModel->config['OS_CANCELED']) {
+                $upData['status'] = $OrderModel->config['DD_CANCELED'];
+            }elseif ($orderInfo['order_status'] == $OrderModel->config['OS_RETURNED']){
+                    $upData['status'] = $OrderModel->config['DD_RETURNED'];
+            }else{
+                $upData['status'] = $OrderModel->config['DD_UNCONFIRMED'];
+            }
         } elseif ($type == 'shipping') {//发货
             $upData['status'] = $OrderModel->config['DD_SHIPPED'];
         } elseif ($type == 'unshipping') {//未发货

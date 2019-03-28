@@ -87,8 +87,11 @@ class Award extends AdminController
 		if (empty($data['limit_role']) == true){
 			return $this->error('请设置可参与的分销身份.');	
 		}
+		if ($data['award_type'] == 3){
+            $data['award_value'] = input('role_award_value');
+        }
 		if (empty($data['award_value']) == true){
-			return $this->error('请设置奖项设置.');	
+			return $this->error('请设置奖项设置.');
 		}
 		
 		if ($data['goods_limit'] > 1){
