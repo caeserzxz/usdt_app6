@@ -172,7 +172,7 @@ class DividendModel extends BaseModel
 
 
         $buyUserInfo = $this->UsersModel->info($orderInfo['user_id']);//获取购买会员信息
-        $lastRole = $buyUserInfo['role']['level'];//下级会员分佣身份级别
+        $lastRole = $orderInfo['dividend_role_id'];//下单会员下单时身份级别
         $this->where('order_id', $orderInfo['order_id'])->delete();//清理旧的提成记录，重新计算
 
         do {
@@ -260,13 +260,17 @@ class DividendModel extends BaseModel
                     $WeiXinMsgTplModel->send($sendData);//模板消息通知
                     continue;
                 }
-                if ($award['award_type'] == 2) {//平推奖
-                    if ($buyUserInfo['role']['level'] != $userInfo['role']['level']){//平推奖须购买者身份与分佣金
+
+
+
+                if ($award['award_type'] == 2) {//平推奖是否享受
+                    if ($orderInfo['dividend_role_id'] != $userInfo['role']['level']){//平推奖须购买者身份与分佣者身份一致
                         continue;
                     }
                     $nowLevelSame += 1;
                     $awardVal = $awardValue[$nowLevelSame];
                 }elseif ($award['award_type'] == 3) {//判断管理奖是否享受
+
                     if ($userInfo['role']['level'] <= $lastRole) {//上级身份低于下级身份或平级时跳出
                         continue;
                     }
