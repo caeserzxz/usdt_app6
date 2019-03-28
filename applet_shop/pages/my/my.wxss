@@ -21,6 +21,11 @@
 .menu_cells .weui-cell::before {
   display: none;
 }
+
+.display_none{
+    display: none;
+}
+
 .menu_cells .weui-cell__bd{
   font-size: 30rpx;
 }

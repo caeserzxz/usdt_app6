@@ -111,6 +111,7 @@ function getcache(_name) {
     return _value
 }
 
+
 /**
  * 写入数据到缓存中
  */
@@ -142,8 +143,18 @@ function pagelist(_url, _pages, _data) {
     })
 }
 
+function islogin(_name) {
+    const userid = getcache(_name)
+    if (userid) {
+        return userid;
+    } else {
+        return false;
+    }
+}
+
 //模块化
 module.exports = {
+    islogin: islogin,
     pagelist: pagelist, //加载更多数据
     getcache: getcache, //读取缓存中数据
     putcache: putcache, //写入数据到缓存中
