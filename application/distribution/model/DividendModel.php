@@ -163,20 +163,22 @@ class DividendModel extends BaseModel
         $DividendInfo = settings('DividendInfo');
         $OrderModel = new OrderModel();
         $OrderGoodsModel = new OrderGoodsModel();
-        $DividendRoleModel = new DividendRoleModel();
         $WeiXinUsersModel = new WeiXinUsersModel();
         $WeiXinMsgTplModel = new WeiXinMsgTplModel();
         $nowLevel = 0;//当前处理级别
         $nowLevelOrdinary = 0;//普通分销当前处理级别，普通分销有逐级计算和无限级计算，如果无限级，不满条件将一直最后的上级
+        $nowLevelSame = 0;//平级奖
         $assignAwardNum = [];//记录已分出去的管理奖金额
-        $roleInfo = $DividendRoleModel->info($orderInfo['role_id']);//获取用户下单时分销身份
-        $lastRole = $roleInfo['level'];//下级会员分佣身份级别
+
+
         $buyUserInfo = $this->UsersModel->info($orderInfo['user_id']);//获取购买会员信息
+        $lastRole = $buyUserInfo['role']['level'];//下级会员分佣身份级别
         $this->where('order_id', $orderInfo['order_id'])->delete();//清理旧的提成记录，重新计算
 
         do {
             $nowLevel += 1;
             $nowLevelOrdinary += 1;
+
             $userInfo = $this->UsersModel->info($parentId);//获取会员信息
 
             $parentId = $userInfo['pid'];//优先记录下次循环用户ID
@@ -225,12 +227,10 @@ class DividendModel extends BaseModel
 
                 //判断身份是否满足条件
                 $limit_role = explode(',', $award['limit_role']);
-                $role_name = $DividendRoleModel->info($userInfo['role_id'], true);
                 if (in_array($userInfo['role_id'], $limit_role) == false) {
                     $sendData['dividend_amount'] = $sendData['dividend_bean'] = 0;
-                    if ($award['award_type'] == 2) {//平推奖，如果当前用户不满足条件，此奖项终止
-                        $awardVal = $awardValue[$nowLevel];
-                        unset($awardList[$key]);//移除已结束的奖项
+                    if ($award['award_type'] == 2) {//平推奖，如果当前用户不满足条件，跳过
+                        continue;
                     } elseif ($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
                         if ($nowLevel <= 3) {
                             $awardVal = $awardValue[$nowLevelOrdinary];
@@ -247,7 +247,7 @@ class DividendModel extends BaseModel
                     $sendData['award_name'] = $award['award_name'];
                     $sendData['level_award_name'] = $awardVal['name'];
                     $sendData['level'] = $nowLevel;
-                    $sendData['role_name'] = $role_name;
+                    $sendData['role_name'] = $userInfo['role']['role_name'];
                     $sendData['order_sn'] = $orderInfo['order_sn'];
                     $sendData['order_amount'] = $orderInfo['order_amount'];
                     $sendData['buy_goods_name'] = $buy_goods_name;
@@ -260,8 +260,16 @@ class DividendModel extends BaseModel
                     $WeiXinMsgTplModel->send($sendData);//模板消息通知
                     continue;
                 }
-
-                if ($award['award_type'] == 3) {//判断管理奖是否享受
+                if ($award['award_type'] == 2) {//平推奖
+                    if ($buyUserInfo['role']['level'] != $userInfo['role']['level']){//平推奖须购买者身份与分佣金
+                        continue;
+                    }
+                    $nowLevelSame += 1;
+                    $awardVal = $awardValue[$nowLevelSame];
+                }elseif ($award['award_type'] == 3) {//判断管理奖是否享受
+                    if ($userInfo['role']['level'] <= $lastRole) {//上级身份低于下级身份或平级时跳出
+                        continue;
+                    }
                     if (empty($awardValue[$userInfo['role_id']])) {//没有找到相应奖项级别跳出
                         continue;
                     }
@@ -274,11 +282,7 @@ class DividendModel extends BaseModel
                         continue;
                     }
                     $awardVal = $awardValue[$userInfo['role_id']];//获取对应角色奖项
-                    $roleInfo = $DividendRoleModel->info($userInfo['role_id']);//获取当前用户分销身份
-                    if ($roleInfo['level'] <= $lastRole) {//上级低于下级或平级时跳出
-                        continue;
-                    }
-                    $lastRole = $roleInfo['level'];
+                    $lastRole = $userInfo['role']['level'];
                     $award_num = $awardVal['num'] - $assignAwardNum[$award['award_id']];//计算当前可分值
                     if ($award_num <= 0) {//已分完终止
                         unset($awardList[$key]);//移除已结束的奖项
@@ -300,14 +304,17 @@ class DividendModel extends BaseModel
                     }
                 }
 
-                if (empty($award['repeat_goods_id']) == false) {//限制复购判断
+                if (empty($award['repeat_goods_id']) == false && $DividendInfo['repeat_buy_day'] > 0) {//限制复购判断
                     $repeat_buy_day = time() - ($DividendInfo['repeat_buy_day'] * 86400);
-                    $where = [];
-                    $where[] = ['o.user_id', '=', $userInfo['user_id']];
-                    $where[] = ['o.add_time', '<', $orderInfo['add_time']];
-                    $where[] = ['o.add_time', '>', $repeat_buy_day];
-                    $where[] = ['o.order_status', '=', $OrderModel->config['OS_CONFIRMED']];
-                    $count = $OrderModel->alias('o')->join($OrderGoodsModel->table() . ' og', 'o.order_id = og.order_id AND og.goods_id IN (' . $award['repeat_goods_id'] . ')')->where($where)->count();
+                    $count = 1;
+                    if ($userInfo['last_up_role_time'] < $repeat_buy_day){//如果升级时间不满足限制，查询订单
+                        $where = [];
+                        $where[] = ['o.user_id', '=', $userInfo['user_id']];
+                        $where[] = ['o.add_time', '<', $orderInfo['add_time']];
+                        $where[] = ['o.add_time', '>', $repeat_buy_day];
+                        $where[] = ['o.order_status', '=', $OrderModel->config['OS_CONFIRMED']];
+                        $count = $OrderModel->alias('o')->join($OrderGoodsModel->table() . ' og', 'o.order_id = og.order_id AND og.goods_id IN (' . $award['repeat_goods_id'] . ')')->where($where)->count();
+                    }
                     if ($count < 1) {
                         $sendData['dividend_amount'] = $sendData['dividend_bean'] = 0;
                         if (in_array($award['award_type'], [1, 2])) {//普通分销奖&平推奖
@@ -328,7 +335,7 @@ class DividendModel extends BaseModel
                         $sendData['award_name'] = $award['award_name'];
                         $sendData['level_award_name'] = $awardVal['name'];
                         $sendData['level'] = $nowLevel;
-                        $sendData['role_name'] = $role_name;
+                        $sendData['role_name'] = $userInfo['role']['role_name'];;
                         $sendData['order_sn'] = $orderInfo['order_sn'];
                         $sendData['order_amount'] = $orderInfo['order_amount'];
                         $sendData['order_amount'] = $orderInfo['order_amount'];
@@ -371,7 +378,7 @@ class DividendModel extends BaseModel
                 $inArr['order_amount'] = $orderInfo['order_amount'];
                 $inArr['dividend_uid'] = $userInfo['user_id'];
                 $inArr['role_id'] = $userInfo['role_id'];
-                $inArr['role_name'] = $role_name;
+                $inArr['role_name'] = $userInfo['role']['role_name'];
                 $inArr['level'] = $nowLevel;
                 $inArr['award_id'] = $award['award_id'];
                 $inArr['award_name'] = $award['award_name'];
