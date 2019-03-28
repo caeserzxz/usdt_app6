@@ -28,8 +28,13 @@ class Passport extends ApiController
         $this->checkPostLimit('login');//验证请求次数
         $this->checkCode('login',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->login(input());
-        if ($res < 1) return $this->error($res);
-        return $this->success('登陆成功.');
+        if (is_array($res) == false) return $this->error($res);
+        $data['code'] = 1;
+        $data['msg'] = '登陆成功.';
+        if ($res[0] == 'developers'){
+            $data['developers'] = $res[1];
+        }
+        return $this->ajaxReturn($data);
     }
 
     /*------------------------------------------------------ */
