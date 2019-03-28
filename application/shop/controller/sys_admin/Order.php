@@ -232,7 +232,7 @@ class Order extends AdminController
         $this->assign("operating", $operating);
         $orderInfo['dividend_role_name'] =  (new DividendRoleModel)->info($orderInfo['dividend_role_id'],true);
         $this->assign('orderInfo', $orderInfo);
-        $dividend_log = (new DividendModel)->where('order_id', $order_id)->order('level ASC')->select()->toArray();
+        $dividend_log = (new DividendModel)->where('order_id', $order_id)->order('award_id,level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);
         return $this->fetch('info');
     }

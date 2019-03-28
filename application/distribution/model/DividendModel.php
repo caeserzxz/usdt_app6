@@ -143,7 +143,7 @@ class DividendModel extends BaseModel
     /*------------------------------------------------------ */
     public function saveLog(&$orderInfo, &$goodsList,$status = 0)
     {
-        $awardList = (new DividendAwardModel)->select();//获取全部奖项目
+        $awardList = (new DividendAwardModel)->order('award_type DESC')->select();//获取全部奖项目,按类型倒序，先处理管理奖
         if (empty($awardList)) return false;
         $dividend_amount = 0;//共分出去的佣金
 
@@ -169,7 +169,7 @@ class DividendModel extends BaseModel
         $nowLevelOrdinary = 0;//普通分销当前处理级别，普通分销有逐级计算和无限级计算，如果无限级，不满条件将一直最后的上级
         $nowLevelSame = 0;//平级奖
         $assignAwardNum = [];//记录已分出去的管理奖金额
-
+        $assignAwardUser = [];//记录已领管理奖的用户
 
         $buyUserInfo = $this->UsersModel->info($orderInfo['user_id']);//获取购买会员信息
         $lastRole = $orderInfo['dividend_role_id'];//下单会员下单时身份级别
@@ -262,10 +262,11 @@ class DividendModel extends BaseModel
                 }
 
 
-
                 if ($award['award_type'] == 2) {//平推奖是否享受
-                    if ($orderInfo['dividend_role_id'] != $userInfo['role']['level']){//平推奖须购买者身份与分佣者身份一致
-                        continue;
+                    if (empty($assignAwardUser[$award['award_id']]) == false){
+                        if (in_array($userInfo['user_id'],$assignAwardUser[$award['award_id']])){
+                            continue;//已拿过管理奖的不享受平级奖
+                        }
                     }
                     $nowLevelSame += 1;
                     $awardVal = $awardValue[$nowLevelSame];
@@ -351,10 +352,18 @@ class DividendModel extends BaseModel
                         $sendData['openid'] = $wxInfo['wx_openid'];
                         $sendData['send_nick_name'] = $wxInfo['wx_nickname'];
                         $WeiXinMsgTplModel->send($sendData);//模板消息通知
+
+                        if($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销，无限级计算时
+                            $nowLevelOrdinary -= 1;
+                        }elseif ($award['award_type'] == 2) {//平推奖复购失败，跳过
+                            $nowLevelSame -= 1;
+                        }
                         continue;//不满足复购限制，跳出
                     }
                 }
-
+                if ($award['award_type'] == 3) {//记录已拿管理奖的会员
+                    $assignAwardUser[$award['award_id']][] = $userInfo['user_id'];
+                }
                 //执行奖项处理
                 $inArr = [];
                 if (in_array($award['award_type'], [1, 2])) {//普通分销奖&平推奖
