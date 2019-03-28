@@ -63,7 +63,7 @@ Page({
             //   url: '/pages/my/my',
             //})
         }
-        api.getconfig('sms_fun', function (err, data){
+        api.getconfig('sms_fun', function(err, data) {
             That.setData({
                 isloginsms: data.login
             })
@@ -77,11 +77,7 @@ Page({
         const That = this
         const user_account = That.data.user_account
         if (user_account) {
-            const _data = {
-                'mobile': user_account,
-                'type': 'login',
-            }
-            api.fetchPost(api.https_path + '/publics/api.sms/sendCode', _data, function(err, res) {
+            api.sendsms(user_account, 'login', function(err, res) {
                 if (res.code == 1) {
                     if (sms.is_send_code == 1) {
                         sms.is_send_code = 0
@@ -118,7 +114,6 @@ Page({
                 'source': 'developers',
             }
             api.fetchPostOther(loginurl, _data, function(err, res) {
-                console.log(res)
                 if (res.code == 0) {
                     api.error_msg(res.msg)
                     return false
