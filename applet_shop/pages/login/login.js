@@ -62,7 +62,7 @@ Page({
             //   url: '/pages/my/my',
             //})
         }
-        api.getconfig('', function (err, data){
+        api.getconfig('sms_fun', function (err, data){
             That.setData({
                 isloginsms: data.login
             })

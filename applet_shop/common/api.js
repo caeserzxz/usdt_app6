@@ -155,7 +155,7 @@ function islogin(_name) {
 function getconfig(_name, callback) {
     let return_data = ""
     fetchPost(https_path + '/publics/api.index/setting', {
-        key_str: 'sms_fun'
+        key_str: _name
     }, function(err, res) {
         if (res.code == 1) {
             callback(null, res.data)
