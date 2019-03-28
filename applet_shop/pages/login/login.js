@@ -1,6 +1,8 @@
 // pages/login/login.js
 const app = getApp()
 var api = require("../../common/api.js")
+var md5 = require("../../common/md5.js")
+var sms = require("../../common/smscode.js")
 Page({
 
     /**
@@ -13,11 +15,15 @@ Page({
         fly_out: false,
         fly_out1: false
     },
+
+
     open_eyes() {
         this.setData({
             eyes: !this.data.eyes
         })
     },
+
+
     account: function(e) {
         var that = this
         var val = e.detail.value;
@@ -25,11 +31,15 @@ Page({
             account: val
         });
     },
+
+
     focus() {
         this.setData({
             fly_out: true,
         })
     },
+
+
     blur() {
         if (this.data.account === '') {
             this.setData({
@@ -37,6 +47,8 @@ Page({
             })
         }
     },
+
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -46,6 +58,8 @@ Page({
             //   url: '/pages/my/my',
             //})
         }
+
+        console.log(sms.new_time());
     },
 
     dologin: function(options) {
@@ -63,12 +77,20 @@ Page({
             const _data = {
                 'mobile': user_account,
                 'password': user_passwrod,
+                'source': 'developers',
             }
             api.fetchPost(loginurl, _data, function(err, res) {
                 console.log(res)
                 if (res.code == 0) {
                     api.error_msg(res.msg)
                     return false
+                } else {
+                    //api.putcache('user_devtoken', '123123123')
+                    //api.putcache('user_id', '123123123')
+                    //api.putcache('user_name', '123123123')
+                    //wx.reLaunch({
+                    //    url: '/pages/my/my',
+                    //})
                 }
             });
         }
