@@ -112,10 +112,10 @@ var goPay = {$goPay};
 			return false;
 		}
 		var pay_code = obj.data("pay_code");
-	  window.location.href = '{:_url("shop/payment/getCode",["order_id"=>$orderInfo['order_id'],"pay_code"=>"【pay_code】"])}';
+	  window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
   });
   if (goPay == 1){
-	   window.location.href = '{:_url("shop/payment/getCode",["order_id"=>$orderInfo['order_id'],"pay_code"=>$orderInfo['pay_code']],false)}';
+	   window.location.href = '{:_url("shop/payment/getCode",'',false)}?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
  }
 </script>
 {/block}

@@ -55,10 +55,11 @@
                                     <label class="control-label">注册时间：</label>
                                     <div class="col-sm-3"><label>{$row.reg_time|dateTpl}</label></div>
                                      <label class="control-label">最近购买时间：</label>
-                                    <div class="col-sm-3"><label>{$row.last_buy_time|dateTpl}</label></div>
+                                    <div class="col-sm-3"><label>{$row.last_buy_time|dateTpl}</label>
                                      <a href="{:url('shop/sys_admin.order/index',array('user_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
                                          <i class="fa fa-search"></i> 查看会员订单
                                      </a>
+                                    </div>
                                 </div>
                                  <div class="form-group">
                                     <label class="control-label">最近登陆时间：</label>

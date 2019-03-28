@@ -117,8 +117,13 @@ class weixin
 				//WeixinJSBridge.log(res.err_msg);
 				 if(res.err_msg == "get_brand_wcpay_request:ok") {
 				    location.href='$go_url';
-				 }else{				    
-				 	alert(res.err_code+res.err_desc+res.err_msg);
+				 }else{				   
+				    if (res.err_msg == 'get_brand_wcpay_request:cancel'){
+				        alert('支付过程中用户取消.');
+				    }else{
+				        alert(res.err_code+' - '+res.err_desc+' - '+res.err_msg);
+				    }
+				 	
 				    location.href='$back_url';
 				 }
 			}
