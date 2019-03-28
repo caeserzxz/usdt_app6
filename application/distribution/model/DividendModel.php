@@ -229,7 +229,9 @@ class DividendModel extends BaseModel
                 $limit_role = explode(',', $award['limit_role']);
                 if (in_array($userInfo['role_id'], $limit_role) == false) {
                     $sendData['dividend_amount'] = $sendData['dividend_bean'] = 0;
-                    if ($award['award_type'] == 2) {//平推奖，如果当前用户不满足条件，跳过
+                    if ($award['award_type'] == 3) {//管理奖
+                        continue;
+                    } elseif ($award['award_type'] == 2) {//平推奖，如果当前用户不满足条件，跳过
                         continue;
                     } elseif ($award['award_type'] == 1 && $award['ordinary_type'] == 1) {//普通分销奖，无限级计算时执行
                         if ($nowLevel <= 3) {

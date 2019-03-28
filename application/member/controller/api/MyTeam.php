@@ -32,9 +32,17 @@ class MyTeam extends ApiController
 		if ($level > 0){
         	$where[] = ['level','=',$level];
 		}		
-		$user_id = input('user_id',0,'intval');
-		if ($user_id > 0){
-        	$where[] = ['user_id','=',$user_id];
+		$user_id = input('user_id','','trim');
+		if (empty($user_id) == false){
+		    if (is_numeric($user_id) == true){
+                $where[] = ['user_id','=',$user_id];
+            }else{
+		        $uwhere[] = ['nick_name','like','%'.$user_id.'%'];
+                $user_ids = (new UsersModel)->where($uwhere)->column('user_id');
+                if (empty($user_ids)) $user_ids = 0;
+                $where[] = ['user_id','in',$user_ids];
+            }
+
 		}
 		
 		$this->sqlOrder = 'user_id DESC';
