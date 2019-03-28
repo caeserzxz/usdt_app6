@@ -49,6 +49,7 @@ class MsgTpl extends AdminController
 	/*------------------------------------------------------ */
     public function beforeEdit($data) {
 		$data['tpl_keys'] = json_encode($data['tpl_keys'],JSON_UNESCAPED_UNICODE);
+        $data['status'] = $data['status'] * 1;
 		return $data;
 	}
 	
