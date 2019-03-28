@@ -1,4 +1,8 @@
 var https_path = 'http://www.moduleshop.top/';
+var md5 = require("md5.js")
+var sms = require("smscode.js")
+var keys = 'eb5c6b3e4505c1fd7878bde2ed8544cf'
+var util = require("../utils/util.js")
 //GET方法获取数据或提交数据
 function fetchGet(url, callback) {
     wx.request({
@@ -19,6 +23,35 @@ function fetchGet(url, callback) {
 
 //POST方法获取数据或提交数据
 function fetchPost(url, data, callback) {
+    var user_devtoken = getcache('user_devtoken')
+    var timestamp = (new Date()).getTime()
+    var new_time = timestamp
+    if (user_devtoken) {
+        data.devtoken = user_devtoken
+        data.source = 'developers'
+        data.timeStamp = new_time
+        data.sign = md5.hexMD5(user_devtoken + new_time + keys)
+    }
+    wx.request({
+        method: 'POST',
+        url: url,
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: data,
+        success(res) {
+            callback(null, res.data)
+        },
+        fail(e) {
+            console.error(e)
+            callback(e)
+        }
+    })
+}
+
+
+
+function fetchPostOther(url, data, callback) {
     wx.request({
         method: 'POST',
         url: url,
@@ -153,20 +186,27 @@ function islogin(_name) {
 }
 
 function getconfig(_name, callback) {
-    let return_data = ""
-    fetchPost(https_path + '/publics/api.index/setting', {
-        key_str: _name
-    }, function(err, res) {
-        if (res.code == 1) {
-            callback(null, res.data)
-        } else {
-            callback(null)
+    wx.request({
+        method: 'POST',
+        url: https_path + '/publics/api.index/setting',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+            key_str: _name
+        },
+        success(res) {
+            callback(null, res.data.data)
+        },
+        fail(e) {
+            callback(e)
         }
     })
 }
 
 //模块化
 module.exports = {
+    fetchPostOther: fetchPostOther,
     getconfig: getconfig,
     islogin: islogin,
     pagelist: pagelist, //加载更多数据
