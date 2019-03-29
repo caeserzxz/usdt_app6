@@ -328,9 +328,17 @@ class UsersModel extends BaseModel
         if ($isCache == true) $info = Cache::get($this->mkey . $val);
         if (empty($info) == false) return $info;
         if ($type == 'token') {
-            $info = $this->where('token', $val)->find()->toArray();
+            $info = $this->where('token', $val)->find();
+            if (empty($info)){
+                return [];
+            }
+            $info = $info->toArray();
         } else {
-            $info = $this->where('user_id', $val)->find()->toArray();
+            $info = $this->where('user_id', $val)->find();
+            if (empty($info)){
+                return [];
+            }
+            $info = $info->toArray();
             $AccountModel = new AccountModel();
             $account = $AccountModel->where('user_id', $val)->find();
             if (empty($account) == true) {
