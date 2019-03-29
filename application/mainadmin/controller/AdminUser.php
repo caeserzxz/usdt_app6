@@ -63,8 +63,10 @@ class AdminUser extends AdminController
 	//-- 添加前处理
 	/*------------------------------------------------------ */
     public function beforeAdd($data) {
-		$map_d['user_name'] = $data['user_name'];
-		$count = $this->Model->where($map_d)->count('user_id');
+        if (empty($data['user_name'])){
+            return $this->error('请输入用户名称.');
+        }
+		$count = $this->Model->where('user_name',$data['user_name'])->count('user_id');
 		if ($count > 0) return $this->error('操作失败:已存在帐号，不允许重复添加！');
 		$data['add_time'] = time();	
 		$data['update_time'] = time();

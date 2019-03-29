@@ -173,28 +173,34 @@ class UsersModel extends BaseModel
             Db::rollback();
             return '未知错误-1，请尝试重新提交.';
         }
-        if ($this->user_id < 29889) {
-            $res = $this->where('user_id', $this->user_id)->delete();
+        $user_id = $this->user_id;
+        if ($user_id < 29889) {
+            $this->where('user_id',$user_id)->delete();
             $inArr['user_id'] = 29889;
-            $res = $this->save($inArr);
-            if ($res < 1) {
+            $res = $this->create($inArr);
+            $user_id = $res->user_id;
+            if ($user_id < 1) {
                 Db::rollback();
                 return '未知错误-2，请尝试重新提交.';
             }
         }
         //创建会员帐户信息
         $AccountLogModel = new AccountLogModel();
-        $AccountLogModel->createData(['user_id' => $this->user_id, 'update_time' => $time]);
+        $res = $AccountLogModel->createData(['user_id' => $user_id, 'update_time' => $time]);
+        if ($res < 1) {
+            Db::rollback();
+            return '未知错误-2，请尝试重新提交.';
+        }
         //edn
         //注册赠送积分
         $register_integral = settings('register_integral') * 1;
         if ($register_integral > 0) {
             $changedata['change_desc'] = '注册赠送积分';
             $changedata['change_type'] = 7;
-            $changedata['by_id'] = $this->user_id;
+            $changedata['by_id'] = $user_id;
             $changedata['use_integral'] = $register_integral;
             $changedata['total_integral'] = $register_integral;
-            $res = $AccountLogModel->change($changedata, $this->user_id, false);
+            $res = $AccountLogModel->change($changedata, $user_id, false);
             if ($res < 1) {
                 Db::rollback();
                 return '未知错误-3，请尝试重新提交.';
@@ -208,7 +214,7 @@ class UsersModel extends BaseModel
         }
         if ($wxuid > 0) {
             $WeiXinUsersModel = new WeiXinUsersModel();
-            $res = $WeiXinUsersModel->bindUserId($wxuid, $this->user_id);
+            $res = $WeiXinUsersModel->bindUserId($wxuid, $user_id);
             if ($res < 1) {
                 Db::rollback();
                 return '未知错误-4，请尝试重新提交.';
@@ -218,13 +224,13 @@ class UsersModel extends BaseModel
         $DividendInfo = settings('DividendInfo');
         if ($DividendInfo['bind_type'] < 1) {
             //写入九级关系链
-            $this->regUserBind($this->user_id);
+            $this->regUserBind($user_id);
         }
 
         //红包模块存在执行
         if (class_exists('app\shop\model\BonusModel')) {
             //注册送红包
-            (new \app\shop\model\BonusModel)->sendByReg($this->user_id);
+            (new \app\shop\model\BonusModel)->sendByReg($user_id);
         }
 
         return true;
