@@ -57,7 +57,7 @@ class WeiXinUsersModel extends BaseModel
 		$inarr['wx_openid'] = $access_token['openid'];		
 		$inarr['add_time'] = $inarr['update_time'] = time();
 		$inarr['sex'] = $wx_arr['sex'];
-		$inarr['subscribe'] = $wx_arr['subscribe'];
+		$inarr['subscribe'] = $wx_arr['subscribe'] * 1;
 		$inarr['wx_nickname'] = $wx_arr['nickname'];
 		$inarr['wx_headimgurl'] = $wx_arr['headimgurl'];
 		$inarr['wx_city'] = $wx_arr['city'];
