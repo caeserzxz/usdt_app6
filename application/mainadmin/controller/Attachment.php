@@ -186,7 +186,7 @@ class Attachment extends AdminController{
 				$where[]= ['store_admin_id','=',SAUID];
 			}
 			
-			$savepath = '/'.$result['info'][0]['savepath'];
+			$savepath = trim($result['info'][0]['savepath'],'.');
 	
 			$addarr['store_id'] = $this->store_id;
 			$addarr['goods_img'] = $file_url = $savepath.$result['info'][0]['savename'];
