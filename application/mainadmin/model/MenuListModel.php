@@ -17,39 +17,31 @@ class MenuListModel extends Model
     public function getList()
     { 
 		$data = Cache::get('main_menu_list');
+
 		if (empty($data) == false){
 			return $data;
 		}
-        $rows = self::where(['parent'=>0,'status'=>1])->order('sort_order ASC')->select()->toArray();
-		foreach ($rows as $row){
-			$rowsb = self::where(['parent'=>$row['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();			
-			if (empty($rowsb) == false){
-				foreach ($rowsb as $rowb){
-					if (empty($rowb['key']) == false){
-						$rowsc = self::where(['parent'=>$rowb['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
-						if (empty($rowsc) == false){
-							foreach ($rowsc as $keyc=>$rowc){
-								if (empty($rowc['key'])) continue;
-								$rowsd = self::where(['parent'=>$rowc['key'],'group'=>$row['group'],'status'=>1])->order('sort_order ASC')->select()->toArray();
-								if (empty($rowsd) == false) $rowc['submenu'] = $rowsd;
-								if (empty($rowc['right']) == false){
-									$rowc['_right'] = explode(',',$rowc['right']);
-								}
-								$rowsc[$keyc] = $rowc;
-							}
-							$rowb['submenu'] = $rowsc;
-						}
-					}
-					$key = empty($rowb['key']) ? $rowb['id'] : $rowb['key'];
-					if (empty($rowb['right']) == false){
-						$rowb['_right'] = explode(',',$rowb['right']);
-					}
-					$row['list'][$key] = $rowb;
-				}
-			}
-			$key = empty($row['key']) ? $row['id'] : $row['key'];
-			$data[$key] = $row;
-		}
+        $data = [];
+		$_data = [];
+        $rows = self::where('status',1)->order('level DESC sort_order ASC')->select()->toArray();
+        foreach ($rows as $row){
+            $key = empty($row['key']) ? $row['id'] : $row['key'];
+            $row['_right'] = explode(',',$row['right']);
+            if ($row['level'] == 4){
+                $_data[$row['pid']][$key] = $row;
+            }elseif ($row['level'] >= 2){
+                if (empty($_data[$row['id']]) == false){
+                    $row['submenu'] = $_data[$row['id']];
+                    unset($_data[$row['id']]);
+                }
+
+                $_data[$row['pid']][$key] = $row;
+            }else{
+                $row['list'] = $_data[$row['id']];
+                $data[$key] = $row;
+            }
+
+        }
 		Cache::set('main_menu_list',$data,60);
         return $data;
     }
