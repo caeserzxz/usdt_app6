@@ -140,10 +140,13 @@ class Bonus extends AdminController
 			}else{
 				$user_level = input('user_level',-1,'intval');
 				$userIds = input('user_id');
+				if (empty($userIds) == false && $user_level >= 0){
+                    return $this->error('按级别发放和指定会员，不能同时设置.');
+                }
 				if ($user_level >= 0){
 					$level = $levelList[$user_level];
 					$AccountModel = new AccountModel();
-					$where = ' total_integral between '.$level['min'].' AND '.$level['max']; 		
+					$where[] = ['total_integral','between',[$level['min'],$level['max']]];
 					$userIds = $AccountModel->where($where)->column('user_id');
 				}
 				if (empty($userIds)) return $this->error('没有找到相关可分配的会员.');
