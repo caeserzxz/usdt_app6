@@ -87,8 +87,7 @@ class AdminController extends BaseController
 		if (empty($menus) == false){
 			return $menus;
 		}
-		$MenuList = new \app\mainadmin\model\MenuListModel;
-		$menus = $MenuList->getList();
+		$menus = (new \app\mainadmin\model\MenuListModel)->getList();
 		//权限过滤
 	    foreach ($menus as $group => $menu){
 		  foreach ($menu['list'] as $groupb => $menub){
