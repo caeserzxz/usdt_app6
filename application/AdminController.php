@@ -262,7 +262,7 @@ class AdminController extends BaseController
 			if ($this->request->isAjax()){
 				 return $this->error('登陆超时，请重新登陆.');
 			}
-            $this->redirect($_SERVER['SCRIPT_NAME'].'/mainAdmin/passport/login');
+            $this->redirect($_SERVER['SCRIPT_NAME'].'/mainadmin/passport/login');
             return false;
         }
         return true;
@@ -277,15 +277,7 @@ class AdminController extends BaseController
 		 exit;
 	}
 
-    /**
-     * 获取post数据 (数组)
-     * @param $key
-     * @return mixed
-     */
-    protected function postData($key)
-    {
-        return $this->request->post($key . '/a');
-    }
+
  	/*------------------------------------------------------ */
 	//-- 添加/修改
 	/*------------------------------------------------------ */
@@ -374,20 +366,4 @@ class AdminController extends BaseController
 
 
 
-    /**
-     * 获取列表参数
-     *
-     * @return array
-     */
-    protected function getListOptions() {
-        $pageSize = (int) $this->request->param('page_size', 10);
-
-	    $options = [
-	        'page' => (int) $this->request->param('p', 1),
-	        'page_size' => $pageSize,
-            'keyword' => $this->request->param('keyword', '', 'trim'),
-        ];
-
-	    return $options;
-    }
 }
