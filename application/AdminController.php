@@ -307,7 +307,7 @@ class AdminController extends BaseController
 					$data = $this->beforeEdit($data);
 				}
 				$res = $this->Model->allowField(true)->save($data,$data[$pk]);
-				if($data[$pk] > 0){
+				if($res > 0){
 					if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($data[$pk]);
 					if (method_exists($this, 'afterEdit')){
 						$result = $this->afterEdit($data);
