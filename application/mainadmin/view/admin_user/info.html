@@ -9,7 +9,7 @@
                     <strong>帐号管理</strong>
                 </li>                                  
             </ul>
-           
+         <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
         </div>
 </header>
 <section class="scrollable  wrapper">
@@ -37,13 +37,13 @@
                      <div class="form-group">
                         <label class="control-label">真实姓名</label>
                         <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="real_name" value="{$row.real_name}" ><span class="maroon">*</span>
+                        <input type="text" class="input-sm" data-rule-maxlength="10" data-rule-required="true" data-msg-required="真实姓名不能为空" name="real_name" value="{$row.real_name}" ><span class="maroon">*</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label">手机号码</label>
                         <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="11" name="moblie" value="{$row.moblie}" >
+                        <input type="text" class="input-sm" data-rule-maxlength="11" name="moblie" value="{$row.moblie}" >
                         <span >不填写，一旦开启后台登陆短信验证，则无法登陆</span>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                         <label class="control-label">状态：</label>
                         <div class="controls">
                                  <label class="radio-inline">
-                                    <input name="status" value="0" id="status" class="js_undertake" type="radio" >封禁
+                                    <input name="status" value="0" id="status" class="js_undertake" type="radio" {$row['status']<1?'checked':''}>封禁
                                 </label>
                                 <label class="radio-inline">
                                     <input name="status" value="1" id="status" class="js_undertake " type="radio" {$row['status']==1?'checked':''}>
@@ -62,15 +62,15 @@
                 </div>
                     <div class="form-group">
                      <label class="control-label" for="new_password">设置密码</label>
-                            <div class="controls">
-                                <input name="new_password" class="input-max" id="new_password"  data-rule-rangelength="[6,16]" type="password">
+                            <div class="col-sm-7">
+                                <input name="new_password" class="input-sm" id="new_password"  data-rule-rangelength="[6,16]" type="password">
                                 <span class="maroon">*</span><span >长度为6~16位字符</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="repassword">确认密码</label>
-                            <div class="controls">
-                                <input name="repassword" class="input-max" id="repassword" data-rule-equalto="#new_password" type="password">
+                            <div class="col-sm-7">
+                                <input name="repassword" class="input-sm" id="repassword" data-rule-equalto="#new_password" type="password">
                              <span class="maroon">*</span>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                     <div class="form-group">
                         <label class="control-label">手机号码</label>
                         <div class="controls " >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="moblie" value="" >
+                        <input type="text" class="input-max" data-rule-maxlength="11" name="moblie" value="" >
                         
                         </div><span class="help-inline">不填写，一旦开启后台短信验证，则无法登陆</span>
                     </div>

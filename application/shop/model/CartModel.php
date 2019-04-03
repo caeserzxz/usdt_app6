@@ -220,7 +220,11 @@ class CartModel extends BaseModel
 		if (empty($recids) == false){
 			$where[] = ['rec_id','in',explode(',',$recids)];			
 		}elseif ($no_cache == false){		
-			$mkey = 'CartInfo_'.$user_id.session_id().$is_sel.$this->is_integral;
+			if ($user_id > 0){
+                $mkey = 'CartInfo_'.$user_id.$is_sel.$this->is_integral;
+            }else{
+                $mkey = 'CartInfo_'.session_id().$is_sel.$this->is_integral;
+            }
 			$data = Cache::get($mkey);
 		}
 						
