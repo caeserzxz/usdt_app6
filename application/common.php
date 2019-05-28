@@ -26,8 +26,25 @@ function toUnderScore($str)
 /**
  * 自定义URL
 */
-function _url($url,$arr,$isNotHtml=true,$domain = false){
-	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D',$domain==ture?$_SERVER['SCRIPT_NAME']:''),array("'+","+'",'{{','}}',''),url($url,$arr,$isNotHtml,$domain));
+function _url($url,$arr=[],$isNotHtml=true,$domain = false){
+    $url = url($url,$arr,$isNotHtml,$domain);
+    if ($domain == true){
+        $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);
+    }
+	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D'),array("'+","+'",'{{','}}'),$url);
+}
+/**
+ * 获取当前页面完整URL地址，前台调用
+ *
+ */
+function getUrl($val='',$type='',$var=array()) {
+    if (strstr($val,'http:')) return $val;
+    $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+    if($type == 'img'){
+        return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').str_replace('./','',$val);
+    }
+    $var['share_token'] = $GLOBALS['userInfo']['token'];
+    return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
 }
 /**
  * 后台生成密码hash值
@@ -69,19 +86,19 @@ function repEmoji($str){
 /*------------------------------------------------------ */
 //-- 获取会员信息
 /*------------------------------------------------------ */ 
-function userInfo($user_id,$returnName=true){
+function userInfo($user_id,$return=true){
 	static $userList;
 	static $userModel;
-	if ($user_id < 1) return $returnName == true ? '--' : [];
+	if ($user_id < 1) return $return == true ? '--' : [];
 	if (!isset($userModel)){
 		 $userModel = model('app\member\model\UsersModel');	
 	}
 	if (!isset($userList[$user_id])){
 		$userList[$user_id] = $userModel->info($user_id);
 	}
-	if (empty($userList[$user_id])) return $returnName == true ? '--' : [];
+	if (empty($userList[$user_id])) return $return == true ? '--' : [];
 	$info = $userList[$user_id];
-	if ($returnName == true) return $info['nick_name'];
+	if ($return == true) return $info['nick_name'];
 	return $info;
 }
 /*------------------------------------------------------ */
@@ -253,7 +270,7 @@ function returnRows($rows,$pid = 0,$level = 1){
 	$icon = array('&nbsp;&nbsp;│ ','&nbsp;&nbsp;├─ ','&nbsp;&nbsp;└─ ');
 	$now_id = 0;
 	foreach ($rows as $key=>$row){
-		$_pid = $row['pid']; 
+		$_pid = isset($row['pid'])?$row['pid']:0;
 		if ($pid != $_pid) continue;	
 		if (isset($newrows[$row['id']])) continue;						
 		$children = returnChildren($rows,$row['id']);
@@ -287,8 +304,9 @@ function returnRows($rows,$pid = 0,$level = 1){
 }
 function returnChildren(&$rows,$pid = 0){
 	$newrows = array();
-	foreach ($rows as $key=>$row){  
-		if ($pid != $row['pid']) continue;	
+	foreach ($rows as $key=>$row){
+        if(isset($row['pid']) == false) continue;
+        if ($pid != $row['pid']) continue;
 		$children = returnChildren($rows,$row['id']);
 		if ($children) $row['id'] .= ','.join(',',$children);
 		$newrows[] = $row['id'];
@@ -477,28 +495,7 @@ function formatBankCardNo($bankCardNo){
 	$maskBankCardNo = $prefix." **** **** **** ".$suffix;
 	return $maskBankCardNo;
 }
-/**
- * 获取当前页面完整URL地址
- */
-function getUrl($val='',$valb='',$var=array()){
-	$sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
-	if($valb == 'img'){
-		if (strstr($val,'http:')) return $val;	
-		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$val;	
-	}elseif($valb == 'url'){
-		$var['token'] = $GLOBALS['userinfo']['token']; 
-		if (strstr($val,'http:')) return $val;	
-		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
-	}elseif($valb == '_url'){
-		$var['token'] = $GLOBALS['userinfo']['token']; 
-		if (strstr($val,'http:')) return $val;	
-		return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
-	}
-	$php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];		
-	$path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
-	$relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : $path_info);
-	return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$relate_url;
-}
+
 /**
  * 获取url 中的各个参数  类似于 pay_code=alipay&bank_code=ICBC-DEBIT
  * @param type $str

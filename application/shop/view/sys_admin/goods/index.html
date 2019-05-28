@@ -23,16 +23,18 @@
                         <option value="1">是</option>
                         <option value="0">否</option>
                     </select>
-                    <select name="status" style="width: 100px;" data-toggle="select2"  data-chang="submit">
-                        <option value="">状态</option>
-                        <option value="1">上架中</option>
-                        <option value="2">未上架</option>
-                    </select>
+
+         <select name="status" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+             <option value="-1">状态</option>
+             <option value="1">上架中</option>
+             <option value="2">未上架</option>
+         </select>
            			 <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商品名称/SN" data-rule-required="true" />
               <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
-              {eq name="is_delete" value="0"}
+
+              {if condition="$is_delete == 0 && $is_supplyer == false" }
               	<a href="{:url('info')}"  title="添加商品" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加商品</a>
-              {/eq}
+              {/if}
         </div>
     </form>
 </header>
@@ -40,7 +42,7 @@
 <section class="scrollable wrapper w-f ">
     <section class="panel panel-default ">
         <div class="table-responsive " id="list_box">
-            {include file="sys_admin/goods/list" /}
+            {include file="shop@sys_admin/goods/list" /}
         </div>
     </section>
 </section>

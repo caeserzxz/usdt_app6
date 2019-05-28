@@ -1,0 +1,191 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+{/block}
+{block name='pageType'}orderDetails{/block}
+{block name="main" }
+<div class="page-bd groupOrder">
+    <!-- 页面内容-->
+    <div class="type">
+        {if condition="$orderInfo.isPay == 1"}
+        <img src="__STATIC__/mobile/default/images/groupOrder02.jpg" alt="">
+        <p class="fs34 fw_b color_3">待支付</p>
+        <a href="{:url('fightgroup/index/done',['order_id'=>$orderInfo['order_id']])}" class="butt" style="width: 90%;">
+            <span class="fs28 fw_b color_r bor ">立即支付</span>
+        </a>
+        {elseif condition="$fgJoin['status'] <= 2"}
+            <img src="__STATIC__/mobile/default/images/groupOrder02.jpg" alt="">
+            <p class="fs34 fw_b color_3">正在拼团中...</p>
+            <span class="fs26 color_9">该商品还未满团您可以邀请好友来拼团</span>
+        {elseif condition="$fgJoin['status'] == 3"}
+            <img src="__STATIC__/mobile/default/images/groupOrder01.jpg" alt="">
+            <p class="fs34 fw_b color_3">拼团成功</p>
+            <span class="fs26 color_9">商家按照付款付款顺序发货中，请耐心等待！</span>
+        {elseif condition="$fgJoin['status'] == 9"}
+            <img src="__STATIC__/mobile/default/images/groupOrder03.jpg" alt="">
+            <p class="fs34 fw_b color_3">拼团失败</p>
+            <span class="fs26 color_9">还未成团，拼团时间已结束</span>
+        {/if}
+    </div>
+    <div class="member">
+        {if condition="$fgJoin['status'] < 3"}
+            <div class="timeBox">
+                <div class="text fs30 fw_b color_3"><span class="color_r">还差{$fgJoin['success_num'] - count($fgJoin['order'])}人，</span>距离结束还剩</div>
+                <div class="time fs32"></div>
+            </div>
+        {elseif condition="$fgJoin['status'] == 3"}
+            <div class="timeBox">
+                <div class="text fs30 fw_b color_3"><span class="color_r">{$fgJoin['success_num']}人团，已成团</div>
+            </div>
+        {elseif condition="$fgJoin['status'] == 9"}
+            <div class="timeBox">
+                <div class="text fs30 fw_b color_3"><span class="color_r">拼团失败</div>
+            </div>
+        {/if}
+        <div class="memberimg">
+            {for start="0" end="$fgJoin['success_num']" name="k" }
+            {if condition="$k == 0"}
+            <div>
+                <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                <span class="fs22 color_w BGcolor_r">团长</span>
+            </div>
+            {else/}
+            {empty name="$fgJoin['order'][$k]"}
+            <img src="__STATIC__/mobile/default/images/groupOrder04.jpg" alt="">
+            {else/}
+            <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+            {/empty}
+            {/if}
+            {/for}
+        </div>
+    </div>
+
+    <div class="address">
+        <div class="fs30 fw_b color_3">{$orderInfo.consignee} {$orderInfo.mobile}</div>
+        <p class="fs28 color_9 color_9">{$orderInfo.merger_name}{$orderInfo.address}</p>
+    </div>
+    <div class="orderBox">
+        <div class="code">
+            <div class="code fs32 fw_b">商品信息</div>
+            <span class="color_9 fs28">
+                {if condition="$fgJoin['status'] == 3"}
+                    {$orderInfo.ostatus}
+                {/if}
+            </span>
+        </div>
+        <div class="goodslist">
+            {volist name="$orderInfo.goodsList" id="goods" }
+            <a href="{:url('fightgroup/index/info',['fg_id'=>$orderInfo['by_id']])}" class="goods">
+                <img src="{$goods.pic}" alt="">
+                <div class="goodsinfo">
+                    <p class="fs28 color_3">{$goods.goods_name}</p>
+                    <div class="appleBox"><span class="fs28 color_9">{$goods.sku_name}</span></div>
+                    <div class="money">
+                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em
+                                class="fs36">{$goods.exp_price[0]}</em>
+                            <p>.{$goods.exp_price[1]}</p></div>
+                        <em class="fs28 color_3">x{$goods.goods_number}</em></div>
+                </div>
+            </a>
+            {/volist}
+        </div>
+        <div class="message fs28 color_3 bor_t">
+            我的留言：{$orderInfo.buyer_message}
+        </div>
+    </div>
+    <div class="list">
+        <div class="cell">
+            <span class="fs28 color_3">拼团金额</span><div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.goods_amount}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">优惠券</span><div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">折扣</span><div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.discount}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">运费</span><div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3 fw_b">实付金额</span><div class="color_3 fs30 num"><p class="fw_b fm_p">￥</p><em class="fs40">{$orderInfo.order_amount}</em></div>
+        </div>
+    </div>
+    <div class="payInfo fs28 color_9">
+        <span>支付方式:{$orderInfo.pay_name}</span>
+        <span>下单时间:{$orderInfo.add_time|dateTpl}</span>
+        <span>发货时间:{$orderInfo.shipping_time|dateTpl}</span>
+        <span>确认收货时间:{$orderInfo.sign_time|dateTpl}</span>
+    </div>
+    {if condition="$orderInfo.isPay == 1"}
+    <a href="{:url('fightgroup/index/done',['order_id'=>$orderInfo['order_id']])}" class="butt">
+        <span class="fs28 fw_b color_r bor ">立即支付</span>
+    </a>
+    {/if}
+    {if condition="$orderInfo.isSign == 1"}
+    <span class="fs28 fw_b color_r bor " data-type="sign">确认收货</span>
+    <a href="{:url('shop/order/shippingInfo',['order_id'=>$orderInfo['order_id']])}" class="butt" >
+        <span class="fs28 fw_b color_r bor ">查看物流</span>
+    </a>
+    {/if}
+    {if condition="$fgJoin.status == 1" }
+    <a  href="{:url('fightgroup/index/join',['join_id'=>$orderInfo['pid']])}" class="butt">
+        <span class="fs32 fw_b color_w BGcolor_r">邀请好友</span>
+    </a>
+    {/if}
+</div>
+
+</div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function () {
+        let tmp = Date.parse(new Date());
+        let time = {$fgJoin['fail_time'] * 1000} - tmp//倒计时总毫秒数
+        countdown(time)
+    })
+
+    function countdown(time) {
+        let countDownTime;
+        if (time < 0) {
+            countDownTime = '<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>'
+            return
+        } else {
+            countDownTime = dateformat(time)//显示的时间
+            time -= 1000;//剩余的毫秒数
+        }
+        $('.time').html(countDownTime)
+        setTimeout(function () {
+            countdown(time);
+        }, 1000)
+    }
+    // 时间格式化输出，如11天03小时25分钟19秒  每1s都会调用一次
+    function dateformat(micro_second) {
+        var second = Math.floor(micro_second / 1000);// 总秒数
+        var day = Math.floor(second / 3600 / 24);// 天数
+        var hr = Math.floor(second / 3600 % 24);// 小时
+        var min = Math.floor(second / 60 % 60);// 分钟
+        var sec = Math.floor(second % 60);// 秒
+        return '<em class="num fs24 BGcolor_3 color_w">' + (hr < 10 ? '0' + hr : hr) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (min < 10 ? '0' + min : min) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (sec < 10 ? '0' + sec : sec) + '</em>';
+    }
+    //订单操作
+    $('.button').on('click','span',function(res){
+        var _this = $(this);
+        var arr = new Object();
+        arr.order_id = '{$orderInfo.order_id}';
+        arr.type = _this.data('type');
+
+        return action(arr);
+    })
+    function action(arr){
+        jq_ajax('{:url("shop/api.order/action")}',arr,function(res){
+            if(res.code  == 0 ){
+                _alert(res.msg);
+                return false;
+            }
+            window.location.reload();
+        })
+    }
+</script>
+
+{/block}

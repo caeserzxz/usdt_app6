@@ -55,25 +55,41 @@
                 <div class="goodsinfo">
                     <p class="fs28 color_3">{$goods.goods_name}</p>
                     <div class="appleBox"><span class="fs28 color_9">{$goods.sku_name}</span></div>
-                    <div class="money">
+                    {if condition="$orderInfo.order_type == 0"}
+                        <div class="money">
                         <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em
                                 class="fs36">{$goods.exp_price[0]}</em>
                             <p>.{$goods.exp_price[1]}</p></div>
                         <em class="fs28 color_3">x{$goods.goods_number}</em></div>
+                    {else/}
+                    <div class="money">
+                        <div class="color_3 fs24 num"><p class="fw_b fm_p">积分</p><em
+                                class="fs36">{$goods.use_integral}</em>
+                            </div>
+                        <em class="fs28 color_3">x{$goods.goods_number}</em></div>
+                    {/if}
                 </div>
             </a>
             {/volist}
         </div>
-        {eq name="$setting.shop_used_bonus" value="1"}
+        {gt name="$orderInfo.use_bonus" value="0"}
         <div class="cell">
             <span class="fs28 color_3">优惠券</span>
             <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.use_bonus}</em></div>
         </div>
-        {/eq}
+        {/gt}
+        {gt name="$orderInfo.discount" value="0"}
         <div class="cell">
             <span class="fs28 color_3">折扣</span>
             <div class="color_3 fs28 num"><p class="fw_b fm_p">-￥</p><em class="fs34">{$orderInfo.discount}</em></div>
         </div>
+        {/gt}
+        {gt name="$orderInfo.use_integral" value="0"}
+        <div class="cell">
+            <span class="fs28 color_3">积分</span>
+            <div class="color_3 fs28 num"><p class="fw_b fm_p">-</p><em class="fs34">{$orderInfo.use_integral}</em></div>
+        </div>
+        {/gt}
         <div class="cell">
             <span class="fs28 color_3">运费</span>
             <div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em>
@@ -99,7 +115,7 @@
         {if condition="$orderInfo.isCancel == 1"}
         <span class="fs28 fw_b color_3 bor_e" data-type="cancel">取消订单</span>
         {/if}
-        {if condition="$orderInfo.isRefund == 1"}
+        {if condition="$orderInfo.isRefund == 1 && $orderInfo.order_type == 0"}
         <span class="fs28 fw_b color_3 bor_e" data-type="refund">退款</span>
         {/if}
         {if condition="$orderInfo.isDel == 1"}

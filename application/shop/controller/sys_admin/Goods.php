@@ -8,6 +8,7 @@ use app\shop\model\GoodsSkuModel;
 use app\shop\model\GoodsImgsModel;
 use app\shop\model\GoodsVolumePriceModel;
 use app\shop\model\GoodsPricesModel;
+use app\shop\model\GoodsLogModel;
 use app\shop\model\AttributeValModel;
 use app\member\model\UsersLevelModel;
 use app\distribution\model\DividendRoleModel;
@@ -20,13 +21,15 @@ use app\shop\model\ShippingTplModel;
  */
 class Goods extends AdminController
 {
+    public $ext_status = 0;//额外默认指定商品状态
+    public $is_supplyer = 0;//是否后台供应商管理
 	//*------------------------------------------------------ */
 	//-- 初始化
 	/*------------------------------------------------------ */
-    public function initialize(){	
+    public function initialize(){
    		parent::initialize();
 		$this->Model = new GoodsModel();
-		
+		$this->assign('is_supplyer',$this->is_supplyer);//
     }
 	
 	//*------------------------------------------------------ */
@@ -42,15 +45,32 @@ class Goods extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
         $runJson = input('runJson',0,'intval');
-		$where[] = ['store_id','=',$this->store_id];
+		if ($this->store_id > 0){
+            $where[] = ['store_id','=',$this->store_id];
+        }elseif ($this->supplyer_id > 0){
+            $where[] = ['supplyer_id','=',$this->supplyer_id];
+        }elseif($this->is_supplyer == true){
+            $where[] = ['supplyer_id','>',0];
+        }else{
+            $where[] = ['store_id','=',0];
+            $where[] = ['supplyer_id','=',0];
+        }
 		$where[] = ['is_delete','=',$is_delete];
-		$search['status'] = input('status',0,'intval');
+        if (empty($this->ext_status) == false){
+            $search['status'] = explode(',',$this->ext_status);
+        }else{
+            $search['status'] = input('status',-1,'intval');
+        }
+
 		if ($search['status'] == 1){
-			$where[] = ['isputaway','>',0];
+			$where[] = ['isputaway','=',1];
 		}elseif($search['status'] == 2){
 			$where[] = ['isputaway','=',0];
-		}
-		
+		}elseif ($search['status'] != -1){
+            $where[] = ['isputaway','in',$search['status']];
+
+        }
+
 		$search['keyword'] =  input('keyword','','trim');
 		if (empty($search['keyword']) == false){
 			 $where['and'][] = "( goods_name like '%".$search['keyword']."%')  OR ( goods_sn like '%".$search['keyword']."%')"; 
@@ -75,7 +95,8 @@ class Goods extends AdminController
 		$this->assign("data", $this->data);
 		$this->assign("search", $search);
 		$this->assign("classListOpt", arrToSel($this->classList,$search['cid']));
-		$this->assign("brandListOpt", arrToSel($this->Model->getBrandList()));
+        $BrandList = $this->Model->getBrandList();
+		$this->assign("brandListOpt", arrToSel($BrandList));
 		if ($runJson == 1){
             return $this->success('','',$this->data);
         }elseif ($runData == false){
@@ -91,12 +112,14 @@ class Goods extends AdminController
 	//-- $data array 自动读取对应的数据
 	/*------------------------------------------------------ */
  	public function asInfo($data){
+
 		$ModelList = $this->Model->getModelList();
 		$this->assign('modelListOpt',arrToSel($ModelList,$data['type_model']));//商品模型对应属性调用
-		$this->assign("classListOpt", arrToSel($this->Model->getClassList(),$data['cid']));//分类
-		$this->assign("brandListOpt", arrToSel($this->Model->getBrandList(),$data['brand_id']));//品牌
+        $ClassList = $this->Model->getClassList();
+		$this->assign("classListOpt", arrToSel($ClassList,$data['cid']));//分类
+        $BrandList = $this->Model->getBrandList();
+		$this->assign("brandListOpt", arrToSel($BrandList ,$data['brand_id']));//品牌
 		$this->assign("skuModelOpt", arrToSel($ModelList,$data['sku_model'],$data['sku_model']));//商品模型对应sku调用
-		$this->assign("SupplyListOpt", arrToSel($this->Model->getSupplyList(),$data['supply_id']));//供货商
 		$UsersLevelModel = new UsersLevelModel();
 		$this->assign("UsersLevel", $UsersLevelModel->getRows());//会员等级
 		$DividendRoleModel = new DividendRoleModel();
@@ -106,10 +129,13 @@ class Goods extends AdminController
 		
 		$products = $specifications = array();
 		if ($data['goods_id'] > 0){
+            if ($this->supplyer_id > 0){
+                if ($data['supplyer_id'] != $this->supplyer_id){
+                    return $this->error('你无权操作此商品..');
+                }
+            }
 			$imgWhere[] = ['goods_id','=',$data['goods_id']];
-			$skuImgWhere = $imgWhere;
-			$imgWhere[] = ['sku_val','=',''];
-			$skuImgWhere[] = ['sku_val','<>',''];
+
 			if ($data['is_spec'] == 1){//多规格
 				$GoodsSkuModel = new GoodsSkuModel();
 				$gsrows = $GoodsSkuModel->where('goods_id',$data['goods_id'])->select()->toArray();
@@ -119,6 +145,8 @@ class Goods extends AdminController
 					$gsarr['sku_id']    = $arr['sku_id'];
 					$gsarr['ProductSn'] = $arr['goods_sn'];
 					$gsarr['Price'] = $arr['shop_price'];
+                    $gsarr['PromotePrice'] = $arr['promote_price'];
+                    $gsarr['SettlePrice'] = $arr['settle_price'];
 					$gsarr['MarketPrice'] = $arr['market_price'];
 					$gsarr['Store'] = $arr['goods_number'];
 					$gsarr['Weight'] = $arr['goods_weight'];
@@ -129,37 +157,42 @@ class Goods extends AdminController
 				foreach ($skuval as $arr){
 					$arr = explode(':',$arr);
 					foreach ($arr as $key=>$v){
-						if (!in_array($v,$specifications[$sku[$key]])){
+						if (empty($specifications[$sku[$key]]) || in_array($v,$specifications[$sku[$key]]) == false){
 							$specifications[$sku[$key]][] = $v * 1;
 						}
 					}
 				}
 			}
 			$goodsPrices = $this->Model->getPrices($data['goods_id']);
-			$this->assign('levelPrice',$goodsPrices['level']);
-			$this->assign('rolePrice',$goodsPrices['role']);
+			$this->assign('levelPrice',empty($goodsPrices['level'])?[]:$goodsPrices['level']);
+			$this->assign('rolePrice',empty($goodsPrices['role'])?[]:$goodsPrices['role']);
 			$this->assign('VolumePriceList',$this->Model->getVolumePrice($data['goods_id']));
 			$this->assign('limit_user_level',explode(',',$data['limit_user_level']));
 			$this->assign('limit_user_role',explode(',',$data['limit_user_role']));
+            $goodsLog = (new GoodsLogModel)->where('goods_id', $data['goods_id'])->order('log_id DESC')->select()->toArray();
+
+            $this->assign("goodsLog", $goodsLog);
 		}else{
 			$imgWhere[] = ['goods_id','=',0];
-			$imgWhere[] = ['store_id','=',$this->store_id];
-			$imgWhere[] = ['admin_id','=',AUID];
-			$skuImgWhere = $imgWhere;
-			$imgWhere[] = ['sku_val','=',''];
-			$skuImgWhere[] = ['sku_val','<>',''];
-			
+            if ($this->supplyer_id > 0){
+                $imgWhere[] = ['supplyer_id','=',$this->supplyer_id];
+            }elseif($this->store_id > 0){
+                $imgWhere[] = ['store_id','=',$this->store_id];
+            }else{
+                $imgWhere[] = ['admin_id','=',AUID];
+            }
+
 		}
-		$sku_imgs = $this->Model->getImgsList($skuImgWhere,true);
+		$sku_imgs = $this->Model->getImgsListAdmin($imgWhere,true);
 		foreach($sku_imgs as $arr){
 			$products[$arr['sku_val']]['ProductImgId'] = $arr['img_id'];
 			$products[$arr['sku_val']]['ProductImg'] = $arr['goods_img'];		
 		}
-		
-		$this->assign('goods_imgs',$this->Model->getImgsList($imgWhere));
+
+		$this->assign('goods_imgs',$this->Model->getImgsListAdmin($imgWhere));
 		$this->assign('specifications',json_encode($specifications));
 		$this->assign('products',json_encode($products));
-		
+        $this->assign('goods_status',config('config.goods_status'));
         return $data;
     }
 	/*------------------------------------------------------ */
@@ -201,65 +234,112 @@ class Goods extends AdminController
 		if ($row['goods_id'] < 1){
 			$imgwhere[] = ['goods_id','=',0];
 			$imgwhere[] = ['sku_val','=',''];
-			$imgwhere[] = ['store_id','=',$this->store_id];
-			$imgwhere[] = ['admin_id','=',AUID];
+            if ($this->supplyer_id > 0) {
+                $imgwhere[] = ['supplyer_id', '=', $this->supplyer_id];
+            }elseif ($this->store_id > 0){
+                $imgwhere[] = ['store_id','=',$this->store_id];
+            }else{
+                $imgwhere[] = ['admin_id','=',AUID];
+            }
+
 			$imgCount = $GoodsImgsModel->where($imgwhere)->count('img_id');
 			if ($imgCount < 1){
-				return $this->error('请上传图片后再操作.');
+				return $this->error('请上传商品图片.');
 			}
 			unset($imgwhere);
 		}
-				
+        $row['goods_desc'] = input('goods_desc', '', 'trim,stripslashes');
+        $row['m_goods_desc'] = input('m_goods_desc', '', 'trim,stripslashes');
+        if (empty($row['goods_desc']) && empty($row['m_goods_desc'])) {
+            return $this->error('获取商品详情失败，请核实是否已填写.');
+        }
 		if ($row['is_spec'] == 0){//单规格
-			if (empty($row['goods_sn'])){
-				return $this->error('请输入商品货号.');
-			}
+            if ($this->is_supplyer == false) {//平台管理供应商时，不判断以下
+                if (empty($row['goods_sn'])) {
+                    return $this->error('请输入商品货号.');
+                }
+                $where[] = ['goods_sn','=',$row['goods_sn']];
+                $where[] = ['store_id','=',$this->store_id];
+                if ($row['goods_id'] > 0){
+                    $where[] = ['goods_id','<>',$row['goods_id']];
+                }
+                $count = $this->Model->where($where)->count('goods_id');
+                if ($count > 0) return $this->error('操作失败:已存在相同的货号，不允许重复添加.');
+                unset($where);
+                if ($row['bar_code']){
+                    $where[] = ['store_id','=',$this->store_id];
+                    $where[] = ['bar_code','=',$row['bar_code']];
+                    if ($row['goods_id'] > 0){
+                        $where[] = ['goods_id','<>',$row['goods_id']];
+                    }
+                    $count = $this->Model->where($where)->count('goods_id');
+                    if ($count > 0) return $this->error('操作失败:已存在相同的货号条形码，不允许重复添加.');
+                    unset($where);
+                }
+                if ($row['market_price'] > 0){
+                    if ($row['market_price'] < $row['shop_price']) return $this->error('操作失败:市场价不能少于销售价.');
+                }else{
+                    $row['market_price'] = $row['shop_price'];//不填写市场价，默认与售价一致
+                }
+            }
+
 			if ($row['shop_price'] < 0){
 				return $this->error('商品销售价不能少于0.');
 			}
 			if ($row['goods_number'] < 0){
 				return $this->error('商品库存不能少于0.');
 			}
-			
-			$where[] = ['goods_sn','=',$row['goods_sn']];
-			$where[] = ['store_id','=',$this->store_id];
-			if ($row['goods_id'] > 0){
-				$where[] = ['goods_id','<>',$row['goods_id']];
-			}
-			$count = $this->Model->where($where)->count('goods_id');
-			if ($count > 0) return $this->error('操作失败:已存在相同的货号，不允许重复添加.');
-			unset($where);
-			if ($row['bar_code']){
-				$where[] = ['store_id','=',$this->store_id];
-				$where[] = ['bar_code','=',$row['bar_code']];
-				if ($row['goods_id'] > 0){
-					$where[] = ['goods_id','<>',$row['goods_id']];
-				}
-				$count = $this->Model->where($where)->count('goods_id');
-				if ($count > 0) return $this->error('操作失败:已存在相同的货号条形码，不允许重复添加.');
-				unset($where);
-			}
-			if ($row['market_price'] > 0){
-				if ($row['market_price'] < $row['shop_price']) return $this->error('操作失败:市场价不能少于销售价.');
-			}else{
-				$row['market_price'] = $row['shop_price'];//不填写市场价，默认与售价一致
-			}
+
+
+            if ($row['is_promote'] == 1) {
+                if ($row['promote_price'] < 0) {
+                    return $this->error('操作失败:促销价必须大于0.');
+                }
+            }
 		}else{//多规格处理
 			$Products = input('post.Products');
-			$goods_sn = array();
+			$goods_sn = [];
 			$row['goods_number'] = 0;
-			foreach ($Products as $prow){
-				if (in_array($prow['ProductSn'],$goods_sn)) return $this->error('子商品列表中货号【'.$prow['ProductSn'].'】重复，系统不允许货号重复.');
-				$goods_sn[] = $prow['ProductSn'];		
-				$row['goods_number'] += $prow['Store'];
-
-                $row['min_price'] = $row['min_price']==0?$prow['Price']:($prow['Price']<$row['min_price']?$prow['Price']:$row['min_price']);
-                $row['max_price'] = ($prow['Price']>$row['max_price'])?$prow['Price']:$row['max_price'];
-                $row['market_price'] = ($prow['MarketPrice']>$row['market_price'])?$prow['MarketPrice']:$row['market_price'];
-			}
-
-
+            $prices = $market_price = [];
+            $PromotePrice = 0;
+            foreach ($Products as $prow){
+				if (in_array($prow['ProductSn'],$goods_sn)){
+                    return $this->error('子商品列表中货号【'.$prow['ProductSn'].'】重复，系统不允许货号重复.');
+                }
+				$goods_sn[] = $prow['ProductSn'];
+				if ($prow['Store'] > 0){
+                    $row['goods_number'] += $prow['Store'];
+                }
+				if ($this->supplyer_id > 0 ){
+                    $prices[] = $prow['SettlePrice'];
+                }else{
+                    $prices[] = $prow['Price'];
+                }
+                $market_price[] = $prow['MarketPrice'];
+                //促销处理
+                if ($row['is_promote'] == 1) {
+                    if ($prow['PromotePrice'] < 0){
+                        return $this->error('操作失败:促销价不能小于0.');
+                    }
+                    $PromotePrice += $prow['PromotePrice'];
+                }
+            }
 			if (empty($goods_sn)) return $this->error('未知错误，未能获取子商品数据.');
+            if ($row['is_promote'] == 1 && $PromotePrice <= 0) {
+                return $this->error('操作失败，开启促销至少有一个sku促销价大于0.');
+            }
+
+            if ($this->supplyer_id > 0 ){
+                $row['settle_price'] = min($prices);
+                $row['settle_min_price'] = $row['settle_price'];
+                $row['settle_max_price'] = max($prices);
+            }else{
+                $row['shop_price'] = min($prices);
+                $row['min_price'] = $row['shop_price'];
+                $row['max_price'] = max($prices);
+            }
+
+            $row['market_price'] = max($market_price);
 			$GoodsSkuModel = new GoodsSkuModel();
 			$where[] = ['store_id','=',$this->store_id];
 			$where[] = ['goods_sn','in',$goods_sn];
@@ -270,52 +350,56 @@ class Goods extends AdminController
 			if (empty($goodsSn['gsn']) == false)  return $this->error('子商品货号【'.$goodsSn['gsn'].'】与其它子商品货号重复，货号不允许重复.');
 			unset($where);
 		}
-		//上架处理
-		if($row['isputaway'] == 2){
-			if(empty($row['added_time']) || empty($row['shelf_time'])) return $this->error('操作失败:请选择上下架的时间.');
-			if (!checkDateIsValid($row['added_time'])) return $this->error('操作失败:上下架的开始时间格式不合法.');
-			if (!checkDateIsValid($row['shelf_time'])) return $this->error('操作失败:上下架的结束时间格式不合法.');
-			$row['added_time'] = strtotime($row['added_time']);
-			$row['shelf_time'] = strtotime($row['shelf_time']);
-			if($row['added_time'] >= $row['shelf_time']) return $this->error('操作失败:下架时间必须大于上架时间.');				
-		}
-		//促销处理
-		if($row['is_promote'] == 1){
-			if(empty($row['promote_start_date']) || empty($row['promote_end_date'])) return $this->error('操作失败:请选择促销的时间.');
-			if (!checkDateIsValid($row['promote_start_date'])) return $this->error('操作失败:促销开始时间格式不合法.');
-			if (!checkDateIsValid($row['promote_end_date'])) return $this->error('操作失败:促销结束时间格式不合法.');
-			$row['promote_start_date'] = strtotime($row['promote_start_date']);
-			$row['promote_end_date'] = strtotime($row['promote_end_date']);
-			if($row['promote_start_date'] >= $row['promote_end_date']) return $this->error('操作失败::促销开始时间必须大于促销结束时间.');
-		}else{
-            $row['is_promote'] = 0;
-		    unset($row['promote_start_date'],$row['promote_end_date']);
+
+        if ($this->supplyer_id > 0) {
+            $row['is_alone_sale'] = 1;
+            $row['supplyer_id'] = $this->supplyer_id;//供应商ID
+        }elseif ($this->store_id > 0){
+            $row['store_id'] = $this->store_id;//门店ID
+        }else {
+            //上架处理
+            if ($row['isputaway'] == 2) {
+                if (empty($row['added_time']) || empty($row['shelf_time'])) return $this->error('操作失败:请选择上下架的时间.');
+                if (!checkDateIsValid($row['added_time'])) return $this->error('操作失败:上下架的开始时间格式不合法.');
+                if (!checkDateIsValid($row['shelf_time'])) return $this->error('操作失败:上下架的结束时间格式不合法.');
+                $row['added_time'] = strtotime($row['added_time']);
+                $row['shelf_time'] = strtotime($row['shelf_time']);
+                if ($row['added_time'] >= $row['shelf_time']) return $this->error('操作失败:下架时间必须大于上架时间.');
+            }
+            //促销处理
+            if ($row['is_promote'] == 1) {
+                if (empty($row['promote_start_date']) || empty($row['promote_end_date'])) return $this->error('操作失败:请选择促销的时间.');
+                if (!checkDateIsValid($row['promote_start_date'])) return $this->error('操作失败:促销开始时间格式不合法.');
+                if (!checkDateIsValid($row['promote_end_date'])) return $this->error('操作失败:促销结束时间格式不合法.');
+                $row['promote_start_date'] = strtotime($row['promote_start_date']);
+                $row['promote_end_date'] = strtotime($row['promote_end_date']);
+                if ($row['promote_start_date'] >= $row['promote_end_date']) return $this->error('操作失败::促销开始时间必须大于促销结束时间.');
+            } else {
+                $row['is_promote'] = 0;
+                unset($row['promote_start_date'], $row['promote_end_date']);
+            }
+            //限购处理
+            $is_quota = input('post.is_quota', 0, 'intval');
+            if ($is_quota == 0) $row['limit_num'] = 0;
+
+            //运费模板
+            $undertake = input('undertake', '0', 'intval');
+            if ($undertake == 0) {
+                $row['freight_template'] = 0;
+            }
+
+            //会员购买限制
+            $row['limit_user_level'] = empty($row['limit_user_level']) ? '' : join(',', $row['limit_user_level']);
+            //身份购买限制
+            $row['limit_user_role'] = empty($row['limit_user_role']) ? '' : join(',', $row['limit_user_role']);
+            $row['shop_price'] = $row['shop_price'] * 1;
         }
-		//限购处理
-		$is_quota = input('post.is_quota',0,'intval');
-		if ($is_quota == 0) $row['quota_amount'] = 0;
-		//获取图片主图
-		$GoodsImages = input('post.GoodsImages');
-		if ($GoodsImages){
-			$row['goods_img'] = $GoodsImages['path'][0];
-			$row['goods_thumb'] = str_replace('.','_thumb.',$row['goods_img']);
-		}
-		//运费模板
-		$undertake = input('undertake','0','intval');
-		if ($undertake == 0){
-			$row['freight_template'] = 0;
-		}
-		$row['goods_desc'] = input('goods_desc','','trim,stripslashes');		
-		$row['m_goods_desc'] = input('m_goods_desc','','trim,stripslashes');
-		if (empty($row['goods_desc']) && empty($row['m_goods_desc'])){
-			return $this->error('获取商品详情失败，请核实.');
-		}
-		//会员购买限制
-		$row['limit_user_level'] = empty($row['limit_user_level'])?'':join(',',$row['limit_user_level']);
-		//身份购买限制
-		$row['limit_user_role'] = empty($row['limit_user_role'])?'':join(',',$row['limit_user_role']);
-		$row['shop_price'] = $row['shop_price'] * 1;
-		$row['store_id'] = $this->store_id;//门店ID
+        //获取图片主图
+        $GoodsImages = input('post.GoodsImages');
+        if ($GoodsImages) {
+            $row['goods_img'] = $GoodsImages['path'][0];
+            $row['goods_thumb'] = str_replace('.', '_thumb.', $row['goods_img']);
+        }
 		return $row;
 	}
 	
@@ -325,16 +409,6 @@ class Goods extends AdminController
 	public function beforeAdd($row){
 		$row = $this->checkData($row);
 		Db::startTrans();//启动事务
-        if($row['is_spec'] == 1){
-            $row['shop_price'] =  $row['show_price'];
-            $Products = input('post.Products');
-            foreach ($Products as $prow){
-                $row['price_range_min'] = $row['price_range_min']==0?$prow['Price']:($prow['Price']<$row['price_range_min']?$prow['Price']:$row['price_range_min']);
-                $row['price_range_max'] = ($prow['Price']>$row['price_range_max'])?$prow['Price']:$row['price_range_max'];
-                $row['market_price'] = ($prow['MarketPrice']>$row['market_price'])?$prow['MarketPrice']:$row['market_price'];
-            }
-        }
-        $row['sort_price'] = $row['shop_price'];
 		return $row;
 	}
 	/*------------------------------------------------------ */
@@ -347,17 +421,22 @@ class Goods extends AdminController
 			$imgwhere = array();
 			$imgwhere[] = ['img_id','=',$img_id];
 			$imgwhere[] = ['goods_id','=',0];
-			$imgwhere[] = ['sku_val','=',''];
-			$imgwhere[] = ['store_id','=',$this->store_id];
-			$imgwhere[] = ['admin_id','=',AUID];
+			if ($this->store_id > 0){
+                $imgwhere[] = ['store_id','=',$this->store_id];
+            }elseif ($this->supplyer_id > 0){
+                $imgwhere[] = ['supplyer_id','=',$this->supplyer_id];
+            }else{
+                $imgwhere[] = ['admin_id','=',AUID];
+            }
 			$upData['sort_order'] = $key;
 			$upData['goods_id'] = $row['goods_id'];
 			$GoodsImgsModel->where($imgwhere)->update($upData);
 		}
 		unset($imgwhere);	
-		
+
 		//规格
 		if ($row['is_spec'] == 1){
+            $sku_model = input('sku_model',0,'intval');
 			$GoodsSkuModel = new GoodsSkuModel();
 			$specifications = input('post.specifications');
 			$sku = join(':',array_values($specifications['id']));
@@ -366,9 +445,18 @@ class Goods extends AdminController
 				$_arr = $prow['Price'].$prow['ProductSn'].$prow['Store'];
 				if (empty($_arr)) continue;//空值跳过,不执行生成sku
 				$inData['sku'] = $sku;
+                $inData['sku_name'] = join(',',$prow['SpecVal']['val']);
+                $inData['supplyer_id'] = $this->supplyer_id * 1;
+                $inData['store_id'] = $this->store_id * 1;
 				$inData['goods_id'] = $row['goods_id'];
 				$inData['market_price'] = $prow['MarketPrice'];
-				$inData['shop_price'] = $prow['Price'];
+				$inData['sku_model'] = $sku_model;
+                if ($this->supplyer_id > 0) {//供应商操作此字段
+                    $inData['settle_price'] = $prow['SettlePrice'];
+                }else{
+                    $inData['shop_price'] = $prow['Price'];
+                    $inData['promote_price'] = $prow['PromotePrice'];
+                }
 				$inData['goods_sn'] = $prow['ProductSn'];
 				$inData['bar_code'] = $prow['ProductCode'];
 				$inData['goods_number'] = $prow['Store'];
@@ -380,7 +468,7 @@ class Goods extends AdminController
 					return $this->error('操作失败:获取商品SKU值失败，请重试.');
 				}				
 				$res = $GoodsSkuModel::create($inData);
-				if ($res < 1){
+				if ($res->sku_id < 1){
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:子商品写入失败，请重试.');
 				}
@@ -468,29 +556,78 @@ class Goods extends AdminController
 		}
     	Db::commit();// 提交事务
         $this->Model->cleanMemcache($row['goods_id']);
-		$this->_log($row['goods_id'],'添加商品：'.$row['goods_name']);
+        $goods_status = config('config.goods_status');
+        $row['isputaway'] = $row['isputaway'] * 1;
+        if ($this->supplyer_id > 0) {
+            $this->Model->_log($row['goods_id'], '添加商品：' . $row['goods_name'],$goods_status[$row['isputaway']],'supplyer',$this->supplyer_id);
+        }else{
+            $this->Model->_log($row['goods_id'], '添加商品：' . $row['goods_name'],$goods_status[$row['isputaway']],'admin',AUID);
+        }
 		return $this->success('添加成功',url('index'));
 	}
 	/*------------------------------------------------------ */
 	//-- 修改前处理
 	/*------------------------------------------------------ */
 	public function beforeEdit($row){
+	    //供应商商品时调用
+	    if ($this->supplyer_id > 0){
+            $goods = $this->Model->where('goods_id',$row['goods_id'])->field('supplyer_id,isputaway')->find();
+           if ($goods['supplyer_id'] != $this->supplyer_id){
+                return $this->error('你无权操作此商品.');
+            }
+            if (in_array($goods['isputaway'],[0,11,12,13]) == false){
+                return $this->error('当前商品状态不允许修改.');
+            }
+        }
 		$row = $this->checkData($row);
 		if ($row['is_spec'] == 0){
 			$goods_number = $row['goods_number'];
             unset($row['goods_number']);
-			$row['goods_number'] = ['INC',$goods_number];
-		}else{
-            $row['shop_price'] =  $row['show_price'];
-        }
-		$row['shop_price'] = $row['shop_price'] * 1;
-        $row['sort_price'] = $row['shop_price'];
+            if ($goods_number > 0 ) {
+                $row['goods_number'] = ['INC', $goods_number];
+            }
+            $row['shop_price'] = $row['shop_price'] * 1;
+		}
+
         $row['is_best'] =  $row['is_best'] * 1;
         $row['is_hot'] =  $row['is_hot'] * 1;
         $row['is_new'] =  $row['is_new'] * 1;
         $row['virtual_sale'] +=  $row['sale_num'];
-        $row['virtual_collect'] +=  $row['collect_num'];		
-		Db::startTrans();//启动事务		
+        $row['virtual_collect'] +=  $row['collect_num'];
+        $opt = input('opt',0,'intval');
+        $this->loginfo = '修改商品：' . $row['goods_name'];
+        if ($opt > 0 ){
+            $opt_remark = input('opt_remark','','trim');
+            $row['isputaway'] = $opt;
+            if ($opt == 1){
+                unset($row['market_price']);//审核不更新此值
+                //上架时判断售价是否大于供货价
+                if ($row['is_spec'] == 1){
+                    $Products = input('post.Products');
+                    foreach ($Products as $prow) {
+                        if ($prow['Price'] < $prow['SettlePrice']){
+                            return $this->error('货号：'.$prow['ProductSn'].'，销售价小于供货价，请核实.');
+                        }
+                    }
+                    unset($Products);
+                }else{
+                    if ($row['shop_price'] < $row['settle_price']){
+                        return $this->error('销售价不能小于供货价，请核实.');
+                    }
+                    unset($row['settle_price']);
+                }
+                $this->loginfo .= "允许上架，备注：".$opt_remark;
+            }elseif($opt == 11){
+                $this->loginfo .= "拒绝上架，备注：".$opt_remark;
+            }elseif($opt == 12){
+                if (empty($opt_remark)){
+                    return $this->error('操作下架，须填写备注.');
+                }
+                $this->loginfo .= "平台下架商品，备注：".$opt_remark;
+            }
+            unset($row['settle_price']);
+        }
+		Db::startTrans();//启动事务
 		return $row;
 	}
 	/*------------------------------------------------------ */
@@ -498,8 +635,8 @@ class Goods extends AdminController
 	/*------------------------------------------------------ */
 	public function afterEdit($row){
 		if ($row['is_spec'] == 1){
-			$GoodsSkuModel = new GoodsSkuModel();	
-				
+			$GoodsSkuModel = new GoodsSkuModel();
+            //查询不同模型的sku,如果查询有删除
 		  	$skudelwhere[] = ['goods_id','=',$row['goods_id']];
 			$skudelwhere[] = ['sku_model','<>',$row['sku_model']];
 			$sku_count = $GoodsSkuModel->where($skudelwhere)->count('sku_id');
@@ -509,41 +646,64 @@ class Goods extends AdminController
 					Db::rollback();// 回滚事务
 					return $this->error('操作失败:删除旧规格商品失败，请重试.');
 				}
-			}
+			}//end
 			$specifications = input('post.specifications');
 			$sku = join(':',array_values($specifications['id']));
 			$Products = input('post.Products');
+            $time = time();
 			foreach ($Products as $prow){
-				$_arr = $prow['Price'].$prow['ProductSn'].$prow['Store'];
-				if (empty($_arr)) continue;//空值跳过,不执行生成sku
-				$upData['sku'] = $sku;			
-				$upData['market_price'] = $prow['MarketPrice'];
-				$upData['shop_price'] = $prow['Price'];
-				$upData['goods_sn'] = $prow['ProductSn'];
-				$upData['bar_code'] = $prow['ProductCode'];				
-				$upData['goods_weight'] = $prow['Weight'];
-				$sku_val = array_values($prow['SpecVal']['key']);
-				$upData['sku_val'] = join(':',$sku_val);
-				if (empty($upData['sku_val'])){
-					return $this->error('操作失败:获取商品SKU值失败，请重试.');
-				}
-				$upData['store_id'] = $this->store_id;
-				$upData['update_time'] = time();
-				if ($prow['SkuId'] > 0){
-					$upData['goods_number'] = ['INC',$prow['Store']];				
-					$res = $GoodsSkuModel->where('sku_id',$prow['SkuId'])->update($upData);
-				}else{
-                    $upData['goods_id'] = $row['goods_id'];
-                    $upData['sku_model'] = $row['sku_model'];
-                    $upData['add_time'] = time();
-                    $upData['goods_number'] = $prow['Store'];
-					$res = $GoodsSkuModel::create($upData);
-				}
+			    if ($this->is_supplyer == true) {//平台管理供应商处理
+                    $upData['shop_price'] = $prow['Price'];
+                    $upData['promote_price'] = $prow['PromotePrice'];
+                    $upData['update_time'] = $time;
+                    $res = $GoodsSkuModel->where('sku_id', $prow['SkuId']*1)->update($upData);
+                }else{
+                    $_arr = $prow['Price'] . $prow['ProductSn'] . $prow['Store'];
+                    if (empty($_arr)) continue;//空值跳过,不执行生成sku
+                    $upData['sku'] = $sku;
+                    $upData['sku_name'] = join(',', $prow['SpecVal']['val']);
+                    $upData['market_price'] = $prow['MarketPrice'];
+                    if ($this->supplyer_id > 0) {//供应商操作此字段
+                        $upData['settle_price'] = $prow['SettlePrice'];
+                    } else {
+                        $upData['shop_price'] = $prow['Price'];
+                        $upData['promote_price'] = $prow['PromotePrice'];
+                    }
+                    $upData['goods_sn'] = $prow['ProductSn'];
+                    $upData['bar_code'] = $prow['ProductCode'];
+                    $upData['goods_weight'] = $prow['Weight'];
+                    $sku_val = array_values($prow['SpecVal']['key']);
+                    $upData['sku_val'] = join(':', $sku_val);
+                    if (empty($upData['sku_val'])) {
+                        return $this->error('操作失败:获取商品SKU值失败，请重试.');
+                    }
+                    $upData['update_time'] = $time;
+                    if ($prow['SkuId'] > 0) {
+                        if ( $prow['Store'] > 0){
+                            $upData['goods_number'] = ['INC', $prow['Store'] * 1];
+                        }
+                       $res = $GoodsSkuModel->where('sku_id', $prow['SkuId'])->update($upData);
+                    } else {
+                        $upData['supplyer_id'] = $this->supplyer_id * 1;
+                        $upData['store_id'] = $this->store_id * 1;
+                        $upData['goods_id'] = $row['goods_id'];
+                        $upData['sku_model'] = $row['sku_model'];
+                        $upData['add_time'] = $time;
+                        $upData['update_time'] = $time;
+                        $upData['goods_number'] = $prow['Store'];
+                        $res = $GoodsSkuModel->create($upData);
+                        $res = $res->sku_id;
+                    }
+                }
 				if ($res < 1){
 					Db::rollback();// 回滚事务
-					return $this->error('操作失败:写入新规格商品失败，请重试.');
+					return $this->error('操作商品规格失败，请重试.');
 				}
-			}			
+			}
+			unset($skudelwhere);
+            $skudelwhere[] = ['goods_id','=',$row['goods_id']];
+			$skudelwhere[] = ['update_time','<',$time];
+            $GoodsSkuModel->where($skudelwhere)->delete();//删除已取消的sku
 		}
 		//处理优惠价格阶梯
 		$volume_number = input('post.volume_number');
@@ -615,16 +775,25 @@ class Goods extends AdminController
 			}
 		}
 		Db::commit();// 提交事务
-		$this->_log($row['goods_id'],'修改商品：'.$row['goods_name']);
+        $goods_status = config('config.goods_status');
+        $info = $this->Model->info($row['goods_id']);
+
+        if ($this->supplyer_id > 0) {
+            $this->Model->_log($row['goods_id'], $this->loginfo,$goods_status[$info['isputaway']],'supplyer',$this->supplyer_id);
+        }else{
+            $this->Model->_log($row['goods_id'], $this->loginfo,$goods_status[$info['isputaway']],'admin',AUID);
+        }
 		return $this->success('修改成功',url('index'));
 	}
 	/*------------------------------------------------------ */
 	//-- 快捷修改
 	/*------------------------------------------------------ */
-	public function afterAjax($id,$data){
+	public function afterAjax($goods_id,$data){
 		$log = '快速修改商品';
-		$this->_Log($id,$log);
-		$this->Model->cleanMemcache($id);
+		$this->Model->cleanMemcache($goods_id);
+        $info = $this->Model->info($goods_id);
+        $goods_status = config('config.goods_status');
+        $this->Model->_log($goods_id, $log,$goods_status[$info['isputaway']],'admin',AUID);
 		return $this->success('修改成功');
 	}
 	/*------------------------------------------------------ */
@@ -637,7 +806,9 @@ class Goods extends AdminController
 		$res = $this->Model->where('goods_id',$goods_id)->update($data);
 		if ($res < 1)  return $this->error();
 		$this->Model->cleanMemcache($goods_id);
-		$this->_log($goods_id,'删除商品放入回收站');//记录日志
+        $info = $this->Model->info($goods_id);
+        $goods_status = config('config.goods_status');
+        $this->Model->_log($goods_id, '删除商品放入回收站',$goods_status[$info['isputaway']],'admin',AUID);
 		return $this->success('操作成功.');
 	}
 	/*------------------------------------------------------ */
@@ -663,7 +834,9 @@ class Goods extends AdminController
 		$res = $this->Model->where('goods_id',$goods_id)->update($data);
 		if ($res < 1)  return $this->error();
 		$this->Model->cleanMemcache($goods_id);
-		$this->_log($goods_id,'还原商品');//记录日志
+        $info = $this->Model->info($goods_id);
+        $goods_status = config('config.goods_status');
+        $this->Model->_log($goods_id, '还原商品',$goods_status[$info['isputaway']],'admin',AUID);
 		return $this->success('操作成功.');
 	}
 	/*------------------------------------------------------ */
@@ -671,7 +844,7 @@ class Goods extends AdminController
 	/*------------------------------------------------------ */
 	public function searchBox(){
 		$this->_pagesize = 10;
-		$this->_field = 'goods_id,goods_sn,goods_name,is_spec,shop_price,show_price';
+		$this->_field = 'goods_id,goods_sn,goods_name,is_spec,shop_price';
 		$this->getList(true);
 		$result['data'] = $this->data;
 		if ($this->request->isPost()) return $this->ajaxReturn($result);

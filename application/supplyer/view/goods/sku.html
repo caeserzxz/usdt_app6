@@ -1,0 +1,305 @@
+{literal}
+<script type="text/html" id="specifications_template">
+<div class="panel panel-default m-t bg-light" data-toggle="specifications">
+	<div class="panel-body lt">
+		 {{if data.length<1}}
+		<span class="help-inline js_nospe_tips">暂无规格数据，请先添加规格</span>
+		<div class="line line-dashed line-lg pull-in js_nospe_tips"></div>
+		{{/if}}
+		{{each data as item index}}
+		<div id="js_specifications_{{item.id}}">
+			<p class="js_specifica" data-name="{{item.name}}" data-id="{{item.id}}"><strong>{{item.name}}</strong>
+				<a href="javascript:;" class="m-l text-info js_specifica_edit"  data-id="{{item.id}}">编辑</a>
+				{{if item.custom}}
+					<a href="javascript:;" class="m-l text-info js_specifica_del text-info" data-name="{{item.name}}" data-id="{{item.id}}">删除</a>
+				{{/if}}
+			</p>
+			<div id="specvals_{{item.id}}" data-id="{{item.id}}" data-toggle="specvals" class="m-b">
+				{{each item.all_val as zitem zindex}}
+				<label class="checkbox-inline input-s-sm" id="spe_{{zitem.key}}">
+					<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" {{specifications_checked item.id zitem.key}} />{{zitem.val}}
+				</label>
+				{{/each}}
+			</div>
+		</div>
+		<div id="specvals_ed_{{item.id}}" class="hide js_enter_div">
+			<div class="form-group">
+				<label class="col-sm-1 control-label"><strong>{{item.name}}</strong></label>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">规格值</label>
+				<div class="col-sm-5">
+					<p class="js_input_outer"><input type="text" data-limit="15" placeholder="输入回车即可直接添加"  class="form-control js_custom_input"/><span class="js_limit"><em>0</em>/<span>15</span></span></p>
+				</div>
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-default js_add_speval" data-id="{{item.id}}">添加</button>
+				</div>
+			</div>
+			<div class="col-sm-11 col-sm-offset-1 error m-t-n-md m-b-xs" id="specvals_error_{{item.id}}">
+					
+			</div>
+			<div class="form-group" id="specvals_show_{{item.id}}">
+				<div class="col-sm-11 col-sm-offset-1">
+					{{each item.all_val as zitem zindex}}
+						<span class="label label-default bg-light dker specvals-show js_specvals_show {{if  zitem.custom}}js_specvals_result{{/if}}" data-name="{{zitem.val}}">{{zitem.val}}
+						{{if zitem.custom}}
+							<i class="fa fa-times  m-l-xs js_del_specvals_val_list" data-speid="{{item.id}}" 
+							data-id="{{zitem.key}}"></i>
+						{{/if}}
+						</span>
+					 {{/each}}
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-11 col-sm-offset-1">
+					<button type="button" class="btn btn-primary btn-sm js_specvals_val_save" data-id="{{item.id}}">确定</button>
+					<button type="button" class="btn btn-default btn-sm js_specvals_val_cancel" data-id="{{item.id}}">取消</button>
+				</div>
+			</div>
+		</div>
+		
+		<div class="line line-dashed line-lg pull-in"></div>
+		{{/each}}
+		<div class="js_add_spe_div add-attr">
+			<div class="col-sm-12">
+				<div class="form-group" style="margin-bottom:0px;">
+					<label class="p-l2"><a class="js_add_spe_btn" href="javascript:;">添加规格</a></label>
+				</div>
+			</div>
+			<label class="control-label btn-s-lg js_enter_div"></label>
+		</div>
+		<div class="js_add_spe_form hide">
+		   
+			<div class="form-group">
+				<label class="control-label">规格名称</label>
+				<div class="col-sm-5">
+					<p class="js_input_outer"><input type="text" class="form-control js_add_spe_input js_custom_input"  data-limit="5">
+					<span class="js_limit"><em>0</em>/<span>5</span></span>
+					</p>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label">规格值</label>
+				<div class="col-sm-5">
+					<p class="js_input_outer"><input type="text" placeholder="输入回车即可直接添加"  class="form-control js_add_spev_input js_custom_input"  data-limit="15">
+					<span class="js_limit"><em>0</em>/<span>15</span></span>
+					</p>
+				</div>
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-default js_spe_speval">添加</button>
+				</div>
+			</div>
+			<div class="col-sm-11 col-sm-offset-2 error m-t-n-md m-b-xs js_js_spe_spev_error" >
+				   
+			</div>
+			<div class="form-group">
+				<div class="col-sm-11 col-sm-offset-2 js_spe_spev_show">
+
+				   
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-5 col-sm-offset-1">
+					<button type="button" class="btn btn-primary btn-sm js_add_spe_save">确定</button>
+					<button type="button" class="btn btn-default btn-sm js_add_spe_cancel">取消</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+</script>
+<script type="text/html" id="specv_tem">
+	{{each spevalList as item}}
+		<label class="checkbox-inline input-s-sm" id="spe_{{item.key}}">
+			<input type="checkbox"  value="{{item.key}}" title="{{item.val}}" />{{item.val}}
+		</label>
+	{{/each}}
+</script>
+<script type="text/html" id="specv_show_tem">
+	<span class="label label-default bg-light dker specvals-show js_specvals_show js_specvals_temp" data-name="{{val}}">{{val}}
+		<i class="fa fa-times  m-l-xs js_del_specvals_val_list" data-speid="{{speid}}" 
+		data-id="{{key}}"></i>
+	</span>
+</script>
+<script type="text/html" id="specv_result_tem">
+	{{each spevalList as item}}
+	<span class="label label-default bg-light dker specvals-show js_specvals_show js_specvals_result" data-name="{{item.val}}">{{item.val}}
+		<i class="fa fa-times  m-l-xs js_del_specvals_val_list" data-speid="{{speid}}" 
+		data-id="{{item.key}}"></i>
+	</span>
+	{{/each}}
+</script>
+<script type="text/html" id="spe_result_tem">
+	<div id="js_specifications_{{id}}">
+		<p class="js_specifica" data-name="{{name}}" data-id="{{id}}"><strong>{{name}}</strong>
+			<a href="javascript:;" class="m-l text-info js_specifica_edit" data-id="{{id}}">编辑</a>
+			<a href="javascript:;" class="m-l text-info js_specifica_del text-info" data-name="{{name}}" data-id="{{id}}">删除</a>
+		</p>
+		<div id="specvals_{{id}}" data-id="{{id}}" data-toggle="specvals" class="m-b">
+			{{each spevalList as zitem zindex}}
+			<label class="checkbox-inline input-s-sm" id="Label1">
+				<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" />{{zitem.val}}
+			</label>
+			{{/each}}
+		</div>
+	</div>
+	<div id="specvals_ed_{{id}}" class="hide js_enter_div">
+		<div class="form-group">
+			<label class="col-sm-1 control-label"><strong>{{name}}</strong></label>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-1 control-label">规格值</label>
+			<div class="col-sm-5">
+				<p class="js_input_outer"><input type="text" data-limit="15" placeholder="输入回车即可直接添加"  class="form-control js_custom_input"/><span class="js_limit"><em>0</em>/<span>15</span></span></p>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-default js_add_speval" data-id="{{id}}">添加</button>
+			</div>
+		</div>
+		<div class="col-sm-11 col-sm-offset-1 error m-t-n-md m-b-xs" id="specvals_error_{{id}}">
+				
+		</div>
+		<div class="form-group" id="specvals_show_{{id}}">
+			<div class="col-sm-11 col-sm-offset-1">
+				{{each spevalList as zitem zindex}}
+					<span class="label label-default bg-light dker specvals-show js_specvals_show js_specvals_result" data-name="{{zitem.val}}">{{zitem.val}}
+						<i class="fa fa-times  m-l-xs js_del_specvals_val_list" data-speid="{{id}}" 
+						data-id="{{zitem.key}}"></i>
+					</span>
+				 {{/each}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-11 col-sm-offset-1">
+				<button type="button" class="btn btn-primary btn-sm js_specvals_val_save" data-id="{{id}}">确定</button>
+				<button type="button" class="btn btn-default btn-sm js_specvals_val_cancel" data-id="{{id}}">取消</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="line line-dashed line-lg pull-in"></div>
+   
+</script>
+<script type="text/html" id="specifications_table_template">
+	<table class="table table-bordered bg-light">
+		<thead>
+			<tr>
+				{{each ths as th index}}
+				<th class="mn90 ">{{th.name}}
+				<input type="hidden"  value="{{th.name}}" name="specifications[name][{{index}}]"/>
+					 <input type="hidden"  value="{{th.id}}" name="specifications[id][{{index}}]"/>
+				</th>
+				{{/each}}
+				<th class="mn100">商品图片</th>
+				<th class="mn130">商品编码<span class="maroon">*</span></th>
+				<th class="mn130">商品条码<span class="maroon"></span></th>
+				<th class="mn90">供货价<span class="maroon">*</span></th>
+				<th class="mn90">市场价</th>
+				<th class="mn130">库存<span class="maroon">*</span></th>
+				<th class="mn80">重量</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			{{each trs as tr index}}
+			<tr  class="lt">
+				{{each tr.tds as td zindex}}
+				{{if td.rowspan > 1 && tr.index % td.rowspan == 0}}
+				<td rowspan="{{td.rowspan}}">
+					{{td.val}}
+				</td>
+				{{/if}}
+				{{if td.rowspan ==1}}
+				<td>
+					{{td.val}}
+				</td>
+				{{/if}}
+				<td class="hd">
+					
+					<input type="hidden" name="Products[{{index}}][SpecVal][val][{{zindex}}]" value="{{td.val}}" />
+					<input type="hidden" name="Products[{{index}}][SpecVal][key][{{zindex}}]" value="{{td.key}}" />
+				</td>
+				{{/each}}
+				<td style="padding:5px;">
+					<div class="file-item thumbnail">
+						  <div class="upload-file" data-sku='{{tr.key}}' style="background-image:url('{{tr.ProductImg?tr.ProductImg:'__STATIC__/main/img/def_img.jpg'}}');" data-dimg="__STATIC__/main/img/def_img.jpg"></div>                                      
+						  <div class="info">点击上传</div>
+						  <input type="hidden" class="file_path" name="Products[{{index}}][ProductImg]" data-id="{{tr.key}}" data-name="ProductImg" value="{{tr.ProductImg}}"><input type="hidden" name="Products[{{index}}][SkuId]" value="{{tr.sku_id}}" />
+						  <a class="delete_sku_img item_close" href="javascript:void(0)" data-id="{{tr.ProductImgId}}" data-name="ProductImgId" title="删除" ></a>  
+                    </div>
+				</td>
+				<td>
+					<input type="text" class="form-control" name="Products[{{index}}][ProductSn]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductSn" value="{{tr.ProductSn}}" data-rule-required="true">
+				</td>
+				<td>
+					<input type="text" class="form-control" name="Products[{{index}}][ProductCode]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductCode" value="{{tr.ProductCode}}" >
+				</td>
+				<td>
+					<input type="text" class="form-control" name="Products[{{index}}][SettlePrice]" data-id="{{tr.key}}" data-name="Price" value="{{tr.SettlePrice}}" data-rule-ismoney="true" data-rule-required="true">
+				</td>
+				<td>
+					<input type="text" class="form-control" name="Products[{{index}}][MarketPrice]" data-id="{{tr.key}}" data-name="MarketPrice" value="{{tr.MarketPrice}}" data-rule-ismoney="true">
+				</td>
+				<td>
+					 {{tr.sku_id > 0 ? tr.Store+'+' :''}}<input type="text" style=" width:50px;" name="Products[{{index}}][Store]" data-id="{{tr.key}}" data-name="Store" value="{{tr.sku_id>0?0:''}}" data-rule-number="true" data-rule-required="true">
+				</td>
+				<td>
+					<input type="text" class="form-control" name="Products[{{index}}][Weight]" data-id="{{tr.key}}" data-name="Weight" value="{{tr.Weight}}" >
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	 
+</script>
+{/literal}
+{include file="layouts/web_upload" /}
+<script type="text/javascript">
+
+
+window.goods_data = {
+	  shelves:true,
+	  specifications: {$specifications|raw},
+	  products: {$products|raw}
+}
+  
+window.goods_setting = {
+	custom_spevalue_path:'{:url("skuCustom/addSkuVal")}',
+	custom_spe_path:'{:url("skuCustom/addSku")}',
+	custom_spe_del_path:'{:url("skuCustom/delSku")}',
+	custom_delspevalue_path:'{:url("skuCustom/delSkuVal")}',
+	specifications_path: '{:url("skuCustom/skuByCategory")}'
+}
+
+$(document).on('click',".upload-file input", function () {
+    pick = $(this).parents('.upload-file');
+    if (uploadering == 1) return false;
+    uploader.options.server = '{:url("Attachment/goodsUpload")}';
+    uploader.options.formData.sku = pick.data('sku');
+	uploader.options.formData.gid = '{$row.goods_id|intval}';
+});
+
+$(document).on('click',".delete_sku_img", function () {
+	var _this = $(this);
+	if (_this.data('id') < 1) return false;
+	jq_ajax('{:url("attachment/removeImg")}','id='+_this.data('id'),function(res){
+		if (res.code==0){
+			_alert(res.msg);
+			return falsel	
+		}
+		var obj = _this.parents('.file-item');
+		obj.find('input').val('');
+		var dimg = obj.find('.upload-file').data('dimg');
+		obj.find('.upload-file').css("background-image","url("+dimg+")");
+		obj.find('.info').html('点击上传');
+		
+	});
+ 
+	
+})
+
+
+</script>
+

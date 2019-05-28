@@ -53,9 +53,9 @@ class Category extends AdminController
     public function beforeAdd($data) {
 		if (empty($data['name']) ) return $this->error('分类名称不能为空.');
 		if ($data['is_index'] > 0 && empty($data['cover'])) return $this->error('分类首页显示，必须上传封面图片.');
-		$map['pid'] = $data['pid'];
-		$map['name'] = $data['name'];
-		$count = $this->Model->where($map)->count();
+		$where[] = ['pid','=',$data['pid']];
+        $where[] = ['name','=',$data['name']];
+		$count = $this->Model->where($where)->count();
 		if ($count > 0) return $this->error('已存在相同的分类名称，不允许重复添加.');		
 		$map['add_time'] = time();	
 		return $data;
@@ -67,15 +67,18 @@ class Category extends AdminController
     public function beforeEdit($data){
 		if (empty($data['name']) ) return $this->error('分类名称不能为空.');
 		if ($data['is_index'] > 0 && empty($data['cover'])) return $this->error('分类首页显示，必须上传封面图片.');
-		$map['id'] = $data['id'];
 		//验证数据是否出现变化
-		$dbarr = $this->Model->field(join(',',array_keys($data)))->where($map)->find()->toArray();		
+		$dbarr = $this->Model->field(join(',',array_keys($data)))->where('id',$data['id'])->find()->toArray();
 		$this->checkUpData($dbarr,$data);
-		$where[] = ['id','<>',$map['id']];
+		$where[] = ['id','<>',$data['id']];
 		$where[] = ['name','=',$data['name']];
 		$where[] = ['pid','=',$data['pid']];
 		$count = $this->Model->where($where)->count();
 		if ($count > 0) return $this->error('已存在相同的分类名称，不允许重复添加！');
+        $pid = $this->Model->where('id',$data['pid'])->value('pid');
+        if ($pid == $data['id']){
+            return $this->error('不能转移到自己的下属.');
+        }
 		return $data;		
 	}
 	/*------------------------------------------------------ */

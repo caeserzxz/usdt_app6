@@ -30,7 +30,7 @@
           <div class="modelContent">
             <div class="cantre">
                 <div class="block">
-                    <div class="title"><p class="fs32 fw_b color_3">价格区间</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div> 
+                    <div class="title"><p class="fs32 fw_b color_3">价格区间</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
                     <div class="list moneyBox">
                       <div><input type="text" class="fs30 color_3" id="min_price" placeholder="最低价"></div>
                       <em class="fs28 color_3"></em>
@@ -38,7 +38,7 @@
                     </div>
                   </div>
               <div class="block">
-                  <div class="title"><p class="fs32 fw_b color_3">分类</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div> 
+                  <div class="title"><p class="fs32 fw_b color_3">分类</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
                 <div class="list class_list">
                     {volist name="classList" id="class" }
                         <span class="fs28 color_3 " data-type="class" data-cid="{$class.id}">{$class.name}</span>
@@ -57,7 +57,7 @@
             </div>
           </div>
       </div>
-  
+
 
 {/block}
 {block name="footer"}
@@ -184,7 +184,7 @@
                 $('.modelContent').find('input').val('');
                 $('.brandlist').html('');
                 return false;
-            }else{				
+            }else{
                 postData.min_price = $('#min_price').val();
                 postData.max_price = $('#max_price').val();
                 postData.cid = $('.class_list').find('.tag_active').data('cid');

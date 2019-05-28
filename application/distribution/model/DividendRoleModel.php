@@ -27,6 +27,7 @@ class DividendRoleModel extends BaseModel
 		}
 		$rows = $this->field('*,role_id as id,role_name as name')->order('level ASC')->select()->toArray();		
 		foreach ($rows as $row){
+            $row['upleve_value'] = json_decode($row['upleve_value'],true);
 			$data[$row['role_id']] = $row;
 		}
 		Cache::set(self::$mkey,$data,600);
@@ -37,8 +38,9 @@ class DividendRoleModel extends BaseModel
 	/*------------------------------------------------------ */ 
 	public function info($role_id,$returnName = false){
 		$rows = $this->getRows();
+		$rows[0] = ['role_name'=>'粉丝','role_id'=>0,'level'=>0];
 		if ($returnName == true){
-			return $role_id < 1 ? '粉丝' :$rows[$role_id]['role_name'];
+			return $rows[$role_id]['role_name'];
 		}
 		return $rows[$role_id];
 	}

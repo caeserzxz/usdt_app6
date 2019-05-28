@@ -25,9 +25,7 @@ class WeiXinUsersModel extends BaseModel
 	/*------------------------------------------------------ */
     public function login($access_token){
 		if (empty($access_token)) return false;
-
 		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();
-
 		if (empty($wx_info) == false){
 		    if ($wx_info['update_time'] < time() - 86400 ){
                 $WeiXinModel = new WeiXinModel();
@@ -49,7 +47,8 @@ class WeiXinUsersModel extends BaseModel
 		//没有数据，执行注册会员
 		$WeiXinModel = new WeiXinModel();
 		//获取相关微信帐号信息
-        $wx_arr = $WeiXinModel->getWxUserInfoSubscribe($access_token['wx_openid']);
+        $wx_arr = $WeiXinModel->getWxUserInfoSubscribe($access_token['openid']);
+
         if ($wx_arr['subscribe'] == 0) {//没有关注，上面的无法获取微信信息调用
             $wx_arr = $WeiXinModel->getWxUserInfo($access_token);
         }

@@ -1,0 +1,21 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+        <p class="fs34 fw_b color_3">支付成功！</p>
+    </div>
+
+    <div class="button">
+        <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
+        <a href="{:url('member/center/index')}" class="color_w fs28 BGcolor_r fw_b">前往会员中心</a>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+
+{/block}

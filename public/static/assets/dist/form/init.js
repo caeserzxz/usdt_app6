@@ -157,7 +157,7 @@ function(a, b) {
                 c.length > 0 ? c.after(a) : b.after(a)
             },
             highlight: function(a) {
-                c(a).removeClass("error has-success").addClass("error")
+               c(a).removeClass("error has-success").addClass("error")
             },
             success: function(a) {
                 a.addClass("valid")

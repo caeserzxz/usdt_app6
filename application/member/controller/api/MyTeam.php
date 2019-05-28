@@ -46,7 +46,7 @@ class MyTeam extends ApiController
 		}
 		
 		$this->sqlOrder = 'user_id DESC';
-        $data = $this->getPageList($this->Model, $where,'user_id',5);     
+        $data = $this->getPageList($this->Model, $where,'user_id',10);
 		$UsersModel = new UsersModel();   
 		$DividendRoleModel = new DividendRoleModel();
         foreach ($data['list'] as $key=>$user){

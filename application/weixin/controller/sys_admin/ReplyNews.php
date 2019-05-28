@@ -55,7 +55,7 @@ class ReplyNews extends AdminController
     public function asInfo($data){		
 		$WeixinReplyType = $this->getDict('WeixinReplyType');		
 		$this->assign("option", arrToSel($WeixinReplyType));		
-		if ($row['id'] > 0){
+		if ($data['id'] > 0){
 			 $map['pid'] = $data['id'];
 			 $data['row_sun'] = $this->Model->where($map)->select()->toArray();
 			 foreach ($data['row_sun'] as $key=>$val){
@@ -94,7 +94,7 @@ class ReplyNews extends AdminController
 		$data['keyword'] = str_replace('，',',',$data['keyword']);
 		$keyword = explode(',',$data['keyword']);
 		foreach ($keyword as $key){
-			$where[] = ['','exp',Db::raw("FIND_IN_SET($key,keyword)")];
+			$where[] = ['','EXP',Db::raw("FIND_IN_SET('".$key."',keyword)")];
 			if ($id > 0) $where[] = ['id','<>',$id];
 			$count = $this->Model->where($where)->count('id');
 			if ($count > 0) return $this->error($key.' - 已存在相同的关键字，不允许重复添加！');
@@ -141,7 +141,7 @@ class ReplyNews extends AdminController
 				$arr['ext_id'] = $new['type_val_key'][$key];
 				$arr['type'] = 'news';
 				$arr['add_time'] = $arr['update_time'] = time();
-				$this->Model::create($arr);
+				$this->Model->create($arr);
 			}
 		}
 		return $this->success('保存成功！');
@@ -180,7 +180,7 @@ class ReplyNews extends AdminController
 				$where['subscribe'] = ['subscribe','=',1];
 				$uparr['subscribe'] = 0;
 				$uparr['update_time'] = time();
-				$this->Model->where($map)->update($uparr);
+				$this->Model->where($where)->update($uparr);
 			}
 		}elseif (isset($data['default'])){
 			$info = '微信文本素材,快速修改默认回复:'.($data['default']==1?'启用':'停用');

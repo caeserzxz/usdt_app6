@@ -8,7 +8,7 @@ use think\facade\Cache;
 class GoodsPricesModel extends BaseModel
 {
 	protected $table = 'shop_goods_prices';
-    protected $mkey = 'shop_goods_prices';
+    protected $mkey = 'shop_goods_prices_';
 	
 	/*------------------------------------------------------ */
 	//-- 获取列表

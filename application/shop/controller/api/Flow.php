@@ -28,7 +28,7 @@ class Flow extends ApiController
     {
         parent::initialize();
         $this->Model = new CartModel();
-        $this->Model->is_integral = $this->is_integral;
+         $this->Model->is_integral = $this->is_integral;
     }
     /*------------------------------------------------------ */
     //-- 添加购物车
@@ -43,14 +43,17 @@ class Flow extends ApiController
 		}
         if ($num < 1) $num = 1;
         $specifications = input('specifications', '', 'trim');
+        $sku_id = input('sku_id', 0, 'intval');
         if ($specifications == 'undefined') $specifications = '';
         if ($goods_id < 1) return $this->error('传值失败，请重新尝试提交！');
-        $rec_id = $this->Model->addToCart($goods_id, $num, $specifications);
+        $rec_id = $this->Model->addToCart($goods_id, $num, $specifications,$sku_id,$type);
         if (is_numeric($rec_id) == false) {
             return $this->error($rec_id);
         }
-        $return['cartInfo'] = $this->Model->getCartInfo();
-        $return['msg'] = '添加购物车成功.';
+        if ($type != 'onbuy') {
+            $return['cartInfo'] = $this->Model->getCartInfo();
+            $return['msg'] = '添加购物车成功.';
+        }
         $return['code'] = 1;
 		$return['rec_id'] = $rec_id;
         return $this->ajaxReturn($return);
@@ -89,7 +92,7 @@ class Flow extends ApiController
         $where['rec_id'] = $rec_id;
         $res = $this->Model->updataGoods($rec_id, $num);
         if ($res != 1){
-			if ($res == 0) return $this->error('');
+			if ($res === 0) return $this->error('');
 			return $this->error($res);
 		}
         $address_id = input('address_id', 0, 'intval');
@@ -155,9 +158,9 @@ class Flow extends ApiController
             $address_id = input('address_id', '0', 'intval');
 			$recids = input('recids', '', 'trim');
         }
-		$return['code'] = 1;       
+		$return['code'] = 1;
         if ($address_id < 1) {
-            $return['shippingFee'] = sprintf("%.2f", $return['shippingFee']);
+            $return['shipping_fee'] = sprintf("%.2f", 0);
 			if ($is_return == true) return $return;
             return $this->ajaxReturn($return);
         }
@@ -179,12 +182,7 @@ class Flow extends ApiController
     function addOrder()
     {
         $this->checkLogin();//验证登录
-        $pay_id = input('pay_id', 0, 'intval');
-        if ($pay_id < 0) return $this->error('请选择支付方式.');
-        $PaymentModel = new PaymentModel();
-        $paymentList = $PaymentModel->getRows(true);
-        $payment = $paymentList[$pay_id];
-        if (empty($payment)) return $this->error('相关支付方式不存在或已停用.');
+
         $address_id = input('address_id', 0, 'intval');
         if ($address_id < 0) return $this->error('请设置收货地址后，再操作.');
         $UserAddressModel = new UserAddressModel();
@@ -192,20 +190,40 @@ class Flow extends ApiController
         $address = $addressList[$address_id];
         if (empty($address)) return $this->error('相关收货地址不存在.');
         $used_bonus_id = input('used_bonus_id', 0, 'intval');
-		
+
 		$recids = input('recids', '', 'trim');
-        $cartList = $this->Model->getCartList(1, true,$recids);
-		
+        $cartList = $this->Model->getCartList(1, true,$recids,false,false);
+
         if ($cartList['buyGoodsNum'] < 1) return $this->error('请选择订购商品.');
 
         $GoodsModel = new GoodsModel();
+        $supplyer_ids = [];//供应商ID
+        $settle_price = 0;
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
             // 判断是商品能否购买或修改
             $res = $this->Model->checkGoodsOrder($goods, $grow['goods_number'], $grow['sku_val']);
             if ($res !== true) return $this->error($res);
+            $price = $GoodsModel->evalPrice($goods, $grow['goods_number'], $grow['sku_val']);//计算需显示的商品价格
+            if ($this->is_integral == 0 && $grow['sale_price'] != $price['min_price']){
+                return $this->error('商品'.$grow['goods_name'].$grow['sku_name'].'价格发生变化，购物车价格：￥'.$grow['sale_price'].'，当前价格：￥'.$price['min_price']);
+            }
+            $supplyer_ids[$grow['supplyer_id']] = 1;
+            if ($grow['supplyer_id'] > 0 ){
+                $settle_price += $grow['settle_price'] * $grow['goods_number'];
+            }
         }
+
+        if (empty($supplyer_ids) == false){
+            $supplyer_ids = array_keys($supplyer_ids);
+            if (count($supplyer_ids) > 1){
+                $inArr['is_split'] = 1;//供应商两个以上，需要进行拆单
+            }else{
+                $inArr['supplyer_id'] = reset($supplyer_ids);//获取唯一的供应商id
+            }
+        }
+        $inArr['settle_price'] = $settle_price;
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证
             $BonusModel = new BonusModel();
@@ -229,20 +247,37 @@ class Flow extends ApiController
         //运费处理
         $shippingFee = $this->Model->evalShippingFee($address, $cartList);
         $shippingFee = reset($shippingFee);//现在只返回默认快递
-        $inArr['shipping_fee'] = $shippingFee['shipping_fee'];
+        $inArr['shipping_fee'] = $shippingFee['shipping_fee'] * 1;
         $inArr['order_amount'] = $cartList['orderTotal'] + $inArr['shipping_fee'] - $inArr['use_bonus'];
+
+        if ($inArr['order_amount'] > 0){
+            $pay_id = input('pay_id', 0, 'intval');
+            if ($pay_id < 0) return $this->error('请选择支付方式.');
+            $PaymentModel = new PaymentModel();
+            $paymentList = $PaymentModel->getRows(true);
+            $payment = $paymentList[$pay_id];
+        }elseif($this->is_integral == 1){//积分支付
+            $payment['pay_code'] = 'integral';
+            $payment['is_pay'] = 1;
+            $payment['pay_name'] = '积分兑换';
+
+        }
+        if (empty($payment)) return $this->error('相关支付方式不存在或已停用.');
+
         if ($payment['pay_code'] == 'balance') {//如果使用余额，判断用户余额是否足够
             if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.');
             }
-            //余额完成支付
-            $inArr['order_status'] = config('config.OS_CONFIRMED');
-            $inArr['pay_status'] = config('config.PS_PAYED');
-            $inArr['money_paid'] = $inArr['order_amount'];
-            $inArr['pay_time'] = $time;
-            $_log .= ',余额支付成功.';
-
         }
+        $inArr['order_type'] = 0;//订单类型，普通订单
+        if($this->is_integral == 1){
+            $inArr['use_integral'] = $cartList['integralTotal'];
+            if ($inArr['use_integral'] > $this->userInfo['account']['use_integral']) {
+                return $this->error('积分不足无法兑换，你的积分余额为：'.$this->userInfo['account']['use_integral']);
+            }
+            $inArr['order_type'] = 1;//订单类型，积分订单
+        }
+
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
         $inArr['consignee'] = $address['consignee'];
         $inArr['address'] = $address['address'];
@@ -251,7 +286,7 @@ class Flow extends ApiController
         $inArr['city'] = $address['city'];
         $inArr['district'] = $address['district'];
         $inArr['mobile'] = $address['mobile'];
-        $inArr['order_type'] = 1;//订单类型
+
         $inArr['add_time'] = $time;
         $inArr['user_id'] = $this->userInfo['user_id'];
         $inArr['dividend_role_id'] = $this->userInfo['role_id'];
@@ -263,9 +298,10 @@ class Flow extends ApiController
         $inArr['buy_goods_sn'] = join(',', array_keys($cartList['allGoodsSn']));
         $inArr['ipadderss'] = request()->ip();
         $inArr['is_pay'] = $payment['is_pay'];//是否需要支付,1线上支付，0，不需要支付，
+        $inArr['is_success'] = 1;//普通订单默认有效，如果拼团默认为0，须拼团成功才会为1
         //执行商品库存和销量处理，后台设置下单减库存或余额支付时执行
         $shop_reduce_stock = settings('shop_reduce_stock');
-        $inArr['is_stock'] = ($shop_reduce_stock == 0 || $payment['pay_code'] == 'balance') ? 1 : 0;
+        $inArr['is_stock'] = $shop_reduce_stock;
         Db::startTrans();//启动事务
         $OrderModel = new OrderModel();
         $inArr['order_sn'] = $OrderModel->getOrderSn();
@@ -282,20 +318,7 @@ class Flow extends ApiController
             Db::rollback();// 回滚事务
             return $this->error('未知原因，订单日志写入失败.');
         }
-        //余额支付，扣除用户余额
-        if ($payment['pay_code'] == 'balance') {
-            $AccountLogModel = new AccountLogModel();
-            $changedata['change_desc'] = '订单余额支付';
-            $changedata['change_type'] = 3;
-            $changedata['by_id'] = $order_id;
-            $changedata['balance_money'] = $inArr['order_amount'] * -1;
-            $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
-            if ($res !== true) {
-                Db::rollback();// 回滚事务
-                return $this->error('未知错误，更新用户余额失败.');
-            }
-            (new UsersModel)->upInfo($this->userInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
-        }//end
+
         //执行扣库存
         if ($inArr['is_stock'] == 1) {
             $res = $GoodsModel->evalGoodsStore($cartList['goodsList']);
@@ -303,7 +326,11 @@ class Flow extends ApiController
                 Db::rollback();// 回滚事务
                 return $this->error('未知错误，更新库存失败.');
             }
+            if($this->is_integral == 1){
+
+            }
         }
+
         //end
         //处理优惠券
         if ($used_bonus_id > 0) {
@@ -321,7 +348,7 @@ class Flow extends ApiController
         }
         //end
         $this->addOrderGoods($order_id,$recids);//写入商品
-        Db::commit();// 提交事务		
+        Db::commit();// 提交事务
         $return['order_id'] = $order_id;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
@@ -334,8 +361,8 @@ class Flow extends ApiController
     {
         $add_time = time();
         $sql = "INSERT INTO shop_order_goods (" .
-            "order_id,brand_id,cid,goods_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,goods_price,goods_weight,discount,add_time,user_id,use_integral,is_dividend,buy_again_discount)" .
-            " SELECT '$order_id',brand_id,cid,goods_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,goods_price,goods_weight,discount,'$add_time',user_id,use_integral,is_dividend,buy_again_discount" .
+            "order_id,brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,add_time,user_id,use_integral,is_dividend,buy_again_discount)" .
+            " SELECT '$order_id',brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,'$add_time',user_id,use_integral,is_dividend,buy_again_discount" .
             " FROM  shop_cart  WHERE ";
         $sql .= " user_id = '" . $this->userInfo['user_id'] . "' AND is_select = 1 ";
         $sql .= " AND is_integral =  " . $this->is_integral;

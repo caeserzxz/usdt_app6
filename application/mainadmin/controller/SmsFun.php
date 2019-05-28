@@ -24,7 +24,7 @@ class SmsFun extends AdminController
 	//-- 获取所有接口程序
 	/*------------------------------------------------------ */
     public function getSmsFunction() {
-		$rows = readModules(Env::get('extend_path').'/sms');
+		$rows = readModules(Env::get('extend_path').'sms');
 		$modules = array();
 		foreach ($rows as $row){
 			$modules[$row['function']] = $row;

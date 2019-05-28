@@ -23,6 +23,7 @@
                     <span class="h3 block m-t-xs"><strong id="y_day_order_num">{$stats.yesterday.all_add_num}</strong></span>
                     <small class="text-muted text-uc">昨天下单数</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
                         <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -40,6 +41,7 @@
                     <span class="h3 block m-t-xs"><strong id="y_day_clinch_money">{$stats.yesterday.order_pay_num}</strong></span>
                     <small class="text-muted text-uc" >昨天成交金额</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light">
                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -54,6 +56,7 @@
                     <span class="h3 block m-t-xs"><strong id="y_day_shipping_num">{$stats.yesterday.order_shipping_num}</strong></span>
                     <small class="text-muted text-uc">昨天发货订单</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
                         <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -68,6 +71,7 @@
                     <span class="h3 block m-t-xs"><strong id="y_day_sign_num">{$stats.yesterday.sign_num}</strong></span>
                     <small class="text-muted text-uc">昨天签收订单</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
         </div>
     </section>
@@ -87,6 +91,7 @@
                     <span class="h3 block m-t-xs"><strong id="wait_withdraw">{$withdrawLogNum}</strong></span>
                     <small class="text-muted text-uc">提现待审核</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
                         <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -104,6 +109,7 @@
                     <span class="h3 block m-t-xs"><strong id="y_day_new_user">{$userStats['yesterday_reg']}</strong></span>
                     <small class="text-muted text-uc">昨天新增会员</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light">
                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -118,6 +124,7 @@
                     <span class="h3 block m-t-xs"><strong id="user_role_num">{$userStats['role_num']}</strong></span>
                     <small class="text-muted text-uc">身份会员总数</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
                   <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
@@ -130,12 +137,13 @@
                         </span>
                 <a class="fl" href="#">
                     <span class="h3 block m-t-xs"><strong id="balance_total">{$account.balance_money}</strong></span>
-                    <small class="text-muted text-uc">金币余额总数</small>
+                    <small class="text-muted text-uc">余额总数</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="bean_total">{$account.bean_value}</strong></span>
-                    <small class="text-muted text-uc">旅游豆总数</small>
+                    <span class="h3 block m-t-xs"><strong id="bean_total">{$account.use_integral|intval}</strong></span>
+                    <small class="text-muted text-uc">积分总数</small>
                 </a>
+                <div class="clearfix"></div>
             </div>
         </div>
     </section>

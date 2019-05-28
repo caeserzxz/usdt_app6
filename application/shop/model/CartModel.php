@@ -14,7 +14,7 @@ class CartModel extends BaseModel
     protected $table = 'shop_cart';
     public $pk = 'rec_id';
     public $is_integral = 0;
- /*------------------------------------------------------ */
+    /*------------------------------------------------------ */
     //-- 优先自动执行
     /*------------------------------------------------------ */
     public function initialize()
@@ -27,32 +27,38 @@ class CartModel extends BaseModel
     public function cleanMemcache()
     {
         $user_id = $this->userInfo['user_id'] * 1;
-        Cache::rm('CartInfo_'.$user_id.session_id().'0'.$this->is_integral);
-        Cache::rm('CartInfo_'.$user_id.session_id().'1'.$this->is_integral);
+        Cache::rm('CartInfo_' . session_id() . '_0' . $this->is_integral);
+        Cache::rm('CartInfo_' . session_id() . '_1' . $this->is_integral);
+        Cache::rm('CartInfo_' . $user_id . '_0' . $this->is_integral);
+        Cache::rm('CartInfo_' . $user_id . '_1' . $this->is_integral);
     }
     /*------------------------------------------------------ */
     //-- 添加购物车处理
     /*------------------------------------------------------ */
-    public function addToCart($goods_id, $num, $spec = '')
+    public function addToCart($goods_id, $num, $spec = '', $sku_id = 0, $type = '')
     {
         $GoodsModel = new GoodsModel();
-        $goods = $GoodsModel->info($goods_id);
-        if (empty($goods)) return '商品不存在';
-        $use_integral = $goods['use_integral'];
 
         if ($this->is_integral == 1) {
-            $time = time();
-            $ExchangeGoodsModel = new ExchangeGoodsModel();
-            $ex_resddd = $ExchangeGoodsModel->where('goods_id', $goods_id)->find();
-            if (empty($ex_resddd)) return '相关商品不存在';
-            if ($ex_resddd['is_exchange'] != 1) return "该商品兑换状态已发生变化不能进行积分兑换.";
-            if ($time < $ex_resddd['start_time'] || $time > $ex_resddd['end_time']) {
-                return "该商品已超过有效兑换时间不能进行积分兑换。";
+            $IntegralGoodsModel = new \app\integral\model\IntegralGoodsModel();
+            $ig_id = $IntegralGoodsModel->where('goods_id', $goods_id)->value('ig_id');
+            if ($ig_id < 1) return '相关商品不存在';
+            $igInfo = $IntegralGoodsModel->info($ig_id, false);
+            if ($igInfo['is_on_sale'] != 1) {
+                return '当前商品暂不能兑换.';
             }
-            $use_integral = $ex_resddd['use_integral'];
+            $goods = $igInfo['goods'];
+            if (empty($goods)) return '商品不存在';
+            if ($sku_id > 0) {
+                $use_integral = $goods['sub_goods'][$spec]['integral'];
+            } else {
+                $use_integral = $goods['integral'];
+            }
         } else {
+            $goods = $GoodsModel->info($goods_id, false);
+            if (empty($goods)) return '商品不存在';
             if ($this->userInfo['user_id'] > 0) {
-                if ($goods['is_promote'] == 1 && $goods['quota_amount'] > 0) {
+                if ($goods['is_promote'] == 1 && $goods['limit_num'] > 0) {
                     $goods_sn = $spec ? $goods['sub_goods'][$spec] : $goods['goods_sn'];
                     $where[] = ['user_id', '=', $this->userInfo['user_id']];
                     $where[] = ['add_time', 'between', array($goods['promote_start_date'], $goods['promote_end_date'])];
@@ -61,10 +67,10 @@ class CartModel extends BaseModel
                     foreach ($orders as $o) {
                         if ($o['order_status'] == config('config.OS_CANCELED') || $o['order_status'] == config('config.OS_INVALID')) continue;
                         $gn = explode(',', $o['buy_goods_sn']);
-                        if (in_array($goods_sn, $gn)) return '当前商品进行限购每个会员只允许参与一次，你已购买过暂不能购买！';
+                        if (in_array($goods_sn, $gn)) return '当前商品进行限购每个会员只允许参与一次，你已购买过暂不能购买.';
                     }
                 }
-            } elseif ($goods['limit_user_buy'] == 1 || $use_integral > 0) return '必须是会员才能购买，请注册会员！';
+            }
         }
         unset($where);
         /* 检查该商品是否已经存在在购物车中 */
@@ -81,7 +87,7 @@ class CartModel extends BaseModel
         $row = $this->field('goods_number,rec_id,use_integral')->where($where)->find();
         unset($where);
         if ($row) {// 如果购物车已经有此物品，则更新
-            if ($use_integral != $row['use_integral']) $update['use_integral'] = $use_integral;			
+            if ($use_integral != $row['use_integral']) $update['use_integral'] = $use_integral;
             // 判断是商品能否购买或修改
             $res = $this->checkGoodsOrder($goods, $num, $spec);
             if ($res !== true) {
@@ -90,11 +96,15 @@ class CartModel extends BaseModel
                 }
                 return $res['msg'];
             }
-            $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
-			$update['add_time'] = time();
+            if ($this->is_integral == 0) {//非积分商品执行
+                $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                $update['sale_price'] = $price['min_price'];
+            }
+            $update['add_time'] = time();
             $update['goods_number'] = $num;
             $update['is_select'] = 1;
-            $update['goods_price'] = $price['min_price'];
+            $update['settle_price'] = $goods['settle_price'];
+            $update['shop_price'] = $goods['shop_price'];
             $update['buy_again_discount'] = 0;
             if ($goods['is_dividend'] == 1) {//分销商品处理，计算分销复购优惠
                 $Dividend = json_decode(settings('Dividend'), true);
@@ -106,17 +116,18 @@ class CartModel extends BaseModel
             $update['is_dividend'] = $goods['is_dividend'];
             $res = $this->where('rec_id', $row['rec_id'])->update($update);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
-			$rec_id = $row['rec_id'];
+            $rec_id = $row['rec_id'];
         } else {// 购物车没有此物品，则插入
             $res = $this->checkGoodsOrder($goods, $num, $spec);// 判断是商品能否购买或修改
             if ($res !== true) return $res['msg'];
 
-            $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
             $parent = array(
+                'is_buy_now' => $type == 'onbuy' ? 1 : 0,
                 'user_id' => $this->userInfo['user_id'] * 1,
                 'session_id' => session_id(),
                 'brand_id' => $goods['brand_id'],
                 'cid' => $goods['cid'],
+                'supplyer_id' => $goods['supplyer_id'],
                 'goods_id' => $goods_id,
                 'goods_number' => $num,
                 'is_dividend' => $goods['is_dividend'],
@@ -125,29 +136,42 @@ class CartModel extends BaseModel
                 'market_price' => $goods['market_price'],
                 'goods_weight' => $goods['goods_weight'],
                 'shop_price' => $goods['shop_price'],
-                'goods_price' => $price['min_price'],
-                'discount' => $goods['shop_price'] - $price['min_price'],
+                'settle_price' => $goods['settle_price'],
                 'is_integral' => $this->is_integral,
                 'pic' => $goods['goods_thumb'],
                 'use_integral' => $use_integral,
                 'add_time' => time()
             );
 
-            if ($spec) {
+            $discont = 0;
+            if ($this->is_integral == 0) {//非积分商品执行
+                $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                $parent['sale_price'] = $price['min_price'];
+                $discont = $goods['shop_price'] - $price['discount'];
+            }else{
+                $parent['sale_price'] = 0;
+            }
+            if ($sku_id > 0) {
                 $sub_goods = $goods['sub_goods'][$spec];
                 $SkuCustomModel = new SkuCustomModel();
+                $parent['sku_id'] = $sku_id;
                 $parent['sku_name'] = $SkuCustomModel->getSkuName($sub_goods);
                 $parent['sku_val'] = $sub_goods['sku_val'];
                 $parent['goods_sn'] = addslashes($sub_goods['goods_sn']);
                 $parent['market_price'] = $sub_goods['market_price'];
                 $parent['shop_price'] = $sub_goods['shop_price'];
-                $parent['goods_price'] = $price['min_price'];
+                if ($this->is_integral == 0) {//非积分商品执行
+                    $parent['sale_price'] = $sub_goods['sale_price'];
+                }else{
+                    $parent['sale_price'] = 0;
+                }
                 $parent['goods_weight'] = $sub_goods['goods_weight'];
                 if ($sub_goods['market_price'] > 0 && $sub_goods['market_price'] > $sub_goods['shop_price']) {
                     $discont = $sub_goods['shop_price'] - $price['min_price'];
                 }
-                $parent['discount'] = $discont ? $discont : 0;
             }
+            $parent['discount'] = $discont;
+            //计算复购
             $parent['buy_again_discount'] = 0;
             if ($this->is_integral == 0 && $goods['is_dividend'] == 1 && $this->userInfo['dividend_role_id'] > 0) {
                 $Dividend = json_decode(settings('Dividend'), true);
@@ -158,7 +182,7 @@ class CartModel extends BaseModel
             }
             $res = $this->save($parent);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
-			$rec_id = $this->rec_id;
+            $rec_id = $this->rec_id;
         }
         $this->cleanMemcache();
         return $rec_id;
@@ -174,16 +198,16 @@ class CartModel extends BaseModel
         }
         if ($goods['is_alone_sale'] == 0) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】为赠品或配件，不能直接进行购买！'];
         //限制等级购买
-        if (empty($goods['limit_user_level']) == false){
-            $limit_user_level = explode(',',$goods['limit_user_level']);
-            if (in_array($this->userInfo['level']['level_id'],$limit_user_level) == false){
+        if (empty($goods['limit_user_level']) == false) {
+            $limit_user_level = explode(',', $goods['limit_user_level']);
+            if (in_array($this->userInfo['level']['level_id'], $limit_user_level) == false) {
                 return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】，您的等级不满足购买条件.'];
             }
         }
         //限制身份购买
-        if (empty($goods['limit_user_role']) == false){
-            $limit_user_role = explode(',',$goods['limit_user_role']);
-            if (in_array($this->userInfo['role_id'],$limit_user_role) == false){
+        if (empty($goods['limit_user_role']) == false) {
+            $limit_user_role = explode(',', $goods['limit_user_role']);
+            if (in_array($this->userInfo['role_id'], $limit_user_role) == false) {
                 return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】，您的身份不满足购买条件.'];
             }
         }
@@ -198,36 +222,48 @@ class CartModel extends BaseModel
         } else {// 单规格商品执行
             if ($goods['goods_number'] < $num) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . '】<br>库存不够当前定义购买数量，不能直接进行购买！'];
             $BuyMaxNum = $goods['goods_number'];
-            if ($goods['quota_amount'] > 0) $BuyMaxNum = $BuyMaxNum > $goods['quota_amount'] ? $goods['quota_amount'] : $BuyMaxNum;
+            if ($goods['limit_num'] > 0) $BuyMaxNum = $BuyMaxNum > $goods['limit_num'] ? $goods['limit_num'] : $BuyMaxNum;
             if ($num > $BuyMaxNum) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . '】只能购买' . $BuyMaxNum . '件'];
         }
         return true;
     }
     /*------------------------------------------------------ */
     //-- 购物车信息
+    //-- $is_sel int 是否选中
+    //-- $no_cache bool 是否不使用缓存
+    //-- $recids string 指定购物车中的商品
+    //-- $is_collect bool 是否执行判断是否收藏
+    //-- $hideSettle bool 是否隐藏供货价，默认隐藏
     /*------------------------------------------------------ */
-    public function getCartList($is_sel = 0, $no_cache = false, $recids = '',$is_collect = true)
+    public function getCartList($is_sel = 0, $no_cache = false, $recids = '', $is_collect = true, $hideSettle = true)
     {
-		$user_id = $this->userInfo['user_id'] * 1;        
-        if ($user_id < 1){
-			 $where[] = ['session_id','=',session_id()];
-		}else{
-			$where[] = ['user_id','=',$this->userInfo['user_id']];	
-		}
-		$where[] = ['is_integral','=',$this->is_integral];
-        if ($is_sel == 1) $where[] = ['is_select','=',1];
-		
-		if (empty($recids) == false){
-			$where[] = ['rec_id','in',explode(',',$recids)];			
-		}elseif ($no_cache == false){		
-			if ($user_id > 0){
-                $mkey = 'CartInfo_'.$user_id.$is_sel.$this->is_integral;
-            }else{
-                $mkey = 'CartInfo_'.session_id().$is_sel.$this->is_integral;
+        $user_id = $this->userInfo['user_id'] * 1;
+        if ($user_id < 1) {
+            $where[] = ['session_id', '=', session_id()];
+        } else {
+            $where[] = ['user_id', '=', $this->userInfo['user_id']];
+            if (empty($recids) == true) {//非立即购买请求，删除购物车中的立即购买商品
+                $delwhere[] = ['user_id', '=', $this->userInfo['user_id']];
+                $delwhere[] = ['is_buy_now', '=', 1];
+                $this->where($delwhere)->delete();
             }
-			$data = Cache::get($mkey);
-		}
-						
+        }
+
+        $where[] = ['is_integral', '=', $this->is_integral];
+        if ($is_sel == 1) $where[] = ['is_select', '=', 1];
+
+        if (empty($recids) == false) {
+            $where[] = ['rec_id', 'in', explode(',', $recids)];
+        } elseif ($no_cache == false) {
+            if ($user_id > 0) {
+                $mkey = 'CartInfo_' . $user_id . '_' . $is_sel . $this->is_integral;
+            } else {
+                $mkey = 'CartInfo_' . session_id() . '_' . $is_sel . $this->is_integral;
+            }
+
+            $data = Cache::get($mkey);
+        }
+
         if (empty($data['allGoodsNum'])) {
             $data['isAllSel'] = 1;
             $data['orderTotal'] = 0;
@@ -263,17 +299,20 @@ class CartModel extends BaseModel
                         $data['integralTotal'] += $row['total'];
                     }
                 } else {
-                    $row['total'] = $row['goods_number'] * $row['goods_price'];
+                    $row['total'] = $row['goods_number'] * $row['sale_price'];
                     if ($row['is_select'] == 1) {
                         $data['orderTotal'] += $row['total'];
-                        $data['totalGoodsPrice'] += $row['goods_number'] * $row['shop_price'];
+                        $data['totalGoodsPrice'] += $row['goods_number'] * $row['sale_price'];
                         //当销售价和商城价一致时，计算折扣的总金额
-                        if ($row['shop_price'] != $row['goods_price']) {
-                            $data['totalDiscount'] += ($row['shop_price'] - $row['goods_price']) * $row['goods_number'];
+                        if ($row['shop_price'] != $row['sale_price']) {
+                            $data['totalDiscount'] += ($row['shop_price'] - $row['sale_price']) * $row['goods_number'];
                         }
                     }
                 }
-                $row['exp_price'] = explode('.', $row['goods_price']);
+                $row['exp_price'] = explode('.', $row['sale_price']);
+                if ($hideSettle == true) {//隐藏供货价
+                    unset($row['settle_price']);
+                }
                 $data['goodsList'][$row['goods_id'] . '_' . $row['sku_val']] = $row;
             }
             unset($rows);
@@ -285,28 +324,29 @@ class CartModel extends BaseModel
             $data['totalGoodsPrice'] = sprintf("%.2f", $data['totalGoodsPrice']);
             $data['orderTotal'] = sprintf("%.2f", $data['orderTotal'] - $data['buyAgainDiscount']);
             $data['exp_total'] = explode('.', $data['orderTotal']);
-            Cache::set($mkey, $data, 300);
+
+            Cache::set($mkey, $data, 60);
         }
-		//没有指定选和指定商品，执行查询是否收藏
-		if ($is_sel == 0 && empty($recids) == true && $is_collect == true){
-			$GoodsCollectModel = new GoodsCollectModel();
-			foreach ($data['goodsList'] as $key=>$goods){
-				$where = [];
-				$where[] = ['user_id','=',$user_id];
-				$where[] = ['goods_id','=',$goods['goods_id']];
-				$where[] = ['status','=',1];
-				$data['goodsList'][$key]['is_collect'] = $GoodsCollectModel->where($where)->count();
-			}
-		}
-		
+        //没有指定选和指定商品，执行查询是否收藏
+        if ($is_sel == 0 && empty($recids) == true && $is_collect == true) {
+            $GoodsCollectModel = new GoodsCollectModel();
+            foreach ($data['goodsList'] as $key => $goods) {
+                $where = [];
+                $where[] = ['user_id', '=', $user_id];
+                $where[] = ['goods_id', '=', $goods['goods_id']];
+                $where[] = ['status', '=', 1];
+                $data['goodsList'][$key]['is_collect'] = $GoodsCollectModel->where($where)->count();
+            }
+        }
+
         return $data;
     }
     /*------------------------------------------------------ */
     //-- 获取购物车商品数量和金额
     /*------------------------------------------------------ */
     public function getCartInfo()
-    {		
-        $data = $this->getCartList(0,false,'',false);
+    {
+        $data = $this->getCartList(0, false, '', false);
         $info['num'] = $data['buyGoodsNum'];
         if ($this->is_integral == 1) {
             $info['total'] = $data['integralTotal'];
@@ -336,7 +376,7 @@ class CartModel extends BaseModel
     {
         $cg = $this->where('rec_id', $rec_id)->find();
         $GoodsModel = new GoodsModel();
-        $goods = $GoodsModel->info($cg['goods_id']);
+        $goods = $GoodsModel->info($cg['goods_id'], fales);
         // 判断是商品能否购买或修改
         $res = $this->checkGoodsOrder($goods, $num, $cg['sku_val']);
         if ($res !== true) {
@@ -345,11 +385,18 @@ class CartModel extends BaseModel
             }
             return $res['msg'];
         }
+
         //计算需显示的商品价格
         $price = $GoodsModel->evalPrice($goods, $num, $cg['sku_val']);
         $arr['goods_number'] = $num;
         $arr['is_select'] = 1;
-        $arr['goods_price'] = $price['min_price'];
+        if ($goods['is_spec'] == 1) {
+            $arr['settle_price'] = $goods['sub_goods'][$cg['sku_val']]['settle_price'];
+        } else {
+            $arr['settle_price'] = $goods['settle_price'];
+        }
+
+        $arr['sale_price'] = $price['min_price'];
         $arr['buy_again_discount'] = 0;
         if ($this->is_integral == 0 && $goods['is_dividend'] == 1 && $this->userInfo['dividend_role_id'] > 0) {
             $Dividend = json_decode(settings('Dividend'), true);
@@ -391,7 +438,7 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     public function evalShippingFee(&$userAddress = [], &$cartList = [])
     {
-		if ($cartList['buyGoodsNum'] < 1) return 0;
+        if ($cartList['buyGoodsNum'] < 1) return 0;
         $GoodsModel = new GoodsModel();
         $CategoryModel = new CategoryModel();
         $Category = $CategoryModel->getRows();
@@ -401,7 +448,7 @@ class CartModel extends BaseModel
             $goods = $GoodsModel->info($goods['goods_id']);
             if ($goods['freight_template'] == -1) {
                 $isUsdDef = true;
-            }elseif ($goods['freight_template'] > 0) {//判断商品运模板
+            } elseif ($goods['freight_template'] > 0) {//判断商品运模板
                 $sf_id[$goods['freight_template']] = 1;
             } else {//判断分类运费模板
                 $class = $Category[$goods['cid']];
@@ -415,11 +462,13 @@ class CartModel extends BaseModel
         $shippingList = $ShippingModel->getToSTRows();
         $ShippingTplModel = new \app\shop\model\ShippingTplModel();
         $shippingTpl = $ShippingTplModel->getRows();//获取全部运费模板
-        if ($isUsdDef == true){
+        if ($isUsdDef == true) {
             $defShippingTpl = reset($shippingTpl);//获取默认模板
             $sf_id[$defShippingTpl['sf_id']] = 1;//写入默认模板ID
         }
-
+        if (empty($sf_id)) {
+            return false;
+        }
         $sf_info = array();
         //获取最贵的运费模板，根据起步价判断
         foreach ($sf_id as $key => $val) {
@@ -428,13 +477,12 @@ class CartModel extends BaseModel
             $_valuation = $shippingTpl[$key]['valuation'];//计件方式
             if (empty($_sf_info)) continue;
             foreach ($shippingList as $code => $shipping) {
-                if ($shipping['status'] == 0 || $shipping['is_zt'] == 1 || $shipping['is_sys'] == 1) continue;
-
+                if ($shipping['status'] == 0 || empty($_sf_info[$code])) continue;
                 foreach ($_sf_info[$code] as $rowb) {
                     $region_id = empty($rowb['region_id']) ? array() : explode(',', $rowb['region_id']);
-                    if ($rowb['area'] == 'all' || in_array($userAddress['city'], $region_id)) {
-                        if (empty($sf_info[$shipping['shipping_code']]) == false) {//如果已存在相关快递的模板
-                            if ($sf_info[$shipping['shipping_code']]['postage'] > $rowb['postage']) {
+                    if ((empty($rowb['area']) == false && $rowb['area'] == 'all') || in_array($userAddress['city'], $region_id)) {
+                        if (empty($sf_info[$code]) == false) {//如果已存在相关快递的模板
+                            if ($sf_info[$code]['postage'] > $rowb['postage']) {
                                 continue;
                             }
                         }
@@ -502,29 +550,29 @@ class CartModel extends BaseModel
             $newGoods[$row['goods_id'] . '_' . $row['sku_val']] = $row;
         }
 
-        $oldRows = $this->where('user_id',$user_id)->select();
-        if (empty($oldRows) == false){
+        $oldRows = $this->where('user_id', $user_id)->select();
+        if (empty($oldRows) == false) {
             $GoodsModel = new GoodsModel();
             foreach ($oldRows as $row) {
                 $nrow = $newGoods[$row['goods_id'] . '_' . $row['sku_val']];
-                if (empty($nrow) == false){//如果存在新的，删除
-                    $this->where('rec_id',$row['rec_id'])->delete();
+                if (empty($nrow) == false) {//如果存在新的，删除
+                    $this->where('rec_id', $row['rec_id'])->delete();
                     continue;
                 }
                 $goods = $GoodsModel->info($row['goods_id']);
                 $checkGoods = $this->checkGoodsOrder($goods, $row['goods_number'], $row['sku_val']);
                 $upDate = array();
-                if ($checkGoods !== true ) {
+                if ($checkGoods !== true) {
                     $upDate['is_invalid'] = 1;
                 }
-                $price = $GoodsModel->evalPrice($goods,  $row['goods_number'], $row['sku_val']);//计算需显示的商品价格
-                $upDate['goods_price'] = $price['min_price'];
-                $this->where('rec_id',$row['rec_id'])->update($upDate);
+                $price = $GoodsModel->evalPrice($goods, $row['goods_number'], $row['sku_val']);//计算需显示的商品价格
+                $upDate['sale_price'] = $price['min_price'];
+                $this->where('rec_id', $row['rec_id'])->update($upDate);
             }
         }
         $where['session_id'] = session_id();
         $where['user_id'] = 0;
-        $this->where($where)->update(['user_id'=>$user_id]);
+        $this->where($where)->update(['user_id' => $user_id]);
         unset($where);
         return true;
     }

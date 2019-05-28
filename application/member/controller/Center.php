@@ -15,7 +15,7 @@ class Center  extends ClientbaseController{
 	/*------------------------------------------------------ */
 	public function index(){
         $this->assign('title', '会员中心');
-       $this->assign('isUserIndex', 1);
+        $this->assign('isUserIndex', 1);
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */

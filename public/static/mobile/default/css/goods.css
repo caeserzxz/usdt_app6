@@ -10,6 +10,7 @@
 .Goods .swiperBox .swiper-slide img {
   width: 4.466667rem;
   height: 4.466667rem;
+  padding: 0.066667rem;
 }
 
 .Goods #swiper01 .swiper-pagination-bullet {
@@ -92,6 +93,166 @@
   color: #333;
 }
 
+.Goods .groupTips {
+  position: fixed;
+  z-index: 77;
+  left: 0;
+  top: 3.48rem;
+  display: none;
+}
+
+.Goods .groupTips div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 2.666667rem;
+  height: 0.466667rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 0 0.233333rem 0.233333rem 0;
+  padding-left: 0.066667rem;
+}
+
+.Goods .groupTips div img {
+  width: 0.346667rem;
+  height: 0.346667rem;
+  background: #fefefe;
+  border: 0.013333rem solid #ffffff;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.Goods .groupTips div span {
+  margin-left: 0.066667rem;
+}
+
+.Goods .groupRule {
+  margin-bottom: 0.133333rem;
+}
+
+.Goods .groupRule .timeBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.Goods .groupRule .timeBox span {
+  margin-right: 0.066667rem;
+}
+
+.Goods .groupRule .timeBox .time {
+  margin-left: 0.093333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.253333rem;
+}
+
+.Goods .groupRule .timeBox .time em {
+  width: 0.213333rem;
+  height: 0.253333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+          align-items: flex-end;
+}
+
+.Goods .groupRule .timeBox .time i {
+  width: 0.066667rem;
+  height: 0.253333rem;
+  text-align: center;
+  line-height: 0.226667rem;
+  font-size: 0.213333rem;
+}
+
+.Goods .groupScale {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.Goods .groupScale .cell {
+  margin-top: 0;
+}
+
+.Goods .groupScale .member {
+  padding: 0 0.2rem 0 0.266667rem;
+  margin-bottom: 0.333333rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.Goods .groupScale .member .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.Goods .groupScale .member img {
+  width: 0.466667rem;
+  height: 0.466667rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.Goods .groupScale .member .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  height: 0.533333rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.Goods .groupScale .member .info span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.Goods .groupScale .member .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 0.666667rem;
+  height: 0.306667rem;
+  border: 0.006667rem solid #f65236;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
 .Goods .moneyBox {
   background-color: #fff;
   padding: 0.133333rem 0.266667rem 0.2rem;
@@ -114,6 +275,10 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+}
+
+.Goods .moneyBox .top .price {
+  margin-left: 0.133333rem;
 }
 
 .Goods .moneyBox .top span {
@@ -245,6 +410,67 @@
           align-items: center;
 }
 
+.Goods .seckillTime {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  width: 100%;
+  height: 0.666667rem;
+  padding: 0 0.266667rem;
+  background: #ffece9;
+}
+
+.Goods .seckillTime .time {
+  margin-left: 0.106667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.Goods .seckillTime .time p {
+  margin-right: 0.066667rem;
+}
+
+.Goods .seckillTime .time span {
+  font-weight: bold;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 0.253333rem;
+  width: 0.08rem;
+  color: #333333;
+}
+
+.Goods .seckillTime .time div {
+  width: 0.213333rem;
+  height: 0.253333rem;
+  background: #333333;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+          align-items: flex-end;
+  font-family: 'num';
+  font-size: 0.16rem;
+  color: #fff;
+}
+
 .Goods .commentBox {
   margin-top: 0.066667rem;
   padding: 0 0.2rem 0 0.266667rem;
@@ -357,7 +583,6 @@
 
 .Goods .imgText img {
   width: 100%;
-  margin-bottom: 0rem;
 }
 
 .Goods .page-ft {
@@ -439,10 +664,28 @@
   display: -webkit-flex;
   display: flex;
   margin-right: 0.133333rem;
+  width: 2.933333rem;
+}
+.Goods .page-ft .right div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
 
-.Goods .page-ft .right div {
-  width: 1.466667rem;
+.Goods .page-ft .right .butt {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
   height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -453,6 +696,20 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.Goods .page-ft .right .butt .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  height: 0.28rem;
 }
 
 .Goods .button {
@@ -558,7 +815,8 @@
   margin: 0.133333rem 0.2rem 0 0;
 }
 
-.Goods .model {
+.Goods .model,
+.Goods .modelRule {
   position: fixed;
   top: 0;
   left: 0;
@@ -569,7 +827,8 @@
   display: none;
 }
 
-.Goods .model .modelContent {
+.Goods .model .modelContent,
+.Goods .modelRule .modelContent {
   position: absolute;
   left: 0;
   width: 100%;
@@ -578,28 +837,33 @@
   height: 70vh;
 }
 
-.Goods .model .modelContent .closeBox {
+.Goods .model .modelContent .closeBox,
+.Goods .modelRule .modelContent .closeBox {
   position: absolute;
   top: 0.2rem;
   right: 0.2rem;
 }
 
-.Goods .model .modelContent .closeBox img {
+.Goods .model .modelContent .closeBox img,
+.Goods .modelRule .modelContent .closeBox img {
   width: 0.173333rem;
   height: 0.173333rem;
 }
 
-.Goods .model .modelContent .top {
+.Goods .model .modelContent .top,
+.Goods .modelRule .modelContent .top {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
 }
 
-.Goods .model .modelContent .top .left {
+.Goods .model .modelContent .top .left,
+.Goods .modelRule .modelContent .top .left {
   margin-left: 0.253333rem;
 }
 
-.Goods .model .modelContent .top .left img {
+.Goods .model .modelContent .top .left img,
+.Goods .modelRule .modelContent .top .left img {
   width: 1.733333rem;
   height: 1.733333rem;
   box-shadow: 0 0.133333rem 0.266667rem 0 rgba(0, 0, 0, 0.1);
@@ -608,11 +872,13 @@
   background-color: #fff;
 }
 
-.Goods .model .modelContent .top .right {
+.Goods .model .modelContent .top .right,
+.Goods .modelRule .modelContent .top .right {
   margin-left: 0.226667rem;
 }
 
-.Goods .model .modelContent .top .right .money {
+.Goods .model .modelContent .top .right .money,
+.Goods .modelRule .modelContent .top .right .money {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -622,14 +888,16 @@
   margin-top: 0.266667rem;
 }
 
-.Goods .model .modelContent .top .right .money span {
+.Goods .model .modelContent .top .right .money span,
+.Goods .modelRule .modelContent .top .right .money span {
   width: 0.52rem;
   height: 0.2rem;
   margin-left: 0.08rem;
   text-align: center;
 }
 
-.Goods .model .modelContent .top .right .money div {
+.Goods .model .modelContent .top .right .money div,
+.Goods .modelRule .modelContent .top .right .money div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -638,15 +906,18 @@
           align-items: baseline;
 }
 
-.Goods .model .modelContent .top .right .moneyPrimary {
+.Goods .model .modelContent .top .right .moneyPrimary,
+.Goods .modelRule .modelContent .top .right .moneyPrimary {
   text-decoration: line-through;
 }
 
-.Goods .model .modelContent .top .right p {
+.Goods .model .modelContent .top .right p,
+.Goods .modelRule .modelContent .top .right p {
   margin-top: 0.066667rem;
 }
 
-.Goods .model .modelContent .cantre {
+.Goods .model .modelContent .cantre,
+.Goods .modelRule .modelContent .cantre {
   position: absolute;
   left: 0;
   top: 1.533333rem;
@@ -656,16 +927,19 @@
   overflow-y: scroll;
 }
 
-.Goods .model .modelContent .cantre .block {
+.Goods .model .modelContent .cantre .block,
+.Goods .modelRule .modelContent .cantre .block {
   margin-top: 0.266667rem;
 }
 
-.Goods .model .modelContent .cantre .block .list {
+.Goods .model .modelContent .cantre .block .list,
+.Goods .modelRule .modelContent .cantre .block .list {
   margin-top: 0.2rem;
   overflow: hidden;
 }
 
-.Goods .model .modelContent .cantre .block .list span {
+.Goods .model .modelContent .cantre .block .list span,
+.Goods .modelRule .modelContent .cantre .block .list span {
   height: 0.466667rem;
   padding: 0 0.2rem;
   display: -webkit-box;
@@ -680,7 +954,8 @@
   margin-bottom: 0.133333rem;
 }
 
-.Goods .model .modelContent .cantre .block .numberBox {
+.Goods .model .modelContent .cantre .block .numberBox,
+.Goods .modelRule .modelContent .cantre .block .numberBox {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -689,7 +964,8 @@
           justify-content: space-between;
 }
 
-.Goods .model .modelContent .cantre .block .numberBox .number {
+.Goods .model .modelContent .cantre .block .numberBox .number,
+.Goods .modelRule .modelContent .cantre .block .numberBox .number {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -698,22 +974,26 @@
           align-items: center;
 }
 
-.Goods .model .modelContent .cantre .block .numberBox .number img {
+.Goods .model .modelContent .cantre .block .numberBox .number img,
+.Goods .modelRule .modelContent .cantre .block .numberBox .number img {
   width: 0.293333rem;
   height: 0.293333rem;
 }
 
-.Goods .model .modelContent .cantre .block .numberBox .number input {
+.Goods .model .modelContent .cantre .block .numberBox .number input,
+.Goods .modelRule .modelContent .cantre .block .numberBox .number input {
   width: 0.4rem;
   margin: 0 0.133333rem;
   text-align: center;
 }
 
-.Goods .model .modelContent .cantre .block:last-child {
+.Goods .model .modelContent .cantre .block:last-child,
+.Goods .modelRule .modelContent .cantre .block:last-child {
   margin-bottom: 0.2rem;
 }
 
-.Goods .model .modelContent .buttBox {
+.Goods .model .modelContent .buttBox,
+.Goods .modelRule .modelContent .buttBox {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -725,7 +1005,10 @@
   display: flex;
 }
 
-.Goods .model .modelContent .buttBox span {
+.Goods .model .modelContent .buttBox span,
+.Goods .modelRule .modelContent .buttBox span,
+.Goods .model .modelContent .buttBox a,
+.Goods .modelRule .modelContent .buttBox a {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
@@ -739,6 +1022,66 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+}
+
+.Goods .model .modelContent .buttBox div,
+.Goods .modelRule .modelContent .buttBox div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-left: 0.066667rem;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.Goods .modelRule .modelContent {
+  height: 45vh;
+}
+
+.Goods .modelRule .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  padding-left: 0.2rem;
+}
+
+.Goods .modelRule .text {
+  padding: 0.133333rem 0.2rem;
+}
+
+.Goods .modelRule .text i {
+  width: 0.213333rem;
+  height: 0.213333rem;
+  background: #c0c0c0;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #fff;
+}
+
+.Goods .modelRule .text span {
+  width: 4.266667rem;
+  margin-left: 0.093333rem;
+  margin-top: -0.013333rem;
+}
+
+.Goods .modelRule .text div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.2rem;
 }
 
 .moreComment {
@@ -851,10 +1194,21 @@
           align-items: center;
 }
 
-.moreComment .commentBox .comimg img {
+.moreComment .commentBox .img_one img {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.moreComment .commentBox .img_two img {
+  width: 1.36rem;
+  height: 1.36rem;
+  margin-right: 0.093333rem;
+}
+
+.moreComment .commentBox .img_three img {
   width: 0.866667rem;
   height: 0.866667rem;
-  margin-right: 0.106667rem;
+  margin-right: 0.093333rem;
 }
 
 .moreComment .commentBox .question {

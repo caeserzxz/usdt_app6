@@ -1,0 +1,214 @@
+{extend name="layouts/base" /}
+{block name="main" }
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
+<section class="scrollable wrapper  ">
+    <section class="panel panel-default ">
+        <div class="row m-l-none m-r-none bg-light lter">
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
+
+                <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                            <i class="fa fa-clipboard  fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
+                                  data-update="5000"></span>
+                        </span>
+                <a class="fl" href="{:url('order/index',['reportrange'=>$today.'-'.$today])}">
+                    <span class="h3 block m-t-xs"><strong id="t_day_order_num">{$stats.today.all_add_num}</strong></span>
+                    <small class="text-muted text-uc">今天下单数</small>
+                </a>
+                <a class="fr" href="{:url('order/index',['reportrange'=>$yesterday.'-'.$yesterday])}">
+                    <span class="h3 block m-t-xs"><strong id="y_day_order_num">{$stats.yesterday.all_add_num}</strong></span>
+                    <small class="text-muted text-uc">昨天下单数</small>
+                </a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa fa-yen fa-stack-1x text-white"></i>
+                            <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
+                                  data-animate="2000" data-target="#bugs" data-update="3000"></span>
+                        </span>
+                <a class="fl" >
+                    <span class="h3 block m-t-xs"><strong id="t_day_clinch_money">{$stats.today.order_pay_num}</strong></span>
+                    <small class="text-muted text-uc">今天成交金额</small>
+                </a>
+                <a class="fr">
+                    <span class="h3 block m-t-xs"><strong id="y_day_clinch_money">{$stats.yesterday.order_pay_num}</strong></span>
+                    <small class="text-muted text-uc" >昨天成交金额</small>
+                </a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                       <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x text-info"></i>
+                            <i class="fa fa-truck fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl"  href="{:url('order/index',['state'=>3])}">
+                    <span class="h3 block m-t-xs"><strong id="t_day_wait_shipping_num">{$stats.wait_shipping_num}</strong></span>
+                    <small class="text-muted text-uc">待发货订单</small>
+                </a>
+                <a class="fr" href="{:url('order/index',['time_type'=>'shipping_time','start_time'=>$yesterday,'end_time'=>$yesterday])}">
+                    <span class="h3 block m-t-xs"><strong id="y_day_shipping_num">{$stats.yesterday.order_shipping_num}</strong></span>
+                    <small class="text-muted text-uc">昨天发货订单</small>
+                </a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                        <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                            <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                            <i class="fa fa-legal fa-stack-1x text-white"></i>
+                        </span>
+                <a class="fl" href="{:url('order/index',['time_type'=>'sign_time','start_time'=>$today,'end_time'=>$today])}">
+                    <span class="h3 block m-t-xs"><strong id="t_day_sign_num">{$stats.today.sign_num}</strong></span>
+                    <small class="text-muted text-uc">今天签收订单</small>
+                </a>
+                <a class="fr" href="{:url('order/index',['time_type'=>'sign_time','start_time'=>$yesterday,'end_time'=>$yesterday])}">
+                    <span class="h3 block m-t-xs"><strong id="y_day_sign_num">{$stats.yesterday.sign_num}</strong></span>
+                    <small class="text-muted text-uc">昨天签收订单</small>
+                </a>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default ">
+        <div class="row m-l-none m-r-none bg-light lter">
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
+                 <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                      <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                      <i class="fa fa-yen  fa-stack-1x text-white"></i>
+                      <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                                  data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                                  data-line-cap="butt" data-animate="3000" data-target="#firers"
+                                  data-update="5000"></span>
+                 </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong id="balance_total">{$account.balance_money|intval}</strong></span>
+                    <small class="text-muted text-uc">帐户余额</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong id="withdraw_total">{$account.withdraw_money|intval}</strong></span>
+                    <small class="text-muted text-uc">提现中</small>
+                </a>
+            </div>
+
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                 <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                      <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                      <i class="fa fa-gift  fa-stack-1x text-white"></i>
+                      <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                            data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                            data-line-cap="butt" data-animate="3000" data-target="#firers"
+                            data-update="5000"></span>
+                 </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong>{$goods.all_num|intval}</strong></span>
+                    <small class="text-muted text-uc">全部商品</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong >{$goods.check_num|intval}</strong></span>
+                    <small class="text-muted text-uc">审核商品</small>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
+                 <span class="fa-stack fa-2x pull-left m-r-sm  m-l">
+                      <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                      <i class="fa fa-gift  fa-stack-1x text-white"></i>
+                      <span class="easypiechart pos-abt" data-percent="100" data-line-width="4"
+                            data-track-color="#f5f5f5" data-scale-color="false" data-size="50"
+                            data-line-cap="butt" data-animate="3000" data-target="#firers"
+                            data-update="5000"></span>
+                 </span>
+                <a class="fl" href="#">
+                    <span class="h3 block m-t-xs"><strong>{$goods.sale_num|intval}</strong></span>
+                    <small class="text-muted text-uc">销售中商品</small>
+                </a>
+                <a class="fr" href="#">
+                    <span class="h3 block m-t-xs"><strong >{$goods.unsale_num|intval}</strong></span>
+                    <small class="text-muted text-uc">下架中商品</small>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+        <section class="panel panel-default ">
+            <header class="panel-heading font-bold">
+                7天订单数据
+                <small>（{$start_day}至{$end_day}）</small>
+                <a href="javascript:;" data-toggle="popover" data-html="true" data-placement="bottom"
+                   data-trigger="hover"
+                   data-content="<p style='color:#999'><strong style='color:#333'>下单数：</strong>每日提交的订单数；</p><p style='color:#999'><strong style='color:#333'>待签收数：</strong>每日待签收订单数；</p><p style='color:#999'><strong style='color:#333'>发货数：</strong>每天发货的订单数。</p>"
+                   data-original-title="" title=""><i class="fa fa-question-circle fa-lg m-l-xs"></i></a>
+            </header>
+            <div class="panel-body">
+                <!--   style="height: 210px"  -->
+                <div id="container"></div>
+            </div>
+            <footer class="panel-footer bg-white no-padder">
+                <div class="row text-center no-gutter">
+
+                    <div class="col-xs-3 b-r b-light">
+                        <span class="h4 font-bold m-t block">{$stats.seven_add_num|intval}</span>
+                        <small class="text-muted m-b block">下单总数</small>
+                    </div>
+                    <div class="col-xs-3 b-r b-light">
+                        <span class="h4 font-bold m-t block">{$stats.seven_pay_num|intval}</span>
+                        <small class="text-muted m-b block">成交总数</small>
+                    </div>
+                    <div class="col-xs-3 b-r b-light">
+                        <span class="h4 font-bold m-t block">{$stats.seven_shpping_num|intval}</span>
+                        <small class="text-muted m-b block">发货总数</small>
+                    </div>
+                    <div class="col-xs-3">
+                        <span class="h4 font-bold m-t block">{$stats.seven_sign_num|intval}</span>
+                        <small class="text-muted m-b block">签收总数</small>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+
+</section>
+<script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: {$riqi|raw}},
+            yAxis: {
+                title: {text: ''},
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
+                data: {$stats.all_add_num|json_encode|raw}
+            },{
+                name: '成交数 <span style="color:gray" >(点击隐藏)</span>',
+                data: {$stats.order_pay_num|json_encode|raw}
+            },{
+                name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
+                data: {$stats.shipping_order_num|json_encode|raw}
+            }, {
+                name: '签收数 <span style="color:gray" >(点击隐藏)</span>',
+                data:  {$stats.sign_order_num|json_encode|raw}
+            }]
+        });
+
+
+
+
+    });
+</script>
+{/block}

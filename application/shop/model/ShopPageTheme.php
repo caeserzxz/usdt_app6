@@ -87,10 +87,10 @@ class ShopPageTheme extends Model {
 				foreach ($row['data'] as $keyb=>$rowb){
 					foreach ($rowb['products'] as $keyc=>$rowc){						
 						if (is_numeric($rowc['id'])){			 
-							$goods = $Goods->field('goods_id,goods_thumb,goods_name,market_price,shop_price,show_price,is_spec,sale_num,virtual_sale')->where('goods_id',$rowc['id'])->find();
+							$goods = $Goods->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale')->where('goods_id',$rowc['id'])->find();
 							$rowc['name'] = $goods['goods_name'];
 							$rowc['par_price'] = $goods['market_price'];
-							$rowc['sale_price'] = $goods['is_spec'] == 1 ? $goods['show_price']:$goods['shop_price'];
+							$rowc['sale_price'] = $goods['shop_price'];
 							$rowc['sale_count'] = $goods['sale_num'] + $goods['virtual_sale'];
 							$rowc['vip_price'] = 0;
 							$rowc['thumb']['url'] = $goods['goods_thumb'];

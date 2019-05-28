@@ -26,7 +26,7 @@ class ShippingLogModel extends BaseModel
 		if ($orderInfo['shipping_status'] == 1){
 			 $fun = str_replace('/','\\','/shipping/'.$shop_shippping_view_fun);
        	 	 $Class = new $fun();
-			 $res = $Class->getLog($orderInfo['shipping_code'],$orderInfo['invoice_no']);		
+			 $res = $Class->getLog($orderInfo['shipping_code'],$orderInfo['invoice_no'],$orderInfo['mobile']);
 			 if ($res['code'] == 0) return $res['msg']; 
 			
 			 if (empty($info)== false){

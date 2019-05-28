@@ -12,29 +12,7 @@
     <script src="__STATIC__/mobile/default/js/page.js?v=1"></script>
     <title>{$title}  - {$setting.shop_title}</title>
     {block name="head"}{/block}
-      <script type="text/javascript">
-          (function (w, d, s, i, v, j, b) {
-              w[i] = w[i] || function () {
-                      (w[i].v = w[i].v || []).push(arguments)
-                  };
-              j = d.createElement(s),
-                  b = d.getElementsByTagName(s)[0];
-              j.async = true;
-              j.charset = "UTF-8";
-              j.src = "https://www.v5kf.com/162752/v5kf.js";
-              b.parentNode.insertBefore(j, b);
-          })(window, document, "script", "V5CHAT");
-          {notempty name="userInfo" }
-          V5CHAT('openId', 'user_{$userInfo.user_id}');
-          V5CHAT('nickname', '{$userInfo.nick_name}');
-          V5CHAT('metadata', [
-              {key: '客户等级', val: '{$userInfo['role_id']>0?$userInfo['role']['role_name']:'粉丝'}'},
-              {key: '客户ID', val: '{$userInfo.user_id}'},
-              {key: '客户ID', val: '{$userInfo.mobile}'}
-          ]);
-          {/notempty}
-      </script>
-      <style>.v5-btn{top:2%}</style>
+
 </head>
 <body {block name="body"}{/block}>
   <div class="page {block name='pageType'}{/block}">
@@ -81,6 +59,95 @@
           </div>
       </div>
   </div>
+  {notempty name="wxShare"}
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script type="text/javascript">
+      window.shareData = {
+          "imgUrl": "{:getUrl($wxShare.img,'img')}",
+          "Link": "{$wxShare.shareUrl}",
+          "tTitle": "{$wxShare.title}",
+          "tContent": '{$wxShare.description}'
+      };
 
+      wx.config({
+          debug: false,
+          appId: '{$wxShare.appId}',
+          timestamp: '{$wxShare.timestamp}',
+          nonceStr: '{$wxShare.nonceStr}',
+          signature: '{$wxShare.signature}',
+          jsApiList: [
+              // 所有要调用的 API 都要加到这个列表中
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage',
+              'onMenuShareQQ',
+              'onMenuShareWeibo',
+          ]
+      });
+      wx.ready(function () {
+
+          // 分享到朋友圈
+          wx.onMenuShareTimeline({
+              title: window.shareData.tTitle, 		// 分享标题
+              link: window.shareData.Link, 		// 分享链接
+              imgUrl: window.shareData.imgUrl, 	// 分享图标
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+                  alert('分享成功');
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                  alert('取消分享成功');
+              }
+          });
+          // 分享给朋友
+          wx.onMenuShareAppMessage({
+              title: window.shareData.tTitle, 		// 分享标题
+              link: window.shareData.Link, 		// 分享链接
+              imgUrl: window.shareData.imgUrl, 	// 分享图标
+              desc: window.shareData.tContent, 		// 分享描述
+              type: '', 					// 分享类型,music、video或link，不填默认为link
+              dataUrl: '', 				// 如果type是music或video，则要提供数据链接，默认为空
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+                  // alert('分享成功');
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                  // alert('取消分享成功');
+              }
+          });
+          // 分享到QQ
+          wx.onMenuShareQQ({
+              title: window.shareData.tTitle, 		// 分享标题
+              link: window.shareData.Link, 		// 分享链接
+              imgUrl: window.shareData.imgUrl, 	// 分享图标
+              desc: window.shareData.tContent, 		// 分享描述
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+                  // alert('分享成功');
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                  // alert('取消分享成功');
+              }
+          });
+          // 分享到腾讯微博
+          wx.onMenuShareWeibo({
+              title: window.shareData.tTitle, 		// 分享标题
+              link: window.shareData.Link, 		// 分享链接
+              imgUrl: window.shareData.imgUrl, 	// 分享图标
+              desc: window.shareData.tContent, 		// 分享描述
+              success: function () {
+                  // 用户确认分享后执行的回调函数
+                  // alert('分享成功');
+              },
+              cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                  // alert('取消分享成功');
+              }
+          });
+      });
+  </script>
+  {/notempty}
 </body>
 </html>

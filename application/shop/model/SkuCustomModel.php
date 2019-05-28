@@ -12,28 +12,33 @@ class SkuCustomModel extends BaseModel
 	protected $mkey = 'goods_sku_custom_mkey_';
 	/*------------------------------------------------------ */
 	//-- 清除缓存
+    //-- $model_id int 模型ID
+    //-- $supplyer_id  int 供应商ID
 	/*------------------------------------------------------ */ 
-	public function cleanMemcache($cid = 0){
-		Cache::rm($this->mkey.$cid);
+	public function cleanMemcache($model_id = 0,$supplyer_id = 0){
+		Cache::rm($this->mkey.$model_id.'_'.$supplyer_id);
         Cache::rm($this->mkey.'_SkuName');
 	}
 
     /*------------------------------------------------------ */
 	//-- 根据模型ID获取相关sku类目
+    //-- $model_id int 模型ID
+    //-- $supplyer_id  int 供应商ID
 	/*------------------------------------------------------ */
-    public function getRows($model_id = 0){	
-		$_list = Cache::get($this->mkey.$model_id);	
+    public function getRows($model_id = 0,$supplyer_id = 0){
+		$_list = Cache::get($this->mkey.$model_id.'_'.$supplyer_id);
 		if ($_list['data']) return $_list;
 		$_list['data'] = array();
-		$map['model_id'] = $model_id;	
-		$map['speid'] = 0;
-		$rows = $this->field('id,val as name')->where($map)->order('id ASC')->select()->toArray();
+        $where[] = ['model_id','=',$model_id];
+        $where[] = ['speid','=',0];
+		$where[] = ['supplyer_id','=',$supplyer_id];
+		$rows = $this->field('id,val as name')->where($where)->order('id ASC')->select()->toArray();
 		foreach ($rows as $row){
 			$row['custom'] = true;
 			$row['all_val'] = $this->field('id as `key`,val')->where('speid',$row['id'])->order('id ASC')->select()->toArray();		
 			$_list['data'][] = $row;
 		}
-		Cache::set($this->mkey.$model_id,$_list,3600);
+		Cache::set($this->mkey.$model_id.'_'.$supplyer_id,$_list,3600);
 		return $_list;
 	}
     /*------------------------------------------------------ */

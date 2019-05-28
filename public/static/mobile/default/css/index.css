@@ -56,7 +56,7 @@
 }
 
 .gird {
-  height: 2.666667rem;
+  height: auto;
   margin: -0.546667rem 0.2rem 0;
   box-shadow: 0 0.133333rem 0.266667rem 0 rgba(0, 0, 0, 0.1);
   position: relative;

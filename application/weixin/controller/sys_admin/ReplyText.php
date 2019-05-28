@@ -102,7 +102,7 @@ class ReplyText extends AdminController
 				$where['subscribe'] = ['subscribe','=',1];
 				$uparr['subscribe'] = 0;
 				$uparr['update_time'] = time();
-				$this->Model->where($map)->update($uparr);
+				$this->Model->where($where)->update($uparr);
 			}
 		}elseif (isset($data['default'])){
 			$info = '微信文本素材,快速修改默认回复:'.($data['default']==1?'启用':'停用');

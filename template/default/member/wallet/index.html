@@ -10,14 +10,14 @@
         <div class="money">
             <p class="fs48 num color_w balance_money">0.00</p>
             <a href="{:url('withdraw/index')}" class="fs24 color_w withdrwa_btn ">提现</a>
-            <span class="fs26 color_w">旅游豆</span><p class="fs48 num color_w bean_value">0.00</p>
-            <a href="{:url('change')}" class="fs24 color_w withdrwa_btn hide">兑换</a>
+            <span class="fs26 color_w">积分</span><p class="fs48 num color_w use_integral">0</p>
+
 
         </div>
-        <span class="fs26 color_w">金币</span>
+        <span class="fs26 color_w">余额</span>
 
         <div class="tips">
-            <div class="color_w fs26">可提现金币 ￥<p class="fs30 balance_money">0.00</p></div>
+            <div class="color_w fs26">可提现 ￥<p class="fs30 balance_money">0.00</p></div>
         </div>
     </div>
     <div class="moneyInfo">
@@ -67,7 +67,7 @@
             $('.balance_money').html(res.account.balance_money);
 			$('.total_income').html(res.account.total_dividend);
             $('.frozen_amount').html(res.frozen_amount);
-            $('.bean_value').html(res.account.bean_value);
+            $('.use_integral').html(res.account.use_integral);
             if (res.account.bean_value > 0){
                  $('.withdrwa_btn').removeClass('hide');
              }

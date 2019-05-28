@@ -1,0 +1,22 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+        <p class="fs34 fw_b color_3">抱歉支付失败！</p>
+    </div>
+
+    <div class="button">
+        <a href="javascript:go(-1);">返回选择其他支付方式</a>
+    </div>
+</div>
+
+{/block}
+{block name="footer"}
+
+{/block}
+

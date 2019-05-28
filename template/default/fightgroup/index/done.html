@@ -1,0 +1,201 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}orderDetails payResult payment{/block}
+{block name="main" }
+<div class="page-bd groupOrder">
+    <!-- 页面内容-->
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder01.jpg" alt="">
+        {if condition="$orderInfo.isPay == 1" }
+            <p class="fs34 fw_b color_3">待支付拼团订单</p>
+            <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+            <span class="fs24 color_9">待支付订单金额</span>
+        {else/}
+            <p class="fs34 fw_b color_3">参团成功</p>
+            <span class="fs26 color_9">您已参团成功，满团即可发货！</span>
+        {/if}
+    </div>
+    {if condition="$fgJoin['order']"}
+    <div class="member">
+        {if condition="$fgJoin['status'] == 3"}
+        <div class="timeBox">
+            <div class="text fs30 fw_b color_3">拼团成功</div>
+        </div>
+        {else/}
+        <div class="timeBox">
+            <div class="text fs30 fw_b color_3"><span class="color_r">还差{$fgJoin['success_num'] - count($fgJoin['order'])}人，</span>距离结束还剩</div>
+            <div class="time fs32"></div>
+        </div>
+        {/if}
+
+        <div class="memberimg">
+            {for start="0" end="$fgJoin['success_num']" name="k" }
+                {if condition="$k == 0"}
+                    <div>
+                        <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                        <span class="fs22 color_w BGcolor_r">团长</span>
+                    </div>
+                {else/}
+                    {empty name="$fgJoin['order'][$k]"}
+                        <img src="__STATIC__/mobile/default/images/groupOrder04.jpg" alt="">
+                    {else/}
+                        <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                    {/empty}
+                {/if}
+            {/for}
+        </div>
+    </div>
+    {/if}
+    <div class="groupRule">
+        <p class="fs32 fw_b color_3">拼团规则</p>
+        <div class="textbox">
+            <div><i>1</i><span class="fs26 color_9">如规定时间内团内人数不足{$fgInfo['success_num']}人，则订单取消，原路返还</span></div>
+        </div>
+    </div>
+
+
+    {if condition="$orderInfo.isPay == 1" }
+    <a href="javascript:;" class="butt gopay">
+        <span class="fs32 fw_b color_w BGcolor_r">立即支付</span>
+    </a>
+    {else/}
+        <div class="btnBox">
+            <a href="{:url('fightgroup/order/info',['order_id'=>$orderInfo['order_id']])}" class="fs32 fw_b color_w BGcolor_3">
+                查看订单
+            </a>
+            {if condition="$fgJoin['status'] == 1"}
+            <a href="{:url('fightgroup/index/join',['join_id'=>$fgJoin['gid']])}" class="fs32 fw_b color_w BGcolor_r">
+                邀请好友
+            </a>
+            {/if}
+        </div>
+    {/if}
+</div>
+<!-- 支付方式 -->
+<div class="model">
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="title fs36 color_3 fw_b">请选择支付方式</div>
+        <div class="cantre pay" id="payListBox">
+
+            <p class="get_list_tip">加载中...</p>
+
+        </div>
+        <div class="buttBox">
+            <span class="fs32 fw_b color_w BGcolor_r payBtn">确认支付</span>
+        </div>
+    </div>
+</div>
+{literal}
+<script type="text/html" id="payListTpl">
+    {{each data as item index}}
+    <div class="block">
+        <label for="{{item.pay_code}}" style="width: 100%;">
+            <div class="payType">
+                <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+                <div>
+                    <span class="fs30 color_3">{{item.pay_name}}</span>
+                    {{if item.pay_code == 'balance'}}
+                    <span class="fs26 color_r">(￥{{balance_money}})</span>
+                    {{/if}}
+                </div>
+            </div>
+        </label>
+        <label for="{{item.pay_code}}">
+            <div class="iconBox">
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" data-pay_code="{{item.pay_code}}" id="{{item.pay_code}}" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+
+    var goPay = {$goPay};
+    //选择支付方式
+    $('.gopay').on('click',function(){
+        jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
+            if (res.code==0){
+                _alert(res.msg);
+                return false;
+            }
+            $('#payListBox').html(template('payListTpl',res));
+            $('.model').show();
+        });
+    });
+    $('.closeBox').on('click',function(){
+        $('.model').hide();
+    });
+    $('.payBtn').on('click',function(){
+        var obj = $('input:radio[name="pay_id"]:checked');
+        if (typeof(obj.val()) == 'undefined') {
+            _alert('请选择支付方式.');
+            return false;
+        }
+        var pay_code = obj.data("pay_code");
+        window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
+    });
+    if (goPay == 1){
+        window.location.href = '{:_url("shop/payment/getCode",'',false)}?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
+    }
+
+
+
+    $(function () {
+        let tmp = Date.parse(new Date());
+        let time = {$fgJoin['fail_time'] * 1000} - tmp//倒计时总毫秒数
+        countdown(time)
+        //点击购买按钮
+        $('.buyBtn ').on('click', function () {
+            var obj = $(this);
+            if (obj.data('type') == 'show') {
+                $('.skubox').show();
+                selsku();
+            } else {
+                checkOut(obj);
+            }
+        })
+    })
+    //前往结算
+    function checkOut(obj) {
+        var arr = new Object;
+        arr.goods_id = obj.data('goods_id');
+        arr.specifications = obj.data('sku');
+        arr.join_id = '{$join_id}';
+        arr.number = $('#buynumber').val();
+        window.location = '{:_url("checkout",["fg_id"=>$fgInfo["fg_id"],"join_id"=>$join_id,"number"=>"【arr.number】","sku_val"=>"【arr.specifications】"])}';
+        return false;
+    }
+    function countdown(time) {
+        let countDownTime;
+        if (time < 0) {
+            countDownTime = '<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>'
+            return
+        } else {
+            countDownTime = dateformat(time)//显示的时间
+            time -= 1000;//剩余的毫秒数
+        }
+        $('.time').html(countDownTime)
+        setTimeout(function () {
+            countdown(time);
+        }, 1000)
+    }
+    // 时间格式化输出，如11天03小时25分钟19秒  每1s都会调用一次
+    function dateformat(micro_second) {
+        var second = Math.floor(micro_second / 1000);// 总秒数
+        var day = Math.floor(second / 3600 / 24);// 天数
+        var hr = Math.floor(second / 3600 % 24);// 小时
+        var min = Math.floor(second / 60 % 60);// 分钟
+        var sec = Math.floor(second % 60);// 秒
+        return '<em class="num fs24 BGcolor_3 color_w">' + (hr < 10 ? '0' + hr : hr) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (min < 10 ? '0' + min : min) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (sec < 10 ? '0' + sec : sec) + '</em>';
+    }
+</script>
+{/block}

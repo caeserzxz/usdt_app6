@@ -1,0 +1,52 @@
+<div class="top addressBox">
+    <!-- 没收货地址 -->
+    <a href="javascript:;" class="tips fs30 fw_b color_9">你还没有收货地址，<span class="color_3">去添加</span></a>
+    <!-- 收货地址 -->
+    <a href="javascript:;" class="address">
+        <div><p class="fs30 fw_b color_3 _consignee"></p><span class="fs28 color_9 _address"></span>
+            <input type="hidden" id="address_id" value="0">
+        </div>
+        <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+    </a>
+</div>
+{include file="member@address/list" /}
+<script type="text/javascript">
+    //计算运费
+    function evalShippingFee(){
+		var arr = new Object;
+        arr.address_id = $('#address_id').val();
+		arr.recids = rec_id;
+        $('.shippingFee').html('<span style="font-size:80%;">运费计算中...</span>');
+        jq_ajax('{:url("shop/api.flow/evalShippingFee")}',arr,function (res) {
+            if (res.code==0){
+                $('.shippingFee').html(res.msg);
+                return false;
+            }
+            shippingFee = res.shippingFee.shipping_fee;
+            evalPrice();
+        })
+    }
+    //显示收货地址
+    $(document).on('click','.addressBox', function () {
+        $('html').addClass('noscroll');
+        $('.addressesList').addClass('move-left');
+    });
+    //关闭弹出
+    $(document).on('click','.addressesList .close_wrapper', function () {
+        $('html').removeClass('noscroll');
+        $('.addressesList').removeClass('move-left');
+    })
+    //点击选择收货地址
+    $(document).on('click', '.addresslist .block', function () {
+        if (isAddOrder == 0) return false;
+        var obj = $(this);
+        setTimeout(function () { //在单击事件中添加一个setTimeout()函数，设置单击事件触发的时间间隔
+            if (isContainer == true) {
+                return isContainer = false;
+            }
+            showAddress(addressList[obj.data('index')]);
+            $('.close_wrapper').trigger("click");
+            evalShippingFee();
+        }, 100);
+    })
+</script>

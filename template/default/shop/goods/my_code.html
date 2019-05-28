@@ -23,7 +23,9 @@
 </div>
 <div class="page-fd">
   <div class="BGcolor_3 saveImg"><img src="__STATIC__/mobile/default/images/goodsIcon04.png" alt=""><span class="fs28 fw_b color_w">保存图片</span></div>
-  <div class="BGcolor_r hide"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""><span class="fs28 fw_b color_w">分享链接</span></div>
+
+  <div class="BGcolor_3 copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">复制链接</span></div>
+
 </div>
 <div class="model">
       <div class="modelBg" onclick="hidemodel()"></div>
@@ -37,7 +39,7 @@
 {/block}
 {block name="footer"}
 <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-
+<script src="__STATIC__/js/clipboard.min.js"></script>
 <script>
 function hidemodel(){
     $('.model').hide()
@@ -61,20 +63,17 @@ $(".saveImg").on("click", function (event) {
             var url = canvas.toDataURL();
             $('.model').find('img').attr('src',url);
 
-            /*var u = navigator.userAgent, app = navigator.appVersion;
-             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-
-             if (isIOS){
-             $('.model').find('img').attr('src',url);
-             $('.model').show()
-             }else{
-             //以下代码为下载此图片功能
-             var triggerDownload = $("<a>").attr("href", url).attr("download",  "saveImg.png").appendTo("body");
-             triggerDownload[0].click();
-             triggerDownload.remove();
-             }*/
         }
     });
+});
+//复制
+var clipboard = new Clipboard('.copy');
+clipboard.on('success', function(e) {
+    _alert('复制成功.');
+    e.clearSelection();
+});
+clipboard.on('error', function(e) {
+    _alert('复制失败.');
 });
 	 //获取二维码
    	jq_ajax('{:url("member/api.users/goodsCode")}','goods_id={$goods.goods_id}',function(res){	

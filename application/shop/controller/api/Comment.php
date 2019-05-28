@@ -34,7 +34,7 @@ class Comment extends ApiController
 				$where[] = ['is_evaluate','=',2];
                 break;
         }
-        $data = $this->getPageList($this->Model, $where,'rec_id,pic,goods_id,goods_name,sku_name,shop_price,goods_price,is_evaluate',5);
+        $data = $this->getPageList($this->Model, $where,'rec_id,pic,goods_id,goods_name,sku_name,shop_price,sale_price,is_evaluate',5);
         foreach ($data['list'] as $key=>$row){
             $row['exp_price'] = explode('.',$row['shop_price']);
             $return['list'][] = $row;
@@ -57,7 +57,7 @@ class Comment extends ApiController
 		if ($row['user_id'] != $this->userInfo['user_id']){
 			return $this->error('无权获取数据.');
 		}
-		$row['exp_price'] = explode('.',$row['goods_price']);
+		$row['exp_price'] = explode('.',$row['sale_price']);
 		if ($row['is_evaluate'] == 2){//如果已评论返回评论内容
 			$GoodsCommentModel = new GoodsCommentModel();
 			$where[] = ['order_id','=',$row['order_id']];

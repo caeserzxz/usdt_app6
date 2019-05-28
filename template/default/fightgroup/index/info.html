@@ -1,0 +1,383 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+{/block}
+{block name='pageType'}Goods{/block}
+{block name="main" }
+<div class="page-hd">
+
+        <div class="header">
+            <div class="header-left back">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">
+                <span class="fs32 color_9 active">商品</span>
+                <span class="fs32 color_9">评价</span>
+                <span class="fs32 color_9">详情</span>
+            </div>
+        </div>
+</div>
+
+    <div class="page-bd tabBox" id="goods">
+        <!-- 页面内容-->
+        <!-- 商品轮播 -->
+        <div class="swiperBox">
+            <div class="swiper-container swiper1" id="swiper01">
+                <div class="swiper-wrapper">
+                    {volist name="imgsList" id="img" }
+                    <a href="javascript:;" class="swiper-slide"><img src="{$img.goods_img}" alt=""/></a>
+                    {/volist}
+                </div>
+                <div class="swiper-pagination pagination1"></div>
+
+            </div>
+        </div>
+        <!-- 拼团的购买信息 -->
+        <div class="groupTips">
+            <div>
+                <img src="__STATIC__/mobile/default/images/seckillimg.png" alt="">
+                <span class="fs24 color_w">最新订单来自[瞭望显**]3s前</span>
+            </div>
+        </div>
+        <!-- 商品信息 -->
+        <div class="moneyBox">
+            <div class="top">
+                <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div>
+
+                <span class="fs22 color_w BGcolor_r">拼团价</span>
+                <p class="fs24 color_3 price">单买价 ￥{$goods.shop_price}</p>
+            </div>
+            <div class="original fs24 color_9">￥{$goods.market_price}</div>
+            <div class="name fw_b fs34 color_3"><span class="color_r">【{$fgInfo.success_num}人团】</span>{$goods.goods_name}</div>
+            <div class="tips fs28 color_9 hide"><span>热销</span><p>运费0元</p></div>
+        </div>
+        <!-- 参团规则 -->
+        <div class="cell groupRule">
+            <div class="timeBox">
+                <div class="text fs28 color_r fw_b">已有{$fgInfo.all_order_num}参与</div>
+                <div class="time fs32"><span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em></div>
+            </div>
+            <div class="rule"><p class="fs28 color_9">参团规则</p><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+        </div>
+        {notempty name="$fgList"}
+        <!-- 拼团规模 -->
+        <div class="groupScale">
+            <div class="cell">
+                <span class="fs32 fw_b color_3">{$fgListCount}个在拼单</span><div class="moreGroup"><a href="{:url('more',['fg_id'=>$fgInfo['fg_id']])}"><p class="fs26 color_6">更多</p></a> <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+            </div>
+            {volist name="$fgList" id="fgl" }
+            <a href="{:url('join',['join_id'=>$fgl['gid']])}">
+            <div class="member">
+                <div class="left">
+                    <img src="{$fgl['headimgurl']}" alt="">
+                    <div class="info">
+                        <p class="fs28 color_3">{$fgl['nick_name']}</p>
+                        <span class="fs24 color_9">还差{$fgInfo['success_num'] - $fgl['order_count']}人 剩余<i class="fg_last_time" data-time="{$fgl['fail_time']}"></i></span>
+                    </div>
+                </div>
+                <div class="right fs24 fw_b color_r">去拼团</div>
+            </div>
+            </a>
+            {/volist}
+        </div>
+        {/notempty}
+
+        <div class="cell">
+            <span class="fs32 fw_b color_3">选择规格</span><div class="size"><p class="fs28 color_6 selSkuNameByInfo">请选择规格</p><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+        </div>
+        <!-- 店铺 -->
+        <div class="shopName bor_b" style="display: none">
+            <div><img src="__STATIC__/mobile/default/images/shoplogo.png" alt=""><span class="fs32 fw_b color_3">xxxx</span>
+            </div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight">
+        </div>
+        <!-- 评论 -->
+        <div class="comment hide">
+            <a class="top" href="{:url('shop/goods/comment',['goods_id'=>$goods['goods_id']])}">
+                <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 commentNum">(0)</p></div>
+                <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+            </a>
+            <div class="commentBox">
+                <div class="user">
+                    <img src="" alt="">
+                    <div class="info">
+                        <p class="fs28 color_3 uname"></p>
+                        <span class="fs24 color_9 time"></span>
+                    </div>
+                </div>
+                <div class="comtext fs28 color_3 line_twe content">
+
+                </div>
+                <div class="comimg">
+                </div>
+            </div>
+        </div>
+        <!-- 图文 -->
+        <div class="imgText">
+            <div class="title fw_b fs32 color_3">商品详情</div>
+            {$goods.m_goods_desc|raw}
+        </div>
+        <!-- 浮按钮 -->
+        <div class="button">
+            <a href="{:url('myCode',['fg_id'=>$fgInfo['fg_id']])}" class="share BGcolor_3"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""></a>
+            <i></i>
+
+        </div>
+    </div>
+
+<!-- 弹出规格选择 -->
+{include file="index/sku" /}
+<!-- 弹出拼团规则 -->
+<div class="model modelRule">
+    <div class="modelContent">
+        <div class="title fs36 fw_b color_3">拼团规则</div>
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="text">
+            <div><i>1</i><span class="fs26 color_9">如规定时间内团内人数不足，则订单取消，原路返还</span></div>
+        </div>
+    </div>
+</div>
+<!-- 底部 -->
+<div class="page-ft">
+    <div class="left">
+        <a href="{:url('shop/index/index')}"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span class="fs22 color_6">首页</span></a>
+        <div><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6">客服</span></div>
+        <a href="{:url('shop/flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">0</em><img src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span class="fs22 color_6">购物车</span></a>
+    </div>
+    <div class="right">
+
+        <div class="fs28 color_w BGcolor_3 butt">
+        {empty name="$fgJoin"}
+            <a href="{:url('shop/goods/info',['id'=>$goods['goods_id']])}" >
+             <div class="color_w fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs42">{$goods.exp_sale_price[0]}</em><i>.{$goods.exp_sale_price[1]}</i></div>
+             <span class="fs22 color_w " >单独购买</span></div>
+            </a>
+         {else/}
+            <div class="color_w fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs42">{$goods.exp_fg_price[0]}</em><i>.{$goods.exp_fg_price[1]}</i></div>
+            <span class="fs22 color_w buyBtn" data-type="show">参与拼团</span></div>
+         {/empty}
+
+            {empty name="$fgJoin"}
+                <div class="fs28 color_w BGcolor_r butt buyBtn"  data-type="show">
+                    <div class="color_w fs30 num money">
+                        <p class="fw_b fm_p">￥</p>
+                        <em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i>
+                    </div>
+                    <span class="fs22 color_w ">发起拼团</span>
+                </div>
+            {else/}
+                {if condition="$fgJoin['fg_status'] == 0"}
+                    <div class="fs28 color_w BGcolor_r butt buyBtn"  data-type="show">
+                        <div class="color_w fs30 num money">
+                            <p class="fw_b fm_p">￥</p>
+                            <em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i>
+                        </div>
+                        <span class="fs22 color_w ">参与拼团</span>
+                    </div>
+                {elseif condition="$fgJoin['fg_status'] == 1"}
+                    <div class="fs28 color_w BGcolor_r butt ">
+                        <div class="color_w fs30 num money">
+                            <p class="fw_b fm_p">￥</p>
+                            <em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i>
+                        </div>
+                        <span class="fs22 color_w ">拼团满员</span>
+                    </div>
+                {else/}
+                    <div class="fs28 color_w BGcolor_r butt ">
+                        <div class="color_w fs30 num money">
+                            <p class="fw_b fm_p">￥</p>
+                            <em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i>
+                        </div>
+                        <span class="fs22 color_w ">拼团结束</span>
+                    </div>
+                {/if}
+            {/empty}
+
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+    $(function () {
+
+        swiper1 = createSwiper(1);
+
+        $('#goods').animate({scrollTop:1},1);
+        $("img.textimg").lazyload({
+            effect : "fadeIn",
+            event:"scroll",
+            container:$("#goods")
+        });
+        //拼团倒计时
+        let time=[]//倒计时总毫秒数
+        let tmp = Date.parse( new Date() );
+
+        //console.log({$fgInfo['end_date']} - tmp);
+        time.push({$fgInfo['end_date'] * 1000} - tmp );
+        $('.fg_last_time').each(function(){
+            time.push($(this).data('time') * 1000 - tmp );
+        })
+        countdown(time);
+
+        //开启规拼团弹窗
+        $('.rule').on('click',function(){
+            $('.modelRule').show()
+        })
+
+        jq_ajax('{:url("shop/api.comment/getListByGoods",["goods_id"=>$goods["goods_id"],"limit"=>1])}','',function(res){
+            if (res.code == 0){
+                return false;
+            }
+
+            $('.commentNum').html('('+res.data.total_count+')');
+            if (res.data.total_count > 0){
+                $('.commentBox .user img').attr('src',res.data.list[0].headimgurl?res.data.list[0].headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');
+                $('.commentBox .user .uname').html(res.data.list[0].user_name);
+                $('.commentBox .user .time').html(res.data.list[0]._time);
+                $('.commentBox  .content').html(res.data.list[0].content);
+                $.each(res.data.list[0].imgs,function(i,v){
+                    $('.commentBox .comimg').append('<img src="'+v.thumbnail+'">');
+                })
+                $('.commentBox').remove('hide');
+            }
+        })
+
+        // 滚动出现tab
+        $('#goods').scroll(function(){
+            let scrolltop=$(this).scrollTop()
+            // console.log($('.comment').offset().top,scrolltop)
+            if(scrolltop>100){
+                $('.header-title').css('display','flex');
+                $('.header-left').removeClass('back')
+                $('.page-hd').css('background-color','#fff')
+                $('.header').addClass('bgShow')
+                if($('.comment').offset().top<$('.page-hd').height()){
+                    $('.header-title span').eq(1).addClass('active')
+                    $('.header-title span').eq(1).siblings().removeClass('active')
+                    if($('.imgText').offset().top<$('.page-hd').height()){
+                        $('.header-title span').eq(2).addClass('active')
+                        $('.header-title span').eq(2).siblings().removeClass('active')
+                    }else{
+                        $('.header-title span').eq(1).addClass('active')
+                        $('.header-title span').eq(1).siblings().removeClass('active')
+                    }
+                }else{
+                    $('.header-title span').eq(0).addClass('active')
+                    $('.header-title span').eq(0).siblings().removeClass('active')
+                }
+
+            }else{
+                $('.header-title').css('display','none');
+                $('.header-left').addClass('back')
+                $('.page-hd').css('background-color','transparent')
+                $('.header').removeClass('bgShow')
+            }
+
+        })
+        //tab切换
+        $('.header-title span').on('click',function(){
+            let index=$(this).index()
+            let topHeight=$('.page-hd').height()
+            let commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
+            let imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
+            if(index==0){
+                $("#goods").animate({scrollTop:0}, 300)
+            }else if(index==1){
+                $("#goods").animate({scrollTop:commentTop+'px'}, 300)
+            }else{
+                $("#goods").animate({scrollTop:imgTextTop+'px'}, 300)
+            }
+        })
+        //点击购买按钮
+        $('.buyBtn ').on('click', function () {
+            var obj = $(this);
+            if (obj.data('type') == 'show') {
+                $('.skubox').show();
+                selsku();
+            } else {
+                checkOut(obj);
+            }
+        })
+    })
+    //获取购物车
+    jq_ajax("{:url('shop/api.flow/getCartInfo')}", '',function (res) {
+        if (res.code == 0)  return false;
+        $('.cartNum').html(res.cartInfo.num);
+    });
+    //前往结算
+    function checkOut(obj) {
+        var arr = new Object;
+        arr.goods_id = obj.data('goods_id');
+        arr.specifications = obj.data('sku');
+        arr.join_id = '{$join_id}';
+        arr.number = $('#buynumber').val();
+        window.location = '{:_url("checkout",["fg_id"=>$fgInfo["fg_id"],"join_id"=>$join_id,"number"=>"【arr.number】","sku_val"=>"【arr.specifications】"])}';
+        return false;
+    }
+
+    function createSwiper(index) {
+        var swiper = new Swiper(".swiper" + index, {
+            pagination: {
+                el: ".pagination" + index
+            },
+            paginationClickable: true,
+            observer: true,
+            observeParents: true,
+            loop: true,
+            autoplay: {
+                delay: 1500,
+                stopOnLastSlide: false,
+                disableOnInteraction: false
+            },
+            onSlideChangeEnd: function (swiper) {
+                swiper.update(); //swiper更新
+            }
+        });
+        return swiper;
+    }
+    function countdown (time) {
+        let countDownTime;
+        let timeArr=[];
+        time.forEach(function (item,index,array) {
+            if(index==0){
+                if (item < 0) {
+                    countDownTime = '<span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em>';
+                }else{
+                    countDownTime = dateformat(item,index)//显示的时间
+                    item -= 1000;//剩余的毫秒数
+                }
+                $('.timeBox .time').html(countDownTime)
+            }else{
+                if (item < 0) {
+                    countDownTime = '00:00:00'
+                }else{
+                    countDownTime = dateformat(item,index)//显示的时间
+                    item -= 1000;//剩余的毫秒数
+                }
+                $('.info i').eq(index-1).html(countDownTime)
+            }
+
+            timeArr.push(item)
+        });
+        setTimeout(function () {
+            countdown(timeArr);
+        }, 1000)
+    }
+    // 时间格式化输出，如11天03小时25分钟19秒  每1s都会调用一次
+    function dateformat(micro_second,type) {
+        var second = Math.floor(micro_second / 1000);// 总秒数
+        var day = Math.floor(second / 3600 / 24);// 天数
+        var hr = Math.floor(second / 3600 % 24);// 小时
+        var min = Math.floor(second / 60 % 60);// 分钟
+        var sec = Math.floor(second % 60);// 秒
+        if(type==0){
+            return '<span class="fs28">还剩'+day+'天</span><em class="num fs24 BGcolor_3 color_w">'+(hr < 10 ? '0' + hr : hr)+'</em><i>:</i><em class="num fs24 BGcolor_3 color_w">'+(min < 10 ? '0' + min : min)+'</em><i>:</i><em class="num fs24 BGcolor_3 color_w">'+(sec < 10 ? '0' + sec : sec)+'</em>';
+        }else{
+            return  (hr < 10 ? '0' + hr : hr)+':'+(min < 10 ? '0' + min : min)+':'+(sec < 10 ? '0' + sec : sec);
+        }
+
+    }
+</script>
+{/block}

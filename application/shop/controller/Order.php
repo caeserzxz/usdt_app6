@@ -6,7 +6,7 @@
 namespace app\shop\controller;
 use app\ClientbaseController;
 use app\shop\model\OrderModel;
-use app\shop\model\ShippingLogModel;
+
 
 
 class Order extends ClientbaseController{

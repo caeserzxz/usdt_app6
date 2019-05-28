@@ -1,0 +1,102 @@
+<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+    <div class="modal-dialog" style="width: 700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['id'] > 0?'编辑菜单':'添加菜单'}</h4>
+            </div>
+            <div class="modal-body">
+            			<div class="form-group">
+                            <label class="control-label">所属菜单：</label>
+                            <div class="col-sm-6">
+                                <select class="input-xlarge" data-rule-required="true" name="pid" onchange="$('#group').val($(this).find('option:selected').data('group'))">
+                                    <option value="0">顶级菜单</option>
+                                    {volist name="menusList" id="vo" }
+                                        <option value="{$vo.id}" data-group="{$vo.group}" {$vo['id']==$row['pid']?'selected':''}>{$vo.name}</option>
+                                            {volist name="vo.list" id="vob" }
+                                                <option value="{$vob.id}" data-group="{$vo.group}" {$vob['id']==$row['pid']?'selected':''}>|-&nbsp;{$vob.name}</option>
+                                            {volist name="vob.submenu" id="voc" }
+                                                <option value="{$voc.id}" data-group="{$vo.group}" {$voc['id']==$row['pid']?'selected':''}>|-&nbsp;{$voc.name}</option>
+                                            {/volist}
+                                        {/volist}
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                		<div class="form-group">
+                            <label class="control-label">菜单名称：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20" data-rule-required="true" name="name" value="{$row.name}" >
+                            </div>
+                        </div>
+                <div class="form-group">
+                    <label class="control-label">所属组：</label>
+                    <div class="col-sm-6 ">
+                        <input type="text" class="input-xlarge" data-rule-maxlength="20" id="group" name="group" value="{$row.group}" >
+                    </div>
+                </div>
+
+                        <div class="form-group">
+                            <label class="control-label">控制器：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="30"  name="controller" value="{$row.controller}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">功能：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20"  name="action" value="{$row.action}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">操作权限：</label>
+                            <div class="col-sm-9">
+                                <label><input type="checkbox" name="right[]" value="all"  {:in_array('all',$row['right'])?'checked':''}> 超级管理员</label>
+                                <label><input type="checkbox" name="right[]" value="manage"  {:in_array('manage',$row['right'])?'checked':''}> 全权限</label>
+                                <label><input type="checkbox" name="right[]" value="view"  {:in_array('view',$row['right'])?'checked':''}> 查看</label>
+                                <label><input type="checkbox" name="right[]" value="edit"  {:in_array('edit',$row['right'])?'checked':''}> 新增/修改</label>
+                                <label><input type="checkbox" name="right[]" value="del"  {:in_array('del',$row['right'])?'checked':''}> 删除</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          	<label class="control-label">状态：</label>
+                            <div class="col-sm-6">
+                              <label class="radio-inline">
+                                  <input name="status" value="1" {$row['status']==1?'checked':''} class="js_undertake " type="radio" >
+                                  正常
+                              </label>
+                              <label class="radio-inline">
+                                  <input name="status" value="0" {$row['status']==0?'checked':''} class="js_undertake" type="radio" >隐藏
+                              </label>
+                            </div>
+                            <div class="clearfix"></div>
+                          </div>
+                        <div class="form-group">
+                            <label class="control-label">子菜单列：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="100"  name="urls" value="{$row.urls}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">图标：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="20"  name="icon" value="{$row.icon}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">排序：</label>
+                            <div class="col-sm-6 ">
+                                <input type="text" class="input-xlarge" data-rule-maxlength="10"  name="sort_order" value="{$row.sort_order}" >
+                            </div>
+                        </div>
+
+            </div>
+            <div class="modal-footer">
+                <input  type="hidden" name="id" value="{$row.id|intval}"/>
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,29 +1,33 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "f75f703af8926d1a780fd84811f4595b",
     "packages": [
         {
             "name": "phpoffice/phpexcel",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
-                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/1441011fb7ecdd8cc689878f54f8b58a6805f870",
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "ext-xml": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=5.2.0"
+                "php": "^5.2|^7.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "2.*"
             },
             "type": "library",
             "autoload": {
@@ -33,7 +37,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "LGPL-2.1"
             ],
             "authors": [
                 {
@@ -41,18 +45,19 @@
                     "homepage": "http://blog.maartenballiauw.be"
                 },
                 {
-                    "name": "Mark Baker"
+                    "name": "Erik Tilt"
                 },
                 {
                     "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
+                    "homepage": "http://rootslabs.net"
                 },
                 {
-                    "name": "Erik Tilt"
+                    "name": "Mark Baker",
+                    "homepage": "http://markbakeruk.net"
                 }
             ],
             "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
-            "homepage": "http://phpexcel.codeplex.com",
+            "homepage": "https://github.com/PHPOffice/PHPExcel",
             "keywords": [
                 "OpenXML",
                 "excel",
@@ -62,20 +67,20 @@
                 "xlsx"
             ],
             "abandoned": "phpoffice/phpspreadsheet",
-            "time": "2015-05-01T07:00:55+00:00"
+            "time": "2018-11-22T23:07:24+00:00"
         },
         {
             "name": "topthink/framework",
-            "version": "v5.1.19",
+            "version": "v5.1.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "3a0fea90ed2a99b181ce503090e08be1171ed091"
+                "reference": "04cb0b7a4872fb7ebfd2d3af34074ac12bbfa31a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/3a0fea90ed2a99b181ce503090e08be1171ed091",
-                "reference": "3a0fea90ed2a99b181ce503090e08be1171ed091",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/04cb0b7a4872fb7ebfd2d3af34074ac12bbfa31a",
+                "reference": "04cb0b7a4872fb7ebfd2d3af34074ac12bbfa31a",
                 "shasum": ""
             },
             "require": {
@@ -113,7 +118,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2018-07-13T14:10:28+00:00"
+            "time": "2019-05-26T04:54:04+00:00"
         },
         {
             "name": "topthink/think-installer",
@@ -155,42 +160,6 @@
                 }
             ],
             "time": "2018-05-11T06:45:42+00:00"
-        },
-        {
-            "name": "tp5er/tp5-databackup",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tp5er/tp5-databackup.git",
-                "reference": "10abd4383cf78844e1c22584fd823ef1d18e75dc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/10abd4383cf78844e1c22584fd823ef1d18e75dc",
-                "reference": "10abd4383cf78844e1c22584fd823ef1d18e75dc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "tp5er\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "tp5er",
-                    "email": "tp5er@qq.com"
-                }
-            ],
-            "description": "Implement the database backup restore",
-            "time": "2017-12-29T05:36:58+00:00"
         }
     ],
     "packages-dev": [],

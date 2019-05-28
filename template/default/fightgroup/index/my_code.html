@@ -1,0 +1,87 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/generalize.css"/>
+{/block}
+{block name='pageType'}goodsCode{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="show" style="background:#FFF; padding:10px 0px;">
+    <div class="top">
+      <img src="{$goods.goods_thumb}" alt="">
+    </div>
+    
+        <div class="name fs34 fw_B color_3">{$goods.goods_name}</div>
+        <div class="info">
+          <div class="left">
+            <div class="color_r fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
+            <div class="user"><img class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt=""><p class="fs28 color_3 fw_b">{$userInfo['nick_name']}</p></div>
+          </div>
+          <div class="right"><img class="qcode" src="" alt=""></div>
+        </div>
+     </div>   
+</div>
+<div class="page-fd">
+  <div class="BGcolor_3 saveImg"><img src="__STATIC__/mobile/default/images/goodsIcon04.png" alt=""><span class="fs28 fw_b color_w">保存图片</span></div>
+    <div class="BGcolor_3 copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">复制链接</span></div>
+
+</div>
+<div class="model">
+      <div class="modelBg" onclick="hidemodel()"></div>
+      <div class="modelContent">
+        <div class="imgBox">
+        <img src="" alt="">
+        <span class="fs28 color_w">长按图片保存</span>
+      </div>
+      </div>
+    </div>
+{/block}
+{block name="footer"}
+<script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+<script src="__STATIC__/js/clipboard.min.js"></script>
+
+<script>
+function hidemodel(){
+    $('.model').hide()
+}
+function getHeadImg(){
+    jq_ajax('{:url("member/api.users/getHeadImg")}','',function(res){
+        $('.headimgurl').attr('src',res.headimgurl);
+    })
+}
+{:strstr($userInfo['headimgurl'],'http')?'getHeadImg();':''}
+//保存图片
+$(".saveImg").on("click", function (event) {
+    event.preventDefault();
+    html2canvas($('.show'), {
+        allowTaint: true,
+        scale:2,
+        ureCORS:true,
+        taintTest: false,
+        onrendered: function (canvas) {
+            $('.model').show();
+            var url = canvas.toDataURL();
+            $('.model').find('img').attr('src',url);
+        }
+    });
+});
+//复制
+var clipboard = new Clipboard('.copy');
+clipboard.on('success', function(e) {
+    _alert('复制成功.');
+    e.clearSelection();
+});
+clipboard.on('error', function(e) {
+    _alert('复制失败.');
+});
+	 //获取二维码
+   	jq_ajax('{:url("fightgroup/api.goods/goodsCode")}','fg_id={$fgInfo.fg_id}',function(res){
+	   if (res.code == 0){
+			_alert(res.msg,'{:url("member/passport/login")}');
+			return false;   
+	   }
+	   $('.qcode').attr('src',res.file);
+	});
+
+ </script>
+{/block}

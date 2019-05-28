@@ -1,0 +1,155 @@
+{extend name="layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet" />
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet" />
+{/block}
+{block name="main" }
+
+<header >
+         <div class="page-breadcrumbs">
+                    <ul class="breadcrumb" >
+                        <li>
+                            <i class="fa fa-ellipsis-v"></i>
+                            <strong>{$row['goods_id']>0?"编辑商品":"添加商品"}</strong>
+                        </li>                                  
+                    </ul>
+          
+            <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+        </header>
+        
+        <section class="scrollable wrapper">
+            <form class="form-horizontal form-validate" method="post" action="{:url('info')}" >
+
+                <section class="panel panel-default">
+                  <header >
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#basicInfo" data-toggle="tab">基本信息</a></li>
+                            <li><a href="#attribute" data-toggle="tab">商品属性</a></li>
+                             <li><a href="#details" data-toggle="tab" class="hide">PC商品详情</a></li>
+                            <li><a href="#mDetails" data-toggle="tab">H5详情</a></li>
+                            {gt name="$row.goods_id" value="0"}
+                            <li><a href="#log" data-toggle="tab">操作日志</a></li>
+                            {/gt}
+                        </ul>
+                    </header>
+                 
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="basicInfo">
+                        	{include file="goods/basicInfo" /}
+                            {include file="goods/sku" /}
+                        </div>
+                        <div class="tab-pane" id="details">
+                        	 <div class="col-sm-10">
+                                <textarea rows="13" class="hd" data-toggle="kindeditor" data-allo="remain" data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]" allowFileManager  name="goods_desc" style="visibility:hidden;">{$row.goods_desc|raw}</textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        	 </div>
+                        </div>
+                        <div class="tab-pane" id="mDetails">
+                        	 <div class="col-sm-10 hide">移动端的图片建议宽度为750像素</div>
+                        	 <div class="col-sm-10">
+                                <textarea rows="13" class="hd" data-toggle="kindeditor" data-allo="remain" data-tongji="remain" data-tongji-target=".js_kindeditor_tongjib" data-rule-rangelength="[0,50000]" allowFileManager   name="m_goods_desc" style="visibility:hidden;">{$row.m_goods_desc|raw}</textarea>   <p class="pull-right js_kindeditor_tongjib">还可输入{0}字</p>
+                        	 </div>
+                        </div>
+
+                        <div class="tab-pane" id="attribute">
+                        	<div class="form-group">
+                                  <label class="col-sm-2 control-label">商品模型：</label>
+                                  <div class="col-sm-3" >
+                                   <select name="type_model" id="type_model" class="input-max " data-toggle="select2" onChange="getGoodsAttriBute()">
+                                    <option value="0" selected>请选择模型</option>
+                                      {$modelListOpt|raw}            
+                                   </select>                                   
+                                  </div>
+                            </div>
+                            <div id="goods_attribute_box">                      
+                            </div>
+                            <script type="text/javascript">
+								function getGoodsAttriBute(){
+									var type_model = $("#type_model").val();
+									$('#goods_attribute_box').html('');
+									if (type_model < 1) return false;
+									jq_ajax('{:_url("getAttriBute",array("goods_id"=>$row["goods_id"],"model_id"=>"【type_model】"))}','',function(res){
+										if (res.code == 0){					
+											_alert(res.msg);
+											return false;
+										}
+										$('#goods_attribute_box').html(res.data.content);
+									});
+								}
+								$(function(){
+									getGoodsAttriBute();
+								});
+                            </script>
+                            
+                        </div>
+                        {if condition="$row['goods_id'] > 0" }
+                        <div class="tab-pane" id="log">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="180">记录时间</th>
+                                    <th width="150">操作者</th>
+                                    <th width="100">状态</th>
+                                    <th>备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="goodsLog" id="log"}
+                                <tr>
+                                    <td>{$log.log_time|dateTpl}</td>
+                                    <td>{$log['opt_source']=='admin'?'平台-'.adminInfo($log['operator']):'供应商'}</td>
+                                    <td>{$log['status']}</td>
+                                    <td>{$log.log_info}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="line line-dashed line-lg pull-in"  style="width:98%;"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">商品状态：</label>
+                            <div class="col-sm-5 m-t-md">
+                                {$goods_status[$row['isputaway']]}
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="line line-dashed line-lg pull-in"  style="width:98%;"></div>
+                          <div class="form-group" style="width:90%;">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                {if condition="$row.isputaway != 1 && $row.isputaway != 10"}
+                                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+                                {/if}
+                                {gt name="$row.goods_id" value="0"}
+                                    {if condition="$row.isputaway != 1 && $row.isputaway != 10"}
+
+                                        <button type="button" data-msg="确定提交上架审核？"
+                                                data-remote="{:url('postCheck',array('goods_id'=>$row['goods_id']))}"
+                                                data-toggle="ajaxCurl" class="btn btn-palegreen js_save_submit">提交上架审核</button>
+                                    {elseif condition="$row.isputaway == 1"}
+                                        <button type="button" data-msg="确定下架商品？"
+                                                data-remote="{:url('postUnder',array('goods_id'=>$row['goods_id']))}"
+                                                data-toggle="ajaxCurl" class="btn btn-palegreen js_save_submit" data-loading-text="提交中...">下架商品</button>
+                                        <button type="button" class="btn btn-primary " >修改库存</button>
+                                    {/if}
+                                {/gt}
+                            </div>
+                        </div>
+                    </div>
+                      
+                </section>
+                
+                <input name="goods_id" id="goods_id" type="hidden" value="{$row.goods_id|intval}">
+                
+        </section>
+    </section>
+
+{/block}
+
+
+{block name="footer" }
+<script type="text/javascript">
+   seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
+</script>
+{/block}

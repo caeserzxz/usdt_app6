@@ -3,3 +3,5 @@ composer.lock
 *.log
 runtime
 /.idea
+*.DS_Store
+/public/upload

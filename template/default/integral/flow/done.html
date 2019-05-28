@@ -1,0 +1,118 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+        <img src="__STATIC__/mobile/default/images/payY.png" alt="">
+        {if condition="$orderInfo.isPay == 1" }
+            <p class="fs34 fw_b color_3">待支付订单</p>
+            <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+            <span class="fs24 color_9">待支付金额</span>
+            <div class="color_3 fs72 num money">{$orderInfo.use_integral}</div>
+            <span class="fs24 color_9">待扣减积分</span>
+        {elseif condition="$orderInfo.pay_code == 'cod'" /}
+        	<p class="fs34 fw_b color_3">订单提交成功</p>
+        	<div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        	<span class="fs24 color_9">订单金额</span>
+        {else/}
+            <p class="fs34 fw_b color_3">订单支付成功 </p>
+            <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+            <span class="fs24 color_9">已支付金额</span>
+        <div class="color_3 fs72 num money">{$orderInfo.use_integral}</div>
+        <span class="fs24 color_9">已扣减积分</span>
+        {/if}
+    </div>
+    <div class="cellBox">
+        <div class="line"></div>
+        <div class="cell">
+            <span class="fs28 color_3">积分</span><div class="color_3 fs28 num money"><p class="fw_b fm_p"></p><em class="fs34">{$orderInfo.use_integral}</em></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_3">运费</span><div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34">{$orderInfo.shipping_fee}</em></div>
+        </div>
+    </div>
+    <div class="button">
+        <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
+        <a href="{:url('shop/order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
+         {if condition="$orderInfo.isPay == 1" }
+        <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>
+        {/if}
+    </div>
+</div>
+
+<!-- 支付方式 -->
+<div class="model">
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="title fs36 color_3 fw_b">请选择支付方式</div>
+        <div class="cantre pay" id="payListBox">
+
+                <p class="get_list_tip">加载中...</p>
+
+        </div>
+        <div class="buttBox">
+            <span class="fs32 fw_b color_w BGcolor_r payBtn">确认支付</span>
+        </div>
+    </div>
+</div>
+{literal}
+<script type="text/html" id="payListTpl">
+    {{each data as item index}}
+    <div class="block">
+        <label for="{{item.pay_code}}" style="width: 100%;">
+        <div class="payType">
+            <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+            <div>
+                <span class="fs30 color_3">{{item.pay_name}}</span>
+                {{if item.pay_code == 'balance'}}
+                <span class="fs26 color_r">(￥{{balance_money}})</span>
+                {{/if}}
+            </div>
+        </div>
+        </label>
+        <label for="{{item.pay_code}}">
+            <div class="iconBox">
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" data-pay_code="{{item.pay_code}}" id="{{item.pay_code}}" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+var goPay = {$goPay};
+  //选择支付方式
+  $('.gopay').on('click',function(){
+	  jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
+		  if (res.code==0){
+			  _alert(res.msg);
+			  return false;
+		  }
+		  $('#payListBox').html(template('payListTpl',res));
+		  $('.model').show();
+	  });
+  });
+  $('.closeBox').on('click',function(){
+            $('.model').hide();
+  });
+  $('.payBtn').on('click',function(){	  
+ 		var obj = $('input:radio[name="pay_id"]:checked');      	
+		if (typeof(obj.val()) == 'undefined') {
+		    _alert('请选择支付方式.');
+			return false;
+		}
+		var pay_code = obj.data("pay_code");
+	  window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
+  });
+  if (goPay == 1){
+	   window.location.href = '{:_url("shop/payment/getCode",'',false)}?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
+ }
+</script>
+{/block}

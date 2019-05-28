@@ -1,0 +1,43 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<tr>
+    <th width="60">ID</th>
+    <th width="120">商品编号</th>
+    <th>商品名</th>
+    <th width="120">兑换积分</th>
+    <th width="80">状态</th>
+    <th width="140">开始时间</th>
+    <th width="140">结束时间</th>
+    <th width="100">操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.ig_id}</td>
+      	<td>{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}</td>
+        <td>{$vo.goods_name}</td>
+        <td align="center">{$vo.show_integral}</td>
+        <td align="center">
+            {if condition="$vo.start_date > $time "}
+                未开始
+            {elseif condition="$vo.start_date < $time && $vo.end_date > $time"}
+                进行中
+            {else/}
+                已结束
+            {/if}
+        </td>
+        <td align="center">{$vo.start_date|dateTpl}</td>
+        <td align="center">{$vo.end_date|dateTpl}</td>
+        <td align="center">
+        	<a href="{:url('info',array('ig_id'=>$vo['ig_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>
+        </td>
+    </tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

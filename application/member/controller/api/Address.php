@@ -93,7 +93,7 @@ class Address extends ApiController
         if (empty($data['consignee'])) return $this->error('请输入收货人.');
         if (empty($data['address'])) return $this->error('请输入详细地址.');
         if (empty($data['mobile'])) return $this->error('请输入手机号码.');
-        if (checkMobile($data['mobile']) == false) return $this->error('手机号码格式不正确.' . $data['mobile']);
+        if (checkMobile($data['mobile']) == false) return $this->error('手机号码格式不正确.');
         $regionIds = input('regionIds', '', 'trim');
         if (empty($regionIds)) return $this->error('请选择所在地区.');
         $regionIds = explode(',', $regionIds);

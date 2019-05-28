@@ -52,7 +52,7 @@
             <td><img width="60" height="60" src="{$g.goods_thumb}"/></td>
             <td>{$g['is_spec']==1?'多规格':$g['goods_sn']}</td>
             <td>{$g.goods_name}</td>
-            <td>{$g['is_spec']==1?$g['show_price']:$g['shop_price']}</td>
+            <td>{$g['shop_price']}</td>
             <td>{$g['store_count']+$g['virtual_sale']}</td>
           </tr>
          {/volist}

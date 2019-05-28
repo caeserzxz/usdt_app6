@@ -1,0 +1,172 @@
+<?PHP header("Cache-Control:private"); ?>
+<!DOCTYPE html>
+<html lang="cn" class="app fadeInUp animated">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>供应商后台管理系统</title>
+  
+    <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
+    
+    <link rel="stylesheet" href="__STATIC__/main/css/app.css"/>
+    <!--Basic Styles-->
+    <link href="__STATIC__/main/css/stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="__STATIC__/main/css/inside.css" rel="stylesheet">
+    <link href="__STATIC__/awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/main/css/stylesheets/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/main/css/stylesheets/style.min.css" rel="stylesheet" />
+    
+    
+    <script type="text/javascript" src="__STATIC__/js/jquery/jquery/1.8.3/jquery.min.js"></script>
+    <script src="__STATIC__/js/inside.js"></script>
+    
+    <link rel="stylesheet" href="__STATIC__/main/css/public.css"/>
+    <link href="__STATIC__/main/css/stylesheets/daterangepicker/daterangepicker-bs3.min.css" rel="stylesheet" />
+	<script type="text/javascript">
+    	var assets_path="__STATIC__",
+		_version = "1.0.0",
+		uploadJ = "{:url('attachment/editer_upload',array('ckv'=>editerUploadCkv()))}",
+		fileManagerJ = "{:url('attachment/editer_manager')}",
+		regionUrl  = "{:url('publics/api.region/getList')}",
+		order_by = '<?=empty($data["order_by"])?'':$data["order_by"];?>',
+		sort_by = '<?=empty($data["sort_by"])?'':$data["sort_by"];?>',
+		page_size = '';
+		
+		/**
+ * app.js
+ */
+$(function () {
+    /**
+     * 点击侧边开关 (一级)
+     */
+    $('.switch-button').on('click', function () {
+        var header = $('.tpl-header'), wrapper = $('.tpl-content-wrapper'), leftSidebar = $('.left-sidebar');
+        if (leftSidebar.css('left') !== "0px") {
+            header.removeClass('active') && wrapper.removeClass('active') && leftSidebar.css('left', 0);
+        } else {
+            header.addClass('active') && wrapper.addClass('active') && leftSidebar.css('left', -280);
+        }
+    });
+    /**
+     * 侧边栏开关 (二级)
+     */
+    $('.sidebar-nav-sub-title').click(function () {
+        $(this).toggleClass('active');
+    });
+
+});
+    </script>    
+    {block name="head"}{/block}
+</head>
+  
+
+<body  {block name="body"}{/block}>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header class="tpl-header">
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-button switch-button">
+                <i class="fa fa-bars"></i>  <a href="javascript:;">欢迎你，<span><?= $supplyer['info']['supplyer_name'] ?></span>
+            </a>
+            </div>
+
+            
+            <!-- 其它功能-->
+            <div class="fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+
+                    </li>
+                
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a href="<?= url('supplyer/passport/logout') ?>">
+                            <i class="fa fa-power-off"></i> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <?php $menus = $menus ?: []; ?>
+        <!-- 一级菜单 -->
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-heading">管理菜单</li>
+            <?php foreach ($menus as $key => $item): 
+                if (empty($item['list']) == false){
+                    $vob = reset($item['list']);
+                    $_url = url($vob['controller'].'/'.$vob['action']);
+                }else{
+                    $_url = isset($item['controller']) ? url($item['controller'].'/'.$item['action']) : 'javascript:void(0);';
+                } 
+            ?>
+                <li class="sidebar-nav-link">
+                    <a href="<?=$_url?>"
+                       class="<?= empty($item['active'])==false  ? 'active' : '' ?>">
+                            <i class="fa sidebar-nav-link-logo {$item['icon']}" style=""></i> {$item['name']}
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <!-- 子级菜单-->
+        <?php
+        $second = isset($menus[$menus_group]['list']) ? $menus[$menus_group]['list'] : [];
+        ?>
+        <?php if (!empty($second)) : ?>
+            <ul class="left-sidebar-second">
+                <li class="sidebar-second-title hide"><?= $menus[$menus_group]['name'] ?></li>
+                <li class="sidebar-second-item">
+                    <?php foreach ($second as $item) :  ?>
+                        <?php if (!isset($item['submenu'])): ?>
+                            <!-- 二级菜单-->
+                            <a href="<?= url($item['controller'].'/'.$item['action']) ?>" class="<?= $item['active'] ? 'active' : '' ?>">
+                                <?= $item['name']; ?>
+                            </a>
+                        <?php else: ?>
+                            <!-- 三级菜单-->
+                            <div class="sidebar-third-item">
+                                <a href="javascript:void(0);"
+                                   class="sidebar-nav-sub-title <?= $item['active'] ? 'active' : '' ?>">
+                                    <i class="fa fa-sort"></i>
+                                    <?= $item['name']; ?>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </li>
+            </ul>
+        <?php endif; ?>
+    </div>
+
+    <!-- 内容区域 start -->
+    <div class="tpl-content-wrapper <?= empty($second) ? 'no-sidebar-second' : '' ?>" >
+    	<section class="vbox">
+        	{block name="main"}{/block}
+            {include file="layouts/page" /}
+    	</section>
+    </div>
+    <!-- 内容区域 end -->
+
+</div>
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/art-template.js"></script>
+<script src="__STATIC__/js/app.js"></script>
+<script src="__STATIC__/assets/sea.js"></script>
+<script src="__STATIC__/assets/seajs_config.js"></script>
+<script type="text/javascript">
+	seajs.use("dist/application/app.js");	
+</script>
+{block name="footer"}{/block}
+</body>
+</html>

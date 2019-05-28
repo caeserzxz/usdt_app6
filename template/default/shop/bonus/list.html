@@ -15,7 +15,7 @@
     <a href="#" class="fs32 fw_b color_w BGcolor_r">去领券中心</a>
 </div>
 
-<script type="text/html" id="addressTabTpl">
+<script type="text/html" id="TabTpl">
     <div class="tabBlock ">
         {{each unused as item index}}
         <div class="listBox">
@@ -23,7 +23,7 @@
             <div class="block {{if totalGoodsPrice==-1 || totalGoodsPrice >= item.bonus.min_amount}}userTicket usedBonus{{/if}}" data-bonus_id="{{item.bonus_id}}">
             {/literal}
                 <div class="left">
-                    <div class="fs34  fw_b">{{item.bonus.type_name}}</div>
+
                     <p class="fs26 ">满{{item.bonus.min_amount}}元可用</p>
                     <span class="fs24 ">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</span>
                 </div>
@@ -93,7 +93,7 @@
                 bounsData.totalGoodsPrice = -1;
             }
 
-            $('.bonusList').html(template('addressTabTpl', bounsData));
+            $('.bonusList').html(template('TabTpl', bounsData));
         })
     }
 

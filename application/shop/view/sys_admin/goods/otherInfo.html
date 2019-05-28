@@ -1,11 +1,4 @@
-<div class="form-group">
-    <label class="col-sm-2 control-label">作为普通商品销售：</label>
-    <div class="col-sm-6">
-		<label class="radio inline">
-            <input type="checkbox" name="is_alone_sale" value="1" {$row['is_alone_sale']==1 || $row['goods_id']==0?'checked':''}> 打勾表示能作为普通商品销售，否则只能作为配件、赠品或积分兑换.
-        </label>
-    </div>
-</div>
+
 <div class="form-group">               
 	<label class="col-sm-2 control-label">是否分销商品：</label>
     <div class="col-sm-10">
@@ -15,11 +8,17 @@
         <label class="radio-inline">
             <input name="is_dividend" value="1" {$row.is_dividend|tplckval='>0','checked'} type="radio" >是
         </label>
-         
-    </div>            
-	
+    </div>
 </div>
-
+{if condition="$row['supplyer_id'] == 0 && $row['store_id'] == 0" }
+<div class="form-group">
+    <label class="col-sm-2 control-label">作为普通商品销售：</label>
+    <div class="col-sm-6">
+        <label class="radio inline">
+            <input type="checkbox" name="is_alone_sale" value="1" {$row['is_alone_sale']==1 || $row['goods_id']==0?'checked':''}> 打勾表示能作为普通商品销售，否则只能作为配件、赠品或积分兑换.
+        </label>
+    </div>
+</div>
 <div class="form-group">
     <label class="col-sm-2 control-label">上架时间：</label>
     <div class="col-sm-10" >
@@ -49,6 +48,7 @@
 
     </div>
 </div>
+{/if}
 <div class="line line-dashed line-lg pull-in"></div>
  
 <div class="form-group">

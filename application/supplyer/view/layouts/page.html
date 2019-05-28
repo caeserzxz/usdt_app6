@@ -1,0 +1,39 @@
+{notempty name="data.page_size"}
+<footer class="footer bg-white b-t">
+    <div class="row text-center-xs ">
+        <div class="dropdown-box fl m-l m-t">
+                 <a data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle">
+                      <span class="dropdown-label">{$data.page_size}</span>
+                      <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-select dropdown-select-50">
+                      <li class="{$data.page_size|tplckval=10,'active'}">
+                          <a href="javascript:;">
+                              <input type="radio" name="pageSize" value="10" {$data.page_size|tplckval=10,'checked'}  />10</a>
+                      </li>
+                      <li class="{$data.page_size|tplckval=20,'active'}">
+                          <a href="javascript:;">
+                              <input type="radio" name="pageSize" value="20" {$data.page_size|tplckval=20,'checked'}/>20</a>
+                      </li>
+                      <li class="{$data.page_size|tplckval=50,'active'}">
+                          <a href="javascript:;">
+                              <input type="radio" name="pageSize" value="50"  {$data.page_size|tplckval=50,'checked'}/>50</a>
+                      </li>
+                      <li class="{$data.page_size|tplckval=100,'active'}">
+                          <a href="javascript:;">
+                              <input type="radio" name="pageSize" value="100" {$data.page_size|tplckval=100,'checked'}/>100</a>
+                      </li>
+                  </ul>
+        </div>
+
+        <div class=" hidden-sm fl m-t m-r">
+        
+            <p class="text-muted " >总共{$data.total_count|intval}条,共{$data.page_count|intval}页</p>
+        </div>
+        <div class="footer_other fl m-l"></div>
+        <div class="col-md-6  text-right text-center-xs fr ">
+            <ul class="pagination pagination-sm m-t-sm m-b-none" data-pages-total="{$data.page_count}" data-page-current="{$data.page}"></ul>
+        </div>
+    </div>
+</footer>
+{/notempty}

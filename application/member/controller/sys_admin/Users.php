@@ -21,6 +21,7 @@ use think\facade\Cache;
  */
 class Users extends AdminController
 {
+    public $is_ban = 0;
     /*------------------------------------------------------ */
     //-- 优先执行
     /*------------------------------------------------------ */
@@ -28,7 +29,6 @@ class Users extends AdminController
     {
         parent::initialize();
         $this->Model = new UsersModel();
-        $this->is_ban = 0;
     }
     /*------------------------------------------------------ */
     //-- 首页
@@ -38,8 +38,8 @@ class Users extends AdminController
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getList(true);
-        $this->assign("roleOpt", arrToSel($this->roleList, $search['roleId']));
-        $this->assign("levelOpt", arrToSel($this->levelList, $search['levelId']));
+        $this->assign("roleOpt", arrToSel($this->roleList, $this->search['roleId']));
+        $this->assign("levelOpt", arrToSel($this->levelList, $this->search['levelId']));
         return $this->fetch('sys_admin/users/index');
     }
 
@@ -50,13 +50,13 @@ class Users extends AdminController
     public function getList($runData = false, $is_ban = -1)
     {
 
-        $search['roleId'] = input('rode_id', 0, 'intval');
-        $search['levelId'] = input('level_id', 0, 'intval');
-        $search['keyword'] = input("keyword");
-        $search['time_type'] = input("time_type");
+        $this->search['roleId'] = input('rode_id', 0, 'intval');
+        $this->search['levelId'] = input('level_id', 0, 'intval');
+        $this->search['keyword'] = input("keyword");
+        $this->search['time_type'] = input("time_type");
 
         $this->assign("is_ban", $this->is_ban);
-        $this->assign("search", $search);
+        $this->assign("search", $this->search);
         $DividendRoleModel = new DividendRoleModel();
         $this->roleList = $DividendRoleModel->getRows();
         $this->assign("roleList", $this->roleList);
@@ -69,7 +69,7 @@ class Users extends AdminController
         if (empty($reportrange) == false) {
             $dtime = explode('-', $reportrange);
         }
-        switch ($search['time_type']) {
+        switch ($this->search['time_type']) {
             case 'reg_time':
                 $where[] = ' u.reg_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
@@ -83,24 +83,24 @@ class Users extends AdminController
                 break;
         }
 
-        if ($search['roleId'] > 0) {
-            $where[] = ' u.role_id = ' . $search['roleId'];
+        if ($this->search['roleId'] > 0) {
+            $where[] = ' u.role_id = ' . $this->search['roleId'];
         }
-        if ($search['levelId'] > 0) {
-            $level = $this->levelList[$search['levelId']];
+        if ($this->search['levelId'] > 0) {
+            $level = $this->levelList[$this->search['levelId']];
             $where[] = ' uc.total_integral between ' . $level['min'] . ' AND ' . $level['max'];
         }
 
-        if (empty($search['keyword']) == false) {
-            if (is_numeric($search['keyword'])) {
-                $where[] = "  u.user_id = '" . ($search['keyword']) . "' or mobile like '" . $search['keyword'] . "%'";
+        if (empty($this->search['keyword']) == false) {
+            if (is_numeric($this->search['keyword'])) {
+                $where[] = "  u.user_id = '" . ($this->search['keyword']) . "' or mobile like '" . $this->search['keyword'] . "%'";
             } else {
-                $where[] = " ( u.user_name like '" . $search['keyword'] . "%' or u.nick_name like '" . $search['keyword'] . "%' )";
+                $where[] = " ( u.user_name like '" . $this->search['keyword'] . "%' or u.nick_name like '" . $this->search['keyword'] . "%' )";
             }
         }
         $sort_by = input("sort_by", 'DESC', 'trim');
         $order_by = 'u.user_id';
-        $viewObj = $this->Model->alias('u')->join("users_account uc", 'u.user_id=uc.user_id', 'left')->where(join(' AND ', $where))->field('u.*,uc.balance_money,uc.use_integral')->order($order_by . ' ' . $sort_by);
+        $viewObj = $this->Model->alias('u')->join("users_account uc", 'u.user_id=uc.user_id', 'left')->where(join(' AND ', $where))->field('u.*,uc.balance_money,uc.use_integral,uc.total_integral')->order($order_by . ' ' . $sort_by);
 
         $data = $this->getPageList($this->Model, $viewObj);
         $data['order_by'] = $order_by;

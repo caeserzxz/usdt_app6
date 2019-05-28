@@ -80,11 +80,8 @@ $(function () {
             </div>
            
            {volist name="top_menus" id="vo"}
-                
-                    <div class="am-fl tpl-header-fun-button {$_module==$vo['key']?'top_select':'top_no_select'}">
-                        <a href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
-                    </div>
-              
+                <a class="am-fl tpl-header-fun-button {$_module==$vo['key']?'top_select':'top_no_select'}"  href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
+
            {/volist}
             
             
@@ -96,7 +93,11 @@ $(function () {
                         <a href="javascript:;">欢迎你，<span><?= $admin['info']['user_name'] ?></span>
                         </a>
                     </li>
-                
+                    <li class="am-text-sm">
+                        <a href="<?= url('mainAdmin/index/clearCache') ?>">
+                            <i class="fa fa-recycle"></i> 清理缓存
+                        </a>
+                    </li>
                     <!-- 退出 -->
                     <li class="am-text-sm">
                         <a href="<?= url('mainAdmin/passport/logout') ?>">
@@ -112,13 +113,13 @@ $(function () {
         <?php $menus = $menus ?: []; ?>
         <!-- 一级菜单 -->
         <ul class="sidebar-nav">
-            <li class="sidebar-nav-heading">后台管理</li>
+            <li class="sidebar-nav-heading">正品社交电商系统</li>
             <?php foreach ($menus as $key => $item): 
-                if (isset($item['submenu'])){
+                if (empty($item['submenu'])==false){
                     $vob = reset($item['submenu']);
-                    $_url = url($vob['controller'].'/'.$vob['action']);
+                    $_url = url($vob['group'].'/'.$vob['controller'].'/'.$vob['action']);
                 }else{
-                    $_url = isset($item['controller']) ? url($item['controller'].'/'.$item['action']) : 'javascript:void(0);';
+                    $_url = isset($item['controller']) ? url($item['group'].'/'.$item['controller'].'/'.$item['action']) : 'javascript:void(0);';
                 } 
             ?>
                 <li class="sidebar-nav-link">
@@ -128,6 +129,7 @@ $(function () {
                     </a>
                 </li>
             <?php endforeach; ?>
+            <div style=" position: absolute; bottom: 0px; width:150px;padding: 5px; color: #fff; font-size: 12px; text-align: center;"> Copyright © 2013-2019 All Rights <br>广东正品信息科技有限公司版权所有</div>
         </ul>
         <!-- 子级菜单-->
         <?php 
@@ -140,7 +142,7 @@ $(function () {
                     <?php foreach ($second as $item) :  ?>
                         <?php if (!isset($item['submenu'])): ?>
                             <!-- 二级菜单-->
-                            <a href="<?= url($item['controller'].'/'.$item['action']) ?>" class="<?= $item['active'] ? 'active' : '' ?>">
+                            <a href="<?= url($item['group'].'/'.$item['controller'].'/'.$item['action']) ?>" class="<?= $item['active'] ? 'active' : '' ?>">
                                 <?= $item['name']; ?>
                             </a>
                         <?php else: ?>
@@ -155,7 +157,7 @@ $(function () {
                                     <?php foreach ($item['submenu'] as $third) : ?>
                                         <li>
                                             <a class="<?= $third['active'] ? 'active' : '' ?>"
-                                               href="<?= url($third['controller'].'/'.$third['action']) ?>">
+                                               href="<?= url($third['group'].'/'.$third['controller'].'/'.$third['action']) ?>">
                                                 &nbsp;&nbsp;├─<?= $third['name']; ?></a>
                                         </li>
                                     <?php endforeach; ?>
@@ -166,6 +168,7 @@ $(function () {
                 </li>
             </ul>
         <?php endif; ?>
+
     </div>
 
     <!-- 内容区域 start -->

@@ -30,6 +30,7 @@ class BaseController extends Controller
     protected $menus_group = '';
  	public  $returnJson = false;//是否统一返回json
     public  $Model;
+    public  $main_transfer = true;//是否主层级调用
     //*------------------------------------------------------ */
 	//-- 获取字典数据
 	/*------------------------------------------------------ */
@@ -42,6 +43,7 @@ class BaseController extends Controller
     public function logout()
     {
         session('userId', null);
+        session('wxInfo', null);
         return $this->success('退出成功.');
     }
     //*------------------------------------------------------ */
@@ -99,8 +101,8 @@ class BaseController extends Controller
 	protected function getPageList(&$model,&$where = '',$field = '*',$page_size = ''){
 		if (empty($page_size)){
 			$page_size = input("page_size/d",0);
+            $session_page_size = Session::get('page_size') * 1;
 			if ($page_size <= 1 ){
-                $session_page_size = Session::get('page_size') * 1;
                 if ($session_page_size <= 1) $session_page_size = 10;
                 $page_size = $session_page_size;
             }
@@ -230,35 +232,32 @@ class BaseController extends Controller
 		return true;
     }
 	/*------------------------------------------------------ */
-	//-- 记录操作日志
+	//-- 记录操作日志，只提供给后台管理调用
 	/*------------------------------------------------------ */
-	public function _log($edit_id,$log_info,$model = 'sys',$data=''){
-		if ($model == 'member'){
-			$Model = new \app\member\model\LogSysModel();	
-		}else{
-			$Model = new \app\mainadmin\model\LogSysModel();	
-		}		
-		$data['edit_id'] = $edit_id;
-		$data['log_info'] = $log_info;
-		$data['module'] = request()->path();
-		$data['log_ip'] = request()->ip();
-		$data['log_time'] = time();
-		$data['user_id'] = AUID;
-		$data['data'] = base64_encode(serialize($data));
-		$Model->save($data);
+	public function _log($edit_id,$log_info,$controller = ''){
+	    if (empty($controller)) {
+            $controller = 'mainadmin';
+        }
+		$inData['edit_id'] = $edit_id;
+        $inData['log_info'] = $log_info;
+        $inData['module'] = request()->path();
+        $inData['log_ip'] = request()->ip();
+        $inData['log_time'] = time();
+        $inData['user_id'] = defined('AUID') ? AUID : SAUID;
+        $Model = str_replace('/', '\\', "/app/$controller/model/LogSysModel");
+        (new $Model)->save($inData);
 		return true;
 	}
 	/*------------------------------------------------------ */
 	//-- 上传文件
 	/*------------------------------------------------------ */
     protected function _upload($file, $dir = '', $thumb = array(), $save_rule='uniqid') {
-		
+
         $upload = new \lib\UploadFile();
-		$upload_path = '';
-        if ($dir) {
-            $upload_path = config('config._upload_') . $dir ;
-        }
-		
+
+        $upload_path = config('config._upload_') . $dir ;
+
+
         if ($thumb) {
             $upload->thumb = true;
             $upload->thumbMaxWidth = $thumb['width'];

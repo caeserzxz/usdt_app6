@@ -20,7 +20,7 @@ class OrderLogModel extends BaseModel
     public static function _log(&$order, $logInfo = '')
     {
         $inArr['order_id'] = $order['order_id'];
-        $inArr['admin_id'] = AUID * 1;
+        $inArr['admin_id'] = defined("AUID") ? AUID : 0;
         $inArr['order_status'] = $order['order_status'];
         $inArr['shipping_status'] = $order['shipping_status'];
         $inArr['pay_status'] = $order['pay_status'];

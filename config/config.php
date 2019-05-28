@@ -10,16 +10,21 @@
 // +----------------------------------------------------------------------
 
 return [
+    // 是否开启多语言
+    'lang_switch_on'         => true,
+    // 默认语言
+    'default_lang'           => 'zh-cn',
     // 上传目录
 	'_upload_'=> './upload/',
 	'apikey'=>'eb5c6b3e4505c1fd7878bde2ed8544cf',
 	'host_path'=> 'http://'.$_SERVER['SERVER_NAME'],//指定域名
     'bind_max_level' => 50,//绑定指定层数关系链
 	'dividend_level' => array(1=>'一级',2=>'二级',3=>'三级',4=>'四级',5=>'五级',6=>'六级',7=>'七级',8=>'八级',9=>'九级'),//提成等级
-    // 是否开启多语言
-    'lang_switch_on'         => true,
-    // 默认语言
-    'default_lang'           => 'zh-cn',
+
+    //使用的分销模式
+    'dividend_type' => 'sdtydw',
+    //使用的分销模式
+
     /* 订单状态 */
     'OS_UNCONFIRMED' => 0,// 未确认
     'OS_CONFIRMED' => 1,// 已确认
@@ -43,4 +48,12 @@ return [
     'DD_DIVVIDEND' => 9, // 已分成
     'DD_RETURNED' => 11, // 退货
     'DD_CANCELED' => 10, // 已取消
+     //商品状态
+     'goods_status'=>['0'=>'未上架','1'=>'上架中','2'=>'自动上架','10'=>'审核中','11'=>'审核失败','12'=>'平台下架商品','13'=>'供应商下架'],
+     //拼团状态
+     'FG_WAITPAY' => 0,// 待支付
+     'FG_DOING' => 1,// 拼团中
+     'FG_FULL' => 2,// 拼团满员
+     'FG_SEUCCESS' => 3,// 拼团成功
+     'FG_FAIL' => 9,// 拼团失败
 ];

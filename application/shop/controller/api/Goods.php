@@ -53,15 +53,15 @@ class Goods extends ApiController
 		 if (empty($sqlOrder)){
 			$search['is_best'] = input('is_best',0,'intval');
 			if ($search['is_best'] > 0){
-				$this->sqlOrder = "is_best DESC, virtual_sale $sort_by";
+				$this->sqlOrder = "is_best DESC, virtual_sale DESC";
 			}
 			$search['is_hot'] = input('is_hot',0,'intval');
 			if ($search['is_hot'] > 0){
-				$this->sqlOrder = "is_hot DESC, virtual_sale $sort_by";
+				$this->sqlOrder = "is_hot DESC, virtual_sale DESC";
 			}	
 			$search['is_new'] = input('is_new',0,'intval');
 			if ($search['is_new'] > 0){
-				$this->sqlOrder = "is_new DESC, virtual_sale $sort_by";
+				$this->sqlOrder = "is_new DESC, virtual_sale DESC";
 			}
 		}
        
@@ -75,7 +75,7 @@ class Goods extends ApiController
 					$this->sqlOrder = "virtual_sale $sort_by";
 					break;
 				case 'price':
-					$this->sqlOrder = "sort_price $sort_by";
+					$this->sqlOrder = "shop_price $sort_by";
 					break;
 				default:
 					$this->sqlOrder = "virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
@@ -93,7 +93,7 @@ class Goods extends ApiController
             $_goods['short_name'] = $goods['short_name'];
             $_goods['is_spec'] = $goods['is_spec'];
             $_goods['exp_price'] = $goods['exp_price'];
-            $_goods['now_price'] = $goods['_price'];
+            $_goods['now_price'] = $goods['sale_price'];
             $_goods['market_price'] = $goods['market_price'];
             $_goods['sale_count'] = $goods['sale_count'];
             $_goods['collect_count'] = $goods['collect_count'];
@@ -191,4 +191,16 @@ class Goods extends ApiController
 		$return['code'] = 1;
         return $this->ajaxReturn($return);
 	}
+    /*------------------------------------------------------ */
+    //-- 获取商品详情
+    /*------------------------------------------------------ */
+    public function info()
+    {
+        $goods_id = input('goods_id','','intval');
+        if (empty($goods_id)) return $this->error('传参失败.');
+        $return['data'] = $this->Model->info($goods_id);
+        if (empty($return['data'])) return $this->error('没有找到相关商品.');
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 }

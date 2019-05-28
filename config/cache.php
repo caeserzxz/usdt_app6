@@ -16,7 +16,7 @@
 return [
     // 驱动方式
     'type'   => 'Redis',
-	'password'=>'eb2018',
+	'password'=>'',
     // 缓存保存目录
     'path'   => '',
     // 缓存前缀

@@ -1,0 +1,132 @@
+<div class="model skubox" >
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="top">
+            <div class="left"><img id="skuImg" src="{$goods.goods_thumb}" alt=""></div>
+            <div class="right">
+                <div class="money">
+                    <div class="color_3 fs30 num"><p class="fw_b fm_p">￥</p>
+                        {eq name="goods.is_spec" value="0"}
+                            <em class="fs52">{$fgInfo.exp_price[0]}</em><p>.{$fgInfo.exp_price[1]}</p>
+                        {else/}
+                            <div class="skuPrice">
+                                <em class="fs52"></em><p></p>
+                            </div>
+                        {/eq}
+                    </div>
+                    <span class="fs22 color_w BGcolor_r">{$fgInfo.success_num}人团</span>
+                </div>
+                <div class="fs24 color_9 moneyPrimary">￥{$goods.market_price}</div>
+                {notempty name="$goods.sub_goods"}<p class="fs28 fw_b color_3 selSkuName">请选择规格</p>{/notempty}
+            </div>
+        </div>
+
+        <div class="cantre sku_list">
+            {volist name="goods.lstSKUArr" id="sku"  }
+
+            <div class="block {$sku['is_show']==0?'hide':''}">
+                <p class="fs32 fw_b color_3">{$sku.name}</p>
+                <div class="list">
+                    {volist name="sku.lstVal" id="lst" }
+                        <span class="fs28 color_3 {$lst['isdef']==1?'tag_active':''} {$lst['issel']==0?'disabled':''}" id="sku_{$lst.id}" data-skukey="{$lst.id}">{$lst.val}</span>
+                    {/volist}
+                </div>
+            </div>
+
+            {/volist}
+
+            <div class="block">
+                <div class="numberBox"><p class="fs32 fw_b color_3">数量</p>
+                    <div class="number">
+                        <img src="__STATIC__/mobile/default/images/goodsIcon05.png" alt="" class="minus onj">
+                        <input class="fs30 color_3 pr_selnum" type="text" value="1" id="buynumber" name="buynumber" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                        <img src="__STATIC__/mobile/default/images/goodsIcon06.png" alt="" class="add onz"></div>
+                </div>
+            </div>
+        </div>
+        <div class="buttBox">
+            {empty name="$fgJoin"}
+            <span class="fs28 fw_b color_w BGcolor_r buyBtn" data-goods_id="{$goods.goods_id}" data-type="onfg">发起拼团<div class="num fg_price">￥<em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+            {else/}
+            {if condition="$orderInfo['fg_status'] == 0"}
+           <span class="fs28 fw_b color_w BGcolor_r buyBtn" data-goods_id="{$goods.goods_id}" data-type="onfg">参与拼团<div class="num fg_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+            {elseif condition="$orderInfo['fg_status'] == 1"}
+            <span class="fs22 color_w buyBtn" data-type="show">拼团满员</span>
+            {else/}
+            <span class="fs22 color_w buyBtn" data-type="show">拼团结束</span>
+            {/if}
+            {/empty}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var sub_goods = {$goods.sub_goods|json_encode|raw};
+    var skuCstom = {$goods.skuCstom|json_encode|raw};
+    var skuImgs = {$skuImgs|json_encode|raw};
+    //选择商品数量
+    $(".onj").click(function(){
+        act=parseInt($(".pr_selnum").val());
+        if(act<=1){
+            $(".pr_selnum").val(1);
+        }else{
+            $(".pr_selnum").val(act-1);
+        }
+    })
+    $(".onz").click(function(){
+        act=parseInt($(".pr_selnum").val());
+        $(".pr_selnum").val(act+1);
+    })
+    $(".pr_selnum").blur(function(){
+        if($(this).val()=="" || $(this).val()=="0"){$(this).val(1);}
+        act=parseInt($(".pr_selnum").val());
+    });
+    function selsku(){
+		if (sub_goods.length < 1) return false;
+
+        var sku = new Array();
+        $('.sku_list .tag_active').each(function(){
+            var skukey = $(this).data('skukey');
+            sku.push($(this).data('skukey'));
+        });
+
+       var _sku = sku.join(":");
+
+        $('.buyBtn').attr('data-sku',_sku);
+        var skuName = new Array();
+        $.each(sku,function (k,v) {
+            skuName.push(skuCstom[v]);
+        })
+        $('#skuImg').attr('src',skuImgs[_sku]);
+        $('.selSkuName').html(skuName.join(" - "));
+        $('.selSkuNameByInfo').html(skuName.join(" - "));
+
+        $('.skuPrice').find('em').html(sub_goods[_sku].exp_price[0]);
+        $('.skuPrice').find('p').html('.'+sub_goods[_sku].exp_price[1]);
+        $('.fg_price').find('em').html(sub_goods[_sku].exp_price[0]);
+        $('.fg_price').find('i').html('.'+sub_goods[_sku].exp_price[1]);
+
+        $('.shop_price').find('em').html(sub_goods[_sku].exp_shop_price[0]);
+        $('.shop_price').find('i').html('.'+sub_goods[_sku].exp_shop_price[1]);
+
+        $('.moneyPrimary').html('￥'+sub_goods[_sku].market_price);
+
+    }
+
+    $(function() {
+        //开启规格选择弹窗
+        $('.size').on('click', function () {
+            $('.skubox').show();
+            selsku();
+        })
+        //规格选择
+        $('.sku_list span').on('click', function () {
+            $(this).addClass('tag_active')
+            $(this).siblings().removeClass('tag_active');
+            selsku();
+        })
+        //关闭规格选择弹窗
+        $('.closeBox').on('click', function () {
+            $('.model').hide()
+        })
+    })
+</script>

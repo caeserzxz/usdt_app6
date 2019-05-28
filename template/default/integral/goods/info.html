@@ -1,0 +1,188 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+{/block}
+{block name='pageType'}Goods{/block}
+{block name="main" }
+<div class="page-hd">
+          <div class="header">
+              <div class="header-left back">
+                  <a href="javascript:history.go(-1)" class="left-arrow"></a>
+              </div>
+              <div class="header-title">
+                <span class="fs32 color_9 active">商品</span>
+                <span class="fs32 color_9">详情</span>
+              </div>
+          </div>
+      </div>
+
+<div class="page-bd tabBox" id="goods">
+    <!-- 页面内容-->
+    <!-- 商品轮播 -->
+    <div class="swiperBox">
+        <div class="swiper-container swiper1" id="swiper01">
+            <div class="swiper-wrapper">
+                {volist name="imgsList" id="img" }
+                <a href="javascript:;" class="swiper-slide"><img src="{$img.goods_img}" alt=""/></a>
+                {/volist}
+            </div>
+            <div class="swiper-pagination pagination1"></div>
+
+        </div>
+    </div>
+    <!-- 商品信息 -->
+    <div class="moneyBox">
+        <div class="top">
+            <div class="color_3 fs30 num money"><p class="fw_b fm_p">积分：</p>
+                 <em class="fs52">{$igInfo.show_integral}</em>
+            </div>
+        </div>
+        <div class="name fw_b fs34 color_3">{$goods.goods_name}</div>
+    </div>
+    {eq name="goods.is_spec" value='1'}
+    <div class="cell">
+        <span class="fs32 fw_b color_3">选择规格</span>
+        <div class="size"><p class="fs28 color_6 selSkuName">请选择规格</p><img
+                src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+    </div>
+    {/eq}
+        <!-- 图文 -->
+        <div class="imgText">
+          <div class="title fw_b fs32 color_3">商品详情</div>
+          {$goods.m_goods_desc|raw}
+        </div>
+
+</div>
+
+<!-- 弹出规格选择 -->
+{include file="goods/sku" /}
+
+<!-- 底部 -->
+<div class="page-ft">
+    <div class="left">
+        <a href="/"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span
+                class="fs22 color_6">首页</span></a>
+        <div v5_href><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6" >客服</span>
+        </div>
+        <a href="{:url('flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">{$cartInfo.num|intval}</em><img
+                src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span
+                class="fs22 color_6">购物车</span></a>
+    </div>
+    <div class="right">
+        <div class="fs28 color_w fw_b BGcolor_3 buyBtn" data-type="show">加入购物车</div>
+        <div class="fs28 color_w fw_b BGcolor_r buyBtn" data-type="show">立即购买</div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+$(function () {
+	swiper1 = createSwiper(1);
+	// 滚动出现tab
+	$('#goods').scroll(function(){
+	  let scrolltop=$(this).scrollTop()
+	  // console.log($('.comment').offset().top,scrolltop)
+	  if(scrolltop>100){
+		$('.header-title').css('display','flex');
+		$('.header-left').removeClass('back')
+		$('.page-hd').css('background-color','#fff')
+		$('.header').addClass('bgShow')
+		if($('.comment').offset().top<$('.page-hd').height()){
+		  $('.header-title span').eq(1).addClass('active')
+		  $('.header-title span').eq(1).siblings().removeClass('active')
+		  if($('.imgText').offset().top<$('.page-hd').height()){
+			$('.header-title span').eq(2).addClass('active')
+			$('.header-title span').eq(2).siblings().removeClass('active')
+		  }else{
+			$('.header-title span').eq(1).addClass('active')
+			$('.header-title span').eq(1).siblings().removeClass('active')
+		  }
+		}else{
+		  $('.header-title span').eq(0).addClass('active')
+		  $('.header-title span').eq(0).siblings().removeClass('active')
+		}
+
+	  }else{
+		$('.header-title').css('display','none');
+		$('.header-left').addClass('back')
+		$('.page-hd').css('background-color','transparent')
+		$('.header').removeClass('bgShow')
+	  }
+
+	})
+	  //tab切换
+	$('.header-title span').on('click',function(){
+	  let index=$(this).index()
+	  let topHeight=$('.page-hd').height()
+	  let commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
+	  let imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
+		if(index==0){
+		  $("#goods").animate({scrollTop:0}, 300)
+		}else if(index==1){
+		  $("#goods").animate({scrollTop:commentTop+'px'}, 300)
+		}else{
+		  $("#goods").animate({scrollTop:imgTextTop+'px'}, 300)
+		}
+	})
+	//点击购买按钮
+	$('.buyBtn ').on('click', function () {
+		var obj = $(this);
+		if (obj.data('type') == 'show') {
+			$('.model').show();
+			selsku();
+		} else {
+			addToCart(obj);
+		}
+	})
+})
+//获取购物车
+jq_ajax("{:url('integral/api.flow/getCartInfo')}", '',function (res) {
+	if (res.code == 0)  return false;
+	$('.cartNum').html(res.cartInfo.num);
+});
+//添加到购物车
+function addToCart(obj) {
+	var arr = new Object;
+	arr.goods_id = obj.data('goods_id');
+	arr.specifications = obj.data('sku');
+    arr.sku_id = 0;
+    if (typeof(arr.specifications) != 'undefined'){
+        arr.sku_id = sub_goods[arr.specifications].sku_id;
+    }
+	arr.type = obj.data('type');
+	arr.number = $('#buynumber').val();
+	var res = jq_ajax("{:url('integral/api.flow/addCart')}", arr);
+	if (res.code == 1) {
+		if (arr.type == 'onbuy') {
+			window.location = '{:_url("flow/checkout",array("rec_id"=>"【res.rec_id】"))}';
+			return false;
+		}
+		$('.cartNum').html(res.cartInfo.num);
+	}
+	if (res.msg) _alert(res.msg);
+}
+
+function createSwiper(index) {
+	var swiper = new Swiper(".swiper" + index, {
+		pagination: {
+			el: ".pagination" + index
+		},
+		paginationClickable: true,
+		observer: true,
+		observeParents: true,
+		loop: true,
+		autoplay: {
+			delay: 1500,
+			stopOnLastSlide: false,
+			disableOnInteraction: false
+		},
+		onSlideChangeEnd: function (swiper) {
+			swiper.update(); //swiper更新
+		}
+	});
+	return swiper;
+}
+</script>
+{/block}

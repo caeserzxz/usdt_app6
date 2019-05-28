@@ -1,0 +1,184 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['goods_id']>0?"编辑拼团商品":"添加拼团商品"}</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$row.goods_id}">
+        <section class="panel panel-default">
+            {if condition="$row['goods_id'] == 0"}
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">选择商品：</label>
+                <div class="col-sm-8 " >
+                    <input id="goods_keyword" type="text" class="input-medium " placeholder="商品名称/SN" aria-invalid="false">
+
+                    <a class="btn btn-default fa fa-search" title="搜索"  onclick="searchGoods()" ></a>
+
+                    <select id="goods_select" class="m-r" style="width:250px;" data-toggle="select2" onChange="goodsSelect()">
+                        <option value="">选择商品</option>
+                    </select>
+                    <span class="help-inline">* 添加后不能修改</span>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                function searchGoods(){
+                    var arr = new Object();
+                    arr.keyword = $('#goods_keyword').val();
+                    arr.min_search = 1;
+                    $('#goods_select').html('<option value="">选择商品</option>');
+                    var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
+                    $.each(res.list, function(i,value){
+                        $('#goods_select').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+                    })
+                }
+                //选择商品
+                function goodsSelect(){
+                    var goods_id = $('#goods_select').val();
+                    $('.goods_name').html('');
+                    $('.goods_info').html('');
+                    jq_ajax('{:url("shop/api.goods/info")}','goods_id='+goods_id,function(res){
+                        if (res.code == 0){
+                            return false;
+                        }
+                        $('#goods_id').val(res.data.goods_id);
+                        $('.goods_name').html('商品ID：'+res.data.goods_id+' - '+res.data.goods_name+'('+(res.data.is_spec==1?'多规格':res.data.goods_sn)+')');
+                        if (res.data.is_spec == 1){
+                            $.each(res.data.sub_goods, function(i,val){
+                                $('.goods_info').append('<div class="relative"><label><input type="checkbox" name="sku_ids['+val.sku_id+']" value="'+val.sku_id+'"> ' +
+                                    ''+val.sku_name+'</label>，' +
+                                    '当前库存：'+val.goods_number+'，拼团销售数量：<input type="text" name="fg_number['+val.sku_id+']" min=0 class="input-ssmall" value="">，' +
+                                    '拼团价：￥<input type="text" name="fg_price['+val.sku_id+']" min=0.01  class="input-small" data-rule-ismoney="true" value="">元</div>');
+                            })
+                        }else{
+                            $('.goods_info').html('当前库存：'+res.data.goods_number+'，拼团销售数量：<input type="text" name="fg_number" class="input-ssmall" data-rule-ismoney="true" value="">，拼团价：￥<input type="text" name="fg_price" class="input-small" data-rule-ismoney="true" value="">元');
+                        }
+                    });
+                }
+            </script>
+            {/if}
+
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">拼团商品：</label>
+                <div class="col-sm-9 lh30" >
+                    <div class="col-sm-10 goods_name " >
+                        {gt name="$row.fg_id" value="0" }
+                        商品ID：{$goods.goods_id} - {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
+                        {/gt}
+                    </div>
+                    <div class="col-sm-10 goods_info m-t-md" >
+                        {gt name="$row.fg_id" value="0" }
+                            {if condition="$goods.is_spec == 1"}
+                            {volist name="$goods.sub_goods" id="sku" }
+                                <div class="relative">
+                                    <label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$fg_goods[$sku['sku_id']]?'checked':''}> {$sku.sku_name}</label>
+                                    当前库存：{$sku.goods_number}，已销售：{$fg_goods[$sku['sku_id']]['sale_num']},拼团销售数量：<input type="text" min="0" name="fg_number[{$sku.sku_id}]" min=0 class="input-ssmall" value="{$fg_goods[$sku['sku_id']]['fg_number']}">，
+                                    拼团价：￥<input type="text" name="fg_price[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['fg_price']}">元
+                                </div>
+                            {/volist}
+                            {else/}
+                            当前库存：{$goods.goods_number}，已销售：{$fg_goods.sale_num},拼团销售数量：<input type="text" name="fg_number" min="0" class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods.fg_number}">，拼团价：￥<input type="text" name="fg_price" class="input-small" data-rule-ismoney="true" value="{$fg_goods.fg_price}">元
+                            {/if}
+                        {/gt}
+                    </div>
+                    <div class="col-sm-10 red m-t-md">* 拼团销售数量：拼团销售量达到此值时，将不能继续销售。</div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">使用优惠券：</label>
+                <div class="col-sm-8">
+                    <label><input type="checkbox" value="1" name="is_usd_bonus" {$row['is_usd_bonus']==1?'checked':''}> 允许使用优惠券</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2  control-label">封面图片：</label>
+                <div class="col-sm-7">
+                    <img class="thumb_img" name="coverfile" id="coverfile" src="{$row.cover|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                    <input class="hide" type="text" id="classcover" name="cover" value="{$row.cover}" />
+                    <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                    <p><span class="help-inline">图片尺寸：690*388像素</span><br /><a href="javascript:;" onclick="$('#classcover').val('');$('#coverfile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">成团人数：</label>
+                <div class="col-sm-8">
+                   <input type="text" value="{$row['success_num']}" class="input-ssmall" min="2" data-msg="最小要2人才能成团." name="success_num">
+                    <span class=" help-inline">达到此数值成团，须两人以上才能成团</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">单笔限购：</label>
+                <div class="col-sm-8">
+                    <input type="text" value="{$row['limit_num']}" class="input-ssmall" min="0" name="limit_num">
+                    <span class=" help-inline">每笔订单限制只能购买数量，0不限制</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">拼团时效：</label>
+                <div class="col-sm-8">
+                    <select name="valid_time" style="width:100px;">
+                        <option value="0" {$row['valid_time']==0?'selected':''}>不限制</option>
+                        {for start="1" end="49" name="hour" }
+                        <option value="{$hour}" {$row['valid_time']==$hour?'selected':''}>{$hour} 小时</option>
+                        {/for}
+                    </select>
+                    <span class=" help-inline">发起拼团时开始计算，至指定小时后未能满足成团条件，自动失败原路退款</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">拼团时间：</label>
+                <div class="col-sm-3" >
+                    <span class="fl help-inline">开始时间：</span><div class="input-group"> <input type="text" class="input-max" name="start_date" readonly="readonly" id="start_date" value="{$row.start_date|dateTpl='Y-m-d H:i',true}"  data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+
+                <div class="col-sm-3" >
+                    <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" name="end_date" value="{$row.end_date|dateTpl='Y-m-d H:i',true}" id="end_date"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">拼团简介：</label>
+                <div class="col-sm-8">
+                    <textarea name="share_desc" style="width: 100%; height: 120px;">{$row.share_desc}</textarea>
+
+                </div>
+            </div>
+
+
+            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
+            <div class="form-group" style="width:90%;">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="fg_id" id="fg_id" type="hidden" value="{$row.fg_id|intval}">
+    </form>
+</section>
+
+{/block}
+
+
+{block name="footer" }
+
+{/block}

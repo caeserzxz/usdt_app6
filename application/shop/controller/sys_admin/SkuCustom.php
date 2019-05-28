@@ -13,8 +13,8 @@ class SkuCustom extends AdminController
 	/*------------------------------------------------------ */
 	//-- 优先自动执行
 	/*------------------------------------------------------ */ 
-	public function initialize(){	
-		parent::initialize();
+	public function initialize(){
+        parent::initialize();
 		$this->Model = new SkuCustomModel();
 	}
 	/*------------------------------------------------------ */
@@ -22,19 +22,22 @@ class SkuCustom extends AdminController
 	/*------------------------------------------------------ */
 	public function skuByCategory(){
 		$skuModelId = input('skuModelId',0,'intval');
-		$skuList = $this->Model->getRows($skuModelId);		
+		$skuList = $this->Model->getRows($skuModelId,$this->supplyer_id);
 		return $this->ajaxReturn($skuList);	
 	}
 	/*------------------------------------------------------ */
-	//-- 新建商品类目
+	//-- 新建商品模型
 	/*------------------------------------------------------ */
 	public function addSkuCategory(){
+	    if (empty($this->supplyer_id) == false){
+            return $this->error('无权操作.');
+        }
 		if ($this->request->isPost()){
 			$inarr['name'] = input('name','','trim');
-			if (empty($inarr['name'])) return $this->error('请输入类目名称！');
+			if (empty($inarr['name'])) return $this->error('请输入模型名称！');
 			$SkuCategoryModel = new SkuCategoryModel();
 			$count = $SkuCategoryModel->where($inarr)->count('id');
-			if ($count > 0) return $this->error('已存在同名的类目！');
+			if ($count > 0) return $this->error('已存在同名的模型！');
 			$res = $SkuCategoryModel->save($inarr);
 			if ($res < 1) return $this->error();
 			$result['_fun'] = 'setSkuCategory';
@@ -58,16 +61,17 @@ class SkuCustom extends AdminController
 		$skuModelId = input('skuModelId',0,'intval');
 		$spe = input('spe','','trim');
 		$speval = input('speval');
-		if ($skuModelId < 0) return $this->error('商品类目ID传参错误！');
+		if ($skuModelId < 0) return $this->error('商品模型ID传参错误！');
 		if (empty($spe)) return $this->error('规格名称传参错误！');
 		if (empty($speval)) return $this->error('规格值传参错误！');
-		
+		$supplyer_id = $this->supplyer_id * 1;
 		$inarr['model_id'] = $skuModelId;
-		$inarr['val'] = $spe;		
+		$inarr['val'] = $spe;
+        $inarr['supplyer_id'] = $supplyer_id;
 		$this->Model->save($inarr);
 		$key = $this->Model->id;
 		if ($key < 0) return $this->error();
-		$result['data']['id'] = $key;	
+		$result['data']['id'] = $key;
 		$result['data']['name'] = $spe;			
 		$result['data']['speid'] = $key;
 		$result['code'] = 1;
@@ -75,8 +79,9 @@ class SkuCustom extends AdminController
 		foreach ($speval as $val){
 			$inarr['model_id'] = $skuModelId;
 			$inarr['speid'] = $key;
-			$inarr['val'] = $val;			
-			$keyb = $this->Model::create($inarr);
+			$inarr['val'] = $val;
+            $inarr['supplyer_id'] = $supplyer_id;
+            $keyb = $this->Model::create($inarr);
 			$row['val'] = $val;
 			$row['key'] = $keyb;
 			$result['data']['spevalList'][] = $row;
@@ -92,17 +97,18 @@ class SkuCustom extends AdminController
 		$skuModelId = input('skuModelId',0,'intval');
 		$speid = number_format(input('speid'),0,'','');
 		$speval = input('speval');
-		if ($cid < 0) return $this->error('商品类目ID传参错误！');
+		if ($skuModelId < 0) return $this->error('商品模型ID传参错误！');
 		if ($speid < 0) return $this->error('规格ID传参错误！');
 		if (empty($speval)) return $this->error('规格值传参错误！');
-		
+        $supplyer_id = $this->supplyer_id * 1;
 		$result['data']['speid'] = $speid;		
 		$result['code'] = 1;
 		$result['msg'] = '操作成功.';
 		foreach ($speval as $val){
 			$inarr['model_id'] = $skuModelId;
 			$inarr['speid'] = $speid;
-			$inarr['val'] = $val;			
+			$inarr['val'] = $val;
+            $inarr['supplyer_id'] = $supplyer_id;
 			$res = $this->Model::create($inarr);
 			$row['val'] = $val;
 			$row['key'] = $res->id;
@@ -114,16 +120,21 @@ class SkuCustom extends AdminController
 	/*------------------------------------------------------ */
 	//-- 删除定义规格
 	/*------------------------------------------------------ */
-	function delSku(){
+    public function delSku(){
 		$skuModelId = input('skuModelId',0,'intval');
 		$speid = number_format(input('post.speid'),0,'','');
-		if ($skuModelId < 0) return $this->error('商品类目ID传参错误！');
+		if ($skuModelId < 0) return $this->error('商品模型ID传参错误！');
 		if ($speid < 0) return $this->error('规格ID传参错误！');
-		$map['model_id'] = $skuModelId;
-		$map['id'] = $speid;
-		$res = $this->Model->where($map)->delete();
+        $supplyer_id = $this->supplyer_id * 1;
+		$where[] = ['model_id','=',$skuModelId];
+        $where[] = ['id','=',$speid];
+        $where[] = ['supplyer_id','=',$supplyer_id];
+		$res = $this->Model->where($where)->delete();
 		if ($res < 1) return $this->error();
-		$this->Model->where('speid',$speid)->delete();
+		unset($where);
+        $where[] = ['speid','=',$speid];
+        $where[] = ['supplyer_id','=',$supplyer_id];
+		$this->Model->where($where)->delete();
 		$this->Model->cleanMemcache($skuModelId);
 		$result['data']['speid'] = $speid;		
 		$result['code'] = 1;
@@ -133,18 +144,21 @@ class SkuCustom extends AdminController
 	/*------------------------------------------------------ */
 	//-- 删除定义规格值
 	/*------------------------------------------------------ */
-	function delSkuVal(){
+    public function delSkuVal(){
 		$skuModelId = input('skuModelId',0,'intval');
 		$speid = number_format(input('post.speid'),0,'','');
 		$idarr = input('post.idarr');		
-		if ($categoryId < 0) return $this->error('商品类目ID传参错误！');
+		if ($skuModelId < 0) return $this->error('商品模型ID传参错误！');
 		if ($speid < 0) return $this->error('规格ID传参错误！');	
-		if (empty($idarr)) return $this->error('删除规格值传参错误！');	
-		foreach ($idarr as $val){			
-			$map['id'] = $val;
-			$map['model_id'] = $skuModelId;
-			$map['speid'] = $speid;			
-			$res = $this->Model->where($map)->delete();			
+		if (empty($idarr)) return $this->error('删除规格值传参错误！');
+        $supplyer_id = $this->supplyer_id * 1;
+		foreach ($idarr as $val){
+		    $where = [];
+            $where[] = ['id','=',$val];
+            $where[] = ['model_id','=',$skuModelId];
+            $where[] = ['speid','=',$speid];
+            $where[] = ['supplyer_id','=',$supplyer_id];
+			$res = $this->Model->where($where)->delete();
 		}
 		$this->Model->cleanMemcache($skuModelId);
 		$result['data']['spevalidList'] = $idarr;

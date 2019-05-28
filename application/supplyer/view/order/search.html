@@ -1,0 +1,151 @@
+{extend name="layouts/base" /}
+{block name="main" }
+<header class="header b-b clearfix">
+     <div class="page-breadcrumbs">
+          <ul class="breadcrumb" >
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>订单查询</strong>
+              </li>                                  
+          </ul>
+    </div>
+</header>
+
+<section class="scrollable  wrapper">
+    <section class="panel panel-default">
+    <form class="form-horizontal " method="post" action="{:url('index')}">
+        <div class="panel-body">
+           <div class="form-group">
+            	<label class=" control-label">订单号：</label>
+                <div class="col-sm-2 ">
+                  <input type="text" class="input-max"  name="order_sn" value=""  />
+                </div>
+                  <label class=" control-label">收货人：</label>
+                <div class="col-sm-2 ">
+                  <input type="text" class="input-max"  name="consignee" value=""  />
+                </div>
+            </div>          
+            <div class="form-group">
+                <label class=" control-label">电话：</label>
+                <div class="col-sm-2 ">
+                  <input type="text" class="input-max"  name="tel" value=""  />
+                </div>
+                <label class=" control-label">手机：</label>
+                <div class="col-sm-2">
+                  <input type="text" class="input-max"  name="mobile" value=""  />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label">地址：</label>
+                <div class="col-sm-6">
+                  <input type="text" class="input-max"  name="address" value=""  />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label">所在地区：</label>
+                <div class="col-sm-6">
+                  <select name="province" id="province" style="width:150px;"  class="region_sel" nextsel="city|district" sel_val="100000|0">
+                    <option value="">请选择</option>
+                   </select>
+                   <select name="city" id="city" style="width:150px;"  class="region_sel" nextsel="district" sel_val="0|0">
+                    <option value="">请选择</option>
+                   </select>
+                   <select name="district" id="district" style="width:150px;"  class="region_sel" sel_val="0|0">
+                    <option value="">请选择</option>
+                   </select>
+                </div>
+            </div>
+              <div class="form-group">
+                <label class=" control-label">会员ID：</label>
+                <div class="col-sm-2 ">
+                  <input type="text" class="input-max"  name="user_id" value=""  />
+                </div>
+                <label class=" control-label">会员手机：</label>
+                <div class="col-sm-2 ">
+                  <input type="text" class="input-max"  name="user_mobile" value=""  />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label">配送方式：</label>
+                <div class="col-sm-2 ">
+                  <select name="shipping_id"  style="width:180px;" >
+                    <option value="">请选择</option>
+                   {volist name="shippingList" id="shipping" }
+                    <option value="{$shipping.shipping_id}">{$shipping.shipping_name}</option>
+                    {/volist}
+                   </select>
+                </div>
+                <label class=" control-label">支付方式：</label>
+                <div class="col-sm-2 ">
+                   <select name="pay_id"  style="width:130px;" >
+                    <option value="">请选择</option>
+                     {volist name="paymentList" id="payment" }
+                    <option value="{$payment.pay_id}">{$payment.pay_name}</option>
+                    {/volist}
+                   </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">时间范围：</label>
+                <div class="col-sm-10" >
+                      <select name="time_type"  style="width:130px; float:left; " >
+                        <option value="add_time">下单时间</option>
+                        <option value="pay_time">支付时间</option>
+                        <option value="shipping_time">发货时间</option>
+                        <option value="sign_time">签收时间</option>
+                       </select>
+                   
+                    <label class="control-label" style="width:100px;">开始时间：</label>
+                    <div class="col-sm-3">
+                        <div class="input-group"> <input type="text" class="input-max" name="start_time" readonly="readonly" value="" data-before="#solddate"   data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                     </div>
+                    <label class="control-label" style="width:100px;">结束时间：</label>
+                    <div class="col-sm-3"  >
+                        <div class="input-group"> <input type="text" class="input-max" name="end_time" value="" data-after="#groundingdate" data-offsetday="0"  readonly="readonly" data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                    </div>
+                </div>
+            </div>
+             <div class="form-group">
+                <label class=" control-label">订单状态：</label>
+                <div class="col-sm-10 ">
+                      <select name="order_status"  style="width:130px; float:left;" >
+                        <option value="">请选择</option>
+                         {volist name="orderLang.os" id="val" }
+                            <option value="{$key}">{$val|raw}</option>
+                         {/volist}
+                       </select>
+                    <label class="control-label" style="width:100px;">付款状态：</label>
+                    <select name="pay_status"  style="width:130px; float:left;" >
+                        <option value="">请选择</option>
+                        {volist name="orderLang.ps" id="val" }
+                            <option value="{$key}">{$val}</option>
+                         {/volist}
+                    </select>
+                    <label class="control-label" style="width:100px;">发货状态：</label>
+                    <select name="shipping_status"  style="width:130px; float:left;" >
+                        <option value="">请选择</option>
+                        {volist name="orderLang.ss" id="val" }
+                            <option value="{$key}">{$val}</option>
+                         {/volist}
+                    </select>
+                </div>
+             </div>
+             <div class="form-group">
+                <label class=" control-label">导出订单：</label>
+                <div class="col-sm-10 ">
+                      <label><input name="export" type="checkbox" value="1" ></label>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                  <div class="form-group" style="width:90%;">
+                    <div class="col-sm-4 col-sm-offset-2"> 
+                      <button type="submit" class="btn btn-primary " >查询</button>
+                      <button type="reset" class="btn btn-default" >重置</button>
+                    </div>
+            </div>
+        </div>
+      </form>
+    </section>
+</section>
+
+{/block}

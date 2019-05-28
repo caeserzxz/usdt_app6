@@ -115,7 +115,9 @@
                     <li class="active"><a href="#tabinfo" data-toggle="tab">订单信息</a></li>
                     <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
                     <li><a href="#tabdescribe" data-toggle="tab">物流信息</a></li>
+                    {if condition="$orderInfo.order_type == 0"}
                     <li><a href="#tabdividend" data-toggle="tab">分佣信息</a></li>
+                    {/if}
                     <li><a href="#log" data-toggle="tab">订单日志</a></li>
 
                 </ul>
@@ -221,9 +223,9 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{$grow.goods_price|priceFormat}</td>
+                                        <td>{$grow.sale_price|priceFormat}</td>
                                         <td>{$grow.goods_number}</td>
-                                        <td>{$grow['goods_price']*$grow['goods_number']|priceFormat}</td>
+                                        <td>{$grow['sale_price']*$grow['goods_number']|priceFormat}</td>
                                     </tr>
                                 {/volist}
                                 <tr>
@@ -398,8 +400,7 @@
                                     <th>用户ID</th>
                                     <th>分佣身份</th>
                                     <th>奖项相关</th>
-                                    <th>金币</th>
-                                    <th>旅游豆</th>
+                                    <th>佣金</th>
                                     <th>分佣状态</th>
                                 </tr>
                                 </thead>
@@ -410,7 +411,6 @@
                                         <td>{$dlog.role_name}</td>
                                         <td>{$dlog.award_name} - {$dlog.level_award_name}</td>
                                         <td>{$dlog.dividend_amount|priceFormat}</td>
-                                        <td>{$dlog.dividend_bean|priceFormat}</td>
                                         <td>{$orderLang['ds'][$dlog['status']]}</td>
                                     </tr>
                                 {/volist}

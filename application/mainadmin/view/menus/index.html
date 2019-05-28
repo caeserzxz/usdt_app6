@@ -1,0 +1,126 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head"}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>菜单管理</strong>&nbsp; <small></small>
+                </li>                                  
+            </ul>
+        </div>
+</header>
+
+<section class="scrollable  wrapper">
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <a href="javascript:;" data-remote="{:url('info')}" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加菜单</a>
+            <button id="nestableMenu" class="btn btn-sm btn-default " data-toggle="class:show">
+                <span class="text-active">展开全部</span>
+                <span class="text">折叠全部</span>
+            </button>
+
+
+        </header>
+        <div class="panel-body">
+
+
+            <div class="col-sm-12">
+
+                <div class="dd" id="dragClassify" data-toggle="nestable">
+                    <ol class="dd-list">
+                    {volist name="list[0]" id="vo" }
+                        <li class="dd-item" data-id="{$vo.id}">
+                            <div class="dd-handle">
+                                {$vo.name}
+                                
+                                <span>
+
+                                    {eq name="vo.status" value="0"}
+                                    	【隐藏】
+                                    {/eq}
+                                </span>
+                                
+                                <span class="pull-right">
+                                    <a href="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                    <a href="{:url('info',array('pid'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
+                                 </span>
+                            </div>
+                        {notempty name = "$list[$vo['id']]"}  
+                            <ol class="dd-list">
+                            {volist name="list[$vo['id']]" id="co" }
+                                    <li class="dd-item" data-id="{$co.id}">
+                                        <div class="dd-handle">
+                                            {$co.name}
+                                            {eq name="co.status" value="0"}
+                                                【隐藏】
+                                            {/eq}
+                                            <span class="pull-right">
+                                                <a href="{:url('info',array('id'=>$co['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a> <a href="{:url('info',array('pid'=>$co['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
+                                                </span>
+                                        </div>
+                                            {notempty name = "$list[$co['id']]"} 
+                                            <ol class="dd-list">
+                                                  {volist name="list[$co['id']]" id="eo"}
+                                                      <li class="dd-item" data-id="{$eo.id}">
+                                                          <div class="dd-handle">
+                                                               {$eo.name}
+                                                                {eq name="eo.status" value="0"}
+                                                                    【隐藏】
+                                                                {/eq}
+                                                              <span class="pull-right">
+                                                          <a href="{:url('info',array('id'=>$eo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                                                  <a href="{:url('info',array('pid'=>$eo['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
+                                                            </span>
+                                                          </div>
+                                                          {notempty name = "$list[$eo['id']]"}
+                                                          <ol class="dd-list">
+                                                              {volist name="list[$eo['id']]" id="fo"}
+                                                              <li class="dd-item" data-id="{$fo.id}">
+                                                                  <div class="dd-handle">
+                                                                      {$fo.name}
+                                                                      {eq name="fo.status" value="0"}
+                                                                      【隐藏】
+                                                                      {/eq}
+                                                                      <span class="pull-right">
+                                                          <a href="{:url('info',array('id'=>$fo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
+                                                            </span>
+                                                                  </div>
+                                                              </li>
+                                                              {/volist}
+                                                          </ol>
+                                                          {/notempty}
+                                                      </li>    
+                                                  {/volist}
+                                             </ol>
+                                         {/notempty}
+                                    </li> 
+                             {/volist}  
+                         </ol>
+                        {/notempty}
+                   {/volist}  
+                      
+                    </ol>
+                </div>
+
+                <div class="<?=empty($list)?'':'hide'?>" id="noClassify">
+                    暂无菜单 ...
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+</section>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+		seajs.use("dist/goods/init.js")
+</script>
+{/block}

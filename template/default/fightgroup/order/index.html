@@ -1,0 +1,160 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
+{/block}
+{block name='pageType'}myGroup{/block}
+{block name="main" }
+
+<div class="page-bd">
+    <div class="tab fs32 ">
+        <div class="color_9 orderActive" data-type="myInitiate">我发起的</div>
+        <div class="color_9" data-type="myJoin">我参与的</div>
+    </div>
+    <!-- 页面内容-->
+    <div class="tabBox">
+        <div class="tabBlock ">
+            <div id="waitEvaluate" class="myInitiateBox"></div>
+        </div>
+        <div class="tabBlock box">
+            <div id="evaluated" class="myJoinBox"></div>
+        </div>
+    </div>
+
+</div>
+
+{/block}
+{block name="footer"}
+
+<script id="orderTpl" type="text/html">
+    {{each list as item index}}
+    <a href='{:_url('info',['order_id'=>'[[item.order_id]]'])}' class="goodsBox">
+
+        <img src={{item.goodsList[0].pic}} alt="">
+        <div class="info">
+            <div class="name fs28 color_3 textline_1">{{item.goodsList[0].goods_name}}</div>
+            <div class="type fs28 color_9">{{item.goodsList[0].sku_name}}</div>
+            <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em
+                            class="fs42">{{item.goodsList[0].exp_price[0]}}</em>
+                        <p>.{{item.goodsList[0].exp_price[1]}}</p></div>
+                    <div class="fs24 color_9 originalMoney">￥{{item.goodsList[0].market_price}}</div>
+                </div>
+            </div>
+
+            <div class='groupType'>
+                <div class="type">
+                    <div class='{{item.fgJoin.status==9?'line_fail':'line'}}'><i style='width:{{item.success_num / item.fgJoin.success_num * 100}}%'></i></div>
+                    <span class='fs26 color_9'>{{item.success_num}}/{{item.fgJoin.success_num}}</span>
+                </div>
+                <p class='fs26 color_9'>{{item.fg_status}}</p>
+            </div>
+
+        </div>
+    </a>
+    {{/each}}
+
+</script>
+<!-- 没有相关订单-->
+<script type="text/html" id="emptyTpl">
+    <div class="empeyOrder">
+        <img src="__STATIC__/mobile/default/images/emptyData.png" alt="">
+        <span class="fs28 color_3">暂无相关订单</span>
+    </div>
+</script>
+
+
+<script>
+    var nowPage = [], getAgain = [], isLoadend = [];
+    var _type = '{$type}';
+    $(function () {
+        $('.left-arrow').on('click', function () {
+            window.location.href = '{:url("member/center/index")}';
+        })
+        $('.page-bd').scroll(function () {
+            let box_h = $(this).height()
+            let content_h = $('.scrollBox').height()
+            let scroll_h = $(this).scrollTop();
+            if (content_h - box_h - scroll_h < 20) {
+                getList();
+            }
+        })
+
+        //请求列表数据
+        function getList(isagain) {
+
+            page = nowPage[_type]; console.log(page);
+            if (typeof(page) == 'undefined') page = 1;
+            if (isLoadend[_type] == true) return false;
+            if (isagain == true) {
+                if (getAgain[_type] == false) return false;
+                getAgain[_type] = false;
+            } else {
+                $('.' + _type + 'Box').append('<div class="get_list_tip" data-type="' + _type + '">加载数据中...</div>');
+            }
+            isLoadend[_type] = true;
+            $.ajax({
+                url: '{:_url("fightgroup/api.order/getlist",["type"=>"【_type】","p"=>"【page】"])}',// 跳转到 action
+                data: {},
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                success: function (res) {
+                    isLoadend[_type] = false;
+                    if (res.code == 0) {
+                        _alert(res.msg);
+                        getAgain[_type] = true;
+                        $('.' + _type + 'Box').find('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    nowPage[_type] = page + 1;
+                    $('.' + _type + 'Box').find('.get_list_tip').remove();
+                    if (res.list) {
+                        $('.' + _type + 'Box').append(template('orderTpl', res));
+                    } else {
+                        $('.' + _type + 'Box').html(template('emptyTpl'));
+                    }
+
+                    if (res.page_count == page) {
+                        $('.' + _type + 'Box').append('<div class="get_list_tip">---我也有底线的---</div>');
+                        isLoadend[_type] = true;
+                    }
+                }, error: function () {
+                    isLoadend[_type] = false;
+                    getAgain[_type] = true;
+                    $('.' + _type + 'Box').find('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+
+        //重新请求数据
+        $(document).on('click', '.get_list_tip', function () {
+            _type = $(this).data('_type');
+            getList(true);
+        })
+
+        $('.tab div').on('click', function () {
+            let index = $(this).index();
+            _type = $(this).data('type');
+            if ($('.' + _type + 'Box').html() == '') {
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+                getList();//执行加载
+            }
+            $(this).addClass('orderActive')
+            $(this).siblings().removeClass('orderActive')
+            $('.tabBlock').eq(index).show();
+            $('.tabBlock').eq(index).siblings().hide();
+        })
+        $('.tab div').each(function () {
+            if ($(this).data('type') == _type) {
+                $(this).trigger('click');
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+            }
+        })
+    })
+</script>
+
+
+{/block}

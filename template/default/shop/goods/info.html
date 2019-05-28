@@ -47,12 +47,12 @@
                 <p>.{$goods.exp_max_price[1]}</p>
                 {/eq}
             </div>
-            {eq name="goods.is_promote" value="1"}<span class="fs22 color_w BGcolor_r">活动价</span>{/eq}
+           <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}">活动价</span>
         </div>
         <div class="original fs24 color_9">￥{$goods.market_price}</div>
         <div class="name fw_b fs34 color_3">{$goods.goods_name}</div>
-        <div class="tips fs28 color_9  hide"><span>热销{$goods.sale_count}</span>
-            <p style="display:none ">运费10元</p></div>
+        <div class="tips fs28 color_9  "><span>热销{$goods.sale_count}</span>
+            <p  class="hide">运费10元</p></div>
     </div>
     {eq name="goods.is_spec" value='1'}
     <div class="cell">
@@ -68,7 +68,7 @@
         <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight">
     </div>
    <!-- 评论 -->
-        <div class="comment">
+        <div class="comment ">
            <a class="top" href="{:url('comment',['goods_id'=>$goods['goods_id']])}">
               <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 commentNum">(0)</p></div>
               <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
@@ -152,7 +152,9 @@ $(function () {
 		if (res.code == 0){
 			return false;	
 		}
-		
+		if (res.data.total_count > 0){
+		    $('.commentBox').removeClass('hide');
+        }
 		$('.commentNum').html('('+res.data.total_count+')');
 		if (res.data.total_count > 0){
 			$('.commentBox .user img').attr('src',res.data.list[0].headimgurl?res.data.list[0].headimgurl:'__STATIC__/mobile/default/images/defheadimg.jpg');
@@ -232,6 +234,9 @@ function addToCart(obj) {
 	var arr = new Object;
 	arr.goods_id = obj.data('goods_id');
 	arr.specifications = obj.data('sku');
+    if (typeof(arr.specifications) != 'undefined'){
+        arr.sku_id = sub_goods[arr.specifications].sku_id;
+    }
 	arr.type = obj.data('type');
 	arr.number = $('#buynumber').val();
 	var res = jq_ajax("{:url('shop/api.flow/addCart')}", arr);

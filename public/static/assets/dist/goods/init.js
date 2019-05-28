@@ -79,6 +79,7 @@ function(a) {
 		if (skuModelId < 1) return false;
 		e.post(window.goods_setting.specifications_path,
         function(d) {
+		    d.is_supplyer = window.goods_data.is_supplyer,
             fn_a.SpecificationsList = d.data,
             b.each(d.data,
             function(b, c) {
@@ -404,6 +405,7 @@ function(a) {
             }
             a.TableData.trs.push(h)
         }),
+        a.TableData.is_supplyer = window.goods_data.is_supplyer,
         this.specificationstable.html(template("specifications_table_template", this.TableData)),
         i.show(),
 		WebUploaderDiy('.upload-file');

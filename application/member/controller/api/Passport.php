@@ -34,6 +34,7 @@ class Passport extends ApiController
         if ($res[0] == 'developers'){
             $data['developers'] = $res[1];
         }
+        $data['url'] = session('REQUEST_URI');
         return $this->ajaxReturn($data);
     }
 

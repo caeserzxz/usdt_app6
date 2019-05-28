@@ -1,0 +1,151 @@
+
+<div class="form-group">
+      <label class="col-sm-2 control-label">商品名称：</label>
+      <div class="col-sm-7 must" >
+          <input type="text" class="input-max" data-rule-maxlength="80" data-rule-required="true" data-msg-required="商品名称不能为空" name="goods_name" value="{$row.goods_name}" >
+      </div>
+</div>
+
+<div class="form-group">
+      <label class="col-sm-2 control-label">商品简称：</label>
+      <div class="col-sm-5" >
+          <input type="text" class="input-max" data-rule-maxlength="60"  name="short_name" value="{$row.short_name}" >
+      </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">商品分类：</label>
+    <div class="col-sm-3 must">
+      <select name="cid"  style="width:100%;" data-toggle="select2" data-placeholder="选择分类" >
+         <option value="">选择分类</option>
+           {$classListOpt|raw}             
+        </select>
+    </div>
+</div>
+
+
+<div class="line line-dashed line-lg pull-in" ></div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" >商品图片：</label>
+    <div class="col-sm-10">
+        <div class="js_upload_container">
+            <div class="js_file_upload ">
+                <button type="button" class="btn btn-default js_new_upload" data-submitname="GoodsImages" data-count="20" data-uploadpath="{:url('attachment/goodsUpload')}" data-delpath="{:url('attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商品图片</button>
+                <span class="maroon">*</span>
+                <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多20张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+            </div>
+            <div class="uploadify-queue js_file_upload_queue">
+            </div>
+             <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+{volist name="goods_imgs" id="gg"  }
+<li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+<a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('attachment/removeImg')}"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}"></a>
+<input value="{$gg.img_id}" name="GoodsImages[id][]" type="hidden"> 
+<input value="{$gg.goods_img}" name="GoodsImages[path][]" type="hidden"> 
+<span class="item_box"><img src="{$gg.goods_thumb}"></span>
+</li>
+{/volist}                                           
+             </ul>
+        </div>
+    </div>
+</div>
+
+<div class="line line-dashed line-lg pull-in" ></div>
+<div  class="form-group" >
+    <label class="col-sm-2 control-label">商品规格：</label>
+    <div class="col-sm-10">
+        <div class="f-l {$row['goods_id'] < 1?'':'hide'}">
+            <label class="radio-inline">
+                <input type="radio" name="is_spec" value="0" data-toggle="specification-enable" data-enable="false"  {$row.is_spec|tplckval='=0','checked',true}  />统一规格
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="is_spec" value="1"  data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>
+                多规格</label>
+            <span class=" help-inline">*添加商品后不能修改规格</span>
+        </div>
+
+        <div class="m-t-md col-sm-8 specificationstable hd">
+            <div ><span class="help-inline"> {$row.is_spec==0?'统一规格':'多规格'}</span></div>
+
+            选择商品模型
+            {if condition="$row.goods_id < 1" }
+            <select name="sku_model" id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                {$skuModelOpt|raw}
+            </select>
+            <span  style="color:#f30;">* 修改模型，将会删除旧有的sku记录</span>
+            {else/}
+            <select disabled id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                {$skuModelOpt|raw}
+            </select>
+            {/if}
+
+        </div>
+
+        <div class="clearfix"></div>
+        <div data-toggle="specifications" class="hd"><i class="fa fa-spinner fa-spin"></i></div>
+ 
+    </div>
+</div>
+<div class="line line-dashed line-lg pull-in specificationstable hd"></div>
+
+<div class="form-group specificationstable hd">
+    <label class="col-sm-2 control-label">价格&库存：</label>
+    <div class="table-responsive tab-content p-l" style="width:81%;" data-toggle="specificationstable">
+        <span class="help-inline p-t ">请选择规格</span>
+    </div>
+</div>
+
+<div class="nospecifications {$row['is_spec']==1?'hd':''}">
+ 
+    <div class="form-group">
+        <label class="col-sm-2 control-label">货号：</label>
+        <div class="col-sm-4 ">
+            <input type="text" class="input-medium" name="goods_sn" value="{$row.goods_sn}" data-rule-maxlength="20" data-rule-required="true" data-msg-required="商品货号不能为空">
+            <span  style="color:#f30;"> *</span>
+        </div>
+        <div class="help-inline"></div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">条形码：</label>
+        <div class="col-sm-2 ">
+            <input type="text" class="input-medium" name="bar_code" value="{$row.bar_code}" data-rule-maxlength="20" >
+        </div>
+        <div class="help-inline"></div>
+    </div>
+  
+    <div class="form-group">
+        <label class="col-sm-2 control-label">供货价：</label>
+        <div class="col-sm-4">
+            <input type="text" class="input-medium" name="settle_price" data-rule-ismoney="true" data-rule-required="true" data-msg-required="供货价不能为空" value="{$row.settle_price}">
+            <span  style="color:#f30;"> *</span>
+        </div>
+       
+    </div>
+  
+    <div class="form-group">
+        <label class="col-sm-2 control-label">市场价：</label>
+        <div class="col-sm-4">
+            <input type="text" class="input-medium" name="market_price" data-rule-ismoney="true" value="{$row.market_price}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">重量：</label>
+        <div class="col-sm-2">
+            <div class="input-group" style="width: 180px;">
+                <input type="text" class="input-medium" name="goods_weight" data-rule-min="0"  data-rule-number="true"  value="{$row.goods_weight}">
+                <span class="input-group-addon">g</span>
+            </div>
+        </div>
+    </div>
+  
+    <div class="form-group">
+        <label class="col-sm-2 control-label">库存：</label>
+        <div class="col-sm-8">
+            {$row['goods_id']>0?'当前库存：'.$row['goods_number'].' + ':''}<input type="text" class="input-mini" name="goods_number" data-rule-digits="true" data-rule-required="true" data-msg-required="库存不能为空" value="{$row['goods_id']>0?'0':''}">
+            <span class="red">*</span>
+        </div>
+    </div>
+
+</div>
+

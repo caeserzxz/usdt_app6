@@ -1,0 +1,58 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url($is_delete==0?'getList':'trashList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$is_delete==0?'商品列表':'商品回收站'}</strong>
+                </li>
+            </ul>
+            <select name="brand_id"  style="width: 150px;" data-toggle="select2" data-chang="submit">
+                <option value="">所有品牌</option>
+                {$brandListOpt|raw}
+            </select>
+            <select name="cat_id"  style="width: 150px;" data-toggle="select2"  data-chang="submit">
+                <option value="">所有分类</option>
+                {$classListOpt|raw}
+            </select>
+            <select name="is_promote" style="width: 150px;" data-toggle="select2" data-chang="submit">
+                <option value="-1">是否限时促销</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+            </select>
+
+            {if condition="$_action == 'wait_check'"}
+            <select name="status" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+                <option value="10">待审核</option>
+                <option value="11">审核失败</option>
+            </select>
+            {else/}
+            <select name="status" style="width: 120px;" data-toggle="select2"  data-chang="submit">
+                <option value="-1">状态</option>
+                {volist name="goods_status" id="status" }
+                <option value="{$key}">{$status}</option>
+                {/volist}
+            </select>
+            {/if}
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商品名称/SN" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+
+            {if condition="$is_delete == 0 && $is_supplyer == false" }
+            <a href="{:url('info')}"  title="添加商品" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加商品</a>
+            {/if}
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/goods/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

@@ -1,0 +1,108 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+{/block}
+{block name='pageType'}orderDetails groupOrder{/block}
+{block name="main" }
+
+<!-- 页面内容-->
+<div class="orderBox">
+    <div class="code fs32 fw_b">商品信息</div>
+    <div class="goodslist">
+        <a href="{:url('info',['fg_id'=>$fgInfo['fg_id']])}"  class="goods">
+            <img src="{$goods.goods_thumb}" alt="">
+            <div class="goodsinfo">
+                <p class="fs28 color_3 textline_2">{$goods['goods_name']}</p>
+
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_price'][0]}</em><i>.{$goods['exp_price'][1]}</i>
+                    </div>
+                    <span class="fs22 color_w BGcolor_r groupType">{$fgInfo['success_num']}人团</span>
+                    <strong class="fs26 color_9">已团{$fgInfo['buy_goods_num']}件</strong>
+                </div>
+
+            </div>
+        </a>
+    </div>
+</div>
+<div class="groupScale">
+    <div class="cell">
+        <span class="fs32 fw_b color_3">{:count($fgList)}个在拼单</span>
+    </div>
+    {volist name="fgList" id="fgl" }
+    <a href="{:url('join',['join_id'=>$fgl['gid']])}">
+        <div class="member">
+            <div class="left">
+                <img src="{$fgl['headimgurl']}" alt="">
+                <div class="info">
+                    <p class="fs28 color_3">{$fgl['nick_name']}</p>
+                    <span class="fs24 color_9">还差{$fgInfo['success_num'] - $fgl['order_count']}人 剩余<i class="fg_last_time" data-time="{$fgl['fail_time']}"></i></span>
+                </div>
+            </div>
+            <div class="right fs24 fw_b color_r">去拼团</div>
+        </div>
+    </a>
+    {/volist}
+
+</div>
+</div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function () {
+        //拼团倒计时
+        let time=[]//倒计时总毫秒数
+        let tmp = Date.parse( new Date() );
+        time.push({$fgInfo['end_date'] * 1000} - tmp );
+        $('.fg_last_time').each(function(){
+            time.push($(this).data('time') * 1000 - tmp );
+        })
+        countdown(time);
+    })
+
+    function countdown (time) {
+        let countDownTime;
+        let timeArr=[];
+        time.forEach(function (item,index,array) {
+            if(index==0){
+                if (item < 0) {
+                    countDownTime = '<span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em>';
+                }else{
+                    countDownTime = dateformat(item,index)//显示的时间
+                    item -= 1000;//剩余的毫秒数
+                }
+                $('.timeBox .time').html(countDownTime)
+            }else{
+                if (item < 0) {
+                    countDownTime = '00:00:00'
+                }else{
+                    countDownTime = dateformat(item,index)//显示的时间
+                    item -= 1000;//剩余的毫秒数
+                }
+                $('.info i').eq(index-1).html(countDownTime)
+            }
+
+            timeArr.push(item)
+        });
+        setTimeout(function () {
+            countdown(timeArr);
+        }, 1000)
+    }
+    // 时间格式化输出，如11天03小时25分钟19秒  每1s都会调用一次
+    function dateformat(micro_second,type) {
+        var second = Math.floor(micro_second / 1000);// 总秒数
+        var day = Math.floor(second / 3600 / 24);// 天数
+        var hr = Math.floor(second / 3600 % 24);// 小时
+        var min = Math.floor(second / 60 % 60);// 分钟
+        var sec = Math.floor(second % 60);// 秒
+        if(type==0){
+            return '<span class="fs28">还剩'+day+'天</span><em class="num fs24 BGcolor_3 color_w">'+(hr < 10 ? '0' + hr : hr)+'</em><i>:</i><em class="num fs24 BGcolor_3 color_w">'+(min < 10 ? '0' + min : min)+'</em><i>:</i><em class="num fs24 BGcolor_3 color_w">'+(sec < 10 ? '0' + sec : sec)+'</em>';
+        }else{
+            return  (hr < 10 ? '0' + hr : hr)+':'+(min < 10 ? '0' + min : min)+':'+(sec < 10 ? '0' + sec : sec);
+        }
+
+    }
+</script>
+{/block}

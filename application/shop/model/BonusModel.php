@@ -68,21 +68,18 @@ class BonusModel extends BaseModel
 		$type_id = $type_id * 1;
 		$info = Cache::get($this->mkey.$type_id);
 		if ($info) return $info;
-		$info = $this->find($type_id);
-		$gmtime = time();
-        if ($row['order_id'] > 0) {//已使用
-            $info['stauts'] = 2;
-            $info['stauts_info'] = '已使用';
-        }elseif ($info['use_start_date'] > $gmtime){
-			$info['stauts'] = 0;
-			$info['stauts_info'] = '未到使用时间';
-		}elseif ($info['use_end_date'] < $gmtime){
-			$info['stauts'] = -1;
-			$info['stauts_info'] = '已过期';
-		}else{
-			$info['stauts'] = 1;
-			$info['stauts_info'] = '未使用';
-		}
+		$info = $this->find($type_id)->toArray();
+        $gmtime = time();
+        if ($info['use_start_date'] > $gmtime){
+            $info['stauts'] = 0;
+            $info['stauts_info'] = '未到使用时间';
+        }elseif ($info['use_end_date'] < $gmtime){
+            $info['stauts'] = -1;
+            $info['stauts_info'] = '已过期';
+        }else{
+            $info['stauts'] = 1;
+            $info['stauts_info'] = '未使用';
+        }
         $info['_use_start_date'] = date('Y-m-d',$info['use_start_date']);
         $info['_use_end_date'] = date('Y-m-d',$info['use_end_date']);
 		Cache::set($this->mkey.$type_id,$info,30);
@@ -96,8 +93,13 @@ class BonusModel extends BaseModel
     public function binfo($bonus_id = 0)
     {
         $BonusListModel = new BonusListModel();
-        $bonus = $BonusListModel->find($bonus_id);
+        $bonus = $BonusListModel->find($bonus_id)->toArray();
         $bonus['info'] = $this->info($bonus['type_id']);
+
+        if ($bonus['order_id'] > 0) {//已使用
+            $bonus['info']['stauts'] = 2;
+            $bonus['info']['stauts_info'] = '已使用';
+        }
         return $bonus;
     }
 	/*------------------------------------------------------ */
@@ -114,14 +116,16 @@ class BonusModel extends BaseModel
 		if (empty($list['unused']) == false || empty($list['used']) == false || empty($list['expired']) == false){
 			return $list;
 		}
-		$exptime = time() - 15552000;//只查询半年180天内的数据	
+
+		$exptime = time() - 15552000;//只查询半年180天内的数据
 		$BonusListModel = new BonusListModel();
 		$rows = $BonusListModel->where("user_id = $uid and add_time > $exptime")->select()->toArray();
         $list['used'] = array();
         $list['expired'] = array();
         $list['unused'] = array();
+
 		foreach ($rows as $row){
-			$row['bonus'] = $this->info($row['type_id']);		
+            $row['bonus'] = $this->info($row['type_id']);
 			if ($row['order_id'] > 0){//已使用
 				$list['used'][$row['bonus_id']] = $row;
 			}elseif ($row['bonus']['stauts'] == -1){//已过期的

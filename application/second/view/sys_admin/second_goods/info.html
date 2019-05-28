@@ -1,0 +1,155 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['goods_id']>0?"编辑秒杀商品":"添加秒杀商品"}</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$row.goods_id}">
+        <section class="panel panel-default">
+            {if condition="$row['goods_id'] == 0"}
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">选择商品：</label>
+                <div class="col-sm-8 " >
+                    <input id="goods_keyword" type="text" class="input-medium " placeholder="商品名称/SN" aria-invalid="false">
+
+                    <a class="btn btn-default fa fa-search" title="搜索"  onclick="searchGoods()" ></a>
+
+                    <select id="goods_select" class="m-r" style="width:250px;" data-toggle="select2" onChange="goodsSelect()">
+                        <option value="">选择商品</option>
+                    </select>
+                    <span class="help-inline">* 添加后不能修改</span>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                function searchGoods(){
+                    var arr = new Object();
+                    arr.keyword = $('#goods_keyword').val();
+                    arr.min_search = 1;
+                    $('#goods_select').html('<option value="">选择商品</option>');
+                    var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
+                    $.each(res.list, function(i,value){
+                        $('#goods_select').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+                    })
+                }
+                //选择商品
+                function goodsSelect(){
+                    var goods_id = $('#goods_select').val();
+                    $('.goods_name').html('');
+                    $('.goods_info').html('');
+                    jq_ajax('{:url("shop/api.goods/info")}','goods_id='+goods_id,function(res){
+                        if (res.code == 0){
+                            return false;
+                        }
+                        $('#goods_id').val(res.data.goods_id);
+                        $('.goods_name').html('商品ID：'+res.data.goods_id+' - '+res.data.goods_name+'('+(res.data.is_spec==1?'多规格':res.data.goods_sn)+')');
+                        if (res.data.is_spec == 1){
+                            $.each(res.data.sub_goods, function(i,val){
+                                $('.goods_info').append('<div class="relative"><label><input type="checkbox" name="sku_ids['+val.sku_id+']" value="'+val.sku_id+'"> ' +
+                                    ''+val.sku_name+'</label>，' +
+                                    '参与秒杀的库存：<input type="text" name="goods_number['+val.sku_id+']" min=0 class="input-ssmall" value="">，' +
+                                    '秒杀价：￥<input type="text" name="goods_price['+val.sku_id+']" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="">元</div>');
+                            })
+                        }else{
+                            $('.goods_info').html('参与秒杀的库存：<input type="text" name="goods_number" class="input-ssmall" data-rule-ismoney="true" value="">，秒杀价：￥<input type="text" name="goods_price" class="input-ssmall" data-rule-ismoney="true" value="">元');
+                        }
+                    });
+                }
+            </script>
+            {/if}
+
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">秒杀商品：</label>
+                <div class="col-sm-9 lh30" >
+                    <div class="col-sm-10 goods_name " >
+                        {gt name="$row.sg_id" value="0"}
+                        商品ID：{$goods.goods_id} - {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
+                        {/gt}
+                    </div>
+                    <div class="col-sm-10 goods_info m-t-md" >
+                        {gt name="$row.sg_id" value="0"}
+                            {if condition="$goods.is_spec == 1"}
+                            {volist name="$goods.sub_goods" id="sku" }
+                                <div class="relative">
+                                    <label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$sg_goods[$sku['sku_id']]?'checked':''}> {$sku.sku_name}</label>
+                                    参与秒杀的库存：<input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-ssmall" value="{$fg_goods[$sku['sku_id']]['goods_number']}">，
+                                    秒杀价：￥<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">元
+                                </div>
+                            {/volist}
+                            {else/}
+                                参与秒杀的库存：<input type="text" name="goods_number" class="input-ssmall" data-rule-ismoney="true" value="">，秒杀价：￥<input type="text" name="goods_price" class="input-ssmall" data-rule-ismoney="true" value="">元
+                            {/if}
+                        {/gt}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">使用优惠券：</label>
+                <div class="col-sm-8">
+                    <label><input type="checkbox" value="1" name="is_usd_bonus" {$row['is_usd_bonus']==1?'checked':''}> 能否使用优惠券</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">秒杀时效：</label>
+                <div class="col-sm-8">
+                    <select name="cancel_time" style="width:100px;">
+                        <option value="0" {$row['cancel_time']==0?'selected':''}>不限制</option>
+                        {for start="1" end="100" name="minute" }
+                        <option value="{$minute * 60}" {$row['cancel_time']==$minute * 60?'selected':''}>{$minute} 分钟</option>
+                        {/for}
+                    </select>
+                    <span class=" help-inline">抢购后多久不支付，自动取消</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">秒杀时间：</label>
+                <div class="col-sm-3" >
+                    <span class="fl help-inline">开始时间：</span><div class="input-group"> <input type="text" class="input-max" name="start_date" readonly="readonly" id="start_date" value="{$row.start_date|dateTpl='Y-m-d H:i',true}"  data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+
+                <div class="col-sm-3" >
+                    <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" name="end_date" value="{$row.end_date|dateTpl='Y-m-d H:i',true}" id="end_date"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+            </div>
+
+
+
+            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
+            <div class="form-group" style="width:90%;">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="fg_id" id="fg_id" type="hidden" value="{$row.fg_id|intval}">
+    </form>
+</section>
+
+{/block}
+
+
+{block name="footer" }
+
+{/block}

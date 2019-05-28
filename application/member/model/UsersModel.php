@@ -69,7 +69,10 @@ class UsersModel extends BaseModel
         $inLog['user_id'] = $userInfo['user_id'];
         $LogLoginModel->save($inLog);
         $this->userInfo = $this->info($userInfo['user_id']);//附值全局
-
+        $wxInfo = session('wxInfo');
+        if (empty($wxInfo) == false){
+            (new \app\weixin\model\WeiXinUsersModel)->where('wxuid',$wxInfo['wxuid'])->update(['user_id'=>$userInfo['user_id']]);
+        }
         //判断订单模块是否存在
         if (class_exists('app\shop\model\OrderModel')) {
             //执行订单自动签收
@@ -320,7 +323,7 @@ class UsersModel extends BaseModel
     //-- 获取用户信息
     //-- val 查询值
     //-- type 查询类型
-    //-- isCache 是否调用缓存  type = user_id 时，才生效
+    //-- isCache 是否调用缓存
     /*------------------------------------------------------ */
     public function info($val, $type = 'user_id', $isCache = true)
     {
@@ -350,9 +353,12 @@ class UsersModel extends BaseModel
         }
         unset($info['password']);
         $info['shareUrl'] = config('config.host_path') . '/?share_token=' . $info['token'];//分享链接
-        $info['level'] = userLevel($info['total_integral'], false);//获取等级信息
+        $info['level'] = userLevel($info['account']['total_integral'], false);//获取等级信息
         if ($info['role_id'] > 0) {
-            $info['role'] = $dividendRole = (new DividendRoleModel)->info($info['role_id']);
+            $info['role'] = (new DividendRoleModel)->info($info['role_id']);
+        }else{
+            $info['role']['role_id'] = 0;
+            $info['role']['role_name'] = '粉丝';
         }
         Cache::set($this->mkey . $val, $info, 30);
         return $info;

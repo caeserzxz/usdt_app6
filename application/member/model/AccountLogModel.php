@@ -54,7 +54,8 @@ class AccountLogModel extends BaseModel
 		$data['old_bean_value'] = $account['bean_value'];	
 		$data['sign'] = $this->toKey($data);
 		$res = $this->create($data);
-		if ($res < 1){
+
+		if ($res->log_id < 1){
             if ($isTrans == true){// 回滚事务
                 Db::rollback();
             }

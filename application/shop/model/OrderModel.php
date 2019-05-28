@@ -4,11 +4,11 @@ namespace app\shop\model;
 
 use app\BaseModel;
 use think\facade\Cache;
-use think\facade\Env;
 use think\Db;
 
 use app\member\model\AccountLogModel;
 use app\member\model\UsersModel;
+
 //*------------------------------------------------------ */
 //-- 订单表
 /*------------------------------------------------------ */
@@ -20,7 +20,8 @@ class OrderModel extends BaseModel
     protected $mkey = 'shop_order_mkey_';
     public $config = [];
 
-    public function initialize(){
+    public function initialize()
+    {
         parent::initialize();
         $this->config = config('config.');
     }
@@ -45,21 +46,25 @@ class OrderModel extends BaseModel
         $mkey = $this->mkey . '_user_stat_' . $user_id;
         $info = Cache::get($mkey);
         if (empty($info) == false) return $info;
+        $where[] = ['order_type', '=', 0];
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['order_status', 'in', [0, 1]];
         $info['all_num'] = $this->where($where)->count('order_id');//全部非取消订单
         unset($where);
+        $where[] = ['order_type', '=', 0];
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['is_pay', '=', 1];
         $where[] = ['order_status', '=', '0'];
         $where[] = ['pay_status', '=', '0'];
         $info['wait_pay_num'] = $this->where($where)->count('order_id');//待支付
         unset($where);
+        $where[] = ['order_type', '=', 0];
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['order_status', '=', '1'];
         $where[] = ['shipping_status', '=', '0'];
         $info['wait_shipping_num'] = $this->where($where)->where("pay_status = 1 OR is_pay = 0")->count('order_id');//待发货
         unset($where);
+        $where[] = ['order_type', '=', 0];
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['order_status', '=', '1'];
         $where[] = ['shipping_status', '=', '1'];
@@ -88,31 +93,31 @@ class OrderModel extends BaseModel
     function info($order_id, $iscache = true)
     {
         if ($iscache == true) {
-         	$info = Cache::get($this->mkey . $order_id);
+            $info = Cache::get($this->mkey . $order_id);
         }
-        if ($info['order_id'] < 1){
+        if ($info['order_id'] < 1) {
             $info = $this->where('order_id', $order_id)->find();
             if (empty($info)) return array();
-            $info = $info->toArray();           
-			
-			if ($info['is_dividend'] == 0){//提成处理
-				Db::startTrans();//启动事务
-				$resData = $this->distribution($info,'add');
-				if (is_array($resData) == true){				
-					$resData['is_dividend'] = 1;
-					$resData['order_id'] = $order_id;				
-					$res = $this->upInfo($resData,'sys');					
-					unset($resData);
-					if ($res > 0){
-						Db::commit();// 提交事务
-						$info = $this->where('order_id', $order_id)->find()->toArray();
-					}else{
-						Db::rollback();// 回滚事务
-					}		
-				}				
-			}
-			list($info['goodsList'], $info['allNum'],$info['isReview']) = $this->orderGoods($order_id);			
-			//end
+            $info = $info->toArray();
+
+            if ($info['is_dividend'] == 0) {//提成处理
+                Db::startTrans();//启动事务
+                $resData = $this->distribution($info, 'add');
+                if (is_array($resData) == true) {
+                    $resData['is_dividend'] = 1;
+                    $resData['order_id'] = $order_id;
+                    $res = $this->upInfo($resData, 'sys');
+                    unset($resData);
+                    if ($res > 0) {
+                        Db::commit();// 提交事务
+                        $info = $this->where('order_id', $order_id)->find()->toArray();
+                    } else {
+                        Db::rollback();// 回滚事务
+                    }
+                }
+            }
+            list($info['goodsList'], $info['allNum'], $info['isReview']) = $this->orderGoods($order_id);
+            //end
             Cache::set($this->mkey . $order_id, $info, 30);
         }
 
@@ -123,20 +128,20 @@ class OrderModel extends BaseModel
         $info['isSign'] = 0;
         $info['isRefund'] = 0;
         if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {
-            if ($info['is_pay'] > 0  && $info['pay_status'] == $this->config['PS_UNPAYED']) {
+            if ($info['is_pay'] > 0 && $info['pay_status'] == $this->config['PS_UNPAYED']) {
                 $info['isCancel'] = 1;
                 $info['isPay'] = 1;
                 $info['ostatus'] = '待付款';
                 $shop_order_auto_cancel = settings('shop_order_auto_cancel');
-				
-                if ($shop_order_auto_cancel > 0 ) {//下单时间，超过未付款的自动取消订单
+
+                if ($info['order_type'] == 0 && $shop_order_auto_cancel > 0) {//下单时间，超过未付款的自动取消订单
                     $info['countdown'] = 1;
-                    $info['last_time'] =  $info['add_time'] + ($shop_order_auto_cancel * 60) - $time;
-                    if ($info['add_time'] < $time - $shop_order_auto_cancel * 60){
+                    $info['last_time'] = $info['add_time'] + ($shop_order_auto_cancel * 60) - $time;
+                    if ($info['add_time'] < $time - $shop_order_auto_cancel * 60) {
                         $upData['order_id'] = $order_id;
                         $upData['order_status'] = $this->config['OS_CANCELED'];
                         $upData['cancel_time'] = $time;
-                        $res = $this->upInfo($upData,'sys');					
+                        $res = $this->upInfo($upData, 'sys');
                         if ($res == true) {
                             $info['ostatus'] = '已取消';
                         }
@@ -146,41 +151,44 @@ class OrderModel extends BaseModel
                 $info['ostatus'] = '待确认';
                 $info['isCancel'] = 1;
             }
-        }elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
+        } elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
 
             if ($info['shipping_status'] == $this->config['SS_UNSHIPPED']) {
                 $info['ostatus'] = '待发货';
+                if ($info['order_type'] == 2) {//拼团订单
+                    if ($info['is_success'] == 0) {
+                        $info['ostatus'] = '拼团中';
+                    }
+                }
                 $info['isRefund'] = 1;
-            }elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
+            } elseif ($info['shipping_status'] == $this->config['SS_SHIPPED']) {
                 $info['ostatus'] = '已发货';
                 $info['isSign'] = 1;
-            }elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
+            } elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
                 $info['ostatus'] = '已完成';
             }
-            //if ($info['pay_status'] == $this->config['PS_PAYED']) {
 
-           // }
-            if ($info['is_pay'] > 0  && $info['pay_status'] == $this->config['PS_UNPAYED']){
-				$info['isCancel'] = 1;
+            if ($info['is_pay'] > 0 && $info['pay_status'] == $this->config['PS_UNPAYED']) {
+                $info['isCancel'] = 1;
                 $info['isPay'] = 1;
                 $info['ostatus'] = '待付款';
-			}
-        }elseif ($info['order_status'] == $this->config['OS_RETURNED']) {
+            }
+        } elseif ($info['order_status'] == $this->config['OS_RETURNED']) {
             $info['ostatus'] = '退货';
-        } else {            
-			if ($info['is_del'] == 0){
-				 if ($info['pay_status'] == 1){
-                     $info['ostatus'] = '取消待退款';
-                 }else{
-                     $info['isDel'] = 1;
-                     $info['ostatus'] = '已取消';
-                     if ($info['pay_status'] == 2){
-                         $info['ostatus'] = '已取消，已退款';
-                     }
-                 }
-			}else{
-				$info['ostatus'] = '已删除';
-			}
+        } else {
+            if ($info['is_del'] == 0) {
+                if ($info['pay_status'] == 1) {
+                    $info['ostatus'] = '取消待退款';
+                } else {
+                    $info['isDel'] = 1;
+                    $info['ostatus'] = '已取消';
+                    if ($info['pay_status'] == 2) {
+                        $info['ostatus'] = '已取消，已退款';
+                    }
+                }
+            } else {
+                $info['ostatus'] = '已删除';
+            }
         }
         $info['exp_price'] = explode('.', $info['order_amount']);
         return $info;
@@ -190,148 +198,206 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     function orderGoods($order_id)
     {
-        $OrderGoodsModel = new OrderGoodsModel();
+        static $OrderGoodsModel;
+        if (empty($OrderGoodsModel)){
+            $OrderGoodsModel = new OrderGoodsModel();
+        }
         $rows = $OrderGoodsModel->order('rec_id ASC')->where('order_id', $order_id)->select()->toArray();
         if (empty($rows)) return array();
         $allNum = 0;
         $isReview = 0;//能否评论
         foreach ($rows as $key => $row) {
-            $row['exp_price'] = explode('.', $row['goods_price']);
-            $goodsList[$row['goods_id'] . '_' . $row['sku_val']] = $row;
+            $row['exp_price'] = explode('.', $row['sale_price']);
+            $goodsList[] = $row;
             $allNum += $row['goods_number'];
-            if ($row['is_evaluate'] == 1 && $isReview == 0){
+            if ($row['is_evaluate'] == 1 && $isReview == 0) {
                 $isReview = 1;
             }
         }
-        return [$goodsList, $allNum,$isReview];
+        return [$goodsList, $allNum, $isReview];
     }
 
     /*------------------------------------------------------ */
     //-- 写入订单日志
     /*------------------------------------------------------ */
-    function _log(&$order,$logInfo='')
+    function _log(&$order, $logInfo = '')
     {
-        return OrderLogModel::_log($order,$logInfo);
+        return OrderLogModel::_log($order, $logInfo);
     }
     /*------------------------------------------------------ */
     //-- 更新订单信息
     /*------------------------------------------------------ */
-    function upInfo($upData,$extType = '')
+    function upInfo($upData, $extType = '')
     {
         $order_id = $upData['order_id'];
         unset($upData['order_id']);
-        $orderInfo = $this->where('order_id',$order_id)->find();
+        $orderInfo = $this->where('order_id', $order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
-		$orderInfo = $orderInfo->toArray();
-        if (defined('AUID') == false && $extType != 'sys'){
-            if($this->userInfo['user_id'] != $orderInfo['user_id']){				
+        $orderInfo = $orderInfo->toArray();
+        if ($extType != 'sys' && defined('AUID') == false ) {
+            if ($this->userInfo['user_id'] != $orderInfo['user_id']) {
                 return '无权操作';
             }
         }
-
-        if ($upData['is_del'] == 1 && $orderInfo['order_status'] != $this->config['OS_CANCELED'] ){
+        if ($upData['is_del'] == 1 && $orderInfo['order_status'] != $this->config['OS_CANCELED']) {
             return '订单未取消不能删除.';
         }
-
+        //确认订单，执行拆单处理，独立出来并外部使用事务
+        if ($upData['order_status'] == $this->config['OS_CONFIRMED'] && $orderInfo['is_split'] == 1){
+            Db::startTrans();//启动事务
+            $res = $this->splitOrder($orderInfo);
+            if ($res == true){
+                $upData['is_split'] = 2;
+                Db::commit();// 提交事务
+            }else{
+                Db::rollback();// 回滚事务
+            }
+        }
+        //end
         Db::startTrans();//启动事务
         $GoodsModel = new GoodsModel();
         $OrderGoodsModel = new OrderGoodsModel();
         $AccountLogModel = new AccountLogModel();
-
-        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单
-			if ($upData['is_stock'] == 1) {//没有执行扣库存执行库存扣除
-                    $goodsList = $this->orderGoods($order_id);
-                    $res = $GoodsModel->evalGoodsStore($goodsList['goodsList']);
-                    if ($res !== true) {
-                        Db::rollback();// 回滚事务
-                        return '支付扣库存失败.';
-                    }
-            }
-            //订单支付成功
-            if ($upData['pay_status'] == $this->config['PS_PAYED']){
-				if ($orderInfo['pay_code'] == 'balance' ){
-					$upData['money_paid'] = $orderInfo['order_amount'];
-					$upData['pay_time'] = time();
-					$changedata['change_desc'] = '订单余额支付';
-					$changedata['change_type'] = 3;
-					$changedata['by_id'] = $order_id;
-					$changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-					$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
-					if ($res !== true) {
-						Db::rollback();// 回滚事务
-						return '支付失败，更新余额失败.';
-					}				
-				}
-				$res = $this->distribution($orderInfo,'pay');//提成处理
-				if ($res !== true) {
-					Db::rollback();// 回滚事务
-					return '佣金处理失败.';
-                }
-				$upData['pay_time'] = time();
-            }
-			$upData['confirm_time'] = time();
-        }elseif ($upData['order_status'] == $this->config['OS_CANCELED'] ) {//取消订单
-            
-			$res = $this->distribution($orderInfo,'cancel');//提成处理
-            if ($res != true) {
-					Db::rollback();// 回滚事务
-					return '佣金处理失败.';
-             }
-            //执行商品库存和销量处理
-            if ($orderInfo['is_stock'] == 1) {
-                $goodsList = $this->orderGoods($order_id);
-                $res = $GoodsModel->evalGoodsStore($goodsList['goodsList'], 'cancel');
+        //执行库存扣除
+        if ($upData['is_stock'] == 1) {
+            $goodsList = $this->orderGoods($order_id);
+            if ($orderInfo['order_type'] == 1) {//积分订单
+                $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList']);
                 if ($res != true) {
                     Db::rollback();//回滚
-                    return '取消订单退库存失败.';
+                    return '取消积分订单退库存失败.';
                 }
-                $upData['is_stock'] = 0;
+            }else{
+                $res = $GoodsModel->evalGoodsStore($goodsList['goodsList']);
+                if ($res !== true) {
+                    Db::rollback();// 回滚事务
+                    return '支付扣库存失败.';
+                }
             }
-		}elseif ($upData['pay_status'] === $this->config['PS_UNPAYED'] ){//未付款,不执行退款操作，只更新
-            $res = $this->distribution($orderInfo,'unpayed');//提成处理
+        }
+        $time = time();
+        if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单
+            if ($upData['pay_status'] == $this->config['PS_PAYED']) {//订单支付成功
+                if ($orderInfo['pay_code'] == 'balance') {//使用余额支付扣减用户余额
+                    $upData['money_paid'] = $orderInfo['order_amount'];
+                    $upData['pay_time'] = time();
+                    $changedata['change_desc'] = '订单余额支付';
+                    $changedata['change_type'] = 3;
+                    $changedata['by_id'] = $order_id;
+                    $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
+                    if ($orderInfo['use_integral'] > 0 ){
+                        $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
+                        $changedata['change_desc'] .= '，积分兑换';
+                    }
+                    $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+                    if ($res !== true) {
+                        Db::rollback();// 回滚事务
+                        return '支付失败，更新余额失败.';
+                    }
+                }else{
+                    if ($orderInfo['use_integral'] > 0 ){
+                        $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
+                        $changedata['change_desc'] = '积分兑换';
+                        $changedata['change_type'] = 3;
+                        $changedata['by_id'] = $order_id;
+                        $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+                        if ($res !== true) {
+                            Db::rollback();// 回滚事务
+                            return '支付失败，更新余额失败.';
+                        }
+                    }
+                }
+                $res = $this->distribution($orderInfo, 'pay');//提成处理
+                if ($res !== true) {
+                    Db::rollback();// 回滚事务
+                    return '佣金处理失败.';
+                }
+                $upData['pay_time'] = $time;
+            }
+
+            $upData['confirm_time'] = $time;
+        } elseif ($upData['order_status'] == $this->config['OS_CANCELED']) {//取消订单
+            $res = $this->distribution($orderInfo, 'cancel');//提成处理
             if ($res != true) {
                 Db::rollback();// 回滚事务
                 return '佣金处理失败.';
             }
-		}elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']){//退款，退回帐户余额
-			if ($orderInfo['money_paid'] > 0) {
-			    if ($orderInfo['pay_code'] == 'balance'){
+            if ($orderInfo['is_stock'] == 1) {//执行商品库存和销量处理
+                $goodsList = $this->orderGoods($order_id);
+                if ($orderInfo['order_type'] == 1) {//积分订单
+                    $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList'], 'cancel');
+                    if ($res != true) {
+                        Db::rollback();//回滚
+                        return '取消积分订单退库存失败.';
+                    }
+                } elseif ($orderInfo['order_type'] == 2) {//拼团订单
+                    $goods = $goodsList[0][0];
+                    $res = (new \app\fightgroup\model\FightGoodsModel)->evalGoodsStore($orderInfo['by_id'], $goods['goods_id'], $goods['sku_id'], $goods['goods_number'], 'cancel');
+                    if ($res != true) {
+                        Db::rollback();//回滚
+                        return '取消拼团订单退库存失败.';
+                    }
+                    if ($orderInfo['is_initiate'] == 1) {//取消团长订单，修改拼团失效时间为当前
+                        $res = (new \app\fightgroup\model\FightGroupListModel)->where('gid', $orderInfo['pid'])->update(['fail_time' => time()]);
+                        if ($res != true) {
+                            Db::rollback();//回滚
+                            return '取消拼团订单退库存失败.';
+                        }
+                    }
+                } else {
+                    $res = $GoodsModel->evalGoodsStore($goodsList['goodsList'], 'cancel');
+                    if ($res != true) {
+                        Db::rollback();//回滚
+                        return '取消订单退库存失败.';
+                    }
+                }
+                $upData['is_stock'] = 0;
+            }
+        } elseif ($upData['pay_status'] === $this->config['PS_UNPAYED']) {//未付款,不执行退款操作，只更新
+            $res = $this->distribution($orderInfo, 'unpayed');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
+            }
+        } elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']) {//退款，退回帐户余额
+            if ($orderInfo['money_paid'] > 0) {
+                if ($orderInfo['pay_code'] == 'balance') {
                     $inData['balance_money'] = $orderInfo['money_paid'];
                     $inData['change_type'] = 3;
                     $inData['by_id'] = $orderInfo['order_id'];
                     $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
                     $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
-
                     if ($res != true) {
                         Db::rollback();//回滚
                         return '订单退款到余额失败.';
                     }
-                }else{//在线退款
-                    $code = str_replace('/', '\\', "/payment/".$orderInfo['pay_code']."/".$orderInfo['pay_code']);
+                } else {//在线退款
+                    $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
                     $res = $payment->refund($orderInfo);
-                    if ($res !== true){
+                    if ($res !== true) {
                         Db::rollback();//回滚
-                        return'请求退款接口失败：'.$res;
+                        return '请求退款接口失败：' . $res;
                     }
                 }
-            }			
-        }elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] ==  $this->config['SS_UNSHIPPED']) {//发货		
-			$res = $this->distribution($orderInfo,'shipping');//提成处理
-			if ($res != true) {
-					Db::rollback();// 回滚事务
-					return '佣金处理失败.';
-             }
-        }elseif ($upData['shipping_status'] === $this->config['SS_UNSHIPPED']) {//未发货            
-			$res = $this->distribution($orderInfo,'unshipping');//提成处理
+            }
+        } elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {//发货
+            $res = $this->distribution($orderInfo, 'shipping');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
+            }
+        } elseif ($upData['shipping_status'] === $this->config['SS_UNSHIPPED']) {//未发货
+            $res = $this->distribution($orderInfo, 'unshipping');//提成处理
             if ($res !== true) {
-				Db::rollback();// 回滚事务
-				return '佣金处理失败.';
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
             }
 
-        }elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
+        } elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
+            $upData['is_settlement'] = 1;//待结算
             //积分赠送
-            $inData['total_integral'] = intval($orderInfo['total_amount']);
+            $inData['total_integral'] = intval($orderInfo['order_amount'] - $orderInfo['shipping_fee']);
             $inData['use_integral'] = $inData['total_integral'];
             if ($inData['total_integral'] > 0) {
                 $inData['change_type'] = 2;
@@ -344,45 +410,43 @@ class OrderModel extends BaseModel
                 }
             }
             unset($inData);
-			$res = $this->distribution($orderInfo,'sign');	//提成处理		
+            $res = $this->distribution($orderInfo, 'sign');    //提成处理
             if ($res != true) {
-				Db::rollback();// 回滚事务
-				return '佣金处理失败.';
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
             }
             //修改订单商品为待评价           
-            $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
-           /* if ($res < 1) {
-                Db::rollback();//回滚
-                return '修改订单商品为待评价失败.';
-            }*/
-        }elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
-           $res = $this->distribution($orderInfo,'returned');//提成处理
-		   if ($res != true) {
-				Db::rollback();// 回滚事务
-				return '佣金处理失败.';
+            $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
+
+        } elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
+            $upData['is_settlement'] = 0;//结算状态：未处理
+            $res = $this->distribution($orderInfo, 'returned');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
             }
-           if($orderInfo['is_evaluate'] == 1) {
-               //修改订单商品未评价的设为不需要评价
-               $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
-               if ($res < 1) {
-                   Db::rollback();//回滚
-                   return '取消订单商品评价失败.';
-               }
-           }
+            if ($orderInfo['is_evaluate'] == 1) {
+                //修改订单商品未评价的设为不需要评价
+                $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
+                if ($res < 1) {
+                    Db::rollback();//回滚
+                    return '取消订单商品评价失败.';
+                }
+            }
         }
 
-        if ($extType == 'changePrice' || $extType == 'editGoods' ) {//改价或修改商品
-			$res = $this->distribution($orderInfo,'change');//提成处理
-			if ($res != true) {
-				Db::rollback();// 回滚事务
-				return '佣金处理失败.';
+        if ($extType == 'changePrice' || $extType == 'editGoods') {//改价或修改商品
+            $res = $this->distribution($orderInfo, 'change');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
             }
-        }elseif ($extType == 'unsign' ) {//撤销签收
-		
+        } elseif ($extType == 'unsign') {//撤销签收
+            $upData['is_settlement'] = 0;//结算状态：未处理
             unset($where);
             //查询通过订单获取的积分,扣除
-            $where[] = ['by_id','=',$orderInfo['order_id']];
-            $where[] = ['change_type','=',2];
+            $where[] = ['by_id', '=', $orderInfo['order_id']];
+            $where[] = ['change_type', '=', 2];
             $log = $AccountLogModel->where($where)->find();
             if ($log['use_integral'] > 0) {
                 unset($inData);
@@ -390,9 +454,9 @@ class OrderModel extends BaseModel
                 $inData['use_integral'] = $inData['total_integral'];
                 $inData['change_type'] = 2;
                 $inData['by_id'] = $orderInfo['order_id'];
-                if ($extType == 'unsign'){
+                if ($extType == 'unsign') {
                     $inData['change_desc'] = '撤销签收退还积分:' . $orderInfo['order_sn'];
-                }else{
+                } else {
                     $inData['change_desc'] = '退货退还积分:' . $orderInfo['order_sn'];
                 }
                 $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
@@ -401,20 +465,17 @@ class OrderModel extends BaseModel
                     return '退还积分失败.';
                 }
             }
-			//修改订单商品为待评价           
-            $res = $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
-           /* if ($res < 1) {
-                Db::rollback();//回滚
-                return '修改订单商品评价状态失败.';
-            }*/
-			 $res = $this->distribution($orderInfo,'unsign');//提成处理			
-			 if ($res != true) {
-				Db::rollback();// 回滚事务
-				return '佣金处理失败.';
+            //修改订单商品为不能评价
+            $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 0]);
+
+            $res = $this->distribution($orderInfo, 'unsign');//提成处理
+            if ($res != true) {
+                Db::rollback();// 回滚事务
+                return '佣金处理失败.';
             }
         }
-        $upData['update_time'] = time();
-		
+        $upData['update_time'] = $time;
+
         $res = $this->where('order_id', $order_id)->update($upData);
         if ($res < 1) {
             Db::rollback();
@@ -422,15 +483,15 @@ class OrderModel extends BaseModel
         }
         Db::commit();// 提交事务
 
-        if ($upData['order_status'] == $this->config['OS_CANCELED']  || $orderInfo['shipping_status'] ==  $this->config['SS_UNSHIPPED']) {
+        if ($upData['order_status'] == $this->config['OS_CANCELED'] || $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {
             //系统超时取消订单
             if ($extType == 'sys') {
                 //发送模板消息，给买家
                 $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
                 $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
-                if ($upData['order_status'] == $this->config['OS_CANCELED']){
+                if ($upData['order_status'] == $this->config['OS_CANCELED']) {
                     $sendData['send_scene'] = 'order_cancel_msg';//订单取消通知
-                }else{
+                } else {
                     $sendData['send_scene'] = 'order_shipping_msg';//订单发货通知
                 }
                 $sendData['openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
@@ -455,115 +516,207 @@ class OrderModel extends BaseModel
         $os = $order['order_status'];
         $ss = $order['shipping_status'];
         $ps = $order['pay_status'];
-        if ($os == $this->config['OS_UNCONFIRMED']){//未确认
+        $time = time();
+        if ($os == $this->config['OS_UNCONFIRMED']) {//未确认
             $operating['isCancel'] = true;//取消
             if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认           
             $operating['changePrice'] = true; //改价
             $operating['editConsignee'] = true; //修改收货信息
             $operating['editGoods'] = true; //修改商品
-			if ($order['is_pay'] == 2) $operating['cfmCodPay'] = true;//设为已付款
-        }elseif ($os == $this->config['OS_CONFIRMED']){ //已确认
-            if ($ss == $this->config['SS_UNSHIPPED']){//未发货
-				$operating['isCancel'] = true;	
-				if ($ps == $this->config['PS_UNPAYED']){//未支付									
-					$operating['changePrice'] = true;//改价
-					$operating['editGoods'] = true; //修改商品					
-				}elseif ($ps == $this->config['PS_PAYED']){//已支付
-					$operating['shipping'] = true;	
-					if ($order['is_pay'] == 2){
-						$operating['setUnPay'] = true;//设为未付款
-					}
-				}
+            if ($order['is_pay'] == 2) $operating['cfmCodPay'] = true;//设为已付款
+        } elseif ($os == $this->config['OS_CONFIRMED']) { //已确认
+            if ($ss == $this->config['SS_UNSHIPPED']) {//未发货
+                $operating['isCancel'] = true;
+                if ($ps == $this->config['PS_UNPAYED']) {//未支付
+                    $operating['changePrice'] = true;//改价
+                    $operating['editGoods'] = true; //修改商品
+                } elseif ($ps == $this->config['PS_PAYED']) {//已支付
+                    $operating['shipping'] = true;
+                    if ($order['is_pay'] == 2) {
+                        $operating['setUnPay'] = true;//设为未付款
+                    }
+                }
                 $operating['editConsignee'] = true; //修改收货信息
-            }elseif ($ss == $this->config['SS_SHIPPED']){//已发货
+            } elseif ($ss == $this->config['SS_SHIPPED']) {//已发货
                 $operating['sign'] = true;
                 $operating['unshipping'] = true;//设为未发货
                 $operating['returned'] = true;//设为退货
-                unset($operating['unconfirmed']);              
-            }elseif ($ss == $this->config['SS_SIGN']){
-                if (($order['sign_time'] > time() - 604800)){
+                unset($operating['unconfirmed']);
+            } elseif ($ss == $this->config['SS_SIGN']) {
+                if (($order['sign_time'] > $time - 604800)) {
                     $operating['returned'] = true;//设为退货
                     $operating['unsign'] = true;//设为未签收
                 }
-                unset($operating['unconfirmed']);               
-            }else{
+                unset($operating['unconfirmed']);
+            } else {
                 $operating['isCancel'] = true;
                 $operating['changePrice'] = true;
-            }           
-		}elseif($os == $this->config['OS_RETURNED']){ //已退货
-			if ($ps == $this->config['PS_PAYED']){//退货后可操作退款
-				$operating['returnPay'] = true;
-			}
-        }elseif($os == $this->config['OS_CANCELED']){ //已关闭
-            if ($order['cancel_time'] > time() - 604800) $operating['confirmed'] = true;//确认
-			if ($ps == $this->config['PS_PAYED']){//取消后可操作退款
-				$operating['returnPay'] = true;
-			}
-        }else{
+            }
+        } elseif ($os == $this->config['OS_RETURNED']) { //已退货
+            if ($ps == $this->config['PS_PAYED']) {//退货后可操作退款
+                $operating['returnPay'] = true;
+            }
+        } elseif ($os == $this->config['OS_CANCELED']) { //已关闭
+            if ($order['cancel_time'] > $time - 604800) $operating['confirmed'] = true;//确认
+            if ($ps == $this->config['PS_PAYED']) {//取消后可操作退款
+                $operating['returnPay'] = true;
+            }
+        } else {
             $operating['confirmed'] = true;//确认
         }
         return $operating;
     }
-	 /*------------------------------------------------------ */
+    /*------------------------------------------------------ */
     //-- 自动收货
     /*------------------------------------------------------ */
-    public function autoSign($uid = 0){
-		$where = [];
-		$sign_limit = settings('shop_auto_sign_limit');
-		$where[] = ['shipping_status','=',$this->config['SS_SHIPPED']];
-		$where[] = ['shipping_time','<',time() - ($sign_limit * 86400)];		
-		if ($uid > 0){
-			$where[] = ['user_id','=',$uid];
-		}
-		$order_ids = $this->where($where)->column('order_id');
-		foreach ($order_ids as $order_id){
-			$upData['order_id'] = $order_id;
-			$upData['shipping_status'] = $this->config['SS_SIGN'];
-			$upData['sign_time'] = time();
-			$res = $this->upInfo($upData);
-			if ($res == true){
-				$orderInfo = $this->info($order_id);
-				$this->_log($orderInfo,'自动签收');
-			}
-		}
-		return true;
-	}
-	 /*------------------------------------------------------ */
-    //-- 提成处理
+    public function autoSign($uid = 0)
+    {
+        $where = [];
+        $sign_limit = settings('shop_auto_sign_limit');
+        $where[] = ['shipping_status', '=', $this->config['SS_SHIPPED']];
+        $where[] = ['shipping_time', '<', time() - ($sign_limit * 86400)];
+        if ($uid > 0) {
+            $where[] = ['user_id', '=', $uid];
+        }
+        $order_ids = $this->where($where)->column('order_id');
+        foreach ($order_ids as $order_id) {
+            $upData['order_id'] = $order_id;
+            $upData['shipping_status'] = $this->config['SS_SIGN'];
+            $upData['sign_time'] = time();
+            $res = $this->upInfo($upData);
+            if ($res == true) {
+                $orderInfo = $this->info($order_id);
+                $this->_log($orderInfo, '自动签收');
+            }
+        }
+        return true;
+    }
     /*------------------------------------------------------ */
-	public function distribution(&$orderInfo,$type = ''){
-		if (empty($orderInfo)) return false;
-		//判断分销模块是否存在
-		if(class_exists('app\distribution\model\DividendModel')){		
-			return (new \app\distribution\model\DividendModel)->_eval($orderInfo,$type);
-		}
-		return true;
-	}
-	/**
-	 * 订单支付时, 获取订单商品名称
-	 * @param unknown $order_id
-	 * @return string|Ambigous <string, unknown>
-	 */
-	function getPayBody($order_id){
-		if(empty($order_id))return "订单ID参数错误";
-		$goodsNames = (new OrderGoodsModel)->where('order_id' , $order_id)->column('goods_name');
-		$gns = implode($goodsNames, ',');
-		$payBody = getSubstr($gns, 0, 18);
-		return $payBody;
-	}
-	 /*------------------------------------------------------ */
-    //-- 订单在线支付成功处理
+    //-- 提成处理&升级处理
     /*------------------------------------------------------ */
-	public function updatePay($upData = [],$_log = '支付成功'){
-		$upData['pay_status'] = $this->config['PS_PAYED'];
-		$upData['order_status'] = $this->config['OS_CONFIRMED'];
-		$res = $this->upInfo($upData,'sys');
-		if ($res == true){			
-			$orderInfo = $this->info($upData['order_id']);
-		 	$this->_log($orderInfo,$_log);
-            (new UsersModel)->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
-			return true;	
-		}
-		return $res;
-	}
+    public function distribution(&$orderInfo, $type = '')
+    {
+        if (empty($orderInfo)) return false;
+        if ($orderInfo['order_type'] == 1){//积分商品不返利
+            return false;
+        }
+        $orderInfo['d_type'] = 'order';//普通订单
+        return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type);
+    }
+
+
+    /*------------------------------------------------------ */
+    //-- 订单支付时, 获取订单商品名称
+    //-- $order_id int 订单ID
+    /*------------------------------------------------------ */
+    public function getPayBody($order_id)
+    {
+        if (empty($order_id)) return "订单ID参数错误";
+        $goodsNames = (new OrderGoodsModel)->where('order_id', $order_id)->column('goods_name');
+        $gns = implode($goodsNames, ',');
+        $payBody = getSubstr($gns, 0, 18);
+        return $payBody;
+    }
+    /*------------------------------------------------------ */
+    //-- 拆分订单
+    /*------------------------------------------------------ */
+    public function splitOrder(&$orderInfo)
+    {
+        static $OrderGoodsModel;//预留如果批量操作拆单时，循环实例化类
+        if (empty($OrderGoodsModel)){
+            $OrderGoodsModel = new OrderGoodsModel();
+        }
+        $orderGoods = $OrderGoodsModel->order('rec_id ASC')->where('order_id', $orderInfo['order_id'])->select()->toArray();
+        $oglist = [];
+        foreach ($orderGoods as $og){
+            if (empty($oglist[$og['supplyer_id']])){
+                $oglist[$og['supplyer_id']]['settle_price'] = 0;
+                $oglist[$og['supplyer_id']]['goods_amount'] = 0;
+                $oglist[$og['supplyer_id']]['discount'] = 0;
+                $oglist[$og['supplyer_id']]['goods_sn'] = [];
+                $oglist[$og['supplyer_id']]['goods_list'] = [];
+            }
+            $oglist[$og['supplyer_id']]['settle_price'] += $og['settle_price'] * $og['goods_number'];
+            $oglist[$og['supplyer_id']]['goods_amount'] += $og['sale_price'] * $og['goods_number'];
+            $oglist[$og['supplyer_id']]['discount'] += $og['discount'];
+            $oglist[$og['supplyer_id']]['goods_sn'][] = $og['goods_sn'];
+            $oglist[$og['supplyer_id']]['goods_list'][] = $og;
+        }
+        $i = 1;
+        foreach ($oglist as $key=>$sogl){
+            $inArr = $orderInfo;
+            unset($inArr['order_id']);
+            $inArr['order_sn'] .= '-'.$i;
+            $inArr['supplyer_id'] = $key;
+            $inArr['pid'] = $orderInfo['order_id'];
+            $inArr['buy_goods_sn'] = join(',', $sogl['goods_sn']);
+            $inArr['settle_price'] = $sogl['settle_price'];
+            $inArr['discount'] = $sogl['discount'];
+            $inArr['goods_amount'] = $sogl['goods_amount'];
+            //使用相关优惠处理
+            $scale = $sogl['goods_amount'] / $orderInfo['goods_amount'];//对比总订单商品价格占比
+            $inArr['use_bonus'] = 0;
+            if ($orderInfo['use_bonus'] > 0){
+                $inArr['use_bonus'] = $orderInfo['use_bonus'] * $scale;
+            }
+            $inArr['shipping_fee'] = 0;
+            if ($orderInfo['shipping_fee'] > 0){
+                $inArr['shipping_fee'] = $orderInfo['shipping_fee'] * $scale;
+            }
+            $inArr['diy_discount'] = 0;
+            if ($orderInfo['diy_discount'] > 0){
+                $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;
+            }
+            $inArr['order_amount'] =  $inArr['goods_amount'] - $inArr['use_bonus'] - $inArr['diy_discount'];
+            //end
+            $order_id = $this->save($inArr);
+            if ($order_id < 1) return false;
+            foreach ($sogl['goods_list'] as $goods){
+                $goods['order_id'] = $order_id;
+                $res = $OrderGoodsModel->create($goods);
+                if ($res->rec_id < 1) return false;
+            }
+            $i++;
+        }
+        return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 订单支付成功处理
+    /*------------------------------------------------------ */
+    public function updatePay($upData = [], $_log = '支付成功')
+    {
+        unset($upData['order_amount']);
+        $upData['pay_status'] = $this->config['PS_PAYED'];
+        $upData['order_status'] = $this->config['OS_CONFIRMED'];
+        $res = $this->upInfo($upData, 'sys');
+        if ($res == true) {
+            $orderInfo = $this->info($upData['order_id']);
+            $this->_log($orderInfo, $_log);
+            $upUser['last_buy_time'] = time();
+            $upUser['total_consume'] = ['INC', $orderInfo['order_amount'] - $orderInfo['shipping_fee']];
+            (new UsersModel)->upInfo($orderInfo['user_id'], $upUser);//更新会员最后购买时间,累计消费
+            //拼团订单处理
+            if ($orderInfo['order_type'] == 2) {
+                $FightGroupListModel = new \app\fightgroup\model\FightGroupListModel();
+                $fgJoin = $FightGroupListModel->info($orderInfo['pid']);
+                $where = [];
+                $where[] = ['order_type', '=', 2];
+                $where[] = ['by_id', '=', $orderInfo['by_id']];
+                $where[] = ['order_status', '=', config('config.OS_CONFIRMED')];
+                $where[] = ['pid', '=', $orderInfo['pid']];
+                $count = $this->where($where)->count();
+                if ($count >= $fgJoin['success_num']) {//达到拼团数量，拼团成功
+                    $fgUpArr['status'] = config('config.FG_SEUCCESS');//设置拼团成功
+                    $fgUpArr['success_time'] = time();
+                    $res = $FightGroupListModel->where(['gid' => $orderInfo['pid']])->update($fgUpArr);
+                    if ($res > 0) {
+                        $this->where($where)->update(['is_success' => 1]);//设置订单拼团成功
+                    }
+                }
+            }
+            //拼团订单处理end
+            return true;
+        }
+        return $res;
+    }
 }

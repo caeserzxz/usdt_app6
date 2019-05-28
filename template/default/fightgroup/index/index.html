@@ -1,0 +1,112 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/shopGroup.css" />
+{/block}
+{block name='pageType'}shopGrouplist{/block}
+{block name="main" }
+
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="scrollBox">
+
+        <div class="listbox">
+
+        </div>
+    </div>
+</div>
+
+
+{/block}
+{block name="footer"}
+
+<script id="ing" type="text/html">
+    {{each list as item index}}
+    <div class="block">
+        <div class="imgBox">
+            <img src={{item.cover}} alt="">
+            <span class="fs24 color_w">已有{{item.all_order_num}}人参与</span>
+        </div>
+        <div class="name fs28 color_3 textline_2 fw_b">
+            <span class="color_r">【{{item.success_num}}人团】</span>{{item.goods_name}}
+        </div>
+        <div class="moneyBox">
+            <div class="left fs24">
+                <div class="money color_3 fw_b">￥<span class="fs42 num fw_4">{{item.exp_price[0]}}</span><span class="num fw_4">.{{item.exp_price[1]}}</span></div>
+                <p class="color_9">￥{{item.market_price}}</p>
+                <div class="color_3 univalence">单买价 ￥{{item.shop_price}}</div>
+            </div>
+            <a href="{:_url('info',['fg_id'=>'[[item.fg_id]]'])}" class="fs28 fw_b color_w BGcolor_r butt">去开团</a>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script>
+    var nowPage = 1,getAgain = false,isLoadend = false;
+
+    $(function(){
+        $('.page-bd').scroll(function(){
+            let box_h=$(this).height()
+            let content_h=$('.scrollBox').height()
+            let scroll_h=$(this).scrollTop();
+            if(content_h-box_h-scroll_h<20){
+                getList(nowPage);
+            }
+        })
+        //请求列表数据
+        function getList(page,isagain) {
+            if (page == 1){
+                $('.listbox').html('');
+            }
+            if (isLoadend == true ) return false;
+            if (isagain == true){
+                if (getAgain == false) return false;
+                getAgain = false;
+            }else{
+                $('.listbox').append('<div class="get_list_tip">加载数据中...</div>');
+            }
+            isLoadend = true;
+            $.ajax({
+                url:'{:_url("fightgroup/api.goods/getlist",["p"=>"【page】"])}',// 跳转到 action
+                data:{},
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    isLoadend = false;
+                    if(res.code  == 0 ){
+                        _alert(res.msg);
+                        getAgain = true;
+                        $('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    nowPage = page;
+                    nowPage++;
+                    $('.get_list_tip').remove();
+                    if (res.list){
+                        $('.listbox').append(template('ing',res));
+                        if (res.page_count == page) {
+                            $('.listbox').append('<div class="get_list_tip">---我也有底线的---</div>');
+                            isLoadend = true;
+                        }
+                    }else{
+                        $('.listbox').append('<div class="get_list_tip">---没有找到相关商品---</div>');
+                    }
+
+
+                },error : function() {
+                    isLoadend = false;
+                    getAgain = true;
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+        //重新请求数据
+        $(document).on('click','.get_list_tip',function () {
+            getList(nowPage,true);
+        })
+        getList(nowPage);//执行商品加载
+
+    })
+</script>
+{/block}

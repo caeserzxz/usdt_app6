@@ -151,12 +151,15 @@ class WeiXinModel extends BaseModel {
 	// -- 生成分享所需参数（调用时需修改此方法）
 	// ---------------------------------------------------
 	public function getSignPackage($shareUrl = '') {
-		if (empty($shareUrl)) return false;		
+		if (empty($shareUrl)) return false;
+		$mkey = 'weixin_share_'.md5($shareUrl);
+		$signPackage = Cache::get($mkey);
+        if (empty($signPackage) == false) return $signPackage;
 		$jsapiTicket = $this->getJsApiTicket();
 		$timestamp = time();
 		$nonceStr = $this->createNonceStr();
 		// 这里参数的顺序要按照 key 值 ASCII 码升序排序
-		$string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=".$shareUrl;
+		$string = htmlspecialchars("jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=".$shareUrl);
 		$signature = sha1($string);
 		$signPackage = array(
 			"appId"     => $this->SetConfig['weixin_appid'],
@@ -166,19 +169,21 @@ class WeiXinModel extends BaseModel {
 			"rawString" => $string,
 			"shareUrl"  => $shareUrl
 		);
-		return $signPackage; 
+        Cache::set($mkey,$signPackage,600);
+        return $signPackage;
 	}
 	// ------------------------------------------
-	// -- 根据access_token获取ticket（调用时需修改此方法，需要先获取到plc_id）
+	// -- 根据access_token获取ticket
 	// ---------------------------------------------------
 	public function getJsApiTicket() {
-		if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) return false;
+		//if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) return false;
 		$ticket = Cache::get('weixin_ticket');
 		if (!$ticket){
 			$accessToken = $this->getAccessToken();
 			// 如果是企业号用以下 URL 获取 ticket
-			// $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
-			$josn = file_get_contents("https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken");
+			//$url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
+            $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
+			$josn = file_get_contents($url);
 			$josn = json_decode($josn,true);
 			$ticket = $josn['ticket'];
 			Cache::set('weixin_ticket',$ticket,600);
@@ -236,7 +241,8 @@ class WeiXinModel extends BaseModel {
 			$redirect_uri = urlencode(getUrl());
 			//$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-			return header("location:".$url);
+			 header("location:".$url);
+			 exit;
 		}
 		//获取access_token
 	     $access_token = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$this->SetConfig['weixin_appid']."&secret=".$this->SetConfig['weixin_appsecret']."&code=".$code."&grant_type=authorization_code");		

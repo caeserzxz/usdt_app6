@@ -1,0 +1,40 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<tr>
+    <th width="120">商品编号</th>
+    <th>商品名</th>
+    <th width="150">供货价</th>
+    <th width="100">状态</th>
+    <th width="80">库存</th>
+    <th width="60">排序</th>
+    <th width="80">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+    <tr>
+      	<td>{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}</td>
+        <td>{$vo.goods_name}</td>
+        <td>{$vo['is_spec']==0?$vo['settle_price']:$vo['settle_min_price'].'~'.$vo['settle_max_price']}</td>
+        <td align="center">
+            {$goods_status[$vo['isputaway']]}
+        </td>
+       <td align="center">
+        {$vo['is_spec']==0?$vo['goods_number']:'--'}
+        </td>
+        <td align="center"><span data-url="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id']))}" data-field="sort_order" data-toggle="ajaxEditInput">{$vo.sort_order}</span></td>
+        <td align="center">
+
+        <a href="{:url('info',array('goods_id'=>$vo['goods_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>
+
+        </td>
+    </tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

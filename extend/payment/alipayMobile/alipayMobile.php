@@ -7,10 +7,11 @@
 namespace payment\alipayMobile;
 
 
-
+use think\facade\Env;
 use app\member\model\RechargeLogModel;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
+use app\distribution\model\RoleOrderModel;
 /**
  * 支付 逻辑定义
  * Class AlipayPayment
@@ -102,6 +103,14 @@ class alipayMobile
     function response()
     {
         require_once("lib/alipay_notify.class.php");  // 请求返回
+
+
+        $fp = fopen(Env::get('runtime_path')."/alipay/".date('Y-m-d').'.txt',"a");
+        flock($fp, LOCK_EX) ;
+        fwrite($fp,"记录时间：".strftime("%Y-%m-%d %H:%M:%S",time())."\n".json_encode($_POST)."\n\n");
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
         //计算得出通知验证结果
         $alipayNotify = new \AlipayNotify($this->alipay_config); // 使用支付宝原生自带的累 和方法 这里只是引用了一下 而已
         $verify_result = $alipayNotify->verifyNotify();
@@ -111,14 +120,28 @@ class alipayMobile
                     $order_sn = $out_trade_no = $_POST['out_trade_no']; //商户订单号
                     $trade_no = $_POST['trade_no']; //支付宝交易号
                     $trade_status = $_POST['trade_status']; //交易状态
+                //购买身份商品
+                if (stripos($order_sn, 'role') !== false) {
+                    $RoleOrderModel = new RoleOrderModel();
+                    $orderInfo = $RoleOrderModel->where('order_sn', "$order_sn")->field('order_id,order_amount,user_id,pay_status')->find();
+                    if (empty($orderInfo)) exit("fail");
+                    if ($orderInfo['pay_status'] == 1) exit("success");
+                    if ($orderInfo['order_amount'] != $_POST['price']) exit("fail"); //验证失败
+                    $orderInfo['transaction_id'] = $trade_no;
+                    // 支付宝解释: 交易成功且结束，即不可再做任何操作。
+                    if ($_POST['trade_status'] == 'TRADE_FINISHED') {
+                        $RoleOrderModel->updatePay($orderInfo);// 修改订单支付状态
+                    } //支付宝解释: 交易成功，且可对该交易做操作，如：多级分润、退款等。
+                    elseif ($_POST['trade_status'] == 'TRADE_SUCCESS') {
+                        $RoleOrderModel->updatePay($orderInfo); // 修改订单支付状态
+                    }
 
-					//用户在线充值
-					if (stripos($order_sn, 'recharge') !== false){
-						$RechargeLogModel = new RechargeLogModel();				
-						$orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,amount,user_id,status')->find();
+                }elseif (stripos($order_sn, 'recharge') !== false){ //用户在线充值
+						$RechargeLogModel = new RechargeLogModel();
+						$orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,order_amount,user_id,status')->find();
                         if (empty($orderInfo)) exit("fail");
 						if ($orderInfo['status'] == 9) exit("success");
-						if($orderInfo['amount']!=$_POST['price'])  exit("fail"); //验证失败
+						if($orderInfo['order_amount']!=$_POST['price'])  exit("fail"); //验证失败
 						$orderInfo['transaction_id'] = $trade_no;
 						// 支付宝解释: 交易成功且结束，即不可再做任何操作。
 						if($_POST['trade_status'] == 'TRADE_FINISHED') 

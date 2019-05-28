@@ -75,9 +75,40 @@ class Links extends AdminController
                 'id' => 11,
                 'name' => '我的钱包',
                 'url' => _url('member/wallet/index','',false,true)
+            ),
+            11 =>array
+            (
+                'id' => 11,
+                'name' => '积分商品',
+                'url' => _url('integral/goods/index','',false,true)
+            ),
+            12 =>array
+            (
+                'id' => 12,
+                'name' => '身份商品',
+                'url' => _url('distribution/role_goods/index','',false,true)
             )
 
         );
+
+        //判断拼团模块是否存在
+        if (class_exists('app\fightgroup\model\FightGroupModel')) {
+            $result['data'][] = array
+            (
+                'id' => 90,
+                'name' => '拼团活动',
+                'url' => _url('fightgroup/index/index','',false,true)
+            );
+        }
+        //判断秒杀模块是否存在
+        if (class_exists('app\second\model\SecondModel')) {
+            $result['data'][] = array
+            (
+                'id' => 91,
+                'name' => '秒杀活动',
+                'url' => _url('second/index/index','',false,true)
+            );
+        }
         $this->assign("_menu_index", input('_menu_index','','trim'));
         $this->assign("searchType", input('searchType','','trim'));
         $this->assign('links', $result['data']);

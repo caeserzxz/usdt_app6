@@ -35,18 +35,30 @@
         <a href="{:_url('info',['order_id'=>'[[item.order_id]]'])}">
             <div class="code fs28"><p class="color_3">订单编号:{{item.order_sn}}</p><span class="color_9 ostatus">{{item.ostatus}}</span></div>
             <div class="goodslist">
+                {literal}
                 {{each item.goodsList as goods indexb}}
                 <div class="goods">
                     <img src="{{goods.pic}}" alt="">
                     <div class="goodsinfo">
                         <p class="fs28 color_3">{{goods.goods_name}}</p>
                         <span class="fs28 color_9">{{goods.sku_name}}</span>
-                        <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i></div><em class="fs28 color_3">x{{goods.goods_number}}</em></div>
+                        <div class="money"><div class="color_3 fs24 num">
+                           {{if item.order_type == 0}}
+                                <p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i>
+                            {{else}}
+                            <p class="fw_b fm_p">积分</p><em class="fs36">{{goods.use_integral}}</em><i></i>
+                            {{/if}}
+                        </div>
+                            <em class="fs28 color_3">x{{goods.goods_number}}</em></div>
                     </div>
                 </div>
                 {{/each}}
+                {/literal}
             </div>
-            <div class="payment"><span class="fs24 color_9">共{{item.allNum}}件商品 实付款</span><div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div></div>
+            <div class="payment"><span class="fs24 color_9">共{{item.allNum}}件商品 实付款</span>
+                <div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+                <div class="color_3 fs28 num"><p class="fw_b fm_p">，积分</p><em class="fs34">{{item.use_integral}}</em></div>
+            </div>
         </a>
 
         <div class="button">

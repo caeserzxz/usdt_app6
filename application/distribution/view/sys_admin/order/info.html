@@ -1,0 +1,219 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>订单详情</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable  wrapper ">
+    <form class="form-horizontal form-validate" method="post" action="" style="padding:0;">
+        <div class="alert alert-warning ">
+
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <td>
+                            当前订单状态：{$orderInfo.pay_status==1?'已付款':'未付款'}
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <section class="panel panel-default">
+            <header>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tabinfo" data-toggle="tab">订单信息</a></li>
+                    <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
+                    <li><a href="#tabdividend" data-toggle="tab">分佣信息</a></li>
+
+                </ul>
+            </header>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tabinfo">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">订单编号：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.order_sn}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">下单时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.add_time|dateTpl}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">支付时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.pay_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">购买会员：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">真实姓名：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.real_name}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">联系电话：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.mobile}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">身份证号码：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.id_number}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系地址：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.merger_name} {$orderInfo.address}
+                                {$orderInfo.merger_name} {$orderInfo.address}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+
+                            <table class="table table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th>商品信息</th>
+                                    <th width="150">价格</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+
+                                        <div class="media">
+                                            <span class="pull-left thumb-sm"><img src="{$orderInfo.goods_img}" alt="John said"></span>
+                                            <div class="media-body">
+                                                <div>{$orderInfo.goods_name}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {$orderInfo.order_amount|priceFormat}
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="payinfo">
+
+                        <div class="col-sm-12 table-responsive">
+
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>支付方式</th>
+                                    <th>支付金额</th>
+                                    <th>支付时间</th>
+                                    <th>支付流水号|商户订单号</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{$orderInfo.pay_name}</td>
+                                    <td>{$orderInfo.order_amount|priceFormat}</td>
+                                    <td>{$orderInfo.pay_time|dateTpl}</td>
+
+                                    <td>{$orderInfo.transaction_id}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tabdividend">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+
+                                订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额：￥{$orderInfo.dividend_amount|priceFormat}</span>
+                                <span class="m-l-lg hide">实收：{$orderInfo.real_amount|priceFormat}</span>
+                                <span class="m-l-lg ">下单时身份：{$orderInfo.buy_role_name}</span>
+                                <a href="javascript:;"
+                                   data-remote="{:url('upDividend',array('id'=>$orderInfo['order_id']))}"
+                                   data-msg="确定重新计算分佣？" data-toggle="ajaxCurl" class="btn  btn-sm fr "
+                                   title="重新计算分佣">重新计算分佣</a>
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>分佣身份</th>
+                                    <th>奖项相关</th>
+                                    <th>佣金</th>
+                                    <th>分佣状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="dividend_log" id="dlog"}
+                                <tr>
+                                    <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$dlog['dividend_uid']])}" target="_blank">{$dlog.dividend_uid}-{$dlog.dividend_uid|userInfo}</a></td>
+                                    <td>{$dlog.role_name}</td>
+                                    <td>{$dlog.award_name} - {$dlog.level_award_name}</td>
+                                    <td>{$dlog.dividend_amount|priceFormat}</td>
+                                    <td>{$orderLang['ds'][$dlog['status']]}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </section>
+
+    </form>
+</section>
+
+
+{/block}
+
+

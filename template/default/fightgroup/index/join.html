@@ -1,0 +1,165 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+
+<style>
+    .Goods .header-title{
+        display: block; margin:auto;height:auto;
+    }
+</style>
+{/block}
+{block name='pageType'}Goods  groupOrder{/block}
+{block name="main" }
+<div class="orderDetails">
+<!-- 页面内容-->
+<div class="orderBox">
+    <div class="code fs32 fw_b">商品信息</div>
+    <div class="goodslist">
+        <a href="{:url('info',['fg_id'=>$fgInfo['fg_id'],'join_id'=>$orderInfo['order_id']])}"  class="goods">
+            <img src="{$goods.goods_thumb}" alt="">
+            <div class="goodsinfo">
+                <p class="fs28 color_3 textline_2">{$goods['goods_name']}</p>
+
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_price'][0]}</em><i>.{$goods['exp_price'][1]}</i>
+                    </div>
+                    <span class="fs22 color_w BGcolor_r groupType">{$fgInfo['success_num']}人团</span>
+                    <strong class="fs26 color_9">已团{$fgInfo['buy_goods_num']}件</strong>
+                </div>
+
+            </div>
+        </a>
+    </div>
+</div>
+<div class="member">
+    <div class="timeBox">
+        <div class="text fs30 fw_b color_3"><span class="color_r">还差{$fgInfo['success_num'] - count($fgJoin['order'])}人，</span>距离结束还剩
+        </div>
+        <div class="time fs32"></div>
+    </div>
+    <div class="memberimg">
+        {for start="0" end="$fgInfo['success_num']" name="k" }
+            {if condition="$k == 0"}
+                <div>
+                    <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                    <span class="fs22 color_w BGcolor_r">团长</span>
+                </div>
+            {else/}
+                {empty name="$fgJoin['order'][$k]"}
+                    <img src="__STATIC__/mobile/default/images/groupOrder04.jpg" alt="">
+                {else/}
+                    <img src="{${$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                {/empty}
+            {/if}
+        {/for}
+    </div>
+</div>
+<div class="groupRule">
+    <p class="fs32 fw_b color_3">拼团规则</p>
+    <div class="textbox">
+        <div><i>1</i><span class="fs26 color_9">如规定时间内团内人数不足{$fgInfo['success_num']}人，则订单取消，原路返还</span></div>
+    </div>
+</div>
+{if condition="$orderInfo['fg_status']==0"}
+<div class="butt">
+    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r buyBtn" data-type="show">参与拼团</a>
+</div>
+    <div class="butt">
+        {notempty name="wxShare"}
+            <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r shareBtn" >分享朋友</a>
+        {else/}
+            <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}" >复制链接</a>
+        {/notempty}
+
+    </div>
+{elseif condition="$orderInfo['fg_status']==1"}
+<div class="butt">
+    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r">参与拼团(满员)</a>
+</div>
+{else/}
+<!-- 开发时请移除 仅用于设计浏览 -->
+<div class="butt">
+    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r">参与拼团(结束)</a>
+</div>
+{/if}
+</div>
+<!-- 弹出规格选择 -->
+{include file="index/sku" /}
+<div class="model share_box">
+    <img src="__STATIC__/mobile/default/images/shareTips.png" alt="">
+    <span class="fs28 color_w">分享邀请您的好友参与您的拼团吧~</span>
+    <div class="close fs26 color_w">知道了</div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/js/clipboard.min.js"></script>
+<script type="text/javascript">
+    //复制
+    var clipboard = new Clipboard('.copy');
+    clipboard.on('success', function(e) {
+        _alert('复制成功.');
+        e.clearSelection();
+    });
+    clipboard.on('error', function(e) {
+        _alert('复制失败.');
+    });
+    $(function () {
+        let tmp = Date.parse(new Date());
+        let time = {$fgJoin['fail_time'] * 1000} - tmp//倒计时总毫秒数
+        countdown(time)
+        //点击购买按钮
+        $('.buyBtn ').on('click', function () {
+            var obj = $(this);
+            if (obj.data('type') == 'show') {
+                $('.skubox').show();
+                selsku();
+            } else {
+                checkOut(obj);
+            }
+        })
+        //分享提示
+        $('.shareBtn').on('click',function(){
+            $('.share_box').show();
+        })
+        //关闭分享提示
+        $('.share_box .close').on('click',function (){
+            $('.share_box').hide();
+        })
+    })
+    //前往结算
+    function checkOut(obj) {
+        var arr = new Object;
+        arr.goods_id = obj.data('goods_id');
+        arr.specifications = obj.data('sku');
+        arr.join_id = '{$join_id}';
+        arr.number = $('#buynumber').val();
+        window.location = '{:_url("checkout",["fg_id"=>$fgInfo["fg_id"],"join_id"=>$join_id,"number"=>"【arr.number】","sku_val"=>"【arr.specifications】"])}';
+        return false;
+    }
+    function countdown(time) {
+        let countDownTime;
+        if (time < 0) {
+            countDownTime = '<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>'
+            return
+        } else {
+            countDownTime = dateformat(time)//显示的时间
+            time -= 1000;//剩余的毫秒数
+        }
+        $('.time').html(countDownTime)
+        setTimeout(function () {
+            countdown(time);
+        }, 1000)
+    }
+    // 时间格式化输出，如11天03小时25分钟19秒  每1s都会调用一次
+    function dateformat(micro_second) {
+        var second = Math.floor(micro_second / 1000);// 总秒数
+        var day = Math.floor(second / 3600 / 24);// 天数
+        var hr = Math.floor(second / 3600 % 24);// 小时
+        var min = Math.floor(second / 60 % 60);// 分钟
+        var sec = Math.floor(second % 60);// 秒
+        return '<em class="num fs24 BGcolor_3 color_w">' + (hr < 10 ? '0' + hr : hr) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (min < 10 ? '0' + min : min) + '</em>:<em class="num fs24 BGcolor_3 color_w">' + (sec < 10 ? '0' + sec : sec) + '</em>';
+    }
+</script>
+
+{/block}

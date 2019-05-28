@@ -1,11 +1,4 @@
 
-<div class="form-group">          
-<label class="col-sm-2 control-label">抵扣积分：</label>
-    <div class="col-sm-8" >
-          <input type="text" class="input-mini" name="use_integral" data-rule-min="0" data-rule-max="9999" data-rule-number="true" value="{$row['use_integral']|intval}">
-          <span class="help-inline">用于积分+现金组合购买，一旦设置用户须有相应积分进行抵扣才能购买</span>
-    </div>
-</div>
 <div class="form-group">
       <label class="col-sm-2 control-label">优惠券：</label>
       <div class="col-sm-10">
@@ -19,29 +12,7 @@
     </div>
 </div>
 
-<div class="form-group">          
-<label class="col-sm-2 control-label">等级积分规则：</label>
-    <div class="col-sm-8" >
-    	 <select name="rank_integral_type" class="select_integral_type" >
-        	   <option value="0" {$row['give_integral_type']==0?'selected':''}>商品售价1:1赠送</option>
-         	   <option value="1" {$row['give_integral_type']==1?'selected':''}>不赠送</option>
-               <option value="2" {$row['give_integral_type']==2?'selected':''}>赠送指定积分</option>
-         </select>
-         <input type="text" class="input-mini {$row['rank_integral']==2?'':'hd'} " name="rank_integral" min="0" data-rule-max="9999" data-rule-number="true" value="{$row['rank_integral']|intval}">
-    </div>
-</div>
-<div class="form-group">          
-<label class="col-sm-2 control-label">消费积分规则：</label>
-    <div class="col-sm-8" >
-    	 <select name="give_integral_type"  class="select_integral_type" >
-         	   <option value="0" {$row['give_integral_type']==0?'selected':''}>商品售价1:1赠送</option>
-         	   <option value="1" {$row['give_integral_type']==1?'selected':''}>不赠送</option>
-               <option value="2" {$row['give_integral_type']==2?'selected':''}>赠送指定积分</option>
-         </select>
-          <input type="text" class="input-mini {$row['give_integral']==2?'':'hd'}" name="give_integral" min="0" data-rule-max="9999" data-rule-number="true" value="{$row['give_integral']|intval}">
-       
-    </div>
-</div>
+
 <div class="help-inline red">默认全等级可购买，一旦勾选则只有勾选中的等级才能进行购买</div>
 <div class="form-group">
       <label class="col-sm-2 control-label">限制会员购买：</label>
@@ -161,14 +132,14 @@
     <label class="col-sm-2 control-label">单次限购：</label>
     <div class="col-sm-10">
         <label class="radio-inline">
-            <input type="radio" name="is_quota" value="0" {$row['quota_amount']<=0?'checked':''}  class="js_quota">不限购
+            <input type="radio" name="is_quota" value="0" {$row['limit_num']<=0?'checked':''}  class="js_quota">不限购
         </label>
         <label class="radio-inline">
-            <input type="radio" name="is_quota" value="1" {$row['quota_amount']>0?'checked':''}  class="js_quota js_quota_show" />
+            <input type="radio" name="is_quota" value="1" {$row['limit_num']>0?'checked':''}  class="js_quota js_quota_show" />
             限购
         </label>
-        <label class="is_quota_container  v-top {$row['quota_amount']>0?'inline':'hd'} " style="position:relative;">
-            <input class="input-xs input-sm" type="text" data-rule-required="true" name="quota_amount" value="{$row.quota_amount|intval}" data-rule-positive="true" />
+        <label class="is_quota_container  v-top {$row['limit_num']>0?'inline':'hd'} " style="position:relative;">
+            <input class="input-xs input-sm" type="text" data-rule-required="true" name="limit_num" value="{$row.limit_num|intval}" data-rule-positive="true" />
         </label>
     </div>
 </div>
@@ -183,14 +154,7 @@
          </label>
     </div>
  </div> 
-   <div class="form-group"> 
-     <label class="col-sm-2 control-label">促销价：</label>
-     <div class="col-sm-8">
-             <input type="text" class="input-mini" data-rule-ismoney="true" name="promote_price" value="{$row.promote_price}" >元
-             <span class="help-inline">促销期间以此价格进行销售</span>
-        </div>
-      
-</div>   
+
 <div class="form-group">          
 <label class="col-sm-2 control-label">促销时间：</label>
     <div class="col-sm-3" >

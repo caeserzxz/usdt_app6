@@ -1,0 +1,210 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/shopGroup.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/custom.css" />
+{/block}
+{block name='pageType'}orderDetails payResult payment shopGrouplist customPage{/block}
+{block name="main" }
+<div class="page-bd groupOrder">
+    <form action="" id="_form">
+    <!-- 页面内容-->
+    <div class="goodslist" style="padding-bottom:0px;">
+        <div class="title fs32 color_3 fw_b">商品信息</div>
+        <!-- 页面内容-->
+        <div class="listbox">
+            <div class="block">
+                <div class="imgBox">
+                    <img src="{$rgoods.goods_img}" alt="">
+                </div>
+                <div class="name fs28 color_3 textline_2 fw_b">
+                    {$rgoods.goods_name}
+                </div>
+                <div class="moneyBox">
+                    <div class="left fs24">
+                        <div class="money color_3 fw_b">￥<span class="fs42 num fw_4">{$rgoods.exp_price[0]}</span><span class="num fw_4">.{$rgoods.exp_price[1]}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info fs26 color_3">{$rgoods.info}</div>
+        </div>
+    </div>
+
+
+        <div></div>
+        <div class="cells">
+            <div class="cell">
+                <div class="cell_hd"><span class="fs28 color_9">真实姓名</span></div>
+
+                <div class="cell_bd">
+                    <input type="text" name="real_name" class="fs28 fw_b color_3 inputBox" placeholder="请输入真实姓名">
+                </div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd">
+                    <span class="fs28 color_9">身份证号</span></div>
+                <div class="cell_bd">
+                    <input type="text" name="id_number"  class="fs28 fw_b color_3 inputBox" placeholder="请输入身份证号">
+                </div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd">
+                    <span class="fs28 color_9">联系电话</span></div>
+                <div class="cell_bd">
+                    <input type="text" name="mobile" class="fs28 fw_b color_3 inputBox" placeholder="请输入联系电话">
+                </div>
+            </div>
+            <div class="cell cell_access">
+                <div class="cell_hd">
+                    <span class="fs28 color_9">所在地区</span></div>
+                <div class="cell_bd">
+                    <input type="text" id="city-picker" placeholder="请选择所在地区" class="fs28 fw_b color_3 bankBox" readonly id="city-picker">
+                </div>
+                <div class="cell_ft"></div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd">
+                    <span class="fs28 color_9">详细地址</span></div>
+                <div class="cell_bd">
+                    <input type="text" name="address" style="width: 100%" class="fs28 fw_b color_3 inputBox" id="address" placeholder="请输入联系地址">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-ft">
+        <div class="rulesBox">
+            <label for="s12">
+                <div class="iconBox">
+                    <input type="checkbox" class="check" value="1" name="is_agree" id="s12">
+                    <i class="icon_checked"></i>
+                </div>
+            </label>
+            <div class="rules fs26 color_9">同意<a href="{:url('shop/Article/roleGoodsDirections')}" class="color_3">《商品购买协议》</a></div>
+
+        </div>
+        <div class="bottom gopay">
+            <div class="money color_1 fs28">共计：<span class="color_r">{$rgoods.sale_price}</span>元</div>
+            <div class="btn fs32 fw_b">立即购买</div>
+        </div>
+    </div>
+</from>
+
+</div>
+<!-- 支付方式 -->
+<div class="model">
+    <div class="modelContent">
+        <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+        <div class="title fs36 color_3 fw_b">请选择支付方式</div>
+        <div class="cantre pay" id="payListBox">
+
+            <p class="get_list_tip">加载中...</p>
+
+        </div>
+        <div class="buttBox">
+            <span class="fs32 fw_b color_w BGcolor_r payBtn">确认支付</span>
+        </div>
+    </div>
+</div>
+{literal}
+<script type="text/html" id="payListTpl">
+    {{each data as item index}}
+    <div class="block">
+        <label for="{{item.pay_code}}" style="width: 100%;">
+            <div class="payType">
+                <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+                <div>
+                    <span class="fs30 color_3">{{item.pay_name}}</span>
+                    {{if item.pay_code == 'balance'}}
+                    <span class="fs26 color_r">(￥{{balance_money}})</span>
+                    {{/if}}
+                </div>
+            </div>
+        </label>
+        <label for="{{item.pay_code}}">
+            <div class="iconBox">
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}"
+                       data-pay_code="{{item.pay_code}}" id="{{item.pay_code}}">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+{block name="footer"}
+<script src="__STATIC__/js/jquery/jquery-weui.min.js"></script>
+
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
+
+<script type="text/javascript">
+    $("#city-picker").cityPicker({
+        title: "请选择省市区"
+    });
+
+    //选择支付方式
+    $('.gopay').on('click', function () {
+        var postData = $('#_form').toJson();
+        if (postData.real_name.length < 2){
+            _alert('真实姓名不能小于2位字符.');
+            return false;
+        }
+        var regName =/^[\u4e00-\u9fa5]{2,4}$/;
+        if(!regName.test(postData.real_name)){
+            alert('真实姓名填写有误.');
+            return false;
+        }
+        var mobileRegex = /^(((1[3456789][0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+        if(!mobileRegex.test(postData.mobile)){
+            _alert('手机号输入不正确');
+            return false;
+        }
+        var regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(!regIdNo.test(postData.id_number)){
+            alert('身份证号填写有误.');
+            return false;
+        }
+        postData.regionIds = $(document).find('#city-picker').data('codes');
+        if (postData.regionIds == ''){
+            alert('请选择所在区域.');
+            return false;
+        }
+        if (postData.is_agree < 1){
+            alert('请勾选同意《商品购买协议》.');
+            return false;
+        }
+        jq_ajax('{:url("publics/api.pay/getList")}', '', function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            $('#payListBox').html(template('payListTpl', res));
+            $('.model').show();
+        });
+    });
+    $('.closeBox').on('click', function () {
+        $('.model').hide();
+    });
+    $('.payBtn').on('click', function () {
+        var postData = $('#_form').toJson();
+        postData.regionIds = $(document).find('#city-picker').data('codes');
+        postData.rg_id = '{$rgoods.rg_id}';
+        postData.pay_id = $('input:radio[name="pay_id"]:checked').val();
+        if (typeof(postData.pay_id ) == 'undefined') {
+            _alert('请选择支付方式.');
+            return false;
+        }
+        jq_ajax('{:url("distribution/api.RoleGoods/addOrder")}', postData, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            window.location.href = '{:_url("done",["order_id"=>"【res.order_id】","type"=>"add"])}';
+        });
+
+    });
+
+
+</script>
+{/block}

@@ -92,6 +92,9 @@
                 _alert(res.msg);
                 return false;
             }
+            if (res.url != ''){
+                return window.location.href = res.url;
+            }
             window.location.href = '{:url("center/index")}';
         })
     })

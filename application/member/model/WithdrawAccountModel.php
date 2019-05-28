@@ -13,7 +13,7 @@ class WithdrawAccountModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 清除缓存
     /*------------------------------------------------------ */
-    public function cleanMemcache($uid)
+    public function cleanMemcache($uid = 0)
     {
         if ($uid < 1){
             $uid = $this->userInfo['user_id'];

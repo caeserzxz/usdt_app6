@@ -1,0 +1,154 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/seckill.css" />
+{/block}
+{block name='pageType'}seckill{/block}
+{block name="main" }
+<div class="scrollbox">
+    <div class="tab fs32 color_3">
+        <div class="color_r"><span class="fs38 num">16:00</span><span class="fs26">抢购中</span></div>
+        <div><span class="fs38 num">17:00</span><span class="fs26">即将开始</span></div>
+        <div><span class="fs38 num">18:00</span><span class="fs26">即将开始</span></div>
+        <div><span class="fs38 num">19:00</span><span class="fs26">即将开始</span></div>
+        <div><span class="fs38 num">20:00</span><span class="fs26">即将开始</span></div>
+        <div><span class="fs38 num">21:00</span><span class="fs26">即将开始</span></div>
+    </div>
+</div>
+
+
+
+<div class="page-bd">
+    <!-- 页面内容-->
+
+    <div class="tabBox">
+        <div class="tabBlock ">
+
+            <div id="seckilling">
+                <div class="timeBox"><p class="fs28 color_3">抢购正在进行中</p><div class="time end"><p class="fs28 color_3">距结束</p><div>00</div><span>:</span><div>00</div><span>:</span><div>00</div></div></div>
+            </div>
+        </div>
+        <div class="tabBlock box">
+            <div id="evaluated">
+                <div class="timeBox"><p class="fs28 color_3">特惠即将开始</p><div class="time start"><p class="fs28 color_3">距开始</p><div>00</div><span>:</span><div>00</div><span>:</span><div>00</div></div></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="footer"}
+
+<script id="ing" type="text/html">
+    {{each goodsing}}
+    <div class="goodsBox">
+        <div class='imgBox'>
+            <img src={{$value.imgUrl}} alt="">
+            {{if $value.proportion=='100%'}}<div class='imgBg'><span class='fs28 color_w'>抢光啦</span></div>{{/if}}
+        </div>
+        <div class="info">
+            <div class="name fs28 color_3 textline_2">{{$value.name}}</div>
+            <div class="type"><div class='line'><i style='width:{{$value.proportion}}'></i></div>
+                {{if $value.proportion=='100%'}}<div class="color_r fs26">已售罄</div>
+                {{else}}<span class='fs26 color_9'>已售{{$value.num}}件</span>{{/if}}
+            </div>
+            <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs42">{{$value.money}}</em><p>.{{$value.moneyPoint}}</p></div>
+                    <div class="fs24 color_9 originalMoney">￥{{$value.originalMoney}}</div>
+                </div>
+                {{if $value.proportion=='100%'}}<div class="butt color_9 fs28 BGcolor_e">马上抢</div>{{else}}
+                <div class="butt color_w fs28 BGcolor_r">马上抢</div>{{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script id="start" type="text/html">
+    {{each goodsWill}}
+    <div class="goodsBox">
+        <img src={{$value.imgUrl}} alt="">
+        <div class="info">
+            <div class="name fs28 color_3 textline_2">{{$value.name}}</div>
+            <div class="type fs26 color_r">限量{{$value.amount}}件</div>
+            <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs42">{{$value.money}}</em><p>.{{$value.moneyPoint}}</p></div>
+                    <div class="fs24 color_9 originalMoney">￥{{$value.originalMoney}}</div>
+                </div>
+                <div class="butt color_9 fs28 BGcolor_e" >马上抢</div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script>
+    $(function(){
+        var data = {
+            goodsing:[
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',proportion:'40%',num:'1452',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',proportion:'50%',num:'6310',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',proportion:'60%',num:'9854',money:'199',moneyPoint:'77',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',proportion:'70%',num:'5324',money:'199',moneyPoint:'66',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',proportion:'100%',num:'653',money:'199',moneyPoint:'55',originalMoney:'2635.00'},
+            ],
+            goodsWill:[
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'4562',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'33215',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'999',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'99',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'1000',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+                {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',amount:'532',money:'199',moneyPoint:'99',originalMoney:'2635.00'}
+            ]
+        };
+        var waitHtml = template("ing",data);
+        var Html = template("start",data);
+        $('#seckilling').append(waitHtml)
+        $('#evaluated').append(Html)
+        $('.tab div').on('click',function(){
+            let index=$(this).index();
+            $(this).addClass('color_r')
+            $(this).siblings().removeClass('color_r')
+            $('.tabBlock').eq(index).show();
+            $('.tabBlock').eq(index).siblings().hide();
+        })
+        codeButton($('.start div'))
+        codeButton($('.end div'))
+    })
+    $('.tabBlock').scroll(function(){
+        if($(this).children('div').height()-$(this).height()-$(this).scrollTop()<50){
+            if($('.tab .color_r').index()==0){
+                console.log('需要加载抢购的')
+            }else{
+                console.log('需要加载即将开始的')
+            }
+        }
+    })
+    function codeButton(obj){
+        let code = obj;
+        let time=10//总秒数
+        let hour=time%3600==0?parseInt(time/3600)-1:parseInt(time/3600);//shi
+        let min = time%60==0?parseInt((time-hour*3600)/60)-1:parseInt(time/3600)>0?parseInt((time-hour*3600)/60):parseInt(time/60);//fen
+        let second=time%60==0?59:time%60//miao
+        code.eq(0).text(hour>9?hour:'0'+hour)
+        code.eq(1).text(min>9?min:'0'+min)
+        code.eq(2).text(second>9?second:'0'+second)
+        let set=setInterval(function(){
+            code.eq(0).text(hour>9?hour:'0'+hour)
+            code.eq(1).text(min>9?min:'0'+min)
+            code.eq(2).text(--second>9?second:'0'+second)
+            if(second==0){
+                second=60
+                min<=0?0:--min
+                if(min==0&&hour>0){
+                    min=59
+                    hour<=0?0:--hour
+                }
+            }
+        }, 1000);
+        setTimeout(function(){
+            clearInterval(set);
+        }, 1000*time);
+    }
+</script>
+{/block}

@@ -1,0 +1,43 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+{/block}
+{block name='pageType'}orderDetails{/block}
+{block name="main" }
+<div class="page-bd groupOrder">
+    <!-- 页面内容-->
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder04.png" alt="">
+        <p class="fs34 fw_b color_3">拼团未开始</p>
+        <span class="fs26 color_9">对不起，该拼团活动还没有开始！</span>
+    </div>
+    <div class="orderBox">
+        <div class="code fs32 fw_b">商品信息</div>
+        <div class="goodslist">
+            <a href="#" class="goods">
+                <img src="{$goods.goods_thumb}" alt="">
+                <div class="goodsinfo">
+                    <p class="fs28 color_3 textline_2">{$goods.goods_name}</p>
+                    <div class="appleBox"><span class="fs28 color_9"></span></div>
+                    <div class="money">
+                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$fgInfo['exp_price'][0]}</em><i>.{$fgInfo['exp_price'][1]}</i></div>
+                        <span class="fs22 color_w BGcolor_r groupType">{$fgInfo.success_num}人团</span>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="groupRule">
+        <p class="fs32 fw_b color_3">拼团规则</p>
+        <div class="textbox">
+            <div><i>1</i><span class="fs26 color_9">如规定时间内团内人数不足{$fgInfo.success_num}人，则订单取消，原路返还</span></div>
+        </div>
+    </div>
+    <div class="butt">
+        <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_r">去首页逛逛</a>
+    </div>
+</div>
+
+
+{/block}

@@ -1,0 +1,61 @@
+<table class="table table-striped  m-b-none">
+    <thead>
+    <tr>
+        <th>商品信息</th>
+        <th width="150" >实收款</th>
+        <th width="150" align="center">购买人</th>
+        <th width="100">支付方式</th>
+        <th width="100">状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td colspan="6"><span class="m-r">订单编号：{$vo.order_sn}</span>
+            <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+            <span class="m-r">{$vo.real_name} {$vo.merger_name}</span>
+            <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="btn btn-sm btn-default fr" title="查看详情">
+                <i class="fa fa-search "></i>订单详情</a>
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            <ul class="list-group no-borders">
+
+                <li class="list-group-item ">
+                    <div class="media">
+                    <span class="pull-left thumb-sm">
+                        <img src="{$vo.goods_img}" ></span>
+
+                        <div class="media-body">
+                            <div style="color:#999;">{$vo.goods_name}</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </td>
+        <td>
+            <p class=" m-b-xs">
+                {$vo.order_amount|priceFormat}
+
+            </p>
+        </td>
+        <td>
+            {$vo.user_id|userInfo} 会员ID：{$vo.user_id}</p>
+        </td>
+        <td>{$vo.pay_name}</td>
+
+        <td>
+            <p> {$vo.pay_status==1?'已付款':'未付款'}</p>
+        </td>
+
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+    <tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

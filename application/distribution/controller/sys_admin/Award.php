@@ -3,9 +3,8 @@ namespace app\distribution\controller\sys_admin;
 use app\AdminController;
 use app\distribution\model\DividendAwardModel;
 use app\distribution\model\DividendRoleModel;
+use app\distribution\model\RoleGoodsModel;
 
-use app\shop\model\OrderModel;
-use app\shop\model\OrderGoodsModel;
 
 /**
  * 分销奖项管理
@@ -35,12 +34,17 @@ class Award extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
 		$usersRole = (new DividendRoleModel)->getRows();//分销身份
+
         $data = $this->getPageList($this->Model);
 		foreach ($data['list'] as $key=>$row){
 			$row['limit_role'] = explode(',',$row['limit_role']);
 			$limit_role_name = [];
 			foreach ($row['limit_role'] as $role_id){
-				$limit_role_name[] = $usersRole[$role_id]['role_name'];
+			    if ($role_id == 0){
+                    $limit_role_name[] = '粉丝';
+                }else{
+				    $limit_role_name[] = $usersRole[$role_id]['role_name'];
+                }
 			}
 			$row['limit_role_name'] = join(',',$limit_role_name);
 			$data['list'][$key] = $row;
@@ -74,7 +78,8 @@ class Award extends AdminController
 			$list = (new \app\shop\model\GoodsModel)->where($where)->field('goods_id,goods_sn,goods_name')->select();
 			if (empty($list) == false) $data['repeat_goods_list'] = $list->toArray(); 
 		}		
-		$data['award_value'] = empty($data['award_value']) == false ? $data['award_value'] : '[]';		
+		$data['award_value'] = empty($data['award_value']) == false ? $data['award_value'] : '[]';
+        $this->assign('roleGoods', (new RoleGoodsModel)->getRows());
 		return $data;
 	}
 	/*------------------------------------------------------ */
@@ -93,8 +98,12 @@ class Award extends AdminController
 		if (empty($data['award_value']) == true){
 			return $this->error('请设置奖项设置.');
 		}
-		
-		if ($data['goods_limit'] > 1){
+        $data['buy_goods_id'] = '';
+		if ($data['goods_limit'] == 4){
+            if ($data['role_goods'] < 1){
+                return $this->error('请指定需要购买的身份商品.');
+            }
+        }elseif (in_array($data['goods_limit'],[2,3])){
 			$buy_goods_id = input('buy_goods_id');
 			if (empty($buy_goods_id) == true){
 				return $this->error('请指定需要购买的商品.');	
@@ -109,8 +118,7 @@ class Award extends AdminController
 				}
 			}
 		}
-		
-		
+
 		$repeat_goods_id = input('repeat_goods_id');
 		$data['repeat_goods_id'] = empty($repeat_goods_id) ? '' : join(',',$repeat_goods_id);
 		$data['award_value'] = json_encode($data['award_value'],JSON_UNESCAPED_UNICODE);
@@ -140,13 +148,17 @@ class Award extends AdminController
 		
 		$data['update_time'] = time();
 		$data['buy_goods_id'] = '';
-		if ($data['goods_limit'] > 1){
-			$buy_goods_id = input('buy_goods_id');
-			if (empty($buy_goods_id) == true){
-				return $this->error('请指定需要购买的商品.');	
-			}
-			$data['buy_goods_id'] = join(',',$buy_goods_id);
-		}
+        if ($data['goods_limit'] == 4){
+            if ($data['role_goods'] < 1){
+                return $this->error('请指定需要购买的身份商品.');
+            }
+        }elseif (in_array($data['goods_limit'],[2,3])){
+            $buy_goods_id = input('buy_goods_id');
+            if (empty($buy_goods_id) == true){
+                return $this->error('请指定需要购买的商品.');
+            }
+            $data['buy_goods_id'] = join(',',$buy_goods_id);
+        }
 		
 		if ($data['award_type'] == 3){//管理奖
 			$data['award_value'] = input('role_award_value');
@@ -192,7 +204,7 @@ class Award extends AdminController
         $res = $this->Model->where('award_id',$award_id)->delete();
         if ($res < 1) return $this->error('删除失败，请重试.');
         $this->Model->cleanMemcache();
-		$this->_Log($data['award_id'],'删除分销奖项:'.$data['award_name'],'',$data->toArray());
+		$this->_Log($data['award_id'],'删除分销奖项:'.$data['award_name']);
         return $this->success('删除成功.');
     }
 }

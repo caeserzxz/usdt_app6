@@ -53,7 +53,7 @@
   background-repeat: no-repeat;
   background-position: bottom;
   background-color: #fff;
-  margin-top: 0.026667rem;
+  margin-bottom: 0.133333rem;
   padding: 0 0.266667rem;
   overflow: hidden;
 }
@@ -73,12 +73,11 @@
 }
 
 .orderDetails .orderBox {
-  margin-top: 0.133333rem;
   background-color: #fff;
 }
 
 .orderDetails .orderBox .code {
-  height: 0.8rem;
+  height: 0.666667rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -233,6 +232,7 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+  margin-right: 0.006667rem;
 }
 
 .orderDetails .button .bor_e {
@@ -926,4 +926,397 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+}
+
+.groupOrder strong {
+  font-weight: 400;
+}
+
+.groupOrder .type {
+  background-color: #fff;
+  height: 2.866667rem;
+  width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0.533333rem 0;
+  margin-bottom: 0.133333rem;
+}
+
+.groupOrder .type img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.groupOrder .member {
+  background-color: #fff;
+  margin-bottom: 0.133333rem;
+  padding: 0.2rem 0.266667rem;
+}
+
+.groupOrder .member .timeBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.groupOrder .member .timeBox .time {
+  margin-left: 0.093333rem;
+  width: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.253333rem;
+  line-height: 0.2rem;
+}
+
+.groupOrder .member .timeBox .time em {
+  width: 0.213333rem;
+  height: 0.253333rem;
+  line-height: 0.333333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.groupOrder .member .memberimg {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.226667rem 0 0;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+
+.groupOrder .member .memberimg img {
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.groupOrder .member .memberimg div {
+  position: relative;
+  margin-bottom: 0.266667rem;
+}
+
+.groupOrder .member .memberimg span {
+  position: absolute;
+  bottom: -0.106667rem;
+  left: 0.08rem;
+  width: 0.44rem;
+  height: 0.24rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  border: 0.013333rem solid #ffffff;
+}
+
+.groupOrder .orderBox {
+  margin-bottom: 0.133333rem;
+}
+
+.groupOrder .orderBox .goodslist .goodsinfo .money {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+}
+
+.groupOrder .orderBox .goodslist .goodsinfo .money div {
+  margin-top: 0.04rem;
+}
+
+.groupOrder .orderBox .goodslist .goodsinfo .money strong {
+  margin-left: auto;
+}
+
+.groupOrder .orderBox .groupType {
+  width: 0.506667rem;
+  height: 0.213333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-left: 0.133333rem;
+}
+
+.groupOrder .orderBox .message {
+  margin-left: 0.266667rem;
+  padding: 0.2rem 0.2rem 0.266667rem 0;
+  border-top: 0.006667rem solid #eee;
+}
+
+.groupOrder .list {
+  background-color: #fff;
+  padding: 0.066667rem 0;
+}
+
+.groupOrder .list .cell {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+  height: 0.6rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.groupOrder .list .cell div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.groupOrder .butt {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.266667rem 0.2rem 0.2rem;
+}
+
+.groupOrder .butt span,
+.groupOrder .butt a {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 0.533333rem;
+}
+
+.groupOrder .groupRule {
+  background-color: #fff;
+  padding-bottom: 0.266667rem;
+}
+
+.groupOrder .groupRule p {
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0.2rem;
+}
+
+.groupOrder .groupRule .textbox {
+  padding: 0 0.2rem;
+}
+
+.groupOrder .groupRule .textbox i {
+  width: 0.213333rem;
+  height: 0.213333rem;
+  background: #c0c0c0;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #fff;
+}
+
+.groupOrder .groupRule .textbox span {
+  width: 4.266667rem;
+  margin-left: 0.093333rem;
+  margin-top: -0.013333rem;
+}
+
+.groupOrder .groupRule .textbox div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.2rem;
+}
+
+.groupOrder .border_r {
+  border: 0.006667rem solid #F65236;
+}
+
+.groupOrder .groupScale {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.groupOrder .groupScale .cell {
+  margin-top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  padding-left: 0.2rem;
+}
+
+.groupOrder .groupScale .member {
+  padding: 0 0.2rem;
+  margin-bottom: 0.333333rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.groupOrder .groupScale .member .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.groupOrder .groupScale .member img {
+  width: 0.466667rem;
+  height: 0.466667rem;
+  margin-right: 0.133333rem;
+  border-radius: 50%;
+}
+
+.groupOrder .groupScale .member .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  height: 0.533333rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.groupOrder .groupScale .member .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 0.666667rem;
+  height: 0.306667rem;
+  border: 0.006667rem solid #f65236;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.groupOrder .btnBox {
+  margin: 0.266667rem 0.2rem 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.groupOrder .btnBox a {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 0.533333rem;
+}
+
+.groupOrder .share_box {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+}
+
+.groupOrder .share_box img {
+  width: 100%;
+  margin-top: 0;
+}
+
+.groupOrder .share_box span {
+  display: block;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.groupOrder .share_box .close {
+  width: 1.2rem;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0.08rem;
+  border: 0.006667rem solid #fff;
+  margin: 0.533333rem auto;
 }

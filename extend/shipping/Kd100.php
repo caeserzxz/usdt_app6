@@ -10,16 +10,20 @@ class Kd100{
      /*------------------------------------------------------ */
 	//--  获取物流信息
 	/*------------------------------------------------------ */
-	public static function getLog($shipping_code,$invoice_no){		
-		$express = array('YT'=>'yuantong','ST'=>'shentong','ZJS'=>'zhaijisong','EMS'=>'ems','ZT'=>'zhongtong','YD'=>'yunda','SF'=>'shunfeng');		
+	public static function getLog($shipping_code,$invoice_no,$mobile=''){
+		$express = array('YT'=>'yuantong','ST'=>'shentong','ZJS'=>'zhaijisong','EMS'=>'ems','ZT'=>'zhongtong','YD'=>'yunda','SF'=>'shunfeng','DBL'=>'debangwuliu','DBLKY'=>'debangwuliu');
 		$return['code'] = 0;
 		
 		if (empty($express[$shipping_code])==true){
 			$return['msg'] = '暂不支持当前快递物流查询，请前往官网查询！';
 			return $return;
 		}
-		$res = self::vget("http://www.kuaidi100.com/query?type=".$express[$shipping_code]."&postid=".$invoice_no);	
-		$res = json_decode($res,true);			
+		$url = "http://www.kuaidi100.com/query?type=".$express[$shipping_code]."&postid=".$invoice_no.'&temp=0.'.rand(10000000,99999999).'&phone='.substr($mobile,-4);
+
+		$res = self::vget($url);
+
+		$res = json_decode($res,true);
+        print_r($res);
 		if ($res['message'] != 'ok'){
 			$return['msg'] = $res['message'];
 			return $return;
@@ -37,7 +41,7 @@ class Kd100{
 					'Accept-Encoding:gzip, deflate',                                
 					'Accept-Language:zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3',
 					'Connection:keep-alive',
-					'Host:www.kuaidi100.com',					
+					'Host:www.kuaidi100.com',
 			);   
 		   $useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0';
 			$curl = curl_init(); // 启动一个CURL会话
@@ -50,7 +54,7 @@ class Kd100{
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
 			curl_setopt($curl, CURLOPT_AUTOREFERER, 1); // 自动设置Referer
 			curl_setopt($curl, CURLOPT_HTTPGET, 1); // 发送一个常规的GET请求
-			//curl_setopt($curl, CURLOPT_COOKIE, 'WWWID=WWW26A1E2C1E53EB3185FDD554EBB86563B; Hm_lvt_22ea01af58ba2be0fec7c11b25e88e6c=1514517868; Hm_lpvt_22ea01af58ba2be0fec7c11b25e88e6c=1514517868'); // 读取上面所储存的Cookie信息
+			curl_setopt($curl, CURLOPT_COOKIE, 'Hm_lvt_22ea01af58ba2be0fec7c11b25e88e6c=1555330368; WWWID=WWWF5A988734DE61FC84FC0BF04746AE8DD; Hm_lpvt_22ea01af58ba2be0fec7c11b25e88e6c=1555989068; '); // 读取上面所储存的Cookie信息
 			curl_setopt($curl, CURLOPT_ENCODING, "gzip"); // 关键在这里
 			curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环
 			curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容

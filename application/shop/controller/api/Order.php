@@ -20,6 +20,8 @@ class Order extends ApiController
 	//-- 获取列表
 	/*------------------------------------------------------ */
  	public function getList(){
+        $where[] = ['pid','=',0];
+        $where[] = ['order_type','in',[0,1]];
         $where[] = ['user_id','=',$this->userInfo['user_id']];
         $where[] = ['is_del','=',0];
         $type = input('type','','trim');

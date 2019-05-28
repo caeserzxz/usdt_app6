@@ -1,6 +1,6 @@
 <?php
 namespace app\mainadmin\controller;
-use Think\Db;
+
 use app\AdminController;
 use think\facade\Cache;
 
@@ -9,6 +9,7 @@ use app\member\model\UsersModel;
 use app\member\model\AccountModel;
 use app\member\model\RechargeLogModel;
 use app\member\model\WithdrawModel;
+
 /**
  * 后台首页
  * Class Index
@@ -26,11 +27,10 @@ class Index extends AdminController
 			(new \app\shop\model\OrderModel)->autoSign();			
 		}
 
-
         $time = time();
         $start_day = date("Y-m-d",strtotime("-1 week"));
         $this->assign('start_day',$start_day);
-        $end_day = date('Y-m-d', $time );
+        $end_day = date('Y-m-d', strtotime("+1 day") );
         $this->assign('end_day',$end_day);
         $dt_start = strtotime($start_day);
         $today = strtotime(date("Y-m-d"));
@@ -42,7 +42,7 @@ class Index extends AdminController
         //帐户统计
         $AccountModel = new AccountModel();
         $account['balance_money'] = $AccountModel->sum('balance_money');
-        $account['bean_value'] = $AccountModel->sum('bean_value');
+        $account['use_integral'] = $AccountModel->sum('use_integral');
         $this->assign('account',$account);
         //end
         //充值&提现审核
@@ -77,7 +77,16 @@ class Index extends AdminController
 
         $where[] = ['order_status', '=', '1'];
         $where[] = ['shipping_status', '=', '0'];
+        $where[] = ['supplyer_id', '=', '0'];
+        $where[] = ['is_success', '=', '1'];
         $stats['wait_shipping_num'] = $OrderModel->where($where)->count('order_id');
+        $stats['seven_order_amount_all'] = 0;
+        $stats['seven_real_amount_all'] = 0;
+        $stats['seven_dividend_amount_all'] = 0;
+        $stats['seven_shpping_num'] = 0;
+        $stats['seven_pay_num'] = 0;
+        $stats['seven_add_num'] = 0;
+        $stats['seven_sign_num'] = 0;
 
         while ($dt_start <=  strtotime($end_day)){
             $riqi[] = date('Y-m-d',$dt_start);
@@ -132,6 +141,10 @@ class Index extends AdminController
 
         $where[] = ['add_time','between',$timeWhere];
         $rows = $OrderModel->field('order_id,order_status,pay_status,shipping_status,is_pay,order_amount,dividend_amount')->where($where)->select();
+        $info['all_add_num'] = 0;
+        $info['order_amount'] = 0;
+        $info['order_pay_num'] = 0;
+        $info['dividend_amount'] = 0;
         foreach ($rows as $row){
             $info['all_add_num'] += 1;//全部订单
             if ($row['order_status'] == 1){
@@ -140,19 +153,32 @@ class Index extends AdminController
                 $info['dividend_amount'] += $row['dividend_amount'];//分佣金额
             }
         }
-        //发货数量
-        unset($where);
-        $where[] = ['shipping_time','between',$timeWhere];
-        $where[] = ['shipping_status','=',1];
-        $info['shipping_num'] = $OrderModel->where($where)->count('order_id');
-        //发货数量
-        unset($where);
-        $where[] = ['sign_time','between',$timeWhere];
-        $where[] = ['shipping_status','=',2];
-        $info['sign_num'] = $OrderModel->where($where)->count('order_id');
+        if ($row['order_status'] == 1) {
+            $info['order_pay_num'] += 1;//成交数
+            $info['order_amount'] += $row['order_amount'];//成交金额
+            if ($row['shipping_status'] > 0){
+                $info['shipping_num'] += 1;
+            }
+            if ($row['shipping_status'] == 2){
+                $info['sign_num'] += 1;
+            }
+        }
         Cache::set($mkey, $info, 20);
         return $info;
     }
-
+    /*------------------------------------------------------ */
+    //-- 清理全部缓存
+    /*------------------------------------------------------ */
+    public function clearCache()
+    {
+        $redis = new \think\cache\driver\Redis();
+        $keysdata = $redis->keys(config('cache.prefix') . '*');
+        foreach ($keysdata as $key => $val) {
+            if (stripos($val, config('cache.prefix').'devlogin_') !== 0) {
+                $redis->rm($val);
+            }
+        }
+        return $this->success('清理完成.');
+    }
 
 }

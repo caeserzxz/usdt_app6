@@ -6,6 +6,8 @@
 namespace app\shop\controller;
 use app\ClientbaseController;
 use app\shop\model\OrderModel;
+use app\mainadmin\model\PaymentModel;
+
 
 class Flow extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -36,9 +38,13 @@ class Flow extends ClientbaseController{
             $this->error('订单不存在.');
         }
 		$goPay = 0;
-		if ($type == 'add' && $orderInfo['pay_status'] == config('config.PS_UNPAYED')){
-			$goPay = 1;
-		}
+        $payment = (new PaymentModel)->where('pay_id', $orderInfo['pay_id'])->find();
+        if ($type == 'add' && $orderInfo['pay_status'] == config('config.PS_UNPAYED')){
+            if ($orderInfo['is_pay'] == 1){
+                $goPay = 1;
+            }
+        }
+        $this->assign('payment', $payment);
 		$this->assign('goPay', $goPay);
         $this->assign('orderInfo', $orderInfo);
         return $this->fetch('done');

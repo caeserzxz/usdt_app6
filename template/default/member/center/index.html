@@ -22,9 +22,9 @@
     </div>
     <div class="moneyInfo">
         <a href="{:url('wallet/index')}"><p class="num fs46 color_0 balance_money">0</p><span
-                class="fs26 color_6">金币</span></a>
-        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 bean_value">0</p><span
-                class="fs26 color_6">旅游豆</span></a>
+                class="fs26 color_6">余额</span></a>
+        <a href="{:url('wallet/index')}"><p class="num fs46 color_0 use_integral">0</p><span
+                class="fs26 color_6">积分</span></a>
 
     </div>
     <div class="myOrder">
@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="cellBox">
-        <a href="" class="hide">
+        <a href="{:url('fightgroup/order/index')}" >
             <div class="left">
                 <img src="__STATIC__/mobile/default/images/myIcon08.png" alt="">
                 <span class="fs30 fw_b color_3">我的拼团</span>
@@ -184,7 +184,7 @@
                 $('.level_name').html(res.userInfo.level.level_name);
             }
             $('.balance_money').html(res.userInfo.account.balance_money);
-            $('.bean_value').html(res.userInfo.account.bean_value);
+            $('.use_integral').html(res.userInfo.account.use_integral);
             $('#headimgurl').attr('src', res.userInfo.headimgurl ? res.userInfo.headimgurl : '__STATIC__/mobile/default/images/defheadimg.jpg');
 
 

@@ -1,0 +1,107 @@
+.customPage .cells .cell {
+  height: 0.666667rem;
+}
+
+.customPage .cells .cell_hd {
+  width: 30%;
+}
+
+.customPage .cells input {
+  width: 100%;
+}
+
+.customPage .rulesBox {
+  padding: 0 0.2rem;
+  margin: 0.2rem 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.customPage .rulesBox .rules {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-left: 0.066667rem;
+}
+
+.customPage .rulesBox label {
+  width: auto;
+}
+
+.customPage .bottom {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.733333rem;
+  background-color: #fff;
+}
+
+.customPage .bottom .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-left: 0.2rem;
+}
+
+.customPage .bottom .btn {
+  background-color: #ff0000;
+  color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  width: 1.786667rem;
+  height: 100%;
+}
+
+.customPage .title {
+  background-color: #fff;
+  height: 0.666667rem;
+  padding-left: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.customPage .block {
+  background-color: #fff;
+  padding: 0 0.2rem;
+  margin-bottom: 0.133333rem;
+}
+
+.customPage .block .imgBox img {
+  width: 100%;
+}
+
+.customPage .block .name {
+  margin: 0.266667rem 0 0.133333rem;
+}
+
+.customPage .block .info {
+  margin-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}

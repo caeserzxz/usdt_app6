@@ -14,13 +14,12 @@
                             </div>
                         {/eq}
                     </div>
-                    {eq name="goods.is_promote" value="1"}<span class="fs22 color_w BGcolor_r">活动价</span>{/eq}
+                    <span class="fs22 color_w BGcolor_r is_promote {$goods['is_promote']==0?'hide':''}">活动价</span>
                 </div>
                 <div class="fs24 color_9 moneyPrimary">￥{$goods.market_price}</div>
                 {notempty name="$goods.sub_goods"}<p class="fs28 fw_b color_3 selSkuName">请选择规格</p>{/notempty}
             </div>
         </div>
-
         <div class="cantre sku_list">
             {volist name="goods.lstSKUArr" id="sku"  }
             <div class="block {$sku['is_show']==0?'hide':''}">
@@ -50,7 +49,6 @@
 </div>
 <script type="text/javascript">
     var sub_goods = {$goods.sub_goods|json_encode|raw};
-    var skuLink = {$goods.skuLink|json_encode|raw};
     var skuCstom = {$goods.skuCstom|json_encode|raw};
     var skuImgs = {$skuImgs|json_encode|raw};
     //选择商品数量
@@ -71,36 +69,10 @@
         act=parseInt($(".pr_selnum").val());
     });
     function selsku(){
-		if (sub_goods == null) return false;
-        var sku = new Array();
+        if (sub_goods.length < 1) return false;
+        var sku = [];
         $('.sku_list .tag_active').each(function(){
             var skukey = $(this).data('skukey');
-            sku.push(skukey);
-            if (skuLink.indexOf(sku.join(":")) < 0){
-                sku.pop();
-                $(this).removeClass('selected').addClass('disabled');
-                $(this).parent().find('.item').each(function(){
-                    skukey = $(this).data('skukey')
-                    sku.push(skukey);
-                    if (skuLink.indexOf(sku.join(":")) < 0){
-                        $(this).removeClass('selected').addClass('disabled');
-                        sku.pop();
-                        return true;
-                    }
-                    $(this).removeClass('disabled').addClass('selected');
-                    return false;
-                })
-            }
-            $(this).parent().find('.item').each(function(){
-                sku.pop();
-                sku.push($(this).data('skukey'));
-                if (skuLink.indexOf(sku.join(":")) < 0){
-                    $(this).addClass('disabled');
-                }else{
-                    $(this).removeClass('disabled');
-                }
-            })
-            sku.pop();
             sku.push(skukey);
         });
        var _sku = sku.join(":");
@@ -111,6 +83,13 @@
         })
         $('#skuImg').attr('src',skuImgs[_sku]);
         $('.selSkuName').html(skuName.join(" - "));
+
+        if (sub_goods[_sku].is_promote == 1){
+            $('.is_promote').removeClass('hide');
+        }else{
+            $('.is_promote').addClass('hide');
+        }
+
         $('.skuPrice').find('em').html(sub_goods[_sku].exp_price[0]);
         $('.skuPrice').find('p').html('.'+sub_goods[_sku].exp_price[1]);
         $('.moneyPrimary').html('￥'+sub_goods[_sku].market_price);

@@ -23,7 +23,7 @@ class Goods extends ClientbaseController{
 		$this->assign('title', '商品列表');
         $keyword = input('keyword','','trim');
         $this->assign('keyword',$keyword );
-		$this->assign('input',input());		
+		$this->assign('input',input());
         if (empty($keyword) == false){//记录搜索关键字
             $this->Model->searchKeys($keyword);
         }
@@ -38,17 +38,27 @@ class Goods extends ClientbaseController{
         $goods_id = input('id',0,'intval');
         if ($goods_id < 1) return $this->error('传参错误.');
         $goods = $this->Model->info($goods_id);
+        if (empty($goods)){
+            return $this->error('商品不存在.');
+        }
         $this->assign('title', $goods['goods_name']);
-						
+
 		$goods['m_goods_desc'] = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"',$goods['m_goods_desc']);
         $this->assign('goods', $goods);
-        $imgWhere[] = ['goods_id','=',$goods_id];
-        $this->assign('imgsList', $this->Model->getImgsList($imgWhere));//获取图片
-        $this->assign('skuImgs', $this->Model->getImgsList($imgWhere,true,true));//获取sku图片
-        $this->assign('isCollect', $this->Model->isCollect($goods_id,$this->userInfo['user_id']));//获取sku图片
+        $this->assign('imgsList', $this->Model->getImgsList($goods_id));//获取图片
+        $this->assign('skuImgs', $this->Model->getImgsList($goods_id,true,true));//获取sku图片
+        $this->assign('isCollect', $this->Model->isCollect($goods_id,$this->userInfo['user_id']));//判断是否收藏
         $CartModel = new CartModel();
         $this->assign('cartInfo', $CartModel->getCartInfo(0));//获取购物车信息
-
+        $this->assign('goods_status',config('config.goods_status'));
+        $shareUrl = getUrl('','',['id'=>$goods_id]);
+        if ($this->is_wx == 1){
+            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
+            $wxShare['img'] = $goods['goods_thumb'];
+            $wxShare['title'] = $goods['goods_name'];
+            $wxShare['description'] = $goods['description'];
+            $this->assign('wxShare',$wxShare);
+        }
         return $this->fetch('info');
     }
 	
@@ -65,6 +75,17 @@ class Goods extends ClientbaseController{
 		$goods_id = input('goods_id',0,'intval');
 		$goods = $this->Model->info($goods_id);
 		$this->assign('goods', $goods);
+        $shareUrl = getUrl('','',['goods_id'=>$goods_id]);
+        $this->assign('shareUrl', $shareUrl);
+        if ($this->is_wx == 1){
+            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
+
+            $wxShare['img'] = $goods['goods_thumb'];
+            $wxShare['title'] = $goods['goods_name'];
+            $wxShare['description'] = $goods['description'];
+
+            $this->assign('wxShare',$wxShare);
+        }
 		return $this->fetch('my_code');
 	}
 	 /*------------------------------------------------------ */

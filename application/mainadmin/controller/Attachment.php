@@ -11,14 +11,15 @@ use app\shop\model\GoodsImgsModel;
 class Attachment extends AdminController{
 
   protected $_root_;
-
+    public $supplyer_id = 0;
 //*------------------------------------------------------ */
 	//-- 初始化
 	/*------------------------------------------------------ */
-   public function initialize()
-   {	
-   		parent::initialize();
+   public function initialize(){
+       $this->initialize_isretrun = false;
+       parent::initialize();
 		$this->_root_ = Request::root();
+
     }
 	
     
@@ -26,8 +27,11 @@ class Attachment extends AdminController{
      * 编辑器上传
      */
     public function editer_upload() {
-        $file_type = empty($_GET['dir']) ? 'image' : trim($_GET['dir']);
-        $result = $this->_upload($_FILES['imgFile']);
+        $dir = 'image/';
+        if ($this->supplyer_id > 0) {
+            $dir = 'supplyer/' . $this->supplyer_id . '/image/';
+        }
+        $result = $this->_upload($_FILES['imgFile'],$dir);
         if ($result['error']) {
             echo json_encode(array('error'=>1, 'message'=>$result['info']));
         } else {
@@ -40,8 +44,8 @@ class Attachment extends AdminController{
      * 编辑器图片空间 
      */
     public function editer_manager() {
-        $root_path = config('config._upload_');
-        $root_url = config('config._upload_');
+
+
         $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
         
@@ -49,7 +53,14 @@ class Attachment extends AdminController{
             echo "Invalid Directory name.";
             exit;
         }
-		
+        if ($this->supplyer_id > 0){
+            $root_path = config('config._upload_').'supplyer/'.$this->supplyer_id.'/';
+            $root_url = config('config._upload_').'supplyer/'.$this->supplyer_id.'/';
+        }else{
+            $root_path = config('config._upload_');
+            $root_url = config('config._upload_');
+        }
+
         if ($dir_name !== '' && $dir_name != 'file') {
             $root_path .= $dir_name . "/";
             $root_url .= $dir_name . "/";
@@ -95,28 +106,28 @@ class Attachment extends AdminController{
         if ($handle = opendir($current_path)) {
             $i = 0;
             while (false !== ($filename = readdir($handle))) {
-		if ($filename{0} == '.') continue;
-		$file = $current_path . $filename;
-		if (is_dir($file)) {
-			$file_list[$i]['is_dir'] = true; //是否文件夹
-			$file_list[$i]['has_file'] = (count(scandir($file)) > 2); //文件夹是否包含文件
-			$file_list[$i]['filesize'] = 0; //文件大小
-			$file_list[$i]['is_photo'] = false; //是否图片
-			$file_list[$i]['filetype'] = ''; //文件类别，用扩展名判断
-		} else {
-			$file_list[$i]['is_dir'] = false;
-			$file_list[$i]['has_file'] = false;
-			$file_list[$i]['filesize'] = filesize($file);
-			$file_list[$i]['dir_path'] = '';
-			$file_arr = explode('.', trim($file));
-			$file_arr = array_pop($file_arr);
-			$file_ext = strtolower($file_arr);
-			$file_list[$i]['is_photo'] = in_array($file_ext, $ext_arr);
-			$file_list[$i]['filetype'] = $file_ext;
-		}
-		$file_list[$i]['filename'] = $filename; //文件名，包含扩展名
-		$file_list[$i]['datetime'] = date('Y-m-d H:i:s', filemtime($file)); //文件最后修改时间
-		$i++;
+                if ($filename{0} == '.') continue;
+                $file = $current_path . $filename;
+                if (is_dir($file)) {
+                    $file_list[$i]['is_dir'] = true; //是否文件夹
+                    $file_list[$i]['has_file'] = (count(scandir($file)) > 2); //文件夹是否包含文件
+                    $file_list[$i]['filesize'] = 0; //文件大小
+                    $file_list[$i]['is_photo'] = false; //是否图片
+                    $file_list[$i]['filetype'] = ''; //文件类别，用扩展名判断
+                } else {
+                    $file_list[$i]['is_dir'] = false;
+                    $file_list[$i]['has_file'] = false;
+                    $file_list[$i]['filesize'] = filesize($file);
+                    $file_list[$i]['dir_path'] = '';
+                    $file_arr = explode('.', trim($file));
+                    $file_arr = array_pop($file_arr);
+                    $file_ext = strtolower($file_arr);
+                    $file_list[$i]['is_photo'] = in_array($file_ext, $ext_arr);
+                    $file_list[$i]['filetype'] = $file_ext;
+                }
+                $file_list[$i]['filename'] = $filename; //文件名，包含扩展名
+                $file_list[$i]['datetime'] = date('Y-m-d H:i:s', filemtime($file)); //文件最后修改时间
+                $i++;
             }
             closedir($handle);
         }
@@ -169,7 +180,13 @@ class Attachment extends AdminController{
 		if ($_FILES['file']){
 			$thumb['width'] = 350;
 			$thumb['height'] = 300;
-			$result = $this->_upload($_FILES['file'],'gimg/',$thumb);
+
+            if ($this->supplyer_id > 0){
+                $dir = 'supplyer/'.$this->supplyer_id.'/gimg';
+            }else{
+                $dir = 'gimg/';
+            }
+			$result = $this->_upload($_FILES['file'],$dir,$thumb);
 			if ($result['error']) {
 				$data['code'] = 1;
 				$data['msg'] = $result['info'];
@@ -177,14 +194,17 @@ class Attachment extends AdminController{
 			}
 			$addarr['goods_id'] = input('post.gid',0,'intval');
 			$addarr['sku_val'] = input('post.sku','','trim');
-			
-			if (defined('AUID')){
-				$addarr['admin_id'] = AUID;
-				$where[]= ['admin_id','=',AUID];
-			}elseif (defined('SAUID')){
-				$addarr['store_admin_id'] = SAUID;
-				$where[]= ['store_admin_id','=',SAUID];
-			}
+
+			if ($this->store_id > 0){
+				$where[] = ['store_id','=',$this->store_id ];
+			}elseif ($this->supplyer_id > 0){//供应商相关
+                $addarr['supplyer_id'] = $this->supplyer_id;
+                $addarr['admin_id'] = 0;
+                $where[] = ['supplyer_id','=',$this->supplyer_id];
+            }else{
+                $addarr['admin_id'] = AUID;
+                $where[] = ['admin_id','=',AUID];
+            }
 			
 			$savepath = trim($result['info'][0]['savepath'],'.');
 	

@@ -42,13 +42,14 @@
           <div class="gird">
             <div class="row">
              {volist name="navMenuList" id="nav" }
+                {if condition="$i==5"}
+                </div><div class="row">
+                  {/if}
               <a href="{$nav.url}" class="box">
                 <div><img src="{$nav.imgurl}" alt="" /></div>
                 <span class="fs26 color_3">{$nav.title}</span>
               </a>
-              {if condition="$i==4"}
-              	</div><div class="row">
-              {/if}
+
              {/volist}
             </div>
           </div>

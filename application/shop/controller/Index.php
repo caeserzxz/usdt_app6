@@ -95,7 +95,7 @@ class Index  extends ClientbaseController{
 									  $rowc['thumb']['url'] = $grow['goods_thumb'];
 									  $rowc['name'] = $grow['goods_name'];
 									  $rowc['par_price'] = $grow['market_price'];
-									  $rowc['sale_price'] = $grow['is_spec'] == 1? $grow['show_price']:$grow['shop_price'];
+									  $rowc['sale_price'] = $grow['shop_price'];
 									  $rowc['vip_price'] = 0;
 									  $rowc['sale_count'] = $grow['sale_num']+ $grow['virtual_sale'];
 									  $rowb['products'][$keyc] = $rowc;
@@ -112,14 +112,14 @@ class Index  extends ClientbaseController{
 								$where[] = ['is_hot','=',1];
 							}
 							$time = time();
-							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,show_price,is_spec,sale_num,virtual_sale')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();	
+							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();
 												
 							foreach ($grows as $grow){
 								$rowc['id'] = $grow['goods_id'];
 								$rowc['thumb']['url'] = $grow['goods_thumb'];
 								$rowc['name'] = $grow['goods_name'];
 								$rowc['par_price'] = $grow['market_price'];
-								$rowc['sale_price'] = $grow['is_spec'] == 1 ? $grow['show_price'] : $grow['shop_price'];
+								$rowc['sale_price'] = $grow['shop_price'];
 								$rowc['vip_price'] = 0;
 								$rowc['sale_count'] = $grow['sale_num'] + $grow['virtual_sale'];
 								$rowb['products'][$rowc['id']] = $rowc;

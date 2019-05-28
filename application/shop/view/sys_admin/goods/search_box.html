@@ -72,7 +72,7 @@
 	  $('#_nowPage').html(res.page);
 	  $('#_totalPages').html(res.page_count);
 	  $.each(res.list,function(key,val){ key
-		   $('#data_list').append('<tr onclick="selTr(this,'+val.goods_id+',\''+val.goods_name+'\')" ><td>'+val.goods_id+'</td><td>'+(val.is_spec==1?'多规格':val.goods_sn)+'</td><td>'+val.goods_name+'</td><td>'+(val.is_spec==1?val.show_price:val.shop_price)+'</td></tr>');
+		   $('#data_list').append('<tr onclick="selTr(this,'+val.goods_id+',\''+val.goods_name+'\')" ><td>'+val.goods_id+'</td><td>'+(val.is_spec==1?'多规格':val.goods_sn)+'</td><td>'+val.goods_name+'</td><td>'+(val.shop_price)+'</td></tr>');
 	  })	
 	}
 	function selTr(obj,id,title){

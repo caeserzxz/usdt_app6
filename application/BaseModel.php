@@ -20,6 +20,7 @@ class BaseModel extends Model
 	protected $createTime = 'add_time';
     protected $updateTime = 'update_time';
     protected $userInfo;//前端会员信息
+    protected $Model;
     /*------------------------------------------------------ */
     //-- 优先自动执行
     /*------------------------------------------------------ */

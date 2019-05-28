@@ -1,0 +1,116 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>供应商管理</strong>
+                </li>                                  
+            </ul>
+         <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+</header>
+<section class="scrollable  wrapper">
+ <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+          
+            <div class="panel-body">
+                    <div class="form-group">
+                        <label class="control-label">供应商名称：</label>
+                        <div class="col-sm-7 must ">
+                            <input type="text" class="input-max" data-rule-maxlength="30" data-rule-required="true" data-msg-required="供应商名称不能为空" name="supplyer_name" value="{$row.supplyer_name}" >
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label">登陆密码：</label>
+                        <div class="col-sm-7" >
+                            <input type="password" class="input-sm" {lt name="row.supplyer_id" value="1"}data-rule-required="true"{/lt} data-rule-maxlength="15" name="password" value="" id="new_password" >
+                            {gt name="row.supplyer_id" value="0"}
+                            <span class="help-inline">不修改不需要填写</span>
+                            {else/}
+                            <span class="maroon">*</span>
+                            {/gt}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">确认密码：</label>
+                        <div class="col-sm-7" >
+                        <input type="password" class="input-sm" data-rule-maxlength="15" name="cmf_password" value="" id="repassword" data-rule-equalto="#new_password"  >
+                        <span class="help-inline">请填写以上面一致的密码，进行确认.</span>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label">状态：</label>
+                        <div class="controls">
+                                 <label class="radio-inline">
+                                    <input name="status" value="0" id="is_ban" class="js_undertake" type="radio" {$row['is_ban']==1?'checked':''}>封禁
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="status" value="1" id="is_ban" class="js_undertake " type="radio" {$row['is_ban']<1?'checked':''}>
+                                    正常
+                                </label>
+                        </div>
+                       <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">联系人：</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="联系人不能为空" name="consignee" value="{$row.consignee}" >
+                    </div><span class="maroon">*</span>
+                </div>
+
+                    <div class="form-group">
+                        <label class="control-label">联系手机：</label>
+                        <div class="controls " >
+                        <input type="text" class="input-max" data-rule-maxlength="11" name="moblie" data-rule-required="true" data-msg-required="联系手机不能为空"  value="{$row.moblie}" >
+                        
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <label class="control-label">联系地址：</label>
+                    <div class="col-sm-7" >
+                        <input type="text" class="input-max" data-rule-maxlength="50"  name="address" value="{$row.address}" >
+                    </div>
+                </div>
+
+                <div class="line line-dashed line-lg pull-in"></div>
+
+                <div class="form-group">
+                    <label class="control-label">待结款：</label>
+                    <div class="col-sm-3"><label>￥{$row.wait_payment}</label></div>
+                    <label class="control-label">历史销售金额：</label>
+                    <div class="col-sm-3"><label>￥{$row.sales_amount}</label></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">最近登陆时间：</label>
+                    <div class="col-sm-3"><label>{$row.login_time|dateTpl}</label></div>
+                    <label class="control-label">最近登陆IP：</label>
+                    <div class="col-sm-3"><label>{$row.login_ip}</label></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">上次登陆时间：</label>
+                    <div class="col-sm-3"><label>{$row.last_login_time|dateTpl}</label></div>
+                    <label class="control-label">上次登陆IP：</label>
+                    <div class="col-sm-3"><label>{$row.last_login_ip}</label></div>
+                </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <input name="supplyer_id" type="hidden" value="{$row.supplyer_id|intval}">
+
+    </form>
+</section>
+
+   
+{/block}
+

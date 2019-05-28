@@ -2,6 +2,7 @@
 namespace app\mainadmin\controller;
 use app\AdminController;
 use app\mainadmin\model\RegionModel;
+use PHPExcel_IOFactory;
 
 /**
  * 区域管理
@@ -45,18 +46,18 @@ class Region extends AdminController
      	$this->isAjax = 1;
 		if (empty($_FILES['file'])) return $this->error('请选择上传文件');
 		$filePath = $_FILES['file']['tmp_name'];
-		$PHPExcel = new \PHPExcel(); // 拿到实例，待会儿用
-		$PHPReader = new \PHPExcel_Reader_Excel2007(); // Reader很关键，用来读excel文件
-		if (!$PHPReader->canRead($filePath)) { // 这里是用Reader尝试去读文件，07不行用05，05不行就报错。注意，这里的return是Yii框架的方式。
-			$PHPReader = new \PHPExcel_Reader_Excel5();
-			if (!$PHPReader->canRead($filePath)) {
+
+
+		$reader = \PHPExcel_IOFactory::createReader('Excel2007');// Reader很关键，用来读excel文件
+		if (!$reader->canRead($filePath)) { // 这里是用Reader尝试去读文件，07不行用05，05不行就报错。注意，这里的return是Yii框架的方式。
+            $reader = PHPExcel_IOFactory::createReader('Excel5');
+			if (!$reader->canRead($filePath)) {
 					return $this->_error('读取excel文件失败！');
 			}
 		}
-		$PHPExcel = $PHPReader->load($filePath); // Reader读出来后，加载给Excel实例
-	
-		$allSheet = $PHPExcel->getSheetCount(); // sheet数
-		$currentSheet = $PHPExcel->getSheet(0); // 拿到第一个sheet（工作簿？）    
+		$PHPExcel = $reader->load($filePath); // Reader读出来后，加载给Excel实例
+
+		$currentSheet = $PHPExcel->getSheet(0); // 拿到第一个sheet（工作簿？）
 		$allColumn = $currentSheet->getHighestColumn(); // 最高的列，比如AU. 列从A开始
 		$allRow = $currentSheet->getHighestRow(); // 最大的行，比如12980. 行从0开始
 		$keyarr = array();
@@ -93,15 +94,17 @@ class Region extends AdminController
 			$inall['update_time'] = $time;
 			$region = $this->Model->where(['id' => $inall['id']])->find();	
 			if (empty($region) == false){
-				$res = $this->Model->save($inall,$region['id']);
+				$res = $this->Model->where('',$region['id'])->update($inall);
 			}else{
-				$res = $this->Model::create($inall);
+				$res = $this->Model->create($inall);
+                $res =$res->id;
 			}
 			if (!$res){			
 				return $this->error('处理数据失败，请重试！');
 			}
 		}
-		$this->Model->where(['update_time','<',$time])->update(['status'=>'0']);
+		$delwhere[] = ['update_time','<',$time];
+		$this->Model->where($delwhere)->update(['status'=>'0']);
 		
 		
 		return $this->success('导入成功.');

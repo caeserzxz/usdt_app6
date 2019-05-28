@@ -1,41 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<title>支付-{$setting.shop_title}</title>
-<style type="text/css">
-*{ margin:0; padding:0}
-.wihe-ee{ background:#FFF; padding:25px; color:#666; font-family:song,arial; font-size:14px; margin:0 auto; text-align:center}
-.wihe-ee p{text-align:center}
-.fail-I-success{margin-top:30px;border-bottom:1px solid #d8d8d8; padding-bottom:30px}
-.co999{color:#999}
-.fo-si-18{font-size:18px}
-.fail-fasu{ text-align:center; border-bottom:1px solid #d8d8d8; padding-bottom:30px}
-.success-fasu{margin-top:30px;  text-align:center}
-.fail-fasu a:hover{ background-color:#ee9775}
-.fail-fasu a{padding:8px 24px; background-color:#f8a584; display:table; margin:0 auto; color:#fff; text-decoration:none; margin-top:10px}
-.re-qtzfgg a,.success-fasu a{padding:8px 24px; background-color:#eee; display:table; margin:0 auto; color:#999; text-decoration:none; margin-top:10px}
-.re-qtzfgg a:hover,.success-fasu a:hover{background-color:#ddd;}
-</style>
-</head>
-<body style=" max-width:640px; min-width:320px; margin:0 auto">
-	<div class="tac-sd">
-    	<div class="wihe-ee">
-        	<p>
-            	<span class="fo-si-18">抱歉支付失败!</span>
-                <br>
-                <span class="co999">充值单号：&nbsp;&nbsp;{$order['order_sn']}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;付款金额（元）：&nbsp;&nbsp;<b>{$order['order_amount']}</b>&nbsp;<b>元</b></span>
-            </p>
-          <br>
-            <br>
-           
-          
-           
-            <div class="re-qtzfgg">
-            	<a href="{:url('member/wallet/recharge')}">返回选择其他支付方式</a>
-            </div>
-        </div>
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+
+        <p class="fs34 fw_b color_3">抱歉充值失败 </p>
+        <div class="color_3 fs72 num money">{$order.order_amount}</div>
+        <span class="fs24 color_9">待支付订单金额</span>
     </div>
-</body>
-</html>
+
+    <div class="button">
+        <a href="{:url('member/wallet/recharge')}">返回选择其他支付方式</a>
+    </div>
+</div>
+
+
+
+{/block}
+{block name="footer"}
+
+{/block}
+

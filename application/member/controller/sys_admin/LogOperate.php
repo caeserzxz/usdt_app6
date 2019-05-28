@@ -48,13 +48,13 @@ class LogOperate extends AdminController
 		}else{
 			$where[] = ['log_time','between',[strtotime("-1 months"),time()]];
 		}
-		if (0 < $this->search['user_id'] ){
+		if ($this->search['user_id'] > 0){
 			$where[] = ['user_id','=',$this->search['user_id'] ];
 		}
-		if (0 < $this->search['edit_id']){
+		if ($this->search['edit_id'] > 0){
 			$where[] = ['edit_id','=',$this->search['edit_id']];
 		}
-        $data = $this->getPageList($this->Model,$where);			
+        $data = $this->getPageList($this->Model,$where);
 		$this->assign("data", $data);
 		if ($runData == false){
 			$data['content']= $this->fetch('list');

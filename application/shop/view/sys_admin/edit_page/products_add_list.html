@@ -1,7 +1,7 @@
 {volist name="goods_list" id="g"}
 <li class="product clearfix" data-id="{$g.goods_id}" title="{$g.goods_name}"><div class="delete-item"><img src="__STATIC__/editPage/images/delete_item.png"/></div><img class="prod-img" src="{$g.goods_thumb}"/><div class="prod-name" 
 
-data-saleprice='{$g['is_spec']==1?$g['show_price']:$g['shop_price']}' data-parprice='{$g['is_spec']==1?$g['show_price']:$g['shop_price']}' data-vip_price='{$g['vip_price']}'
+data-saleprice='{$g['shop_price']}' data-parprice='{$g['shop_price']}' data-vip_price='{$g['shop_price']}'
 
-data-sale="{$g.sales_sum}">{$g.goods_name}</div><div class="prod-price">￥{$g['is_spec']==1?$g['show_price']:$g['shop_price']}</div></li>
+data-sale="{$g.sales_sum}">{$g.goods_name}</div><div class="prod-price">￥{$g['shop_price']}</div></li>
 {/volist}

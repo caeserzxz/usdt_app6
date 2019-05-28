@@ -1,0 +1,308 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>拼团信息</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" method="post" action="" style="padding:0;">
+        <div class="alert alert-warning ">
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <td>
+                            当前状态：{$fg_order[$fgJoin['status']]}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <section class="panel panel-default">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">拼团商品：</label>
+                <div class="col-sm-5 form-control-static">
+                    {$fgInfo.goods.goods_id} - {$fgInfo.goods.goods_name} - {$fgInfo['goods']['is_spec'] == 1?'多规格':$fgInfo['goods']['goods_sn']}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">成团人数：</label>
+                <div class="col-sm-5 form-control-static">
+                    {$fgJoin.success_num}
+                </div>
+            </div>
+            <div class="form-group">
+            <label class="col-sm-3 control-label">发起时间：</label>
+            <div class="col-sm-5 form-control-static">
+                {$fgJoin.add_time|dateTpl}
+            </div>
+            </div>
+
+            {if condition="$fgJoin['status'] == 3"}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">成团时间：</label>
+                <div class="col-sm-5 form-control-static">
+                    {$fgJoin.success_time|dateTpl}
+                </div>
+            </div>
+            {else/}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">失效时间：</label>
+                <div class="col-sm-5 form-control-static">
+                    {$fgJoin.fail_time|dateTpl} 达到此时间未成团，自动关闭
+                </div>
+            </div>
+            {/if}
+            <header>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#success" data-toggle="tab">有效订单</a></li>
+                    <li><a href="#waitPay" data-toggle="tab">待支付订单</a></li>
+                    <li><a href="#invalid" data-toggle="tab">无效订单</a></li>
+                </ul>
+            </header>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="success">
+                        <table class="table table-striped  m-b-none">
+                            <thead>
+                            <tr>
+                                <th>商品信息</th>
+                                <th width="150" >实收款</th>
+                                <th width="150" align="center">收货人</th>
+                                <th width="100">支付方式</th>
+                                <th width="100">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="orders[1]" id="vo" }
+                            <tr>
+                                <td colspan="6"><span class="m-r">订单编号：{$vo.order_sn}</span>
+                                    <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+                                    <span class="m-r">{$vo.merger_name} {$vo.address}</span>
+                                    <a href="{:url('shop/sys_admin.order/info',array('order_id'=>$vo['order_id']))}" target="_blank" class="btn btn-sm btn-default fr" title="查看详情">
+                                        <i class="fa fa-search "></i>订单详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    <ul class="list-group no-borders">
+                                        {volist name="vo.goodsList" id="grow" }
+                                        <li class="list-group-item ">
+                                            <div class="media">
+                                                <span class="pull-left thumb-sm">
+                                                    <img src="{$grow.pic}" ></span>
+                                                <div class="pull-right">
+                                                    x {$grow.goods_number}
+                                                </div>
+                                                <div class="media-body">
+                                                    <div style="color:#999;">{$grow.goods_name} {$grow.sku_name}</div>
+                                                    <small class="text-muted">单价： {$grow.sale_price|priceFormat}<span class="m-l-xs"></span></small>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <p class=" m-b-xs">
+                                        {$vo.order_amount|priceFormat}
+
+                                    </p>
+                                    <small class="text-muted">[含运费: {$vo.shipping_fee}]</small>
+                                </td>
+                                <td>
+                                    {$vo.consignee}<p>会员ID：{$vo.user_id}</p>
+                                </td>
+                                <td>{$vo.pay_name}</td>
+
+                                <td>
+                                    <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
+                                    <p>
+                                        {$orderLang['ss'][$vo['shipping_status']]|raw}
+
+
+                                </td>
+
+                            </tr>
+                            {/volist}
+                            {empty name="orders[1]"}
+                            <tr>
+                                <td colspan="6" style="line-height: 100px; text-align: center;">暂无相关订单</td>
+                            </tr>
+                            {/empty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane " id="waitPay">
+                        <table class="table table-striped  m-b-none">
+                            <thead>
+                            <tr>
+                                <th>商品信息</th>
+                                <th width="150" >实收款</th>
+                                <th width="150" align="center">收货人</th>
+                                <th width="100">支付方式</th>
+                                <th width="100">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="orders[0]" id="vo" }
+                            <tr>
+                                <td colspan="6"><span class="m-r">订单编号：{$vo.order_sn}</span>
+                                    <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+                                    <span class="m-r">{$vo.merger_name} {$vo.address}</span>
+                                    <a href="{:url('shop/sys_admin.order/info',array('order_id'=>$vo['order_id']))}" target="_blank" class="btn btn-sm btn-default fr" title="查看详情">
+                                        <i class="fa fa-search "></i>订单详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    <ul class="list-group no-borders">
+                                        {volist name="vo.goodsList" id="grow" }
+                                        <li class="list-group-item ">
+                                            <div class="media">
+                                                <span class="pull-left thumb-sm">
+                                                    <img src="{$grow.pic}" ></span>
+                                                <div class="pull-right">
+                                                    x {$grow.goods_number}
+                                                </div>
+                                                <div class="media-body">
+                                                    <div style="color:#999;">{$grow.goods_name} {$grow.sku_name}</div>
+                                                    <small class="text-muted">单价： {$grow.sale_price|priceFormat}<span class="m-l-xs"></span></small>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <p class=" m-b-xs">
+                                        {$vo.order_amount|priceFormat}
+
+                                    </p>
+                                    <small class="text-muted">[含运费: {$vo.shipping_fee}]</small>
+                                </td>
+                                <td>
+                                    {$vo.consignee}<p>会员ID：{$vo.user_id}</p>
+                                </td>
+                                <td>{$vo.pay_name}</td>
+
+                                <td>
+                                    <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
+                                    <p>
+                                        {$orderLang['ss'][$vo['shipping_status']]|raw}
+
+                                    </p>
+
+                                </td>
+
+                            </tr>
+                            {/volist}
+                            {empty name="orders[0]"}
+                            <tr>
+                                <td colspan="6" style="line-height: 100px; text-align: center;">暂无相关订单</td>
+                            </tr>
+                            {/empty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane " id="invalid">
+                        <table class="table table-striped  m-b-none">
+                            <thead>
+                            <tr>
+                                <th>商品信息</th>
+                                <th width="150" >实收款</th>
+                                <th width="150" align="center">收货人</th>
+                                <th width="100">支付方式</th>
+                                <th width="100">状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="orders[2]" id="vo" }
+                            <tr>
+                                <td colspan="6"><span class="m-r">订单编号：{$vo.order_sn}</span>
+                                    <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+                                    <span class="m-r">{$vo.merger_name} {$vo.address}</span>
+                                    <a href="{:url('shop/sys_admin.order/info',array('order_id'=>$vo['order_id']))}" target="_blank" class="btn btn-sm btn-default fr" title="查看详情">
+                                        <i class="fa fa-search "></i>订单详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td>
+                                    <ul class="list-group no-borders">
+                                        {volist name="vo.goodsList" id="grow" }
+                                        <li class="list-group-item ">
+                                            <div class="media">
+                                                <span class="pull-left thumb-sm">
+                                                    <img src="{$grow.pic}" ></span>
+                                                <div class="pull-right">
+                                                    x {$grow.goods_number}
+                                                </div>
+                                                <div class="media-body">
+                                                    <div style="color:#999;">{$grow.goods_name} {$grow.sku_name}</div>
+                                                    <small class="text-muted">单价： {$grow.sale_price|priceFormat}<span class="m-l-xs"></span></small>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <p class=" m-b-xs">
+                                        {$vo.order_amount|priceFormat}
+
+                                    </p>
+                                    <small class="text-muted">[含运费: {$vo.shipping_fee}]</small>
+                                </td>
+                                <td>
+                                    {$vo.consignee}<p>会员ID：{$vo.user_id}</p>
+                                </td>
+                                <td>{$vo.pay_name}</td>
+
+                                <td>
+                                    <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
+                                    <p>
+                                        {$orderLang['ss'][$vo['shipping_status']]|raw}
+
+                                    </p>
+
+                                </td>
+
+                            </tr>
+                            {/volist}
+                            {empty name="orders[2]"}
+                            <tr>
+                                <td colspan="6" style="line-height: 100px; text-align: center;">暂无相关订单</td>
+                            </tr>
+                            {/empty}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+    </form>
+</section>
+{/block}
+
+
+{block name="footer" }
+
+{/block}

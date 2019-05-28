@@ -34,7 +34,7 @@
                                     <label class="control-label">注册手机：</label>
                                     <div class="col-sm-3"><label>{$row.mobile}</label></div>
                                     <label class="control-label">会员等级：</label>
-                                    <div class="col-sm-3"><label>{$row.total_integral|userLevel}</label>
+                                    <div class="col-sm-3"><label>{$row.account.total_integral|userLevel}</label>
                                         <a href="{:url('member/sys_admin.log_operate/index',array('edit_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
                                             <i class="fa fa-search"></i> 查看会员日志
                                         </a>
@@ -218,7 +218,7 @@
                                     <tbody>
                                     {volist name="row.user_address" id="ua" }                                   
                                     <tr>
-                                    <td ><a href="javascript:;"  class="{$row['address_id']==$ua['address_id']?'active':''}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+                                    <td ><a href="javascript:;"  class="{$ua['is_default']?'active':''}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
                                     <td >{$ua.consignee}</td>
                                     <td >{$ua['mobile']}</td>
                                     <td >{$ua.merger_name} - {$ua.address}</td>

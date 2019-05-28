@@ -23,16 +23,18 @@ class Order extends AdminController
 
     private $shipping_model = null;
     private $setting_model = null;
+    public $order_type = false;
+
     //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
-    public function initialize()
+    public function initialize($isretrun = true)
     {
-        parent::initialize();
+        parent::initialize($isretrun);
         $this->Model = new OrderModel();
         $this->shipping_model = new ShippingModel();
         $this->setting_model = new SettingsModel();
-        $this->store_id = 0;//当前默认为总后台，门店值默认为0
+
     }
 
     //*------------------------------------------------------ */
@@ -40,8 +42,6 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
-
-
         $reportrange = input('reportrange', '', 'trim');
         if (empty($reportrange) == false) {
             $reportrange = str_replace('_', '/', $reportrange);
@@ -61,7 +61,24 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false, $is_cancel = false)
     {
-        $where[] = ['store_id', '=', $this->store_id];
+        if ($this->order_type == 'fg_order') {
+            $where[] = ['order_type', '=', 2];
+        }elseif($this->order_type == 'integral_order') {
+            $where[] = ['order_type', '=', 1];
+        }else{
+            $where[] = ['order_type', 'in', [0,1]];
+        }
+        if ($this->store_id > 0) {
+            $where[] = ['store_id', '=', $this->store_id];
+        } elseif ($this->supplyer_id > 0) {
+            $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        } elseif ($this->is_supplyer == true) {
+            $where[] = ['supplyer_id', '>', 0];
+        } else {
+            $where[] = ['is_split', '=', 0];//不查询拆单的
+            $where[] = ['supplyer_id', '=', 0];
+            $where[] = ['store_id', '=', 0];
+        }
         $time_type = input('time_type', '', 'trim');
         if (empty($time_type) == false) {
             $search['start_time'] = input('start_time', '', 'trim');
@@ -171,6 +188,7 @@ class Order extends AdminController
             case "3" :
                 $where[] = ['order_status', '=', $config['OS_CONFIRMED']];
                 $where[] = ['shipping_status', '=', $config['SS_UNSHIPPED']];
+                $where[] = ['is_success', '=', 1];
                 break;
             /**已发货**/
             case "4" :
@@ -194,6 +212,12 @@ class Order extends AdminController
             /**已退款**/
             case "8" :
                 $where[] = ['pay_status', '=', $config['PS_RUNPAYED']];
+                break;
+            /**已付款**/
+            case "9" :
+                $where[] = ['order_status', '=', $config['OS_CONFIRMED']];
+                $where[] = ['pay_status', '=', $config['PS_PAYED']];
+                $where[] = ['shipping_status', '=', $config['SS_UNSHIPPED']];
                 break;
             default:
                 break;
@@ -225,14 +249,22 @@ class Order extends AdminController
         $order_id = input('order_id', 0, 'intval');
         if ($order_id < 1) return $this->error('传参错误.');
         $orderInfo = $this->Model->info($order_id);
+        if ($this->supplyer_id > 0) {
+            if ($this->supplyer_id != $orderInfo['supplyer_id']) {
+                return $this->error("您无权操作此订单.");
+            }
+        }
+
         $orderLog = (new OrderLogModel)->where('order_id', $order_id)->order('log_id DESC')->select()->toArray();
         $this->assign("orderLog", $orderLog);
         $this->assign("orderLang", lang('order'));
         $operating = $this->Model->operating($orderInfo);//订单操作权限
         $this->assign("operating", $operating);
-        $orderInfo['dividend_role_name'] =  (new DividendRoleModel)->info($orderInfo['dividend_role_id'],true);
+        $orderInfo['dividend_role_name'] = (new DividendRoleModel)->info($orderInfo['dividend_role_id'], true);
         $this->assign('orderInfo', $orderInfo);
-        $dividend_log = (new DividendModel)->where('order_id', $order_id)->order('award_id,level ASC')->select()->toArray();
+        $logWhere[] = ['order_type', '=', 'order'];
+        $logWhere[] = ['order_id', '=', $order_id];
+        $dividend_log = (new DividendModel)->where($logWhere)->order('award_id,level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);
         return $this->fetch('info');
     }
@@ -243,6 +275,11 @@ class Order extends AdminController
     {
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
+        if ($this->supplyer_id > 0) {
+            if ($this->supplyer_id != $orderInfo['supplyer_id']) {
+                return $this->error("您无权操作此订单.");
+            }
+        }
         $ShippingModel = new ShippingModel();
         $shipping = $ShippingModel->getRows();
         if ($this->request->isPost()) {
@@ -254,7 +291,7 @@ class Order extends AdminController
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
             $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
             if ($kd_type == 3) {
-                $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id],$kdeorder_goods_name,$orderInfo);
+                $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $kdeorder_goods_name, $orderInfo);
                 if (is_array($res) == false) return $this->error($res);
                 $data['shipping_id'] = $res[0];
                 $data['invoice_no'] = $res[1];
@@ -276,10 +313,10 @@ class Order extends AdminController
             return $this->success('操作发货成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('shippingOpt', arrToSel($shipping, $orderInfo['shipping_id']));
-        $kdnpingopt =  $ShippingModel->getRows('kdn_code');
+        $kdnpingopt = $ShippingModel->getRows('kdn_code');
         $this->assign('kdnpingopt', arrToSel($kdnpingopt, $orderInfo['shipping_id']));
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('shipping'));
+        return response($this->fetch('shop@sys_admin/order/shipping'));
     }
     /*------------------------------------------------------ */
     //-- 批量发货管理
@@ -287,11 +324,11 @@ class Order extends AdminController
     public function batchShipping()
     {
         if ($this->request->isPost()) {
-            $order_ids = input('order_ids','','trim');
-            if (empty($order_ids)){
+            $order_ids = input('order_ids', '', 'trim');
+            if (empty($order_ids)) {
                 return $this->error("请选择需要发货的订单.");
             }
-            $order_ids = explode(',',$order_ids);
+            $order_ids = explode(',', $order_ids);
             $kd_type = input('post.kd_type', '3', 'intval');
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
             $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
@@ -300,17 +337,23 @@ class Order extends AdminController
             $error = [];
             $okNum = 0;
             $shipping = $ShippingModel->getRows();
-            foreach ($order_ids as $order_id){
+            foreach ($order_ids as $order_id) {
                 $orderInfo = $this->Model->find($order_id);
+                if ($this->supplyer_id > 0) {
+                    if ($this->supplyer_id != $orderInfo['supplyer_id']) {
+                        $error[] = '订单' . $orderInfo['order_sn'] . ',您无权操作此订单';
+                        continue;
+                    }
+                }
                 $operating = $this->Model->operating($orderInfo);//订单操作权限
-                if ($operating['shipping'] !== true){
-                    $error[] = '订单'.$orderInfo['order_sn'].',操作失败';
+                if ($operating['shipping'] !== true) {
+                    $error[] = '订单' . $orderInfo['order_sn'] . ',操作失败';
                     continue;
                 }
                 if ($kd_type == 3) {
                     $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $kdeorder_goods_name, $orderInfo);
-                    if (is_array($res) == false){
-                        $error[] = '订单'.$orderInfo['order_sn'].':'.$res;
+                    if (is_array($res) == false) {
+                        $error[] = '订单' . $orderInfo['order_sn'] . ':' . $res;
                         continue;
                     }
                     $upData['shipping_id'] = $res[0];
@@ -320,8 +363,8 @@ class Order extends AdminController
                 $upData['shipping_status'] = $config['SS_SHIPPED'];
                 $upData['shipping_time'] = time();
                 $res = $this->Model->upInfo($upData);
-                if ($res != true){
-                    $error[] = '订单'.$orderInfo['order_sn'].',操作失败.';
+                if ($res != true) {
+                    $error[] = '订单' . $orderInfo['order_sn'] . ',操作失败.';
                     continue;
                 }
                 $orderInfo['shipping_status'] = $upData['shipping_status'];
@@ -329,18 +372,21 @@ class Order extends AdminController
                 $okNum += 1;
             }
 
-            return $this->success('提交'.count($order_ids).'张订单,共成功'.$okNum.'张订单<br>'.join('<br>',$error));
+            return $this->success('提交' . count($order_ids) . '张订单,共成功' . $okNum . '张订单<br>' . join('<br>', $error));
         }
         $ShippingModel = new ShippingModel();
         $kdnpingopt = $ShippingModel->getRows('kdn_code');
         $this->assign('kdnpingopt', arrToSel($kdnpingopt));
-        return response($this->fetch('batch_shipping'));
+        return response($this->fetch('shop@sys_admin/order/batch_shipping'));
     }
     /*------------------------------------------------------ */
     //-- 改价
     /*------------------------------------------------------ */
     public function changePrice()
     {
+        if ($this->supplyer_id > 0) {
+            return $this->error("您无权操作.");
+        }
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
         if ($this->request->isPost()) {
@@ -359,7 +405,7 @@ class Order extends AdminController
             return $this->success('修改价格成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('change_price'));
+        return response($this->fetch('shop@sys_admin/order/change_price'));
     }
     /*------------------------------------------------------ */
     //-- 修改收货信息
@@ -377,19 +423,19 @@ class Order extends AdminController
             $data['city'] = input('city', 0, 'intval');
             $data['district'] = input('district', 0, 'intval');
             $data['address'] = input('address', '', 'trim');
-            if (empty($data['consignee']) == true){
+            if (empty($data['consignee']) == true) {
                 return $this->error('请填写收货人.');
             }
-            if (empty($data['mobile']) == true ){
+            if (empty($data['mobile']) == true) {
                 return $this->error('请填写联系手机.');
             }
-            if (checkMobile($data['mobile']) == false){
+            if (checkMobile($data['mobile']) == false) {
                 return $this->error('联系手机格式不正确.');
             }
-            if ($data['district'] < 1){
+            if ($data['district'] < 1) {
                 return $this->error('请选择区域地址.');
             }
-            if (empty($data['address']) == true ){
+            if (empty($data['address']) == true) {
                 return $this->error('请填写详细地址.');
             }
             $regionInfo = (new \app\mainadmin\model\RegionModel)->info($data['district']);
@@ -397,11 +443,11 @@ class Order extends AdminController
             $data['order_id'] = $order_id;
             $res = $this->Model->upInfo($data);
             if ($res < 1) return $this->error();
-            $this->Model->_log($orderInfo, '修改收货信息，原信息：'.$orderInfo['consignee'].'- '.$orderInfo['mobile'].'- '.$orderInfo['merger_name'].'-'.$orderInfo['address']);
+            $this->Model->_log($orderInfo, '修改收货信息，原信息：' . $orderInfo['consignee'] . '- ' . $orderInfo['mobile'] . '- ' . $orderInfo['merger_name'] . '-' . $orderInfo['address']);
             return $this->success('修改收货信息成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('edit_consignee'));
+        return response($this->fetch('shop@sys_admin/order/edit_consignee'));
     }
 
     /*------------------------------------------------------ */
@@ -435,7 +481,7 @@ class Order extends AdminController
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('cfm_cod_pay'));
+        return response($this->fetch('shop@sys_admin/order/cfm_cod_pay'));
     }
 
     /*------------------------------------------------------ */
@@ -577,7 +623,7 @@ class Order extends AdminController
         $data['tuikuan_money'] = $orderInfo['money_paid'];
         $data['tuikuan_time'] = time();
         $res = $this->Model->upInfo($data);
-        if ($res !== true ) return $this->error($res);
+        if ($res !== true) return $this->error($res);
         $orderInfo['pay_status'] = $data['pay_status'];
         $this->Model->_log($orderInfo, '设为退款');
         return $this->success('设为退款成功！', url('info', array('order_id' => $order_id)));

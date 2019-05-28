@@ -31,15 +31,6 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-sm-2 control-label">供货商：</label>
-    <div class="col-sm-3 ">
-      <select name="supply_id"  style="width:100%;" data-toggle="select2" >
-         <option value="">选择供货商</option>
-           {$SupplyListOpt|raw}             
-        </select>
-    </div>
-</div>
 
 
 <div class="form-group">
@@ -66,7 +57,7 @@
        
     </div>
 </div>
-<div class="line line-dashed line-lg pull-in" ></div>
+<div class="line line-dashed line-lg pull-in" style="width:98%;"></div>
 
 <div class="form-group">
     <label class="col-sm-2 control-label" >商品图片：</label>
@@ -97,28 +88,45 @@
 <div  class="form-group" >
     <label class="col-sm-2 control-label">商品规格：</label>
     <div class="col-sm-10">
-   	 	<div class="f-l">
-        <label class="radio-inline">
-            <input type="radio" name="is_spec" value="0"  data-toggle="specification-enable" data-enable="false"  {$row.is_spec|tplckval='=0','checked',true}  />统一规格
-		</label>
-        <label class="radio-inline">
-            <input type="radio" name="is_spec" value="1"   data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>
-            多规格</label>
-       </div>
-     	<div class="m-t-md col-sm-6 specificationstable hd">
-         	选择商品模型 <select name="sku_model" id="skuModelId" data-toggle="changeSkuModelId">
-                  {$skuModelOpt|raw}
-              </select>{gt name="row.goods_id" value="0"}
-                       	<span  style="color:#f30;">* 修改模型，将会删除旧有的sku记录</span>
-             {/gt}
-        </div>
-      
+        {if condition="$row.goods_id > 0" }
+         <div ><span class="help-inline"> {$row.is_spec==0?'统一规格':'多规格'}</span></div>
+        {/if}
+            <div class="f-l {$row['goods_id'] < 1?'':'hide'}">
+                <label class="radio-inline">
+                    <input type="radio" name="is_spec" value="0" data-toggle="specification-enable" data-enable="false"  {$row.is_spec|tplckval='=0','checked',true}  />统一规格
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="is_spec" value="1"  data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>
+                    多规格</label>
+                <span class=" help-inline">*添加商品后不能修改规格</span>
+            </div>
+
+            <div class="m-t-md col-sm-8 specificationstable hd">
+
+                选择商品模型
+                {if condition="$row.goods_id < 1" }
+                <select name="sku_model" id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                {$skuModelOpt|raw}
+                </select>
+                <span  style="color:#f30;">* 修改模型，将会删除旧有的sku记录</span>
+                {else/}
+                <select disabled id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                    {$skuModelOpt|raw}
+                </select>
+                <input type="hidden" name="sku_model" value="{$row.sku_model|intval}">
+                {/if}
+
+            </div>
+
+
+
+
         <div class="clearfix"></div>
         <div data-toggle="specifications" class="hd"><i class="fa fa-spinner fa-spin"></i></div>
  
     </div>
 </div>
-<div class="line line-dashed line-lg pull-in specificationstable hd"></div>
+<div class="line line-dashed line-lg pull-in specificationstable hd" style="width:98%;"></div>
 
 <div class="form-group specificationstable hd">
     <label class="col-sm-2 control-label">价格&库存：</label>
@@ -126,14 +134,9 @@
         <span class="help-inline p-t ">请选择规格</span>
     </div>
 </div>
-<div class="form-group specificationstable hd">
-    <label class="col-sm-2 control-label">显示价格：</label>
-   <div class="col-sm-2 must">
-            <input type="text" class="input-medium" name="show_price" data-rule-ismoney="true" data-rule-required="true" data-msg-required="显示价格不能为空" value="{$row.show_price}">
-    </div>
-</div>
+
 <div class="nospecifications {$row['is_spec']==1?'hd':''}">
- 
+    {if condition="$is_supplyer == false" }
     <div class="form-group">
         <label class="col-sm-2 control-label">货号：</label>
         <div class="col-sm-4 ">
@@ -150,22 +153,8 @@
         </div>
         <div class="help-inline"></div>
     </div>
-  
-    <div class="form-group">
-        <label class="col-sm-2 control-label">销售价：</label>
-        <div class="col-sm-4">
-            <input type="text" class="input-medium" name="shop_price" data-rule-ismoney="true" data-rule-required="true" data-msg-required="销售价不能为空" value="{$row.shop_price}">
-            <span  style="color:#f30;"> *</span>
-        </div>
-       
-    </div>
-  
-    <div class="form-group">
-        <label class="col-sm-2 control-label">市场价：</label>
-        <div class="col-sm-4">
-            <input type="text" class="input-medium" name="market_price" data-rule-ismoney="true" value="{$row.market_price}">
-        </div>
-    </div>
+
+
     <div class="form-group">
         <label class="col-sm-2 control-label">重量：</label>
         <div class="col-sm-2">
@@ -175,7 +164,29 @@
             </div>
         </div>
     </div>
-  
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">销售价：</label>
+        <div class="col-sm-4">
+            <input type="text" class="input-mini" name="shop_price" min="0.01" data-rule-ismoney="true" data-rule-required="true" data-msg-required="销售价不能为空" value="{$row.shop_price}">
+            元<span  style="color:#f30;"> *</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">促销价：</label>
+        <div class="col-sm-8">
+            <input type="text" class="input-mini" data-rule-ismoney="true" name="promote_price" value="{$row.promote_price}" >元
+            <span class="help-inline">促销期间以此价格进行销售</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">市场价：</label>
+        <div class="col-sm-4">
+            <input type="text" class="input-mini" name="market_price" data-rule-ismoney="true" value="{$row.market_price}">元
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">库存：</label>
         <div class="col-sm-8">
@@ -183,6 +194,67 @@
             <span class="red">*</span>
         </div>
     </div>
+    {else}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">货号：</label>
+        <div class="col-sm-4 ">
+            <div class="help-inline">{$row['goods_sn']}</div>
+        </div>
+        <div class="help-inline"></div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">条形码：</label>
+        <div class="col-sm-2 ">
+            <div class="help-inline">{$row['bar_code']}</div>
+        </div>
+        <div class="help-inline"></div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">重量：</label>
+        <div class="col-sm-2">
+            <div class="input-group" style="width:50px;">
+                <input type="text" class="input-mini" name="goods_weight" data-rule-min="0"  data-rule-number="true"  value="{$row.goods_weight}">
+                <span class="input-group-addon">g</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">市场价：</label>
+        <div class="col-sm-8">
+            <div class="help-inline">{$row['market_price']|priceFormat=true}</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">库存：</label>
+        <div class="col-sm-8">
+           <div class="help-inline"> {$row['goods_number']}</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">供货价：</label>
+        <div class="col-sm-4">
+            <div class="help-inline red"><b>{$row.settle_price|priceFormat=true}</b></div>
+            <input type="hidden" name="settle_price" value="{$row.settle_price}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">销售价：</label>
+        <div class="col-sm-4">
+            <input type="text" class="input-mini" name="shop_price" min="0.01" data-rule-ismoney="true" data-rule-required="true" data-msg-required="销售价不能为空" value="{$row.shop_price}">
+            元<span  style="color:#f30;"> *</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">促销价：</label>
+        <div class="col-sm-8">
+            <input type="text" class="input-mini" data-rule-ismoney="true" name="promote_price" value="{$row.promote_price}" >元
+            <span class="help-inline">促销期间以此价格进行销售</span>
+        </div>
+    </div>
+    {/if}
     <div class="form-group">
         <label class="col-sm-2 control-label">排序：</label>
         <div class="col-sm-8">

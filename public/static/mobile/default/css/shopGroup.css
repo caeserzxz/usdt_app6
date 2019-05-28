@@ -1,0 +1,107 @@
+.fw_4 {
+  font-weight: 400;
+}
+
+.shopGrouplist .timeSelect {
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-left: 0.2rem;
+}
+
+.shopGrouplist .timeSelect img {
+  width: 0.093333rem;
+  height: 0.093333rem;
+}
+
+.shopGrouplist .timeSelect input {
+  width: 1.04rem;
+}
+
+.shopGrouplist .block {
+  background-color: #fff;
+  padding: 0.2rem;
+  margin-bottom: 0.133333rem;
+}
+
+.shopGrouplist .block .imgBox {
+  position: relative;
+  height: 2.253333rem;
+}
+
+.shopGrouplist .block .imgBox img {
+  width: 4.6rem;
+  height: 100%;
+}
+
+.shopGrouplist .block .imgBox span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1.293333rem;
+  height: 0.266667rem;
+  background: rgba(51, 51, 51, 0.6);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.shopGrouplist .block .name {
+  padding: 0.24rem 0 0.106667rem;
+  line-height: 0.28rem;
+}
+
+.shopGrouplist .block .moneyBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-bottom: 0.066667rem;
+}
+
+.shopGrouplist .block .moneyBox .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.shopGrouplist .block .moneyBox .left p {
+  padding-left: 0.053333rem;
+  text-decoration: line-through;
+}
+
+.shopGrouplist .block .moneyBox .left .univalence {
+  margin-left: 0.133333rem;
+}
+
+.shopGrouplist .block .moneyBox .butt {
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}

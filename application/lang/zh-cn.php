@@ -39,8 +39,16 @@ return [
 			$config['DD_RETURNED']=>'已退货',
             $config['DD_CANCELED']=>'已取消'
 
-		]
-	
+		],
+
 	],
+    //拼团相关
+    'fg_order'=>[
+        $config['FG_WAITPAY']=>'待支付',
+        $config['FG_DOING']=>'拼团中',
+        $config['FG_FULL']=>'拼团满员',
+        $config['FG_SEUCCESS']=>'拼团成功',
+        $config['FG_FAIL']=>'拼团失败'
+    ]
 	
 ];

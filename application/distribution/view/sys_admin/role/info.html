@@ -98,7 +98,7 @@
 			      <label><input type="radio"  name="function_val[{{item.name}}]" value="{{index}}" {{value[item.name]==index?'checked':''}}> {{selval}}</label>
 				 {{/each}}
 			{{else if item.input == 'sel_goods'}}
-				{{include 'selGoods_tpl'}} 
+				{{include 'selGoods_tpl'}}
 				<div class="col-sm-6 col-sm-offset-1 m-t">指定商品，只有购买此商品的会员才能进行升级.</div>
 			{{/if}}
       </div>
@@ -110,7 +110,10 @@
 {/literal} 
 <script type="text/javascript">
 var upleve_value = {$row['function']|json_encode|raw};
-var roleList = {$roleList|json_encode|raw};
+var arr = [];
+arr.roleList = {$roleList|json_encode|raw};
+
+
 function upleveFunction(){
 	$("#upleve_function_box").html('');
 	var obj = $('#upleve_function').find('option:selected');		
@@ -121,7 +124,12 @@ function upleveFunction(){
 	if (typeof(upleve_value[val]) == 'undefined'){
 		upleve_value[val] = [];
 	}
-	$("#upleve_function_box").html(template("upLevel_tpl", {'roleList':roleList,'list':jsonval,'explain':obj.data('explain'),'value':upleve_value[val],'goodsList':upleve_value[val].buy_goods,'select_type':'buy_goods'}));			
+    arr.list = jsonval;
+    arr.explain = obj.data('explain');
+    arr.value = upleve_value[val];
+    arr.goodsList = upleve_value[val].buy_goods;
+    arr.select_type = 'buy_goods';
+	$("#upleve_function_box").html(template("upLevel_tpl", arr));
 }
 $(function(){
 	$("#upleve_function").change(function (){

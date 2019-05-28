@@ -78,7 +78,7 @@ class AdminUser extends AdminController
 	/*------------------------------------------------------ */
 	//-- 修改前处理
 	/*------------------------------------------------------ */
-    public function beforeEdit($data){		
+    public function beforeEdit($data){
 		$data['update_time'] = time();
 		$pwd = input('new_password','','trim');
 		unset($data['password']);

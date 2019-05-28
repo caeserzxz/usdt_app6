@@ -1,0 +1,34 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>拼团列表</strong>
+                </li>                                  
+            </ul>
+         <input type="hidden" name="fg_id" value="{$search['fg_id']}">
+         <select name="status" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+             <option value="-1">状态</option>
+            {volist name="fg_order"  id="val" }
+             <option value="{$key}">{$val}</option>
+             {/volist}
+         </select>
+              <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商品名称/SN" data-rule-required="true" />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/fg_list/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

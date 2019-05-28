@@ -6,9 +6,7 @@
     <th>用户ID</th>
     <th>分佣身份</th>
     <th>奖项相关</th>
-    <th>金币</th>
-    <th>旅游豆</th>
-
+    <th>佣金</th>
     <th width="150">状态</th>
 </tr>
 </thead>
@@ -21,9 +19,7 @@
 <td>{$row.role_name}</td>
 <td>{$row.award_name} - {$row.level_award_name}</td>
 <td>{$row.dividend_amount|priceFormat}</td>
-<td>{$row.dividend_bean|priceFormat}</td>
-
-<td>{$divdend_satus[$row['status']]} / 
+<td>{$divdend_satus[$row['status']]} /
 <a href="{:url('shop/sys_admin.order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
     <i class="fa fa-search text-muted"></i>
 </a>

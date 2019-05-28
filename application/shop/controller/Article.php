@@ -67,4 +67,13 @@ class Article extends ClientbaseController{
         $this->assign('content', $content);
         return $this->fetch('other');
     }
+    /*------------------------------------------------------ */
+    //-- 购买身份商品协议
+    /*------------------------------------------------------ */
+    public function roleGoodsDirections(){
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('role_goods_directions'));
+        $this->assign('title','商品购买协议');
+        $this->assign('content', $content);
+        return $this->fetch('other');
+    }
 }?>
