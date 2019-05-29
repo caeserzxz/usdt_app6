@@ -127,7 +127,6 @@
                                 {/if}
                                 {gt name="$row.goods_id" value="0"}
                                     {if condition="$row.isputaway != 1 && $row.isputaway != 10"}
-
                                         <button type="button" data-msg="确定提交上架审核？"
                                                 data-remote="{:url('postCheck',array('goods_id'=>$row['goods_id']))}"
                                                 data-toggle="ajaxCurl" class="btn btn-palegreen js_save_submit">提交上架审核</button>
@@ -135,7 +134,7 @@
                                         <button type="button" data-msg="确定下架商品？"
                                                 data-remote="{:url('postUnder',array('goods_id'=>$row['goods_id']))}"
                                                 data-toggle="ajaxCurl" class="btn btn-palegreen js_save_submit" data-loading-text="提交中...">下架商品</button>
-                                        <button type="button" class="btn btn-primary " >修改库存</button>
+                                        <button type="button" class="btn btn-primary" id="editStore">修改库存</button>
                                     {/if}
                                 {/gt}
                             </div>
@@ -155,5 +154,14 @@
 {block name="footer" }
 <script type="text/javascript">
    seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
+    $('#editStore').on('click',function(){
+        var arr = $('.form-horizontal').toJson();
+        jq_ajax('{:url("editStore")}',arr,function (res) {
+            if (res.code == 0){
+                return _alert(res.msg);
+            }
+            window.location.reload();
+        })
+    })
 </script>
 {/block}
