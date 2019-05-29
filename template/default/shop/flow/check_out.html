@@ -38,11 +38,18 @@
             <span class="fs28">运费</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 shippingFee">0.00</em></div>
         </div>
+        <div class="color_3 cell use_integral hide">
+            <span class="fs28">积分：</span>
+            <div class="color_3 fs28 num money"><p class="fw_b fm_p">-</p><em class="fs34 integralTotal"></em></div>
+        </div>
     </div>
 </div>
 
 <div class="paymentbox">
-    <div class="left"><span class="fs28 color_9">实付款</span><div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span></div></div>
+    <div class="left"><span class="fs28 color_9">实付</span>
+        <div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span></div>
+        <span class="color_9 fs28 num money use_integral hide"> + 积分<i class="color_3 fs52 integralTotal"></i></span>
+    </div>
     <div class="gopay fs28 fw_b color_w BGcolor_r">立即支付</div>
 </div>
 <!-- 支付方式 -->
@@ -66,13 +73,18 @@
             <a href="{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}" >
             <img src="{{item.pic}}" alt="" class="goodsimg">
             </a>
+            {literal}
             <div class="info">
                 <p class="fs28 color_3">{{item.goods_name}}</p>
                 <div class="sign fs28 color_9">{{item.sku_name}}</div>
                 <div class="Money">
                     <div class="left">
                         <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
-                        <span class="fs24 color_9">￥{{item.market_price}}</span>
+                        {{if item.use_integral > 0}}
+                            <p class="fw_b fm_p"> + </p><em class="fs36">{{item.use_integral}}</em>积分
+                        {{else}}
+                            <span class="fs24 color_9">￥{{item.market_price}}</span>
+                        {{/if}}
                     </div>
                     <div class="number">
                         <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{item.rec_id}}','down');" class="minus">
@@ -80,6 +92,7 @@
                         <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{item.rec_id}}','up');" class="add"></div>
                 </div>
             </div>
+            {/literal}
         </div>
     {{/each}}
  </script>
@@ -150,6 +163,10 @@
             $('.goodsList').html(template('goodsListTpl',res.cartInfo));
             $('.totalGoodsPrice').html(res.cartInfo.totalGoodsPrice);
             $('.totalDiscount').html(res.cartInfo.totalDiscount);
+            if (res.cartInfo.integralTotal > 0){
+                $('.use_integral').removeClass('hide');
+                $('.integralTotal').html(res.cartInfo.integralTotal);
+            }
             orderTotal = res.cartInfo.orderTotal;
             totalGoodsPrice = res.cartInfo.totalGoodsPrice;
             if (action == 'editNum') {

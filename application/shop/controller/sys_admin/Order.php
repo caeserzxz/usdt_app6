@@ -66,19 +66,20 @@ class Order extends AdminController
         }elseif($this->order_type == 'integral_order') {
             $where[] = ['order_type', '=', 1];
         }else{
-            $where[] = ['order_type', 'in', [0,1]];
+            $where[] = ['is_success', '=', 1];
+            if ($this->store_id > 0) {
+                $where[] = ['store_id', '=', $this->store_id];
+            } elseif ($this->supplyer_id > 0) {
+                $where[] = ['supplyer_id', '=', $this->supplyer_id];
+            } elseif ($this->is_supplyer == true) {
+                $where[] = ['supplyer_id', '>', 0];
+            }else{
+                $where[] = ['is_split', '=', 0];//不查询拆单的
+                $where[] = ['supplyer_id', '=', 0];
+                $where[] = ['store_id', '=', 0];
+            }
         }
-        if ($this->store_id > 0) {
-            $where[] = ['store_id', '=', $this->store_id];
-        } elseif ($this->supplyer_id > 0) {
-            $where[] = ['supplyer_id', '=', $this->supplyer_id];
-        } elseif ($this->is_supplyer == true) {
-            $where[] = ['supplyer_id', '>', 0];
-        } else {
-            $where[] = ['is_split', '=', 0];//不查询拆单的
-            $where[] = ['supplyer_id', '=', 0];
-            $where[] = ['store_id', '=', 0];
-        }
+
         $time_type = input('time_type', '', 'trim');
         if (empty($time_type) == false) {
             $search['start_time'] = input('start_time', '', 'trim');
@@ -188,7 +189,9 @@ class Order extends AdminController
             case "3" :
                 $where[] = ['order_status', '=', $config['OS_CONFIRMED']];
                 $where[] = ['shipping_status', '=', $config['SS_UNSHIPPED']];
-                $where[] = ['is_success', '=', 1];
+                if ($this->order_type == 'fg_order') {
+                    $where[] = ['is_success', '=', 1];
+                }
                 break;
             /**已发货**/
             case "4" :

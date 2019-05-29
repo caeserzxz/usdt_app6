@@ -38,7 +38,7 @@ class CartModel extends BaseModel
     public function addToCart($goods_id, $num, $spec = '', $sku_id = 0, $type = '')
     {
         $GoodsModel = new GoodsModel();
-
+        $use_integral = 0;
         if ($this->is_integral == 1) {
             $IntegralGoodsModel = new \app\integral\model\IntegralGoodsModel();
             $ig_id = $IntegralGoodsModel->where('goods_id', $goods_id)->value('ig_id');
@@ -71,6 +71,9 @@ class CartModel extends BaseModel
                     }
                 }
             }
+            if ($goods['use_integral'] > 0){
+                $use_integral = $goods['use_integral'];
+            }
         }
         unset($where);
         /* 检查该商品是否已经存在在购物车中 */
@@ -87,7 +90,7 @@ class CartModel extends BaseModel
         $row = $this->field('goods_number,rec_id,use_integral')->where($where)->find();
         unset($where);
         if ($row) {// 如果购物车已经有此物品，则更新
-            if ($use_integral != $row['use_integral']) $update['use_integral'] = $use_integral;
+            $update['use_integral'] = $use_integral;
             // 判断是商品能否购买或修改
             $res = $this->checkGoodsOrder($goods, $num, $spec);
             if ($res !== true) {
@@ -99,6 +102,11 @@ class CartModel extends BaseModel
             if ($this->is_integral == 0) {//非积分商品执行
                 $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
                 $update['sale_price'] = $price['min_price'];
+                if ($goods['give_integral'] == 0){//1:1赠送积分
+                    $update['give_integral'] = $goods['sale_price'];
+                }elseif($goods['give_integral'] > 0){//赠送指定积分
+                    $update['give_integral'] = $goods['give_integral'];
+                }
             }
             $update['add_time'] = time();
             $update['goods_number'] = $num;
@@ -147,7 +155,12 @@ class CartModel extends BaseModel
             if ($this->is_integral == 0) {//非积分商品执行
                 $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
                 $parent['sale_price'] = $price['min_price'];
-                $discont = $goods['shop_price'] - $price['discount'];
+                $discont = $goods['shop_price'] - $price['min_price'];
+                if ($goods['give_integral'] == 0){//1:1赠送积分
+                    $parent['give_integral'] = $goods['sale_price'];
+                }elseif($goods['give_integral'] > 0){//赠送指定积分
+                    $parent['give_integral'] = $goods['give_integral'];
+                }
             }else{
                 $parent['sale_price'] = 0;
             }
@@ -161,14 +174,16 @@ class CartModel extends BaseModel
                 $parent['market_price'] = $sub_goods['market_price'];
                 $parent['shop_price'] = $sub_goods['shop_price'];
                 if ($this->is_integral == 0) {//非积分商品执行
-                    $parent['sale_price'] = $sub_goods['sale_price'];
+                    $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                    $parent['sale_price'] = $price['min_price'];
+                    if ($sub_goods['market_price'] > 0 && $sub_goods['market_price'] > $sub_goods['shop_price']) {
+                        $discont = $sub_goods['shop_price'] - $parent['sale_price'];
+                    }
                 }else{
                     $parent['sale_price'] = 0;
                 }
                 $parent['goods_weight'] = $sub_goods['goods_weight'];
-                if ($sub_goods['market_price'] > 0 && $sub_goods['market_price'] > $sub_goods['shop_price']) {
-                    $discont = $sub_goods['shop_price'] - $price['min_price'];
-                }
+
             }
             $parent['discount'] = $discont;
             //计算复购
@@ -293,11 +308,13 @@ class CartModel extends BaseModel
                     $data['buyGoodsNum'] += $row['goods_number'];
                     $data['buyGoodsWeight'] += $row['goods_number'] * $row['goods_weight'];
                 }
+                if ($row['use_integral'] > 0) {
+                    if ($row['is_select'] == 1) {
+                        $data['integralTotal'] += $row['goods_number'] * $row['use_integral'];
+                    }
+                }
                 if ($this->is_integral == 1) {
                     $row['total'] = $row['goods_number'] * $row['use_integral'];
-                    if ($row['is_select'] == 1) {
-                        $data['integralTotal'] += $row['total'];
-                    }
                 } else {
                     $row['total'] = $row['goods_number'] * $row['sale_price'];
                     if ($row['is_select'] == 1) {

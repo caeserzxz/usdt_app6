@@ -276,30 +276,29 @@ class GoodsModel extends BaseModel
         $goods['sale_price'] = $goods['shop_price'];
         $time = time();
 
-        if ($goods['is_promote'] == 1){
-            if ($goods['promote_start_date'] >= $time && $goods['promote_end_date'] <= $time) {//判断促销是否在时间范围内
-                $goods['is_promote'] = 0;
-            }
+        if ($goods['promote_start_date'] >= $time && $goods['promote_end_date'] <= $time) {//判断促销是否在时间范围内
+            $goods['is_promote'] = 0;
         }
 
-        if ($goods['is_spec'] == 1) {
-            $prices = [];
-            foreach ($goods['sub_goods'] as $key => $sku) {
-                $sku['is_promote'] = 0;
-                if ($goods['is_promote'] == 1 && $sku['promote_price'] > 0) {
-                    $sku['sale_price'] = $sku['promote_price'];
-                    $sku['is_promote'] = 1;
+        if ($goods['is_promote'] == 1) {
+            if ($goods['is_spec'] == 1) {
+                $prices = [];
+                foreach ($goods['sub_goods'] as $key => $sku) {
+                    $sku['is_promote'] = 0;
+                    if ($goods['is_promote'] == 1 && $sku['promote_price'] > 0) {
+                        $sku['sale_price'] = $sku['promote_price'];
+                        $sku['is_promote'] = 1;
+                    }
+                    $prices[] = $sku['shop_price'];
+                    $sku['exp_price'] = explode('.', $sku['sale_price']);
+                    $goods['sub_goods'][$key] = $sku;
                 }
-                $prices[] = $sku['shop_price'];
-                $sku['exp_price'] = explode('.', $sku['sale_price']);
-                $goods['sub_goods'][$key] = $sku;
+                $goods['min_price'] = min($prices);
+                $goods['max_price'] = max($prices);
+            } else {
+                $goods['sale_price'] = $goods['promote_price'];
             }
-            $goods['min_price'] = min($prices);
-            $goods['max_price'] = max($prices);
-        } else {
-            $goods['sale_price'] = $goods['promote_price'];
         }
-
 
         if ($goods['is_spec'] == 1) {
             $goods['exp_min_price'] = explode('.', $goods['min_price']);
@@ -393,6 +392,60 @@ class GoodsModel extends BaseModel
         $goods['lstSKUArr'] = $lstSKUArr;
         $goods['skuCstom'] = $skuCstom;
         return $goods;
+    }
+
+    /**------------------------------------------------------
+     *获取商品当前身份和等级价格和下一级别价格
+     * $goods_id int 商品ID
+     * return $price array
+     * ------------------------------------------------------ */
+    public function getPriceList($goods_id = 0)
+    {
+        $prices['level'] = [];
+        $prices['role'] = [];
+        if ($goods_id < 1) return $prices;
+        if (empty($this->userInfo) == true) return $prices;
+        $rows =  (new GoodsPricesModel)->where('goods_id',$goods_id)->order('price DESC')->select();
+        if (empty($rows)) return $prices;
+        $role = (new \app\distribution\model\DividendRoleModel)->getRows();
+        $level = (new \app\member\model\UsersLevelModel)->getRows();
+        $_prices['role'] = [];
+        $_prices['level'] = [];
+        foreach ($rows as $row) {
+            if ($row['type'] == 'role'){
+                $_prices['role'][$row['by_id']] = ['name'=>$role[$row['by_id']]['role_name'],'price'=>$row['price']];
+            }else{
+                $_prices['level'][$row['by_id']] = ['name'=>$level[$row['by_id']]['level_name'],'price'=>$row['price']];
+            }
+        }
+        //身份价格
+        if ($this->userInfo['role_id'] == 0){
+            $prices['role'][] = reset($_prices['role']);
+        }else{
+            $is_next = 0;
+            foreach ($_prices['role'] as $key=>$row){
+                if ($is_next == 1) {
+                    $is_next = 0;
+                    $prices['role'][] = $row;
+                }elseif ($this->userInfo['role_id'] == $key){
+                    $prices['role'][] = $row;
+                    $is_next = 1;
+                }
+            }
+        }
+        //等级价格
+        $is_next = 0;
+        foreach ($_prices['level'] as $key=>$row){
+            if ($is_next == 1) {
+                $is_next = 0;
+                $prices['level'][] = $row;
+            }elseif ($this->userInfo['level']['level_id'] == $key){
+                $prices['level'][] = $row;
+                $is_next = 1;
+            }
+        }
+
+        return $prices;
     }
     /*------------------------------------------------------ */
     //-- 计算商品销售价

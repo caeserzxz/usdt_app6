@@ -198,7 +198,10 @@ class Flow extends ApiController
 
         $GoodsModel = new GoodsModel();
         $supplyer_ids = [];//供应商ID
-        $settle_price = 0;
+
+        $inArr['give_integral'] = 0;
+        $inArr['settle_price'] = 0;
+        $use_integral = 0;
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
@@ -210,8 +213,14 @@ class Flow extends ApiController
                 return $this->error('商品'.$grow['goods_name'].$grow['sku_name'].'价格发生变化，购物车价格：￥'.$grow['sale_price'].'，当前价格：￥'.$price['min_price']);
             }
             $supplyer_ids[$grow['supplyer_id']] = 1;
-            if ($grow['supplyer_id'] > 0 ){
-                $settle_price += $grow['settle_price'] * $grow['goods_number'];
+            if ($grow['supplyer_id'] > 0 ){//供应商商品计算供货总价
+                $inArr['settle_price'] += $grow['settle_price'] * $grow['goods_number'];
+            }
+            if ($grow['give_integral'] > 0 ){//赠送积分总计
+                $inArr['give_integral'] += $grow['give_integral'] * $grow['goods_number'];
+            }
+            if ($grow['use_integral'] > 0 ){//扣减积分总计,组合购买时调用
+                $use_integral += $grow['use_integral'] * $grow['goods_number'];
             }
         }
 
@@ -223,7 +232,7 @@ class Flow extends ApiController
                 $inArr['supplyer_id'] = reset($supplyer_ids);//获取唯一的供应商id
             }
         }
-        $inArr['settle_price'] = $settle_price;
+
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证
             $BonusModel = new BonusModel();
@@ -269,13 +278,14 @@ class Flow extends ApiController
                 return $this->error('余额不足，请使用其它支付方式.');
             }
         }
-        $inArr['order_type'] = 0;//订单类型，普通订单
-        if($this->is_integral == 1){
-            $inArr['use_integral'] = $cartList['integralTotal'];
-            if ($inArr['use_integral'] > $this->userInfo['account']['use_integral']) {
+        $inArr['order_type'] = $this->is_integral;//订单类型，0普通订单,1积分订单
+
+        if($use_integral > 0){
+            $inArr['use_integral'] = $use_integral;
+            if ($use_integral > $this->userInfo['account']['use_integral']) {
                 return $this->error('积分不足无法兑换，你的积分余额为：'.$this->userInfo['account']['use_integral']);
             }
-            $inArr['order_type'] = 1;//订单类型，积分订单
+            $inArr['use_integral'] = $use_integral;
         }
 
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
@@ -361,8 +371,8 @@ class Flow extends ApiController
     {
         $add_time = time();
         $sql = "INSERT INTO shop_order_goods (" .
-            "order_id,brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,add_time,user_id,use_integral,is_dividend,buy_again_discount)" .
-            " SELECT '$order_id',brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,'$add_time',user_id,use_integral,is_dividend,buy_again_discount" .
+            "order_id,brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,add_time,user_id,give_integral,use_integral,is_dividend,buy_again_discount)" .
+            " SELECT '$order_id',brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,'$add_time',user_id,give_integral,use_integral,is_dividend,buy_again_discount" .
             " FROM  shop_cart  WHERE ";
         $sql .= " user_id = '" . $this->userInfo['user_id'] . "' AND is_select = 1 ";
         $sql .= " AND is_integral =  " . $this->is_integral;

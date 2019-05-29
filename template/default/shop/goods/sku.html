@@ -11,11 +11,18 @@
                         {else/}
                             <div class="skuPrice">
                                 <em class="fs52"></em><p></p>
+
                             </div>
                         {/eq}
+                        {gt name="goods.use_integral" value="0"}
+                            <p class="fw_b fm_p"> + </p><em class="fs32 color_r">{$goods.use_integral}</em>积分
+                        {/gt}
                     </div>
                     <span class="fs22 color_w BGcolor_r is_promote {$goods['is_promote']==0?'hide':''}">活动价</span>
                 </div>
+                {gt name="goods.use_integral" value="0"}
+                <div class="color_3 fs20 num money" style="margin-top: 0px;"> </div>
+                {/gt}
                 <div class="fs24 color_9 moneyPrimary">￥{$goods.market_price}</div>
                 {notempty name="$goods.sub_goods"}<p class="fs28 fw_b color_3 selSkuName">请选择规格</p>{/notempty}
             </div>

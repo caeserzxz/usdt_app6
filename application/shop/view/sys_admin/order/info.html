@@ -158,7 +158,12 @@
                                         <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">赠送积分：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.give_integral} (订单签收后即返)
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="col-sm-6">
@@ -190,12 +195,18 @@
                                     </div>
                                 </div>
                             
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label">买家留言：</label>
-                                <div class="col-sm-8 form-control-static">
-                                    {$orderInfo.buyer_message}
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">买家留言：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$orderInfo.buyer_message}
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">佣金总额：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$orderInfo.dividend_amount|priceFormat=true}
+                                    </div>
+                                </div>
 							</div>
                         </div>
                         <div class="col-sm-12 table-responsive">
@@ -234,6 +245,7 @@
                                         <p class="red">折扣：- {$orderInfo.discount|priceFormat}</p>
                                         <p class="red">调整折扣：- {$orderInfo.diy_discount|priceFormat}</p>
                                         <p class="red">优惠券：- {$orderInfo.use_bonus|priceFormat}</p>
+                                        <p class="red">扣减积分：- {$orderInfo.use_integral}</p>
                                         <p>+ 运费：{$orderInfo.shipping_fee|priceFormat}</p>
                                         <p>= 实收款：{$orderInfo.order_amount|priceFormat}</p>
                                     </td>
@@ -325,7 +337,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">要求配送：</label>
+                            <label class="col-sm-1 control-label">快递费用：</label>
                             <div class="col-sm-8 form-control-static">
 
                                 {eq name="row.shipping_fee" value="0"}
@@ -382,7 +394,7 @@
                      	<div class="form-group">
                         <div class="col-sm-12">
                                  
-                                        订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额：￥{$orderInfo.dividend_amount|priceFormat}</span>
+                                        订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">佣金总额：{$orderInfo.dividend_amount|priceFormat=true}</span>
                                         <span class="m-l-lg hide">实收：{$orderInfo.real_amount|priceFormat}</span>
                             <span class="m-l-lg ">会员下单时身份：{$orderInfo.dividend_role_name}</span>
                                         <a href="javascript:;"

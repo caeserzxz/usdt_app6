@@ -40,17 +40,33 @@
                 <em class="fs52">{$goods.exp_price[0]}</em>
                 <p>.{$goods.exp_price[1]}</p>
                 {else/}
-                <em class="fs52">{$goods.exp_min_price[0]}</em>
-                <p>.{$goods.exp_min_price[1]}</p>
-                <em class="fs52">~</em>
-                <em class="fs52">{$goods.exp_max_price[0]}</em>
-                <p>.{$goods.exp_max_price[1]}</p>
+                    {if condition="$goods.min_price == $goods.max_price"}
+                        <em class="fs52">{$goods.exp_min_price[0]}</em>
+                        <p>.{$goods.exp_min_price[1]}</p>
+                    {else/}
+                        <em class="fs52">{$goods.exp_min_price[0]}</em>
+                        <p>.{$goods.exp_min_price[1]}</p>
+                        <em class="fs52">~</em>
+                        <em class="fs52">{$goods.exp_max_price[0]}</em>
+                        <p>.{$goods.exp_max_price[1]}</p>
+                    {/if}
                 {/eq}
+
             </div>
            <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}">活动价</span>
         </div>
+        {gt name="goods.use_integral" value="0"}
+        <div class="color_3 fs20 num money"><p class="fw_b fm_p"> + 积分：</p><em class="fs32 color_r">{$goods.use_integral}</em>分（组合购买，须额外支付积分）</div>
+        {/gt}
+        {gt name="goods.market_price" value="0"}
         <div class="original fs24 color_9">￥{$goods.market_price}</div>
-        <div class="name fw_b fs34 color_3">{$goods.goods_name}</div>
+        {/gt}
+        <div class="name fw_b fs34 color_3" style="margin-bottom: 10px;">{$goods.goods_name}</div>
+        {volist name="priceList" id="prices" }
+            {volist name="prices" id="price" }
+            <div class="color_3 fs20 num money"><p class="fw_b fm_p">{$price.name}：￥</p><em class="fs22">{$price.price}</em></div>
+            {/volist}
+        {/volist}
         <div class="tips fs28 color_9  "><span>热销{$goods.sale_count}</span>
             <p  class="hide">运费10元</p></div>
     </div>

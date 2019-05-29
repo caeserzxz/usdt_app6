@@ -143,6 +143,7 @@ class Flow extends ApiController
         }
 
 
+
         if ($fgInfo['limit_num'] < $number){
             return  $this->error('单次限购'.$buyGoods['limit_num'].'件');
         }
@@ -261,9 +262,15 @@ class Flow extends ApiController
             }
 
         }
+        //积分处理
+        if ($fgInfo['give_integral'] == 0){
+            $inArr['give_integral'] = $inArr['order_amount'] - $inArr['shipping_fee'];
+        }elseif($fgInfo['give_integral'] > 0){
+            $inArr['give_integral'] = $fgInfo['give_integral'] * $number;
+        }
+
         $inArr['order_type'] = 2;
         $inArr['by_id'] = $fg_id;
-
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
         $inArr['consignee'] = $address['consignee'];
         $inArr['address'] = $address['address'];
@@ -314,6 +321,12 @@ class Flow extends ApiController
         $inArr = [];
         $inArr['order_id'] = $order_id;
         $inArr['goods_id'] = $buyGoods['goods_id'];
+        //积分处理
+        if ($fgInfo['give_integral'] == 0){
+            $inArr['give_integral'] = $buyGoods['sale_price'];
+        }elseif($fgInfo['give_integral'] > 0){
+            $inArr['give_integral'] = $fgInfo['give_integral'];
+        }
         if ($goods['is_spec'] == 1) {
             $inArr['sku_id'] = $sku_id;
             $inArr['sku_val'] = $buyGoods['sku_val'];

@@ -109,6 +109,26 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">赠送积分：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="0" {$row['give_integral']==0?'checked':''}  class="js_radio_undertake">1:1赠送（销售价）
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="-1" {$row['give_integral']==-1?'checked':''}  class="js_radio_undertake">不赠送
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="1" {$row['give_integral']>0?'checked':''}  class="js_radio_undertake "
+                        data-class="give_integral_val"/>
+                        赠送指定积分
+                    </label>
+                    <label class="radio_undertake_is_give_integral give_integral_val v-top {$row['give_integral']>0?'':'hide'} " style="position:relative;">
+                        <input class="input-xs input-sm" type="text" data-rule-required="true" min="1" name="give_integral" value="{$row['give_integral']<0?0:$row['give_integral']}" data-rule-positive="true" />
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="col-sm-2  control-label">封面图片：</label>
                 <div class="col-sm-7">
                     <img class="thumb_img" name="coverfile" id="coverfile" src="{$row.cover|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />

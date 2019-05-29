@@ -52,6 +52,7 @@ class Goods extends ClientbaseController{
         $this->assign('cartInfo', $CartModel->getCartInfo(0));//获取购物车信息
         $this->assign('goods_status',config('config.goods_status'));
         $shareUrl = getUrl('','',['id'=>$goods_id]);
+        $this->assign('priceList',$this->Model->getPriceList($goods_id));//身份和级别价格
         if ($this->is_wx == 1){
             $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
             $wxShare['img'] = $goods['goods_thumb'];

@@ -1,4 +1,10 @@
-
+<div class="form-group">
+    <label class="col-sm-2 control-label">抵扣积分：</label>
+    <div class="col-sm-8" >
+        <input type="text" class="input-mini" name="use_integral" data-rule-min="0" data-rule-max="9999" data-rule-number="true" value="{$row['use_integral']|intval}">
+        <span class="help-inline">用于积分+现金组合购买，一旦设置用户须有相应积分进行抵扣才能购买,针对购买普通商品（拼团等无效）</span>
+    </div>
+</div>
 <div class="form-group">
       <label class="col-sm-2 control-label">优惠券：</label>
       <div class="col-sm-10">
@@ -8,10 +14,27 @@
         <label class="radio-inline">
             <input type="radio" name="use_bond" value="1" {$row.use_bond|tplckval='>0','checked',true}  /> 可以使用
         </label>
-        
     </div>
 </div>
-
+<div class="form-group">
+    <label class="col-sm-2 control-label">赠送积分：</label>
+    <div class="col-sm-10">
+        <label class="radio-inline">
+            <input type="radio" name="is_give_integral" value="0" {$row['give_integral']==0?'checked':''}  class="js_radio_undertake">1:1赠送（销售价）
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_give_integral" value="-1" {$row['give_integral']==-1?'checked':''}  class="js_radio_undertake">不赠送
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="is_give_integral" value="1" {$row['give_integral']>0?'checked':''}  class="js_radio_undertake "
+            data-class="give_integral_val"/>
+            赠送指定积分
+        </label>
+        <label class="radio_undertake_is_give_integral give_integral_val v-top {$row['give_integral']>0?'':'hide'} " style="position:relative;">
+            <input class="input-xs input-sm" type="text" data-rule-required="true" min="1" name="give_integral" value="{$row['give_integral']<0?0:$row['give_integral']}" data-rule-positive="true" />
+        </label>
+    </div>
+</div>
 
 <div class="help-inline red">默认全等级可购买，一旦勾选则只有勾选中的等级才能进行购买</div>
 <div class="form-group">

@@ -13,8 +13,8 @@ class GoodsPricesModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 获取列表
 	/*------------------------------------------------------ */
-    public function getRows($goods_id = 0){	
-		$list = Cache::get($this->mkey.$goods_id);	
+    public function getRows($goods_id = 0){
+		$list = Cache::get($this->mkey.$goods_id);
 		if (empty($list) == false) return $list;
 		$rows = $this->where('goods_id',$goods_id)->select()->toArray();
 		$list = array();

@@ -99,15 +99,28 @@ class OrderModel extends BaseModel
             $info = $this->where('order_id', $order_id)->find();
             if (empty($info)) return array();
             $info = $info->toArray();
-
-            if ($info['is_dividend'] == 0) {//提成处理
-                Db::startTrans();//启动事务
-                $resData = $this->distribution($info, 'add');
-                if (is_array($resData) == true) {
-                    $resData['is_dividend'] = 1;
-                    $resData['order_id'] = $order_id;
-                    $res = $this->upInfo($resData, 'sys');
-                    unset($resData);
+            try {
+                if ($info['is_dividend'] == 0 || $info['is_pay_eval'] == 2) {
+                    Db::startTrans();//启动事务
+                    //提成记录处理
+                    if ($info['is_dividend'] == 0 && $info['is_split'] == 0) {
+                        $res = $this->distribution($info, 'add');
+                        if (is_array($res) == true) {
+                            $upData = $res;
+                            $upData['is_dividend'] = 1;
+                        }
+                    }//end
+                    //执行支付成功后的相关处理
+                    if ($info['is_pay_eval'] == 2) {
+                        $res = $this->distribution($info, 'pay');//提成处理
+                        if ($res == true) {
+                            $upData['is_pay_eval'] = 1;
+                        }
+                    }//end
+                    $res = 0;
+                    if (empty($upData) == false) {
+                        $res = $this->where('order_id', $order_id)->update($upData);
+                    }
                     if ($res > 0) {
                         Db::commit();// 提交事务
                         $info = $this->where('order_id', $order_id)->find()->toArray();
@@ -115,11 +128,15 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                     }
                 }
+            } catch (Exception $e) {
             }
+
             list($info['goodsList'], $info['allNum'], $info['isReview']) = $this->orderGoods($order_id);
             //end
             Cache::set($this->mkey . $order_id, $info, 30);
         }
+
+        $info['exp_price'] = explode('.', $info['order_amount']);
 
         $time = time();
         $info['isCancel'] = 0;
@@ -127,6 +144,12 @@ class OrderModel extends BaseModel
         $info['isDel'] = 0;
         $info['isSign'] = 0;
         $info['isRefund'] = 0;
+
+        if ($info['is_split'] == 2) {
+            $info['ostatus'] = '已拆分';
+            return $info;
+        }
+
         if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {
             if ($info['is_pay'] > 0 && $info['pay_status'] == $this->config['PS_UNPAYED']) {
                 $info['isCancel'] = 1;
@@ -190,7 +213,6 @@ class OrderModel extends BaseModel
                 $info['ostatus'] = '已删除';
             }
         }
-        $info['exp_price'] = explode('.', $info['order_amount']);
         return $info;
     }
     /*------------------------------------------------------ */
@@ -199,7 +221,7 @@ class OrderModel extends BaseModel
     function orderGoods($order_id)
     {
         static $OrderGoodsModel;
-        if (empty($OrderGoodsModel)){
+        if (empty($OrderGoodsModel)) {
             $OrderGoodsModel = new OrderGoodsModel();
         }
         $rows = $OrderGoodsModel->order('rec_id ASC')->where('order_id', $order_id)->select()->toArray();
@@ -234,7 +256,7 @@ class OrderModel extends BaseModel
         $orderInfo = $this->where('order_id', $order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
         $orderInfo = $orderInfo->toArray();
-        if ($extType != 'sys' && defined('AUID') == false ) {
+        if ($extType != 'sys' && defined('AUID') == false) {
             if ($this->userInfo['user_id'] != $orderInfo['user_id']) {
                 return '无权操作';
             }
@@ -242,18 +264,29 @@ class OrderModel extends BaseModel
         if ($upData['is_del'] == 1 && $orderInfo['order_status'] != $this->config['OS_CANCELED']) {
             return '订单未取消不能删除.';
         }
+        if ($orderInfo['is_split'] == 2) {
+            return '此订单已拆分，不能进行操作.';
+        }
         //确认订单，执行拆单处理，独立出来并外部使用事务
-        if ($upData['order_status'] == $this->config['OS_CONFIRMED'] && $orderInfo['is_split'] == 1){
+        if ($orderInfo['is_split'] == 1 && $upData['order_status'] == $this->config['OS_CONFIRMED']) {
             Db::startTrans();//启动事务
-            $res = $this->splitOrder($orderInfo);
-            if ($res == true){
+            $_orderInfo = $orderInfo;
+            if (isset($upData['order_status'])) {
+                $_orderInfo['order_status'] = $upData['order_status'];
+            }
+            if (isset($upData['pay_status'])) {
+                $_orderInfo['pay_status'] = $upData['pay_status'];
+            }
+            $res = $this->splitOrder($_orderInfo);
+            if ($res == true) {
                 $upData['is_split'] = 2;
                 Db::commit();// 提交事务
-            }else{
+            } else {
                 Db::rollback();// 回滚事务
             }
         }
         //end
+
         Db::startTrans();//启动事务
         $GoodsModel = new GoodsModel();
         $OrderGoodsModel = new OrderGoodsModel();
@@ -267,7 +300,7 @@ class OrderModel extends BaseModel
                     Db::rollback();//回滚
                     return '取消积分订单退库存失败.';
                 }
-            }else{
+            } else {
                 $res = $GoodsModel->evalGoodsStore($goodsList['goodsList']);
                 if ($res !== true) {
                     Db::rollback();// 回滚事务
@@ -285,36 +318,30 @@ class OrderModel extends BaseModel
                     $changedata['change_type'] = 3;
                     $changedata['by_id'] = $order_id;
                     $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-                    if ($orderInfo['use_integral'] > 0 ){
+                    if ($orderInfo['use_integral'] > 0) {//如果额外使用积分，同时处理扣减
                         $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
-                        $changedata['change_desc'] .= '，积分兑换';
+                        $changedata['change_desc'] .= '&积分抵扣';
                     }
                     $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
                     if ($res !== true) {
                         Db::rollback();// 回滚事务
-                        return '支付失败，更新余额失败.';
+                        return '支付失败，扣减余额失败.';
                     }
-                }else{
-                    if ($orderInfo['use_integral'] > 0 ){
-                        $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
-                        $changedata['change_desc'] = '积分兑换';
-                        $changedata['change_type'] = 3;
-                        $changedata['by_id'] = $order_id;
-                        $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
-                        if ($res !== true) {
-                            Db::rollback();// 回滚事务
-                            return '支付失败，更新余额失败.';
-                        }
+                }elseif ($orderInfo['use_integral'] > 0) {
+                    $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
+                    $changedata['change_desc'] = '积分兑换';
+                    $changedata['change_type'] = 3;
+                    $changedata['by_id'] = $order_id;
+                    $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+                    if ($res !== true) {
+                        Db::rollback();// 回滚事务
+                        return '支付失败，扣减积分失败.';
                     }
                 }
-                $res = $this->distribution($orderInfo, 'pay');//提成处理
-                if ($res !== true) {
-                    Db::rollback();// 回滚事务
-                    return '佣金处理失败.';
-                }
-                $upData['pay_time'] = $time;
-            }
 
+                $upData['pay_time'] = $time;
+                $upData['is_pay_eval'] = 2;//设为待执行支付成功后的相关处理
+            }
             $upData['confirm_time'] = $time;
         } elseif ($upData['order_status'] == $this->config['OS_CANCELED']) {//取消订单
             $res = $this->distribution($orderInfo, 'cancel');//提成处理
@@ -322,6 +349,7 @@ class OrderModel extends BaseModel
                 Db::rollback();// 回滚事务
                 return '佣金处理失败.';
             }
+
             if ($orderInfo['is_stock'] == 1) {//执行商品库存和销量处理
                 $goodsList = $this->orderGoods($order_id);
                 if ($orderInfo['order_type'] == 1) {//积分订单
@@ -353,13 +381,13 @@ class OrderModel extends BaseModel
                 }
                 $upData['is_stock'] = 0;
             }
-        } elseif ($upData['pay_status'] === $this->config['PS_UNPAYED']) {//未付款,不执行退款操作，只更新
+        } elseif($upData['pay_status'] === $this->config['PS_UNPAYED']) {//未付款,不执行退款操作，只更新
             $res = $this->distribution($orderInfo, 'unpayed');//提成处理
             if ($res != true) {
                 Db::rollback();// 回滚事务
                 return '佣金处理失败.';
             }
-        } elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']) {//退款，退回帐户余额
+        } elseif($upData['pay_status'] == $this->config['PS_RUNPAYED']) {//退款，退回帐户余额
             if ($orderInfo['money_paid'] > 0) {
                 if ($orderInfo['pay_code'] == 'balance') {
                     $inData['balance_money'] = $orderInfo['money_paid'];
@@ -381,6 +409,17 @@ class OrderModel extends BaseModel
                     }
                 }
             }
+            if ($orderInfo['use_integral'] > 0) {
+                $inData['use_integral'] = $orderInfo['use_integral'];
+                $inData['change_type'] = 3;
+                $inData['by_id'] = $orderInfo['order_id'];
+                $inData['change_desc'] = '订单退还积分:' . $orderInfo['use_integral'];
+                $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
+                if ($res != true) {
+                    Db::rollback();//回滚
+                    return '订单退还积分失败.';
+                }
+            }
         } elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {//发货
             $res = $this->distribution($orderInfo, 'shipping');//提成处理
             if ($res != true) {
@@ -397,7 +436,7 @@ class OrderModel extends BaseModel
         } elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
             $upData['is_settlement'] = 1;//待结算
             //积分赠送
-            $inData['total_integral'] = intval($orderInfo['order_amount'] - $orderInfo['shipping_fee']);
+            $inData['total_integral'] = $orderInfo['give_integral'];
             $inData['use_integral'] = $inData['total_integral'];
             if ($inData['total_integral'] > 0) {
                 $inData['change_type'] = 2;
@@ -519,7 +558,7 @@ class OrderModel extends BaseModel
         $time = time();
         if ($os == $this->config['OS_UNCONFIRMED']) {//未确认
             $operating['isCancel'] = true;//取消
-            if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认           
+            if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认
             $operating['changePrice'] = true; //改价
             $operating['editConsignee'] = true; //修改收货信息
             $operating['editGoods'] = true; //修改商品
@@ -597,7 +636,7 @@ class OrderModel extends BaseModel
     public function distribution(&$orderInfo, $type = '')
     {
         if (empty($orderInfo)) return false;
-        if ($orderInfo['order_type'] == 1){//积分商品不返利
+        if ($orderInfo['order_type'] == 1) {//积分商品不返利
             return false;
         }
         $orderInfo['d_type'] = 'order';//普通订单
@@ -622,32 +661,44 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function splitOrder(&$orderInfo)
     {
-        static $OrderGoodsModel;//预留如果批量操作拆单时，循环实例化类
-        if (empty($OrderGoodsModel)){
+        static $OrderGoodsModel;
+
+        if ($orderInfo['is_split'] != 1) {
+            return false;
+        }
+        if (empty($OrderGoodsModel)) {
             $OrderGoodsModel = new OrderGoodsModel();
         }
+
         $orderGoods = $OrderGoodsModel->order('rec_id ASC')->where('order_id', $orderInfo['order_id'])->select()->toArray();
         $oglist = [];
-        foreach ($orderGoods as $og){
-            if (empty($oglist[$og['supplyer_id']])){
+
+        foreach ($orderGoods as $og) {
+            if (empty($oglist[$og['supplyer_id']])) {
                 $oglist[$og['supplyer_id']]['settle_price'] = 0;
                 $oglist[$og['supplyer_id']]['goods_amount'] = 0;
                 $oglist[$og['supplyer_id']]['discount'] = 0;
                 $oglist[$og['supplyer_id']]['goods_sn'] = [];
                 $oglist[$og['supplyer_id']]['goods_list'] = [];
             }
+            $oglist[$og['supplyer_id']]['give_integral'] += $og['give_integral'] * $og['goods_number'];
+            $oglist[$og['supplyer_id']]['use_integral'] += $og['use_integral'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['settle_price'] += $og['settle_price'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['goods_amount'] += $og['sale_price'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['discount'] += $og['discount'];
             $oglist[$og['supplyer_id']]['goods_sn'][] = $og['goods_sn'];
             $oglist[$og['supplyer_id']]['goods_list'][] = $og;
         }
+
         $i = 1;
-        foreach ($oglist as $key=>$sogl){
+        foreach ($oglist as $key => $sogl) {
             $inArr = $orderInfo;
             unset($inArr['order_id']);
-            $inArr['order_sn'] .= '-'.$i;
+            $inArr['order_sn'] .= '-' . $i;
+            $inArr['is_split'] = 0;
             $inArr['supplyer_id'] = $key;
+            $inArr['give_integral'] = $sogl['give_integral'];
+            $inArr['use_integral'] = $sogl['use_integral'];
             $inArr['pid'] = $orderInfo['order_id'];
             $inArr['buy_goods_sn'] = join(',', $sogl['goods_sn']);
             $inArr['settle_price'] = $sogl['settle_price'];
@@ -656,28 +707,35 @@ class OrderModel extends BaseModel
             //使用相关优惠处理
             $scale = $sogl['goods_amount'] / $orderInfo['goods_amount'];//对比总订单商品价格占比
             $inArr['use_bonus'] = 0;
-            if ($orderInfo['use_bonus'] > 0){
+            if ($orderInfo['use_bonus'] > 0) {
                 $inArr['use_bonus'] = $orderInfo['use_bonus'] * $scale;
             }
             $inArr['shipping_fee'] = 0;
-            if ($orderInfo['shipping_fee'] > 0){
+            if ($orderInfo['shipping_fee'] > 0) {
                 $inArr['shipping_fee'] = $orderInfo['shipping_fee'] * $scale;
             }
             $inArr['diy_discount'] = 0;
-            if ($orderInfo['diy_discount'] > 0){
+            if ($orderInfo['diy_discount'] > 0) {
                 $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;
             }
-            $inArr['order_amount'] =  $inArr['goods_amount'] - $inArr['use_bonus'] - $inArr['diy_discount'];
-            //end
-            $order_id = $this->save($inArr);
+            $inArr['order_amount'] = $inArr['goods_amount'] - $inArr['use_bonus'] - $inArr['diy_discount'] + $inArr['shipping_fee'];
+            $inArr['money_paid'] = $inArr['order_amount'];
+                //end
+            $res = $this->create($inArr);
+            $order_id = $res->order_id;
             if ($order_id < 1) return false;
-            foreach ($sogl['goods_list'] as $goods){
+            foreach ($sogl['goods_list'] as $goods) {
                 $goods['order_id'] = $order_id;
+                unset($goods['rec_id']);
                 $res = $OrderGoodsModel->create($goods);
                 if ($res->rec_id < 1) return false;
             }
+            $inArr['order_id'] = $order_id;
+            $this->_log($inArr, '订单拆分：' . $orderInfo['order_sn'] . '，拆分生成子订单');
             $i++;
         }
+        $this->_log($orderInfo, '拆分订单');
+
         return true;
     }
     /*------------------------------------------------------ */

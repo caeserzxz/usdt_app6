@@ -56,6 +56,7 @@
     </div>
 </div>
 {include file="layouts@bottom" /}
+{literal}
 <script type="text/html" id="goodsLi">
     {{each goodsList as item index}}
     <li>
@@ -75,9 +76,16 @@
                     <div class="sign fs28 color_9">{{item.sku_name}}</div>
                     <div class="Money">
                         <div class="left">
-                            <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><i>.{{item.exp_price[1]}}</i></div>
+                            <div class="color_3 fs24 num">
+                                <p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><i>.{{item.exp_price[1]}} </i> 元
+                            </div>
+                            {{if item.use_integral > 0}}
+                            <p class="fw_b fm_p"> + </p><em class="fs36">{{item.use_integral}}</em>积分
+                           {{else}}
                             <span class="fs24 color_9">￥{{item.market_price}}</span>
+                            {{/if}}
                         </div>
+
                         <div class="number">
                             <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{item.rec_id}}','down');" class="minus">
                             <input class="fs30 color_3" type="text" readonly value="{{item.goods_number}}">
@@ -95,7 +103,7 @@
     </li>
     {{/each}}
 </script>
-
+{/literal}
 <script type="text/html" id="loseGoodsLi">
     {{each invalidList as item index}}
     <a href='{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}' >
