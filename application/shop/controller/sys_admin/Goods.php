@@ -237,7 +237,9 @@ class Goods extends AdminController
         if ($row['cid'] < 1) {
             return $this->error('请选择商品分类.');
         }
-        $row['is_alone_sale'] = isset($row['is_alone_sale']) ? 1 : 0;
+
+
+
         $GoodsImgsModel = new GoodsImgsModel();
         if ($row['goods_id'] < 1) {
             $imgwhere[] = ['goods_id', '=', 0];
@@ -360,11 +362,14 @@ class Goods extends AdminController
         }
 
         if ($this->supplyer_id > 0) {
-            $row['is_alone_sale'] = 1;
+            if ($row['goods_id'] < 1){
+                $row['is_alone_sale'] = 1;
+            }
             $row['supplyer_id'] = $this->supplyer_id;//供应商ID
         } elseif ($this->store_id > 0) {
             $row['store_id'] = $this->store_id;//门店ID
         } else {
+            $row['is_alone_sale'] = isset($row['is_alone_sale']) ? 1 : 0;
             //上架处理
             if ($row['isputaway'] == 2) {
                 if (empty($row['added_time']) || empty($row['shelf_time'])) return $this->error('操作失败:请选择上下架的时间.');
