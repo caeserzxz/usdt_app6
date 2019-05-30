@@ -40,7 +40,7 @@ class Dividend extends BaseModel
         //身份订单处理
         if ($orderInfo['d_type'] == 'role_order') {
             $status = 3;
-            Db::startTrans();//启动事务
+            Db::startTrans();//启动事务，身份订单独立事务，其它订单在订单主模块里使用事务
             $logArr = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
             if (is_array($logArr) == false) {
                 Db::rollback();// 回滚事务

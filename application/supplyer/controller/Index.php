@@ -4,7 +4,8 @@ use think\facade\Cache;
 
 use app\supplyer\Controller;
 use app\shop\model\OrderModel;
-
+use app\supplyer\model\SupplyerModel;
+use app\shop\model\GoodsModel;
 /**
  * 供应商后台首页
  * Class Index
@@ -14,7 +15,6 @@ class Index extends Controller
 {
     public function index()
     {
-        $time = time();
         $start_day = date("Y-m-d",strtotime("-1 week"));
         $this->assign('start_day',$start_day);
         $end_day = date('Y-m-d', strtotime("+1 day") );
@@ -73,7 +73,33 @@ class Index extends Controller
             $i++;
         }
         //订单统计相关end
-
+        $SupplyerModel = new SupplyerModel();
+        $supplyerInfo = $SupplyerModel->find($this->supplyer_id)->toArray();
+        $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        $where[] = ['is_settlement', '=', 1];
+        $supplyer['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
+        $GoodsModel = new GoodsModel();
+        //全部商品
+        $goods['all_num'] = $GoodsModel->where('supplyer_id', $this->supplyer_id)->count();
+        //销售中商品
+        unset($where);
+        $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        $where[] = ['isputaway', '=', 1];
+        $goods['sale_num'] = $GoodsModel->where($where)->count();
+        //审核中商品
+        unset($where);
+        $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        $where[] = ['isputaway', '=', 10];
+        $goods['check_num'] = $GoodsModel->where($where)->count();
+        //平台下架商品
+        unset($where);
+        $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        $where[] = ['isputaway', '=', 12];
+        $goods['obtained_num'] = $GoodsModel->where($where)->count();
+        $this->assign("goods", $goods);
+        $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
+        $this->assign("end_date", date('Y/m/d'));
+        $this->assign("supplyerInfo", $supplyerInfo);
         $this->assign('stats',$stats);
         $this->assign('riqi',json_encode($riqi));
         return $this->fetch('index');

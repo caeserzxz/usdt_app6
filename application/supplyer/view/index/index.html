@@ -88,12 +88,12 @@
                                   data-update="5000"></span>
                  </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong id="balance_total">{$account.balance_money|intval}</strong></span>
+                    <span class="h3 block m-t-xs"><strong id="balance_total">￥{$supplyerInfo.balance_money|intval}</strong></span>
                     <small class="text-muted text-uc">帐户余额</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong id="withdraw_total">{$account.withdraw_money|intval}</strong></span>
-                    <small class="text-muted text-uc">提现中</small>
+                    <span class="h3 block m-t-xs"><strong id="withdraw_total">￥{$supplyerInfo.wait_settle|intval}</strong></span>
+                    <small class="text-muted text-uc">待结款</small>
                 </a>
             </div>
 
@@ -111,8 +111,8 @@
                     <small class="text-muted text-uc">全部商品</small>
                 </a>
                 <a class="fr" href="#">
-                    <span class="h3 block m-t-xs"><strong >{$goods.check_num|intval}</strong></span>
-                    <small class="text-muted text-uc">审核商品</small>
+                    <span class="h3 block m-t-xs"><strong>{$goods.sale_num|intval}</strong></span>
+                    <small class="text-muted text-uc">销售中商品</small>
                 </a>
             </div>
             <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
@@ -125,12 +125,13 @@
                             data-update="5000"></span>
                  </span>
                 <a class="fl" href="#">
-                    <span class="h3 block m-t-xs"><strong>{$goods.sale_num|intval}</strong></span>
-                    <small class="text-muted text-uc">销售中商品</small>
+                    <span class="h3 block m-t-xs"><strong >{$goods.check_num|intval}</strong></span>
+                    <small class="text-muted text-uc">审核商品</small>
                 </a>
+
                 <a class="fr" href="#">
                     <span class="h3 block m-t-xs"><strong >{$goods.unsale_num|intval}</strong></span>
-                    <small class="text-muted text-uc">下架中商品</small>
+                    <small class="text-muted text-uc">平台下架</small>
                 </a>
             </div>
         </div>

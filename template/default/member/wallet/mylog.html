@@ -9,7 +9,8 @@
     <div class="dataBox">
         <div class="left">
             <input type="text" class="fs28 fw_b color_3" readonly value="" id="nowValue"/>
-            <span class="fs24 color_9">支出：￥<em class="expend">0</em>  收入：￥<em class="income">0</em></span>
+            <span class="fs24 color_9">余额收入：￥<em class="b_income">0</em> 余额支出：￥<em class="b_expend">0</em></span>
+            <span class="fs24 color_9">积分收入：<em class="i_income">0</em> 积分支出：<em class="i_expend">0</em></span>
         </div>
         <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
     </div>
@@ -44,14 +45,14 @@
         </label>
        
         <label for="s14">
-            <span class="fs28 color_3 fw_b">佣金收入</span>
+            <span class="fs28 color_3 fw_b">佣金流水</span>
             <div class="iconBox">
                 <input type="radio" class="check" value="brokerage" name="radiobox" id="s14">
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s15">
-            <span class="fs28 color_3 fw_b">积分兑换</span>
+            <span class="fs28 color_3 fw_b">积分流水</span>
             <div class="iconBox">
                 <input type="radio" class="check" value="integral"  name="radiobox" id="s15">
                 <i class="icon_checked"></i>
@@ -94,8 +95,10 @@
                 $('.list').html(template('logTpl', res));
             }
 			$('#nowValue').val(res.time);
-			$('.expend').html(res.expend);
-			$('.income').html(res.income);
+			$('.b_expend').html(res.b_expend);
+			$('.b_income').html(res.b_income);
+            $('.i_expend').html(res.i_expend);
+            $('.i_income').html(res.i_income);
 		});
 	}
     $(function(){		

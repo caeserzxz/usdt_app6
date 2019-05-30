@@ -420,7 +420,10 @@ class GoodsModel extends BaseModel
         }
         //身份价格
         if ($this->userInfo['role_id'] == 0){
-            $prices['role'][] = reset($_prices['role']);
+            $price = reset($_prices['role']);
+            if (empty($price) == false){
+                $prices['role'][] = $price;
+            }
         }else{
             $is_next = 0;
             foreach ($_prices['role'] as $key=>$row){
@@ -539,7 +542,6 @@ class GoodsModel extends BaseModel
         $GoodsSkuModel = new GoodsSkuModel();
         foreach ($goodsList as $grow) {
             $goods = $this->info($grow['goods_id']);
-
             if ($goods['is_spec'] == 1) {//多规格商品执行
                 if ($type == 'cancel') {
                     $sub_data['goods_number'] = ['INC', $grow['goods_number']];

@@ -34,7 +34,7 @@ class Wallet  extends ClientbaseController{
     //-- 余额明细
     /*------------------------------------------------------ */
     public function mylog(){
-        $this->assign('title', '余额明细');
+        $this->assign('title', '帐户明细');
         return $this->fetch('mylog');
     }
     /*------------------------------------------------------ */

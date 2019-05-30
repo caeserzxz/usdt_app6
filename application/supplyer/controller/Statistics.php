@@ -21,7 +21,7 @@ class Statistics extends Controller
     {
         $SupplyerModel = new SupplyerModel();
         $OrderModel = new OrderModel();
-        $supplyer = $SupplyerModel->find($this->supplyer_id);
+        $supplyerInfo = $SupplyerModel->find($this->supplyer_id)->toArray();
         $where[] = ['supplyer_id', '=', $this->supplyer_id];
         $where[] = ['is_settlement', '=', 1];
         $supplyer['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
@@ -37,7 +37,7 @@ class Statistics extends Controller
         unset($where);
         $where[] = ['supplyer_id', '=', $this->supplyer_id];
         $where[] = ['isputaway', '=', 10];
-        $goods['sale_num'] = $GoodsModel->where($where)->count();
+        $goods['check_num'] = $GoodsModel->where($where)->count();
         //平台下架商品
         unset($where);
         $where[] = ['supplyer_id', '=', $this->supplyer_id];
@@ -46,7 +46,7 @@ class Statistics extends Controller
         $this->assign("goods", $goods);
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
-        $this->assign("supplyer", $supplyer);
+        $this->assign("supplyerInfo", $supplyerInfo);
 
         return $this->fetch('index');
     }

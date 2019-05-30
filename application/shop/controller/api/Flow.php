@@ -281,11 +281,11 @@ class Flow extends ApiController
         $inArr['order_type'] = $this->is_integral;//订单类型，0普通订单,1积分订单
 
         if($use_integral > 0){
-            $inArr['use_integral'] = $use_integral;
             if ($use_integral > $this->userInfo['account']['use_integral']) {
                 return $this->error('积分不足无法兑换，你的积分余额为：'.$this->userInfo['account']['use_integral']);
             }
             $inArr['use_integral'] = $use_integral;
+
         }
 
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
@@ -328,19 +328,31 @@ class Flow extends ApiController
             Db::rollback();// 回滚事务
             return $this->error('未知原因，订单日志写入失败.');
         }
-
-        //执行扣库存
-        if ($inArr['is_stock'] == 1) {
-            $res = $GoodsModel->evalGoodsStore($cartList['goodsList']);
+        //使用积分，下单即扣除
+        if ($use_integral > 0){
+            $changedata['use_integral'] = $use_integral * -1;
+            $changedata['change_desc'] = '购物抵扣积分';
+            $changedata['change_type'] = 3;
+            $changedata['by_id'] = $order_id;
+            $res = (new AccountLogModel)->change($changedata, $this->userInfo['user_id'], false);
             if ($res !== true) {
                 Db::rollback();// 回滚事务
-                return $this->error('未知错误，更新库存失败.');
-            }
-            if($this->is_integral == 1){
-
+                return $this->error('扣减积分失败失败.');
             }
         }
 
+        //执行扣库存
+        if ($inArr['is_stock'] == 1) {
+            if ($inArr['order_type'] == 1) {//积分订单
+                $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($cartList['goodsList']);
+            } else {
+                $res = $GoodsModel->evalGoodsStore($cartList['goodsList']);
+            }
+            if ($res != true) {
+                Db::rollback();//回滚
+                return '扣库存失败.';
+            }
+        }
         //end
         //处理优惠券
         if ($used_bonus_id > 0) {

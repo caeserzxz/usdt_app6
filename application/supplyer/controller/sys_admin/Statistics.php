@@ -24,15 +24,15 @@ class Statistics extends AdminController
         $SupplyerModel = new SupplyerModel();
         $OrderModel = new OrderModel();
         if ($supplyer_id > 0 ){
-            $supplyer = $SupplyerModel->find($supplyer_id);
+            $supplyerInfo = $SupplyerModel->find($supplyer_id)->toArray();
             $where[] = ['supplyer_id','=',$supplyer_id];
             $where[] = ['is_settlement','=',1];
-            $supplyer['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
+            $supplyerInfo['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
         }else{
             $supplyer['balance_money'] = $SupplyerModel->SUM('balance_money');
             $where[] = ['supplyer_id','>',0];
             $where[] = ['is_settlement','=',1];
-            $supplyer['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
+            $supplyerInfo['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
         }
         $GoodsModel = new GoodsModel();
         if ($supplyer_id > 0 ){
@@ -65,7 +65,7 @@ class Statistics extends AdminController
             unset($where);
             $where[] = ['supplyer_id','>',0];
             $where[] = ['isputaway','=',10];
-            $goods['sale_num'] = $GoodsModel->where($where)->count();
+            $goods['check_num'] = $GoodsModel->where($where)->count();
             //平台下架商品
             unset($where);
             $where[] = ['supplyer_id','>',0];
@@ -76,7 +76,7 @@ class Statistics extends AdminController
         $this->assign("supplyer_id", $supplyer_id);
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
-        $this->assign("supplyer", $supplyer);
+        $this->assign("supplyerInfo", $supplyerInfo);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
