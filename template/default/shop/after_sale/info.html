@@ -1,0 +1,114 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css" />
+{/block}
+{block name='pageType'}afterSale{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="goodsbox">
+        <a href="{:url('goods/info',['id'=>$goods['goods_id']])}" class="goods">
+            <img src="{$goods['pic']}" alt="">
+            <div class="goodsinfo">
+                <p class="fs28 color_3">{$goods['goods_name']}</p>
+                <div class="appleBox"><span class="fs28 color_9">{$goods['sku_name']}</span></div>
+                <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_prcie'][0]}</em><p>.{$goods['exp_prcie'][1]}</p></div>
+                    <em class="fs28 color_3"></em></div>
+            </div>
+        </a>
+        <div class="title selectBox">
+            <div class="color_9" style="float: right;">{$info._status}</div>
+            <div class="fs28 fw_b color_3">服务类型 </div>
+            <span class="fs28 color_3 {$info['type']=='return_goods'?'tag_active':''}" data-type="return_goods" >退货</span>
+            <span class="fs28 color_3 {$info['type']=='change_goods'?'tag_active':''} hide" data-type="change_goods" data-sale_price="0">换货</span>
+        </div>
+        <div class="number">
+            <span class="fw_b color_3 fs28">申请退换货数量</span>
+            <div class="inputBox">
+                X {$info['goods_number']}
+            </div>
+        </div>
+    </div>
+    <div class="inputBlock animateBox">
+        <div class="tips fs38 fw_b color_9" style="font-size: 0.173333rem; top: 0.2rem;">退款金额(元)</div>
+        <input type="text" value="{$info.return_money}" class="fs38 num textBox">
+
+    </div>
+    <div class="textBlock animateBox">
+        <div class="tips fs38 fw_b color_9" style="font-size: 0.173333rem; top: 0.2rem;">退换/退款原因</div>
+        <textarea rows="2" class="fs28 fw_b textBox" >{$info.return_desc}</textarea>
+    </div>
+    <div class="uploading">
+        <div class="title fs28 fw_b color_3">上传图片</div>
+        <div class="uploadBox">
+            {volist name="info.imgs" id="img" }
+            <div class="Box">
+                <img src="{$img}" alt="" class="imgBox">
+            </div>
+            {/volist}
+        </div>
+    </div>
+    {if condition="$info['status'] == 1"}
+        <div style="background: #fff; padding: 0.266667rem; margin-top: 0.133333rem; line-height: 23px;">
+            <div class=" fs28 fw_b color_3"  style="width: 100%">审核失败</div>
+            <div class="fs28 fw_b color_9">{$info.remark}</div>
+        </div>
+    {elseif  condition="$info['status'] >= 2"}
+        <div style="background: #fff; padding: 0.266667rem; margin-top: 0.133333rem; line-height: 23px;">
+            <div class=" fs28 fw_b color_3"  style="width: 100%;">请将商品寄回以下地址</div>
+                <div class="fs28 fw_b color_9">收货人：{$returnInfo.return_consignee}</div>
+                <div class="fs28 fw_b color_9">联系电话：{$returnInfo.return_mobile}</div>
+                <div class="fs28 fw_b color_9">退货地址：{$returnInfo.return_address}</div>
+                <div class="fs28 fw_b color_9">退货说明：{$returnInfo.return_desc}</div>
+                {if condition="$info['status'] > 2"}
+                    <div class="fs28 fw_b color_9">退货快递：{$info.shipping_name}</div>
+                    <div class="fs28 fw_b color_9">退货单号：{$info.shipping_no}</div>
+                {/if}
+        </div>
+    {/if}
+    {if condition="$info['status'] == 2"}
+    <div class="inputBlock ">
+        <select id="shipping_id" class="fs28" style="width: 100%;">
+            <option value="0">选择快递公司</option>
+            {volist name="shippingList" id="shipping"}
+            <option value="{$shipping.shipping_id}">{$shipping.shipping_name}</option>
+            {/volist}
+        </select>
+        <input type="text" id="shipping_no"  class="fs28 num textBox" style="margin-top: 0px;" placeholder="请输入快递单号">
+    </div>
+    <div class="button fs32 fw_b color_w BGcolor_r postBtn">提交退货信息</div>
+    <script>
+        var isPost = false
+        $('.postBtn').click(function(){
+            if (isPost == true) return false;
+            var arr = [];
+            arr.shipping_id = $('#shipping_id').val();
+            arr.shipping_no = $('#shipping_no').val();
+            if (arr.shiping_id < 1){
+                return _alert('请选择快递公司.');
+            }
+            if (arr.shipping_no == '' ){
+                return _alert('请输入快递单号.');
+            }
+            if (arr.shipping_no.length < 8){
+                return _alert('请正确的快递单号.');
+            }
+            arr.as_id = {$info.as_id};
+            isPost = true;
+            jq_ajax('{:url("shop/api.afterSale/shipping")}',arr,function(res){
+                isPost = false;
+                if (res.code == 0){
+                    _alert(res.msg);
+                    return false;
+                }
+                window.location.reload();
+            })
+
+        })
+    </script>
+    {/if}
+</div>
+{/block}
+{block name="footer"}
+
+{/block}

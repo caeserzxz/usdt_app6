@@ -28,7 +28,6 @@ class Index extends Controller
 
 
 		//订单统计相关
-
         $OrderModel = new OrderModel();
         $stats = [];
         $i = 0;

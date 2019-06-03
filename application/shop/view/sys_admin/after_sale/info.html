@@ -1,0 +1,453 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet" />
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>售后详情</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable  wrapper ">
+    <form class="form-horizontal form-validate" method="post" action="" style="padding:0;">
+        <div class="alert alert-warning ">
+
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <td>
+                            当前售后状态：【{$as_status[$row['status']]}】，当前订单状态：【{$orderInfo['ostatus']}】
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <section class="panel panel-default">
+            <header>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#asinfo" data-toggle="tab">售后信息</a></li>
+                    <li ><a href="#orderinfo" data-toggle="tab">订单信息</a></li>
+                    <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
+                </ul>
+            </header>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="asinfo">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">售后编号：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.as_sn}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">申请时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.add_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">退货时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.shipping_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">购买会员：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$row['user_id']])}" target="_blank">{$row.user_id} - {$row.user_id|userInfo}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">售后类型：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$as_type[$row['type']]}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">审核时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.check_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">收货时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.confirm_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">商品来源：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {if condition="$row['supplyer_id']==0"}
+                                        平台自营
+                                        {else/}
+                                        <a href="{:url('supplyer/sys_admin.supplyer/info',['supplyer_id'=>$row['supplyer_id']])}">供应商商品</a>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 table-responsive">
+
+                            <table class="table table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th>商品信息</th>
+                                    <th>单价</th>
+                                    <th>购买数量</th>
+                                    <th>退换数量</th>
+                                    <th>小计</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <span class="pull-left thumb-sm"> <img src="{$goods.pic}" alt="John said"></span>
+                                            <div class="media-body">
+                                                <div>{$goods.goods_name}</div>
+                                                <div style="color:#999;">{$goods.sku_name}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{$goods.sale_price|priceFormat}</td>
+                                    <td>{$goods.goods_number}</td>
+                                    <td>{$row.goods_number}</td>
+                                    <td>{$goods['sale_price']*$row['goods_number']|priceFormat}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" align="right">
+                                        <p class="red">= 退款：{$goods['sale_price']*$row['goods_number']|priceFormat}</p>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="line line-dashed line-lg pull-in "  style="width:98%;"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">退换原因：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$row.return_desc}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" >相关图片：</label>
+                            <div class="col-sm-10">
+                                <div class="js_upload_container">
+                                    <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                        {volist name="row.imgs" id="img"  }
+                                        <li class="imgbox" >
+                                            <span class="item_box"><a href="{$img}" target="_blank"><img src="{$img}"></a> </span>
+                                        </li>
+                                        {/volist}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {if condition="$row['status'] == 0" }
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">操作选项：</label>
+                            <div class="col-sm-5">
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="0" checked/>不操作
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="1" />拒绝售后申请
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" value="2" />同意申请
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">拒绝说明：</label>
+                            <div class="col-sm-8">
+                                <textarea name="remark" id="remark"  style=" width:80%; height:100px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button type="button" class="btn btn-primary postBtn" data-loading-text="保存中...">保存
+                                </button>
+                                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                            </div>
+                        </div>
+                        <script>
+                            var isPost = false;
+                            $('.postBtn').on('click',function () {
+                                if (isPost == true) return false;
+                                var arr = [];
+                                arr.status = $('input[name="status"]:checked').val();
+                                if (arr.status == 0){
+                                    return _alert('请选择要进行的操作.');
+                                }
+                                arr.remark = $('#remark').val();
+                                if (arr.status == 1 && arr.remark == ''){
+                                    return _alert('拒绝售后，需要填写拒绝说明.');
+                                }
+                                arr.as_id = {$row.as_id};
+                                isPost = true;
+                                jq_ajax('{:url("check")}',arr,function (res) {
+                                    var isPost = false;
+                                    if (res.code == 0){
+                                        _alert(res.msg);
+                                        return false;
+                                    }
+                                    window.location.reload();
+                                });
+                            })
+                        </script>
+
+                        {elseif condition="$row['status'] == 1" }
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">操作备注：</label>
+                            <div class="col-sm-8">
+                                <textarea name="opt_remark"  style=" width:80%; height:100px;">{$row.remark}</textarea>
+                            </div>
+                        </div>
+                        {elseif condition="$row['status'] >= 3" }
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">退货快递：</label>
+                                <div class="col-sm-5 form-control-static">
+                                    {$row.shipping_name}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">退货快递单号：</label>
+                                <div class="col-sm-5 form-control-static">
+                                    {$row.shipping_no}
+                                </div>
+                            </div>
+                        {/if}
+                        {if condition="$row['status'] == 3" }
+                        <div class="form-group" style="width:90%;">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                {if condition="$row['supplyer_id']==0"}
+                                    <button type="button" data-msg="确定已收到退货商品？<br>确定后将自动打款给用户."
+                                        data-remote="{:url('sign',array('as_id'=>$row['as_id']))}"
+                                        data-toggle="ajaxCurl" class="btn btn-palegreen" data-loading-text="提交中...">确认收到退货</button>
+                                {else}
+                                    <button type="button" data-msg="确定操作强制确认收货？<br>确定后将自动打款给用户."
+                                        data-remote="{:url('forceSign',array('as_id'=>$row['as_id']))}"
+                                        data-toggle="ajaxCurl" class="btn btn-danger" data-loading-text="提交中...">强制确认收货（供应商不操作时平台强制执行）</button>
+                                {/if}
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                    <div class="tab-pane " id="orderinfo">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">订单编号：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('shop/sys_admin.order/info',['order_id'=>$orderInfo['order_id']])}" target="_blank">{$orderInfo.order_sn}</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">下单时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.add_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">支付时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.pay_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">确定时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.confirm_time|dateTpl}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">购买会员：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">赠送积分：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.give_integral} (订单签收后即返)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">发货时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.shipping_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">签收/自提时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.sign_time|dateTpl}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">退货时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.returned_time|dateTpl}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">取消时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$orderInfo.cancel_time|dateTpl}
+                                    </div>
+                                </div>
+                            
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">买家留言：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$orderInfo.buyer_message}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">佣金总额：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$orderInfo.dividend_amount|priceFormat=true}
+                                    </div>
+                                </div>
+							</div>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+
+                            <table class="table table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th>商品信息</th>
+                                    <th>单价</th>
+                                    <th>数量</th>
+                                    <th>小计</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="orderInfo.goodsList" id="grow"}
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                               <span class="pull-left thumb-sm"><img src="{$grow.pic}" alt="John said"></span>
+                                                <div class="media-body">
+                                                    <div>{$grow.goods_name}</div>
+                                                    <div style="color:#999;">{$grow.sku_name}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{$grow.sale_price|priceFormat}</td>
+                                        <td>{$grow.goods_number}</td>
+                                        <td>{$grow['sale_price']*$grow['goods_number']|priceFormat}</td>
+                                    </tr>
+                                {/volist}
+                                <tr>
+                                    <td colspan="4" align="right">
+                                        <p>商品价格：{$orderInfo.goods_amount|priceFormat}</p>
+                                        <p class="red">折扣：- {$orderInfo.discount|priceFormat}</p>
+                                        <p class="red">调整折扣：- {$orderInfo.diy_discount|priceFormat}</p>
+                                        <p class="red">优惠券：- {$orderInfo.use_bonus|priceFormat}</p>
+                                        <p class="red">扣减积分：- {$orderInfo.use_integral}</p>
+                                        <p>+ 运费：{$orderInfo.shipping_fee|priceFormat}</p>
+                                        <p>= 实收款：{$orderInfo.order_amount|priceFormat}</p>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="payinfo">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        应付款:￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">已收款:￥{$orderInfo.money_paid|priceFormat}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            {eq name="row.is_pay" value="0"}
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="120">操作者</th>
+                                        <th width="180">确认收款时间</th>
+                                        <th width="120">支付金额</th>
+                                        <th>备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{$orderInfo.cfmpay_user}</td>
+                                        <td>{$orderInfo.pay_time|dateTpl}</td>
+                                        <td>{$orderInfo.money_paid|priceFormat}</td>
+                                        <td>{$orderInfo.transaction_id}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                {else/}
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>支付方式</th>
+                                        <th>支付金额</th>
+                                        <th>支付时间</th>
+
+                                        <th>支付流水号|商户订单号</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{$orderInfo.pay_name}</td>
+                                        <td>{$orderInfo.money_paid|priceFormat}</td>
+                                        <td>{$orderInfo.pay_time|dateTpl}</td>
+
+                                        <td>{$orderInfo.transaction_id}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            {/eq}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </section>
+
+    </form>
+</section>
+
+{/block}
+
+

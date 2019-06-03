@@ -16,6 +16,7 @@
                   <header>
                       <ul class="nav nav-tabs">
                           <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
+                          <li ><a href="#return" data-toggle="tab">退货信息</a></li>
                           <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
                       </ul>
                   </header>
@@ -142,10 +143,31 @@
                                 </label>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="tab-pane " id="return">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" >库存预警数：</label>
+                            <label class="col-sm-2 control-label">退货收货人：</label>
                             <div class="controls">
-                                <input type="text" name="goods_stock_warn"  class="input-mini" data-rule-required="true" value="{$setting.goods_stock_warn|intval}"> <span class="help-line">库存预警,当商品库存少于库存预警数</span>
+                                <input type="text" name="return_consignee" value="{$setting.return_consignee}" class="input-large"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">退货联系电话：</label>
+                            <div class="controls">
+                                <input type="text" name="return_mobile" value="{$setting.return_mobile}" class="input-large"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">退货地址：</label>
+                            <div class="controls">
+                                <input type="text" name="return_address" value="{$setting.return_address}" class="input-xxlarge"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">退货说明：</label>
+                            <div class="controls">
+                               <textarea rows="4" class="input-xxlarge" name="return_desc">{$setting.return_desc}</textarea>
                             </div>
                         </div>
                     </div>

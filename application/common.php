@@ -39,12 +39,12 @@ function _url($url,$arr=[],$isNotHtml=true,$domain = false){
  */
 function getUrl($val='',$type='',$var=array()) {
     if (strstr($val,'http:')) return $val;
-    $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
     if($type == 'img'){
-        return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').str_replace('./','',$val);
+        $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+        return $sys_protocal.(isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '').str_replace('./','',$val);
     }
     $var['share_token'] = $GLOBALS['userInfo']['token'];
-    return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').url($val,$var);
+    return url($val,$var,false,true);
 }
 /**
  * 后台生成密码hash值

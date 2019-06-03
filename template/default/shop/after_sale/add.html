@@ -1,0 +1,163 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css" />
+{/block}
+{block name='pageType'}afterSale{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="goodsbox">
+        <a href="{:url('goods/info',['id'=>$goods['goods_id']])}" class="goods">
+            <img src="{$goods['pic']}" alt="">
+            <div class="goodsinfo">
+                <p class="fs28 color_3">{$goods['goods_name']}</p>
+                <div class="appleBox"><span class="fs28 color_9">{$goods['sku_name']}</span></div>
+                <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_prcie'][0]}</em><p>.{$goods['exp_prcie'][1]}</p></div>
+                    <em class="fs28 color_3">x{$goods['goods_number']}</em></div>
+            </div>
+        </a>
+        <div class="title selectBox">
+            <div class="fs28 fw_b color_3">服务类型</div>
+            <span class="fs28 color_3 tag_active" data-type="return_goods" data-sale_price="{$goods.sale_price}">退货</span>
+            <span class="fs28 color_3 hide" data-type="change_goods" data-sale_price="0">换货</span>
+        </div>
+        <div class="number">
+            <span class="fw_b color_3 fs28">申请退换货数量</span>
+            <div class="inputBox">
+                <img src="__STATIC__/mobile/default/images/goodsIcon05.png" alt="" class="minus">
+                <input type="text" value="{$goods['goods_number']}" id="goods_number" readonly data-num="{$goods['goods_number']}" class="fs28 color_3">
+                <img src="__STATIC__/mobile/default/images/goodsIcon06.png" alt="" class="add">
+            </div>
+        </div>
+    </div>
+    <div class="inputBlock animateBox">
+        <div class="tips fs38 fw_b color_9" style="font-size: 0.173333rem; top: 0.2rem;">退款金额(元)</div>
+        <input type="text" name="return_money" id="return_money" readonly value="{$goods.total_prcie}" data-max_price='{$goods.total_prcie}' class="fs38 num textBox">
+    </div>
+    <div class="textBlock animateBox">
+        <div class="tips fs38 fw_b color_9">退换/退款原因</div>
+        <textarea rows="2" class="fs28 fw_b textBox"  id="return_desc"></textarea>
+    </div>
+    <div class="uploading">
+        <div class="title fs28 fw_b color_3">上传图片</div>
+        <div class="uploadBox">
+            <div class="Box">
+                <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                <input type="file" class="uploadInput" onchange="uploadFile(this,event)">
+            </div>
+        </div>
+    </div>
+
+    <div class="button fs32 fw_b color_w BGcolor_r postBtn">提交申请</div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    $('.selectBox span').on('click',function(){
+        $(this).addClass('tag_active')
+        $(this).siblings().removeClass('tag_active');
+        editReturnMoney();
+    })
+    function editReturnMoney(){
+        var sale_price = parseFloat($('.selectBox .tag_active').data('sale_price'));
+        $('#return_money').val(sale_price * parseFloat($('#goods_number').val()));
+    }
+    // 0.173333rem
+    $('.textBox').on('click',function(){
+        $(this).siblings().animate({'fontSize':'0.173333rem','top':'0.2rem'})
+    })
+    $('.inputBlock input').blur(function(){
+        if($(this).val()==''){
+            $(this).siblings().animate({'fontSize':'0.253333rem','top':'0.36rem'})
+        }
+    })
+    $('.textBlock input').blur(function(){
+        if($(this).val()==''){
+            $(this).siblings().animate({'fontSize':'0.253333rem','top':'0.493333rem'})
+        }
+    })
+    //减
+    $('.minus').on('click',function(){
+        event.preventDefault();
+        let numVal=parseInt($('#goods_number').val());
+        if(numVal==1){
+            return false;
+        }
+        $('#goods_number').val(numVal-1);
+        editReturnMoney();
+    })
+    //加
+    $('.add').on('click',function(event){
+        event.preventDefault();
+        let obj = $('#goods_number');
+        if (obj.val() == obj.data('num')){
+            return false;
+        }
+        $(this).siblings('input').val(parseInt(obj.val())+1);
+        editReturnMoney();
+    })
+    $(document).on('click',".check",function(){
+        $('.uploading').hide();
+        if ($(this).is(":checked") && $(this).val() == 'offline') {
+            $('.uploading').show()
+        }
+    })
+    var isPost = false
+    var fd = new FormData();
+    var imgNum = 0;
+    //删除上传图片
+    $('.uploadBox').on('click','.closeImg',function(){
+        $(this).parent().remove();
+        fd.delete("imgfile["+$(this).data('imgnum')+"]");
+    })
+    //选择上传图片
+    function uploadFile(_this,e){
+        compress(e, function(base64Img){
+            if (imgNum > 6){
+                _alert('最多允许上传6张图片.');
+                return false;
+            }
+            imgNum++;
+            fd.append("imgfile["+imgNum+"]", base64Img);
+            $(_this).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+imgNum+'" class="closeImg"></div>');
+        })
+    }
+    $('.postBtn').click(function(){
+        if (isPost == true) return false;
+        var return_money = $('#return_money').val();
+        var max_price = $('#return_money').data('max_price');
+        if (return_money > max_price){
+            return _alert('退款金额不能大于'+max_price);
+        }
+        var return_desc = $('#return_desc').val();
+        if (return_desc == ''){
+            return _alert('请填写退换/退款原因.');
+        }
+        if (return_desc.length < 10){
+            return _alert('退换/退款原因长度不能小于10个字符.');
+        }
+        fd.append("return_money",  return_money);
+        fd.append("type",  $('.selectBox .tag_active').data('type'));
+        fd.append("goods_number", $('#goods_number').val());
+        fd.append("return_desc", $('#return_desc').val());
+        fd.append("rec_id", {$goods['rec_id']});
+        isPost = true;
+        $.ajax({
+            url: '{:url("shop/api.afterSale/add")}',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: fd,
+            success: function (res) {
+                isPost = false;
+                if (res.code == 0){
+                    _alert(res.msg);
+                    return false;
+                }
+
+                window.location.href = '{:_url("shop/after_sale/index")}';
+            }
+        })
+    })
+</script>
+{/block}

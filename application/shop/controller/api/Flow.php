@@ -202,6 +202,7 @@ class Flow extends ApiController
         $inArr['give_integral'] = 0;
         $inArr['settle_price'] = 0;
         $use_integral = 0;
+        $rec_ids = [];
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
@@ -222,6 +223,7 @@ class Flow extends ApiController
             if ($grow['use_integral'] > 0 ){//扣减积分总计,组合购买时调用
                 $use_integral += $grow['use_integral'] * $grow['goods_number'];
             }
+            $rec_ids[] = $grow['rec_id'];
         }
 
         if (empty($supplyer_ids) == false){
@@ -369,7 +371,7 @@ class Flow extends ApiController
             }
         }
         //end
-        $this->addOrderGoods($order_id,$recids);//写入商品
+        $this->addOrderGoods($order_id,$rec_ids);//写入商品
         Db::commit();// 提交事务
         $return['order_id'] = $order_id;
         $return['code'] = 1;
@@ -388,9 +390,7 @@ class Flow extends ApiController
             " FROM  shop_cart  WHERE ";
         $sql .= " user_id = '" . $this->userInfo['user_id'] . "' AND is_select = 1 ";
         $sql .= " AND is_integral =  " . $this->is_integral;
-		if (empty($recids) == false){
-			 $sql .= " AND rec_id IN (".$recids.") ";
-		}
+		$sql .= " AND rec_id IN (".join(',',$recids).") ";
         $sql .= " order by rec_id asc";
         $res = Db::execute($sql);
         if ($res < 1) {
@@ -400,9 +400,7 @@ class Flow extends ApiController
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
         $where[] = ['is_select', '=', 1];
         $where[] = ['is_integral', '=', $this->is_integral];
-		if (empty($recids) == false){
-			 $where[] = ['rec_id', 'in', explode(',',$recids)];
-		}
+		$where[] = ['rec_id', 'in', $recids];
         $this->Model->where($where)->delete();// 清理购物车的商品
         $this->Model->cleanMemcache();
         return $res;

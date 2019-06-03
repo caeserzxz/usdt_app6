@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="control-label">供应商名称：</label>
                         <div class="col-sm-7 must ">
-                            <input type="text" class="input-max" data-rule-maxlength="30" data-rule-required="true" data-msg-required="供应商名称不能为空" name="supplyer_name" value="{$row.supplyer_name}" >
+                            <input type="text" class="input-xlarge" data-rule-maxlength="30" data-rule-required="true" data-msg-required="供应商名称不能为空" name="supplyer_name" value="{$row.supplyer_name}" >
                         </div>
                     </div>
                      <div class="form-group">
@@ -45,10 +45,10 @@
                         <label class="control-label">状态：</label>
                         <div class="controls">
                                  <label class="radio-inline">
-                                    <input name="status" value="0" id="is_ban" class="js_undertake" type="radio" {$row['is_ban']==1?'checked':''}>封禁
+                                    <input name="is_ban" value="0"  class="js_undertake" type="radio" {$row['is_ban']==1?'checked':''}>封禁
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="status" value="1" id="is_ban" class="js_undertake " type="radio" {$row['is_ban']<1?'checked':''}>
+                                    <input name="is_ban" value="1"  class="js_undertake " type="radio" {$row['is_ban']<1?'checked':''}>
                                     正常
                                 </label>
                         </div>
@@ -78,8 +78,8 @@
                 <div class="line line-dashed line-lg pull-in"></div>
 
                 <div class="form-group">
-                    <label class="control-label">待结款：</label>
-                    <div class="col-sm-3"><label>￥{$row.wait_payment}</label></div>
+                    <label class="control-label">帐户余额：</label>
+                    <div class="col-sm-3"><label>￥{$row.balance_money}</label></div>
                     <label class="control-label">历史销售金额：</label>
                     <div class="col-sm-3"><label>￥{$row.sales_amount}</label></div>
                 </div>
@@ -95,6 +95,30 @@
                     <label class="control-label">上次登陆IP：</label>
                     <div class="col-sm-3"><label>{$row.last_login_ip}</label></div>
                 </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+
+                <div class="form-group">
+                    <label class="control-label">退货收货人：</label>
+                    <div class="col-sm-3"><label>{$setting.return_consignee|default='未填写'}</label></div>
+                    <label class="control-label">退货联系电话：</label>
+                    <div class="col-sm-3">
+                        <label>{$setting.return_mobile|default='未填写'}</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">退货地址：</label>
+                    <div class="col-sm-3">
+                        <label>{$setting.return_address|default='未填写'}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">退货说明：</label>
+                    <div class="col-sm-3">
+                        <label>{$setting.return_desc|default='未填写'}</label>
+                    </div>
+                </div>
+
                 <div class="line line-dashed line-lg pull-in"></div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">

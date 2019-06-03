@@ -53,12 +53,12 @@ class Index  extends ClientbaseController{
         $FightGroupListModel = new FightGroupListModel();
         $this->assign('fgListCount',  $FightGroupListModel->where(['fg_id'=>$fg_id,'status'=>1])->count());
         $this->assign('fgList',  $FightGroupListModel->getList($fg_id,2));
-        $shareUrl = getUrl('','',['fg_id'=>$fg_id]);
         if ($this->is_wx == 1){
-            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
+            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
             $wxShare['img'] = $fgInfo['cover'];
             $wxShare['title'] = '我正在参与拼团：'.$goods['goods_name'];
             $wxShare['description'] = $fgInfo['share_desc'];
+            $wxShare['shareUrl'] = getUrl('','',['fg_id'=>$fg_id]);
             $this->assign('wxShare',$wxShare);
         }
         return $this->fetch('info');

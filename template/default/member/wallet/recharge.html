@@ -83,6 +83,7 @@ var isPost = false
 var fd = new FormData();
 var imgNum = 0;
 $('.postBtn').click(function(){
+    if (isPost == true) return false;
 	var order_amount = $('#order_amount').val();
     var pay_code =  $('input:radio[name="pay_code"]:checked').val();
 	if (order_amount < 1){
@@ -91,6 +92,7 @@ $('.postBtn').click(function(){
 	}
 	fd.append("pay_code",pay_code);
 	fd.append("order_amount", order_amount);
+    isPost = true;
 	$.ajax({
 		  url: '{:url("member/api.Wallet/recharge")}',
 		  type: 'post',
@@ -98,6 +100,7 @@ $('.postBtn').click(function(){
 		  contentType: false,
 		  data: fd,
 		  success: function (res) {
+             isPost = false;
 			 if (res.code == 0){
 				  _alert(res.msg);
 				  return false;
@@ -106,7 +109,6 @@ $('.postBtn').click(function(){
                   _alert(res.msg,'{:url("member/wallet/index")}');
                   return false;
               }
-
               window.location.href = '{:_url("shop/payment/getPay",["order_id"=>"【res.data.order_id】","pay_code"=>"【pay_code】"])}';
 		  }
 	})

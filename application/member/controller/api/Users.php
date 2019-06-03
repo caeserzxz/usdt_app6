@@ -160,7 +160,7 @@ class Users extends ApiController
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
         $where[] = ['change_time', 'between', array($_time, strtotime(date('Y-m-t', $_time)) + 86399)];
 
-  
+
         $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
         foreach ($rows as $key => $row) {
 

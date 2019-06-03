@@ -12,28 +12,26 @@ use think\Db;
 use app\member\model\UsersModel;
 use app\shop\model\OrderModel;
 use app\shop\model\OrderGoodsModel;
-use app\member\model\AccountLogModel;
 use app\distribution\model\DividendAwardModel;
 use app\distribution\model\DividendRoleModel;
 
 class Dividend extends BaseModel
 {
-
     public $UsersModel;
-
     public function __construct($Model)
     {
-        $this->exists = false;
         parent::__construct();
         $this->UsersModel = new UsersModel();
         $this->Model = $Model;
     }
 
-
     /*------------------------------------------------------ */
     //-- 计算提成并记录或更新
+    //-- $orderInfo array 订单数据
+    //-- $type string 操作类型
+    //-- $status int 分佣状态，操作类型为add时，根据传值设置默认状态
     /*------------------------------------------------------ */
-    public function _eval(&$orderInfo, $type = '')
+    public function _eval(&$orderInfo, $type = '',$status = 0)
     {
         if ($orderInfo['is_split'] > 0) return true;//需要拆单的不执行
         $goodsList = [];
@@ -48,7 +46,7 @@ class Dividend extends BaseModel
             }
             Db::commit();// 提交事务
             $logArr['is_dividend'] = 1;
-            $this->evalArrival($orderInfo['order_id']);//身份订单直接执行分佣
+            $this->Model->evalArrival($orderInfo['order_id']);//身份订单直接执行分佣
             $res = $this->evalLevelUp($orderInfo, $goodsList, $orderInfo['user_id']);//会员升级
             if ($res == true) {
                 $logArr['is_up_role'] = 1;
@@ -69,7 +67,6 @@ class Dividend extends BaseModel
 
         //先计算佣金再执行升级处理
         if ($type == 'add') {//写入分佣，普通订单下单时执行
-            $status = 0;
             $logArr = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
             if (is_array($logArr) == false) return false;
             return $logArr;
@@ -98,9 +95,9 @@ class Dividend extends BaseModel
         } elseif ($type == 'sign') {//签收
             $upData['status'] = $OrderModel->config['DD_SIGN'];
         } elseif ($type == 'unsign') {//撤销签收
-            return $this->returnArrival($orderInfo['order_id'], 'unsign', $orderInfo['user_id']);
+            return $this->Model->returnArrival($orderInfo['order_id'], 'unsign', $orderInfo['user_id']);
         } elseif ($type == 'returned') {//退货
-            return $this->returnArrival($orderInfo['order_id'], 'returned', $orderInfo['user_id']);
+            return $this->Model->returnArrival($orderInfo['order_id'], 'returned', $orderInfo['user_id']);
         }
 
         if (empty($upData) == false) {//更新分佣状态
@@ -111,10 +108,10 @@ class Dividend extends BaseModel
             if ($res < 1) return false;
         }
 
-        if ($type == 'sign') {//签收
+        if ($type == 'sign') {//签收,执行佣金到帐
             $shop_after_sale_limit = settings('shop_after_sale_limit');
             if ($shop_after_sale_limit == 0) {
-                return $this->evalArrival($orderInfo['order_id']);
+                return $this->Model->evalArrival($orderInfo['order_id']);
             }
         }
         return true;
@@ -241,13 +238,10 @@ class Dividend extends BaseModel
             $nowLevel += 1;
             $userInfo = $this->UsersModel->info($parentId);//获取会员信息
             $parentId = $userInfo['pid'];//优先记录下次循环用户ID
-
             foreach ($awardList as $key => $award) {
-
                 if ($award['goods_limit'] == 4){//身份分销的跳过
                     continue;
                 }
-
                 if (isset($nowLevelOrdinary[$key]) == false) {
                     $nowLevelOrdinary[$key] = 0;
                 }
@@ -342,8 +336,8 @@ class Dividend extends BaseModel
                 if ($award['award_type'] == 1) {//普通分销奖
                     if ($awardVal['num_type'] == 'money') {//固定金额
                         $inArr['dividend_amount'] = $awardVal['num'];
-                    } else {//订单百分比，扣除运费后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
+                    } else {//订单百分比，扣除运费和退款后计算
+                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'] - $orderInfo['tuikuan_money'];
                         $inArr['dividend_amount'] = $amount / 100 * $awardVal['num'];
                     }
                 } elseif ($award['award_type'] == 3) {//管理奖
@@ -351,8 +345,8 @@ class Dividend extends BaseModel
                     $assignAwardNum[$award['award_id']] += $award_num;
                     if ($awardVal['num_type'] == 'money') {//固定金额
                         $inArr['dividend_amount'] = $award_num;
-                    } else {//订单百分比，扣除运费后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
+                    } else {//订单百分比，扣除运费和退款后计算
+                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'] - $orderInfo['tuikuan_money'];
                         $inArr['dividend_amount'] = $amount / 100 * $awardVal['num'];
                     }
                 }
@@ -362,7 +356,7 @@ class Dividend extends BaseModel
                 $inArr['order_id'] = $orderInfo['order_id'];
                 $inArr['order_sn'] = $orderInfo['order_sn'];
                 $inArr['buy_uid'] = $orderInfo['user_id'];
-                $inArr['order_amount'] = $orderInfo['order_amount'];
+                $inArr['order_amount'] = $amount;
                 $inArr['dividend_uid'] = $userInfo['user_id'];
                 $inArr['role_id'] = $userInfo['role_id'];
                 $inArr['role_name'] = $userInfo['role']['role_name'];
@@ -444,86 +438,5 @@ class Dividend extends BaseModel
         return true;
     }
 
-    /*------------------------------------------------------ */
-    //-- 执行分佣到帐
-    //-- order_id int 订单ID
-    /*------------------------------------------------------ */
-    public function evalArrival($order_id = 0, $limit_id = 0)
-    {
-        $time = time();
-        $OrderModel = new OrderModel();
-        if ($order_id > 0) {
-            $where[] = ['order_id', '=', $order_id];
-            $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-            $rows = $this->Model->where($where)->select()->toArray();
-        } else {
-            $settings = settings();
-            $limit_time = $settings['shop_after_sale_limit'] * 86400;
-            $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-            $where[] = ['update_time', '<', $time - $limit_time];
-            $rows = $this->Model->where($where)->select()->toArray();
-        }
 
-        if (empty($rows)) return true;//没有找到相关佣金记录
-
-        $AccountLogModel = new AccountLogModel();
-        $log_id = [];
-        foreach ($rows as $row) {
-            $changedata['change_desc'] = '订单佣金到帐';
-            $changedata['change_type'] = 4;
-            $changedata['by_id'] = $row['order_id'];
-            $changedata['balance_money'] = $row['dividend_amount'];
-            $changedata['bean_value'] = $row['dividend_bean'];
-            $changedata['total_dividend'] = ($row['dividend_amount'] + $row['dividend_bean']);
-            $res = $AccountLogModel->change($changedata, $row['dividend_uid'], false);
-            if ($res !== true) {
-                return false;
-            }
-            $upDate['status'] = $OrderModel->config['DD_DIVVIDEND'];
-            $upDate['limit_id'] = $limit_id;
-            $upDate['update_time'] = $time;
-            $res = $this->Model->where('log_id', $row['log_id'])->update($upDate);
-            if ($res < 1) {
-                return false;
-            }
-            $log_id[] = $row['log_id'];
-        }
-        return $log_id;
-    }
-    /*------------------------------------------------------ */
-    //-- 退回分佣到帐,只有普通订单可操作
-    //-- order_id int 订单ID
-    /*------------------------------------------------------ */
-    public function returnArrival($order_id = 0, $type = '')
-    {
-        $time = time();
-        $OrderModel = new OrderModel();
-        $where[] = ['order_id', '=', $order_id];
-        $rows = $this->Model->where($where)->select()->toArray();
-        if (empty($rows)) return true;//没有找到相关佣金记录
-
-        $AccountLogModel = new AccountLogModel();
-        foreach ($rows as $row) {
-            $upDate['status'] = $type == 'unsign' ? $OrderModel->config['DD_SHIPPED'] : $OrderModel->config['DD_RETURNED'];
-            $upDate['limit_id'] = 0;
-            $upDate['update_time'] = $time;
-            $res = $this->Model->where('log_id', $row['log_id'])->update($upDate);
-            if ($res < 1) {
-                return false;
-            }
-            if ($row['status'] == $OrderModel->config['DD_DIVVIDEND']) {
-                $changedata['change_desc'] = $type == 'unsign' ? '订单撤销签收-退回佣金' : '订单退货-退回佣金';
-                $changedata['change_type'] = 4;
-                $changedata['by_id'] = $row['order_id'];
-                $changedata['balance_money'] = $row['dividend_amount'] * -1;
-                $changedata['bean_value'] = $row['dividend_bean'] * -1;
-                $changedata['total_dividend'] = ($row['dividend_amount'] + $row['dividend_bean']) * -1;
-                $res = $AccountLogModel->change($changedata, $row['dividend_uid'], false);
-                if ($res !== true) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 }

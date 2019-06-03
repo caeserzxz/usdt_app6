@@ -82,13 +82,16 @@ class Order extends ApiController
             case 'cancel'://取消
                 $upData['order_status'] = $config['OS_CANCELED'];
                 $upData['cancel_time'] = time();
+                $_log = '用户取消订单';
                 break;
             case 'sign'://签收
                 $upData['shipping_status'] = $config['SS_SIGN'];
                 $upData['sign_time'] = time();
+                $_log = '用户签收订单';
                 break;
             case 'del'://删除
                 $upData['is_del'] = 1;
+                $_log = '用户删除订单';
                 break;
             default:
                 return $this->error('没有相关操作.');
@@ -97,6 +100,7 @@ class Order extends ApiController
         $res = $this->Model->upInfo($upData);
         if ($res !== true) return $this->error($res);
         $orderInfo = $this->Model->info($order_id);
+        $this->Model->_log($orderInfo,$_log);
         $return['ostatus'] = $orderInfo['ostatus'];
         $return['code'] = 1;
         return $this->ajaxReturn($return);

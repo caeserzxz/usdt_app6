@@ -133,7 +133,7 @@ class WeiXinModel extends BaseModel {
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $par['data']);
+			//curl_setopt($ch, CURLOPT_POSTFIELDS, $par['data']);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$tmpInfo = curl_exec($ch);
 			if (curl_errno($ch)) {
@@ -150,8 +150,9 @@ class WeiXinModel extends BaseModel {
 	// ------------------------------------------
 	// -- 生成分享所需参数（调用时需修改此方法）
 	// ---------------------------------------------------
-	public function getSignPackage($shareUrl = '') {
-		if (empty($shareUrl)) return false;
+	public function getSignPackage() {
+        $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+        $shareUrl =  $sys_protocal.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 		$mkey = 'weixin_share_'.md5($shareUrl);
 		$signPackage = Cache::get($mkey);
         if (empty($signPackage) == false) return $signPackage;
@@ -159,7 +160,7 @@ class WeiXinModel extends BaseModel {
 		$timestamp = time();
 		$nonceStr = $this->createNonceStr();
 		// 这里参数的顺序要按照 key 值 ASCII 码升序排序
-		$string = htmlspecialchars("jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=".$shareUrl);
+		$string = 'jsapi_ticket='.$jsapiTicket.'&noncestr='.$nonceStr.'&timestamp='.$timestamp.'&url='.$shareUrl;
 		$signature = sha1($string);
 		$signPackage = array(
 			"appId"     => $this->SetConfig['weixin_appid'],
@@ -167,8 +168,8 @@ class WeiXinModel extends BaseModel {
 			"nonceStr"  => $nonceStr,
 			"signature" => $signature,
 			"rawString" => $string,
-			"shareUrl"  => $shareUrl
 		);
+
         Cache::set($mkey,$signPackage,600);
         return $signPackage;
 	}
@@ -186,7 +187,7 @@ class WeiXinModel extends BaseModel {
 			$josn = file_get_contents($url);
 			$josn = json_decode($josn,true);
 			$ticket = $josn['ticket'];
-			Cache::set('weixin_ticket',$ticket,600);
+			Cache::set('weixin_ticket',$ticket,7000);
 			return $ticket;
 		}
 		return $ticket;

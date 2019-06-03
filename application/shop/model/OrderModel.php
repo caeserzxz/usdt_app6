@@ -7,7 +7,7 @@ use think\facade\Cache;
 use think\Db;
 
 use app\member\model\AccountLogModel;
-use app\member\model\UsersModel;
+
 
 //*------------------------------------------------------ */
 //-- 订单表
@@ -103,7 +103,13 @@ class OrderModel extends BaseModel
                 //未记录提成，并且不需要拆单
                 if ($info['is_dividend'] == 0 && $info['is_split'] == 0) {
                     Db::startTrans();//启动事务
-                    $upData = $this->distribution($info, 'add');
+                    $status = 0;
+                    if ($info['shipping_status'] == 2){//订单已签收，重新计算时直接设为已签收待分佣金
+                        $status = $this->config['DD_SIGN'];
+                    }elseif($info['pay_status'] == 1){//订单已支付
+                        $status = $this->config['DD_PAYED'];
+                    }
+                    $upData = $this->distribution($info, 'add',$status);
                     $res = 0;
                     if (is_array($upData) == true) {
                         $upData['is_dividend'] = 1;
@@ -137,23 +143,25 @@ class OrderModel extends BaseModel
         $info['isDel'] = 0;
         $info['isSign'] = 0;
         $info['isRefund'] = 0;
+        $info['isAfterSale'] = 0;
 
-        if ($info['is_split'] == 2) {
+        if ($info['is_split'] == 2) {//订单已拆分后，终止
             $info['ostatus'] = '已拆分';
             return $info;
         }
 
-        if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {
+        if ($info['order_status'] == $this->config['OS_UNCONFIRMED']) {//订单未确定
             if ($info['is_pay'] > 0 && $info['pay_status'] == $this->config['PS_UNPAYED']) {
-                $info['isCancel'] = 1;
-                $info['isPay'] = 1;
+                $info['isCancel'] = 1;//可操作：取消
+                $info['isPay'] = 1;//可操作：支付
                 $info['ostatus'] = '待付款';
                 $shop_order_auto_cancel = settings('shop_order_auto_cancel');
 
                 if ($info['order_type'] == 0 && $shop_order_auto_cancel > 0) {//下单时间，超过未付款的自动取消订单
                     $info['countdown'] = 1;
-                    $info['last_time'] = $info['add_time'] + ($shop_order_auto_cancel * 60) - $time;
-                    if ($info['add_time'] < $time - $shop_order_auto_cancel * 60) {
+                    $if_time = $info['cancel_time'] > $info['add_time'] ? $info['update_time'] : $info['add_time'];
+                    $info['last_time'] = $if_time + ($shop_order_auto_cancel * 60) - $time;
+                    if ($if_time < $time - $shop_order_auto_cancel * 60) {
                         $upData['order_id'] = $order_id;
                         $upData['order_status'] = $this->config['OS_CANCELED'];
                         $upData['cancel_time'] = $time;
@@ -165,10 +173,9 @@ class OrderModel extends BaseModel
                 }
             } else {
                 $info['ostatus'] = '待确认';
-                $info['isCancel'] = 1;
+                $info['isCancel'] = 1;//可操作：取消
             }
         } elseif ($info['order_status'] == $this->config['OS_CONFIRMED']) {
-
             if ($info['shipping_status'] == $this->config['SS_UNSHIPPED']) {
                 $info['ostatus'] = '待发货';
                 if ($info['order_type'] == 2) {//拼团订单
@@ -182,11 +189,17 @@ class OrderModel extends BaseModel
                 $info['isSign'] = 1;
             } elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
                 $info['ostatus'] = '已完成';
+                $shop_after_sale_limit = settings('shop_after_sale_limit');
+                if ($shop_after_sale_limit > 0){//开启售后
+                    if ($info['sign_time'] > time() - $shop_after_sale_limit * 86400){
+                        $info['isAfterSale'] = 1;//可操作：申请售后
+                    }
+                }
             }
 
             if ($info['is_pay'] > 0 && $info['pay_status'] == $this->config['PS_UNPAYED']) {
-                $info['isCancel'] = 1;
-                $info['isPay'] = 1;
+                $info['isCancel'] = 1;//可操作：取消
+                $info['isPay'] = 1;//可操作：支付
                 $info['ostatus'] = '待付款';
             }
         } elseif ($info['order_status'] == $this->config['OS_RETURNED']) {
@@ -360,6 +373,7 @@ class OrderModel extends BaseModel
                 } else {//在线退款
                     $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
+                    $orderInfo['refund_amount'] = $orderInfo['money_paid'];
                     $res = $payment->refund($orderInfo);
                     if ($res !== true) {
                         Db::rollback();//回滚
@@ -529,9 +543,9 @@ class OrderModel extends BaseModel
                 $operating['unshipping'] = true;//设为未发货
                 $operating['returned'] = true;//设为退货
                 unset($operating['unconfirmed']);
-            } elseif ($ss == $this->config['SS_SIGN']) {
+            } elseif ($ss == $this->config['SS_SIGN']) {//已签收
                 if (($order['sign_time'] > $time - 604800)) {
-                    $operating['returned'] = true;//设为退货
+                   //使用售后 $operating['returned'] = true;//设为退货
                     $operating['unsign'] = true;//设为未签收
                 }
                 unset($operating['unconfirmed']);
@@ -544,7 +558,7 @@ class OrderModel extends BaseModel
                 $operating['returnPay'] = true;
             }
         } elseif ($os == $this->config['OS_CANCELED']) { //已关闭
-            if ($order['cancel_time'] > $time - 604800) $operating['confirmed'] = true;//确认
+            if ($order['cancel_time'] > $time - 604800) $operating['recover'] = true;//恢复订单
             if ($ps == $this->config['PS_PAYED']) {//取消后可操作退款
                 $operating['returnPay'] = true;
             }
@@ -581,14 +595,14 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 提成处理&升级处理
     /*------------------------------------------------------ */
-    public function distribution(&$orderInfo, $type = '')
+    public function distribution(&$orderInfo, $type = '',$status=0)
     {
         if (empty($orderInfo)) return false;
         if ($orderInfo['order_type'] == 1) {//积分商品不返利
             return false;
         }
         $orderInfo['d_type'] = 'order';//普通订单
-        return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type);
+        return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
     }
 
 

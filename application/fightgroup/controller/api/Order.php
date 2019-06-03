@@ -4,7 +4,7 @@ use app\ApiController;
 
 use app\shop\model\OrderModel;
 use app\fightgroup\model\FightGroupListModel;
-/*-------Order.php----------------------------------------------- */
+/*---------------------------------------------------- */
 //-- 订单相关API
 /*------------------------------------------------------ */
 class Order extends ApiController

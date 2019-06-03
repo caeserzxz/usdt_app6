@@ -93,11 +93,13 @@ $(function () {
                         <a href="javascript:;">欢迎你，<span><?= $admin['info']['user_name'] ?></span>
                         </a>
                     </li>
+                    {if condition="$admin['info']['role_action']=='all'"}
                     <li class="am-text-sm">
                         <a href="<?= url('mainAdmin/index/clearCache') ?>">
                             <i class="fa fa-recycle"></i> 清理缓存
                         </a>
                     </li>
+                    {/if}
                     <!-- 退出 -->
                     <li class="am-text-sm">
                         <a href="<?= url('mainAdmin/passport/logout') ?>">
@@ -117,10 +119,13 @@ $(function () {
             <?php foreach ($menus as $key => $item): 
                 if (empty($item['submenu'])==false){
                     $vob = reset($item['submenu']);
+                    if (empty($vob['submenu']) == false){
+                        $vob = reset($vob['submenu']);
+                    }
                     $_url = url($vob['group'].'/'.$vob['controller'].'/'.$vob['action']);
                 }else{
                     $_url = isset($item['controller']) ? url($item['group'].'/'.$item['controller'].'/'.$item['action']) : 'javascript:void(0);';
-                } 
+                }
             ?>
                 <li class="sidebar-nav-link">
                     <a href="<?=$_url?>"

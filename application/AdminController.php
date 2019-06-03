@@ -90,134 +90,11 @@ class AdminController extends BaseController
             //print_r($this->menus_list);exit;
         }
     }
-
-
-    /*------------------------------------------------------ */
-    //-- 获取有权限的菜单
-    /*------------------------------------------------------ */
-    private function getPrivList()
-    {
-        $mkey = 'main_menu_priv_list_' . AUID;
-        $menus = Cache::get($mkey);
-        if (empty($menus) == false) {
-            return $menus;
-        }
-        $menus = (new \app\mainadmin\model\MenuListModel)->getList();
-
-        //权限过滤
-        foreach ($menus as $group => $menu) {
-            foreach ($menu['list'] as $groupb => $menub) {
-                if (empty($menub['submenu'])) continue;
-                foreach ($menub['submenu'] as $groupc => $menuc) {
-                    if (empty($menuc['submenu'])) continue;
-                    foreach ($menuc['submenu'] as $groupd => $menud) {
-                        if (empty($menud['right'])) {
-                            continue;
-                        }
-                        if ($this->_privIf($menud['group'] . '|' . $menud['controller'], $menud['action']) == true) {
-                            continue;
-                        }
-                        unset($menuc['submenu'][$groupd]);
-                    }
-
-                    if (empty($menuc['submenu'])) {
-                        if (empty($menuc['controller']) == false) {
-                            if (empty($menuc['right'])) {
-                                continue;
-                            }
-                            if ($this->_privIf($menuc['group'] . '|' . $menuc['controller'], $menuc['action']) == true) {
-                                continue;
-                            }
-                        }
-
-                        unset($menub['submenu'][$groupc], $menus[$group]['list'][$groupb]['submenu'][$groupc]);
-                    } else {
-                        $menus[$group]['list'][$groupb]['submenu'][$groupc] = $menuc;
-                    }
-                }
-                if (empty($menub['submenu'])) {
-                    if (empty($menub['controller']) == false) {
-                        if (empty($menub['right'])) {
-                            continue;
-                        }
-                        if ($this->_privIf($menub['group'] . '|' . $menub['controller'], $menub['action']) == true) {
-                            continue;
-                        }
-                    }
-                    unset($menu['list'][$groupb], $menus[$group]['list'][$groupb]);
-                } else {
-                    $menus[$group]['list'][$groupb] = $menub;
-                }
-            }
-        }
-        Cache::set($mkey, $menus, 60);
-        return $menus;
-    }
-
-    /**
-     * 后台菜单配置
-     * @return array
-     */
-    private function menus()
-    {
-        $menus = $this->getPrivList();//获取有权限的菜单
-        $this->top_menus = array();
-        foreach ($menus as $group => $menu) {
-            if (empty($menu['list']) == false) {
-                $menub = reset($menu['list']);
-                if (empty($menub['submenu']) == false) {
-                    $menuc = reset($menub['submenu']);
-                    $this->top_menus[] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menuc['group'], 'controller' => $menuc['controller'], 'action' => $menuc['action']];
-                } else {
-                    $this->top_menus[] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menub['group'], 'controller' => $menub['controller'], 'action' => $menub['action']];
-                }
-            }
-        }
-
-        $data = $menus[$this->module]['list'];
-        foreach ($data as $group => $first) {
-            $parent = '';
-            // 遍历：二级菜单
-            if (isset($first['submenu'])) {
-                foreach ($first['submenu'] as $secondKey => $second) {
-                    // 二级菜单：active
-                    $data[$group]['submenu'][$secondKey]['active'] = 0;
-
-                    if ($this->routeUri == $second['controller'] . '/' . $second['action'] || in_array($this->routeUri, explode(',', $second['urls']))) {
-
-                        $data[$group]['submenu'][$secondKey]['active'] = 1;
-                        $parent = $second['pid'];
-                    }
-
-                    if (isset($second['submenu'])) {
-                        // 遍历：三级菜单
-                        foreach ($second['submenu'] as $thirdKey => $third) {
-                            $data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 0;
-                            if ($this->routeUri == $third['controller'] . '/' . $third['action'] || in_array($this->routeUri, explode(',', $third['urls']))) {
-                                $data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 1;
-                            }
-                        }
-                    }
-                }
-            }
-            if ($this->routeUri == $first['controller'] . '/' . $first['action'] || in_array($this->routeUri, explode(',', $first['urls']))) {
-                $data[$group]['active'] = 1;
-                $this->menus_group = $parent;
-            } elseif (empty($parent) == false && $parent == $data[$group]['id']) {
-                $data[$group]['active'] = 1;
-                $this->menus_group = $parent;
-            } else {
-                $data[$group]['active'] = $data[$group]['group'] === $this->group;
-            }
-        }
-        return $data;
-    }
     /*------------------------------------------------------ */
     //-- 权限验证
     /*------------------------------------------------------ */
     protected function _priv($now = '', $action = '', $isAll = true, $isReturn = false)
     {
-        global $noPrivList;
         if ($this->isCheckPriv == false) return true;
         $role_action = $this->admin['info']['role_action'];
         if ($role_action == 'all') {
@@ -231,13 +108,10 @@ class AdminController extends BaseController
         $role_action = $role_action[$now];
         if (empty($role_action)) {
             $MenuListModel = new \app\mainadmin\model\MenuListModel();
-            if (empty($noPrivList)) {
-                $noPrivList = $MenuListModel->getNoPriv();
-            }
+            $noPrivList = $MenuListModel->getNoPriv();
             if (in_array($now, $noPrivList)) {
                 return true;
             }
-
         }
         $action = empty($action) ? $this->action : $action;
         if ($action == 'info') {
@@ -246,16 +120,15 @@ class AdminController extends BaseController
             } else {
                 $isTrue = array_intersect(['view', 'manage'], $role_action);
             }
-        } elseif ($action == 'ajaxedit') {
+        } elseif ($action == 'ajaxEdit') {
             $isTrue = array_intersect(['manage', 'edit'], $role_action);
         } elseif (in_array($action, array('index', 'getList', 'trashList', 'search'))) {
             $isTrue = array_intersect(['manage', 'view'], $role_action);
         } elseif (in_array($action, array('download', 'export'))) {
             $isTrue = array_intersect(['download', 'export'], $role_action);
-        } else {
-            $isTrue = true;//in_array($action,$role_action);
+        }else{
+            $isTrue = true;
         }
-
         if (empty($isTrue) == false) return true;
         if ($isReturn == true) return false;
         $this->error('你无操作权限.');
@@ -267,6 +140,125 @@ class AdminController extends BaseController
     {
         return $this->_priv($now, $action, $isAll, true);
     }
+    /*------------------------------------------------------ */
+    //-- 获取有权限的菜单
+    /*------------------------------------------------------ */
+    private function getPrivList()
+    {
+        $mkey = 'main_menu_priv_list_' . AUID;
+        //$data = Cache::get($mkey);
+        if (empty($data) == false) {
+            return $data;
+        }
+        $rows = (new \app\mainadmin\model\MenuListModel)->where('status', 1)->order('pid DESC sort_order ASC')->select()->toArray();
+        //权限过滤
+        foreach ($rows as $row) {
+            if (empty($row['right']) == false && $this->_privIf($row['group'] . '|' . $row['controller'], $row['action']) == false) {
+                continue;
+            }
+            $menus[] = $row;
+        }
+        $data = [];
+        $_data = [];
+        foreach ($menus as $row) {
+            $key = $row['pid'] < 1 ? $row['group'] : $row['id'];
+            if ($row['pid'] > 0) {
+                if (empty($_data[$row['id']]) == false) {
+                    $row['submenu'] = $_data[$row['id']];
+                    unset($_data[$row['id']]);
+                }
+                $_data[$row['pid']][$key] = $row;
+            } else {
+                $row['list'] = $_data[$row['id']];
+                if (empty($row['list']) == false){
+                    $data[$key] = $row;
+                }
+            }
+        }
+       Cache::set($mkey, $data, 60);
+        return $data;
+    }
+
+
+    /**
+     * 后台菜单配置
+     * @return array
+     */
+    private function menus()
+    {
+        $menus = $this->getPrivList();//获取有权限的菜单
+        $this->top_menus = array();
+        foreach ($menus as $group => $menu) {
+            if (empty($menu['list']) == true)  continue;
+            if (empty($this->top_menus[$group]) == false)  continue;
+            foreach ($menu['list'] as $menub){
+                if (empty($this->top_menus[$group]) == false) continue;
+                if (empty($menub['submenu']) == false) {
+                    $menuc = reset($menub['submenu']);
+                    $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menuc['group'], 'controller' => $menuc['controller'], 'action' => $menuc['action']];
+                    continue;
+                } elseif (empty($menub) == false) {
+                    if (empty($menub['controller'])){
+                        continue;
+                    }
+                    $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menub['group'], 'controller' => $menub['controller'], 'action' => $menub['action']];
+                    continue;
+                }
+            }
+        }
+
+        $data = $menus[$this->module]['list'];
+        $list_type = input('list_type','','trim');
+        foreach ($data as $group => $first) {
+            $parent = '';
+            // 遍历：二级菜单
+            if (isset($first['submenu'])) {
+                foreach ($first['submenu'] as $secondKey => $second) {
+                    // 二级菜单：active
+                    $data[$group]['submenu'][$secondKey]['active'] = 0;
+                    if ($this->routeUri == $second['controller'] . '/' . $second['action']) {
+                        $data[$group]['submenu'][$secondKey]['active'] = 1;
+                        $parent = $second['pid'];
+                    }elseif(in_array($this->routeUri, explode(',', $second['urls']))) {
+                        if (empty($list_type) || $list_type == $second['action']) {
+
+                            $data[$group]['submenu'][$secondKey]['active'] = 1;
+                            $parent = $second['pid'];
+                        }
+                    }
+                    if (empty($second['submenu'])) {
+                        if (empty($second['controller'])){
+                            unset($data[$group]['submenu'][$secondKey]);
+                            continue;
+                        }
+                    }else{
+                        // 遍历：三级菜单
+                        foreach ($second['submenu'] as $thirdKey => $third) {
+                            $data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 0;
+                            if ($this->routeUri == $third['controller'] . '/' . $third['action'] || in_array($this->routeUri, explode(',', $third['urls']))) {
+                                $data[$group]['submenu'][$secondKey]['submenu'][$thirdKey]['active'] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            if (empty($data[$group]['controller']) && empty($data[$group]['submenu'])){
+                unset($data[$group]);
+                continue;
+            }
+            if ($this->routeUri == $first['controller'] . '/' . $first['action'] || in_array($this->routeUri, explode(',', $first['urls']))) {
+                $data[$group]['active'] = 1;
+                $this->menus_group = $parent;
+            } elseif (empty($parent) == false && $parent == $data[$group]['id']) {
+                $data[$group]['active'] = 1;
+                $this->menus_group = $parent;
+            } else {
+                $data[$group]['active'] = $data[$group]['group'] === $this->group;
+            }
+        }
+        return $data;
+    }
+
 
     /**
      * 验证登录状态

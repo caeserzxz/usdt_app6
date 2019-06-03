@@ -656,7 +656,29 @@ class Order extends AdminController
         $this->Model->_log($orderInfo, '设为已确认');
         return $this->success('设为已确认成功.');
     }
-
+    /*------------------------------------------------------ */
+    //-- 恢复订单
+    /*------------------------------------------------------ */
+    public function recover()
+    {
+        $order_id = input('id', 0, 'intval');
+        $orderInfo = $this->Model->info($order_id);
+        $config = config('config.');
+        if ($orderInfo['order_status'] != $config['OS_CANCELED']) return $this->error('非取消订单不能恢复！');
+        $data['order_id'] = $order_id;
+        if ($orderInfo['pay_status'] == $config['PS_PAYED']) {
+            $data['order_status'] = $config['OS_CONFIRMED'];
+        }else{
+            $data['order_status'] = $config['OS_UNCONFIRMED'];
+        }
+        $shop_reduce_stock = settings('shop_reduce_stock');
+        $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
+        $res = $this->Model->upInfo($data);
+        if ($res !== true) return $this->error($res);
+        $orderInfo['order_status'] = $data['order_status'];
+        $this->Model->_log($orderInfo, '恢复取消订单');
+        return $this->success('恢复成功.');
+    }
     /*------------------------------------------------------ */
     //-- 重新计算分佣
     /*------------------------------------------------------ */

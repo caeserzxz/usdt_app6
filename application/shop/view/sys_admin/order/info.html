@@ -31,6 +31,13 @@
                                    data-toggle="ajaxCurl" class="btn btn-default btn-sm" data-msg="确定把订单设为确认？">确认订单</a>
                             </td>
                         {/notempty}
+                        {notempty name="operating.recover"}
+                        <td>&nbsp;</td>
+                        <td><a href="javascript:;"
+                               data-remote="{:url('recover',array('id'=>$orderInfo['order_id']))}"
+                               data-toggle="ajaxCurl" class="btn btn-default btn-sm" data-msg="确定恢复已取消的订单？">恢复订单</a>
+                        </td>
+                        {/notempty}
                         {eq name="operating.isCancel" value="1"}
                             <td>&nbsp;</td>
                             <td><a href="javascript:;"

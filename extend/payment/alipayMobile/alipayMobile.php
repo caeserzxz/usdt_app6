@@ -230,7 +230,7 @@ class alipayMobile
         $array=array(
             'out_trade_no'=>$orderInfo['order_sn'],//订单支付时传入的商户订单号,不能和 trade_no同时为空。
             'trade_no'=>$orderInfo['transaction_id'],//支付宝交易号，和商户订单号不能同时为空
-            'refund_amount'=>$orderInfo['money_paid'],//需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+            'refund_amount'=>$orderInfo['refund_amount'],//需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
             'refund_reason'=>'退款',//退款的原因说明
             'out_request_no'=>$orderInfo['order_sn'],//标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
             'operator_id'=>AUID,//商户的操作员编号

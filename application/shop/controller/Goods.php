@@ -51,13 +51,12 @@ class Goods extends ClientbaseController{
         $CartModel = new CartModel();
         $this->assign('cartInfo', $CartModel->getCartInfo(0));//获取购物车信息
         $this->assign('goods_status',config('config.goods_status'));
-        $shareUrl = getUrl('','',['id'=>$goods_id]);
-        $this->assign('priceList',$this->Model->getPriceList($goods_id));//身份和级别价格
         if ($this->is_wx == 1){
-            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
+            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
             $wxShare['img'] = $goods['goods_thumb'];
             $wxShare['title'] = $goods['goods_name'];
             $wxShare['description'] = $goods['description'];
+            $wxShare['shareUrl'] = getUrl('','',['id'=>$goods_id]);
             $this->assign('wxShare',$wxShare);
         }
         return $this->fetch('info');
@@ -76,15 +75,12 @@ class Goods extends ClientbaseController{
 		$goods_id = input('goods_id',0,'intval');
 		$goods = $this->Model->info($goods_id);
 		$this->assign('goods', $goods);
-        $shareUrl = getUrl('','',['goods_id'=>$goods_id]);
-        $this->assign('shareUrl', $shareUrl);
         if ($this->is_wx == 1){
-            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage($shareUrl);
-
+            $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
             $wxShare['img'] = $goods['goods_thumb'];
             $wxShare['title'] = $goods['goods_name'];
             $wxShare['description'] = $goods['description'];
-
+            $wxShare['shareUrl'] = getUrl('goods/info','',['id'=>$goods_id]);
             $this->assign('wxShare',$wxShare);
         }
 		return $this->fetch('my_code');

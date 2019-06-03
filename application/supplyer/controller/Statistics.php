@@ -19,34 +19,11 @@ class Statistics extends Controller
     /*------------------------------------------------------ */
     public function index()
     {
-        $SupplyerModel = new SupplyerModel();
-        $OrderModel = new OrderModel();
-        $supplyerInfo = $SupplyerModel->find($this->supplyer_id)->toArray();
-        $where[] = ['supplyer_id', '=', $this->supplyer_id];
-        $where[] = ['is_settlement', '=', 1];
-        $supplyer['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
-        $GoodsModel = new GoodsModel();
-        //全部商品
-        $goods['all_num'] = $GoodsModel->where('supplyer_id', $this->supplyer_id)->count();
-        //销售中商品
-        unset($where);
-        $where[] = ['supplyer_id', '=', $this->supplyer_id];
-        $where[] = ['isputaway', '=', 1];
-        $goods['sale_num'] = $GoodsModel->where($where)->count();
-        //审核中商品
-        unset($where);
-        $where[] = ['supplyer_id', '=', $this->supplyer_id];
-        $where[] = ['isputaway', '=', 10];
-        $goods['check_num'] = $GoodsModel->where($where)->count();
-        //平台下架商品
-        unset($where);
-        $where[] = ['supplyer_id', '=', $this->supplyer_id];
-        $where[] = ['isputaway', '=', 12];
-        $goods['obtained_num'] = $GoodsModel->where($where)->count();
-        $this->assign("goods", $goods);
+
+
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
-        $this->assign("supplyerInfo", $supplyerInfo);
+
 
         return $this->fetch('index');
     }
@@ -87,11 +64,10 @@ class Statistics extends Controller
                 $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
             }
 
-
-            $stats['seven_shpping_num'] += $data['shipping_num'] * 1;
-            $stats['seven_pay_num'] += $data['order_pay_num'] * 1;
-            $stats['seven_add_num'] += $data['all_add_num'] * 1;
-            $stats['seven_sign_num'] += $data['sign_num'] * 1;
+            $stats['total_shpping_num'] += $data['shipping_num'] * 1;
+            $stats['total_pay_num'] += $data['order_pay_num'] * 1;
+            $stats['total_add_num'] += $data['all_add_num'] * 1;
+            $stats['total_sign_num'] += $data['sign_num'] * 1;
             $stats['all_add_num'][$i][] = $data['all_add_num'] * 1;
             $stats['order_pay_num'][$i][] = $data['order_pay_num'] * 1;
             $stats['shipping_order_num'][$i][] = $data['shipping_num'] * 1;

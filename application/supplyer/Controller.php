@@ -83,7 +83,7 @@ class Controller extends AdminController
     {
         $menus = (new model\MenuListModel)->getList();
         $data = $menus[$this->module];
-
+        $list_type = input('list_type','','trim');
         foreach ($data as $group => $first) {
 
             if ($this->controller == $first['controller']){
@@ -94,12 +94,13 @@ class Controller extends AdminController
                 foreach ($first['list'] as $secondKey => $second) {
                     // 二级菜单：active
                     $data[$group]['list'][$secondKey]['active'] = 0;
-                    if ($this->routeUri == $second['controller'].'/'.$second['action'] || in_array($this->routeUri,explode(',',$second['urls']))){
+                    if ($this->routeUri == $second['controller'].'/'.$second['action']){
                         $data[$group]['list'][$secondKey]['active'] = 1;
-
+                    } elseif(in_array($this->routeUri, explode(',', $second['urls']))) {
+                        if (empty($list_type) || $list_type == $second['action']) {
+                            $data[$group]['list'][$secondKey]['active'] = 1;
+                        }
                     }
-
-
                 }
             }
             if (empty($first['action'])){
@@ -107,7 +108,6 @@ class Controller extends AdminController
             }elseif($this->controller == $first['controller'] && $this->action == $first['action']){
                 $data[$group]['active'] = 1;
             }
-
 
         }
         return $data;
