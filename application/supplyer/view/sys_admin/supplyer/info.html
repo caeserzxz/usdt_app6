@@ -45,10 +45,10 @@
                         <label class="control-label">状态：</label>
                         <div class="controls">
                                  <label class="radio-inline">
-                                    <input name="is_ban" value="0"  class="js_undertake" type="radio" {$row['is_ban']==1?'checked':''}>封禁
+                                    <input name="is_ban" value="1"  class="js_undertake" type="radio" {$row['is_ban']==1?'checked':''}>封禁
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="is_ban" value="1"  class="js_undertake " type="radio" {$row['is_ban']<1?'checked':''}>
+                                    <input name="is_ban" value="0"  class="js_undertake " type="radio" {$row['is_ban']<1?'checked':''}>
                                     正常
                                 </label>
                         </div>

@@ -16,10 +16,10 @@ class DividendModel extends BaseModel
      /*------------------------------------------------------ */
     //-- 计算提成并记录或更新f
     /*------------------------------------------------------ */
-    public function _eval(&$orderInfo, $type = ''){
+    public function _eval(&$orderInfo, $type = '',$status=0){
         $fun = str_replace('/', '\\', '/distribution/'.config('config.dividend_type').'/Dividend');
         $Model = new $fun($this);
-        return $Model->_eval($orderInfo, $type);
+        return $Model->_eval($orderInfo, $type,$status);
     }
     /*------------------------------------------------------ */
     //-- 执行分佣到帐

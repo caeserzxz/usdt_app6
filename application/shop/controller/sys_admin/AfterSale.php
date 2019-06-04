@@ -210,11 +210,14 @@ class AfterSale extends AdminController
         }
         $oupData['is_after_sale'] = 9;
         $oupData['update_time'] = time();
-        $res = (new OrderModel)->where('order_id',$asInfo['order_id'])->update($oupData);
+        $OrderModel = new OrderModel();
+        $res = $OrderModel->where('order_id',$asInfo['order_id'])->update($oupData);
         if ($res < 1){
             Db::rollback();// 回滚事务
             return $this->error('提交处理失败-2，请重试.');
-        }//end
+        }
+        $OrderModel->cleanMemcache($asInfo['order_id']);
+        //end
         if ($asInfo['status'] == 2) {//通过售后才执行订单商品处理
             $ogupData['return_goods_munber'] = ['INC', $asInfo['goods_number']];
             $res = (new OrderGoodsModel)->where('rec_id', $asInfo['rec_id'])->update($ogupData);

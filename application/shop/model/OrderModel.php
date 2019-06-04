@@ -299,6 +299,11 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
                     }
+                    $balance_money = $AccountLogModel->where('user_id',$orderInfo['user_id'])->value('xc');
+                    if ($balance_money < 0){
+                        Db::rollback();// 回滚事务
+                        return '支付失败，扣减余额失败.';
+                    }
                 }
 
             }
@@ -396,7 +401,6 @@ class OrderModel extends BaseModel
             }
 
         } elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
-            $upData['is_settlement'] = 1;//待结算
             //积分赠送
             $inData['total_integral'] = $orderInfo['give_integral'];
             $inData['use_integral'] = $inData['total_integral'];
@@ -420,7 +424,6 @@ class OrderModel extends BaseModel
             $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
 
         } elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
-            $upData['is_settlement'] = 0;//结算状态：未处理
             $res = $this->distribution($orderInfo, 'returned');//提成处理
             if ($res != true) {
                 Db::rollback();// 回滚事务
@@ -443,7 +446,6 @@ class OrderModel extends BaseModel
                 return '佣金处理失败.';
             }
         } elseif ($extType == 'unsign') {//撤销签收
-            $upData['is_settlement'] = 0;//结算状态：未处理
             unset($where);
             //查询通过订单获取的积分,扣除
             $where[] = ['by_id', '=', $orderInfo['order_id']];
@@ -648,7 +650,8 @@ class OrderModel extends BaseModel
             $oglist[$og['supplyer_id']]['settle_price'] += $og['settle_price'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['goods_amount'] += $og['sale_price'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['discount'] += $og['discount'];
-            $oglist[$og['supplyer_id']]['goods_sn'][] = $og['goods_sn'];
+            $oglist[$og['supplyer_id']]['goods_sns'][] = $og['goods_sn'];
+            $oglist[$og['supplyer_id']]['goods_ids'][] = $og['goods_id'];
             $oglist[$og['supplyer_id']]['goods_list'][] = $og;
         }
 
@@ -662,7 +665,8 @@ class OrderModel extends BaseModel
             $inArr['give_integral'] = $sogl['give_integral'];
             $inArr['use_integral'] = $sogl['use_integral'];
             $inArr['pid'] = $orderInfo['order_id'];
-            $inArr['buy_goods_sn'] = join(',', $sogl['goods_sn']);
+            $inArr['buy_goods_sn'] = join(',', $sogl['goods_sns']);
+            $inArr['buy_goods_id'] = join(',', $sogl['goods_ids']);
             $inArr['settle_price'] = $sogl['settle_price'];
             $inArr['discount'] = $sogl['discount'];
             $inArr['goods_amount'] = $sogl['goods_amount'];

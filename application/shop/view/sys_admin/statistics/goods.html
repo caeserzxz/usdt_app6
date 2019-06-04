@@ -1,0 +1,116 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
+<section class="scrollable wrapper  ">
+
+        <section class="panel panel-default ">
+            <header class="panel-heading font-bold">
+                <form id="forms" onsubmit="return evalstat();" >
+                    <div class="page-breadcrumbs">
+                        <select name="type" id="type" class="state_select" style="width: 200px;" data-toggle="select2"  onchange="changeType()" >
+                            <option value="img_status"  selected>top10图形报表</option>
+                            <option value="table_status" >全部表格报表</option>
+
+                        </select>
+                        <div class="form-group fl">
+                            <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
+                                <i class="fa fa-calendar fa-lg"></i>
+                                <small>下单时间</small>
+                                <span></span> <b class="caret"></b>
+                                <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="panel-body">
+                <!--   style="height: 210px"  -->
+                <div id="container"></div>
+                <div id="table_status"  class="panel panel-default "></div>
+            </div>
+        </section>
+</section>
+<script type="text/html" id="table_status_tpl">
+
+    <table class="table table-striped  m-b-none">
+        <tr><th>商品</th><th>下单数</th><th>发货数</th><th>签收数</th><th>退货数</th></tr>
+        <tbody>
+        {{each all_goods as goods index}}
+        <tr>
+            <td>{{goods}}</td>
+            <td>{{all_stats.all_num[index]}}</td>
+            <td>{{all_stats.shipping_num[index]}}</td>
+            <td>{{all_stats.sign_num[index]}}</td>
+            <td>{{all_stats.return_num[index]}}</td>
+        </tr>
+        {{/each}}</tbody>
+    </table>
+</script>
+
+
+<script type="text/javascript">
+    var obj = [];
+    function evalstat() {
+        var arr = $('#forms').toJson()
+        jq_ajax('{:url("evalGoodsStat")}',arr,function(res){
+            obj = res;
+            var type = $('#type').val();
+            if (type == 'img_status'){
+                return statusByImg();
+            }else{
+                return statusByTable();
+            }
+        })
+        return false;
+    }
+    $(function(){
+        evalstat();
+    })
+    function changeType(){
+        var type = $('#type').val();
+        if (type == 'img_status'){
+            return statusByImg();
+        }else{
+            return statusByTable();
+        }
+    }
+    function statusByImg(){
+        $('#container').show();
+        $('#table_status').hide();
+        $('#container').highcharts({
+            chart: {type: 'column'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: obj.top_goods},
+            yAxis: {
+                title: {text: ''},
+                min: 0,
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>商品:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.top_stats.all_num
+            },{
+                name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.top_stats.shipping_num
+            }, {
+                name: '签收数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.top_stats.sign_num
+            }, {
+                name: '退货数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.top_stats.return_num
+            }]
+        });
+    }
+    function statusByTable(){
+        $('#container').hide();
+        $('#table_status').show();
+        $('#table_status').html(template('table_status_tpl',obj));
+    }
+</script>
+{/block}

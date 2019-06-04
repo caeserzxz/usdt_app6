@@ -76,6 +76,7 @@ class Supplyer extends AdminController
         if (empty($data['supplyer_name'])){
             return $this->error('请输入供应商名称.');
         }
+        $data['is_ban'] = $data['is_ban'] * 1;
         $where[] = ['supplyer_name','=',$data['supplyer_name']];
         $where[] = ['supplyer_id','<>',$data['supplyer_id']];
         $count = $this->Model->where($where)->count('supplyer_id');

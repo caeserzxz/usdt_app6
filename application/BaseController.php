@@ -178,7 +178,7 @@ class BaseController extends Controller
  	protected function ajaxReturn($result = array())
     {
         header('Content-Type:application/json; charset=utf-8');
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
       
     }
     /**

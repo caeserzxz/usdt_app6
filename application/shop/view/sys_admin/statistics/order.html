@@ -1,4 +1,4 @@
-{extend name="layouts/base" /}
+{extend name="mainadmin@layouts/base" /}
 {block name="main" }
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
@@ -10,7 +10,7 @@
                     <div class="page-breadcrumbs">
                         <select name="type" id="type" class="state_select" style="width: 200px;" data-toggle="select2"  onchange="changeType()" >
                             <option value="order_num"  selected>订单数量图表</option>
-                            <option value="settle_amount" >货款金额图表</option>
+                            <option value="order_amount" >订单金额图表</option>
 
                         </select>
                         <div class="form-group fl">
@@ -33,8 +33,8 @@
             <footer class="panel-footer bg-white no-padder">
                 <div class="row text-center no-gutter">
                     <div class="col-xs-2 b-r b-light">
-                        <span class="h4 font-bold m-t block" id="total_settle_price">0</span>
-                        <small class="text-muted m-b block">成交货款总额</small>
+                        <span class="h4 font-bold m-t block" id="total_order_amount">0</span>
+                        <small class="text-muted m-b block">成交总额</small>
                     </div>
                     <div class="col-xs-2 b-r b-light">
                         <span class="h4 font-bold m-t block" id="total_add_num">0</span>
@@ -67,7 +67,7 @@
             $('#total_pay_num').html(res.stats.total_pay_num);
             $('#total_shpping_num').html(res.stats.total_shpping_num);
             $('#total_sign_num').html(res.stats.total_sign_num);
-            $('#total_settle_price').html('￥'+res.stats.total_settle_price);
+            $('#total_order_amount').html('￥'+res.stats.total_order_amount);
             obj = res;
             var type = $('#type').val();
             if (type == 'order_num'){
@@ -102,7 +102,7 @@
             },
             tooltip: {
                 formatter: function () {
-                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '笔';
                 }
             },
             series: [{
@@ -132,18 +132,21 @@
             },
             tooltip: {
                 formatter: function () {
-                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ￥' + this.y + '元';
                 }
             },
             series: [{
-                name: '发出货款 <span style="color:gray" >(点击隐藏)</span>',
-                data: obj.stats.shipping_settle_price
+                name: '下订单金额 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.all_order_amount
             },{
-                name: '待结货款 <span style="color:gray" >(点击隐藏)</span>',
-                data: obj.stats.wait_settlement
+                name: '成交订单金额 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.cmf_order_amount
             },{
-                name: '已结货款 <span style="color:gray" >(点击隐藏)</span>',
-                data: obj.stats.then_settlement
+                name: '发货订单金额 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.shipping_order_amount
+            },{
+                name: '签收订单金额 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.sign_order_amount
             }
             ]
         });

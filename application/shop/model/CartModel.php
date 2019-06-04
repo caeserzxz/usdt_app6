@@ -304,7 +304,6 @@ class CartModel extends BaseModel
                     //记录购买的商品品牌，分类，单品ID
                     $cat_list[$row['cid']] = 1;
                     $brand_list[$row['brand_id']] = 1;
-                    $data['allGoodsSn'][$row['goods_sn']] = 1;
                     $data['buyGoodsNum'] += $row['goods_number'];
                     $data['buyGoodsWeight'] += $row['goods_number'] * $row['goods_weight'];
                 }
@@ -517,7 +516,7 @@ class CartModel extends BaseModel
                 $n_info[$code]['code'] = $code;
                 $n_info[$code]['sf_id'] = $val['sf_id'];
                 $row = $sf_info[$code];
-                if ($row['consume'] > 0 && $cartList['totalGoodsPrice'] > $row['consume']) {
+                if ($row['consume'] > 0 && $cartList['totalGoodsPrice'] >= $row['consume']) {
                     $n_info[$code]['shipping_fee'] = 0;
                 } else {
                     if ($cartList['buyGoodsNum'] > $row['start']) {

@@ -203,6 +203,8 @@ class Flow extends ApiController
         $inArr['settle_price'] = 0;
         $use_integral = 0;
         $rec_ids = [];
+        $allGoodsSn = [];
+        $allGoodsId = [];
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
@@ -223,6 +225,8 @@ class Flow extends ApiController
             if ($grow['use_integral'] > 0 ){//扣减积分总计,组合购买时调用
                 $use_integral += $grow['use_integral'] * $grow['goods_number'];
             }
+            $allGoodsSn[$grow['goods_sn']] = 1;
+            $allGoodsId[$grow['goods_id']] = 1;
             $rec_ids[] = $grow['rec_id'];
         }
 
@@ -307,7 +311,8 @@ class Flow extends ApiController
         $inArr['pay_name'] = $payment['pay_name'];
         $inArr['discount'] = $cartList['totalDiscount'];
         $inArr['goods_amount'] = $cartList['totalGoodsPrice'];
-        $inArr['buy_goods_sn'] = join(',', array_keys($cartList['allGoodsSn']));
+        $inArr['buy_goods_sn'] = join(',', array_keys($allGoodsSn));
+        $inArr['buy_goods_id'] = join(',', array_keys($allGoodsId));
         $inArr['ipadderss'] = request()->ip();
         $inArr['is_pay'] = $payment['is_pay'];//是否需要支付,1线上支付，0，不需要支付，
         $inArr['is_success'] = 1;//普通订单默认有效，如果拼团默认为0，须拼团成功才会为1

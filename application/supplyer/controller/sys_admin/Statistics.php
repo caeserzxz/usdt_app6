@@ -21,19 +21,7 @@ class Statistics extends AdminController
     {
 
         $supplyer_id = input('supplyer_id', 0, 'intval');
-        $SupplyerModel = new SupplyerModel();
-        $OrderModel = new OrderModel();
-        if ($supplyer_id > 0 ){
-            $supplyerInfo = $SupplyerModel->find($supplyer_id)->toArray();
-            $where[] = ['supplyer_id','=',$supplyer_id];
-            $where[] = ['is_settlement','=',1];
-            $supplyerInfo['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
-        }else{
-            $supplyer['balance_money'] = $SupplyerModel->SUM('balance_money');
-            $where[] = ['supplyer_id','>',0];
-            $where[] = ['is_settlement','=',1];
-            $supplyerInfo['wait_settle'] = $OrderModel->where($where)->SUM('settle_price');
-        }
+
         $GoodsModel = new GoodsModel();
         if ($supplyer_id > 0 ){
             //全部商品
@@ -76,7 +64,6 @@ class Statistics extends AdminController
         $this->assign("supplyer_id", $supplyer_id);
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
-        $this->assign("supplyerInfo", $supplyerInfo);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
