@@ -40,9 +40,6 @@
             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商品名称/SN" data-rule-required="true" />
             <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
 
-            {if condition="$is_delete == 0 && $is_supplyer == false" }
-            <a href="{:url('info')}"  title="添加商品" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加商品</a>
-            {/if}
         </div>
     </form>
 </header>

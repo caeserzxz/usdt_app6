@@ -1,24 +1,22 @@
 <?php
-namespace app\supplyer\controller\sys_admin;
-use app\AdminController;
+namespace app\supplyer\controller\log;
+use app\supplyer\Controller;
 
-use app\supplyer\model\LogSysModel;
+use app\supplyer\model\LogLoginModel;
 /**
- * 操作日志
+ * 登陆日志
  * Class Index
  * @package app\store\controller
  */
-class LogOperate extends AdminController
+class LogLogin extends Controller
 {
-	
-
    //*------------------------------------------------------ */
 	//-- 初始化
 	/*------------------------------------------------------ */
    public function initialize()
    {	
    		parent::initialize();
-		$this->Model = new LogSysModel(); 
+		$this->Model = new LogLoginModel(); 
     }
 	/*------------------------------------------------------ */
     //--首页
@@ -36,27 +34,21 @@ class LogOperate extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
 		
-		$this->search['user_id'] = input('user_id/d');
-		$this->search['edit_id'] = input('edit_id/d');
-		
+
 		$this->assign("search", $this->search);
 		$reportrange = input('reportrange');
-		$where = [];
+        $where[] = ['log.supplyer_id','=',$this->supplyer_id];
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
-			$where[] = ['log_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+			$where[] = ['log.log_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
 		}else{
-			$where[] = ['log_time','between',[strtotime("-1 months"),time()]];
+			$where[] = ['log.log_time','between',[strtotime("-1 months"),time()]];
 		}
-		if (0 < $this->search['user_id'] ){
-			$where[] = ['user_id','=',$this->search['user_id'] ];
-		}
-		if (0 < $this->search['edit_id']){
-			$where[] = ['edit_id','=',$this->search['edit_id']];
-		}
+
+
         $sort_by = input("sort_by", 'DESC', 'trim');
         $order_by = 'log.log_id';
-        $viewObj = $this->Model->alias('log')->join("supplyer s", 'log.edit_id=s.supplyer_id', 'left')->where($where)->field('log.*,s.supplyer_name')->order($order_by . ' ' . $sort_by);
+        $viewObj = $this->Model->alias('log')->join("supplyer s", 'log.supplyer_id=s.supplyer_id', 'left')->where($where)->field('log.*,s.supplyer_name')->order($order_by . ' ' . $sort_by);
 
         $data = $this->getPageList($this->Model,$viewObj);
 		$this->assign("data", $data);

@@ -1,0 +1,61 @@
+{extend name="layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+       <div class="page-breadcrumbs">
+              <ul class="breadcrumb">
+                  <li>
+                      <i class="fa fa-ellipsis-v"></i>
+                      <strong>退货信息</strong>
+                  </li>                                  
+              </ul>
+             
+          </div>
+  </header>
+
+<section class="scrollable  wrapper">
+   
+      <section class="panel panel-default">
+                <div class="widget-body">
+                    <div class="collapse in">
+                        <form class="form-horizontal form-validate" method="post" action="{:url('edit')}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">退货收货人：</label>
+                                <div class="controls">
+                                    <input type="text" name="return_consignee" value="{$info.return_consignee}" class="input-large"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">退货联系电话：</label>
+                                <div class="controls">
+                                    <input type="text" name="return_mobile" value="{$info.return_mobile}" class="input-large"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">退货地址：</label>
+                                <div class="controls">
+                                    <input type="text" name="return_address" value="{$info.return_address}" class="input-xxlarge"> <span class="help-line"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">退货说明：</label>
+                                <div class="controls">
+                                    <textarea rows="4" class="input-xxlarge" name="return_desc">{$info.return_desc}</textarea>
+                                </div>
+                            </div>
+
+
+                             <div class="form-group">
+                                   <label class="control-label"></label>
+                                    <div class="controls"> 
+                                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                                    </div>
+                             </div>
+                        </form>
+                        
+                    </div>
+                </div>     
+      </section>
+</section>
+
+{/block}
+

@@ -10,6 +10,11 @@
                     <strong>{$title}</strong>
                 </li>                                  
             </ul>
+         <select name="as_type" style="width: 150px;" data-toggle="select2" data-change="submit">
+             <option value="all" {$as_type=='all'?'selected':''}>全部售后</option>
+             <option value="platform" {$as_type=='platform'?'selected':''}>平台售后</option>
+             <option value="supplyer" {$as_type=='supplyer'?'selected':''}>供应商售后</option>
+         </select>
          <div class="form-group">
              <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
                  <i class="fa fa-calendar fa-lg"></i>

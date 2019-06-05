@@ -687,7 +687,10 @@ class Order extends AdminController
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if ($orderInfo['shipping_status'] == $config['SS_SIGN']) return $this->error('订单已签收后不能修改！');
+        if ($orderInfo['order_status'] == $config['OS_CANCELED']){
+            return $this->error('已取消订单不能操作！');
+        }
+        if ($orderInfo['shipping_status'] == $config['SS_SIGN']) return $this->error('订单已签收后不能操作！');
         $data['is_dividend'] = 0;
         $data['order_id'] = $order_id;
         $res = $this->Model->upInfo($data);

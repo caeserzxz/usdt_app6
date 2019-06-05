@@ -850,17 +850,42 @@ function(a) {
             h = a.data("enddate"),
             i = a.data("after"),
             j = a.data("before"),
-            k = a.data("offsetday") - 0 || 0;
+            k = a.data("offsetday") - 0 || 0,
+            l = a.data("bytype");
+
             "now" == f ? (e = new Date, e.setDate(e.getDate() + k)) : (e = new Date(f), e.setDate(e.getDate() + k)),
-            "now" == h ? (g = new Date, g.setDate(g.getDate())) : (g = new Date(h), g.setDate(g.getDate())),
-            a.datetimepicker({
+            "now" == h ? (g = new Date, g.setDate(g.getDate())) : (g = new Date(h), g.setDate(g.getDate()));
+            var json = {
                 language: "zh-CN",
                 startDate: e,
                 endDate: g,
                 autoclose: !0,
                 minuteStep: c,
                 pickerPosition: d
-            }).on("show",
+            };
+            if (l == 'month'){
+                json = {
+                    format: 'yyyy-mm',
+                    endDate: g,
+                    weekStart: 1,
+                    autoclose: true,
+                    startView: 3,
+                    minView: 3,
+                    forceParse: false,
+                    language: 'zh-CN'
+                };
+            }else if(l == 'year'){
+                json = {
+                    format: 'yyyy',
+                    weekStart: 1,
+                    autoclose: true,
+                    startView: 4,
+                    minView: 4,
+                    forceParse: false,
+                    language: 'zh-CN'
+                };
+            }
+            a.datetimepicker(json).on("show",
             function() {
                 if (i && b(i).val()) {
                     var c = new Date(b(i).val());
@@ -892,7 +917,7 @@ function(a) {
             e = moment(d[0]),
             f = moment(d[1]),
             g = f.diff(e, "days");
-			
+
             a.daterangepicker({
                 format: "YYYY/MM/DD HH:mm",
                 ranges: {

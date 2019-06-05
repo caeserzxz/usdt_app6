@@ -4,10 +4,8 @@
 <tr>
 	<th width="80">ID</th>
     <th >供应商名称</th>
-    <th width="100">待结款</th>
-    <th width="100">历史销售额</th>
-    <th width="120">创建时间</th>
-    <th width="120">最近登陆</th>
+    <th width="160">创建时间</th>
+    <th width="160">最近登陆</th>
     <th width="60">状态</th>
     <th width="150">操作</th>
 </tr>
@@ -18,8 +16,6 @@
 <tr>
 	<td>{$vo.supplyer_id}</td>
     <td>{$vo.supplyer_name}</td>
-    <td>{$vo.wait_payment}</td>
-    <td>{$vo.sales_amount}</td>
     <td>{$vo.add_time|dateTpl}</td>
     <td>{$vo.login_time|dateTpl}</td>
    <td><a href="javascript:;"  class="{$vo.is_ban|tplckval='=0','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>

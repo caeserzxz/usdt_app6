@@ -27,7 +27,7 @@ class AfterSale extends ApiController
     /*------------------------------------------------------ */
     public function add()
     {
-        $inArr['return_money'] = input('return_money') * 1;
+
         $inArr['type'] = input('type','','trim');
         $inArr['goods_number'] = input('goods_number',0,'intval');
         $inArr['return_desc'] = input('return_desc','','trim');
@@ -65,7 +65,8 @@ class AfterSale extends ApiController
             }
             $inArr['imgs'] = join(',',$imgs);
         }
-
+        $inArr['return_settle_money'] = $goods['settle_price'] * $inArr['goods_number'];
+        $inArr['return_money'] = $goods['sale_price'] * $inArr['goods_number'];
         $inArr['user_id']  = $this->userInfo['user_id'];
         $inArr['add_time'] = $inArr['update_time'] = time();
         $inArr['goods_id'] = $goods['goods_id'];

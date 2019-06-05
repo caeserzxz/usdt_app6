@@ -1,0 +1,166 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb" >
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>订单统计</strong>
+            </li>
+        </ul>
+        {if condition="$supplyer_id > 0"}
+        <a href="{:url('order',['supplyer_id'=>-1])}" class="fr m-r">正在查看【{$supplyer_name}】点击查看全部</a>
+        {/if}
+    </div>
+</header>
+<section class="scrollable wrapper  ">
+
+        <section class="panel panel-default ">
+            <header class="panel-heading font-bold">
+                <form id="forms" onsubmit="return evalstat();" >
+                    <div class="page-breadcrumbs">
+                        <select name="type" id="type" class="state_select" style="width: 200px;" data-toggle="select2"  onchange="changeType()" >
+                            <option value="order_num"  selected>订单数量图表</option>
+                            <option value="settle_amount" >货款金额图表</option>
+
+                        </select>
+                        <div class="form-group fl">
+                            <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
+                                <i class="fa fa-calendar fa-lg"></i>
+                                <small>下单时间</small>
+                                <span></span> <b class="caret"></b>
+                                <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
+            </header>
+            <div class="panel-body">
+                <!--   style="height: 210px"  -->
+                <div id="container"></div>
+            </div>
+            <footer class="panel-footer bg-white no-padder">
+                <div class="row text-center no-gutter">
+                    <div class="col-xs-2 b-r b-light">
+                        <span class="h4 font-bold m-t block" id="total_settle_price">0</span>
+                        <small class="text-muted m-b block">成交货款总额</small>
+                    </div>
+                    <div class="col-xs-2 b-r b-light">
+                        <span class="h4 font-bold m-t block" id="total_add_num">0</span>
+                        <small class="text-muted m-b block">下单总数</small>
+                    </div>
+                    <div class="col-xs-2 b-r b-light">
+                        <span class="h4 font-bold m-t block" id="total_pay_num">0</span>
+                        <small class="text-muted m-b block">成交总数</small>
+                    </div>
+                    <div class="col-xs-2 b-r b-light">
+                        <span class="h4 font-bold m-t block" id="total_shpping_num">0</span>
+                        <small class="text-muted m-b block">发货总数</small>
+                    </div>
+                    <div class="col-xs-2">
+                        <span class="h4 font-bold m-t block" id="total_sign_num">0</span>
+                        <small class="text-muted m-b block">签收总数</small>
+                    </div>
+                </div>
+            </footer>
+        </section>
+
+
+</section>
+<script type="text/javascript">
+    var obj = [];
+    function evalstat() {
+        var arr = $('#forms').toJson();
+        arr.supplyer_id = {$supplyer_id};
+        jq_ajax('{:url("evalOrderStat")}',arr,function(res){
+            $('#total_add_num').html(res.stats.total_add_num);
+            $('#total_pay_num').html(res.stats.total_pay_num);
+            $('#total_shpping_num').html(res.stats.total_shpping_num);
+            $('#total_sign_num').html(res.stats.total_sign_num);
+            $('#total_settle_price').html('￥'+res.stats.total_settle_price);
+            obj = res;
+            var type = $('#type').val();
+            if (type == 'order_num'){
+               return containerByNum();
+            }else{
+                containerBySettle();
+            }
+        })
+        return false;
+    }
+    $(function(){
+        evalstat();
+    })
+    //
+    function changeType(){
+        var type = $('#type').val();
+        if (type == 'order_num'){
+            return containerByNum();
+        }else{
+            containerBySettle();
+        }
+    }
+    function containerByNum(){
+        $('#container').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: obj.riqi},
+            yAxis: {
+                title: {text: ''},
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.all_add_num
+            },{
+                name: '成交数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.order_pay_num
+            },{
+                name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.shipping_order_num
+            }, {
+                name: '签收数 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.sign_order_num
+            }]
+        });
+    }
+    function containerBySettle(){
+        $('#container').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: obj.riqi},
+            yAxis: {
+                title: {text: ''},
+                min: 0
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>时间:' + this.x + '</b><br>' + this.series.name + ': ' + this.y + '';
+                }
+            },
+            series: [{
+                name: '发出货款 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.shipping_settle_price
+            },{
+                name: '待结货款 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.wait_settlement
+            },{
+                name: '已结货款 <span style="color:gray" >(点击隐藏)</span>',
+                data: obj.stats.then_settlement
+            }
+            ]
+        });
+
+    }
+</script>
+{/block}

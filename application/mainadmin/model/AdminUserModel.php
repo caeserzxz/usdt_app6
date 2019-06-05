@@ -112,7 +112,7 @@ class AdminUserModel extends BaseModel
 				$logModel->save(['log_ip'=>$data['login_ip'],'log_time'=>$data['login_time'],'user_id'=>$data['user_id']]);
 			 }elseif($type == 'editPwd'){//修改密码处理
 				 $logModel = new LogSysModel();	
-				 $logModel->saveDate(['edit_id'=>$data['user_id'],'log_info'=>'修改管理员密码']);
+				 $logModel->save(['edit_id'=>$data['user_id'],'log_info'=>'修改管理员密码']);
 		 	}
 		 }
 		 return $res;

@@ -114,7 +114,6 @@ class Statistics extends Controller
     public function evalGoodsStat()
     {
         $GoodsModel = new GoodsModel();
-        $where[] = ['supplyer_id', '=', $this->supplyer_id];
         $goodsRows = $GoodsModel->where('supplyer_id', $this->supplyer_id)->order('goods_id DESC')->column('goods_name', 'goods_id');
         $reportrange = input('reportrange', '', 'trim');
         $reportrange = str_replace('_', '/', $reportrange);

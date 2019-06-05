@@ -46,6 +46,16 @@ class AfterSale extends AdminController
         return $this->fetch('index');
     }
     //*------------------------------------------------------ */
+    //-- 待退货（供应商）
+    /*------------------------------------------------------ */
+    public function wait_shipping_s()
+    {
+        $this->assign('title','待退货（供应商）');
+        $this->listType = 'wait_shipping_s';
+        $this->getList(true);
+        return $this->fetch('index');
+    }
+    //*------------------------------------------------------ */
     //-- 待收货
     /*------------------------------------------------------ */
     public function wait_sign()

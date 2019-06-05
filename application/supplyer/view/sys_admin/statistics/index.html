@@ -2,6 +2,19 @@
 {block name="main" }
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
+<header class="header  b-b clearfix">
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>汇总统计</strong>
+                </li>
+            </ul>
+            {if condition="$supplyer_id > 0"}
+            <a href="{:url('order',['supplyer_id'=>-1])}" class="fr m-r">正在查看【{$supplyer_name}】点击查看全部</a>
+            {/if}
+        </div>
+</header>
 <section class="scrollable wrapper  ">
     <section class="panel panel-default ">
         <div class="row m-l-none m-r-none bg-light lter">
@@ -129,10 +142,7 @@
                         <small>下单时间</small>
                         <span></span> <b class="caret"></b>
                         <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
-                    </a> <a href="javascript:;" data-toggle="popover" data-html="true" data-placement="bottom"
-                            data-trigger="hover"
-                            data-content="<p style='color:#999'><strong style='color:#333'>下单数：</strong>每日提交的订单数；</p><p style='color:#999'><strong style='color:#333'>待签收数：</strong>每日待签收订单数；</p><p style='color:#999'><strong style='color:#333'>发货数：</strong>每天发货的订单数。</p>"
-                            data-original-title="" title=""><i class="fa fa-question-circle fa-lg m-l-xs"></i></a>
+                    </a>
                 </div>
                 </form>
             </header>
@@ -168,7 +178,8 @@
 <script type="text/javascript">
     var the_first = true;
     function evalstat() {
-        var arr = $('#forms').toJson()
+        var arr = $('#forms').toJson();
+        arr.supplyer_id = {$supplyer_id};
         jq_ajax('{:url("evalStat")}',arr,function(res){
             if (the_first == true){
                 the_first = false;

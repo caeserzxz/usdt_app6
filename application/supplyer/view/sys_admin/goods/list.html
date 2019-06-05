@@ -36,7 +36,7 @@
         <td align="center"><span data-url="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id']))}" data-field="sort_order" data-toggle="ajaxEditInput">{$vo.sort_order}</span></td>
         <td align="center">
             {if condition="$is_delete == 0"}
-            <a href="{:url('info',array('goods_id'=>$vo['goods_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>
+            <a href="{:url('info',array('list_type'=>$listType,'goods_id'=>$vo['goods_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>
             {if condition="$is_supplyer == false"}
             <a href="{:url('del',array('goods_id'=>$vo['goods_id']))}" data-toggle="ajaxRemove" data-msg="确定将 {$vo.goods_name} 放入回收站？"  class="fa fa-trash"  title="回收"></a>
             {/if}

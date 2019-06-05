@@ -17,7 +17,7 @@ class MenuListModel extends BaseModel
 	/*------------------------------------------------------ */
     public function getList()
     { 
-		$data = Cache::get('supplyer_menu_list');
+		//$data = Cache::get('supplyer_menu_list');
 
 		if (empty($data) == false){
 			return $data;
@@ -27,6 +27,9 @@ class MenuListModel extends BaseModel
         $rows = self::where('status',1)->order('pid DESC sort_order ASC')->select()->toArray();
         foreach ($rows as $row){
             $row['group'] = 'supplyer';
+            if (empty($row['ext_upper']) == false){
+                $row['controller'] = $row['controller'].'.'.$row['ext_upper'];
+            }
             $key = $row['pid'] < 1 ? $row['group'] : $row['id'];
             if ($row['pid'] > 0){
                 if (empty($_data[$row['id']]) == false){

@@ -299,7 +299,7 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
                     }
-                    $balance_money = $AccountLogModel->where('user_id',$orderInfo['user_id'])->value('xc');
+                    $balance_money = $AccountLogModel->where('user_id',$orderInfo['user_id'])->value('balance_money');
                     if ($balance_money < 0){
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
@@ -422,7 +422,8 @@ class OrderModel extends BaseModel
             }
             //修改订单商品为待评价
             $OrderGoodsModel->where('order_id', $order_id)->update(['is_evaluate' => 1]);
-
+            $shop_after_sale_limit = settings('shop_after_sale_limit');
+            $upData['settlement_time'] = $time + $shop_after_sale_limit * 86400;
         } elseif ($upData['order_status'] == $this->config['OS_RETURNED']) {//退货
             $res = $this->distribution($orderInfo, 'returned');//提成处理
             if ($res != true) {

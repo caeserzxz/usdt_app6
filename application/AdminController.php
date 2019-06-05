@@ -221,7 +221,6 @@ class AdminController extends BaseController
                         $parent = $second['pid'];
                     }elseif(in_array($this->routeUri, explode(',', $second['urls']))) {
                         if (empty($list_type) || $list_type == $second['action']) {
-
                             $data[$group]['submenu'][$secondKey]['active'] = 1;
                             $parent = $second['pid'];
                         }

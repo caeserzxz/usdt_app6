@@ -64,8 +64,8 @@ class Supplyer extends AdminController
     /*------------------------------------------------------ */
     public function afterAdd($data)
     {
-        $logInfo = '添加供应商帐号，';
-        $logInfo .= $data['is_ban'] == 1 ? '供应商帐号状态：封禁':'正常';
+        $logInfo = '添加供应商帐号，供应商帐号状态：';
+        $logInfo .= $data['is_ban'] == 1 ? '封禁':'正常';
         $this->_Log($data['supplyer_id'],$logInfo);
         return $this->success('修改成功.',url('index'));
     }
@@ -87,6 +87,8 @@ class Supplyer extends AdminController
 		}else{
 		    unset($data['password']);
         }
+        $logInfo = '修改供应商信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
+        $this->_log($data['supplyer_id'], $logInfo ,'supplyer');
 		return $data;		
 	}
     /*------------------------------------------------------ */

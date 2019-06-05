@@ -3,21 +3,22 @@
 <thead>
 <tr>
     <th width="50">LOGID</th>
-    <th width="100">供应商ID</th>
-    <th width="160">操作时间</th>
-    <th width="120">操作IP</th>
-    <th>记录</th>
+    <th width="120">供应商ID</th>
+    <th >供应商名称</th>
+    <th>登陆时间</th>
+    <th>登陆IP</th>
 </tr>
 </thead>
 <tbody>
+
 {volist name="data.list" id="vo" }
+
 <tr>
     <td>{$vo.log_id}</td>
-    <td>{$vo.edit_id}</td>
+    <td>{$vo.supplyer_id}</td>
+    <td>{$vo.supplyer_name}</td>
     <td>{$vo.log_time|dateTpl}</td>
-	<td>{$vo.log_ip}</td>
-    <td>{$vo.log_info}</td>
-
+    <td>{$vo.log_ip}</td>
 </tr>
 
 {/volist} 

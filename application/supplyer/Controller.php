@@ -84,9 +84,10 @@ class Controller extends AdminController
         $menus = (new model\MenuListModel)->getList();
         $data = $menus[$this->module];
         $list_type = input('list_type','','trim');
+        $controller = explode('.',$this->controller);
+        $controller = $controller[0];
         foreach ($data as $group => $first) {
-
-            if ($this->controller == $first['controller']){
+            if ($controller == $first['controller']){
                   $this->menus_group = $group;
             }
             // 遍历：二级菜单
@@ -104,11 +105,10 @@ class Controller extends AdminController
                 }
             }
             if (empty($first['action'])){
-                $data[$group]['active'] = $this->controller == $first['controller'];
-            }elseif($this->controller == $first['controller'] && $this->action == $first['action']){
+                $data[$group]['active'] = $controller == $first['controller'];
+            }elseif($controller == $first['controller'] && $this->action == $first['action']){
                 $data[$group]['active'] = 1;
             }
-
         }
         return $data;
     }

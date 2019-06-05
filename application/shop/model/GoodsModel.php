@@ -276,7 +276,7 @@ class GoodsModel extends BaseModel
         $goods['sale_price'] = $goods['shop_price'];
         $time = time();
 
-        if ($goods['promote_start_date'] >= $time && $goods['promote_end_date'] <= $time) {//判断促销是否在时间范围内
+        if ($goods['promote_start_date'] >= $time || $goods['promote_end_date'] <= $time) {//判断促销是否在时间范围内
             $goods['is_promote'] = 0;
         }
 
@@ -295,7 +295,7 @@ class GoodsModel extends BaseModel
                 }
                 $goods['min_price'] = min($prices);
                 $goods['max_price'] = max($prices);
-            } else {
+            } elseif ($goods['promote_price'] > 0){
                 $goods['sale_price'] = $goods['promote_price'];
             }
         }

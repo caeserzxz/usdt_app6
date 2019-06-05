@@ -1,0 +1,31 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url($is_cancel==true?'trashList':'getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb " >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$title}</strong>
+                </li>                                  
+            </ul>
+         选择月份：<div class="input-group " style="width: 120px;"> <input type="text" class="form-control input-max" readonly="readonly" value="{$settl_month}" data-enddate="{$settl_month}" data-bytype="month"  data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+         <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-refresh"></i>生成月结算单</button>
+    </div>
+</form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/settlement/list" /}
+        </div>
+
+    </section>
+</section>
+
+{/block}
+
+{block name="footer" }
+
+{/block}

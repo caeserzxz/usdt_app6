@@ -49,6 +49,7 @@ class Goods extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false, $is_delete = 0)
     {
+        $this->assign('listType',$this->action);
         $runJson = input('runJson', 0, 'intval');
         if ($this->store_id > 0) {
             $where[] = ['store_id', '=', $this->store_id];
