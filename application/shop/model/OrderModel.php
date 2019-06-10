@@ -487,7 +487,7 @@ class OrderModel extends BaseModel
         }
         Db::commit();// 提交事务
 
-        if ($upData['order_status'] == $this->config['OS_CANCELED'] || $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {
+        if ($upData['order_status'] == $this->config['OS_CANCELED'] || $upData['shipping_status'] == $this->config['SS_SHIPPED']) {
             //系统超时取消订单
             if ($extType == 'sys') {
                 //发送模板消息，给买家
@@ -767,7 +767,13 @@ class OrderModel extends BaseModel
             }
             Db::rollback();// 回滚事务
         }//end
-
+        $UsersModel =  new \app\member\model\UsersModel();
+        //如果设置支付再绑定关系时执行
+        $DividendInfo = settings('DividendInfo');
+        if ($DividendInfo['bind_type'] == 1){
+            $UsersModel->regUserBind($orderInfo['user_id']);
+        }//end
+        $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
         Db::startTrans();//启动事务
         $res = $this->distribution($orderInfo, 'pay');//提成处理
         if ($res != true) {

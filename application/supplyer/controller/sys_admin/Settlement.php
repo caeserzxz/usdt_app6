@@ -14,12 +14,12 @@ class Settlement extends AdminController
         $this->Model = new SettleListModel();
     }
 	/*------------------------------------------------------ */
-	//-- 待结算
+	//-- 结算列表
 	/*------------------------------------------------------ */
-    public function wait()
+    public function index()
     {
         $this->assign("settl_month", date('Y-m', strtotime("-1 months")));
-        $this->assign('title','待结算');
+        $this->assign('title','结算列表');
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */

@@ -53,6 +53,13 @@ class RoleOrderModel extends BaseModel
                 return '支付失败，更新余额失败.';
             }
         }
+        //如果设置支付再绑定关系时执行,须优先于分佣计算前执行
+        $DividendInfo = settings('DividendInfo');
+        if ($DividendInfo['bind_type'] == 1){
+            $UsersModel =  new \app\member\model\UsersModel();
+            $UsersModel->regUserBind($orderInfo['user_id']);
+        }//end
+
         $this->distribution($orderInfo,'pay');
         //升级，分佣处理
         return true;

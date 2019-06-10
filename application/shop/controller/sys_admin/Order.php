@@ -309,7 +309,7 @@ class Order extends AdminController
             }
             $data['shipping_status'] = $config['SS_SHIPPED'];
             $data['shipping_time'] = time();
-            $res = $this->Model->upInfo($data);
+            $res = $this->Model->upInfo($data,'sys');
             if ($res != true) return $this->error($res);
             $orderInfo['shipping_status'] = $data['shipping_status'];
             $this->Model->_log($orderInfo, '操作发货');

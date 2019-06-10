@@ -1,7 +1,7 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
 <header class="header  b-b clearfix">
-    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url($is_cancel==true?'trashList':'getList')}" >
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
      <div class="page-breadcrumbs">
             <ul class="breadcrumb " >
                 <li>
@@ -10,7 +10,7 @@
                 </li>                                  
             </ul>
          选择月份：<div class="input-group " style="width: 120px;"> <input type="text" class="form-control input-max" readonly="readonly" value="{$settl_month}" data-enddate="{$settl_month}" data-bytype="month"  data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
-         <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-refresh"></i>生成月结算单</button>
+         <button class="btn btn-sm" type="button" title="搜索" onclick="evalSettlement()"><i class="fa fa-refresh"></i>生成月结算单</button>
     </div>
 </form>
 </header>
@@ -27,5 +27,9 @@
 {/block}
 
 {block name="footer" }
+<script type="text/javascript">
+    function evalSettlement(){
 
+    }
+</script>
 {/block}

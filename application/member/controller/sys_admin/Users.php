@@ -172,8 +172,7 @@ class Users extends AdminController
         $where[] = ['status', 'in', [2, 3]];
         $DividendModel = new DividendModel();
         $dividend_amount = $DividendModel->where($where)->sum('dividend_amount');
-        $dividend_bean = $DividendModel->where($where)->sum('dividend_bean');
-        $this->assign("wait_money", $dividend_amount + $dividend_bean);
+        $this->assign("wait_money", $dividend_amount );
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
 

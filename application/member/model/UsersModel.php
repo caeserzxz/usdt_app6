@@ -61,6 +61,8 @@ class UsersModel extends BaseModel
         $upData['login_ip'] = request()->ip();
         $upData['last_login_time'] = $userInfo['login_time'];
         $upData['last_login_ip'] = $userInfo['login_ip'];
+
+
         $this->where('user_id', $userInfo['user_id'])->update($upData);
         session('userId', $userInfo['user_id']);
         $LogLoginModel = new LogLoginModel();
@@ -162,10 +164,7 @@ class UsersModel extends BaseModel
         //分享注册
         $share_token = session('share_token');
         if (empty($share_token) == false) {
-            $pInfo = $this->getShareUser($share_token);
-            if ($pInfo['is_ban'] != 1) {
-                $inArr['pid'] = $pInfo['user_id'] * 1;
-            }
+            $inArr['pid'] = $this->getShareUser($share_token);
         }//end
 
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
@@ -227,7 +226,7 @@ class UsersModel extends BaseModel
         $DividendInfo = settings('DividendInfo');
         if ($DividendInfo['bind_type'] < 1) {
             //写入九级关系链
-            $this->regUserBind($user_id);
+            $this->regUserBind($user_id,$inArr['pid']);
         }
 
         //红包模块存在执行
@@ -360,6 +359,15 @@ class UsersModel extends BaseModel
             $info['role']['role_id'] = 0;
             $info['role']['role_name'] = '粉丝';
         }
+        //还没有执行绑定关系执行
+        if ($info['is_bind'] == 0 && $info['pid'] > 0){
+            $DividendInfo = settings('DividendInfo');
+            if ($DividendInfo['bind_type'] == 0){
+                $this->regUserBind($info['user_id'],$info['pid'],'edit');
+            }elseif($info['last_buy_time'] > 0){
+                $this->regUserBind($info['user_id'],$info['pid'],'edit');
+            }
+        }//end
         Cache::set($this->mkey . $val, $info, 30);
         return $info;
     }
@@ -402,11 +410,25 @@ class UsersModel extends BaseModel
     }
     /*------------------------------------------------------ */
     //-- 根据token获取分享者进行关联
+    //-- $val int/string 用户ID/分享token
+    //-- $type string 类型
     /*------------------------------------------------------ */
-    public function getShareUser($token = '')
+    public function getShareUser($val = '',$type = 'token')
     {
-        if (empty($token)) return array();
-        return $this->where('token', $token)->find();
+        if (empty($val)) return 0;
+        $DividendSatus = settings('DividendSatus');
+        if ($DividendSatus == 0) return 0;//不开启推荐，不执行
+        if ($type == 'token'){
+            $pInfo = $this->where('token', $val)->find();
+        }else{
+            $pInfo = $this->where('user_id', $val)->find();
+        }
+        if (empty($pInfo)) return 0;
+        if ($pInfo['is_ban'] == 1) {//如果用户被封禁，直接归被封禁用户的上级
+            if ($pInfo['pid'] < 1) return 0;
+           return $this->getShareUser($pInfo['pid'],'user_id');
+        }
+        return $pInfo['user_id'];
     }
     /*------------------------------------------------------ */
     //-- 获取会员下级汇总
@@ -439,27 +461,13 @@ class UsersModel extends BaseModel
     public function regUserBind($user_id = 0, $pid = 0, $is_edit = false)
     {
         static $UsersBindModel;
-        if ($user_id < 1) return true;
+        if ($user_id < 1 || $pid < 1) return true;
         if ($is_edit == false){
             $DividendSatus = settings('DividendSatus');
             if ($DividendSatus == 0) return true;//不开启推荐，不执行
             $userInfo = $this->where('user_id', $user_id)->field('is_bind,pid')->find();
             if ($userInfo['is_bind'] > 0) return false;//已执行绑定不再执行
-        }
-
-        if ($pid == 0) {
-            $share_token = session('share_token');
-            if (empty($share_token) == false) {
-                $pInfo = $this->getShareUser($share_token);
-                if ($pInfo['is_ban'] != 1) {
-                    $pid = $pInfo['user_id'] * 1;
-                }
-            } else {
-                $pid = $userInfo['pid'];
-            }
-        }
-        if ($pid < 1){
-            return true;
+            $this->where('user_id', $user_id)->update(['is_bind'=>1]);
         }
 
         if (isset($UsersBindModel) == false){
@@ -469,7 +477,7 @@ class UsersModel extends BaseModel
         if ($is_edit == true) {//如果重新修改会员上级，清理原来的记录
             $UsersBindModel->where('user_id',$user_id)->delete();
         }
-       $dividend_level = config('config.dividend_level');
+        $dividend_level = config('config.dividend_level');
         $bind_max_level = config('config.bind_max_level');//后台记录50层的关系链config('config.dividend_level');
         $_pid = $pid;
         for ($level=1;$level<=$bind_max_level;$level++) {
@@ -480,10 +488,11 @@ class UsersModel extends BaseModel
             $inArr['level'] = $level;
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $_pid;
-            $res = $UsersBindModel::create($inArr);
-            if ($is_edit == true && $res < 1) return false;
+            $res = $UsersBindModel->create($inArr);
+            if ($is_edit == true && $res !== false) return false;
             $_pid = $this->where('user_id', $_pid)->value('pid');
         }
+
 
         if ($is_edit == false) {
             //发送模板消息
