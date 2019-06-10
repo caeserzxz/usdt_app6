@@ -16,10 +16,9 @@ class Attachment extends AdminController{
 	//-- 初始化
 	/*------------------------------------------------------ */
    public function initialize(){
-       $this->initialize_isretrun = false;
+
        parent::initialize();
 		$this->_root_ = Request::root();
-
     }
 	
     
@@ -205,7 +204,6 @@ class Attachment extends AdminController{
                 $addarr['admin_id'] = AUID;
                 $where[] = ['admin_id','=',AUID];
             }
-			
 			$savepath = trim($result['info'][0]['savepath'],'.');
 	
 			$addarr['store_id'] = $this->store_id;
