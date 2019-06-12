@@ -25,8 +25,8 @@ class Settlement extends AdminController
         $this->assign('title','结算列表');
         $this->selmonth = date('Y-m', strtotime("-1 months"));
         $this->assign("selmonth",  $this->selmonth);
-        $this->status = -1;
-        $this->assign("status",  $this->status);
+        $this->sel_status = -1;
+        $this->assign("sel_status",  $this->sel_status);
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -38,8 +38,8 @@ class Settlement extends AdminController
         $this->assign('title','待认领');
         $this->selmonth = date('Y-m', strtotime("-1 months"));
         $this->assign("selmonth",  $this->selmonth);
-        $this->status = 0;
-        $this->assign("status",  $this->status);
+        $this->sel_status = 0;
+        $this->assign("sel_status",  $this->sel_status);
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -51,8 +51,8 @@ class Settlement extends AdminController
         $this->assign('title','待打款');
         $this->selmonth = date('Y-m', strtotime("-1 months"));
         $this->assign("selmonth",  $this->selmonth);
-        $this->status = 1;
-        $this->assign("status",  $this->status);
+        $this->sel_status = 1;
+        $this->assign("sel_status",  $this->sel_status);
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -64,8 +64,8 @@ class Settlement extends AdminController
         $this->assign('title','已完成');
         $this->selmonth = date('Y-m', strtotime("-1 months"));
         $this->assign("selmonth",  $this->selmonth);
-        $this->status = 2;
-        $this->assign("status",  $this->status);
+        $this->sel_status = 2;
+        $this->assign("sel_status",  $this->sel_status);
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -78,11 +78,15 @@ class Settlement extends AdminController
         if (empty($date)){
            $date = $this->selmonth;
         }
-        $where[] = ['st.settle_date','=',$date];
-        $status = input('status',$this->status,'intval');
-        if ($status >= 0){
-            $where[] = ['st.status','=',$status];
+        if (empty($date)){
+            exit;
         }
+        $where[] = ['st.settle_date','=',$date];
+        $sel_status = input('sel_status',$this->sel_status) * 1;
+        if ($sel_status >= 0){
+            $where[] = ['st.status','=',$sel_status];
+        }
+
         $viewObj = $this->Model->alias('st')->join("supplyer s", 'st.supplyer_id=s.supplyer_id', 'left')->where($where)->field('st.*,s.supplyer_name')->order('st.settle_date DESC');
 
         $data = $this->getPageList($this->Model,$viewObj);
