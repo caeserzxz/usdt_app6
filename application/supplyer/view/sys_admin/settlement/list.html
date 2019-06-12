@@ -1,15 +1,15 @@
 <table class="table table-striped  m-b-none">
 <thead>
 <tr>
-    <th width="150">结算日期</th>
+    <th width="100">结算日期</th>
     <th >供应商</th>
     <th width="100">签收订单数</th>
-    <th width="100" >签收商品数</th>
-    <th width="100">售后单数</th>
-    <th width="100">售后商品数</th>
-    <th width="100">结算金额</th>
-    <th width="100">售后金额</th>
-    <th width="100">结算金额</th>
+    <th width="100">签收商品数</th>
+    <th width="110" class="green">签收结算金额</th>
+    <th width="100" >售后单数</th>
+    <th width="100" >售后商品数</th>
+    <th width="100" class="green">售后金额</th>
+    <th width="120" class="red">汇总结算金额</th>
     <th width="100">状态</th>
     <th width="80">操作</th>
 </tr>
@@ -21,11 +21,11 @@
     <td>{$vo.supplyer_name}</td>
     <td>{$vo.sale_order_num}</td>
     <td>{$vo.sale_goods_num}</td>
-    <td>{$vo.sale_goods_amount}</td>
+    <td class="green">￥{$vo.sale_amount}</td>
     <td>{$vo.after_sale_order_num}</td>
     <td>{$vo.after_sale_goods_num}</td>
-    <td>{$vo.after_sale_amount}</td>
-    <td>{$vo.settle_amount}</td>
+    <td class="green">￥{$vo.after_sale_amount}</td>
+    <td class="red">￥{$vo.settle_amount}</td>
     <td>{$status[$vo['status']]}</td>
     <td>
         {if condition="$vo['status'] == 1"}

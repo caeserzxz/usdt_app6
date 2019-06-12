@@ -129,7 +129,12 @@ class Settlement extends AdminController
             $where[] = ['o.supplyer_id','=',$supplyer['supplyer_id']];
             $where[] = ['o.settlement_time','between',[$startTime,$endTime]];
             $where[] = ['o.shipping_status','=',2];
-            $inArr['sale_goods_amount'] = $OrderModel->alias('o')->where($where)->SUM('o.settle_price');
+            $orderList = $OrderModel->alias('o')->where($where)->select();
+            $inArr['sale_order_num'] = 0;
+            foreach ($orderList as $order){
+                $inArr['sale_order_num'] += 1;
+                $inArr['sale_amount'] = $order['settle_price'];
+            }
             $inArr['sale_goods_num'] = $OrderModel->alias('o')->join("shop_order_goods og", 'o.order_id=og.order_id', 'left')->where($where)->SUM('og.goods_number');
             $where = [];
             $where[] = ['supplyer_id','=',$supplyer['supplyer_id']];
@@ -142,7 +147,7 @@ class Settlement extends AdminController
                 $inArr['after_sale_order_num'] += $as['goods_number'];
                 $inArr['after_sale_amount'] += $as['return_settle_money'];
             }
-            $inArr['settle_amount'] = $inArr['sale_goods_amount'] - $inArr['after_sale_amount'];
+            $inArr['settle_amount'] = $inArr['sale_amount'] - $inArr['after_sale_amount'];
             $this->Model->create($inArr);
         }
         return $this->success('操作成功.');

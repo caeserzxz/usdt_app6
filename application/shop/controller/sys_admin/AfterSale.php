@@ -206,6 +206,7 @@ class AfterSale extends AdminController
         }
 
         $upData['check_admin'] = AUID;
+        $upData['check_time'] = time();
         Db::startTrans();//启动事务
         $res = $this->Model->where('as_id',$as_id)->update($upData);
         if ($res < 1){

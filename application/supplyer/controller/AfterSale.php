@@ -7,6 +7,7 @@ use app\supplyer\Controller;
 use app\shop\model\AfterSaleModel;
 use app\shop\model\OrderGoodsModel;
 use app\shop\model\OrderModel;
+use app\member\model\AccountLogModel;
 /**
  * 售后相关
  * Class Index

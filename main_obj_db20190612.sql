@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 12/06/2019 09:45:25
+ Date: 12/06/2019 10:49:13
 */
 
 SET NAMES utf8mb4;
@@ -2107,7 +2107,7 @@ INSERT INTO `main_menu_list` VALUES (109, 93, 'supplyer', '汇总统计', 'sys_a
 INSERT INTO `main_menu_list` VALUES (110, 93, 'supplyer', '订单统计', 'sys_admin.statistics', 'order', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (111, 93, 'supplyer', '商品统计', 'sys_admin.statistics', 'goods', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (112, 60, 'supplyer', '结算管理', '', '', '', 'manage', '', 1, 'fa-calculator', 0);
-INSERT INTO `main_menu_list` VALUES (113, 112, 'supplyer', '待结算', 'sys_admin.settlement', 'wait', '', '', '', 1, '', 0);
+INSERT INTO `main_menu_list` VALUES (113, 112, 'supplyer', '结算列表', 'sys_admin.settlement', 'index', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (114, 112, 'supplyer', '待认领', 'sys_admin.settlement', 'wait_check', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (115, 112, 'supplyer', '待打款', 'sys_admin.settlement', 'wait_pay', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (116, 112, 'supplyer', '已完成', 'sys_admin.settlement', 'complete', '', '', '', 1, '', 0);
@@ -8672,7 +8672,11 @@ INSERT INTO `supplyer_menu_list` VALUES (15, 13, '待收货', 'after_sale', 'wai
 INSERT INTO `supplyer_menu_list` VALUES (16, 13, '已完成', 'after_sale', 'complete', '', 'after_sale/info', 1, '', 0);
 INSERT INTO `supplyer_menu_list` VALUES (17, 5, '订单报表', 'statistics', 'index', '', '', 1, '', 0);
 INSERT INTO `supplyer_menu_list` VALUES (18, 5, '商品报表', 'statistics', 'goods', '', '', 1, '', 0);
-INSERT INTO `supplyer_menu_list` VALUES (19, 5, '结算报表', 'statistics', 'after_sale', '', '', 1, '', 0);
+INSERT INTO `supplyer_menu_list` VALUES (19, 0, '结算管理', 'settlement', 'index', '', '', 1, 'fa-calculator', 0);
+INSERT INTO `supplyer_menu_list` VALUES (20, 0, '退货信息', 'return_info', 'index', '', '', 1, 'fa-truck', 0);
+INSERT INTO `supplyer_menu_list` VALUES (21, 0, '相关日志', 'log', '', '', '', 1, 'fa-calendar', 0);
+INSERT INTO `supplyer_menu_list` VALUES (22, 21, '登陆日志', 'log', 'index', 'log_login', '', 1, '', 0);
+INSERT INTO `supplyer_menu_list` VALUES (23, 21, '操作日志', 'log', 'index', 'log_operate', '', 1, '', 0);
 COMMIT;
 
 -- ----------------------------
@@ -8685,7 +8689,7 @@ CREATE TABLE `supplyer_settle_list` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   `sale_order_num` int(11) DEFAULT '0' COMMENT '签收订单数',
   `sale_goods_num` int(10) DEFAULT '0' COMMENT '签收商品数',
-  `sale_goods_amount` decimal(10,2) DEFAULT '0.00' COMMENT '商品结算金额',
+  `sale_amount` decimal(10,2) DEFAULT '0.00' COMMENT '商品结算金额',
   `after_sale_order_num` int(11) DEFAULT '0' COMMENT '售后单数',
   `after_sale_goods_num` int(10) DEFAULT '0' COMMENT '售后商品数',
   `after_sale_amount` decimal(10,2) DEFAULT '0.00' COMMENT '售后金额',
