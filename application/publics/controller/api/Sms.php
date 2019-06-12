@@ -23,7 +23,11 @@ class Sms extends ApiController{
         $smsTpl =  $smsTpl[$type];
         if (empty($smsTpl['sms_tpl_code'])) return $this->error('相关短信未设置.');
         $mobile = input('mobile','','trim');
-        if (checkMobile($mobile) == false)  return $this->error('手机号码不正确.');
+        if (empty($mobile) == true){
+            $mobile = $this->userInfo['mobile'];
+        }else{
+            if (checkMobile($mobile) == false)  return $this->error('手机号码不正确.');
+        }
         $sendLogMkey = 'sendLog_'.$mobile;
         $sendLog = Cache::get($sendLogMkey);
         if (empty($sendLog)) $sendLog = ['num'=>0,'time'=>$time,'limit'=>0];

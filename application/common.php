@@ -75,6 +75,20 @@ function checkMobile($phone = ''){
 
 }
 /*------------------------------------------------------ */
+//-- 联系电话隐藏,156****312
+/*------------------------------------------------------ */
+function mobileSubstr($phone = '', $strlen = false)
+{
+    if (empty($phone) == true) return '无记录';
+    if (is_numeric($phone) == false) return $phone;
+    if (strlen($phone) <= 6) return $phone;
+    $phone_back =  substr_replace($phone, "*****", strlen($phone)-8, 5);
+
+    if ($strlen)   $phone_back .= ' ［长度：'.strlen($phone).'］';
+
+    return $phone_back;
+}
+/*------------------------------------------------------ */
 //-- 过滤掉emoji表情
 /*------------------------------------------------------ */ 
 function repEmoji($str){

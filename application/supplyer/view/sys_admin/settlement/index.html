@@ -8,9 +8,9 @@
                     <i class="fa fa-ellipsis-v"></i>
                     <strong>{$title}</strong>
                 </li>                                  
-            </ul>
-         选择月份：<div class="input-group " style="width: 120px;"> <input type="text" class="form-control input-max" readonly="readonly" value="{$settl_month}" data-enddate="{$settl_month}" data-bytype="month"  data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
-         <button class="btn btn-sm" type="button" title="搜索" onclick="evalSettlement()"><i class="fa fa-refresh"></i>生成月结算单</button>
+            </ul><input type="hidden" name="status" value="{$status}">
+         选择月份：<div class="input-group " id="month_div" style="width: 120px;"> <input type="text" name="selmonth" class="form-control input-max" readonly="readonly" value="{$selmonth}" data-enddate="{$settl_month}" data-bytype="month"  data-toggle="datetimepicker" data-change="submit" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+         <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button> <button class="btn btn-sm fa fa-refresh m-t-md fr" type="button" title="搜索" onclick="evalSettlement()"> 生成月结算单</button>
     </div>
 </form>
 </header>
@@ -29,7 +29,14 @@
 {block name="footer" }
 <script type="text/javascript">
     function evalSettlement(){
-
+        var selmonth = $('#month_div').find("input").val();
+        jq_ajax('{:url("evalSettlement")}','selmonth='+selmonth,function (res) {
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            $('#forms').find('button').click();
+        });
     }
 </script>
 {/block}

@@ -58,6 +58,14 @@ class Center  extends ClientbaseController{
         return $this->fetch('edit_pwd');
     }
     /*------------------------------------------------------ */
+    //-- 修改支付密码
+    /*------------------------------------------------------ */
+    public function editPayPwd(){
+        $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
+        $this->assign('title', '修改支付密码');
+        return $this->fetch('edit_pay_pwd');
+    }
+    /*------------------------------------------------------ */
     //-- 个人资料
     /*------------------------------------------------------ */
     public function userInfo(){

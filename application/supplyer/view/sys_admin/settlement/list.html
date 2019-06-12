@@ -2,34 +2,36 @@
 <thead>
 <tr>
     <th width="150">结算日期</th>
-    <th width="150">签收订单数</th>
-    <th width="150" >签收商品数</th>
-    <th width="150">售后单数</th>
-    <th width="150">售后商品数</th>
-    <th width="150">签收结算金额</th>
-    <th width="150">售后金额</th>
-    <th width="150">结算金额</th>
-    <th width="150">状态</th>
-    <th width="100">操作</th>
+    <th >供应商</th>
+    <th width="100">签收订单数</th>
+    <th width="100" >签收商品数</th>
+    <th width="100">售后单数</th>
+    <th width="100">售后商品数</th>
+    <th width="100">结算金额</th>
+    <th width="100">售后金额</th>
+    <th width="100">结算金额</th>
+    <th width="100">状态</th>
+    <th width="80">操作</th>
 </tr>
 </thead>
 <tbody>
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.settle_date}</td>
+    <td>{$vo.supplyer_name}</td>
     <td>{$vo.sale_order_num}</td>
     <td>{$vo.sale_goods_num}</td>
     <td>{$vo.sale_goods_amount}</td>
     <td>{$vo.after_sale_order_num}</td>
     <td>{$vo.after_sale_goods_num}</td>
-    <td>-{$vo.after_sale_amount}</td>
+    <td>{$vo.after_sale_amount}</td>
     <td>{$vo.settle_amount}</td>
     <td>{$status[$vo['status']]}</td>
     <td>
-        {if condition="$vo['status'] == 0"}
-        <a data-msg="确定无误，认领结算单？"
-           data-remote="{:url('check',array('settle_id'=>$vo['settle_id']))}"
-           data-toggle="ajaxCurl" class="btn btn-primary fr" >认领结算单</a>
+        {if condition="$vo['status'] == 1"}
+        <a data-msg="确定已打款给供应商？"
+           data-remote="{:url('checkPay',array('settle_id'=>$vo['settle_id']))}"
+           data-toggle="ajaxCurl" class="btn btn-primary fr" >确定已打款</a>
         {else}
             --
         {/if}

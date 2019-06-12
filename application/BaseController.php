@@ -109,7 +109,7 @@ class BaseController extends Controller
 			elseif ($page_size != $session_page_size) Session::set('page_size',$page_size);
 	    }	
 		
-		if (is_object($where) == false){//单表查询            
+		if (is_object($where) == false){//单表查询
             if (empty($this->sqlOrder)){
                 $sort_by = input("sort_by/s");                
                 if (empty($sort_by) == false){

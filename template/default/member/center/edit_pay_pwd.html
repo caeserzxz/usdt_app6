@@ -1,0 +1,112 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+{/block}
+{block name="main" }
+<div class="page-bd userData">
+    <!-- 页面内容-->
+    <div class="cells">
+        {if condition="$sms_fun['edit_pay_pwd']==1"}
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="fs28 color_3 fw_b">手机号</span>
+            </div>
+            <div class="cell_bd">
+               {$userInfo['mobile']|mobileSubstr}
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="fs28 color_3 fw_b">验证码</span>
+            </div>
+            <div class="cell_bd">
+                <input type="text" class="fs28 fw_b  color_3 codeBox" placeholder="请输入验证码">
+            </div>
+            <div class="cell_ft">
+                <input type="text" value="获取验证码" id="code" class="color_r fs28 fw_b" readonly onclick="codeButton()">
+            </div>
+        </div>
+        {/if}
+        <div class="cell">
+            <div class="cell_hd"><span class="fs28 color_3 fw_b">新支付密码</span></div>
+            <div class="cell_bd">
+                <input type="password" class="fs28 fw_b color_3" id="password" placeholder="请输入新支付密码">
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_hd"><span class="fs28 color_3 fw_b">确认密码</span></div>
+            <div class="cell_bd">
+                <input type="password" class="fs28 fw_b  color_3" id="cfm_password" placeholder="请再次输入新支付密码">
+            </div>
+        </div>
+    </div>
+    <div class="page-ftb">
+        <span class="fs32 color_w fw_b BGcolor_r editpwd">确定</span>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="footer"}
+<script type="text/javascript">
+	$('.editpwd').on('click',function(){
+        var arr = new Object();
+        arr.password = $('#password').val();
+		arr.cfm_password = $('#cfm_password').val();
+        if ($('.codeBox').length > 0){
+            arr.code = $('.codeBox').val();
+            if (arr.code == ''){
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+		if (arr.password == '' ){
+            _alert('请输入新支付密码.');
+            return false;
+        }
+        if (arr.password.length < 6){
+            _alert('新支付密码长度不能小于六位.');
+            return false;
+        }
+		if (arr.password !== arr.cfm_password){
+			_alert('两次输入的密码不一致.');
+			return false;	
+		}        
+        jq_ajax('{:url("member/api.users/editPayPwd")}',arr,function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg,'{:url("member/center/index")}');
+        })
+    })
+    function codeButton(){
+        var arr = new Object();
+        arr.type = 'edit_pay_pwd';
+
+        jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            var codebtn = $("#code");
+            setTimeout(function(){
+                codebtn.css("color","#999");
+                codebtn.attr("disabled","disabled");
+            },1000)
+            var time = 60;
+            var set=setInterval(function(){
+                codebtn.val(""+--time+"s");
+            }, 1000);
+            setTimeout(function(){
+                codebtn.attr("disabled",false).val("获取验证码");
+                codebtn.css("color","#F65236");
+                clearInterval(set);
+            }, 60000);
+        })
+
+    }
+</script>
+
+{/block}

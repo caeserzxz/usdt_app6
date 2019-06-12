@@ -897,12 +897,14 @@ function(a) {
                     c.setDate(c.getDate() + k),
                     a.datetimepicker("setEndDate", c)
                 }
+
             });
             var l = a.next("span.input-group-addon"),
             m = a.prev("span.input-group-addon");
             l.add(m).on("click",
             function() {
-                a.datetimepicker("show")
+                a.datetimepicker("show");
+
             })
         })
     });

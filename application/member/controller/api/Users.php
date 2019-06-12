@@ -47,6 +47,25 @@ class Users extends ApiController
         if ($res !== true) return $this->error($res);
         return $this->success('密码已重置，请用新密码登陆.');
     }
+    /*------------------------------------------------------ */
+    //-- 修改用户密码
+    /*------------------------------------------------------ */
+    public function editPayPwd()
+    {
+        $pay_password = input('password','','trim');
+        if (empty($pay_password))  return $this->error('请输入新的支付密码.');
+        $this->checkCode('edit_pay_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
+        $data['pay_password'] = f_hash($pay_password.$this->userInfo['user_id']);
+        if ($data['pay_password'] == $this->userInfo['pay_password']){
+            return $this->error('新密码与旧密码一致，无需修改.');
+        }
+        $res = $this->Model->where('user_id', $this->userInfo['user_id'])->update($data);
+        if ($res < 1) {
+            return $this->error('未知错误，处理失败.');
+        }
+        $this->_log($this->userInfo['user_id'], '用户修改支付密码.', 'member');
+        return $this->success('支付密码修改成功.');
+    }
     //*------------------------------------------------------ */
     //-- 绑定会员手机
     /*------------------------------------------------------ */

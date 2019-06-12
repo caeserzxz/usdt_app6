@@ -213,14 +213,15 @@ class Withdraw extends ApiController
 		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
             return $this->error('余额不足，请核实提现金现.');
         }
+
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
 		Db::startTrans();//启动事务
-		
+
 		$res = $WithdrawModel->save($inArr);
 		if ($res < 1){
 			Db::rollback();// 回滚事务
-			return $this->error('提现失败.');
+			return $this->error('提现申请失败.');
 		}
 		$AccountLogModel = new AccountLogModel();
 	    $changedata['change_desc'] = '提现扣除';
@@ -241,6 +242,6 @@ class Withdraw extends ApiController
         $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
         $WeiXinMsgTplModel->send($inArr);//模板消息通知
 
-		return $this->success('提现成功.');
+		return $this->success('提现申请成功.');
 	}
 }

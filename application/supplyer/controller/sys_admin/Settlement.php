@@ -3,6 +3,9 @@ namespace app\supplyer\controller\sys_admin;
 
 use app\AdminController;
 use app\supplyer\model\SettleListModel;
+use app\supplyer\model\SupplyerModel;
+use app\shop\model\OrderModel;
+use app\shop\model\AfterSaleModel;
 /**
  * 结算管理
  */
@@ -12,14 +15,19 @@ class Settlement extends AdminController
     {
         parent::initialize();
         $this->Model = new SettleListModel();
+        $this->status = -1;
     }
 	/*------------------------------------------------------ */
 	//-- 结算列表
 	/*------------------------------------------------------ */
     public function index()
     {
-        $this->assign("settl_month", date('Y-m', strtotime("-1 months")));
         $this->assign('title','结算列表');
+        $this->selmonth = date('Y-m', strtotime("-1 months"));
+        $this->assign("selmonth",  $this->selmonth);
+        $this->status = -1;
+        $this->assign("status",  $this->status);
+        $this->getList(true);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
@@ -27,8 +35,12 @@ class Settlement extends AdminController
     /*------------------------------------------------------ */
     public function wait_check()
     {
-        $this->assign("settl_month", date('Y-m', strtotime("-1 months")));
         $this->assign('title','待认领');
+        $this->selmonth = date('Y-m', strtotime("-1 months"));
+        $this->assign("selmonth",  $this->selmonth);
+        $this->status = 0;
+        $this->assign("status",  $this->status);
+        $this->getList(true);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
@@ -36,8 +48,12 @@ class Settlement extends AdminController
     /*------------------------------------------------------ */
     public function wait_pay()
     {
-        $this->assign("settl_month", date('Y-m', strtotime("-1 months")));
         $this->assign('title','待打款');
+        $this->selmonth = date('Y-m', strtotime("-1 months"));
+        $this->assign("selmonth",  $this->selmonth);
+        $this->status = 1;
+        $this->assign("status",  $this->status);
+        $this->getList(true);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
@@ -45,8 +61,111 @@ class Settlement extends AdminController
     /*------------------------------------------------------ */
     public function complete()
     {
-        $this->assign("settl_month", date('Y-m', strtotime("-1 months")));
         $this->assign('title','已完成');
+        $this->selmonth = date('Y-m', strtotime("-1 months"));
+        $this->assign("selmonth",  $this->selmonth);
+        $this->status = 2;
+        $this->assign("status",  $this->status);
+        $this->getList(true);
         return $this->fetch('index');
+    }
+    /*------------------------------------------------------ */
+    //-- 获取列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getList($runData = false) {
+        $date = input('selmonth','','trim');
+        if (empty($date)){
+           $date = $this->selmonth;
+        }
+        $where[] = ['st.settle_date','=',$date];
+        $status = input('status',$this->status,'intval');
+        if ($status >= 0){
+            $where[] = ['st.status','=',$status];
+        }
+        $viewObj = $this->Model->alias('st')->join("supplyer s", 'st.supplyer_id=s.supplyer_id', 'left')->where($where)->field('st.*,s.supplyer_name')->order('st.settle_date DESC');
+
+        $data = $this->getPageList($this->Model,$viewObj);
+
+        $this->assign("status", $this->Model->status);
+        $this->assign("data", $data);
+        if ($runData == false){
+            $this->data['content'] = $this->fetch('list');
+            unset($data['list']);
+            return $this->success('','', $this->data);
+        }
+        return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 已完成
+    /*------------------------------------------------------ */
+    public function evalSettlement(){
+        $date = input('selmonth','','trim');
+        if (empty($date)){
+            return $this->error('请选择月份.');
+        }
+        $startTime = strtotime($date);
+        $endDate = date('Y-m-t 23:59:59', $startTime);
+        $endTime = strtotime($endDate);
+        $OrderModel = new OrderModel();
+        $AfterSaleModel = new AfterSaleModel();
+        $SupplyerModel = new SupplyerModel();
+        $supplyerList =$SupplyerModel->select();//获取所有供应商
+        $time = time();
+        foreach ($supplyerList as $supplyer){
+
+            $where = [];
+            $where[] = ['supplyer_id','=',$supplyer['supplyer_id']];
+            $where[] = ['settle_date','=',$date];
+            $count = $this->Model->where($where)->count('settle_id');
+            if ($count > 0){
+                continue;
+            }
+            $inArr = [];
+            $inArr['supplyer_id'] = $supplyer['supplyer_id'];
+            $inArr['settle_date'] = $date;
+            $inArr['add_time'] = $time;
+            $where = [];
+            $where[] = ['o.supplyer_id','=',$supplyer['supplyer_id']];
+            $where[] = ['o.settlement_time','between',[$startTime,$endTime]];
+            $where[] = ['o.shipping_status','=',2];
+            $inArr['sale_goods_amount'] = $OrderModel->alias('o')->where($where)->SUM('o.settle_price');
+            $inArr['sale_goods_num'] = $OrderModel->alias('o')->join("shop_order_goods og", 'o.order_id=og.order_id', 'left')->where($where)->SUM('og.goods_number');
+            $where = [];
+            $where[] = ['supplyer_id','=',$supplyer['supplyer_id']];
+            $where[] = ['status','>',1];
+            $where[] = ['check_time','between',[$startTime,$endTime]];
+            $afterSale = $AfterSaleModel->where($where)->field('goods_number,return_settle_money')->select();
+            $inArr['after_sale_order_num'] = 0;
+            $inArr['after_sale_amount'] = 0;
+            foreach ($afterSale as $as){
+                $inArr['after_sale_order_num'] += $as['goods_number'];
+                $inArr['after_sale_amount'] += $as['return_settle_money'];
+            }
+            $inArr['settle_amount'] = $inArr['sale_goods_amount'] - $inArr['after_sale_amount'];
+            $this->Model->create($inArr);
+        }
+        return $this->success('操作成功.');
+    }
+    /*------------------------------------------------------ */
+    //-- 已打款结算单
+    /*------------------------------------------------------ */
+    public function checkPay()
+    {
+        $settle_id = input('settle_id',0,'intval');
+        if ($settle_id < 1){
+            return $this->error('传参错误.');
+        }
+        $settle = $this->Model->find($settle_id);
+        if (empty($settle)){
+            return $this->error('没有找到相应结算单.');
+        }
+        $upDate['status'] = 2;
+        $upDate['payment_time'] = time();
+        $res = $this->Model->where('settle_id',$settle_id)->update($upDate);
+        if ($res < 1){
+            return $this->error('处理失败，请重试.');
+        }
+        return $this->success('操作成功.');
     }
 }

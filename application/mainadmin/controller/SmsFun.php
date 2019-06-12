@@ -37,6 +37,7 @@ class SmsFun extends AdminController
     public function save() {
 		$data['register'] = input('register',0,'intval');
 		$data['forget_password'] = input('forget_password',0,'intval');
+        $data['edit_pay_pwd'] = input('edit_pay_pwd',0,'intval');
         $data['bind_mobile'] = input('bind_mobile',0,'intval');
 		$data['shipping'] = input('shipping',0,'intval');
 		$data['login'] = input('login',0,'intval');

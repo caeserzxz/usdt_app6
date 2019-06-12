@@ -27,6 +27,7 @@ class Settlement extends Controller
     /*------------------------------------------------------ */
     public function getList($runData = false) {
         $where[] = ['supplyer_id','=',$this->supplyer_id];
+        $this->sqlOrder = 'settle_date DESC';
         $this->data = $this->getPageList($this->Model, $where);
         $this->assign("status", $this->Model->status);
         $this->assign("data", $this->data);
