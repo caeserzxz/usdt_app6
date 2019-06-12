@@ -117,8 +117,8 @@ class Settlement extends AdminController
             $where = [];
             $where[] = ['supplyer_id','=',$supplyer['supplyer_id']];
             $where[] = ['settle_date','=',$date];
-            $count = $this->Model->where($where)->count('settle_id');
-            if ($count > 0){
+            $settle = $this->Model->where($where)->find();
+            if (empty($settle) == false && $settle['status'] > 0){
                 continue;
             }
             $inArr = [];
@@ -133,7 +133,7 @@ class Settlement extends AdminController
             $inArr['sale_order_num'] = 0;
             foreach ($orderList as $order){
                 $inArr['sale_order_num'] += 1;
-                $inArr['sale_amount'] = $order['settle_price'];
+                $inArr['sale_amount'] += $order['settle_price'];
             }
             $inArr['sale_goods_num'] = $OrderModel->alias('o')->join("shop_order_goods og", 'o.order_id=og.order_id', 'left')->where($where)->SUM('og.goods_number');
             $where = [];
@@ -148,7 +148,12 @@ class Settlement extends AdminController
                 $inArr['after_sale_amount'] += $as['return_settle_money'];
             }
             $inArr['settle_amount'] = $inArr['sale_amount'] - $inArr['after_sale_amount'];
-            $this->Model->create($inArr);
+            if (empty($settle) == true){
+                $this->Model->create($inArr);
+            }else{
+                unset($inArr['add_time']);
+                $this->Model->where('settle_id',$settle['settle_id'])->update($inArr);
+            }
         }
         return $this->success('操作成功.');
     }
