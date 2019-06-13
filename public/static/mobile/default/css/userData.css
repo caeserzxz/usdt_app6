@@ -8,8 +8,9 @@
 }
 
 .cell .cell_ft input {
-  width: auto;
+  width: 3.3333rem;
   text-align: right;
+  padding-right: 1px;
 }
 
 .cell .cell_ft .userimg {

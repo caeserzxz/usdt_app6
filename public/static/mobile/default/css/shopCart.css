@@ -100,6 +100,9 @@ img {
 
 .goodslist .checkbox .info {
   margin-left: 0.133333rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .goodslist .checkbox .info p {
@@ -167,7 +170,7 @@ img {
 
 .goodslist .checkbox .info .Money .number input {
   width: 0.4rem;
-  margin: 0 0.133333rem;
+  margin: 0 4px;
   text-align: center;
 }
 
