@@ -106,7 +106,7 @@
         $('#seckilling').append(waitHtml)
         $('#evaluated').append(Html)
         $('.tab div').on('click',function(){
-            let index=$(this).index();
+            var index=$(this).index();
             $(this).addClass('color_r')
             $(this).siblings().removeClass('color_r')
             $('.tabBlock').eq(index).show();
@@ -125,15 +125,15 @@
         }
     })
     function codeButton(obj){
-        let code = obj;
-        let time=10//总秒数
-        let hour=time%3600==0?parseInt(time/3600)-1:parseInt(time/3600);//shi
-        let min = time%60==0?parseInt((time-hour*3600)/60)-1:parseInt(time/3600)>0?parseInt((time-hour*3600)/60):parseInt(time/60);//fen
-        let second=time%60==0?59:time%60//miao
+        var code = obj;
+        var time=10//总秒数
+        var hour=time%3600==0?parseInt(time/3600)-1:parseInt(time/3600);//shi
+        var min = time%60==0?parseInt((time-hour*3600)/60)-1:parseInt(time/3600)>0?parseInt((time-hour*3600)/60):parseInt(time/60);//fen
+        var second=time%60==0?59:time%60//miao
         code.eq(0).text(hour>9?hour:'0'+hour)
         code.eq(1).text(min>9?min:'0'+min)
         code.eq(2).text(second>9?second:'0'+second)
-        let set=setInterval(function(){
+        var set=setInterval(function(){
             code.eq(0).text(hour>9?hour:'0'+hour)
             code.eq(1).text(min>9?min:'0'+min)
             code.eq(2).text(--second>9?second:'0'+second)

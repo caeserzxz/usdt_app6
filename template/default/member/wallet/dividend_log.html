@@ -117,7 +117,7 @@
         })
         //开启数据筛选
         $('.title div').on('click',function(){
-            let imgBox=$('.typeimg')
+            var imgBox=$('.typeimg')
             if (imgBox.attr('data-type')=='1') {
                 $('.model').hide();
                 imgBox.attr('data-type','0');
@@ -135,12 +135,12 @@
 
         $('.modelbd label').on('click',function(){
             if ($(this).find('input').is(':checked')) {
-                let val=$(this).find('span').text()
+                var val=$(this).find('span').text()
                 console.log(val);
                 $('.title span').text(val)
 				getList();
 				$('.model').hide();
-				let imgBox=$('.typeimg')
+				var imgBox=$('.typeimg')
 				imgBox.attr('data-type',0);
 				imgBox.css('transform','rotate(0deg)');
             }
@@ -151,7 +151,7 @@
     function demoClick() {
         var nowValue = document.getElementById('nowValue');
         var reg = new RegExp("年|月","g");
-        let nowval=nowValue.value.replace(reg,"-").substring(0,7);
+        var nowval=nowValue.value.replace(reg,"-").substring(0,7);
         new DatePicker({
             "type": "1",//0年, 1年月, 2月日, 3年月日
             "title": '请选择年月',//标题(可选)
@@ -161,7 +161,7 @@
             "defaultValue": nowval,//默认值（可选）
             "callBack": function (val) {
                 //回调函数（val为选中的日期）
-                let arr=val.split('-');
+                var arr=val.split('-');
                 val=arr[0]+'年'+arr[1]+'月'
                 nowValue.value = val;
 				getList();

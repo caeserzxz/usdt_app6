@@ -50,9 +50,9 @@
     var postData = {$input|json_encode|raw};
     $(function(){
         $('.page-bd').scroll(function(){
-            let box_h=$(this).height()
-            let content_h=$('.scrollBox').height()
-            let scroll_h=$(this).scrollTop();
+            var box_h=$(this).height()
+            var content_h=$('.scrollBox').height()
+            var scroll_h=$(this).scrollTop();
             if(content_h-box_h-scroll_h<20){
                 getList(nowPage);
             }

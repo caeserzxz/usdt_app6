@@ -165,7 +165,7 @@
 <script>
 $(function(){
           $('.tab div').on('click',function(){
-            let index=$(this).index();
+            var index=$(this).index();
             $(this).addClass('rankActive')
             $(this).siblings().removeClass('rankActive')
             $('.block').eq(index).show();

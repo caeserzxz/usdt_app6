@@ -72,9 +72,9 @@
             window.location.href = '{:url("member/center/index")}';
         })
         $('.page-bd').scroll(function () {
-            let box_h = $(this).height()
-            let content_h = $('.scrollBox').height()
-            let scroll_h = $(this).scrollTop();
+            var box_h = $(this).height()
+            var content_h = $('.scrollBox').height()
+            var scroll_h = $(this).scrollTop();
             if (content_h - box_h - scroll_h < 20) {
                 getList();
             }
@@ -134,7 +134,7 @@
         })
 
         $('.tab div').on('click', function () {
-            let index = $(this).index();
+            var index = $(this).index();
             _type = $(this).data('type');
             if ($('.' + _type + 'Box').html() == '') {
                 isLoadend[_type] = false;

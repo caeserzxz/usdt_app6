@@ -89,7 +89,7 @@
        $(function(){
 		getList();
         $('.tab div').on('click',function(){
-             let index=$(this).index();
+             var index=$(this).index();
              $(this).addClass('orderActive')
              $(this).siblings().removeClass('orderActive')
              $('.tabBlock').eq(index).show();

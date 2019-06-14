@@ -66,7 +66,7 @@
           $('.inputBox input').focus();
         });
         $('.box').on('click',function(){
-          let index=$(this).index();
+          var index=$(this).index();
           $(this).addClass('boxActive');
           $(this).siblings().removeClass('boxActive')
           $('.rightBox').eq(index).show();

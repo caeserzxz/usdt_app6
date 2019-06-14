@@ -90,7 +90,7 @@ $(function() {
 		$('.model').hide();
 	  })
 	$('.model label').on('click',function(){
-	  let index=$(this).index();
+	  var index=$(this).index();
 	  if(index==0){
 		window.location.href='{:url("bankAdd")}'
 	  }else{

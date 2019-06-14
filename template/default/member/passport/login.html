@@ -50,7 +50,7 @@
         }
       })
       $('.ereBox').on('click',function(){
-        let obj=$(this).find('img')
+        var obj=$(this).find('img')
         if(obj.attr('data-type')=='0'){
           obj.attr('src','__STATIC__/mobile/default/images/login02.png')
           obj.attr('data-type','1')

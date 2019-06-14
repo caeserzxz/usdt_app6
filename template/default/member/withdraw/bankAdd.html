@@ -132,7 +132,7 @@ $(function(){
 	})
 	$('.block label').on('click',function(){
 	  if($(this).find('input').is(':checked')){
-		   let nameVal= $(this).find('span').text();
+		   var nameVal= $(this).find('span').text();
 		   $('.bankBox').val(nameVal)
 		   $('.model').hide();
 	  }
