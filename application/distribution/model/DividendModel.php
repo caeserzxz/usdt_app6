@@ -7,7 +7,9 @@ namespace app\distribution\model;
 use app\BaseModel;
 use app\member\model\AccountLogModel;
 use app\shop\model\OrderModel;
-
+use app\weixin\model\WeiXinMsgTplModel;
+use app\weixin\model\WeiXinUsersModel;
+use app\member\model\UsersModel;
 class DividendModel extends BaseModel
 {
     protected $table = 'distribution_dividend_log';
@@ -19,7 +21,38 @@ class DividendModel extends BaseModel
     public function _eval(&$orderInfo, $type = '',$status=0){
         $fun = str_replace('/', '\\', '/distribution/'.config('config.dividend_type').'/Dividend');
         $Model = new $fun($this);
-        return $Model->_eval($orderInfo, $type,$status);
+        $res = $Model->_eval($orderInfo, $type,$status);
+
+        return $res;
+    }
+    /*------------------------------------------------------ */
+    //-- 发送模板消息通知
+    /*------------------------------------------------------ */
+    public function sendMsg($type,$order_id,$order_operating=''){
+        $rows = $this->where('order_id', $order_id)->select()->toArray();
+        if (empty($rows)) return false;
+        $WeiXinUsersModel = new WeiXinUsersModel();
+        $WeiXinMsgTplModel = new WeiXinMsgTplModel();
+        $buy_nick_name = (new UsersModel)->where('user_id', $rows[0]['buy_uid'])->value('nick_name');//获取购买会员昵称
+        foreach ($rows as $row) {
+            $row['buy_user_id'] = $row['buy_uid'];
+            $sendData['order_sn'] = $row['order_sn'];
+            $sendData['order_amount'] = $row['order_amount'];
+            if ($type == 'pay') {
+                $row['send_scene'] = 'dividend_add_msg';//佣金产生通知
+            } elseif ($type == 'cancel') {
+                $row['send_scene'] = 'dividend_cancel_msg';
+            }elseif($type == 'sign'){
+                $row['send_scene'] = 'dividend_arrival_msg';
+            }
+            $row['buy_nick_name'] = $buy_nick_name;
+            $row['order_operating'] = $order_operating;
+            $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid,wx_nickname')->find();
+            $row['openid'] = $wxInfo['wx_openid'];
+            $row['send_nick_name'] = $wxInfo['wx_nickname'];
+            $WeiXinMsgTplModel->send($row);//模板消息通知
+        }
+        return true;
     }
     /*------------------------------------------------------ */
     //-- 执行分佣到帐
@@ -75,6 +108,7 @@ class DividendModel extends BaseModel
             }
             $log_id[] = $row['log_id'];
         }
+       $this->sendMsg('sign',$order_id);
         return $log_id;
     }
     /*------------------------------------------------------ */

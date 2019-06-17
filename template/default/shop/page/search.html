@@ -4,35 +4,35 @@
 <div class="component-search clearfix {$theme_row.themeId} {$theme_row.templateId} component-search_{$_key}">
     <div id="search" class="component-data clearfix">
         <div class="logo">
-    <a href="/"><img src="{$theme_row.logo}"/></a>
-</div>
-{if condition="($theme_row.templateId eq 'tpl_1') OR ($theme_row.templateId eq 'tpl_2') "}
-<div class="search-form">
-    <form method="post" action="{:url('shop/goods/index')}" >
-        <input class="search-keyword" name="keyword" placeholder="{$theme_row.placeholder}" type="text">
-        <input class="search-submit" type="submit">
-    </form>
-</div>
-{/if}
-<div class="links">
-    <ul class="list-unstyled">
-        {if condition="($theme_row.templateId eq 'tpl_1') OR ($theme_row.templateId eq 'tpl_5') "}
-        	<li><a href="{:url('shop/index/allsort')}"><div class="search-image"></div></a></li>
-        {elseif condition="$theme_row.templateId eq 'tpl_3'"/}       
-            <li><a href="{:url('shop/goods/index')}"><div class="search-image icon_1"></div></a></li>
-            <li><a href="{:url('shop/flow/cart')}"><div class="search-image icon_2"></div></a></li>
-            <li><a href="{:url('shop/index/allsort')}"><div class="search-image icon_3"></div></a></li>
-        {elseif condition="$theme_row.templateId eq 'tpl_4'"/}      
-        	{empty name="userinfo.user_id"}
-            	<li><a href="{:url('member/passport/login')}"><span>登录</span></a></li>
-            	<li><a href="{:url('member/passport/register')}"><span>注册</span></a></li>
-            {else/}
-            	<li><a href="{:url('member/center/index')}"><span>会员中心</span></a></li>
-                <li><a href="{:url('shop/flow/cart')}"><span>购物车</span></a></li>
-            {/empty}
+            <a href="/"><img src="{$theme_row.logo}"/></a>
+        </div>
+        {if condition="($theme_row.templateId eq 'tpl_1') OR ($theme_row.templateId eq 'tpl_2') "}
+        <div class="search-form">
+            <form method="post" action="{:url('shop/goods/index')}" >
+                <input class="search-keyword" name="keyword" placeholder="{$theme_row.placeholder}" type="text">
+                <input class="search-submit" type="submit">
+            </form>
+        </div>
         {/if}
-    </ul>
-</div>
+        <div class="links">
+            <ul class="list-unstyled">
+                {if condition="($theme_row.templateId eq 'tpl_1') OR ($theme_row.templateId eq 'tpl_5') "}
+                <li><a href="{:url('shop/index/allsort')}"><div class="search-image"></div></a></li>
+                {elseif condition="$theme_row.templateId eq 'tpl_3'"/}
+                <li><a href="{:url('shop/goods/index')}"><div class="search-image icon_1"></div></a></li>
+                <li><a href="{:url('shop/flow/cart')}"><div class="search-image icon_2"></div></a></li>
+                <li><a href="{:url('shop/index/allsort')}"><div class="search-image icon_3"></div></a></li>
+                {elseif condition="$theme_row.templateId eq 'tpl_4'"/}
+                {empty name="userinfo.user_id"}
+                <li><a href="{:url('member/passport/login')}"><span>登录</span></a></li>
+                <li><a href="{:url('member/passport/register')}"><span>注册</span></a></li>
+                {else/}
+                <li><a href="{:url('member/center/index')}"><span>会员中心</span></a></li>
+                <li><a href="{:url('shop/flow/cart')}"><span>购物车</span></a></li>
+                {/empty}
+                {/if}
+            </ul>
+        </div>
 
     </div>
 </div>

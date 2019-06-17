@@ -64,11 +64,15 @@ class Dividend extends BaseModel
         $DividendInfo = settings('DividendInfo');
         $upData = [];//更新分佣记录状态
         $OrderModel = new OrderModel();
-
+        $order_operating = '';
+        $send_msg = false;
         //先计算佣金再执行升级处理
         if ($type == 'add') {//写入分佣，普通订单下单时执行
             $logArr = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
             if (is_array($logArr) == false) return false;
+            if ($orderInfo['pay_status'] == $OrderModel->config['DD_PAYED']){
+                $this->Model->sendMsg('pay',$orderInfo['order_id']);//发货模板消息
+            }
             return $logArr;
         } elseif ($type == 'pay') {//订单支付成功
             if ($DividendInfo['bind_type'] == 1) {//支付成功时绑定关系
@@ -77,9 +81,11 @@ class Dividend extends BaseModel
             $res = $this->evalLevelUp($orderInfo, $goodsList, $orderInfo['user_id']);
             if ($res == false) return false;
             $upData['status'] = $OrderModel->config['DD_PAYED'];
+            $send_msg = true;
         } elseif ($type == 'cancel') {//订单取消
-            if ($orderInfo['pay_status'] == 1) $send_msg = true;
             $upData['status'] = $OrderModel->config['DD_CANCELED'];
+            $order_operating = '订单取消';
+            $send_msg = true;
         } elseif ($type == 'unpayed') {//未付款
             if ($orderInfo['order_status'] == $OrderModel->config['OS_CANCELED']) {
                 $upData['status'] = $OrderModel->config['DD_CANCELED'];
@@ -106,6 +112,10 @@ class Dividend extends BaseModel
             $upData['update_time'] = time();
             $res = $this->Model->where('order_id', $orderInfo['order_id'])->update($upData);
             if ($res < 1) return false;
+        }
+
+        if ($send_msg == true){
+            $this->Model->sendMsg($type,$orderInfo['order_id'],$order_operating);//发送模板消息
         }
 
         if ($type == 'sign') {//签收,执行佣金到帐
@@ -181,39 +191,41 @@ class Dividend extends BaseModel
                     $res = $this->Model->create($inArr);
                     if ($res->log_id < 1) return false;
                 }
-                $awardValue = json_decode($award['award_value'], true);//奖项内容
-                foreach ($awardValue as $value) {
-                    $userInfo = $this->UsersModel->info($parentId);//获取会员信息
-                    $parentId = $userInfo['pid'];//优先记录下次循环用户ID
-                    $role_id = $userInfo['role_id'] * 1;
-                    $num = $value['num'][$role_id];
-                    if ($num <= 0){
-                        continue;
+                if ($parentId > 0) {
+                    $awardValue = json_decode($award['award_value'], true);//奖项内容
+                    foreach ($awardValue as $value) {
+                        $userInfo = $this->UsersModel->info($parentId);//获取会员信息
+                        $parentId = $userInfo['pid'];//优先记录下次循环用户ID
+                        $role_id = $userInfo['role_id'] * 1;
+                        $num = $value['num'][$role_id];
+                        if ($num <= 0) {
+                            continue;
+                        }
+                        $inArr['status'] = $status;
+                        $inArr['order_id'] = $orderInfo['order_id'];
+                        $inArr['order_sn'] = $orderInfo['order_sn'];
+                        $inArr['buy_uid'] = $orderInfo['user_id'];
+                        $inArr['order_amount'] = $orderInfo['order_amount'];
+                        $inArr['dividend_uid'] = $userInfo['user_id'];
+                        $inArr['role_id'] = $role_id;
+                        $inArr['role_name'] = $userInfo['role_id'] > 0 ? $userInfo['role']['role_name'] : '粉丝';
+                        $inArr['level'] = $value['level'];
+                        $inArr['award_id'] = $award['award_id'];
+                        $inArr['award_name'] = $award['award_name'];
+                        $inArr['level_award_name'] = $value['name'];
+                        $num_type = $value['num_type'][$role_id];
+                        if ($num_type == 'money') {//固定金额
+                            $inArr['dividend_amount'] = $num;
+                        } else {//订单百分比，扣除运费后计算
+                            $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
+                            $inArr['dividend_amount'] = $amount / 100 * $num;
+                        }
+                        $dividend_amount += $inArr['dividend_amount'];
+                        $inArr['add_time'] = $inArr['update_time'] = time();
+                        $res = $this->Model->create($inArr);
+                        if ($res->log_id < 1) return false;
+                        if ($parentId < 1) break;//没有找到上级终止
                     }
-                    $inArr['status'] = $status;
-                    $inArr['order_id'] = $orderInfo['order_id'];
-                    $inArr['order_sn'] = $orderInfo['order_sn'];
-                    $inArr['buy_uid'] = $orderInfo['user_id'];
-                    $inArr['order_amount'] = $orderInfo['order_amount'];
-                    $inArr['dividend_uid'] = $userInfo['user_id'];
-                    $inArr['role_id'] = $role_id;
-                    $inArr['role_name'] = $userInfo['role_id'] > 0 ? $userInfo['role']['role_name'] : '粉丝';
-                    $inArr['level'] = $value['level'];
-                    $inArr['award_id'] = $award['award_id'];
-                    $inArr['award_name'] = $award['award_name'];
-                    $inArr['level_award_name'] = $value['name'];
-                    $num_type = $value['num_type'][$role_id];
-                    if ($num_type == 'money') {//固定金额
-                        $inArr['dividend_amount'] = $num;
-                    } else {//订单百分比，扣除运费后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
-                        $inArr['dividend_amount'] = $amount / 100 * $num;
-                    }
-                    $dividend_amount += $inArr['dividend_amount'];
-                    $inArr['add_time'] = $inArr['update_time'] = time();
-                    $res = $this->Model->create($inArr);
-                    if ($res->log_id < 1) return false;
-                    if ($parentId < 1) break;//没有找到上级终止
                 }
             }
             return ['dividend_amount' => $dividend_amount];

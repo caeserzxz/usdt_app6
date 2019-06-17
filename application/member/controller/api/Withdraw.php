@@ -240,6 +240,7 @@ class Withdraw extends ApiController
         $wxInfo = $WeiXinUsersModel->where('user_id', $inArr['user_id'])->field('wx_openid,wx_nickname')->find();
         $inArr['openid'] = $wxInfo['wx_openid'];
         $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
+        $inArr['balance_money'] = $this->userInfo['account']['balance_money'] - $withdraw_money;
         $WeiXinMsgTplModel->send($inArr);//模板消息通知
 
 		return $this->success('提现申请成功.');

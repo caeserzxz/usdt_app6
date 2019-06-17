@@ -124,8 +124,8 @@ class Withdraw extends AdminController
 	//-- 修改后处理
 	/*------------------------------------------------------ */
     public function afterEdit($data){
+        $info = $this->Model->find($data['log_id']);
 		if ($data['status'] == 1){//拒绝提现，退回帐户
-			$info = $this->Model->find($data['log_id']);
 			$AccountLogModel = new AccountLogModel();
 			$changedata['change_desc'] = '提现失败退回';
 			$changedata['change_type'] = 5;
@@ -138,18 +138,19 @@ class Withdraw extends AdminController
 			}			
 		}
 		Db::commit();// 提交事务
+
         //模板消息通知
         $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
         $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
         if ($data['status'] == 1) {
-            $data['send_scene'] = 'withdraw_fail_msg';//提现拒绝通知
+            $info['send_scene'] = 'withdraw_fail_msg';//提现拒绝通知
         }elseif ($data['status'] == 9) {
-            $data['send_scene'] = 'withdraw_ok_msg';//提现打款通知
+            $info['send_scene'] = 'withdraw_ok_msg';//提现打款通知
         }
-        $wxInfo = $WeiXinUsersModel->where('user_id', $data['user_id'])->field('wx_openid,wx_nickname')->find();
-        $data['openid'] = $wxInfo['wx_openid'];
-        $data['send_nick_name'] = $wxInfo['wx_nickname'];
-        $WeiXinMsgTplModel->send($inArr);//模板消息通知
+        $wxInfo = $WeiXinUsersModel->where('user_id', $info['user_id'])->field('wx_openid,wx_nickname')->find();
+        $info['openid'] = $wxInfo['wx_openid'];
+        $info['send_nick_name'] = $wxInfo['wx_nickname'];
+        $WeiXinMsgTplModel->send($info);//模板消息通知
 		return $this->success('操作成功.',url('index'));
 	}
     /*------------------------------------------------------ */
