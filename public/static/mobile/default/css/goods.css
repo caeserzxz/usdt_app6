@@ -1096,11 +1096,6 @@
   padding: 0 0.2rem 0.2rem 0.266667rem;
   margin-bottom: 0.266667rem;
 }
-.moreComment .commentBox img{
-  width: 1.36rem;
-  height: 1.36rem;
-  margin-right: 0.093333rem;
-}
 .moreComment .commentBox:last-child::before {
   display: none;
 }
@@ -1197,7 +1192,11 @@
   -webkit-align-items: center;
           align-items: center;
 }
-
+.moreComment .commentBox .comimg img{
+  width: 1.36rem;
+  height: 1.36rem;
+  margin-right: 0.093333rem;
+}
 .moreComment .commentBox .img_one img {
   width: 2.8rem;
   height: 2.8rem;
