@@ -472,7 +472,7 @@
 }
 
 .Goods .commentBox {
-  margin-top: 0.066667rem;
+  margin: 0.066667rem 0 0.1rem;
   padding: 0 0.2rem 0 0.266667rem;
 }
 
@@ -1096,7 +1096,11 @@
   padding: 0 0.2rem 0.2rem 0.266667rem;
   margin-bottom: 0.266667rem;
 }
-
+.moreComment .commentBox img{
+  width: 1.36rem;
+  height: 1.36rem;
+  margin-right: 0.093333rem;
+}
 .moreComment .commentBox:last-child::before {
   display: none;
 }
