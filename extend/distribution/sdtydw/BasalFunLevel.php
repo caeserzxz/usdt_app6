@@ -6,13 +6,13 @@ use app\member\model\UsersModel;
 //-- @author iqgmy
 /*------------------------------------------------------ */
 $i = (isset($modules)) ? count($modules) : 0;
-$modules[$i]["name"] = "升级方案";
+$modules[$i]["name"] = "升级222方案";
 $modules[$i]["explain"] = "基础升级方案，购买身份商品或购买普通商品累计达指定金额.";
-//$modules[$i]["val"][] = ['name'=>'referral','text'=>'直推','input'=>'sel_role','tip'=>'个'];
+$modules[$i]["val"][] = ['name'=>'referral','text'=>'直推','input'=>'sel_role','tip'=>'个'];
 $modules[$i]["val"][] = ['name'=>'is_auto','text'=>'升级方式','input'=>'radio','selval'=>[1=>'满足条件升级',9=>'手动调整']];
 $modules[$i]["val"][] = ['name'=>'total_consume','text'=>'累计消费','input'=>'text','tip'=>'元'];
-//$modules[$i]["val"][] = ['name'=>'buy_type','text'=>'指定类型','input'=>'radio','selval'=>[1=>'购买以下任意指定商品',2=>'购买以下全部指定商品']];
-//$modules[$i]["val"][] = ['name'=>'buy_goods','text'=>'指定商品','input'=>'sel_goods'];
+$modules[$i]["val"][] = ['name'=>'buy_type','text'=>'指定类型','input'=>'radio','selval'=>[1=>'购买以下任意指定商品',2=>'购买以下全部指定商品']];
+$modules[$i]["val"][] = ['name'=>'buy_goods','text'=>'指定商品','input'=>'sel_goods'];
 
 
 class BasalFunLevel{

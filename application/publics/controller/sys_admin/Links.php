@@ -50,13 +50,13 @@ class Links extends AdminController
             (
                 'id' => 6,
                 'name' => '我的订单',
-                'url' => _url('mobile/Order/order_list','',false,true)
+                'url' => _url('shop/order/index','',false,true)
             ),
             7 =>array
             (
                 'id' => 8,
                 'name' => '地址管理',
-                'url' => _url('mobile/User/address_list','',false,true)
+                'url' => _url('member/center/address','',false,true)
             ),
             8 =>array
             (
