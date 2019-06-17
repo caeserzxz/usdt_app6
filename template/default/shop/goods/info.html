@@ -147,7 +147,7 @@ $(function () {
 	swiper1 = createSwiper(1);
 	// 关注
 	$('.attention').on('click', function () {
-		let imgObj = $(this).find('img');
+		var imgObj = $(this).find('img');
 		var status = imgObj.data('no');
 		jq_ajax('{:url("shop/api.goods/collect")}', 'goods_id={$goods.goods_id}', function (res) {
 			if (res.code == 0) {
@@ -185,7 +185,7 @@ $(function () {
 
 	// 滚动出现tab
 	$('#goods').scroll(function(){
-	  let scrolltop=$(this).scrollTop()
+	  var scrolltop=$(this).scrollTop()
 	  // console.log($('.comment').offset().top,scrolltop)
 	  if(scrolltop>100){
 		$('.header-title').css('display','flex');
@@ -217,10 +217,10 @@ $(function () {
 	})
 	  //tab切换
 	$('.header-title span').on('click',function(){
-	  let index=$(this).index()
-	  let topHeight=$('.page-hd').height()
-	  let commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
-	  let imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
+	  var index=$(this).index()
+	  var topHeight=$('.page-hd').height()
+	  var commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
+	  var imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
 		if(index==0){
 		  $("#goods").animate({scrollTop:0}, 300)
 		}else if(index==1){

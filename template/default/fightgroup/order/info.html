@@ -140,13 +140,13 @@
 {block name="footer"}
 <script>
     $(function () {
-        let tmp = Date.parse(new Date());
-        let time = {$fgJoin['fail_time'] * 1000} - tmp//倒计时总毫秒数
+        var tmp = Date.parse(new Date());
+        var time = {$fgJoin['fail_time'] * 1000} - tmp//倒计时总毫秒数
         countdown(time)
     })
 
     function countdown(time) {
-        let countDownTime;
+        var countDownTime;
         if (time < 0) {
             countDownTime = '<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>:<em class="num fs24 BGcolor_3 color_w">00</em>'
             return

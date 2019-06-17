@@ -74,9 +74,9 @@
     var postData = {$input|json_encode|raw};
     $(function(){
         $('.page-bd').scroll(function(){
-            let box_h=$(this).height()
-            let content_h=$('.scrollBox').height()
-            let scroll_h=$(this).scrollTop();
+            var box_h=$(this).height()
+            var content_h=$('.scrollBox').height()
+            var scroll_h=$(this).scrollTop();
             if(content_h-box_h-scroll_h<20){
                 getList(nowPage);
             }
@@ -135,13 +135,13 @@
         getList(nowPage);//执行商品加载
         $('.rank').on('click',function(){
             if(!$(this).hasClass('rank_active')){
-                let sibImg=$('.rank').find('img')
+                var sibImg=$('.rank').find('img')
                 sibImg.attr('src','__STATIC__/mobile/default/images/goodslist01.png')
                 sibImg.attr('data-type','1')
             }
             $(this).addClass('rank_active')
             $(this).siblings().removeClass('rank_active')
-            let imgObj=$(this).find('img')
+            var imgObj=$(this).find('img')
             if(imgObj.attr('data-type')==0){
                 imgObj.attr('src','__STATIC__/mobile/default/images/goodslist03.png')
                 imgObj.attr('data-type','1')
@@ -213,7 +213,7 @@
         //筛选块的收放
         $('.title').on('click',function(){
             $(this).siblings().slideToggle()
-            let imgObj=$(this).find('img');
+            var imgObj=$(this).find('img');
             if(imgObj.attr('data-type')==0){
                 imgObj.css('transform','rotate(180deg)')
                 imgObj.attr('data-type','1')

@@ -100,7 +100,7 @@ function getHeadImg(){
 {:strstr($userInfo['headimgurl'],'http')?'getHeadImg();':''}
 $(function(){
    $('.tablist').on('click',function(){
-	 let index=$(this).index()
+	 var index=$(this).index()
 	 $(this).removeClass('boxOpacity')
 	 $(this).siblings().addClass('boxOpacity')
 	 $('.block').eq(index).addClass('show')

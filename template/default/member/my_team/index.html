@@ -61,9 +61,9 @@ $('.left-arrow').on('click',function(){
 	window.location.href = '{:url("member/center/index")}';
 })
 $('.page-bd').scroll(function(){
-	let box_h=$(this).height()
-	let content_h=$('.scrollBox').height()
-	let scroll_h=$(this).scrollTop();
+	var box_h=$(this).height()
+	var content_h=$('.scrollBox').height()
+	var scroll_h=$(this).scrollTop();
 	if(content_h-box_h-scroll_h<20){
 		getList();
 	}
@@ -123,7 +123,7 @@ $(document).on('click','.get_list_tip',function () {
 })
 		
 $('.tab div').on('click',function(){
-	let index=$(this).index();
+	var index=$(this).index();
 	_type = $(this).data('type');
 	if ($('.'+_type+'Box').html() == ''){
 		isLoadend[_type] = false;
@@ -156,7 +156,7 @@ $('.inputBox input').change(function(){
 //粉丝的账户信息
 $('.tabBox').on('click','.cellBox .right',function(){
 	$(this).parent().siblings().slideToggle()
-	let imgObj=$(this).find('img')
+	var imgObj=$(this).find('img')
 	if(imgObj.attr('data-type')==0){
 		imgObj.css('transform','rotate(180deg)')
 		imgObj.attr('data-type','1')

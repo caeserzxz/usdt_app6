@@ -21,10 +21,11 @@
                   <span class="fs28 color_3 fw_b">验证码</span>
               </div>
               <div class="cell_bd">
-                <input type="text" class="fs28 fw_b  color_3 codeBox" placeholder="请输入验证码">
+                <input type="text" class="fs28 fw_b  color_3 codeBox" style="width: 2rem" placeholder="请输入验证码">
               </div>
               <div class="cell_ft">
-                <input type="text" value="获取验证码" id="code" class="color_r fs28 fw_b" readonly onclick="codeButton()">
+                    <span class="color_r fs28 fw_b getCode" onclick="codeButton()">获取验证码</span>
+                    <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
               </div>
           </div>
            {/if}
@@ -106,20 +107,19 @@
                 _alert(res.msg);
                 return false;
             }
-            var codebtn = $("#code");
-            setTimeout(function(){
-                codebtn.css("color","#999");
-                codebtn.attr("disabled","disabled");
-            },1000)
+            var timeObj=$('.time')
+            var getCodeObj=$('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
             var time = 60;
             var set=setInterval(function(){
-                codebtn.val(""+--time+"s");
+                timeObj.text(""+--time+"s");
+                if (time<=0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
             }, 1000);
-            setTimeout(function(){
-                codebtn.attr("disabled",false).val("获取验证码");
-                codebtn.css("color","#F65236");
-                clearInterval(set);
-            }, 60000);
         })
 
 	}

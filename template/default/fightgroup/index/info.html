@@ -211,8 +211,8 @@
             container:$("#goods")
         });
         //拼团倒计时
-        let time=[]//倒计时总毫秒数
-        let tmp = Date.parse( new Date() );
+        var time=[]//倒计时总毫秒数
+        var tmp = Date.parse( new Date() );
 
         //console.log({$fgInfo['end_date']} - tmp);
         time.push({$fgInfo['end_date'] * 1000} - tmp );
@@ -246,7 +246,7 @@
 
         // 滚动出现tab
         $('#goods').scroll(function(){
-            let scrolltop=$(this).scrollTop()
+            var scrolltop=$(this).scrollTop()
             // console.log($('.comment').offset().top,scrolltop)
             if(scrolltop>100){
                 $('.header-title').css('display','flex');
@@ -278,10 +278,10 @@
         })
         //tab切换
         $('.header-title span').on('click',function(){
-            let index=$(this).index()
-            let topHeight=$('.page-hd').height()
-            let commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
-            let imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
+            var index=$(this).index()
+            var topHeight=$('.page-hd').height()
+            var commentTop= $('.comment').offset().top+$('#goods').scrollTop()-topHeight+1
+            var imgTextTop= $('.imgText').offset().top+$('#goods').scrollTop()-topHeight+1
             if(index==0){
                 $("#goods").animate({scrollTop:0}, 300)
             }else if(index==1){
@@ -338,8 +338,8 @@
         return swiper;
     }
     function countdown (time) {
-        let countDownTime;
-        let timeArr=[];
+        var countDownTime;
+        var timeArr=[];
         time.forEach(function (item,index,array) {
             if(index==0){
                 if (item < 0) {

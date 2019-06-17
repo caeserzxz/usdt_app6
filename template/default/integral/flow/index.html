@@ -202,7 +202,7 @@
             }
         })
         $(document).on('click','.like',function(){
-            let imgObj = $(this).find('img');
+            var imgObj = $(this).find('img');
 			var status = imgObj.data('type');
 			var goods_id = $(this).data('goods_id');
 			jq_ajax('{:url("api.goods/collect")}', 'goods_id='+goods_id, function (res) {

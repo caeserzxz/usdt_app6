@@ -79,7 +79,7 @@
     //减
     $('.minus').on('click',function(){
         event.preventDefault();
-        let numVal=parseInt($('#goods_number').val());
+        var numVal=parseInt($('#goods_number').val());
         if(numVal==1){
             return false;
         }
@@ -89,7 +89,7 @@
     //加
     $('.add').on('click',function(event){
         event.preventDefault();
-        let obj = $('#goods_number');
+        var obj = $('#goods_number');
         if (obj.val() == obj.data('num')){
             return false;
         }

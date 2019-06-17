@@ -53,8 +53,8 @@
 <script>
     $(function () {
         //拼团倒计时
-        let time=[]//倒计时总毫秒数
-        let tmp = Date.parse( new Date() );
+        var time=[]//倒计时总毫秒数
+        var tmp = Date.parse( new Date() );
         time.push({$fgInfo['end_date'] * 1000} - tmp );
         $('.fg_last_time').each(function(){
             time.push($(this).data('time') * 1000 - tmp );
@@ -63,8 +63,8 @@
     })
 
     function countdown (time) {
-        let countDownTime;
-        let timeArr=[];
+        var countDownTime;
+        var timeArr=[];
         time.forEach(function (item,index,array) {
             if(index==0){
                 if (item < 0) {

@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// [ 应用入口文件 ]
+// // [ 应用入口文件 ]
 namespace think;
 
 // 加载基础文件
@@ -21,3 +21,4 @@ define('VIEWPATH', '../template/default/');
 define('EXTEND_PATH', '../extend/');
 // 执行应用并响应
 Container::get('app')->run()->send();
+
