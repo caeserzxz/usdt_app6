@@ -216,7 +216,8 @@ class Goods extends AdminController
             $goods_id = $goods['goods_id'];
         }
         if ($goods_id > 0) {
-            $this->assign('goodsAttr', $this->Model->getAttributeVal($goods_id));
+            $goodsAttr = $this->Model->getAttributeVal($goods_id);
+            $this->assign('goodsAttr', $goodsAttr);
 
         }
         $model_list = $this->Model->getModelList();

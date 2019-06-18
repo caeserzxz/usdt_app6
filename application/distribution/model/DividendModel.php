@@ -22,7 +22,6 @@ class DividendModel extends BaseModel
         $fun = str_replace('/', '\\', '/distribution/'.config('config.dividend_type').'/Dividend');
         $Model = new $fun($this);
         $res = $Model->_eval($orderInfo, $type,$status);
-
         return $res;
     }
     /*------------------------------------------------------ */
@@ -124,6 +123,9 @@ class DividendModel extends BaseModel
         if (empty($rows)) return true;//没有找到相关佣金记录
 
         $AccountLogModel = new AccountLogModel();
+        $WeiXinUsersModel = new WeiXinUsersModel();
+        $WeiXinMsgTplModel = new WeiXinMsgTplModel();
+        $buy_nick_name = (new UsersModel)->where('user_id', $rows[0]['buy_uid'])->value('nick_name');//获取购买会员昵称
         foreach ($rows as $row) {
             $upDate['status'] = $type == 'unsign' ? $OrderModel->config['DD_SHIPPED'] : $OrderModel->config['DD_RETURNED'];
             $upDate['limit_id'] = 0;
@@ -142,6 +144,17 @@ class DividendModel extends BaseModel
                 $res = $AccountLogModel->change($changedata, $row['dividend_uid'], false);
                 if ($res !== true) {
                     return false;
+                }
+                //执行模板消息通知
+                $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid,wx_nickname')->find();
+                if (empty($wxInfo) == false){
+                    $row['buy_user_id'] = $row['buy_uid'];
+                    $row['buy_nick_name'] = $buy_nick_name;
+                    $row['order_operating'] = $type == 'unsign' ? '撤销签收' : '订单退货';
+                    $row['send_scene'] = 'dividend_return_msg';//佣金退回通知
+                    $row['openid'] = $wxInfo['wx_openid'];
+                    $row['send_nick_name'] = $wxInfo['wx_nickname'];
+                    $WeiXinMsgTplModel->send($row);//模板消息通知
                 }
             }
         }
