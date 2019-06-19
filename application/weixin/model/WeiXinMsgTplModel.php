@@ -75,6 +75,15 @@ class WeiXinMsgTplModel extends BaseModel
                     'nick_name'=> '[会员昵称]',
                     'now_time'=>'[当前时间]'
                 ]
+            ],
+            'after_sale'=>[
+                'name'=>'售后通知',
+                'list'=>[
+                    'add_time'=> '[产生时间]',
+                    'as_sn'=> '[售后编号]',
+                    'now_time'=>'[当前时间]',
+                    'remark'=>'[拒绝说明]'
+                ]
             ]
 
         ];
