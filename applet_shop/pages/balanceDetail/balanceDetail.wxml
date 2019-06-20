@@ -4,12 +4,12 @@
       <view class="weui-cell__bd">
         <view class="fs34 fw500 ff">{{dateTime}}</view>
         <view class="text-muted fs24 mt10">
-          <text>支出￥36952</text>
-          <text class="ml10">收入￥93321</text>
+          <text>支出￥{{expend}}</text>
+          <text class="ml10">收入￥{{income}}</text>
         </view>
       </view>
       <view class="weui-cell__ft">
-        <picker bindchange="bindPickerChange"  mode="date" value="{{date}}" fields='month' start="2000-01-01" end="2050-01-01" bindchange="bindDateChange">
+        <picker bindchange="bindPickerChange" mode="date" value="{{date}}" fields='month' start="2000-01-01" end="2050-01-01" bindchange="bindDateChange">
           <image src="/images/detail01.png" class="img1"></image>
         </picker>
 
@@ -17,109 +17,82 @@
     </view>
   </view>
   <view bindtap='openDestination' class="allshow__title {{ open?'open':''}}" style="position: relative;">
-    <text class="fs26" style="color: #666666;">商城购物总收入</text>
+    <text class="fs26" style="color: #666666;">{{type_str}}</text>
     <i class="arrow-down"></i>
   </view>
   <view bindtap='openDestination' class="destination-mask" wx:if="{{ open }}"></view>
   <view class="destination" wx:if="{{ open }}">
     <radio-group class='w100' bindchange="radioChange">
-      <label class="weui-cell weui-check__label border-before" for="x11">
+      <label class="weui-cell weui-check__label border-before" for="x12">
         <view class="weui-cell__bd">
-          <view class="fs28">商城佣金支出</view>
+          <view class="fs28">商城消费</view>
         </view>
         <view class="weui-cell__ft">
-          <radio id='x11' color='#f8584f' value="1" checked='true' />
+          <radio id='x12' color='#f8584f' value="order" checked='{{is_order}}' />
         </view>
       </label>
-      <label class="weui-cell weui-check__label border-before" for="x12">
+      <label class="weui-cell weui-check__label border-before" for="x11">
+        <view class="weui-cell__bd">
+          <view class="fs28">提现相关</view>
+        </view>
+        <view class="weui-cell__ft">
+          <radio id='x11' color='#f8584f' value="withdraw" checked='{{is_withdraw}}' />
+        </view>
+      </label>
+      <!-- <label class="weui-cell weui-check__label border-before" for="x12">
         <view class="weui-cell__bd">
           <view class="fs28">个人转账</view>
         </view>
         <view class="weui-cell__ft">
           <radio id='x12' color='#f8584f' value="1" checked='true' />
         </view>
-      </label>
+      </label> -->
       <label class="weui-cell weui-check__label border-before" for="x13">
         <view class="weui-cell__bd">
-          <view class="fs28">商城佣金收入</view>
+          <view class="fs28">佣金收入</view>
         </view>
         <view class="weui-cell__ft">
-          <radio id='x13' color='#f8584f' value="1" checked='true' />
+          <radio id='x13' color='#f8584f' value="brokerage" checked='{{is_brokerage}}' />
         </view>
       </label>
-      <label class="weui-cell weui-check__label border-before" for="x14">
+      <!-- <label class="weui-cell weui-check__label border-before" for="x14">
         <view class="weui-cell__bd">
           <view class="fs28">分享收入</view>
         </view>
         <view class="weui-cell__ft">
           <radio id='x14' color='#f8584f' value="1" checked='true' />
         </view>
-      </label>
+      </label>-->
       <label class="weui-cell weui-check__label border-before" for="x15">
         <view class="weui-cell__bd">
-          <view class="fs28">积分兑换</view>
+          <view class="fs28">积分相关</view>
         </view>
         <view class="weui-cell__ft">
-          <radio id='x15' color='#f8584f' value="1" checked='true' />
+          <radio id='x15' color='#f8584f' value="integral" checked='{{is_integral}}' />
         </view>
-      </label>
+      </label> 
     </radio-group>
   </view>
   <view class="weui-cells mt0 border-after" wx:if='{{!emptyData}}'>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">商城购物</view>
-        <view class="fs24 text-muted mt10">今天 12:30</view>
+
+
+    <scroll-view scroll-y="true" style="width:100%;height: 1000rpx;" lower-threshold="100" bindscrolltolower="scrolltloadlist" class="orders-box">
+      <view wx:for="{{lists}}" wx:for-item="list" wx:key="key">
+        <view wx:for="{{list}}" wx:for-item="item" wx:key="k">
+          
+          <view class="weui-cell">
+            <view class="weui-cell__bd">
+              <view class="fs28">{{item.change_desc}}</view>
+              <view class="fs24 text-muted mt10">{{item._time}}</view>
+            </view>
+            <view class="text-red">
+              <b class="fs34 ff">{{item.value}}</b>
+            </view>
+          </view>
+        </view>
       </view>
-      <view>
-        <b class="fs34 ff">-1800</b>
-      </view>
-    </view>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">佣金充值</view>
-        <view class="fs24 text-muted mt10">2019.01.01 12:30</view>
-      </view>
-      <view>
-        <b class="fs34 ff">-2080</b>
-      </view>
-    </view>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">余额提现</view>
-        <view class="fs24 text-muted mt10">今天 12:30</view>
-      </view>
-      <view class="text-red">
-        <b class="fs34 ff">+2080</b>
-      </view>
-    </view>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">佣金充值</view>
-        <view class="fs24 text-muted mt10">今天 12:30</view>
-      </view>
-      <view>
-        <b class="fs34 ff">-1000</b>
-      </view>
-    </view>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">商城购物</view>
-        <view class="fs24 text-muted mt10">今天 12:30</view>
-      </view>
-      <view>
-        <b class="fs34 ff">-180</b>
-      </view>
-    </view>
-    <view class="weui-cell">
-      <view class="weui-cell__bd">
-        <view class="fs28">余额提现</view>
-        <view class="fs24 text-muted mt10">今天 12:30</view>
-      </view>
-      <view class="text-red">
-        <b class="fs34 ff">+2080</b>
-      </view>
-    </view>
+  
+  </scroll-view>
   </view>
   <view class='emptyDataBox' wx:if='{{emptyData}}'>
     <image src='/images/emptyData.png'></image>

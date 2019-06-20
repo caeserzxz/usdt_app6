@@ -35,28 +35,56 @@ page {
   box-sizing: border-box;
   box-shadow: 1px 1px 15rpx 0px rgba(0, 0, 0, 0.05);
 }
-.bigqrcode> view{
+
+.bigqrcode> view {
   display: none;
 }
-.bigqrcode image{
-  width:100%; 
+
+.bigqrcode image {
+  width: 100%;
 }
-.bigqrcode .active{
+
+.bigqrcode .active {
   display: block;
 }
-.smallqrcode{
+
+.smallqrcode {
   width: 580rpx;
   margin: 30rpx auto 20rpx auto;
   display: flex;
   justify-content: space-between;
 }
-.smallqrcode view{
+
+.smallqrcode view {
   width: 120rpx;
   opacity: 0.5;
 }
-.smallqrcode view.active{
+
+.smallqrcode view.active {
   opacity: 1;
 }
-.smallqrcode view image{
+
+.smallqrcode view image {
   width: 100%;
+}
+
+.cs_button {
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  background-color: #333;
+}
+
+.cs_button::after {
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+.bottom_box button {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #fff;
+  padding-top: 10rpx;
 }

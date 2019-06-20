@@ -1,0 +1,66 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>小程序配置</strong>
+            </li>
+        </ul>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+        <section class="panel panel-default">
+            <div class="widget-body">
+                <div class="collapse in">
+                    <div class="form-group">
+                        <label class="control-label">小程序名称：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[xcx_name]" class="input-xlarge" data-rule-required="true" value="{$setting.xcx_name}">
+                            <span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">AppId：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[xcx_appid]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_appid}">
+                            <span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">AppSecret：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[xcx_appsecret]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_appsecret}">
+                            <span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">商户ID：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[xcx_mchid]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_mchid}">
+                            <span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">商户密钥：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[xcx_mchid_key]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_mchid_key}">
+                            <span class="maroon">*</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="control-label"></label>
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</section>
+{/block}

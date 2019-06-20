@@ -1,0 +1,115 @@
+<!--pages/payment/payment.wxml-->
+<view class='weui-cells default'>
+  <navigator url='/pages/address/address' class='weui-cell weui-cell__ft_in-access'>
+
+  <block wx:if="{{address_id > 0 }}">
+    <view class='weui-cell__bd'>
+      <view class='fs30 fw_b'>
+        <text>{{addressinfo.consignee}}</text>
+        <text class='ml10'>{{addressinfo.mobile}}</text>
+      </view>
+      <view class='fs28 text-muted mt30'>{{addressinfo.merger_name}} {{addressinfo.address}}</view>
+    </view>
+  </block>
+  <block wx:else>
+  <view class='weui-cell__bd'>   
+      <view class='no-address' bindtap='noaddress'>你还没有收货地址，请添加</view>
+    </view>
+  </block>
+
+
+  </navigator>
+</view>
+<view class='weui-cells'>
+  <view class='title fs32 fw_b'>商品信息</view>
+
+  <view wx:for="{{goodsList}}" wx:key data-index="{{index}}">
+  <view class='weui-cell goodsinfo'>
+    <view class='weui-cell__hd'>
+      <image src='{{item.pic}}' class='goodsimg'></image>
+    </view>
+    <view class='weui-cell__bd'>
+      <view class='name fs28 text-default'>{{item.goods_name}}</view>
+      <text class='text-muted fs28 type mt10'>{{item.sku_name}}</text>
+      <view class='monBox mt10'>
+        <view class='left'>
+          <view>
+            <text class='fs24 fw_b'>￥</text>
+            <text class='fs36 ff'>{{item.exp_price[0]}}</text>
+            <text class='fs24 ff'>.{{item.exp_price[1]}}</text>
+          </view>
+          <text class='fs24 text-muted'>￥{{item.market_price}}</text>
+        </view>
+        <view class='right'>
+          <image src='/images/goodsIcon05.png' bindtap='minus'  data-index='{{index}}'></image>
+          <input value="{{item.goods_number}}" ></input>
+          <image src='/images/goodsIcon06.png' bindtap='add'  data-index='{{index}}'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+  <view class='weui-cell'>
+    <view class='weui-cell__bd fs28'>
+      <input placeholder='给商家留言' bindinput='getWord' maxlength='200'></input>
+    </view>
+    <view class='weui-cell__ft fs28 ff wordnum'>
+      {{wordnum}}/200
+    </view>
+  </view>
+</view>
+<view class='weui-cells list'>
+  <view class='weui-cell'>
+    <view class='weui-cell__bd fs28'>
+      商品金额
+    </view>
+    <view class='weui-cell__ft text-default'>
+      <text class='fs28 fw_b'>￥</text>
+      <text class='fs34 ff'>{{totalGoodsPrice}}</text>
+    </view>
+  </view>
+  <view class='weui-cell weui-cell__ft_in-access' bindtap='selectbonus'>
+    <view class='weui-cell__bd fs28'>
+      优惠券
+    </view>
+    <view class='weui-cell__ft text-default ticket'>
+      <text class='tips'>{{unusedNum}}张可用</text>
+      <block wx:if="{{bonus_id == 0}}"><text class='fs28'>未使用</text></block>
+       <block wx:else><text class='fs28 fw_b'>-￥</text>
+        <text class='fs34 ff'>{{bonus_money}}</text>
+       </block>
+    </view>
+  </view>
+  <view class='weui-cell'>
+    <view class='weui-cell__bd fs28'>
+      会员折扣
+    </view>
+    <view class='weui-cell__ft text-default'>
+      <text class='fs28 fw_b'>-￥</text>
+      <text class='fs34 ff'>{{totalDiscount}}</text>
+    </view>
+  </view>
+  <view class='weui-cell'>
+    <view class='weui-cell__bd fs28'>
+      运费
+    </view>
+    <view class='weui-cell__ft text-default'>
+      <text class='fs28 fw_b'>￥</text>
+      <text class='fs34 ff'>{{shippingFee}}</text>
+    </view>
+  </view>
+</view>
+<view class='bottomBtn'>
+  <view class='left'>
+    <text class='fs28 text-muted'>实付款</text>
+    <view>
+      <text class='fs30 fw_b'>￥</text>
+      <text class='fs30 ff'>{{payInteger}}</text>
+      <text class='fs52 ff'>.{{payTotalDecimal}}</text>
+    </view>
+  </view>
+  <view class='right fs28 fw_b .text-white' bindtap='doaddorder'>
+  立即支付
+  </view> 
+</view>

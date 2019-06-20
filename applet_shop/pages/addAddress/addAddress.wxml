@@ -1,43 +1,67 @@
 <!--pages/addAddress/addAddress.wxml-->
-<view class="weui-cells weui-cells_form mt0">
-  <view class="weui-cell">
-    <view class="weui-cell__hd">
-      <label class="weui-label fw600">收货人</label>
-    </view>
-    <view class="weui-cell__bd">
-      <input class="weui-input" type="text" placeholder="请输入收货人姓名" />
-    </view>
-  </view>
-  <view class="weui-cell">
-    <view class="weui-cell__hd">
-      <label class="weui-label fw600">电话</label>
-    </view>
-    <view class="weui-cell__bd">
-      <input class="weui-input" type="number" placeholder="请输入收货人电话" />
-    </view>
-  </view>
-  <view class="weui-cell weui-cell__ft_in-access">
-    <view class="weui-cell__hd">
-      <label class="weui-label fw600">所在地区</label>
-    </view>
-    <view class="weui-cell__bd">
-      <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-        <view class="picker">
-          {{region[0]}} {{region[1]}} {{region[2]}}
+<form bindsubmit="doaddress">
+    <view class="weui-cells weui-cells_form mt0">
+        <view class="weui-cell">
+            <view class="weui-cell__hd">
+                <label class="weui-label fw600">收货人</label>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" name="name" value='{{name}}' type="text" placeholder="请输入收货人姓名" />
+            </view>
         </view>
-      </picker>
+        <view class="weui-cell">
+            <view class="weui-cell__hd">
+                <label class="weui-label fw600">联系电话</label>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" name="phone" value='{{phone}}' type="number" placeholder="请输入收货人电话" />
+            </view>
+        </view>
+        <view class="weui-cell weui-cell__ft_in-access">
+            <view class="weui-cell__hd">
+                <label class="weui-label fw600">所在地区</label>
+            </view>
+            <view bindtap='showarea' class="weui-cell__bd">{{region_title}}</view>
+        </view>
+        <view class="weui-cell">
+            <view class="weui-cell__hd">
+                <label class="weui-label fw600">详细地址</label>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" name="address" value='{{address}}' type="text" placeholder="请输入详细地址" />
+            </view>
+        </view>
     </view>
-  </view>
-  <view class="weui-cell">
-    <view class="weui-cell__hd">
-      <label class="weui-label fw600">详细地址</label>
-    </view>
-    <view class="weui-cell__bd">
-      <input class="weui-input" type="text" placeholder="请输入详细地址" />
-    </view>
-  </view>
-</view>
 
-<view class='btn_box mt100'>
-  <navigator class='btn_primary'>确认添加</navigator>
+    <view class='btn_box mt100'>
+        <button form-type="submit" class='btn_primary'>确认</button>
+    </view>
+</form>
+
+<view class='protect-layer' wx:if="{{isshowarea == 1}}">
+    <view class='area-list-container'>
+        <view class='area-title'>
+            <span>请选择所在地区</span>
+            <text bindtap='hidearea'>关闭</text>
+        </view>
+        <view class='select-area-title'>
+            <view class="{{province_name ? 'on' : ''}}">{{province_name ? province_name : '请选择'}}</view>
+            <view class="{{city_name ? 'on' : ''}}">{{city_name ? city_name : '请选择'}}</view>
+            <view class="{{area_name ? 'on' : ''}}">{{area_name ? area_name : '请选择'}}</view>
+        </view>
+        <view class='area-list'>
+            <view wx:if="{{province_list}}" class='province_list'>
+                <view class='view-area' bindtap='city_list' wx:for="{{province_list}}" wx:key="province" data-region_id='{{index}}' data-region_name='{{item}}'>{{item}}</view>
+            </view>
+
+            <view wx:if="{{city_list}}" class='city_list'>
+                <view class='view-area' bindtap='area_list' wx:for="{{city_list}}" wx:key="city" data-region_id='{{index}}' data-region_name='{{item}}'>{{item}}</view>
+            </view>
+
+            <view wx:if="{{area_list}}" class='area_list'>
+                <view class='view-area' bindtap='select_area' wx:for="{{area_list}}" wx:key="area" data-region_id='{{index}}' data-region_name='{{item}}'>{{item}}</view>
+            </view>
+        </view>
+
+    </view>
 </view>

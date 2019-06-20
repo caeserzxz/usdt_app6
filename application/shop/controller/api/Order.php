@@ -3,6 +3,7 @@ namespace app\shop\controller\api;
 use app\ApiController;
 
 use app\shop\model\OrderModel;
+use app\shop\model\SaleafterGoodsModel;
 /*------------------------------------------------------ */
 //-- 订单相关API
 /*------------------------------------------------------ */
@@ -105,6 +106,107 @@ class Order extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
 
+    }
+
+    /**
+     * 售后商品详情
+     */
+    public function saleaftergoodsdetail(){
+        $order_sn = input('order_sn', '');
+        $rec_id = input('rec_id', '');
+        $order_id = input('order_id', 0, 'intval');
+        $data['order_sn'] = $order_sn;
+        $data['rec_id'] = $rec_id;
+        $data['order_id'] = $order_id;
+        $data['user_id'] = $this->userInfo['user_id'];
+        $res = $this->Model->saleaftergoods($data);
+        if (!is_array($res)) return $this->error($res);
+        $res_return['orderinfo'] = $res;
+        $res_return['code'] = 1;
+        return $this->ajaxReturn($res_return);
+    }
+
+    public function dosaleaftergoods()
+    {
+        try {
+            $input = input('');
+            $saleafter_type = $input['saleafter_type'];
+            $sku_val = $input['sku_val'];
+            $sku_name = $input['sku_name'];
+            $goods_name = $input['goods_name'];
+            $goods_number = $input['goodsnum'];
+            $goods_pic = $input['goods_pic'];
+            $images_list = $input['images_list'];
+            $order_sn = $input['order_sn'];
+            $order_id = $input['order_id'];
+            $rec_id = $input['rec_id'];
+            $refund_amount = $input['refund_amount'];
+            $refund_reason_value = $input['refund_reason_value'];
+            $is_html = $input['is_html'];
+            if ($is_html == 1) {
+                $imgfile = $input['imgfile'];
+                $images_list = '';
+                //处理图片      
+                if (empty($imgfile) == false){
+                    $file_path = config('config._upload_').'gimg/'.date('Ymd').'/';
+                    makeDir($file_path);
+                    foreach ($imgfile as $file){
+                        $file_name = $file_path.random_str(12).'.jpg';
+                        file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$file)));
+                        $images_list  .= trim($file_name,'.').',';              
+                    }
+                    $images_list = rtrim($images_list, ',');
+                }
+            }
+            if (empty($order_sn)) throw new \Exception("缺少必要参数");
+            if (empty($order_id)) throw new \Exception("缺少必要参数");
+            if (empty($rec_id)) throw new \Exception("缺少必要参数");
+            if (empty($refund_amount)) throw new \Exception("缺少必要参数");
+            if (empty($goods_number)) throw new \Exception("请选择退货数量");
+            if (empty($refund_reason_value)) throw new \Exception("请输入退款原因");
+            $SaleafterGoodsModel = new SaleafterGoodsModel();
+            $data['user_id'] = $this->userInfo['user_id'];
+            $data['sku_val'] = $sku_val;
+            $data['sku_name'] = $sku_name;
+            $data['saleafter_type'] = $saleafter_type;
+            $data['goods_number'] = $goods_number;
+            $data['goods_name'] = $goods_name;
+            $data['goods_pic'] = $goods_pic;
+            $data['images_list'] = $images_list;
+            $data['order_sn'] = $order_sn;
+            $data['order_id'] = $order_id;
+            $data['rec_id'] = $rec_id;
+            $data['refund_amount'] = $refund_amount;
+            $data['total_refund_amount'] = $refund_amount * $goods_number;
+            $data['refund_reason_value'] = $refund_reason_value;
+            $data['add_time'] = time();
+            $data['status'] = 0;
+            $return = $SaleafterGoodsModel->addSaleafterGoods($data);
+            if (is_array($return)) {
+                $return['code'] = 1;
+                return $this->ajaxReturn($return);
+            } else {
+                throw new \Exception($return);
+            }
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 售后列表数据
+     */
+    public function saleafterlist(){
+        try {
+            $SaleafterGoodsModel = new SaleafterGoodsModel();
+            $list = $SaleafterGoodsModel->saleafterlist($this->userInfo['user_id']);
+            $return['list'] = $list['list'];
+            $return['page_count'] = $list['page_count'];
+            $return['code'] = 1;
+            return $this->ajaxReturn($return);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
     }
  	
 }

@@ -4,16 +4,16 @@
             <view class='weui-cell'>
                 <view class='weui-cell__hd'>
                     <navigator url='/pages/personalData/personalData' class='avatar'>
-                        <image src='/images/df_tx.png'></image>
+                        <image src="{{memberinfo.headimgurl ? memberinfo.headimgurl : '/images/df_tx.png'}}"></image>
                     </navigator>
                 </view>
                 <view class='weui-cell__bd'>
-                    <navigator url='/pages/personalData/personalData' class='fs34 fw600'>汤姆克鲁斯
-                        <text class='badge'>金牌VIP</text>
+                    <navigator url='/pages/personalData/personalData' class='fs34 fw600'>{{memberinfo.nick_name}}
+                        <text class='badge'>{{memberinfo.role.role_name}}</text>
                     </navigator>
-                    <view class='text-muted mt10'>路遥知马力,日久见人心</view>
+                    <view class='text-muted mt10'><!-- 用户描述 --></view>
                 </view>
-                <view class='weui-cell__ft'>
+                <!-- <view class='weui-cell__ft'>
                     <navigator url="/pages/message/message" class="icon icon_msg">
                         <view class='dot'></view>
                         <image src='/images/myIcon01.png' />
@@ -21,25 +21,25 @@
                     <view bindtap='goSetting' class="icon icon_set">
                         <image src='/images/myIcon02.png' />
                     </view>
-                </view>
+                </view> -->
             </view>
         </view>
         <view class='card-flex grid4'>
-            <navigator url='/pages/myBalance/myBalance' class='flex_item'>
-                <view class='fs46 ff'>2059</view>
-                <view class='text'>ETC</view>
+            <navigator url='/pages/myBalance/myBalance' style='width: 50%;' class='flex_item'>
+                <view class='fs46 ff'>{{memberinfo.account.balance_money}}</view>
+                <view class='text'>可用金额</view>
+            </navigator>
+            <!-- <navigator url='/pages/myBalance/myBalance' class='flex_item'>
+                <view class='fs46 ff'>{{memberinfo.account.total_dividend}}</view>
+                <view class='text'>总佣金</view>
             </navigator>
             <navigator url='/pages/myBalance/myBalance' class='flex_item'>
-                <view class='fs46 ff'>98</view>
-                <view class='text'>ETH</view>
-            </navigator>
-            <navigator url='/pages/myBalance/myBalance' class='flex_item'>
-                <view class='fs46 ff'>187</view>
-                <view class='text'>USDT</view>
-            </navigator>
-            <navigator url='/pages/myBalance/myBalance' class='flex_item'>
-                <view class='fs46 ff'>5897</view>
-                <view class='text'>LTC</view>
+                <view class='fs46 ff'>{{memberinfo.account.total_integral}}</view>
+                <view class='text'>总积分</view>
+            </navigator> -->
+            <navigator url='/pages/myBalance/myBalance' style='width: 50%;' class='flex_item'>
+                <view class='fs46 ff'>{{memberinfo.account.use_integral}}</view>
+                <view class='text'>可用积分</view>
             </navigator>
         </view>
     </view>
@@ -47,32 +47,32 @@
     <view class='weui-panel my_order'>
         <view class='weui-panel__hd border_none'>
             <view class='fs28 title'>我的订单</view>
-            <navigator url='/pages/myorders/myorders' class='more arrow_r'>查看全部</navigator>
+            <navigator url='/pages/myorders/myorders?orderstauts=all' class='more arrow_r'>查看全部</navigator>
         </view>
         <view class='weui-panel__bd'>
             <view class='card-flex grid5'>
-                <navigator url='/pages/myorders/myorders' class='flex_item'>
+                <navigator url='/pages/myorders/myorders?orderstauts=waitPay' class='flex_item'>
                     <view class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon03.png" />
                     </view>
                     <view class='text'>待付款</view>
                 </navigator>
-                <navigator url='/pages/myorders/myorders' class='flex_item'>
+                <navigator url='/pages/myorders/myorders?orderstauts=waitShipping' class='flex_item'>
                     <view class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon04.png" />
                     </view>
                     <view class='text'>待发货</view>
                 </navigator>
-                <navigator url='/pages/myorders/myorders' class='flex_item'>
+                <navigator url='/pages/myorders/myorders?orderstauts=waitSign' class='flex_item'>
                     <view class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon05.png" />
                     </view>
                     <view class='text'>待收货</view>
                 </navigator>
-                <navigator url='/pages/myorders/myorders' class='flex_item'>
+                <navigator url='/pages/myorders/myorders?orderstauts=sign' class='flex_item'>
                     <view class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon06.png" />
@@ -129,6 +129,13 @@
                     <image src='/images/myIcon12.png' />
                 </view>
                 <view class='weui-cell__bd'>我的评价</view>
+                <view class='weui-cell__ft'></view>
+            </navigator>
+            <navigator url='/pages/sign/sign' class='weui-cell weui-cell__ft_in-access' wx:if="{{sign_in==1}}">
+                <view class='weui-cell__hd'>
+                    <image src='/images/myIcon12.png' />
+                </view>
+                <view class='weui-cell__bd'>我的签到</view>
                 <view class='weui-cell__ft'></view>
             </navigator>
             <navigator url='/pages/withdrawManage/withdrawManage' class='weui-cell weui-cell__ft_in-access'>
@@ -199,6 +206,12 @@
             </view>
             <view class='text'>我的评价</view>
         </navigator>
+        <navigator url='/pages/sign/sign' class='flex_item' wx:if="{{sign_in==1}}">
+            <view class='icon'>
+                <image src='/images/myIcon12.png' />
+            </view>
+            <view class='text'>我的签到</view>
+        </navigator>
         <navigator url='/pages/address/address' class='flex_item'>
             <view class='icon'>
                 <image src='/images/myIcon13.png' />
@@ -211,24 +224,30 @@
             </view>
             <view class='text'>提现管理</view>
         </navigator>
-        <navigator url='' class='flex_item'>
+                <navigator url='/pages/couponCenter/couponCenter' class='flex_item'>
+            <view class='icon'>
+                <image src='/images/myIcon10.png' />
+            </view>
+            <view class='text'>领卷中心</view>
+        </navigator>
+        <!-- <navigator url='' class='flex_item'>
             <view class='icon'>
                 <image src='/images/myIcon14.png' />
             </view>
             <view class='text'>意见需求</view>
-        </navigator>
-        <navigator url='' class='flex_item'>
+        </navigator> -->
+        <!-- <navigator url='' class='flex_item'>
             <view class='icon'>
                 <image src='/images/myIcon15.png' />
             </view>
             <view class='text'>关于我们</view>
-        </navigator>
+        </navigator> -->
 
     </view>
 
-    <view class='weui-cells'>
+    <!-- <view class='weui-cells'>
         <view class='weui-cell logout'>
             <view class='weui-cell__bd tc'>退出登录</view>
         </view>
-    </view>
+    </view> -->
 </view>

@@ -6,18 +6,20 @@
           <view class="fs26 text-muted">提现金额（元）</view>
             <view class="txflex weui-cell border-before pl0" style=" align-items: center;">
               <view class="weui-cell__bd">
-                <input value="36962.00" type='digit' placeholder="请输入金额" class="ff"/>
+
+                <input value="{{amount == 0 ?'':amount}}" type='digit' placeholder="请输入金额" class="ff" bindinput='onChangeinput'/>
+
               </view>
               <view class="weui-cell__ft">
-                <text class="fs24 text-default">手续费0.1元</text>  
+                <text class="fs24 text-default">手续费{{withdraw_fee}}元</text>  
               </view>
             </view>
             <view class="weui-cell pl0 pr0 pb0 pt0 border-before">
               <view class="weui-cell__bd">
-                  <view class="text-muted fs26">可提现金额<text class="text-default fs26 fs500 ff">￥369.00</text></view>
+                  <view class="text-muted fs26">可提现金额<text class="text-default fs26 fs500 ff">￥{{balance_money}}</text></view>
               </view>
               <view class="weui-cell__ft">
-                <navigator url='' class="tx-btn">全部提现</navigator>
+                <view bindtap='allmoney' class="tx-btn">全部提现</view>
               </view>
             </view>
         </view>
@@ -27,19 +29,19 @@
      <view class="weui-cell tbornone mb10">
       <view class="weui-cell__bd fs34">请选择提现银行</view>
       </view>
-      <radio-group>
-        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x12">
+      <radio-group bindchange="radioChange">
+        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x12" wx:for="{{list}}" wx:key>
           <view class="weui-cell__hd">
-            <image class="hd_icon" src="/images/AliPay.png" alt="" />
+            <image class="hd_icon" src="{{imgurl}}{{code_bank[item.bank_code].img}}" alt="" />
           </view>
           <view class="weui-cell__bd">
-            <view class="fs30">支付宝</view>
+            <view class="fs30">{{item.bank_name}}</view>
           </view>
           <view class="weui-cell__ft">
-            <radio id='x12' color='#f8584f'/>
+            <radio id='x12' value="{{item.account_id}}" color='#f8584f'/>
           </view>
         </label>
-        <label class="weui-cell weui-check__label border-before pt25 pb25" for="x11">
+        <!-- <label class="weui-cell weui-check__label border-before pt25 pb25" for="x11">
           <view class="weui-cell__hd">
             <image class="hd_icon" src="/images/weixinPay.png" alt=""/>
           </view>
@@ -82,7 +84,7 @@
           <view class="weui-cell__ft">
             <radio id='x15' color='#f8584f'/>
           </view>
-        </label>
+        </label> -->
       </radio-group>
       <navigator url="/pages/addBank/addBank" class="weui-cell border-before pb60">
         <view class="weui-cell__bd fs30 addBank"><text class="fs40 fw600">+</text>添加银行卡</view>
@@ -90,6 +92,6 @@
     </view>
   </view>
 <view class='btn_box'>
-  <text class='btn_primary'>确认提现</text>
+  <text class='btn_primary' bindtap='dowithdraw'>确认提现</text>
 </view>
 </view>

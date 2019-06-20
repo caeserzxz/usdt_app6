@@ -537,3 +537,32 @@ function getSubstr($string, $start, $length) {
           return $string;
       }
 }
+
+/**
+ * 数组分页
+ * @param array $data
+ * @param int $pagescount
+ * @param string $order_field
+ * @param string $order
+ * @return array
+ */
+function page_array($data = [], $pagescount = 10, $order_field = "", $order = "asc")
+{
+    //$order SORT_DESC 倒序  SORT_ASC 正序
+    $pages = input('pages',1); #判断当前页面是否为空 如果为空就表示为第一页面
+    $start = ($pages - 1) * $pagescount; #计算每次分页的开始位置
+    $totals = count($data);
+    $countpage = ceil($totals / $pagescount); #计算总页面数
+    $pagedata = [];
+    if ($order_field) {
+        $data = array_sort($data, $order_field, $order);
+    }
+    for ($i = $start; $i < ($start + $pagescount); $i++) {
+        if ($data[$i]) {
+            $pagedata[] = $data[$i];
+        }
+    }
+    $return['page_count'] = $countpage;
+    $return['list'] = $pagedata;
+    return $return;  #返回查询数据
+}

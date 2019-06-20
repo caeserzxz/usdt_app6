@@ -9,16 +9,20 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"autoAudits": false
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.1",
 	"appid": "wx7f6dd0468dc44cf7",
 	"projectname": "%E6%96%B0%E7%89%88%E5%95%86%E5%9F%8Eshop",
+	"cloudfunctionTemplateRoot": "",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
-	"isGameTourist": false,
+	"scripts": {},
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -33,11 +37,10 @@
 			"list": []
 		},
 		"game": {
-			"currentL": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": 58,
+			"current": 61,
 			"list": [
 				{
 					"id": -1,
@@ -112,10 +115,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 11,
 					"name": "商品二维码",
 					"pathName": "pages/goodsQR/goodsQR",
-					"query": "",
+					"query": "goods_id=102",
 					"scene": null
 				},
 				{
@@ -129,7 +132,7 @@
 					"id": 13,
 					"name": "使用优惠券 ",
 					"pathName": "pages/coupons/coupons",
-					"query": "",
+					"query": "payTotal=39&bonus_id=0",
 					"scene": null
 				},
 				{
@@ -211,10 +214,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 26,
 					"name": "编辑收货地址",
 					"pathName": "pages/editAddress/editAddress",
-					"query": "",
+					"query": "address_id=7&name=收货人&phone=13800138000&address=收货详情地址&province_id=120000&city_id=120100&area_id=120102&merger_name=天津 天津市 河东区",
 					"scene": null
 				},
 				{
@@ -271,7 +274,7 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 35,
 					"name": "商品列表",
 					"pathName": "pages/goodsList/goodsList",
 					"query": "",
@@ -309,7 +312,7 @@
 					"id": -1,
 					"name": "订单详情",
 					"pathName": "pages/orderDetails/orderDetails",
-					"query": "",
+					"query": "order_id=7",
 					"scene": null
 				},
 				{
@@ -320,10 +323,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 42,
 					"name": "申请售后",
 					"pathName": "pages/saleAfter/saleAfter",
-					"query": "",
+					"query": "order_sn=2019030903355&order_id=7&rec_id=8",
 					"scene": null
 				},
 				{
@@ -334,7 +337,7 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 44,
 					"name": "我的优惠券 ",
 					"pathName": "pages/mycoupons/mycoupons",
 					"query": "",
@@ -356,7 +359,7 @@
 					"id": 47,
 					"name": "提现",
 					"pathName": "pages/withdrawCash/withdrawCash",
-					"query": "",
+					"query": "balance_money=1480",
 					"scene": null
 				},
 				{
@@ -395,17 +398,17 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "提现管理",
+					"id": 53,
+					"name": "银行卡",
 					"pathName": "pages/withdrawManage/withdrawManage",
 					"query": "",
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 54,
 					"name": "商品详情",
 					"pathName": "pages/productDetails/productDetails",
-					"query": "",
+					"query": "goods_id=106",
 					"scene": null
 				},
 				{
@@ -433,6 +436,67 @@
 					"id": -1,
 					"name": "粉丝搜索",
 					"pathName": "pages/selectFans/selectFans",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品列表",
+					"pathName": "pages/goodsList/goodsList",
+					"query": "categoryid=7"
+				},
+				{
+					"id": -1,
+					"name": "我的粉丝",
+					"pathName": "pages/myfans/myfans",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 61,
+					"name": "结算",
+					"pathName": "pages/payment/payment",
+					"query": "rec_id=122",
+					"scene": null
+				},
+				{
+					"id": 62,
+					"name": "选择优惠卷",
+					"pathName": "pages/coupons/coupons",
+					"query": "payTotal=201",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "支付页面",
+					"pathName": "pages/payorder/payorder",
+					"query": "order_id=46",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "签到",
+					"pathName": "pages/sign/sign",
+					"query": ""
+				},
+				{
+					"id": 65,
+					"name": "签到记录",
+					"pathName": "pages/signInRecord/signInRecord",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "领券中心",
+					"pathName": "pages/couponCenter/couponCenter",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 67,
+					"name": "授权登录",
+					"pathName": "pages/authorizeLogin/authorizeLogin",
+					"query": "share_token=7dgQOGbmH7UCvzfK",
 					"scene": null
 				}
 			]

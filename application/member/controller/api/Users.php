@@ -35,6 +35,10 @@ class Users extends ApiController
     {
         $return['info'] = $this->userInfo;
         $return['code'] = 1;
+        $return['sign_in'] = settings('sign_in');
+        $superior = $this->Model->getSuperior($this->userInfo['pid']);
+        if ($superior) $superior['reg_time'] = date('Y-m-d', $superior['reg_time']);
+        $return['superior'] = $superior;
         return $this->ajaxReturn($return);
     }
 
@@ -156,7 +160,13 @@ class Users extends ApiController
         $where[] = ['add_time', '>', strtotime(date('Y-m-01', strtotime('-1 month')))];
         $return['month_income'] = $DividendModel->where($where)->sum('dividend_amount');
         $return['month_income'] += $DividendModel->where($where)->sum('dividend_bean');
-
+        //累计收益
+        unset($where);
+        $where[] = ['dividend_uid','=',$this->userInfo['user_id']];
+        $where[] = ['status','in',[1,2,3,9]];
+        $return['end_income'] = $DividendModel->where($where)->sum('dividend_amount');
+        $return['end_income'] += $DividendModel->where($where)->sum('dividend_bean');
+        $return['end_income'] = number_format($return['end_income'],2);
         //end
         $return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
         $return['code'] = 1;
@@ -307,6 +317,7 @@ class Users extends ApiController
         if (empty($upArr['nick_name']) == true) {
             return $this->error('请填写用户昵称.');
         }
+        $upArr['mobile'] = input('mobile', '', 'trim');
         $where[] = ['nick_name', '=', $upArr['nick_name']];
         $where[] = ['user_id', '<>', $this->userInfo['user_id']];
         $count = $this->Model->where($where)->count('user_id');
@@ -344,5 +355,79 @@ class Users extends ApiController
         return $this->ajaxReturn($return);
     }
 
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户变动日志-----改
+    /*------------------------------------------------------ */
+    public function AccountLog()
+    {
+        $type = input('type','order','trim');
+        $time = input('time','','trim');
+        $p = input('p',1);
+        $limit = 10;
+        $offset = ($p-1)*$limit;
+        if (empty($time)){
+            $time = date('Y年m月');
+        }
+        $return['time'] = $time;
+        $_time = strtotime(str_replace(array('年','月'),array('-',''),$time));
+        $return['code'] = 1;
+        $AccountLogModel = new AccountLogModel();
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+        switch($type){
+            case 'order'://订单相关
+                $where[] = ['change_type','=',3];
+                break;
+            case 'brokerage'://佣金相关
+                $where[] = ['change_type','=',4];
+                break;
+            case 'withdraw'://提现相关
+                $where[] = ['change_type','=',5];
+                break;
+            case 'integral'://积分相关
+                $where[] = ['use_integral','<>',0];
+                break;
+            default:
+                return $this->error('类型错误.');
+                break;
+        }
+        $where[] = ['change_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+        $rows = $AccountLogModel->where($where)->limit($offset,$limit)->order('change_time DESC')->select();
+        foreach ($rows as $key=>$row){
+            //if ($row['bean_value'] > 0) {
+            //    $return['income'] += $row['balance_money'];
+            //}
+            if ($row['balance_money'] != 0){
+                if ( $row['balance_money'] > 0){
+                    if ($row['change_type'] == 4){
+                        $return['income'] += $row['balance_money'];
+                    }
+                    $return['expend'] += $row['balance_money'];
+                    $row['value'] = '+'.$row['balance_money'];
+                }else{
+
+                    $row['value'] = $row['balance_money'];
+                }
+            }elseif ($row['use_integral'] != 0){
+                if ( $row['use_integral'] > 0){
+                    $return['expend'] += $row['use_integral'];
+                    $row['value'] = '+'.$row['use_integral'];
+                }else{
+                    $return['income'] += $row['use_integral'];
+                    $row['value'] = $row['use_integral'];
+                }
+            }else{
+                continue;
+            }
+            $row['_time'] = timeTran($row['change_time']);
+            $return['list'][] = $row;
+        }
+        $return['list'] = [];
+        $return['income'] = $AccountLogModel->where($where)->where('balance_money','gt',0)->sum('balance_money');
+        $return['expend'] = $AccountLogModel->where($where)->where('balance_money','lt',0)->sum('balance_money');
+        $return['income'] = $return['income']?$return['income']:0;
+        $return['expend'] = !empty($return['expend'])?$return['expend']:0;
+        $return['list'] = $rows;
+        return $this->ajaxReturn($return);
+    }
 
 }
