@@ -343,10 +343,11 @@ class Users extends ApiController
         $headimgurl = $this->userInfo['headimgurl'];
         if (empty($headimgurl) == false){
             if (strstr($headimgurl,'http')){
+                $headimgurl = strstr($headimgurl,'https')?str_replace("https","http",$headimgurl):$headimgurl;
                 $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
                 makeDir($file_path);
                 $file_name = $file_path.random_str(12).'.jpg';
-                downloadImage($this->userInfo['headimgurl'],$file_name);
+                downloadImage($headimgurl,$file_name);
                 $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
                 (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
             }
