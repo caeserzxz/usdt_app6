@@ -37,6 +37,7 @@ Page({
     api.fetchPost(api.https_path + '/member/api.users/getHeadImg', {}, function (err, res) {
       if(res.code == 1){
         api.fetchPost(api.https_path + '/member/api.users/wechat_qrcode', { headimgurl: res.headimgurl}, function (err, res) {
+          console.log(res)
           wx.hideLoading();
           _this.setData({
             imgs: res.list,

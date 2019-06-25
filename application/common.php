@@ -566,3 +566,13 @@ function page_array($data = [], $pagescount = 10, $order_field = "", $order = "a
     $return['list'] = $pagedata;
     return $return;  #返回查询数据
 }
+function domain_name_images($_images)
+{
+    return 'http://' . $_SERVER['SERVER_NAME'] . $_images;
+}
+
+function domain_name($_string)
+{
+    $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+    return $sys_protocal . $_SERVER['SERVER_NAME'] . '/' . $_string;
+}

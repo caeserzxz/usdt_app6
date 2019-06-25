@@ -15,7 +15,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.6.1",
 	"appid": "wx7f6dd0468dc44cf7",
-	"projectname": "%E6%96%B0%E7%89%88%E5%95%86%E5%9F%8Eshop",
+	"projectname": "%E6%96%B0%E7%89%88%E5%95%86%E5%9F%8Eshop_main",
 	"cloudfunctionTemplateRoot": "",
 	"debugOptions": {
 		"hidedInDevtools": []

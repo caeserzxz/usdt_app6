@@ -1,6 +1,9 @@
 <?php
 namespace app\publics\controller\api;
 use app\ApiController;
+use app\shop\model\SlideModel;
+use app\shop\model\GoodsModel;
+use app\shop\model\NavMenuModel;
 
 /*------------------------------------------------------ */
 //-- 公共调用
@@ -42,6 +45,18 @@ class Index extends ApiController
         $temp_key = array_column($all_bank,'code');  //键值
         $arr = array_combine($temp_key,$all_bank) ;
         $result['code_bank'] = $arr;
+        $result['code'] = 1;
+        return $this->ajaxReturn($result);
+    }
+    
+    public function  get_index_data(){
+        $GoodsModel = new GoodsModel();
+        $result = [];
+        $result['slideList'] = SlideModel::getRows();//获取幻灯片
+        $result['navMenuList'] = NavMenuModel::getRows();//获取导航菜单
+        $result['classGoods'] = $GoodsModel->getIndexClass();//获取商品橱窗商品
+        $result['promoteList'] = $GoodsModel->getIndexPromoteList();//促销商品
+        $result['bestGoods'] = $GoodsModel->getIndexBestGoods();//猜你喜欢
         $result['code'] = 1;
         return $this->ajaxReturn($result);
     }

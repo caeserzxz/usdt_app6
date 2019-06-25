@@ -11,7 +11,8 @@ use app\member\model\AccountLogModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
-
+use lib\Image;
+use app\weixin\model\MiniModel;
 
 /*------------------------------------------------------ */
 //-- 会员相关API
@@ -428,6 +429,132 @@ class Users extends ApiController
         $return['expend'] = !empty($return['expend'])?$return['expend']:0;
         $return['list'] = $rows;
         return $this->ajaxReturn($return);
+    }
+    public function wechat_qrcode()
+    {
+        $user = $this->userInfo;
+        $headimgurl = input('headimgurl','','trim');
+        //判断缩略图是否存在
+        $path = config('config._upload_').'qrcode/'.$user['user_id'].'/';
+
+
+        $bgimages = settings('share_bg');//"./static/images/backgroundimg.jpg";
+
+        $bgimage = substr($bgimages,1);
+        $bgimg_name = strstr(end(explode('/',substr($bgimage,1))), '.', TRUE);
+
+        $one_name =  md5($user['user_id'].'_'.date('Y')."_one").'_'.$bgimg_name.'.png';
+        $two_name =  md5($user['user_id'].'_'.date('Y')."_two").'_'.$bgimg_name.'.png';
+        $three_name =  md5($user['user_id'].'_'.date('Y')."_three").'_'.$bgimg_name.'.png';
+
+        $list = [];
+        $userqrcode = $this->get_user_mini_qrcode();
+        $image = \think\Image::open($userqrcode);
+        $qrthumbimage = $user['user_id']."_qrcode_".date("Y")."_thumb".'.png';
+        $image->thumb(250, 250)->save($path.$qrthumbimage);
+        $h_name = $user['user_id'].'_'.date('Y')."_head_thumb".'.png';
+        $headimg = \think\Image::open('.'.$headimgurl);
+        $headimg->thumb(180, 180)->save($path.$h_name);
+
+        $one = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $one_name,1,$path.$h_name,$user); //第一张
+        $two = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $two_name,2,$path.$h_name,$user); //第二张
+        $three = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $three_name,3,$path.$h_name,$user); //第三张
+        array_push($list,$one,$two,$three);
+        unlink($userqrcode);
+        unlink($path.$qrthumbimage);
+        unlink($path.$h_name);
+        $this->deldir($path,$bgimg_name);
+        $return['list'] = $list;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+    //获取用户小程序二维码
+    public function get_user_mini_qrcode(){
+
+        $user = $this->userInfo;
+
+        //$page = 'pages/authorizeLogin/authorizeLogin';
+        $page = '';
+        $scene = $user['token'];
+        $mini = new MiniModel();
+        $qrcode = $mini->get_qrcode($page,$scene);
+        $imageName = $user['user_id']."_qrcode_".date("Y").'.png';
+        if (strstr($qrcode,",")){
+            $qrcode = explode(',',$qrcode);
+            $qrcode = $qrcode[1];
+        }
+        $path = config('config._upload_').'qrcode/'.$user['user_id'];
+        if (!is_dir($path)){ //判断目录是否存在 不存在就创建
+            mkdir($path,0777,true);
+        }
+        $imageSrc= $path."/". $imageName; //图片名字
+        if (is_file($imageSrc )){
+            return  $imageSrc ;
+        }
+        file_put_contents($imageSrc, base64_decode($qrcode));//返回的是字节数
+
+        return $imageSrc;
+    }
+    //生成水印图
+    public function dowaterimg($bgimage,$qrcode,$pathname,$type,$header_img,$user){
+        // 已经生成过这个比例的图片就直接返回了
+        if (is_file($pathname)){
+            return  $pathname ;
+        }
+        if($type == 1){
+            $location1 = \think\Image::WATER_CENTER; //二维码居中
+            $location2 =  [50,50];
+            $location3 =  [200,140];
+            $location4 =  [200,90];
+        }elseif($type == 2){
+            $location1 = \think\Image::WATER_SOUTH;//二维码下居中
+            $location2 =  [380,50];
+            $location3 =  [360,250];
+            $location4 =  [360,200];
+        }else{
+            $location1 = [600,700];
+            $location2 =  [30,900];
+            $location3 =  [180,990];
+            $location4 =  [180,940];
+        }
+        $image = \think\Image::open($bgimage);
+
+        $image->water($qrcode, $location1,100)->save($pathname);
+        if($header_img){
+            $image->water($header_img, $location2,100)->save($pathname);
+        }
+        $image->text("昵称 ".$user['nick_name'], "hgzb.ttf", 30,"#000",$location3)->save($pathname);
+        $image->text("ID ".$user['user_id'], "hgzb.ttf", 30,"#000",$location4)->save($pathname);
+        return $pathname;
+    }
+    //清空文件夹函数和清空文件夹后删除空文件夹函数的处理
+    function deldir($path,$bgimg_name){
+        //如果是目录则继续
+        if(is_dir($path)){
+            //扫描一个文件夹内的所有文件夹和文件并返回数组
+            $p = scandir($path);
+            foreach($p as $val){
+                //排除目录中的.和..
+                if($val !="." && $val !=".."){
+                    //如果是目录则递归子目录，继续操作
+                    if(is_dir($path.$val)){
+                        ////子目录中操作删除文件夹和文件
+                        //
+                        //deldir($path.$val.'/');
+                        //
+                        ////目录清空后删除空文件夹
+                        //
+                        //@rmdir($path.$val.'/');
+                    }else{
+                        //如果是之前生成图片直接删除
+                        $code_name = strstr(end(explode('_',$val)), '.', TRUE);
+                        if($bgimg_name != $code_name){
+                            unlink($path.$val);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

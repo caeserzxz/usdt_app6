@@ -254,7 +254,7 @@ Page({
 
     api.fetchPost(api.https_path + 'member/api.address/getList', data, function(err, res) {
       console.log(res)
-      if (res.code == 1) {
+      if (res.code == 1 && res.list) {
         _this.setData({
           addressinfo: res.list[0],
           address_id: res.list[0].address_id,
