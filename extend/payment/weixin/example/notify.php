@@ -77,8 +77,8 @@ class PayNotifyCallBack extends WxPayNotify
             $orderInfo['transaction_id'] = $data["transaction_id"];
             $RoleOrderModel->updatePay($orderInfo);// 修改订单支付状态
         } elseif (stripos($order_sn, 'recharge') !== false) {//用户在线充值
-            if (strlen($order_sn) > 21) {
-                $order_sn = substr($order_sn, 0, 21);
+            if (strlen($order_sn) > 20) {
+                $order_sn = substr($order_sn, 0, 20);
             }
             //Log::DEBUG("充值验证:" . $order_sn);
             $RechargeLogModel = new RechargeLogModel();
