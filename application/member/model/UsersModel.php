@@ -353,6 +353,7 @@ class UsersModel extends BaseModel
         unset($info['password']);
         $info['shareUrl'] = config('config.host_path') . '/?share_token=' . $info['token'];//分享链接
         $info['level'] = userLevel($info['account']['total_integral'], false);//获取等级信息
+        $info['weixin'] = (new WeiXinUsersModel)->where('user_id',$info['user_id'])->find()->toArray();
         if ($info['role_id'] > 0) {
             $info['role'] = (new DividendRoleModel)->info($info['role_id']);
         }else{

@@ -35,6 +35,7 @@ Page({
       title: '图片生成中',
     })
     api.fetchPost(api.https_path + '/member/api.users/getHeadImg', {}, function (err, res) {
+      console.log(res)
       if(res.code == 1){
         api.fetchPost(api.https_path + '/member/api.users/wechat_qrcode', { headimgurl: res.headimgurl}, function (err, res) {
           console.log(res)

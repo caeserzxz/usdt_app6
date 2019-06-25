@@ -341,14 +341,14 @@ class Users extends ApiController
     public function getHeadImg()
     {
         $headimgurl = $this->userInfo['headimgurl'];
-        if (empty($headimgurl) == false) {
-            if (strstr($headimgurl, 'http')) {
-                $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
+        if (empty($headimgurl) == false){
+            if (strstr($headimgurl,'http')){
+                $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
                 makeDir($file_path);
-                $file_name = $file_path . random_str(12) . '.jpg';
-                file_put_contents($file_name, file_get_contents($this->userInfo['headimgurl']));
-                $upArr['headimgurl'] = $headimgurl = trim($file_name, '.');
-                (new UsersModel)->upInfo($this->userInfo['user_id'], $upArr);
+                $file_name = $file_path.random_str(12).'.jpg';
+                downloadImage($this->userInfo['headimgurl'],$file_name);
+                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
+                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
             }
         }
         $return['headimgurl'] = $headimgurl;
