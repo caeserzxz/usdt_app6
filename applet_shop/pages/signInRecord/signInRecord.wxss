@@ -1,0 +1,38 @@
+/* pages/set/set.wxss */
+
+.signInLog .top {
+    display: flex;
+    height: 100rpx;
+    align-items: center;
+    padding: 0 40rpx;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.signInLog .top image {
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.list {
+    margin-top: 20rpx;
+    background-color: #fff;
+    padding: 20rpx 40rpx;
+}
+
+.list .cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 110rpx;
+}
+
+.list .cell .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list .cell .right text:nth-child(2) {
+    margin-top: -10rpx;
+}

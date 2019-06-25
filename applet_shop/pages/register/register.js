@@ -8,12 +8,28 @@ Page({
     /**
      * 发送验证码
      */
-    sendcode: function() {
-        const That = this
-        if (sms.is_send_code == 1) {
-            sms.is_send_code = 0
-            sms.sendcode(That)
+    sendcode: function () {
+      const That = this
+      const user_account = That.data.account
+      if (user_account) {
+        const _data = {
+          'mobile': user_account,
+          'type': 'register',
         }
+        api.fetchPost(api.https_path + '/publics/api.sms/sendCode', _data, function (err, res) {
+          if (res.code == 1) {
+            if (sms.is_send_code == 1) {
+              sms.is_send_code = 0
+              sms.sendcode(That)
+            }
+          }else{
+            api.error_msg(res.msg)
+          }
+        });
+      } else {
+        api.error_msg("请输入手机号码")
+        return false
+      }
     },
 
     /**
@@ -27,6 +43,7 @@ Page({
         fly_out: false,
         fly_out1: false,
         isagree: 1,
+        register_sms:0,
     },
 
 
@@ -64,19 +81,25 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-
+      const That = this
+      api.getconfig('sms_fun', function (err, data) {
+        That.setData({
+          register_sms: data.register
+        })
+      })
     },
 
     doregister: function(options) {
         const That = this
+        const register_sms = That.data.register_sms
         const user_account = options.detail.value.user_account
-        const user_passwrod = options.detail.value.user_passwrod
+        const user_passwrod = options.detail.value.user_password
         const user_code = options.detail.value.user_code
         const user_name = options.detail.value.user_name
         if (user_account == "") {
             api.error_msg("请输入登录账号")
             return false
-        } else if (user_code == "") {
+        } else if (user_code == "" && register_sms == 1) {
             api.error_msg("请输入验证码")
             return false
         } else if (user_name == "") {

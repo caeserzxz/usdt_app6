@@ -11,7 +11,8 @@ use app\member\model\AccountLogModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
-
+use lib\Image;
+use app\weixin\model\MiniModel;
 
 /*------------------------------------------------------ */
 //-- 会员相关API
@@ -35,6 +36,10 @@ class Users extends ApiController
     {
         $return['info'] = $this->userInfo;
         $return['code'] = 1;
+        $return['sign_in'] = settings('sign_in');
+        $superior = $this->Model->getSuperior($this->userInfo['pid']);
+        if ($superior) $superior['reg_time'] = date('Y-m-d', $superior['reg_time']);
+        $return['superior'] = $superior;
         return $this->ajaxReturn($return);
     }
 
@@ -156,7 +161,13 @@ class Users extends ApiController
         $where[] = ['add_time', '>', strtotime(date('Y-m-01', strtotime('-1 month')))];
         $return['month_income'] = $DividendModel->where($where)->sum('dividend_amount');
         $return['month_income'] += $DividendModel->where($where)->sum('dividend_bean');
-
+        //累计收益
+        unset($where);
+        $where[] = ['dividend_uid','=',$this->userInfo['user_id']];
+        $where[] = ['status','in',[1,2,3,9]];
+        $return['end_income'] = $DividendModel->where($where)->sum('dividend_amount');
+        $return['end_income'] += $DividendModel->where($where)->sum('dividend_bean');
+        $return['end_income'] = number_format($return['end_income'],2);
         //end
         $return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
         $return['code'] = 1;
@@ -307,6 +318,7 @@ class Users extends ApiController
         if (empty($upArr['nick_name']) == true) {
             return $this->error('请填写用户昵称.');
         }
+        $upArr['mobile'] = input('mobile', '', 'trim');
         $where[] = ['nick_name', '=', $upArr['nick_name']];
         $where[] = ['user_id', '<>', $this->userInfo['user_id']];
         $count = $this->Model->where($where)->count('user_id');
@@ -329,14 +341,14 @@ class Users extends ApiController
     public function getHeadImg()
     {
         $headimgurl = $this->userInfo['headimgurl'];
-        if (empty($headimgurl) == false) {
-            if (strstr($headimgurl, 'http')) {
-                $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
+        if (empty($headimgurl) == false){
+            if (strstr($headimgurl,'http')){
+                $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
                 makeDir($file_path);
-                $file_name = $file_path . random_str(12) . '.jpg';
-                file_put_contents($file_name, file_get_contents($this->userInfo['headimgurl']));
-                $upArr['headimgurl'] = $headimgurl = trim($file_name, '.');
-                (new UsersModel)->upInfo($this->userInfo['user_id'], $upArr);
+                $file_name = $file_path.random_str(12).'.jpg';
+                downloadImage($this->userInfo['headimgurl'],$file_name);
+                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
+                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
             }
         }
         $return['headimgurl'] = $headimgurl;
@@ -344,5 +356,205 @@ class Users extends ApiController
         return $this->ajaxReturn($return);
     }
 
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户变动日志-----改
+    /*------------------------------------------------------ */
+    public function AccountLog()
+    {
+        $type = input('type','order','trim');
+        $time = input('time','','trim');
+        $p = input('p',1);
+        $limit = 10;
+        $offset = ($p-1)*$limit;
+        if (empty($time)){
+            $time = date('Y年m月');
+        }
+        $return['time'] = $time;
+        $_time = strtotime(str_replace(array('年','月'),array('-',''),$time));
+        $return['code'] = 1;
+        $AccountLogModel = new AccountLogModel();
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+        switch($type){
+            case 'order'://订单相关
+                $where[] = ['change_type','=',3];
+                break;
+            case 'brokerage'://佣金相关
+                $where[] = ['change_type','=',4];
+                break;
+            case 'withdraw'://提现相关
+                $where[] = ['change_type','=',5];
+                break;
+            case 'integral'://积分相关
+                $where[] = ['use_integral','<>',0];
+                break;
+            default:
+                return $this->error('类型错误.');
+                break;
+        }
+        $where[] = ['change_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+        $rows = $AccountLogModel->where($where)->limit($offset,$limit)->order('change_time DESC')->select();
+        foreach ($rows as $key=>$row){
+            //if ($row['bean_value'] > 0) {
+            //    $return['income'] += $row['balance_money'];
+            //}
+            if ($row['balance_money'] != 0){
+                if ( $row['balance_money'] > 0){
+                    if ($row['change_type'] == 4){
+                        $return['income'] += $row['balance_money'];
+                    }
+                    $return['expend'] += $row['balance_money'];
+                    $row['value'] = '+'.$row['balance_money'];
+                }else{
+
+                    $row['value'] = $row['balance_money'];
+                }
+            }elseif ($row['use_integral'] != 0){
+                if ( $row['use_integral'] > 0){
+                    $return['expend'] += $row['use_integral'];
+                    $row['value'] = '+'.$row['use_integral'];
+                }else{
+                    $return['income'] += $row['use_integral'];
+                    $row['value'] = $row['use_integral'];
+                }
+            }else{
+                continue;
+            }
+            $row['_time'] = timeTran($row['change_time']);
+            $return['list'][] = $row;
+        }
+        $return['list'] = [];
+        $return['income'] = $AccountLogModel->where($where)->where('balance_money','gt',0)->sum('balance_money');
+        $return['expend'] = $AccountLogModel->where($where)->where('balance_money','lt',0)->sum('balance_money');
+        $return['income'] = $return['income']?$return['income']:0;
+        $return['expend'] = !empty($return['expend'])?$return['expend']:0;
+        $return['list'] = $rows;
+        return $this->ajaxReturn($return);
+    }
+    public function wechat_qrcode()
+    {
+        $user = $this->userInfo;
+        $headimgurl = input('headimgurl','','trim');
+        //判断缩略图是否存在
+        $path = config('config._upload_').'qrcode/'.$user['user_id'].'/';
+
+
+        $bgimages = settings('share_bg');//"./static/images/backgroundimg.jpg";
+
+        $bgimage = substr($bgimages,1);
+        $bgimg_name = strstr(end(explode('/',substr($bgimage,1))), '.', TRUE);
+
+        $one_name =  md5($user['user_id'].'_'.date('Y')."_one").'_'.$bgimg_name.'.png';
+        $two_name =  md5($user['user_id'].'_'.date('Y')."_two").'_'.$bgimg_name.'.png';
+        $three_name =  md5($user['user_id'].'_'.date('Y')."_three").'_'.$bgimg_name.'.png';
+
+        $list = [];
+        $userqrcode = $this->get_user_mini_qrcode();
+        $image = \think\Image::open($userqrcode);
+        $qrthumbimage = $user['user_id']."_qrcode_".date("Y")."_thumb".'.png';
+        $image->thumb(250, 250)->save($path.$qrthumbimage);
+        $h_name = $user['user_id'].'_'.date('Y')."_head_thumb".'.png';
+        $headimg = \think\Image::open('.'.$headimgurl);
+        $headimg->thumb(180, 180)->save($path.$h_name);
+
+        $one = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $one_name,1,$path.$h_name,$user); //第一张
+        $two = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $two_name,2,$path.$h_name,$user); //第二张
+        $three = $this->dowaterimg($bgimage,$path.$qrthumbimage,$path . $three_name,3,$path.$h_name,$user); //第三张
+        array_push($list,$one,$two,$three);
+        unlink($userqrcode);
+        unlink($path.$qrthumbimage);
+        unlink($path.$h_name);
+        $this->deldir($path,$bgimg_name);
+        $return['list'] = $list;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+    //获取用户小程序二维码
+    public function get_user_mini_qrcode(){
+
+        $user = $this->userInfo;
+
+        //$page = 'pages/authorizeLogin/authorizeLogin';
+        $page = '';
+        $scene = $user['token'];
+        $mini = new MiniModel();
+        $qrcode = $mini->get_qrcode($page,$scene);
+        $imageName = $user['user_id']."_qrcode_".date("Y").'.png';
+        if (strstr($qrcode,",")){
+            $qrcode = explode(',',$qrcode);
+            $qrcode = $qrcode[1];
+        }
+        $path = config('config._upload_').'qrcode/'.$user['user_id'];
+        if (!is_dir($path)){ //判断目录是否存在 不存在就创建
+            mkdir($path,0777,true);
+        }
+        $imageSrc= $path."/". $imageName; //图片名字
+        if (is_file($imageSrc )){
+            return  $imageSrc ;
+        }
+        file_put_contents($imageSrc, base64_decode($qrcode));//返回的是字节数
+
+        return $imageSrc;
+    }
+    //生成水印图
+    public function dowaterimg($bgimage,$qrcode,$pathname,$type,$header_img,$user){
+        // 已经生成过这个比例的图片就直接返回了
+        if (is_file($pathname)){
+            return  $pathname ;
+        }
+        if($type == 1){
+            $location1 = \think\Image::WATER_CENTER; //二维码居中
+            $location2 =  [50,50];
+            $location3 =  [200,140];
+            $location4 =  [200,90];
+        }elseif($type == 2){
+            $location1 = \think\Image::WATER_SOUTH;//二维码下居中
+            $location2 =  [380,50];
+            $location3 =  [360,250];
+            $location4 =  [360,200];
+        }else{
+            $location1 = [600,700];
+            $location2 =  [30,900];
+            $location3 =  [180,990];
+            $location4 =  [180,940];
+        }
+        $image = \think\Image::open($bgimage);
+
+        $image->water($qrcode, $location1,100)->save($pathname);
+        if($header_img){
+            $image->water($header_img, $location2,100)->save($pathname);
+        }
+        $image->text("昵称 ".$user['nick_name'], "hgzb.ttf", 30,"#000",$location3)->save($pathname);
+        $image->text("ID ".$user['user_id'], "hgzb.ttf", 30,"#000",$location4)->save($pathname);
+        return $pathname;
+    }
+    //清空文件夹函数和清空文件夹后删除空文件夹函数的处理
+    function deldir($path,$bgimg_name){
+        //如果是目录则继续
+        if(is_dir($path)){
+            //扫描一个文件夹内的所有文件夹和文件并返回数组
+            $p = scandir($path);
+            foreach($p as $val){
+                //排除目录中的.和..
+                if($val !="." && $val !=".."){
+                    //如果是目录则递归子目录，继续操作
+                    if(is_dir($path.$val)){
+                        ////子目录中操作删除文件夹和文件
+                        //
+                        //deldir($path.$val.'/');
+                        //
+                        ////目录清空后删除空文件夹
+                        //
+                        //@rmdir($path.$val.'/');
+                    }else{
+                        //如果是之前生成图片直接删除
+                        $code_name = strstr(end(explode('_',$val)), '.', TRUE);
+                        if($bgimg_name != $code_name){
+                            unlink($path.$val);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -1,7 +1,8 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/goodsList/goodsList",
+    "pages/promoteList/promoteList",
     "pages/productDetails/productDetails",
     "pages/myorders/myorders",
     "pages/orderDetails/orderDetails",
@@ -56,13 +57,19 @@
     "pages/topupDetails/topupDetails",
     "pages/rank/rank",
     "pages/fansDetais/fansDetais",
-    "pages/selectFans/selectFans"
+    "pages/selectFans/selectFans",
+    "pages/payment/payment",
+    "pages/payorder/payorder",
+    "pages/sign/sign",
+    "pages/signInRecord/signInRecord",
+    "pages/authorizeLogin/authorizeLogin",
+    "pages/couponCenter/couponCenter"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F2F2F2",
     "navigationBarTitleText": "正品商城",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#666666",
@@ -101,5 +108,6 @@
         "text": "我的"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

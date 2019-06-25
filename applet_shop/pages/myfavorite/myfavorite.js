@@ -12,27 +12,10 @@ Page({
     offsetRecord: { 'index': -1, 'startX': 0, 'offset': 0, 'direction': null }, // 偏移记录
     deleteButtonWidth: 150, // 删除按钮的宽度(rpx)
     pixelScale: 1,
-    list: [
-      {
-        id: 1,
-        title: '元旦狂欢畅销款情侣手表对表送礼礼盒时尚休闲石英情侣对表2只装',
-        desc: '铁锈红-M码',
-        checked: false
-      },
-      {
-        id: 2,
-        title: '连帽系腰带鹅绒羽绒服大毛领手工刺连帽系腰带鹅绒羽绒服大毛领手工刺',
-        desc: '深蓝色- M码',
-        checked: false
-        
-      },
-      {
-        id: 3,
-        title: '春节不打烊狂欢畅销款情侣手表对表送礼礼盒连帽系腰带鹅绒羽绒服大毛领手工刺',
-        desc: '深蓝色- M码',
-        checked: false
-      }
-    ]
+    list: [],
+    counts:0,
+    https_path:api.https_path,
+    checked_ids:[],
   },
   openEdit() {
     this.setData({
@@ -44,21 +27,22 @@ Page({
       edit: false
     });
   },
+  //选中事件
   checkboxTap(e) {
+    const _this = this
     let id = e.currentTarget.id;
-    let list = this.data.list;
+    let list = _this.data.list;
     let len = list.length;
     let checked  = [];
     for (let i = 0; i < len; i++) {
-      if (list[i].id == id) {
+      if (list[i].goods_id == id) {
         list[i].checked = !list[i].checked;
       }
     }
-
-    let selectAll = this.data.selectAll;
+    let selectAll = _this.data.selectAll;
     for (let i = 0; i < list.length; i++) {
       if (list[i].checked == true) {
-        checked.push(list[i].id);
+        checked.push(list[i].goods_id);
       } 
     }
     if (checked.length == len){
@@ -66,50 +50,106 @@ Page({
     } else {
       selectAll = false;
     }
-    this.setData({
+    _this.setData({
+      checked_ids: checked,
       list: list,
       selectAll: selectAll
     });
   },
-  del(e){
-    let id = e.currentTarget.id;
+
+  //删除收藏
+  delgoods:function(e){
+    const _this = this
+    let goods_id = e.currentTarget.id;
     wx:wx.showModal({
       title: '操作提示',
       content: '你要删除这个收藏吗？',
+      success: (res) => {
+        if (!res.confirm) return;
+        let data = {
+          goods_id: goods_id,
+        }
+        _this.loadInfo('collect', data);
+       
+        _this.loadInfo('getCollectlist', {});
+      }
     })
   },
-  checkboxChange(e) {
-    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
-    let list = this.data.list;
+
+  //取消收藏
+  qxCollect:function(){
+    const _this = this
+    let ids = _this.data.checked_ids; 
+    
+    if (ids.length == 0){
+      api.error_msg('请先选择需要取消的商品');
+      return false;
+    }
+   
+    wx: wx.showModal({
+      title: '操作提示',
+      content: '确定要取消选中商品收藏吗？',
+      success: (res) => {
+        if (!res.confirm) return;
+        let data = {
+          gids: ids.join(','),
+        }
+        _this.loadInfo('cancelCollect', data);
+
+        _this.loadInfo('getCollectlist', {});
+      }
+    })
   },
+
+
+
+  // checkboxChange(e) {
+  //   const _this = this;
+  //   console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+
+  //   let list = _this.data.list;
+  //   let goods_id = e.detail.value
+
+  //   for (let i = 0; i < list.length; i++) {
+  //     if (list[i].goods_id == goods_id) {
+  //       list[i].checked = !list[i].checked;
+  //     }
+  //   }
+  //   _this.setData({
+  //     list: list
+  //   })
+  // },
+
+
   selall: function(){
-    let that = this;
-    let list = this.data.list;
-    that.setData({
-      selectAll: !this.data.selectAll
+    const  _this = this;
+    let list = _this.data.list;
+    _this.setData({
+      selectAll: !_this.data.selectAll
     });
 
-    if (this.data.selectAll){
+    if (_this.data.selectAll){
       for(let i=0; i<list.length; i++){
         list[i].checked = true
       }
-      that.setData({
+      _this.setData({
         list: list
       });
     } else {
       for (let i = 0; i < list.length; i++) {
         list[i].checked = false
       }
-      that.setData({
+      _this.setData({
         list: list
       });
     }
+    // console.log(list)
   },
   /**
      * 表格cell触摸开始事件
      */
   onTableCellTouchStart: function (event) {
-    console.log(event);
+    // console.log(event);
     if (event.changedTouches.length != 1) return;
     let index = event.currentTarget.dataset.index;
     let x = event.changedTouches[0].clientX;
@@ -170,8 +210,53 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '数据加载中...',
+    })
+    setTimeout(function(){
+
+      wx.hideLoading();
+    },1000)
+  },
+
+
+    loadInfo: function (action, data) {
+    const  _this = this
+    _this.setData({
+      offsetRecord: { 'index': -1, 'startX': 0, 'offset': 0, 'direction': null },
+      list:[],
+      edit:false
+    })
+
+      let loadurl = api.https_path + 'shop/api.goods/' + action;
+    let _data = data
+
+    api.fetchPost(loadurl, _data, function (err, res) {
+      console.log(res)
+      if (res.code == 1) {
+        if(res.list.length >0){
+          for (let i = 0; i < res.list.length; i++) {
+            res.list[i].checked = false;
+          }
+          _this.setData({
+            list: res.list,
+            counts: res.count
+          })
+        }
+      } 
+
+    })
 
   },
+
+  goCollect:function(){
+
+    wx.switchTab({
+      url: '/pages/index/index',
+    })
+
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -184,7 +269,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    const _this = this
+    let data = {};
+    _this.loadInfo('getCollectlist', data);
   },
 
   /**

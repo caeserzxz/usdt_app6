@@ -1,63 +1,56 @@
-<!--pages/myorders/myorders.wxml-->
-<view class="page">
-  <view class="h-search weui-cell bg-fff border-after">
+<view class="h-search weui-cell bg-fff border-after">
     <view class="h-search_input weui-cell__bd">
-      <image src="/images/selech01.png" bindtap='selectFans'></image>
-      <input value="" placeholder='请输入ID号' confirm-type="search"></input>
+        <image src="/images/selech01.png"></image>
+        <input value="" bindinput='searchfans' placeholder='请输入ID号' confirm-type="search"></input>
     </view>
-    <view class="fs30 weui-cell__ft text-default">取消</view>
-  </view>
-  <view class="weui-flex flex-tbtn mb10">
-    <view class="weui-flex__item {{active1? 'active':''}}" bindtap="tabchang1">
-      <view class="text-muted fs32 text1">全部</view>
-      <view class="text-muted fs22">100</view>
-    </view>
-    <view class="weui-flex__item {{active2? 'active':''}}" bindtap="tabchang2">
-      <view class="text-muted fs32 text1">第一层</view>
-      <view class="text-muted fs22">3人</view>
-    </view>
-    <view class="weui-flex__item {{active3? 'active':''}}" bindtap="tabchang3">
-      <view class="text-muted fs32 text1">第二层</view>
-      <view class="text-muted fs22">20人</view>
-    </view>
-    <view class="weui-flex__item {{active4? 'active':''}}" bindtap="tabchang4">
-      <view class="text-muted fs32 text1">第三层</view>
-      <view class="text-muted fs22">80人</view>
-    </view>
-  </view>
-  <view class="weui-cells border-after bg-none mt0">
-   <block wx:for='{{fansDetais}}' wx:key=''>
-    <navigator url="/pages/fansDetais/fansDetais" hover-class="none" class="weui-cell border-before bg-fff mt20">
-      <view class="weui-cell__hd">
-        <image src="{{imgUrl}}{{item.userimg}}" class="tx-img"></image>
-      </view>
-      <view class="weui-cell__bd">
-        <view class="weui-cell__title">
-          <text class="fs28 fw800">{{item.userName}}</text>
-          <text class="btn1 fs22 fw800">VIP</text>
-        </view>
-        <view class="weui-cell__tips">
-          <text class="text-muted fs26 mt10">ID {{item.userID}}</text>
-        </view>
-      </view>
-      <view class="weui-cell__ft" catchtap='openData' data-index='{{index}}'>
-        <image src='/images/goodslist05.png' style='transform:rotate({{item.transformVal}}deg);'></image>
-      </view>
-    </navigator>
-          <view class='info fs26 text-muted' hidden='{{item.hiddenVal}}'>
-        <view class='row'>
-          <text>ETC:{{item.userETC}}</text>
-          <text>ETC:{{item.userETH}}</text>
-        </view>
-        <view class='row'>
-          <text>ETH:{{item.userETB}}</text>
-          <text>USDT:{{item.userUSDT}}</text>
-        </view>
-        <view class='row'>
-          <text>我的佣金:{{item.userMoney}}</text>
-          <text>我的积分:{{item.userIntegration}}</text>
-        </view>
-      </view>
-    </block>
-  </view>
+    <view bindtap='clicksearch' class="fs30 weui-cell__ft text-default">搜索</view>
 </view>
+<view wx:if="{{hide_tab == 1}}" class="weui-flex flex-tbtn mb10">
+    <view class="weui-flex__item {{level == 'all' ? 'active':''}}" data-level='all' bindtap="tabchang">
+        <view class="text-muted fs32 text1">全部</view>
+        <view class="text-muted fs22">{{stat['all']}}</view>
+    </view>
+    <view class="weui-flex__item {{level == 1 ? 'active':''}}" data-level='1' bindtap="tabchang">
+        <view class="text-muted fs32 text1">第一层</view>
+        <view class="text-muted fs22">{{stat[1]}}人</view>
+    </view>
+    <view class="weui-flex__item {{level == 2 ? 'active':''}}" data-level='2' bindtap="tabchang">
+        <view class="text-muted fs32 text1">第二层</view>
+        <view class="text-muted fs22">{{stat[2]}}人</view>
+    </view>
+    <!-- <view class="weui-flex__item {{level == 3 ? 'active':''}}" data-level='3' bindtap="tabchang">
+        <view class="text-muted fs32 text1">第三层</view>
+        <view class="text-muted fs22">{{stat[3]}}人</view>
+    </view> -->
+</view>
+<scroll-view scroll-y="true" lower-threshold="50" bindscrolltolower="scrolltloadlist" class='scroll-view'>
+    <!--pages/myorders/myorders.wxml-->
+    <view class="page">
+        <view wx:if="{{lists[0]}}" class="weui-cells border-after bg-none mt0">
+            <block wx:for='{{lists}}' wx:key='key'>
+                <navigator url="#/pages/fansDetais/fansDetais" hover-class="none" class="weui-cell border-before bg-fff mt20">
+                    <view class="weui-cell__hd">
+                        <image class="tx-img" src="{{item.headimgurl ? item.headimgurl : '/images/df_tx.png'}}" />
+                    </view>
+                    <view class="weui-cell__bd">
+                        <view class="weui-cell__title">
+                            <text class="fs28 fw800">{{item.nick_name}}</text>
+                            <!-- <text class="btn1 fs22 fw800">VIP</text> -->
+                        </view>
+                        <view class="weui-cell__tips">
+                            <text class="text-muted fs26 mt10">ID {{item.user_id}}</text>
+                        </view>
+                    </view>
+                    <!-- <view class="weui-cell__ft"><image src='/images/goodslist05.png' style='transform:rotate({{item.transformVal}}deg);'></image></view> -->
+                </navigator>
+                <view class='info fs26 text-muted' hidden='{{item.hiddenVal}}'>
+                    <view class='row'>
+                        <text>我的佣金:{{item.account.balance_money}}</text>
+                        <text>我的积分:{{item.account.total_integral}}</text>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class='no-data' wx:else>--没有相关数据哦--</view>
+    </view>
+</scroll-view>

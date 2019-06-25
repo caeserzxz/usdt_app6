@@ -3,14 +3,18 @@
   <view class='sp_title'>商品信息</view>
   <navigator url='/pages/productDetails/productDetails' class="weui-cell flex-start border-none">
     <view class="weui-cell__hd hd_img">
-      <image src="{{imgBase}}goods01.png" />
+      <image src="{{path}}{{data.pic}}" />
     </view>
     <view class="weui-cell__bd">
-      <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-      <view class='fs28 text-muted mt10'>铁锈红-M码</view>
+      <view class='pj_title'>{{data.goods_name}}</view>
+      <view class='fs28 text-muted mt10'>{{data.sku_name}}</view>
       <view class='pj_box'>
         <view class='price'>
-                                <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
+          <view class='money' class='fs24 mr10'>
+            <text class='fw_b'>￥</text>
+            <text class='fs42 ff'>{{data.exp_price[0]}}</text>
+            <text class='ff'>.{{data.exp_price[1]}}</text>
+          </view>
         </view>
       </view>
     </view>
@@ -31,14 +35,16 @@
 <view class="weui-cells">
   <view class='sp_title'>上传照片</view>
   <view class="weui-cell border-none" style="flex-wrap:wrap;">
-    <view class='upload'>
-      <image src="{{imgBase}}goods01.png" class='upload_img' />
-      <image src="/images/closeImg.png" class='delete_img' />
-    </view>
+    <block wx:if="{{upload_list}}">
+      <view class='upload' wx:for="{{upload_list}}" wx:key="key">
+        <image src="{{path}}{{item}}" class="upload_img" />
+        <image src="/images/closeImg.png" class='delete_img' id="{{index}}" data-index="{{key}}" bindtap="delImg" />
+      </view>
+    </block>
     <view class='add'>
-      <image src="/images/addImg.png" class='add_img' />
+      <image src="/images/addImg.png" class='add_img' bindtap="addImg" />
     </view>
   </view>
 </view>
 
-<navigator class='btn_primary' ho style='margin:50rpx 30rpx;'>提交</navigator>
+<view class='btn_primary' style='margin:50rpx 30rpx;' bindtap="submit">提交</view>

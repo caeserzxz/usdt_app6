@@ -9,9 +9,9 @@
             <view class='label {{fly_out?"fly_out":""}}'>手机号</view>
             <input type='text' bindfocus='focus' name="user_account" bindblur='blur' bindinput='account' />
         </view>
-        <view class='input_box mt10'>
-            <view class='label {{fly_out1?"fly_out":""}}'>验证码</view>
-            <input type='{{eyes?"text":"password"}}' name="user_code" bindfocus='focus' bindblur='blur' bindinput='password' />
+        <view class='input_box mt10' wx:if="{{register_sms == 1}}">
+            <view class='label {{fly_out?"fly_out":""}}'>验证码</view>
+            <input type='text' name="user_code" bindfocus='focus' bindblur='blur' bindinput='account' />
             <view bindtap='sendcode' class='eye_img fs28 fw600 text-main '>{{code_title}}</view>
         </view>
         <view class='input_box mt10'>
@@ -20,7 +20,7 @@
         </view>
         <view class='input_box mt10'>
             <view class='label {{fly_out?"fly_out":""}}'>密码</view>
-            <input type='text' bindfocus='focus' name="user_password" bindblur='blur' bindinput='account' />
+            <input type='{{eyes?"text":"password"}}' bindfocus='focus' name="user_password" bindblur='blur' bindinput='password' />
         </view>
         <view class='mt10'>
         <checkbox-group bindchange="checkboxChange">

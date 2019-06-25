@@ -4,16 +4,16 @@
       <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
         <block wx:for="{{imgUrls}}" wx:key="dtsw">
           <swiper-item>
-            <image wx:if="{{item}}" src="{{imgBase}}{{item}}" class="slide-image" />
+            <image wx:if="{{item}}" src="{{imgBase}}{{item.goods_img}}" class="slide-image" />
           </swiper-item>
         </block>
       </swiper>
       <view class='icon_btns'>
-        <view>
+        <view bindtap="toqrcode">
           <image src='/images/goodsIcon01.png' />
         </view>
         <view bindtap='collect'>
-          <image wx:if="{{isCollect}}" src='/images/goodsIcon03_lh.png' />
+          <image wx:if="{{isCollect==1}}" src='/images/goodsIcon03_lh.png' />
           <image wx:else src='/images/goodsIcon03.png' />
         </view>
       </view>
@@ -24,49 +24,60 @@
         <view class='weui-cell__bd'>
           <view>
             <text class='fs30'>￥</text>
-            <text class='fs52 ff'>369</text>
-            <text class='badge offset'>活动价</text>
+
+            <block wx:if="{{goods.is_spec == 0}}">
+              <em class="fs52 ff">{{goods.exp_price[0]}}</em>
+              <p class="fw_b ff">.{{goods.exp_price[1]}}</p>
+            </block>
+            <block wx:else>
+              <em class="fs52 ff">{{goods.exp_min_price[0]}}</em>
+              <p class="fw_b ff">.{{goods.exp_min_price[1]}}</p>
+              <em class="fs52 ff">~</em>
+              <em class="fs52 ff">{{goods.exp_max_price[0]}}</em>
+              <p class="fw_b ff">.{{goods.exp_max_price[1]}}</p>
+            </block>
+            <text class='badge offset' wx:if="{{goods.is_promote>0}}">活动价</text>
           </view>
           <view>
-            <text class='sprice'>￥2635.00</text>
+            <text class='sprice'>￥{{goods.market_price}}</text>
           </view>
         </view>
       </view>
       <view class='weui-cell border-none pt0'>
         <view class='weui-cell__bd'>
-          <view class='title fs34 fw600 ellipsisLn2'>冬季新款羽绒服宽松面包服休闲百搭短款羽绒服女女红色喜庆</view>
+          <view class='title fs34 fw600 ellipsisLn2'>{{goods.goods_name}}</view>
         </view>
       </view>
       <view class='weui-cell border-none pt0'>
         <view class='weui-cell__bd'>
           <view>
-            <text class='fs28 text-muted'>热销26953</text>
-            <text class='fs28 text-muted ml30'>运费10元</text>
+            <text class='fs28 text-muted'>热销{{goods.sale_num+goods.virtual_sale}}</text>
+            <!-- <text class='fs28 text-muted ml30'>运费10元</text> -->
           </view>
         </view>
       </view>
     </view>
   </view>
 
-  <view class='weui-cells'>
+  <view wx:if="{{goods.is_spec == 1}}" class='weui-cells'>
     <view class='weui-cell weui-cell__ft_in-access' bindtap='openGG'>
       <view class='weui-cell__bd fs32 fw600'>选择规格</view>
-      <view class='weui-cell__ft'>蓝色 / M码 / 5件</view>
+      <view class='weui-cell__ft'>请选择规格</view>
     </view>
   </view>
 
-  <view class='weui-cells'>
-    <view class='weui-cell weui-cell__ft_in-access'>
+  <view wx:if="{{plnum>0}}" class='weui-cells'>
+    <!-- <view class='weui-cell weui-cell__ft_in-access'>
       <view class='weui-cell__hd'>
         <image class='pplogo' src='/images/shoplogo.png'></image>
       </view>
       <view class='weui-cell__bd fs32 fw600'>阿玛尼官方旗舰店</view>
-    </view>
+    </view> -->
 
     <view class='weui-cell bor_left0  weui-cell__ft_in-access'>
       <view class='weui-cell__bd fs32 fw600'>
         用户评价
-        <text class='text-muted'>(9)</text>
+        <text class='text-muted'>({{plnum}})</text>
       </view>
       <view class='weui-cell__ft'>更多</view>
     </view>
@@ -76,23 +87,22 @@
         <image class='pl_tx' src='/images/df_tx.png'></image>
       </view>
       <view class='weui-cell__bd'>
-        <view class='fs28'>狂风扫落叶</view>
-        <view class='fs24 text-muted'>2018.12.22</view>
+        <view class='fs28'>{{pinglun.user_name}}</view>
+        <view class='fs24 text-muted'>{{pinglun._time}}</view>
       </view>
     </view>
     <view class='weui-cell border-none pt0'>
       <view class='weui-cell__bd'>
-        <view class='pl_text'>大衣是A字型的，有暗扣，系腰带效果一般，12.17买的，以为低价了，结果刚买完又降价了，预料不到的促销</view>
-        <view class='pl_imgs'>
-          <image src='{{imgBase}}goods01.png' />
-          <image src='{{imgBase}}goods01.png' />
-          <image src='{{imgBase}}goods01.png' />
-          <image src='{{imgBase}}goods01.png' />
+        <view class='pl_text'>{{pinglun.content}}</view>
+        <view wx:if="{{pinglun.imgs}}">
+        <view wx:for="{{pinglun.imgs}}" wx:key="" class='pl_imgs'>
+          <image src='{{imgBase}}{{item.image}}'/>
+        </view>
         </view>
       </view>
     </view>
 
-    <view class='weui-cell border-none  weui-cell__ft_in-access'>
+    <!-- <view class='weui-cell border-none  weui-cell__ft_in-access'>
       <view class='weui-cell__bd fs32 fw600'>
         问大家
         <text class='text-muted'>(26)</text>
@@ -117,7 +127,7 @@
         <view class='fs28'>羽绒服吗？有人鉴定过羽绒含量是99%以上吗？</view>
         <view class='fs26 mt10 text-muted'>4个回答</view>
       </view>
-    </view>
+    </view> -->
   </view>
 
   <view class='weui-cells mb20'>
@@ -126,8 +136,9 @@
         <view class='fs32 fw600'>商品详情</view>
         <view class='details_content'>
           <!--图片内容-->
-          <image src='{{imgBase}}imgtext.png' mode='widthFix'></image>
-          <image src='{{imgBase}}imgtext.png' mode='widthFix'></image>
+          <!-- <image src='{{imgBase}}imgtext.png' mode='widthFix'></image>
+          <image src='{{imgBase}}imgtext.png' mode='widthFix'></image> -->
+          <rich-text nodes="{{goods.m_goods_desc}}"></rich-text>
         </view>
       </view>
     </view>
@@ -136,7 +147,7 @@
 
 <view class='bottom_btns'>
   <view class='left'>
-    <view>
+    <view bindtap='toindex'>
       <view class='icon'>
         <image src='/images/tabbar_icon01.png'></image>
       </view>
@@ -149,8 +160,8 @@
       <view class='text'>客服</view>
     </view>
     <view>
-      <view class='icon'>
-        <text class='num'>8</text>
+      <view class='icon' bindtap='tocart'>
+        <text class='num'>{{cartInfo.num}}</text>
         <image src='/images/tabbar_icon04.png'></image>
       </view>
       <view class='text'>购物车</view>
@@ -158,47 +169,43 @@
   </view>
   <view class='right'>
     <view class='btns'>
-      <view class='btn1'>加入购物车</view>
-      <view class='btn2'>立即购买</view>
+      <view class='btn1' bindtap='openGG'>加入购物车</view>
+      <view class='btn2' bindtap='openGG'>立即购买</view>
     </view>
   </view>
 </view>
 
 <!-- 弹出规格选择 -->
-<view class='modelBg' wx:if='{{guigeModel}}' bindtap='closeGG'></view>
-<view class="model  {{guigeModel?'model_show':''}}">
+<view wx:if="{{guigeModel == 1}}"  bindtap='closeGG' class='modelBg'></view>
+<view wx:if="{{guigeModel == 1}}" class="model">
   <view class="modelContent">
     <view class="closeBox" bindtap='closeGG'>
       <image src='/images/close_icon.png'></image>
     </view>
     <view class="top">
       <view class="left">
-        <image src='{{imgBase}}goods01.png'></image>
+        <image src='{{imgBase}}{{goods.goods_img}}'></image>
       </view>
       <view class="right">
         <view class="money">
           <view class="text-red fs30 num">
             <p class="fw_b fm_p">￥</p>
-            <em class="fs52 ff">199</em>
+            <em class="fs52 ff">{{valprice*goodsnumber}}</em>
             <p class="fw_b ff">.00</p>
           </view>
-          <text class="fs22 color_w BGcolor_r">活动价</text>
+          <text class="fs22 color_w BGcolor_r" wx:if="{{goods.is_promote>0}}">活动价</text>
         </view>
-        <view class="fs24 color_9 moneyPrimary">￥2635.00</view>
-        <p class="fs28 fw_b color_3 goodstype">{{goodsitem}}-{{sizeitem}}</p>
+        <view class="fs24 color_9 moneyPrimary">{{goods.market_price}}</view>
+        <p wx:if="{{is_spec==1}}" class="fs28 fw_b color_3 goodstype">{{goodsitem}}-{{sizeitem}}</p>
       </view>
     </view>
     <view class="cantre">
-      <view class="block">
-        <text class="fs32 fw_b color_3">颜色</text>
-        <view class="list color">
-          <text class="fs28 color_3 {{item == goodsitem?'tag_active':''}} bor-1px" data-money="198.99" wx:for="{{goodsColor}}" wx:key='*index' bindtap='changColor' data-classify="{{item}}">{{item}}</text>
-        </view>
-      </view>
-      <view class="block">
-        <text class="fs32 fw_b color_3">尺码</text>
-        <view class="list size">
-          <text class="fs28 color_3 {{item == sizeitem?'tag_active':''}} bor-1px" wx:for="{{goodsSize}}" wx:key='*index' bindtap='changSize' data-classify="{{item}}">{{item}}</text>
+      <view wx:if="{{goods.is_spec == 1}}" wx:for="{{skuArr}}" wx:key="" wx:for-index="bindex">
+        <view class="block">
+          <text class="fs32 fw_b color_3">{{item.name}}</text>
+          <view class="list color">
+            <text wx:if="{{item.is_show == 1}}" wx:for="{{item.lstVal}}" wx:key="" wx:for-item="vo" class="fs28 color_3 {{vo.id == coArr[bindex]?'tag_active':''}} bor-1px" data-pid="{{bindex}}" data-id="{{vo.id}}" bindtap='changColor'>{{vo.val}}</text>
+          </view>
         </view>
       </view>
       <view class="block">
@@ -206,15 +213,15 @@
           <text class="fs32 fw_b color_3">数量</text>
           <view class="number">
             <text class="number-sub fs30" bindtap='minus'>-</text>
-            <input class="number-input fs28" type="text" value="{{goodsnumber}}" />
+            <input class="number-input fs28" type="text" bindinput='input_num' value="{{goodsnumber}}" />
             <text class="number-plus fs30" bindtap='add'>+</text>
           </view>
         </view>
       </view>
     </view>
     <view class="buttBox">
-      <text class="fs28 fw_b color_w BGcolor_3">加入购物车</text>
-      <text class="fs28 fw_b color_w BGcolor_r">立即购买</text>
+      <text class="fs28 fw_b color_w BGcolor_3" bindtap='addcart'>加入购物车</text>
+      <text class="fs28 fw_b color_w BGcolor_r" bindtap='buy_now'>立即购买</text>
     </view>
   </view>
 </view>

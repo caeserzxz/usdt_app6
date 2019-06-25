@@ -1,188 +1,143 @@
 <view class="page">
 
-  <!--已发货-->
-  <view wx:if="{{orderStatus==1}}" class="b-top text-white">
-    <view class="fs34 fw600">
-      <image src="/images/dd_img1.png" class="img1"></image>
-      已发货
-    </view>
-    <view class="fs26" style="opacity:0.6; ">您的商品已经火速运输中，请耐心等待！</view>
-  </view>
-
-  <!--待发货-->
-  <view wx:if="{{orderStatus==2}}" class="b-top text-white">
-    <view class="fs34 fw600">
-      <image src="/images/orderIcon04.png" class="img1"></image>
-      待发货
-    </view>
-    <view class="fs26" style="opacity:0.6; ">您的商品还在打包中，请耐心等待！</view>
-  </view>
-
-  <!--待付款-->
-  <view wx:if="{{orderStatus==3}}" class="b-top text-white">
-    <view class="fs34 fw600">
-      <image src="/images/orderIcon03.png" class="img1"></image>
-      待付款
-    </view>
-    <view class="fs26" ><text style="opacity:0.6; ">剩</text><text style="opacity:1; ">23小时59分</text><text style="opacity:0.6; ">自动关闭</text></view>
-  </view>
-
-  <!--已取消-->
-  <view wx:if="{{orderStatus==4}}" class="b-top text-white">
-    <view class="fs34 fw600">
-      <image src="/images/orderIcon02.png" class="img1"></image>
-      已取消
-    </view>
-    <view class="fs26" ><text style="opacity:0.6; ">该订单您已经申请退款</text></view>
-  </view>
-
-
-  <view class='weui-cells default mt0'>
-    <view class='weui-cell'>
-      <view class='weui-cell__bd'>
-        <view class='fs30'>
-          <text>周杰伦</text>
-          <text class='ml10'>15984568411</text>
-          <text class='badge'>默认</text>
+    <!--已发货-->
+    <view class="b-top text-white">
+        <view class="fs34 fw600">
+            <image src="/images/dd_img1.png" class="img1"></image>{{orderinfo.ostatus}}
         </view>
-        <view class='fs28 text-muted mt30'>广州市海珠区客村新南港西路丽影广场4栋105室</view>
-      </view>
+        <view wx:if="{{orderinfo.ostatus == '已发货'}}" class="fs26" style="opacity:0.6; ">您的商品已经火速运输中，请耐心等待！</view>
+        <view wx:if="{{orderinfo.ostatus == '待发货'}}" class="fs26" style="opacity:0.6; ">您的商品还在打包中，请耐心等待！</view>
+        <view wx:if="{{orderinfo.pay_status > 1}}" class="fs26" style="opacity:0.6; ">您的订单申请了退款</view>
     </view>
-  </view>
 
-  <view class="orders-box" style="padding-bottom:120rpx;">
-    <view class="weui-cells border-before border-after pt40 pb30 mb20 mt20">
-      <view class="weui-cell pt0">
-        <view class="weui-cell__bd">
-          <text class="text-default fs28">订单编号:256385423663</text>
-        </view>
-        <view class="weui-cell__ft">
-          <text class="text-muted fs28">已支付</text>
-        </view>
-      </view>
-      <view class="weui-media-boxs">
-        <navigator url='/pages/productDetails/productDetails'class="weui-media-box pro-cell weui-media-box_appmsg  border-before">
-          <view class="weui-media-box__hd">
-            <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
-          </view>
-          <view class="weui-media-box__bd" style="width:100%;">
-            <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
-            <p class="weui-media-box__desc mt10 fs28">
-              <text>粉红色- S码 </text>
-              <navigator wx:if="{{orderStatusl == 1 && orderStatusl == 2}}"  url="/pages/sales/sales" class="fr text-red" style="float:right;">申请售后</navigator>
-            </p>
-            <view class="mt10 money">
-              <text class="fs24 fw_b">￥</text>
-              <text class="fs36 fw500 ff">328</text>
-              <text class="fs24 ff">.00</text>
-              <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+    <view class='weui-cells default mt0'>
+        <view class='weui-cell'>
+            <view class='weui-cell__bd'>
+                <view class='fs30'>
+                    <text>{{orderinfo.consignee}}</text>
+                    <text class='ml10'>{{orderinfo.mobile}}</text>
+                </view>
+                <view class='fs28 text-muted mt30'>{{orderinfo.merger_name}} {{orderinfo.address}}</view>
             </view>
-          </view>
-        </navigator>
-        <navigator url='/pages/productDetails/productDetails' class="weui-media-box pro-cell weui-media-box_appmsg  border-before">
-          <view class="weui-media-box__hd">
-            <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
-          </view>
-          <view class="weui-media-box__bd" style="width:100%;">
-            <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
-            <p class="weui-media-box__desc mt10 fs28">
-              <text>粉红色- S码</text>
-              <navigator wx:if="{{orderStatusl == 1 && orderStatusl == 2}}"  url="/pages/sales/sales" class="fr text-red" style="float:right;">申请售后</navigator>
-            </p>
-            <view class="mt10 money">
-              <text class="fs24 fw_b">￥</text>
-              <text class="fs36 fw500 ff">328</text>
-              <text class="fs24 ff">.00</text>
-              <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+        </view>
+    </view>
+
+    <view class="orders-box" style="padding-bottom:120rpx;">
+        <view class="weui-cells border-before border-after pt40 pb30 mb20 mt20">
+            <view class="weui-cell pt0">
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:{{orderinfo.order_sn}}</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-muted fs28">{{orderinfo.ostatus}}</text>
+                </view>
             </view>
-          </view>
-        </navigator>
-      </view>
-      <view class="weui-cell border-before pt20 pb20">
-        <view class="weui-cell__bd">
-          <text class="fs28">优惠券</text>
-        </view>
-        <view class="weui-cell__ft text-default">
-          <text class="fs28 fw_b">-￥</text>
-          <text class="fs34 ff">30.00</text>
-        </view>
-      </view>
-      <view class="weui-cell border-before pt20 pb20">
-        <view class="weui-cell__bd">
-          <text class="fs28">会员折扣</text>
-        </view>
-        <view class="weui-cell__ft text-default">
-          <text class="fs28 fw_b">-￥</text>
-          <text class="fs34 ff">30.00</text>
-        </view>
-      </view>
-      <view class="weui-cell border-before pt20 pb20">
-        <view class="weui-cell__bd">
-          <text class="fs28">运费</text>
-        </view>
-        <view class="weui-cell__ft text-default">
-          <text class="fs28 fw_b">￥</text>
-          <text class="fs34 ff">10.00</text>
-        </view>
-      </view>
-      <view class="weui-cell border-before pt20 pb20">
-        <view class="weui-cell__bd">
-          <text class="fs28 fw_b">实付金额</text>
-        </view>
-        <view class="weui-cell__ft text-default">
-          <text class="fs28 fw_b">￥</text>
-          <text class="fs34 ff">982.00</text>
-        </view>
-      </view>
-    </view>
-    <view class='weui-cells ptb20'>
-      <view class="weui-cell">
-        <view class="weui-cell__bd">
-          <view class='text-muted'>
-            <text> 支付方式:</text>
-            <text>支付宝</text>
-          </view>
-          <view class='text-muted mt20'>
-            <text> 下单时间:</text>
-            <text>2018.26 12:32</text>
-          </view>
-          <view class='text-muted mt20'>
-            <text> 发货时间:</text>
-            <text>2018.26 12:32</text>
-          </view>
-          <view class='text-muted mt20'>
-            <text> 确认收货时间:</text>
-            <text>2018.26 12:32</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
-  
-  <!--已发货-->
-  <view wx:if="{{orderStatus==1}}" class="fixed-box">
-    <view class="btn1">联系客服</view>
-    <navigator url="/pages/express/express" class="btn1 red">查看物流</navigator>
-  </view>
+            <view class="weui-media-boxs">
 
- 
+                <navigator wx:for="{{orderinfo.goodsList}}" wx:key="key" url='/pages/productDetails/productDetails?goods_id={{item.goods_id}}' class="weui-media-box pro-cell weui-media-box_appmsg  border-before">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{item.goods_pic}}" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">{{item.goods_name}}</view>
+                        <p class="weui-media-box__desc mt10 fs28">
+                            <text>{{item.sku_name}}</text>
+                            <navigator wx:if="{{orderinfo.isAfterSale == 0 && item.has_asleafter == 0}}" url="/pages/saleAfter/saleAfter?order_sn={{orderinfo.order_sn}}&order_id={{orderinfo.order_id}}&rec_id={{item.rec_id}}" class="fr text-red" style="float:right;">申请售后</navigator>
+                        </p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 ff">{{item.goods_price}}</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x{{item.goods_number}}</text>
+                        </view>
+                    </view>
+                </navigator>
 
-  <!--待发货-->
-  <view wx:if="{{orderStatus==2}}" class="fixed-box">
-    <view class="btn1">联系客服</view>
-  </view>
+            </view>
+            <view class="weui-cell border-before pt20 pb20">
+                <view class="weui-cell__bd">
+                    <text class="fs28">优惠券</text>
+                </view>
+                <view class="weui-cell__ft text-default">
+                    <text class="fs28 fw_b">-￥</text>
+                    <text class="fs34 ff">{{orderinfo.use_bonus}}</text>
+                </view>
+            </view>
+            <view class="weui-cell border-before pt20 pb20">
+                <view class="weui-cell__bd">
+                    <text class="fs28">会员折扣</text>
+                </view>
+                <view class="weui-cell__ft text-default">
+                    <text class="fs28 fw_b">-￥</text>
+                    <text class="fs34 ff">{{orderinfo.discount}}</text>
+                </view>
+            </view>
+            <view class="weui-cell border-before pt20 pb20">
+                <view class="weui-cell__bd">
+                    <text class="fs28">运费</text>
+                </view>
+                <view class="weui-cell__ft text-default">
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 ff">{{orderinfo.shipping_fee}}</text>
+                </view>
+            </view>
+            <view class="weui-cell border-before pt20 pb20">
+                <view class="weui-cell__bd">
+                    <text class="fs28 fw_b">实付金额</text>
+                </view>
+                <view class="weui-cell__ft text-default">
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 ff">{{orderinfo.real_amount}}</text>
+                </view>
+            </view>
+        </view>
+        <view class='weui-cells ptb20'>
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class='text-muted'>
+                        <text>支付方式：</text>
+                        <text>{{orderinfo.pay_name}}</text>
+                    </view>
+                    <view class='text-muted mt20'>
+                        <text>下单时间：</text>
+                        <text>{{pay_time}}</text>
+                    </view>
+                    <view class='text-muted mt20'>
+                        <text>发货时间：</text>
+                        <text>{{shipping_time}}</text>
+                    </view>
+                    <view class='text-muted mt20'>
+                        <text>收货时间：</text>
+                        <text>{{sign_time}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!--已发货-->
+    <view wx:if="{{orderStatus==1}}" class="fixed-box">
+        <view class="btn1">联系客服</view>
+        <navigator url="/pages/express/express" class="btn1 red">查看物流</navigator>
+    </view>
+
+
+
+    <!--待发货-->
+    <view wx:if="{{orderStatus==2}}" class="fixed-box">
+        <view class="btn1">联系客服</view>
+    </view>
 </view>
 
 <!--待付款-->
-  <view wx:if="{{orderStatus==3}}" class="fixed-box">
+<view wx:if="{{orderStatus==3}}" class="fixed-box">
     <view class="btn1">联系客服</view>
     <view class="btn1">取消订单</view>
     <navigator url="/" class="btn1 red">立即支付</navigator>
-  </view>
+</view>
 
 
- <!--已取消-->
-  <view wx:if="{{orderStatus==4}}" class="fixed-box">
+<!--已取消-->
+<view wx:if="{{orderStatus==4}}" class="fixed-box">
     <view class="btn1">联系客服</view>
     <view class="btn1 red">删除订单</view>
-  </view>
+</view>

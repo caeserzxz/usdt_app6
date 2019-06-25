@@ -1,12 +1,13 @@
 <!--pages/addBank/addBank.wxml-->
+<form bindsubmit="formSubmit">
 <view class="weui-cells weui-cells_form mt0">
   <view class="weui-cell weui-cell__ft_in-access">
     <view class="weui-cell__hd">
       <label class="weui-label fw600">银行类型</label>
     </view>
     <view class="weui-cell__bd">
-      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-        <view class='fs28 fw600 text-default'>{{array[index]}}</view>
+      <picker bindchange="bindPickerChange" value="{{index}}" data-code="{{bank_arr[index].code}}" range="{{bank_arr}}" range-key="{{'name'}}" > 
+        <view class='fs28 fw600 text-default'>{{bank_arr[index].name}}</view>
       </picker>
     </view>
   </view>
@@ -15,7 +16,7 @@
       <label class="weui-label fw600">持卡人</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" placeholder="请输入持卡人姓名" />
+      <input class="weui-input" placeholder="请输入持卡人姓名" name='bank_cardholder'/>
     </view>
   </view>
   <view class="weui-cell">
@@ -23,7 +24,7 @@
       <label class="weui-label fw600">卡号</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" type="number" placeholder="请输入卡号" />
+      <input class="weui-input" type="number" placeholder="请输入卡号" name='bank_card_number' />
     </view>
   </view>
   <view class="weui-cell">
@@ -31,7 +32,7 @@
       <label class="weui-label fw600">持卡人电话</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" type="number" placeholder="请输入持卡人电话" />
+      <input class="weui-input" type="number" placeholder="请输入持卡人电话"  name='bank_cardholder_phone' />
     </view>
   </view>
   <view class="weui-cell">
@@ -39,7 +40,7 @@
       <label class="weui-label fw600">网点所在地</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" placeholder="请输入网点所在地" />
+      <input class="weui-input" placeholder="请输入网点所在地"  name='bank_location_outlet'  />
     </view>
   </view>
   <view class="weui-cell">
@@ -47,11 +48,13 @@
       <label class="weui-label fw600">支行名称</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" placeholder="请输入支行名称" />
+      <input class="weui-input" placeholder="请输入支行名称" name='bank_branch_name' />
     </view>
   </view>
 </view>
 
 <view class='btn_box mt100'>
-  <text class='btn_primary'>确认添加</text>
+  <!-- <text class='btn_primary'>确认添加</text> -->
+    <button form-type="submit" class='btn_primary'>确认添加</button>
 </view>
+</form>

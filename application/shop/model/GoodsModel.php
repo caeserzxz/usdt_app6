@@ -607,4 +607,25 @@ class GoodsModel extends BaseModel
         $inArr['log_time'] = time();
         return (new GoodsLogModel)::create($inArr);
     }
+    /*------------------------------------------------------ */
+    //-- 获取首页促销商品
+    /*------------------------------------------------------ */
+    public function getIndexPromoteList()
+    {
+        $mkey = 'IndexPromoteList';
+        $goodsList = Cache::get($mkey);
+        if (empty($goodsList) == false) return $goodsList;
+        $gwhere[] = ['isputaway', '=', 1];
+        $gwhere[] = ['is_delete', '=', 0];
+        $gwhere[] = ['store_id', '=', 0];
+        $gwhere[] = ['is_promote', '=', 1];
+        $gwhere[] = ['promote_start_date','<=',time()];
+        $gwhere[] = ['promote_end_date','>=',time()];
+        $gooodsList = $this->where($gwhere)->order('is_best desc,goods_id desc')->limit(4)->column('goods_id');
+        foreach ($gooodsList as $key => $goods_id) {
+            $gooodsList[$key] = $this->info($goods_id);
+        }
+        Cache::set($mkey, $gooodsList, 60);
+        return $gooodsList;
+    }
 }

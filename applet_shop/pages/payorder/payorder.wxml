@@ -1,0 +1,52 @@
+<view class="page">
+    <checkbox-group class="weui-cells cardbox">
+        <view class="weui-cell" style="padding: 1rem 0; border-bottom: 1px dashed #e0e0e0;">
+            <view class="weui-cell__bd tc card-top">
+                <view>付款金额</view>
+                <view class="text-red mt5">
+                    <span class="fs26">￥</span>
+                    <b class="fs40">{{pay_account}}</b>
+                </view>
+            </view>
+        </view>
+    </checkbox-group>
+
+    <view class="weui-panel weui-panel_access">
+        <view class="weui-panel__hd">
+            <view class="fs26">还需支付</view>
+            <view class="text-red fr" style="line-height: 1.4em;">
+                <span class="fs24">￥</span>
+                <b class="fs30">{{pay_account}}</b>
+            </view>
+        </view>
+        <view class="weui-panel__bd fs10">
+            <radio-group class="weui-cells mt0" bindchange='payType'>
+                <label class="weui-cell weui-cell_access weui-check__label" for="x11">
+                    <view class="weui-cell__hd">
+                        <radio id='x11' checked color='#f8584f' value='miniAppPay' />
+                    </view>
+                    <view class="weui-cell__bd">
+                        <view class="fs26">在线支付</view>
+                    </view>
+                    <view class="weui-cell__ft">
+                        <image style="width: 0.8rem; height: 0.8rem; margin-right:3px;" src="{{icon_wxpay}}" />
+                        <span>微信支付</span>
+                    </view>
+                </label>
+                <!-- <label class="weui-cell weui-check__label" for="x12">
+          <view class="weui-cell__hd">
+            <radio id='x12' color='#f8584f' value='cod' />
+          </view>
+          <view class="weui-cell__bd">
+            <view class="fs26">余额支付</view>
+          </view>
+        </label> -->
+            </radio-group>
+        </view>
+
+    </view>
+
+    <view class="btn-area">
+        <view class="btn-primary" bindtap='payOrder'>去付款</view>
+    </view>
+</view>
