@@ -11,7 +11,7 @@
                     </view>
                 </view>
                 <view class="type">
-                    <image src="/images/signInYBG{{isSameDay.length}}.png"></image>
+                    <!--<image src="/images/signInYBG{{isSameDay.length}}.png"></image>-->
                     <view class="giftBox" bindtap='getAward'></view>
                 </view>
                 <view class="date fs22 color_6">
