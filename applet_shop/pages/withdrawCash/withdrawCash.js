@@ -28,6 +28,7 @@ Page({
     _this.setData({
       balance_money: balance_money
     })
+    api.islogin() //判断是否已经登录，没有登录跳转去登录
     _this.loadlist()
     api.getconfig('', function (err, data) {
       // console.log(data)

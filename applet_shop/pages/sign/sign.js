@@ -15,11 +15,11 @@ Page({
         lastDay: '',
         isSameDay: [], //历史签到时间戳
         cycleArr: [], //环形签到日期
-        dayString: '1556467200', //当天时间戳
+        dayString: new Date().getTime(), //当天时间戳
         modelType: false
     },
     getDate: function() { //获取当月日期
-        let mydate = new Date(this.data.dayString * 1000);
+        let mydate = new Date(this.data.dayString);
         let year = mydate.getFullYear();
         let month = mydate.getMonth() + 1;
         let day = mydate.getDate();
@@ -28,7 +28,6 @@ Page({
             month: month,
             day: day,
         })
-        // console.log("今天：" + this.data.day);
     },
     //画日历
     setDate: function() {
@@ -157,15 +156,14 @@ Page({
     //获取签到信息
     signIndex: function (that) {
         api.fetchPost(api.https_path + 'member/api.Center/signIndex', [], function (err, res) {
-            // console.log(res);
+            console.log(res);
             if (res.code == 1 && res.signData) {
                 var isSign = res.is_sign == 1?true:false;
                 that.setData({
                     isSign: isSign,
                     cycleArr: res.signTime,
-                    dayString: res.timeData,
+                    dayString: res.timeData*1000,
                     isSameDay: res.signData,
-                    dataList: res.dataList,
                     integral: res.use_integral
                 })
             }

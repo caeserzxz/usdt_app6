@@ -539,4 +539,144 @@ class UsersModel extends BaseModel
         Cache::set('userSuperior_' . $user_id, $chain, 300);
         return $chain;
     }
+    /*------------------------------------------------------ */
+    //-- 签到首页
+    /*------------------------------------------------------ */
+    public function signIndex($user_id = 0,$type = 0)
+    {
+        $redis_name = "sing_".$user_id."_".date('Ymd');
+        $info = Cache::get($redis_name);
+        if(empty($info)){
+            $info = Db::name('sign')->where(['user_id'=>$user_id])->field('time')->select();
+            Cache::set($redis_name,$info,86400);
+        }
+        foreach ($info as $key => $value) {
+            $data[] = $value['time'];
+        }
+        if ($type == 0) {
+            $demo = implode("','", $data);
+            $demo = "'".$demo."'";
+        }else{
+             $demo = $data;
+        }
+        return $demo;
+    }
+    /*------------------------------------------------------ */
+    //-- 签到首页七条历史记录
+    /*------------------------------------------------------ */
+    public function signTime($user_id = 0,$type = 0)
+    {
+        $redis_name = "signTime_".$user_id."_".date('Ymd');
+        $info = Cache::get($redis_name);
+        if(empty($info)){
+            $info = Db::name('sign')->where(['user_id'=>$user_id])->field('time')->limit(7)->order('time desc')->select();
+            Cache::set($redis_name,$info,86400);
+        }
+        foreach ($info as $key => $value) {
+            $data[] = date('n.d', $value['time']);;
+        }
+        if ($type == 0) {
+            $demo = implode("','", $data);
+            $demo = "'".$demo."'";
+        }else{
+             $demo = $data;
+        }
+        return $demo;
+    }
+    /*------------------------------------------------------ */
+    //-- 签到积分
+    /*------------------------------------------------------ */
+    public function signIntegral()
+    {
+        $use_integral = settings('sign_integral');
+        return $use_integral;
+    }
+    /*------------------------------------------------------ */
+    //-- 是否签到 1签到0还没签到
+    /*------------------------------------------------------ */
+    public function is_sign($user_id = 0)
+    {
+        $data[0] = strtotime(date('Y-m-d', time()) . '00:00:00');
+        $data[1] = strtotime(date('Y-m-d', time()) . '23:59:59');
+        $res = Db::name('sign')->where(['user_id'=>$user_id])->whereTime('time', 'between', [$data[0], $data[1]])->find();
+        $ress = $res?1:0;
+        return $ress;
+    }
+    /*------------------------------------------------------ */
+    //-- 签到记录
+    /*------------------------------------------------------ */
+    public function signInfos($user_id = 0, $date, $page, $limit)
+    {
+        $where[] = ['user_id','=',$user_id];
+        $where[] = ['time','>=',$date[0]];
+        $where[] = ['time','<=',$date[1]];
+        $p = ($page-1)*$limit;
+        $info = Db::name('sign')->where($where)->order('time desc')->limit($p, $limit)->select();
+        foreach ($info as $key => $value) {
+            $info[$key]['timeData'] = date('Y-m-d', $value['time']);
+        }
+        return $info;
+    }
+    public function signInfo($user_id = 0)
+    {
+        $time1 = mktime(0,0,0,date('m'),1,date('Y'));
+        $time2 = mktime(23,59,59,date('m'),date('t'),date('Y'));
+        $where[] = ['user_id','=',$user_id];
+        $where[] = ['time','>=',$time1];
+        $where[] = ['time','<=',$time2];
+
+        $redis_name = "singInfo_".$user_id."_".date('Ymd');
+        $info = Cache::get($redis_name);
+        if(empty($info)){
+            $info = Db::name('sign')->where($where)->order('time desc')->select();
+            Cache::set($redis_name,$info,86400);
+        }
+        foreach ($info as $key => $value) {
+            $info[$key]['timeData'] = date('Y-m-d', $value['time']);
+        }
+        return $info;
+    }
+    /*------------------------------------------------------ */
+    //-- 签到
+    /*------------------------------------------------------ */
+    public function signIng($user_id = 0)
+    {
+        $begin = strtotime(date('Y-m-d', time()) . '00:00:00');
+        $end = strtotime(date('Y-m-d', time()) . '23:59:59');
+        $res = Db::name('sign')->where(['user_id'=>$user_id])->whereTime('time', 'between', [$begin, $end])->find();
+        if($res){ return false; }
+
+        $inArr['use_integral'] = settings('sign_integral');
+        $inArr['user_id'] = $user_id;
+        $inArr['time'] = time();
+        $redis_name1 = "sing_".$user_id."_".date('Ymd');
+        $redis_name2 = "signTime_".$user_id."_".date('Ymd');
+        Db::startTrans();//启动事务
+        try {
+            $AccountLogModel = new AccountLogModel();
+            $changedata['change_desc'] = '签到赠积分';
+            $changedata['change_type'] = 9;
+            $changedata['by_id'] = 0;
+            $changedata['use_integral'] = $inArr['use_integral'];
+            $re = $AccountLogModel->change($changedata, $user_id, false);
+            if ($re == true) {
+                $ress = Db::name('sign')->insert($inArr);
+                if($ress == true){
+                    Db::commit();// 提交事务
+                    Cache::rm($redis_name1);
+                    Cache::rm($redis_name2);
+                    return true;
+                }else{
+                    Db::rollback();// 回滚事务
+                    return false;
+                }
+            }else{
+                Db::rollback();// 回滚事务
+                return false;
+            }
+        } catch (Exception $e) {
+             Db::rollback();// 回滚事务
+             return $this->error($e->getMessage);
+        }
+    }
 }
