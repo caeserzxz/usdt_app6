@@ -140,6 +140,7 @@ class alipayMobile
 						$RechargeLogModel = new RechargeLogModel();
 						$orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,order_amount,user_id,status')->find();
                         if (empty($orderInfo)) exit("fail");
+                        $orderInfo = $orderInfo->toArray();
 						if ($orderInfo['status'] == 9) exit("success");
 						if($orderInfo['order_amount']!=$_POST['price'])  exit("fail"); //验证失败
 						$orderInfo['transaction_id'] = $trade_no;

@@ -111,12 +111,12 @@ class UsersModel extends BaseModel
         if (preg_match("/^[a-zA-Z]+$/", $pwd)) {
             return '密码不能全是字母，请包含数字，字母大小写或者特殊字符';
         }
-        if (preg_match("/^[0-9A-Z]+$/", $pwd)) {
+        /*if (preg_match("/^[0-9A-Z]+$/", $pwd)) {
             return '请包含数字，字母大小写或者特殊字符';
         }
         if (preg_match("/^[0-9a-z]+$/", $pwd)) {
             return '请包含数字，字母大小写或者特殊字符';
-        }
+        }*/
         return true;
     }
     /*------------------------------------------------------ */
@@ -353,7 +353,6 @@ class UsersModel extends BaseModel
         unset($info['password']);
         $info['shareUrl'] = config('config.host_path') . '/?share_token=' . $info['token'];//分享链接
         $info['level'] = userLevel($info['account']['total_integral'], false);//获取等级信息
-        $info['weixin'] = (new WeiXinUsersModel)->where('user_id',$info['user_id'])->find()->toArray();
         if ($info['role_id'] > 0) {
             $info['role'] = (new DividendRoleModel)->info($info['role_id']);
         }else{
@@ -490,10 +489,9 @@ class UsersModel extends BaseModel
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $_pid;
             $res = $UsersBindModel->create($inArr);
-            if ($is_edit == true && $res !== false) return false;
+            if ($is_edit == true && $res->bid < 1) return false;
             $_pid = $this->where('user_id', $_pid)->value('pid');
         }
-
 
         if ($is_edit == false) {
             //发送模板消息
