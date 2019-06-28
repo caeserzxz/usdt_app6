@@ -27,8 +27,12 @@ function toUnderScore($str)
  * 自定义URL
 */
 function _url($url,$arr=[],$isNotHtml=true,$domain = false){
-    $url = url($url,$arr,$isNotHtml,$domain);
-    if ($domain == true){
+    if ($domain == '/'){
+        $url = url($url,$arr,$isNotHtml,false);
+    }else{
+        $url = url($url,$arr,$isNotHtml,$domain);
+    }
+    if (empty($domain) == false){
         $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);
     }
 	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D'),array("'+","+'",'{{','}}'),$url);
@@ -536,64 +540,4 @@ function getSubstr($string, $start, $length) {
       }else{
           return $string;
       }
-}
-
-/**
- * 数组分页
- * @param array $data
- * @param int $pagescount
- * @param string $order_field
- * @param string $order
- * @return array
- */
-function page_array($data = [], $pagescount = 10, $order_field = "", $order = "asc")
-{
-    //$order SORT_DESC 倒序  SORT_ASC 正序
-    $pages = input('pages',1); #判断当前页面是否为空 如果为空就表示为第一页面
-    $start = ($pages - 1) * $pagescount; #计算每次分页的开始位置
-    $totals = count($data);
-    $countpage = ceil($totals / $pagescount); #计算总页面数
-    $pagedata = [];
-    if ($order_field) {
-        $data = array_sort($data, $order_field, $order);
-    }
-    for ($i = $start; $i < ($start + $pagescount); $i++) {
-        if ($data[$i]) {
-            $pagedata[] = $data[$i];
-        }
-    }
-    $return['page_count'] = $countpage;
-    $return['list'] = $pagedata;
-    return $return;  #返回查询数据
-}
-function domain_name_images($_images)
-{
-    return 'http://' . $_SERVER['SERVER_NAME'] . $_images;
-}
-
-function domain_name($_string)
-{
-    $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
-    return $sys_protocal . $_SERVER['SERVER_NAME'] . '/' . $_string;
-}
-/*------------------------------------------------------ */
-//-- 保存网络图片到本地
-//-- @param string $url 网络图片地址
-//-- @return string $path 保存的路径及文件名 ./public/upload/headimg/s3f21sdf3s1ads.jpg
-/*------------------------------------------------------ */
-function downloadImage($url,$path){
-	$ch=curl_init();
-	$timeout=5;
-	curl_setopt($ch,CURLOPT_URL,$url);
-	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
-	$img=curl_exec($ch);
-	curl_close($ch);
-
-	$fp2=@fopen($path,'a');
-	fwrite($fp2,$img);
-	fclose($fp2);
-	unset($img,$url);
-
-	return true;
 }
