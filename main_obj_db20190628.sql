@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 05/06/2019 15:32:07
+ Date: 28/06/2019 16:46:26
 */
 
 SET NAMES utf8mb4;
@@ -529,6 +529,7 @@ CREATE TABLE `distribution_role_order` (
   `pay_status` tinyint(1) DEFAULT '0' COMMENT '支付状态，0未支付，1已支付',
   `transaction_id` varchar(150) DEFAULT '' COMMENT '第三方平台交易流水号',
   `user_id` mediumint(8) NOT NULL COMMENT '购买会员',
+  `is_pay` tinyint(1) DEFAULT '0' COMMENT '是否需要支付',
   `pay_id` tinyint(3) DEFAULT NULL COMMENT '支付ID',
   `pay_code` varchar(20) DEFAULT NULL COMMENT '支付Code',
   `pay_name` varchar(120) DEFAULT NULL COMMENT '支付名称',
@@ -559,51 +560,51 @@ CREATE TABLE `distribution_role_order` (
 -- Records of distribution_role_order
 -- ----------------------------
 BEGIN;
-INSERT INTO `distribution_role_order` VALUES (1, 'role2019051430606', 0.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802148, 1557802713, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (2, 'role2019051481174', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802759, 1557802759, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (3, 'role2019051485303', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802867, 1557802867, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (4, 'role2019051472846', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557804419, 1557804420, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (5, 'role2019051461575', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834331, 1557834332, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (6, 'role2019051457774', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834379, 1557834379, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (7, 'role2019051468307', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834474, 1557834475, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (8, 'role2019051421307', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834550, 1557834550, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (9, 'role2019051444393', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834627, 1557834627, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (10, 'role2019051491793', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835116, 1557835117, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (11, 'role2019051455675', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835148, 1557835149, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (12, 'role2019051478111', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835187, 1557835188, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (13, 'role2019051400419', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835288, 1557835288, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (14, 'role2019051401822', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835316, 1557835316, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (15, 'role2019051429912', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835376, 1557835377, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (16, 'role2019051444989', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835513, 1557835513, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (17, 'role2019051433919', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835794, 1557835794, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (18, 'role2019051441768', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835946, 1557835947, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (19, 'role2019051477511', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847478, 1557847478, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (20, 'role2019051494800', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847616, 1557847616, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (21, 'role2019051435870', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847652, 1557847652, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (22, 'role2019051407978', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847704, 1557847704, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (23, 'role2019051457450', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847731, 1557847731, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (24, 'role2019051435292', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847874, 1557847874, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (25, 'role2019051486538', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847904, 1557847905, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (26, 'role2019051418810', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847964, 1557847965, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (27, 'role2019051427454', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848275, 1557848276, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (28, 'role2019051426139', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848333, 1557848333, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (29, 'role2019051444651', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848376, 1557848376, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (30, 'role2019051429923', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848892, 1557848892, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (31, 'role2019051464999', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849081, 1557849081, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (32, 'role2019051402780', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849206, 1557849206, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (33, 'role2019051475496', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849295, 1557849295, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (34, 'role2019051421114', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849347, 1557849347, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (35, 'role2019051464998', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849477, 1557849478, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (36, 'role2019051495234', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849534, 1557849535, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (37, 'role2019051545344', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849698, 1557849698, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (38, 'role2019051569339', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849985, 1557849985, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (39, 'role2019051581153', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850046, 1557850046, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (40, 'role2019051523710', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850169, 1557850169, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (41, 'role2019051550869', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850957, 1557850957, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (42, 'role2019051510423', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557851826, 1557851826, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (43, 'role2019052027679', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, '::1', 1558323608, 1558323609, 1, 41.00, 1);
-INSERT INTO `distribution_role_order` VALUES (44, 'role2019052009193', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1558323657, 1558323657, 1, 42.00, 1);
-INSERT INTO `distribution_role_order` VALUES (45, 'role2019052434916', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, '姓名', '440782198406282118', '15625077763', 110000, 110100, 110101, '北京,北京市,东城区', '', 0, '::1', 1558682304, 1558682305, 1, 23.00, 1);
+INSERT INTO `distribution_role_order` VALUES (1, 'role2019051430606', 0.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802148, 1557802713, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (2, 'role2019051481174', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802759, 1557802759, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (3, 'role2019051485303', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802867, 1557802867, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (4, 'role2019051472846', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557804419, 1557804420, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (5, 'role2019051461575', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834331, 1557834332, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (6, 'role2019051457774', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834379, 1557834379, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (7, 'role2019051468307', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834474, 1557834475, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (8, 'role2019051421307', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834550, 1557834550, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (9, 'role2019051444393', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834627, 1557834627, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (10, 'role2019051491793', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835116, 1557835117, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (11, 'role2019051455675', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835148, 1557835149, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (12, 'role2019051478111', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835187, 1557835188, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (13, 'role2019051400419', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835288, 1557835288, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (14, 'role2019051401822', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835316, 1557835316, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (15, 'role2019051429912', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835376, 1557835377, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (16, 'role2019051444989', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835513, 1557835513, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (17, 'role2019051433919', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835794, 1557835794, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (18, 'role2019051441768', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835946, 1557835947, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (19, 'role2019051477511', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847478, 1557847478, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (20, 'role2019051494800', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847616, 1557847616, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (21, 'role2019051435870', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847652, 1557847652, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (22, 'role2019051407978', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847704, 1557847704, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (23, 'role2019051457450', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847731, 1557847731, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (24, 'role2019051435292', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847874, 1557847874, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (25, 'role2019051486538', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847904, 1557847905, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (26, 'role2019051418810', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847964, 1557847965, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (27, 'role2019051427454', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848275, 1557848276, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (28, 'role2019051426139', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848333, 1557848333, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (29, 'role2019051444651', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848376, 1557848376, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (30, 'role2019051429923', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848892, 1557848892, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (31, 'role2019051464999', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849081, 1557849081, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (32, 'role2019051402780', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849206, 1557849206, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (33, 'role2019051475496', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849295, 1557849295, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (34, 'role2019051421114', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849347, 1557849347, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (35, 'role2019051464998', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849477, 1557849478, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (36, 'role2019051495234', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849534, 1557849535, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (37, 'role2019051545344', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849698, 1557849698, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (38, 'role2019051569339', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849985, 1557849985, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (39, 'role2019051581153', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850046, 1557850046, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (40, 'role2019051523710', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850169, 1557850169, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (41, 'role2019051550869', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850957, 1557850957, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (42, 'role2019051510423', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557851826, 1557851826, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (43, 'role2019052027679', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, '::1', 1558323608, 1558323609, 1, 41.00, 1);
+INSERT INTO `distribution_role_order` VALUES (44, 'role2019052009193', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1558323657, 1558323657, 1, 42.00, 1);
+INSERT INTO `distribution_role_order` VALUES (45, 'role2019052434916', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, '姓名', '440782198406282118', '15625077763', 110000, 110100, 110101, '北京,北京市,东城区', '', 0, '::1', 1558682304, 1558682305, 1, 23.00, 1);
 COMMIT;
 
 -- ----------------------------
@@ -682,7 +683,7 @@ CREATE TABLE `fightgroup_list` (
   `success_time` int(10) DEFAULT '0' COMMENT '成团时间',
   PRIMARY KEY (`gid`) USING BTREE,
   KEY `fg_id` (`fg_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COMMENT='拼团列表';
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COMMENT='拼团列表';
 
 -- ----------------------------
 -- Records of fightgroup_list
@@ -758,7 +759,7 @@ CREATE TABLE `integral_goods` (
   `add_time` int(10) DEFAULT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`ig_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='积分商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='积分商品表';
 
 -- ----------------------------
 -- Table structure for integral_goods_list
@@ -774,7 +775,7 @@ CREATE TABLE `integral_goods_list` (
   `integral` decimal(10,2) DEFAULT '0.00' COMMENT '兑换积分',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`gid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='积分商品子表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='积分商品子表';
 
 -- ----------------------------
 -- Table structure for main_admin_role
@@ -890,7 +891,7 @@ CREATE TABLE `main_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=559 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=567 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台登陆日志';
 
 -- ----------------------------
 -- Records of main_log_login
@@ -1420,7 +1421,7 @@ CREATE TABLE `main_log_sys` (
   `module` varchar(50) DEFAULT '' COMMENT '操作模块',
   `edit_id` int(10) DEFAULT '0' COMMENT '影响ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=563 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台操作日志';
+) ENGINE=MyISAM AUTO_INCREMENT=566 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Records of main_log_sys
@@ -2107,7 +2108,7 @@ INSERT INTO `main_menu_list` VALUES (109, 93, 'supplyer', '汇总统计', 'sys_a
 INSERT INTO `main_menu_list` VALUES (110, 93, 'supplyer', '订单统计', 'sys_admin.statistics', 'order', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (111, 93, 'supplyer', '商品统计', 'sys_admin.statistics', 'goods', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (112, 60, 'supplyer', '结算管理', '', '', '', 'manage', '', 1, 'fa-calculator', 0);
-INSERT INTO `main_menu_list` VALUES (113, 112, 'supplyer', '待结算', 'sys_admin.settlement', 'wait', '', '', '', 1, '', 0);
+INSERT INTO `main_menu_list` VALUES (113, 112, 'supplyer', '结算列表', 'sys_admin.settlement', 'index', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (114, 112, 'supplyer', '待认领', 'sys_admin.settlement', 'wait_check', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (115, 112, 'supplyer', '待打款', 'sys_admin.settlement', 'wait_pay', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (116, 112, 'supplyer', '已完成', 'sys_admin.settlement', 'complete', '', '', '', 1, '', 0);
@@ -6706,7 +6707,7 @@ CREATE TABLE `shop_after_sale` (
   `order_sn` varchar(20) DEFAULT '' COMMENT '订单编号',
   `type` varchar(15) DEFAULT '' COMMENT '售后类型',
   `return_settle_money` decimal(10,2) DEFAULT '0.00' COMMENT '退回结算金额',
-  `goods_number` mediumint(9) DEFAULT '0' COMMENT '售后商品数量',
+  `goods_number` mediumint(8) DEFAULT '0' COMMENT '售后商品数量',
   `return_money` decimal(10,2) DEFAULT '0.00' COMMENT '退款金额',
   `return_desc` varchar(255) DEFAULT '' COMMENT '退款原因',
   `imgs` varchar(255) DEFAULT '' COMMENT '上传图片',
@@ -6725,8 +6726,10 @@ CREATE TABLE `shop_after_sale` (
   KEY `order_id` (`order_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE,
-  KEY `supplyer_id` (`supplyer_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='售后表';
+  KEY `supplyer_id` (`supplyer_id`) USING BTREE,
+  KEY `status` (`status`) USING BTREE,
+  KEY `check_time` (`check_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='售后表';
 
 -- ----------------------------
 -- Table structure for shop_after_sale_log
@@ -6966,7 +6969,7 @@ CREATE TABLE `shop_goods` (
   KEY `sort_order` (`sort_order`) USING BTREE,
   KEY `is_field` (`store_id`,`is_delete`,`is_best`,`is_hot`,`is_new`,`is_alone_sale`) USING BTREE,
   KEY `supply_id` (`supplyer_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8 COMMENT='商品表';
 
 -- ----------------------------
 -- Records of shop_goods
@@ -7202,7 +7205,7 @@ CREATE TABLE `shop_goods_imgs` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   PRIMARY KEY (`img_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
 -- ----------------------------
 -- Records of shop_goods_imgs
@@ -7267,7 +7270,7 @@ CREATE TABLE `shop_goods_log` (
   `log_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '记录时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8 COMMENT='商品操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8 COMMENT='商品操作日志';
 
 -- ----------------------------
 -- Records of shop_goods_log
@@ -7485,7 +7488,7 @@ CREATE TABLE `shop_goods_sku` (
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`sku_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop_goods_sku
@@ -7617,7 +7620,7 @@ CREATE TABLE `shop_order_goods` (
   KEY `goods_id` (`goods_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `is_evalueate` (`is_evaluate`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop_order_goods
@@ -7842,8 +7845,9 @@ CREATE TABLE `shop_order_info` (
   KEY `update_time` (`update_time`) USING BTREE,
   KEY `add_time` (`add_time`) USING BTREE,
   KEY `status_pay` (`order_status`,`is_pay`) USING BTREE,
-  KEY `user_id` (`user_id`,`is_del`,`pid`,`order_type`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8 COMMENT='订单表';
+  KEY `user_id` (`user_id`,`is_del`,`pid`,`order_type`) USING BTREE,
+  KEY `supplyer_id` (`supplyer_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of shop_order_info
@@ -7989,7 +7993,7 @@ CREATE TABLE `shop_order_log` (
   `log_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '记录时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `order_id` (`order_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=502 DEFAULT CHARSET=utf8 COMMENT='订单操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8 COMMENT='订单操作日志';
 
 -- ----------------------------
 -- Records of shop_order_log
@@ -8575,7 +8579,7 @@ CREATE TABLE `supplyer_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商登陆日志';
 
 -- ----------------------------
 -- Records of supplyer_log_login
@@ -8669,7 +8673,11 @@ INSERT INTO `supplyer_menu_list` VALUES (15, 13, '待收货', 'after_sale', 'wai
 INSERT INTO `supplyer_menu_list` VALUES (16, 13, '已完成', 'after_sale', 'complete', '', 'after_sale/info', 1, '', 0);
 INSERT INTO `supplyer_menu_list` VALUES (17, 5, '订单报表', 'statistics', 'index', '', '', 1, '', 0);
 INSERT INTO `supplyer_menu_list` VALUES (18, 5, '商品报表', 'statistics', 'goods', '', '', 1, '', 0);
-INSERT INTO `supplyer_menu_list` VALUES (19, 5, '结算报表', 'statistics', 'after_sale', '', '', 1, '', 0);
+INSERT INTO `supplyer_menu_list` VALUES (19, 0, '结算管理', 'settlement', 'index', '', '', 1, 'fa-calculator', 0);
+INSERT INTO `supplyer_menu_list` VALUES (20, 0, '退货信息', 'return_info', 'index', '', '', 1, 'fa-truck', 0);
+INSERT INTO `supplyer_menu_list` VALUES (21, 0, '相关日志', 'log', '', '', '', 1, 'fa-calendar', 0);
+INSERT INTO `supplyer_menu_list` VALUES (22, 21, '登陆日志', 'log', 'index', 'log_login', '', 1, '', 0);
+INSERT INTO `supplyer_menu_list` VALUES (23, 21, '操作日志', 'log', 'index', 'log_operate', '', 1, '', 0);
 COMMIT;
 
 -- ----------------------------
@@ -8682,7 +8690,7 @@ CREATE TABLE `supplyer_settle_list` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   `sale_order_num` int(11) DEFAULT '0' COMMENT '签收订单数',
   `sale_goods_num` int(10) DEFAULT '0' COMMENT '签收商品数',
-  `sale_goods_amount` decimal(10,2) DEFAULT '0.00' COMMENT '商品结算金额',
+  `sale_amount` decimal(10,2) DEFAULT '0.00' COMMENT '商品结算金额',
   `after_sale_order_num` int(11) DEFAULT '0' COMMENT '售后单数',
   `after_sale_goods_num` int(10) DEFAULT '0' COMMENT '售后商品数',
   `after_sale_amount` decimal(10,2) DEFAULT '0.00' COMMENT '售后金额',
@@ -8743,7 +8751,7 @@ CREATE TABLE `users` (
   KEY `pid` (`pid`) USING BTREE,
   KEY `mobile` (`mobile`) USING BTREE,
   KEY `nick_name` (`nick_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=29891 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Table structure for users_account
@@ -8785,7 +8793,7 @@ CREATE TABLE `users_account_log` (
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `change_type` (`change_type`) USING BTREE,
   KEY `by_id` (`by_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
 
 -- ----------------------------
 -- Table structure for users_address
@@ -8814,11 +8822,13 @@ CREATE TABLE `users_address` (
 -- ----------------------------
 DROP TABLE IF EXISTS `users_bind`;
 CREATE TABLE `users_bind` (
+  `bid` bigint(15) NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(8) NOT NULL COMMENT '用户ID',
   `pid` mediumint(8) NOT NULL COMMENT '关联上级',
   `level` tinyint(1) NOT NULL COMMENT '关联等级',
-  PRIMARY KEY (`user_id`,`pid`,`level`) USING BTREE,
-  KEY `pid` (`pid`) USING BTREE
+  PRIMARY KEY (`bid`) USING BTREE,
+  KEY `pid` (`pid`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='会员关系表';
 
 -- ----------------------------
@@ -8844,7 +8854,7 @@ CREATE TABLE `users_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '会员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
 
 -- ----------------------------
 -- Table structure for users_log_sys
@@ -8859,7 +8869,7 @@ CREATE TABLE `users_log_sys` (
   `module` varchar(50) DEFAULT '' COMMENT '操作模块',
   `edit_id` int(10) DEFAULT '0' COMMENT '影响ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='后台会员操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='后台会员操作日志';
 
 -- ----------------------------
 -- Table structure for users_recharge_log
@@ -8880,7 +8890,7 @@ CREATE TABLE `users_recharge_log` (
   `check_time` int(10) DEFAULT '0' COMMENT '审核时间',
   `admin_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员充值日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员充值日志表';
 
 -- ----------------------------
 -- Table structure for users_withdraw_account
@@ -8915,7 +8925,7 @@ CREATE TABLE `users_withdraw_log` (
   `amount` decimal(10,2) NOT NULL COMMENT '提现金额',
   `withdraw_fee` decimal(10,2) DEFAULT '0.00' COMMENT '提现手续费',
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
-  `admin_id` mediumint(8) NOT NULL COMMENT '管理员ID',
+  `admin_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '申请时间',
   `refuse_time` int(10) DEFAULT '0' COMMENT '拒绝时间',
   `complete_time` int(10) DEFAULT '0' COMMENT '打款时间',
@@ -8926,7 +8936,7 @@ CREATE TABLE `users_withdraw_log` (
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for weixin_keywords
@@ -8990,7 +9000,25 @@ CREATE TABLE `weixin_msg_tpl` (
   `remark` varchar(255) DEFAULT '' COMMENT '备注内容',
   PRIMARY KEY (`tpl_id`) USING BTREE,
   UNIQUE KEY `send_scene` (`send_scene`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of weixin_msg_tpl
+-- ----------------------------
+BEGIN;
+INSERT INTO `weixin_msg_tpl` VALUES (1, 'dividend_return_msg', 1, 'dividend', '佣金退回通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已签收，佣金待到帐状态', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (2, 'dividend_add_msg', 1, 'dividend', '佣金产生通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[产生时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】下单[订单编号]，您获得佣金。', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (3, 'dividend_arrival_msg', 1, 'dividend', '佣金到帐通知', '1', '', '{\"1\":\"到帐金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[当前时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已完成，佣金已到帐', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (4, 'withdraw_apply_msg', 1, 'withdraw', '提现申请通知', '11', '', '{\"1\":\"[提现金额]\",\"2\":\"[申请时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '您的帐户刚发起一笔提现申请', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (5, 'withdraw_ok_msg', 1, 'withdraw', '提现打款通知', '1', '', '{\"1\":\"[提现金额]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '平台已打款到您的提现帐号', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (6, 'withdraw_fail_msg', 1, 'withdraw', '提现拒绝通知', '1', '', '{\"1\":\"[客服备注]\",\"2\":\"[拒绝时间]\"}', '', '#ff0000', '您的提现申请失败', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (7, 'order_cancel_msg', 1, 'order', '订单取消通知', '1', '', '{\"1\":\"[当前时间]\"}', 'http://l.my.com/mobile/order/order_list', '#ff0000', '您的订单[订单编号]超取未支付取消', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (8, 'order_shipping_msg', 0, 'order', '订单发货通知', '1', '', '{\"1\":\"[快递公司]\",\"2\":\"[快递编号]\"}', 'http://l.my.com/mobile/order/order_list', '#ff0000', '您的订单[订单编号]，已发货', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (11, 'bind_user_msg', 1, 'superior', '绑定下级通知', '5qaKvAnpl6fu7-dZMxQ4TC44_vBW4MZj3sAkhL0l8SM', '编号：OPENTM414994604\n您申请绑定的结果通知\n被推荐人：客服部 李四\n时间：2018年3月14日 16时50分\n绑定结果：因权限不够，本次绑定不成功。\n如有疑问请及时反馈', '{\"1\":\"[注册会员昵称]\",\"2\":\"[当前时间]\",\"3\":\"绑定级别为[绑定级别]\"}', 'http://l.my.com/member/my_team/index', '#ff0000', '恭喜您成功绑定一位([绑定级别])团队成员', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (19, 'after_sale_ok_msg', 0, 'after_sale', '售后审核通过通知', '', '', '', '', '', '', '');
+INSERT INTO `weixin_msg_tpl` VALUES (20, 'after_sale_fail_msg', 0, 'after_sale', '售后审核失败通知', '', '', '', '', '', '', '');
+INSERT INTO `weixin_msg_tpl` VALUES (21, 'after_sale_refund_msg', 0, 'after_sale', '售后退款通知', '', '', '', '', '', '', '');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for weixin_users
@@ -9010,6 +9038,6 @@ CREATE TABLE `weixin_users` (
   `add_time` int(10) unsigned DEFAULT NULL COMMENT '录入时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`wxuid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
