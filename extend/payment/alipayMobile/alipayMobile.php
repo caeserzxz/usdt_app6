@@ -127,6 +127,7 @@ class alipayMobile
                     if (empty($orderInfo)) exit("fail");
                     if ($orderInfo['pay_status'] == 1) exit("success");
                     if ($orderInfo['order_amount'] != $_POST['price']) exit("fail"); //验证失败
+                    $orderInfo = $orderInfo->toArray();
                     $orderInfo['transaction_id'] = $trade_no;
                     // 支付宝解释: 交易成功且结束，即不可再做任何操作。
                     if ($_POST['trade_status'] == 'TRADE_FINISHED') {

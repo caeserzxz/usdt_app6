@@ -57,7 +57,7 @@ class MyTeam extends ApiController
 			$_user['account'] = $user['account'];
 			$_user['role_name'] = '';
 			if ($user['role_id'] > 0){
-				$_user['role_name'] = $DividendRoleModel->info($user['user_id'],true);
+				$_user['role_name'] = $DividendRoleModel->info($user['role_id'],true);
 			}
             $return['list'][] = $_user;
         }

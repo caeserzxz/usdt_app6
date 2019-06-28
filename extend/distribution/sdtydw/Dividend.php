@@ -220,6 +220,7 @@ class Dividend extends BaseModel
                             continue;
                         }
                         $inArr['status'] = $status;
+                        $inArr['order_type'] = $orderInfo['d_type'];
                         $inArr['order_id'] = $orderInfo['order_id'];
                         $inArr['order_sn'] = $orderInfo['order_sn'];
                         $inArr['buy_uid'] = $orderInfo['user_id'];

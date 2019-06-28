@@ -70,6 +70,7 @@ class PayNotifyCallBack extends WxPayNotify
             $RoleOrderModel = new RoleOrderModel();
             $orderInfo = $RoleOrderModel->where('order_sn',"$order_sn")->field('order_id,order_amount,user_id,pay_status')->find();
             if (empty($orderInfo)) return false;
+            $orderInfo = $orderInfo->toArray();
             if ($orderInfo['pay_status'] == 1) return true;
             if ((string)($orderInfo['order_amount'] * 100) != (string)$data['total_fee']) {
                 return false; //验证失败
