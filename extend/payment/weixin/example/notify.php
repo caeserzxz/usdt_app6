@@ -76,7 +76,7 @@ class PayNotifyCallBack extends WxPayNotify
                 return false; //验证失败
             }
             $orderInfo['transaction_id'] = $data["transaction_id"];
-            $RoleOrderModel->updatePay($orderInfo);// 修改订单支付状态
+            return $RoleOrderModel->updatePay($orderInfo);// 修改订单支付状态
         } elseif (stripos($order_sn, 'recharge') !== false) {//用户在线充值
             if (strlen($order_sn) > 20) {
                 $order_sn = substr($order_sn, 0, 20);
@@ -91,7 +91,7 @@ class PayNotifyCallBack extends WxPayNotify
                 return false; //验证失败
             }
             $orderInfo['transaction_id'] = $data["transaction_id"];
-            $RechargeLogModel->updatePay($orderInfo);// 修改订单支付状态
+            return $RechargeLogModel->updatePay($orderInfo);// 修改订单支付状态
         } else {
             if (strlen($order_sn) > 13) {
                 $order_sn = substr($order_sn, 0, 13);
@@ -110,7 +110,7 @@ class PayNotifyCallBack extends WxPayNotify
                 return false; //验证失败
             }
             //Log::DEBUG("call back:开始更新订单状态.");
-            $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$data["transaction_id"]),'微信支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
+            return $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$data["transaction_id"]),'微信支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
         }
 
 

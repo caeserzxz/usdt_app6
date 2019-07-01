@@ -20,9 +20,15 @@
 <td>{$row.award_name} - {$row.level_award_name}</td>
 <td>{$row.dividend_amount|priceFormat}</td>
 <td>{$divdend_satus[$row['status']]} /
-<a href="{:url('shop/sys_admin.order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
+    {if condition="$row.order_type == 'role_order'"}
+<a href="{:url('distribution/sys_admin.order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
     <i class="fa fa-search text-muted"></i>
 </a>
+    {else/}
+    <a href="{:url('shop/sys_admin.order/info',array('order_id'=>$row['order_id']))}" class="m-xs" title="查看订单">
+        <i class="fa fa-search text-muted"></i>
+    </a>
+    {/if}
 </td>
 </tr>
 {/volist} 

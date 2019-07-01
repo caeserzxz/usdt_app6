@@ -2,6 +2,7 @@
 namespace app\distribution\model;
 use app\BaseModel;
 use app\member\model\AccountLogModel;
+use think\Db;
 //*------------------------------------------------------ */
 //-- 身份订单表
 /*------------------------------------------------------ */
@@ -30,12 +31,14 @@ class RoleOrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function updatePay($upData = [])
     {
+        Db::startTrans();
         $order_id = $upData['order_id'];
         unset($upData['order_id']);
         $upData['pay_status'] = 1;
         $upData['pay_time'] = time();
         $res = $this->where('order_id',$order_id)->update($upData);
         if ($res < 1) {
+            Db::rollback();// 回滚事务
             return false;
         }
         $orderInfo = $this->where('order_id',$order_id)->find()->toArray();
@@ -50,9 +53,10 @@ class RoleOrderModel extends BaseModel
             $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
             if ($res !== true) {
                 Db::rollback();// 回滚事务
-                return '支付失败，更新余额失败.';
+                return false;
             }
         }
+        Db::commit();// 提交事务
         //如果设置支付再绑定关系时执行,须优先于分佣计算前执行
         $DividendInfo = settings('DividendInfo');
         if ($DividendInfo['bind_type'] == 1){

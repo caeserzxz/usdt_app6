@@ -39,7 +39,7 @@ class Order extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
 		$this->sqlOrder = 'order_id DESC';
-        $search['state'] = input('state', 0, 'intval');
+        $search['pay_status'] = input('pay_status', -1, 'intval');
         $reportrange = input('reportrange', '', 'trim');
         if (empty($reportrange) == false) {
             $reportrange = str_replace('_', '/', $reportrange);
@@ -48,7 +48,11 @@ class Order extends AdminController
         } else {
             $where[] = ['add_time', 'between', [strtotime("-1 months"), time()]];
         }
-        $data = $this->getPageList($this->Model);
+        if ($search['pay_status'] >= 0){
+            $where[] = ['pay_status', '=',$search['pay_status']];
+        }
+
+        $data = $this->getPageList($this->Model,$where);
 		$this->assign("data", $data);
         $this->assign("search", $search);
 		if ($runData == false){

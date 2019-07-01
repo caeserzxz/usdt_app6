@@ -77,6 +77,7 @@ class DividendModel extends BaseModel
                 $where[] = ['order_type', '=', $type];
                 $rows = $this->where($where)->select()->toArray();
             }else{
+                $where[] = ['order_type', '=', $type];
                 if ($shop_after_sale_limit > 0 ){
                     $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
                     $limit_time = $shop_after_sale_limit * 86400;
@@ -99,8 +100,15 @@ class DividendModel extends BaseModel
                     continue;//有售后，暂不能分佣
                 }
             }
-            $changedata['change_desc'] = '订单佣金到帐';
-            $changedata['change_type'] = 4;
+
+            if ($row['order_type'] == 'role_order'){
+                $changedata['change_desc'] = '身份单佣金到帐';
+                $changedata['change_type'] = 10;
+            }else{
+                $changedata['change_desc'] = '订单佣金到帐';
+                $changedata['change_type'] = 4;
+            }
+
             $changedata['by_id'] = $row['order_id'];
             $changedata['balance_money'] = $row['dividend_amount'];
             $changedata['bean_value'] = $row['dividend_bean'];
@@ -132,6 +140,7 @@ class DividendModel extends BaseModel
         $time = time();
         $OrderModel = new OrderModel();
         $where[] = ['order_id', '=', $order_id];
+        $where[] = ['order_type','=','order'];
         $rows = $this->where($where)->select()->toArray();
         if (empty($rows)) return true;//没有找到相关佣金记录
 

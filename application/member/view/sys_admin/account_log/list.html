@@ -17,9 +17,11 @@
 <td>
     {eq name="row.change_type" value="1"} <i class="fa fa-laptop text-muted"></i>人工调整：{/eq}
     {$row.change_desc}
-
-     <a href="{:url('shop/sys_admin.order/info',['order_id'=>$row['by_id']])}" target="_blank" class="{:in_array($row['change_type'],[2,3,4])?'':'hide'}">【查看订单】</a>
-
+    {if condition="$row.change_type == 10"}
+        <a href="{:url('distribution/sys_admin.order/info',['order_id'=>$row['by_id']])}" target="_blank" >【查看身份订单】</a>
+    {else/}
+        <a href="{:url('shop/sys_admin.order/info',['order_id'=>$row['by_id']])}" target="_blank" class="{:in_array($row['change_type'],[2,3,4])?'':'hide'}">【查看订单】</a>
+    {/if}
 </td>
 <td style="{$row['balance_money']>0?'color:#F00;':''}{$row['balance_money']<0?'color:#390;':''}">{$row.balance_money} / {$row['balance_money']+$row['old_balance_money']}</td>
 <td  style="{$row['use_integral']>0?'color:#F00;':''}{$row['use_integral']<0?'color:#390;':''}">{$row.use_integral} / {$row['use_integral']+$row['old_use_integral']}</td>

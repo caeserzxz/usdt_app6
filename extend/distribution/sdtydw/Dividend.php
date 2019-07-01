@@ -47,7 +47,7 @@ class Dividend extends BaseModel
             }
             Db::commit();// 提交事务
             $logArr['is_dividend'] = 1;
-            $this->Model->evalArrival($orderInfo['order_id'], $type);//身份订单直接执行分佣
+            $this->Model->evalArrival($orderInfo['order_id'], 'role_order');//身份订单直接执行分佣
             $res = $this->evalLevelUp($orderInfo, $orderInfo['user_id']);//会员升级
             if ($res == true) {
                 $logArr['is_up_role'] = 1;
@@ -125,10 +125,12 @@ class Dividend extends BaseModel
         }
 
         if (empty($upData) == false) {//更新分佣状态
-            $count = $this->Model->where('order_id', $orderInfo['order_id'])->count();
+            $upWhere[] = ['order_id','=',$orderInfo['order_id']];
+            $upWhere[] = ['order_type','=','order'];
+            $count = $this->Model->where($upWhere)->count();
             if ($count < 1) return true;//如果没有佣金记录不执行
             $upData['update_time'] = time();
-            $res = $this->Model->where('order_id', $orderInfo['order_id'])->update($upData);
+            $res = $this->Model->where($upWhere)->update($upData);
             if ($res < 1) return false;
         }
 
@@ -139,7 +141,7 @@ class Dividend extends BaseModel
         if ($type == 'sign') {//签收,执行佣金到帐
             $shop_after_sale_limit = settings('shop_after_sale_limit');
             if ($shop_after_sale_limit == 0) {
-                return $this->Model->evalArrival($orderInfo['order_id'], $type);
+                return $this->Model->evalArrival($orderInfo['order_id'], 'order');
             }
         }
         return true;
