@@ -187,11 +187,11 @@ class Withdraw extends ApiController
 		if ($inArr['amount'] <= 0){
             return $this->error('请输入提现金额.');
         }
-        $pay_password = input('pay_password') * 1;
-        $pay_password = f_hash($pay_password.$this->userInfo['user_id']);
-        if ($pay_password != $this->userInfo['pay_password']){
-            return $this->error('支付密码错误，请核实.');
-        }
+        // $pay_password = input('pay_password') * 1;
+        // $pay_password = f_hash($pay_password.$this->userInfo['user_id']);
+        // if ($pay_password != $this->userInfo['pay_password']){
+        //     return $this->error('支付密码错误，请核实.');
+        // }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
 		$inArr['account_id'] = input('account_id') * 1;
 		if ($inArr['account_id'] < 1){
@@ -240,6 +240,7 @@ class Withdraw extends ApiController
         $wxInfo = $WeiXinUsersModel->where('user_id', $inArr['user_id'])->field('wx_openid,wx_nickname')->find();
         $inArr['openid'] = $wxInfo['wx_openid'];
         $inArr['send_nick_name'] = $wxInfo['wx_nickname'];
+        $inArr['balance_money'] = $this->userInfo['account']['balance_money'] - $withdraw_money;
         $WeiXinMsgTplModel->send($inArr);//模板消息通知
 
 		return $this->success('提现申请成功.');

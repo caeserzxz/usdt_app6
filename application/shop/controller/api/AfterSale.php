@@ -66,7 +66,15 @@ class AfterSale extends ApiController
             $inArr['imgs'] = join(',',$imgs);
         }
         $inArr['return_settle_money'] = $goods['settle_price'] * $inArr['goods_number'];
-        $inArr['return_money'] = $goods['sale_price'] * $inArr['goods_number'];
+
+        //计算实际可退金额
+        $total_sale_price = $OrderGoodsModel->where('order_id',$goods['order_id'])->SUM('sale_price');//计算订单商品单价汇总
+        $offer_price = $orderInfo['goods_amount'] - ($orderInfo['order_amount'] - $orderInfo['shipping_fee']);//计算订单总优惠金额
+        $return_pre = $goods['sale_price'] / $total_sale_price;//计算当前商品占比
+        $return_price = priceFormat($goods['sale_price'] - ($offer_price * $return_pre));
+        $inArr['return_money'] = $return_price * $inArr['goods_number'];
+        //end
+
         $inArr['user_id']  = $this->userInfo['user_id'];
         $inArr['add_time'] = $inArr['update_time'] = time();
         $inArr['goods_id'] = $goods['goods_id'];

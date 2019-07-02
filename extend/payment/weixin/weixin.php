@@ -78,9 +78,12 @@ class weixin
 
     function getJSAPI($order)
     {
-    	if(stripos($order['order_sn'],'recharge') !== false){
-    		$go_url = url('member/wallet/index',array('type'=>'recharge'));
-    		$back_url = url('member/wallet/recharge',array('order_id'=>$order['order_id']));
+    	if(stripos($order['order_sn'],'recharge') !== false) {
+            $go_url = url('member/wallet/index', array('type' => 'recharge'));
+            $back_url = url('member/wallet/recharge', array('order_id' => $order['order_id']));
+        }elseif(stripos($order['order_sn'],'role') !== false){
+                $go_url = url('distribution/role_goods/done',array('order_id'=>$order['order_id']));
+                $back_url = $go_url;
     	}else{
     		$go_url = url('shop/order/info',array('order_id'=>$order['order_id']));
     		$back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));

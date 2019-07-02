@@ -55,7 +55,7 @@
                 <div class="goodsinfo">
                     <p class="fs28 color_3">{$goods.goods_name}</p>
                     <div class="appleBox"><span class="fs28 color_9">{$goods.sku_name}</span>
-                        {if condition="$goods.goods_number - $goods.return_goods_munber == 0"}
+                        {if condition="$goods.goods_number - $goods.after_sale_num == 0"}
                             <object><a href="{:url('AfterSale/index',['order_id'=>$goods.order_id])}" class="fs28 color_r">查看售后</a></object>
                         {elseif condition="$orderInfo.isAfterSale == 1"}
                              <object><a href="{:url('AfterSale/add',['rec_id'=>$goods.rec_id])}" class="fs28 color_r">申请售后</a></object>

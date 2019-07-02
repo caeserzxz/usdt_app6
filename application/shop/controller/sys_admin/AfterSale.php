@@ -238,6 +238,21 @@ class AfterSale extends AdminController
             }
         }
         Db::commit();// 提交事务
+        if ($upData['status'] > 0) {
+            //模板消息通知
+            $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+            $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+            if ($upData['status'] == 1) {//拒时执行
+                $asInfo['send_scene'] = 'after_sale_fail_msg';//拒绝通知
+            }elseif($upData['status'] == 2) {//通过时执行
+                $asInfo['send_scene'] = 'after_sale_ok_msg';//通过通知
+            }
+            $wxInfo = $WeiXinUsersModel->where('user_id', $asInfo['user_id'])->field('wx_openid,wx_nickname')->find();
+            $asInfo['openid'] = $wxInfo['wx_openid'];
+            $asInfo['send_nick_name'] = $wxInfo['wx_nickname'];
+            $WeiXinMsgTplModel->send($asInfo);//模板消息通知
+        }
+
         $this->Model->_log($as_id, '后台审核',$this->Model->status[$upData['status']],'admin',AUID);
         return $this->success('处理成功.');
     }
@@ -286,6 +301,7 @@ class AfterSale extends AdminController
                     return '请求退款接口失败：' . $res;
                 }
             }
+
         }
         if ($isForce==true){
             $log = '强制执行-确定收到退货，并打款给用户';
@@ -293,6 +309,14 @@ class AfterSale extends AdminController
             $log = '确定收到退，并打款给用户';
         }
         Db::commit();// 提交事务
+        //模板消息通知
+        $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
+        $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
+        $asInfo['send_scene'] = 'after_sale_refund_msg';//售后退款通知
+        $wxInfo = $WeiXinUsersModel->where('user_id', $asInfo['user_id'])->field('wx_openid,wx_nickname')->find();
+        $asInfo['openid'] = $wxInfo['wx_openid'];
+        $asInfo['send_nick_name'] = $wxInfo['wx_nickname'];
+        $WeiXinMsgTplModel->send($asInfo);//模板消息通知
         $this->Model->_log($as_id, $log,$this->Model->status[9],'admin',AUID);
         return $this->success('处理成功.');
     }

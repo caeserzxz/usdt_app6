@@ -1,58 +1,59 @@
-<view class="page">
-  <view class="weui-panel">
-    <view class="weui-panel__hd mb20 bg-fff border-after">
-      <view class="weui-flex">
-        <view class="weui-flex__item">
-          <text class="fs32" style="color:#333333;">当前购物车共12件商品</text>
-        </view>
-        <view class="weui-cell__ft">
-          <view>
-            <block wx:if="{{edit == 1}}">
-              <text class="fs28 ml10 text-red" bindtap='onEdit' data-index='2'>编辑</text>
-            </block>
-            <block wx:else>
-              <text class="fs28 ml10 text-red" bindtap='onEdit' data-index='1'>完成</text>
-            </block>
-          </view>
-        </view>
-      </view>
-    </view>
-    <checkbox-group class="weui-cell__bd weui-cells_checkbox bg-fff">
-      <view wx:for="{{cartlist}}" style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" class="weui-media-box weui-media-box_appmsg cart_swiped  border-before" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove" bindtouchend="onTableCellTouchEnd"
-        bindtouchcancel="onTableCellTouchEnd" data-index="{{index}}" wx:key=''>
-        <label for="s11" style="margin-right:5px;">
-          <view class="weui-cell__hd">
-            <checkbox checked='{{item.selected}}' data-index="{{index}}" catchtap='selectList'/>
-          </view>
-        </label>
-        <view class="weui-media-box__hd">
-          <image class="weui-media-box__thumb" src="{{imgUrl}}proimg.jpg" />
-        </view>
-        <view class="weui-media-box__bd goodsinfo" style="width:100%;">
-          <view class="weui-media-box__title fs28">{{item.title}}</view>
-          <p class="weui-media-box__desc mt10 fs28">{{item.desc}}</p>
-          <view class='bonttom'>
-            <view class="money">
-              <span class="fs24">￥</span>
-              <text class="fs36 ff">328</text>
-              <text class="fs24 ff">.00</text>
+<view class="page" style='background-color:#fff;'>
+    <view wx:if="{{allGoodsNum > 0}}">
+        <view class="weui-panel">
+            <view class="weui-panel__hd mb20 bg-fff border-after">
+                <view class="weui-flex">
+                    <view class="weui-flex__item">
+                        <text class="fs32" style="color:#333333;">当前购物车共{{allGoodsNum}}件商品</text>
+                    </view>
+                    <view class="weui-cell__ft">
+                        <view>
+                            <block wx:if="{{edit == 1}}">
+                                <text class="fs28 ml10 text-red" bindtap='onEdit' data-index='2'>编辑</text>
+                            </block>
+                            <block wx:else>
+                                <text class="fs28 ml10 text-red" bindtap='onEdit' data-index='1'>完成</text>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <checkbox-group class="weui-cell__bd weui-cells_checkbox bg-fff">
+                <view wx:for="{{cartlist}}" style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" class="weui-media-box weui-media-box_appmsg cart_swiped  border-before" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove"
+                    bindtouchend="onTableCellTouchEnd" bindtouchcancel="onTableCellTouchEnd" data-index="{{index}}" wx:key=''>
+                    <label for="s11" style="margin-right:5px;">
+                        <view class="weui-cell__hd">
+                            <checkbox checked="{{item.is_select?'checked':''}}" data-index="{{index}}" catchtap='selectList' />
+                        </view>
+                    </label>
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb" src="{{item.pic}}" />
+                    </view>
+                    <view class="weui-media-box__bd goodsinfo" style="width:100%;">
+                        <view class="weui-media-box__title fs28">{{item.goods_name}}</view>
+                        <p class="weui-media-box__desc mt10 fs28">{{item.sku_name}}</p>
+                        <view class='bonttom'>
+                            <view class="money">
+                                <span class="fs24">￥</span>
+                                <text class="fs36 ff">{{item.exp_price[0]}}</text>
+                                <text class="fs24 ff">.{{item.exp_price[1]}}</text>
 
-              <span class="text-muted fs24 ml10" style=" text-decoration: line-through;">￥592.00</span>
-            </view>
-            <view class="number">
-              <span class="number-sub fs30" catchtap='btn_minus' data-index='{{index}}'>-</span>
-              <input class="number-input fs28" type="text" value="{{item.num}}" />
-              <span class="number-plus fs30" catchtap='btn_add' data-index='{{index}}'>+</span>
-            </view>
-          </view>
+                                <span class="text-muted fs24 ml10" style=" text-decoration: line-through;">￥{{item.market_price}}</span>
+                            </view>
+                            <view class="number">
+                                <span class="number-sub fs30" catchtap='btn_minus' data-index='{{index}}'>-</span>
+                                <input class="number-input fs28" type="text" value="{{item.goods_number}}" />
+                                <span class="number-plus fs30" catchtap='btn_add' data-index='{{index}}'>+</span>
+                            </view>
+                        </view>
+                    </view>
+                    <view class='del' bindtap="onDeleteButtonTapped" data-rec_id="{{item.rec_id}}">
+                        <image class="icon_trash2" src="/images/delectIcon.png" />
+                    </view>
+                </view>
+            </checkbox-group>
         </view>
-        <view class='del' bindtap="onDeleteButtonTapped" data-index="{{index}}">
-          <image class="icon_trash2" src="/images/delectIcon.png" />
-        </view>
-      </view>
-    </checkbox-group>
-  </view>
-  <view class="weui-panel">
+        <!-- <view class="weui-panel">
     <view class="weui-panel__hd bg-fff">
       <view class="weui-flex">
         <view class="weui-flex__item">
@@ -78,29 +79,37 @@
         </view>
       </view>
     </view>
-  </view>
+  </view> -->
 
-  <view class="fixed-bottom3">
-    <view class="weui-flex">
-      <view class="weui-cells_checkbox">
-        <label class="weui-cell__hd weui-flex" style='padding-left: 10px;' catchtap='selectAll'>
-          <checkbox checked='{{selectAllStatus}}'/>
-          <text class="fs32 text-default mr10">全选</text>
-        </label>
-      </view>
-      <view style="flex:1;line-height:90rpx;" class="ml20 fs28 allMoney" wx:if='{{edit == 1}}'>
-        <text class="fs28 text-muted">小计</text>
-        <text class="fs30 text-default">￥</text>
-        <text class="fs52 text-default fw500 ff">{{integerPrice}}</text>
-        <text class="fs30 ff">.{{decimalPrice}}</text>
-      </view>
-      <view>
-        <view wx:if='{{edit == 2}}' class='btnBox'>
-          <view class="btn fs28 del">删除</view>
-          <view class="btn" style="display:inline-block;">收藏</view>
+        <view class="fixed-bottom3">
+            <view class="weui-flex">
+                <view class="weui-cells_checkbox">
+                    <label class="weui-cell__hd weui-flex" style='padding-left: 10px;' catchtap='selectAll'>
+                        <checkbox checked='{{selectAllStatus}}' />
+                        <text class="fs32 text-default mr10">全选</text>
+                    </label>
+                </view>
+                <view style="flex:1;line-height:90rpx;" class="ml20 fs28 allMoney" wx:if='{{edit == 1}}'>
+                    <text class="fs28 text-muted">小计</text>
+                    <text class="fs30 text-default">￥</text>
+                    <text class="fs52 text-default fw500 ff">{{integerPrice}}</text>
+                    <text class="fs30 ff">.{{decimalPrice}}</text>
+                </view>
+                <view>
+                    <view wx:if='{{edit == 2}}' class='btnBox'>
+                        <view class="btn fs28 del" bindtap="delSelGoods">删除</view>
+                        <!-- <view class="btn" style="display:inline-block;" bindtap='collectGoods'>收藏</view> -->
+                    </view>
+                    <view class="btn fs28" wx:if='{{edit == 1}}' bindtap='checkout'>结算({{settlementNum}})</view>
+                </view>
+            </view>
         </view>
-        <view class="btn fs28" wx:if='{{edit == 1}}'>结算({{settlementNum}})</view>
-      </view>
     </view>
-  </view>
+    <view wx:else>
+        <view class='emptyBox'>
+            <image class="no-data" src="/images/emptyCart.png" />
+            <view class='str_desc'>购物车空空哦</view>
+            <view class='go-shop' bindtap='goshop'>去商城逛逛</view>
+        </view>
+    </view>
 </view>

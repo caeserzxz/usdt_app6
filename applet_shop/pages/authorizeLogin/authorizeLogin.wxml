@@ -1,0 +1,6 @@
+<view class='byr'>
+  <view class='byr_img'>
+    <image src='{{user_avatar ? user_avatar: defultimg}}'></image>
+  </view>
+  <button open-type="getUserInfo" class='bygd' bindgetuserinfo="userInfoHandler">微信授权登录</button>
+</view>

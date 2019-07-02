@@ -21,15 +21,15 @@ class GoodsModelModel extends BaseModel
 	//-- 获取列表
 	/*------------------------------------------------------ */
     public function getRows(){	
-		$list = Cache::get($this->mkey);	
+		$list = Cache::get($this->mkey);
 		if (empty($list) == false) return $list;
 		$rows = $this->select()->toArray();
 		if (empty($rows)) return array();
 		$AttributeModel = new AttributeModel();
 		foreach ($rows as $row){
 			$attr_list = $AttributeModel->where('model_id',$row['id'])->order('sort_order DESC')->select()->toArray();
-			
 			foreach ($attr_list as $attr_row){
+                $attr_row['attr_values_arr'] = explode(',',$attr_row['attr_values']);
 				$row['attr_list'][$attr_row['attr_id']] = $attr_row;
 			}
 			$list[$row['id']] = $row;

@@ -488,8 +488,6 @@ class OrderModel extends BaseModel
         Db::commit();// 提交事务
 
         if ($upData['order_status'] == $this->config['OS_CANCELED'] || $upData['shipping_status'] == $this->config['SS_SHIPPED']) {
-            //系统超时取消订单
-            if ($extType == 'sys') {
                 //发送模板消息，给买家
                 $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
                 $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
@@ -507,7 +505,6 @@ class OrderModel extends BaseModel
                 $sendData['shipping_name'] = $orderInfo['shipping_name'];
                 $sendData['invoice_no'] = $orderInfo['invoice_no'];
                 $WeiXinMsgTplModel->send($sendData);
-            }
         }
         $this->cleanMemcache($order_id);
         return true;

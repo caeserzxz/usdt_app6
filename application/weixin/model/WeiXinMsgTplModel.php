@@ -51,13 +51,11 @@ class WeiXinMsgTplModel extends BaseModel
                     'award_name'=> '[奖项名称]',
                     'level_award_name'=> '[奖励名称]',
                     'level'=> '[分佣级别]',
-                    'dividend_amount'=> '[金币数量]',
-                    'dividend_bean'=> '[旅游豆数]',
+                    'dividend_amount'=> '[佣金金额]',
                     'role_name'=> '[分佣身份]',
                     'add_time'=> '[产生时间]',
                     'order_sn'=> '[订单编号]',
                     'order_amount'=> '[订单金额]',
-                    'buy_goods_name'=> '[订单商品]',
                     'buy_nick_name'=> '[下单会员昵称]',
                     'buy_user_id'=> '[下单会员ID]',
                     'send_nick_name'=> '[分佣会员昵称]',
@@ -69,12 +67,23 @@ class WeiXinMsgTplModel extends BaseModel
                 'name'=>'提现通知',
                 'list'=>[
                     'amount'=> '[提现金额]',
+                    'balance_money'=>'[提现后余额]',
                     'refuse_time'=> '[拒绝时间]',
                     'admin_note'=> '[客服备注]',
                     'add_time'=> '[申请时间]',
                     'user_id'=> '[会员ID]',
                     'nick_name'=> '[会员昵称]',
                     'now_time'=>'[当前时间]'
+                ]
+            ],
+            'after_sale'=>[
+                'name'=>'售后通知',
+                'list'=>[
+                    'add_time'=> '[产生时间]',
+                    'as_sn'=> '[售后编号]',
+                    'now_time'=>'[当前时间]',
+                    'remark'=>'[拒绝说明]',
+                    'return_money'=>'[退款金额]'
                 ]
             ]
 
@@ -116,7 +125,7 @@ class WeiXinMsgTplModel extends BaseModel
         if (empty($data['url']) == false){
             $msgTemp['url'] = $data['url'];
         }elseif (empty($tplData['url']) == false){
-            $msgTemp['url'] = $tplData['url'];
+            $msgTemp['url'] = config('config.host_path').$tplData['url'];
         }
         list($first,$tpl_keys,$remark) = $this->replaceTpl($data,$tplData);
 
@@ -140,15 +149,16 @@ class WeiXinMsgTplModel extends BaseModel
         $msgTplReplace = $this->msgTplReplace[$tplData['type']];
         $keywrod = $replaceKey = [];
         foreach ($msgTplReplace['list'] as $key=>$val){
-            $keywrod[] = $val;
             if ($key == 'now_time') {
                 $replaceKey[] = date('Y-m-d H:i',time());
             }elseif (strstr($key, '_time')) {
                 $replaceKey[] = date('Y-m-d H:i', $data[$key]);
-            } else {
+            } elseif(empty($data[$key]) == false){
                 $replaceKey[] = $data[$key];
+            }else{
+                continue;
             }
-
+            $keywrod[] = $val;
         }
         $tplStr = str_replace($keywrod,$replaceKey, $tplData['first'].'|_*_|'.$tplData['tpl_keys'].'|_*_|'.$tplData['remark']);
         return explode('|_*_|',$tplStr);

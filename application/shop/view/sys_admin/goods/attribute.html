@@ -6,8 +6,8 @@
           		<input type="text" size="40" value="{$goodsAttr[$attr['attr_id']]}" name="attr_value_list[{$attr.attr_id}]">
                 {elseif condition="$attr.attr_input_type eq 1"/}
                       {volist name="attr.attr_values_arr" id="values" }
-                          <label><input name="attr_value_list[{$attr.attr_id}][]" type="checkbox" value="{$values}" 
-                         <in name="values" value="$goodsAttr[$attr['attr_id']]">checked</in> /> {$values}</label>
+                          <label><input name="attr_value_list[{$attr.attr_id}][]" type="checkbox" value="{$values}"
+                         {in name="values" value="$goodsAttr[$attr['attr_id']]"}checked{/in} /> {$values}</label>
                      {/volist}
                       <input name="attr_value_list[{$attr.attr_id}][]" type="hidden" value="" />
                 {else/}

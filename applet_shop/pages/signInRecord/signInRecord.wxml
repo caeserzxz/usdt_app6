@@ -1,0 +1,34 @@
+<!--pages/set/set.wxml-->
+<view class="page signInLog">
+    <view class="top">
+        <view class='fs28 fw_b color_3'>{{timeDate}}</view>
+        <picker mode="date" value="{{timeDate}}" fields='month' bindchange="bindDateChange">
+            <image src="/images/detail01.png" alt=""></image>
+        </picker>
+    </view>
+    <view class="page-bd">
+        <!-- 页面内容-->
+        <view class="list">
+            <block wx:for="{{info}}" wx:key>
+                <view class="cell" wx:if="{{item.time >= data[1]}}">
+                    <view class="left">
+                        <text class="fs28 fw_b color_2">今日</text>
+                    </view>
+                    <view class="right fs34 ff color_r">
+                        <text class="fs34 ff color_3">+{{item.use_integral}}</text>
+                        <text class="fs24 color_9">积分</text>
+                    </view>
+                </view>
+                <view class="cell" wx:else>
+                    <view class="left">
+                        <text class="fs28 fw_b color_2">{{item.timeData}}</text>
+                    </view>
+                    <view class="right fs34 ff color_r">
+                        <text class="fs34 ff color_3">+{{item.use_integral}}</text>
+                        <text class="fs24 color_9">积分</text>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>

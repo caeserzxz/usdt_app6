@@ -66,10 +66,12 @@ class AfterSale extends ClientbaseController{
 	    if ($rec_id < 1){
 	        return $this->error('传参失败.');
         }
-        $goods = (new OrderGoodsModel)->find($rec_id);
+        $OrderGoodsModel = new OrderGoodsModel();
+        $goods = $OrderGoodsModel->find($rec_id);
         if (empty($goods)){
             return $this->error('没有找到相关商品.');
         }
+
         if ($goods['goods_number'] -  $goods['after_sale_num'] < 1){
             return $this->error('此订单商品售后已全部申请，不能继续操作.');
         }
@@ -77,8 +79,15 @@ class AfterSale extends ClientbaseController{
         if ($orderInfo['isAfterSale'] == 0){
             return $this->error('此订单不能申请售后，请联系客服.');
         }
+
+        //计算单件商品实际可退金额
+        $total_sale_price = $OrderGoodsModel->where('order_id',$goods['order_id'])->SUM('sale_price');//计算订单商品单价汇总
+        $offer_price = $orderInfo['goods_amount'] - ($orderInfo['order_amount'] - $orderInfo['shipping_fee']);//计算订单总优惠金额
+        $return_pre = $goods['sale_price'] / $total_sale_price;//计算当前商品占比
+        $return_price = priceFormat($goods['sale_price'] - ($offer_price * $return_pre));
+        $this->assign('return_price',$return_price);
+        //end
         $goods['exp_prcie'] = explode('.',$goods['sale_price']);
-        $goods['total_prcie'] = $goods['sale_price'] * $goods['goods_number'];
         $this->assign('goods',$goods);
         $this->assign('title','申请售后');
 		return $this->fetch('add');

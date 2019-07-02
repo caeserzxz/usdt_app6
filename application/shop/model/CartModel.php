@@ -49,6 +49,11 @@ class CartModel extends BaseModel
             }
             $goods = $igInfo['goods'];
             if (empty($goods)) return '商品不存在';
+
+            if ($igInfo['limit_num'] > 0 && $num > $igInfo['limit_num']) {
+                return '此积分商品单次只允许兑换【' . $igInfo['limit_num'] . '】件';
+            }
+
             if ($sku_id > 0) {
                 $use_integral = $goods['sub_goods'][$spec]['integral'];
             } else {
@@ -71,7 +76,7 @@ class CartModel extends BaseModel
                     }
                 }
             }
-            if ($goods['use_integral'] > 0){
+            if ($goods['use_integral'] > 0) {
                 $use_integral = $goods['use_integral'];
             }
         }
@@ -102,9 +107,9 @@ class CartModel extends BaseModel
             if ($this->is_integral == 0) {//非积分商品执行
                 $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
                 $update['sale_price'] = $price['min_price'];
-                if ($goods['give_integral'] == 0){//1:1赠送积分
+                if ($goods['give_integral'] == 0) {//1:1赠送积分
                     $update['give_integral'] = $goods['sale_price'];
-                }elseif($goods['give_integral'] > 0){//赠送指定积分
+                } elseif ($goods['give_integral'] > 0) {//赠送指定积分
                     $update['give_integral'] = $goods['give_integral'];
                 }
             }
@@ -156,12 +161,12 @@ class CartModel extends BaseModel
                 $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
                 $parent['sale_price'] = $price['min_price'];
                 $discont = $goods['shop_price'] - $price['min_price'];
-                if ($goods['give_integral'] == 0){//1:1赠送积分
+                if ($goods['give_integral'] == 0) {//1:1赠送积分
                     $parent['give_integral'] = $goods['sale_price'];
-                }elseif($goods['give_integral'] > 0){//赠送指定积分
+                } elseif ($goods['give_integral'] > 0) {//赠送指定积分
                     $parent['give_integral'] = $goods['give_integral'];
                 }
-            }else{
+            } else {
                 $parent['sale_price'] = 0;
             }
             if ($sku_id > 0) {
@@ -179,7 +184,7 @@ class CartModel extends BaseModel
                     if ($sub_goods['market_price'] > 0 && $sub_goods['market_price'] > $sub_goods['shop_price']) {
                         $discont = $sub_goods['shop_price'] - $parent['sale_price'];
                     }
-                }else{
+                } else {
                     $parent['sale_price'] = 0;
                 }
                 $parent['goods_weight'] = $sub_goods['goods_weight'];
@@ -207,6 +212,47 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     public function checkGoodsOrder(&$goods, $num, $spec = '')
     {
+        if ($this->is_integral == 1) {//积分商品
+            $IntegralGoodsModel = new \app\integral\model\IntegralGoodsModel();
+            $ig_id = $IntegralGoodsModel->where('goods_id', $goods['goods_id'])->value('ig_id');
+            if ($ig_id < 1){
+                return ['code' => -1, 'msg' => '相关商品不存在'];
+            }
+            $igInfo = $IntegralGoodsModel->info($ig_id, false);
+            if ($igInfo['is_on_sale'] != 1) {
+                return ['code' => -1, 'msg' => '当前商品暂不能兑换'];
+            }
+            $igoods = $igInfo['goods'];
+            if (empty($igoods)){
+                return ['code' => -1, 'msg' => '商品不存在'];
+            }
+
+            if ($igInfo['limit_num'] > 0 && $num > $igInfo['limit_num']) {
+                return ['code' => -1, 'msg' => '此积分商品单次只允许兑换【' . $igInfo['limit_num'] . '】件'];
+            }
+            if ($goods['is_spec'] == 1) {// 多规格商品执行
+                $sub_goods = $igoods['sub_goods'][$spec];
+                $SkuCustomModel = new SkuCustomModel();
+                $sku_name = $SkuCustomModel->getSkuName($sub_goods);
+                $lastNum = $sub_goods['BuyMaxNum'] - $sub_goods['sale_num'];
+                if ($lastNum == 0) {
+                    return ['code' => -1, 'msg' => '积分商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】暂无库存.'];
+                }
+                if ($lastNum - $num < 0) {
+                    return ['code' => -1, 'msg' => '积分商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】库存不足，剩余：' . $lastNum];
+                }
+            } else {
+                $lastNum = $igoods['BuyMaxNum'] - $igoods['sale_num'];
+                if ($lastNum == 0) {
+                    return ['code' => -1, 'msg' => '积分商品【'.$goods['goods_name'].'】暂无库存.'];
+                }
+                if ($lastNum - $num < 0) {
+                    return ['code' => -1, 'msg' => '积分商品【'.$goods['goods_name'].'】库存不足，剩余：' . $lastNum];
+                }
+
+            }
+            return true;
+        }
         /* 是否正在销售 */
         if ($goods['is_on_sale'] == 0) {
             return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】已下架，暂不支持购买！'];
@@ -226,6 +272,7 @@ class CartModel extends BaseModel
                 return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】，您的身份不满足购买条件.'];
             }
         }
+
         if ($goods['is_spec'] == 1) {// 多规格商品执行
             if (empty($spec)) return ['code' => 0, 'msg' => '当前商品为多规格商品，请前往详情页选择规格后再操作'];
             $sub_goods = $goods['sub_goods'][$spec];

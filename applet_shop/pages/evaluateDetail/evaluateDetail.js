@@ -13,7 +13,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const that = this
+    api.islogin();
+    if (options.rec_id>0) {
+      that.setData({ rec_id: options.rec_id })
+      that.comment(that);
+    }
+  },
 
+  //获取评论详情
+  comment: function (that) {
+    const _data = {
+      rec_id: that.data.rec_id,
+    }
+    api.fetchPost(api.https_path + 'shop/api.comment/getInfo', _data, function (err, res) {
+      console.log(res)
+      if (res.data) {
+        that.setData({
+          path: api.https_path,
+          data: res.data
+        })
+      }else{
+        that.setData({
+          data: []
+        }) 
+      }
+    });
   },
 
   /**

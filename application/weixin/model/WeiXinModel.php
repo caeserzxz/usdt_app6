@@ -285,7 +285,7 @@ class WeiXinModel extends BaseModel {
 	//-- 提交处理
 	/*------------------------------------------------------ */
 	function weiXinCurl($url,$data,$curlagain = false,$retunarr = false){
-		 if (is_array($data) && $retunarr == false) $data = urldecode(jsonEncode($data));
+		 if (is_array($data) && $retunarr == false) $data = urldecode(json_encode($data,JSON_UNESCAPED_UNICODE));
 		 $access_token = $this->getAccessToken($curlagain);
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url."access_token=".$access_token);

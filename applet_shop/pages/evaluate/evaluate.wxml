@@ -2,65 +2,33 @@
 <!-- tab头部切换 -->
 <view class="swiper-tab">
   <view class="swiper-tab-item {{currentTab==0?'active':''}}" id="0" bindtap="clickTab">待评价
-    <text class='fs26'>(12)</text>
+    <text class='fs26'>({{num1}})</text>
   </view>
   <view class="swiper-tab-item {{currentTab==1?'active':''}}" id="1" bindtap="clickTab">已评价
-    <text class='fs26'>(1)</text>
+    <text class='fs26'>({{num2}})</text>
   </view>
 </view>
 
 <!-- 待评价 -->
 <view class="{{currentTab == 0 ? 'show':'hidden'}}">
-  <view class="weui-cells">
+  <view class="weui-cells" wx:for="{{list}}" wx:key="key" wx:for-item="item">
     <view class="weui-cell flex-start">
       <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
+        <image src="{{path}}{{item.pic}}" />
       </view>
       <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
+        <view class='pj_title'>{{item.goods_name}}</view>
+        <view class='fs28 text-muted mt10'>{{item.sku_name}}</view>
         <view class='pj_box'>
           <view class='price'>
-                        <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
+            <view class='money' class='fs24 mr10'>
+              <text class='fw_b'>￥</text>
+              <text class='fs42 ff'>{{item.exp_price[0]}}</text>
+              <text class='ff'>.{{item.exp_price[1]}}</text>
+            </view>
+            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥{{item.goods_price}}</text>
           </view>
-          <navigator url='/pages/evaluates/evaluates' class='pj_btn'>评价</navigator>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="weui-cells">
-    <view class="weui-cell flex-start">
-      <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
-      </view>
-      <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
-        <view class='pj_box'>
-          <view class='price'>
-                        <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
-          </view>
-          <navigator url='/pages/evaluates/evaluates' class='pj_btn'>评价</navigator>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="weui-cells">
-    <view class="weui-cell flex-start">
-      <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
-      </view>
-      <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
-        <view class='pj_box'>
-          <view class='price'>
-                        <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
-          </view>
-          <navigator url='/pages/evaluates/evaluates' class='pj_btn'>评价</navigator>
+          <navigator url='/pages/evaluates/evaluates?rec_id={{item.rec_id}}' class='pj_btn'>评价</navigator>
         </view>
       </view>
     </view>
@@ -69,56 +37,24 @@
 
 <!-- 已评价 -->
 <view class="{{currentTab == 1 ? 'show':'hidden'}}">
-  <view class="weui-cells">
+  <view class="weui-cells" wx:for="{{list}}" wx:key="key" wx:for-item="item">
     <view class="weui-cell flex-start">
       <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
+        <image src="{{path}}{{item.pic}}" />
       </view>
       <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
+        <view class='pj_title'>{{item.goods_name}}</view>
+        <view class='fs28 text-muted mt10'>{{item.sku_name}}</view>
         <view class='pj_box'>
           <view class='price'>
-                        <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
+            <view class='money' class='fs24 mr10'>
+              <text class='fw_b'>￥</text>
+              <text class='fs42 ff'>{{item.exp_price[0]}}</text>
+              <text class='ff'>.{{item.exp_price[1]}}</text>
+            </view>
+            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥{{item.goods_price}}</text>
           </view>
-          <navigator url='/pages/evaluateDetail/evaluateDetail' class='pj_btn pj_btn1'>查看评价</navigator>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="weui-cells">
-    <view class="weui-cell flex-start">
-      <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
-      </view>
-      <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
-        <view class='pj_box'>
-          <view class='price'>
-                        <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
-          </view>
-           <navigator url='/pages/evaluateDetail/evaluateDetail' class='pj_btn pj_btn1'>查看评价</navigator>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="weui-cells">
-    <view class="weui-cell flex-start">
-      <view class="weui-cell__hd hd_img">
-        <image src="{{imgBase}}goods01.png" />
-      </view>
-      <view class="weui-cell__bd">
-        <view class='pj_title'>玉兰油OLAY 新生塑颜臻粹修护精华ddfff</view>
-        <view class='fs28 text-muted mt10'>铁锈红-M码</view>
-        <view class='pj_box'>
-          <view class='price'>
-            <view class='money' class='fs24 mr10'><text class='fw_b'>￥</text><text class='fs42 ff'>369</text><text class='ff'>.00</text></view>
-            <text class='fs24 text-muted' style='text-decoration:line-through;'>￥2635.00</text>
-          </view>
-           <navigator url='/pages/evaluateDetail/evaluateDetail' class='pj_btn pj_btn1'>查看评价</navigator>
+          <navigator url='/pages/evaluateDetail/evaluateDetail?rec_id={{item.rec_id}}' class='pj_btn pj_btn1'>查看评价</navigator>
         </view>
       </view>
     </view>

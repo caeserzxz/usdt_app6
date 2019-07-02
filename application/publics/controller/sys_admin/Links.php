@@ -26,67 +26,67 @@ class Links extends AdminController
             (
                 'id' => 2,
                 'name' => '用户中心',
-                'url' => _url('member/center/index','',false,true)
+                'url' => '/member/center/index'
             ),
             2 =>array
             (
                 'id' => 3,
                 'name' => '所有商品',
-                'url' => _url('shop/goods/index','',false,true)
+                'url' =>'/shop/goods/index'
             ),
             3 =>array
             (
                 'id' => 4,
                 'name' => '购物车',
-                'url' => _url('shop/flow/cart','',false,true)
+                'url' =>'/shop/flow/cart'
             ),
             4 =>array
             (
                 'id' => 5,
                 'name' => '商品分类',
-                'url' => _url('shop/index/allsort','',false,true)
+                'url' =>'/shop/index/allsort'
             ),
             5 =>array
             (
                 'id' => 6,
                 'name' => '我的订单',
-                'url' => _url('mobile/Order/order_list','',false,true)
+                'url' =>'/shop/order/index'
             ),
             7 =>array
             (
                 'id' => 8,
                 'name' => '地址管理',
-                'url' => _url('mobile/User/address_list','',false,true)
+                'url' =>'/member/center/address'
             ),
             8 =>array
             (
                 'id' => 9,
                 'name' => '我的信息',
-                'url' => _url('member/center/userinfo','',false,true)
+                'url' =>'/member/center/userinfo'
             ),
             9 =>array
             (
                 'id' => 10,
                 'name' => '我的粉丝',
-                'url' => _url('member/my_team/index','',false,true)
+                'url' =>'/member/my_team/index'
             ),
             10 =>array
             (
                 'id' => 11,
                 'name' => '我的钱包',
-                'url' => _url('member/wallet/index','',false,true)
+                'url' =>'/member/wallet/index'
             ),
             11 =>array
             (
                 'id' => 11,
                 'name' => '积分商品',
-                'url' => _url('integral/goods/index','',false,true)
+                'url' =>'/integral/goods/index'
             ),
             12 =>array
             (
                 'id' => 12,
                 'name' => '身份商品',
-                'url' => _url('distribution/role_goods/index','',false,true)
+                'url' =>'/distribution/role_goods/index'
             )
 
         );
@@ -97,7 +97,7 @@ class Links extends AdminController
             (
                 'id' => 90,
                 'name' => '拼团活动',
-                'url' => _url('fightgroup/index/index','',false,true)
+                'url' =>'/fightgroup/index/index'
             );
         }
         //判断秒杀模块是否存在
@@ -106,7 +106,7 @@ class Links extends AdminController
             (
                 'id' => 91,
                 'name' => '秒杀活动',
-                'url' => _url('second/index/index','',false,true)
+                'url' =>'/second/index/index'
             );
         }
         $this->assign("_menu_index", input('_menu_index','','trim'));

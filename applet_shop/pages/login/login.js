@@ -58,11 +58,6 @@ Page({
      */
     onLoad: function(options) {
         const That = this
-        if (api.islogin('user_id')) {
-            //wx.switchTab({
-            //   url: '/pages/my/my',
-            //})
-        }
         api.getconfig('sms_fun', function(err, data) {
             That.setData({
                 isloginsms: data.login

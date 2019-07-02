@@ -49,7 +49,7 @@ class FightGroupListModel extends BaseModel
             } elseif (count($fgInfo['order']) > 0) {
                 $fgInfo['status'] = $upData['status'] = config('config.FG_DOING');
             }
-        } elseif ($fgInfo['status'] == config('config.FG_DOING')) {//拼团中
+        } elseif ($fgInfo['status'] == config('config.FG_DOING') || $fgInfo['status'] == config('config.FG_FULL')) {//拼团中
             $order_count = count($fgInfo['order']);
             $ok_count = 0;
             foreach ($fgInfo['order'] as $order) {

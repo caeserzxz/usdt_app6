@@ -17,6 +17,44 @@ Page({
 
   },
 
+  //绑定支付宝
+  formSubmit: function (e) {
+    const _this = this;
+
+    console.log(e)
+    let alipay_user_name = e.detail.value.alipay_user_name; //支付宝名称
+    let alipay_account = e.detail.value.alipay_account; //支付宝账号
+
+
+
+    if (alipay_user_name == '' || alipay_account == '') {
+      api.error_msg('请填写完整!')
+    } else {
+      let data = {
+        alipay_user_name: alipay_user_name, //支付宝名称
+        alipay_account: alipay_account, //支付宝账号
+
+      }
+      api.fetchPost(api.https_path + '/member/api.withdraw/addAlipay', data, function (err, res) {
+
+        if (res.code == 1) {
+          api.success_msg('添加成功', 1000)
+          setTimeout(function () {
+            wx.redirectTo({
+              url: '/pages/withdrawManage/withdrawManage',
+            })
+          }, 1500)
+
+        } else {
+          api.error_msg('系统繁忙，稍后再试')
+        }
+      })
+    }
+
+  },
+
+
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

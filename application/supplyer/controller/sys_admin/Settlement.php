@@ -147,8 +147,10 @@ class Settlement extends AdminController
             $afterSale = $AfterSaleModel->where($where)->field('goods_number,return_settle_money')->select();
             $inArr['after_sale_order_num'] = 0;
             $inArr['after_sale_amount'] = 0;
+            $inArr['after_sale_goods_num'] = 0;
             foreach ($afterSale as $as){
-                $inArr['after_sale_order_num'] += $as['goods_number'];
+                $inArr['after_sale_order_num'] += 1;
+                $inArr['after_sale_goods_num'] += $as['goods_number'];
                 $inArr['after_sale_amount'] += $as['return_settle_money'];
             }
             $inArr['settle_amount'] = $inArr['sale_amount'] - $inArr['after_sale_amount'];

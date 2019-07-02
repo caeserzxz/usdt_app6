@@ -1,0 +1,62 @@
+<!--pages/sign/sign.wxml-->
+<view class="page signIn">
+    <view class="page-bd">
+        <view class="top">
+            <navigator url='/pages/signInRecord/signInRecord' class="goLog fs24 color_w">签到记录</navigator>
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class="fs32 text-color" wx:if='{{!isSign}}' bindtap='doSign'>立即<br/>签到</view>
+                    <view class="text-color fs24" wx:if='{{isSign}}' bindtap='doSign'>已签到
+                        <!--<p><i class="fs62 fw_b">{{isSameDay.length}}</i>天</p>-->
+                    </view>
+                </view>
+                <view class="type">
+                    <!--<image src="/images/signInYBG{{isSameDay.length}}.png"></image>-->
+                    <view class="giftBox" bindtap='getAward'></view>
+                </view>
+                <view class="date fs22 color_6">
+                    <text wx:for="{{cycleArr}}" wx:key="key" class="{{index<isSameDay.length?'text-color':''}}">{{item}}</text>
+                </view>
+            </view>
+        </view>
+        <view class="Calendar">
+            <view id="toyear" class="flex flex-pack-center fs38 color_9">
+                <view bindtap='prevMonth' class='btnBox'><image src='/images/signInleft.png'></image></view>
+                <view class="year-month fs30 fw_b color_3">
+                    {{year}}年{{month}}月
+                </view>
+                <view bindtap='nextMonth' class='btnBox'><image src='/images/signInright.png'></image></view>
+            </view>
+            <view class='tou fs28 fw_b color_3'>
+                <text>日</text>
+                <text>一</text>
+                <text>二</text>
+                <text>三</text>
+                <text>四</text>
+                <text>五</text>
+                <text>六</text>
+            </view>
+            <view class="dateBox">
+                <block wx:for="{{dateArr}}" wx:key="key">
+                    <view class="fs30 fw_b {{index<firstDay||index>=lastDay?'notMonth':''}}">
+                        <text class="{{item.isSame?'signActive':''}}">{{item.date}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+    <view class="model" wx:if='{{modelType}}'>
+        <view class="modelBg" bindtap='closeModel'></view>
+        <view class="canter">
+            <image src='/images/signInpoup01.png' class='canterBG'></image>
+            <view class='data'>
+                <p class="fs32 color_r">签到成功</p>
+                <view class="ff color_r">+{{integral}}</view>
+                <text class="fs24 color_9">获得积分</text>
+            </view>
+        </view>
+        <view class="closeBox" bindtap='closeModel'>
+            <image src='/images/close_wy.png'></image>
+        </view>
+    </view>
+</view>

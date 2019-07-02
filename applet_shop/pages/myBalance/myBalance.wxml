@@ -4,34 +4,34 @@
       <view class="weui-cell__bd w100">
         <view class="weui-cell border-before p0" style="justify-content: space-between;align-items: flex-start;">
           <view class="weui-cell__bd">
-            <view class="fs48 text-white fw500 ff">36962.00</view>
+            <view class="fs48 text-white fw500 ff">{{balance_money}}</view>
             <view class="text-muted fs26">余额(元)</view>
           </view>
           <view class="weui-cell__ft">
-            <navigator url='/pages/withdrawCash/withdrawCash' class="tx-btn">
+            <view bindtap='gowithdraw' class="tx-btn">
               提现
-            </navigator>
+            </view>
           </view>
         </view>
       </view>
       <view class="weui-cell__ft w100">
         <view class="text-muted fs26 tl">可提现金额
-          <text class="fs26 ff fw500">￥1587.00</text>, 冻结金额
-          <text class="fs26 ff fw500">￥3652.00</text>
+          <text class="fs26 ff fw500">￥{{balance_money}}</text>, 冻结金额
+          <text class="fs26 ff fw500">￥{{frozen_amount}}</text>
         </view>
       </view>
     </view>
     <view class="weui-flex mt40 mb30">
       <view class="weui-flex__item tc">
-        <view class="fs40 fw500 ff">962.00</view>
+        <view class="fs40 fw500 ff">{{today_income}}</view>
         <view class="fs26 text-muted mt5">今日收益(元)</view>
       </view>
       <view class="weui-flex__item tc">
-        <view class="fs40 fw500 ff">1365.32</view>
+        <view class="fs40 fw500 ff">{{month_income}}</view>
         <view class="fs26 text-muted mt5">本月收益(元)</view>
       </view>
       <view class="weui-flex__item tc">
-        <view class="fs40 fw500 ff">1365.32</view>
+        <view class="fs40 fw500 ff">{{end_income}}</view>
         <view class="fs26 text-muted mt5">累计收益(元)</view>
       </view>
     </view>
@@ -46,7 +46,7 @@
       </view>
       <view class="weui-cell__ft"></view>
     </navigator>
-    <navigator url="/pages/rank/rank" class="weui-cell weui-cell__ft_in-access border-before">
+    <!-- <navigator url="/pages/rank/rank" class="weui-cell weui-cell__ft_in-access border-before">
       <view class="weui-cell__hd">
         <image src="/images/wallet02.png" class="img2" style="vertical-align:sub;"></image>
       </view>
@@ -63,7 +63,7 @@
         <text class="fs30">充值明细</text>
       </view>
       <view class="weui-cell__ft"></view>
-    </navigator>
+    </navigator> -->
   </view>
   <view class='btn_box'>
     <navigator url='/pages/topup/topup' class='btn_primary'>充值</navigator>

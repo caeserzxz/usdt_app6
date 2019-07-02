@@ -259,13 +259,12 @@
 }
 
 .btn_primary {
-    height: 80rpx;
-    line-height: 80rpx;
+    height: 90rpx;
+    line-height: 90rpx;
     background-color: #f65236;
     display: block;
     text-align: center;
-    font-size: 32rpx;
-    font-weight: 600;
+    font-size: 28rpx;
     color: #fff;
 }
 

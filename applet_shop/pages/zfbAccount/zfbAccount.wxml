@@ -1,11 +1,12 @@
 <!--pages/zfbAccount/zfbAccount.wxml-->
+<form bindsubmit="formSubmit">
 <view class="weui-cells weui-cells_form mt0">
   <view class="weui-cell">
     <view class="weui-cell__hd">
       <label class="weui-label fw600">账户姓名</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" type="text" placeholder="请输入账户姓名" />
+      <input class="weui-input" type="text" placeholder="请输入账户姓名" name='alipay_user_name' />
     </view>
   </view>
    <view class="weui-cell">
@@ -13,11 +14,13 @@
       <label class="weui-label fw600">支付宝账号</label>
     </view>
     <view class="weui-cell__bd">
-      <input class="weui-input" type="text" placeholder="请输入支付宝账号" />
+      <input class="weui-input" type="text" placeholder="请输入支付宝账号" name='alipay_account'/>
     </view>
   </view>
 </view>
 
 <view class='btn_box mt100'>
-  <navigator class='btn_primary'>确认添加</navigator>
+  <!-- <navigator class='btn_primary'>确认添加</navigator> -->
+    <button form-type="submit" class='btn_primary'>确认添加</button>
 </view>
+</form> 

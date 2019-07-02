@@ -1,4 +1,5 @@
 .idea/
+common/domain_name.js
 node_modules
 npm-debug.log
-/dist/
+project.config.json

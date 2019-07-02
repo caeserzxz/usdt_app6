@@ -155,5 +155,53 @@ class BonusModel extends BaseModel
 		}
 		return true;
 	}
+
+	/*------------------------------------------------------ */
+    //-- 获取免费优惠券列表
+    /*------------------------------------------------------ */
+    public function getListByFree(){
+
+        $mkey = $this->mkey.'_free';
+        $list = Cache::get($mkey);
+        if (empty($list['unused']) == false || empty($list['used']) == false || empty($list['expired']) == false){
+            return $list;
+        }
+        $rows = $this->where("send_type = 2 ")->select()->toArray();
+        $list = array();
+        foreach ($rows as $row){
+            $_t = $row;
+            if(time() < $row['send_end_date']){
+                $_t['send_start_date'] = date("Y-m-d H:i",$row['send_start_date']);
+                $_t['send_end_date'] = date("Y-m-d H:i",$row['send_end_date']);
+                $list[] = $_t;
+            }
+        }
+        Cache::set($mkey,$list,60);//缓存30秒
+        return $list;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 领取免费优惠卷
+    /*------------------------------------------------------ */
+    public function receiveFreeBonus($type_id = 0,$user_id = 0){
+        $BonusListModel = new BonusListModel();
+        if ($user_id < 1) return false;
+        $info = $this->where(['type_id'=>$type_id])->find();
+        if(empty($info)) return  '系统繁忙，稍后再试';
+        $log = $BonusListModel->where(['type_id'=>$type_id])->find();
+        if($log) return '该优惠卷已领取';
+        /* 生成优惠券序列号 */
+        $num = $BonusListModel->max('bonus_sn');
+        $num = $num ? floor($num / 10000) : 100000;
+        $addnum = 1;
+        $time = time();
+        $arr['type_id'] = $type_id;
+        $arr['bonus_sn'] = ($num + $addnum ) . str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+        $arr['user_id'] = $user_id;
+        $arr['add_time'] = $time;
+        $res = $BonusListModel::create($arr);
+        if ($res < 1) return '未知错误，领取失败，请稍后再试';
+        return true;
+    }
 	
 }
