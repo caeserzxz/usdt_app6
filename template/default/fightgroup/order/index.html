@@ -24,7 +24,10 @@
 
 {/block}
 {block name="footer"}
-
+<style>
+    .empeyOrder img {width: 100%;}
+    .empeyOrder span {display: block;text-align: center;}
+</style>
 <script id="orderTpl" type="text/html">
     {{each list as item index}}
     <a href='{:_url('info',['order_id'=>'[[item.order_id]]'])}' class="goodsBox">
