@@ -11,22 +11,23 @@
           <span class="fs34 color_3 fw_b">{:settings('shop_title')}</span>
         </div>
         <div class="inputBlock bor_b">
-            <div class="tips fs34 color_9">账号</div>
-            <input type="text" class="fs34 fw_b textBox" id="mobile">
+            <img src="__STATIC__/mobile/default/images/register01.png" alt="" class="imgIcon">
+            <input type="text" class="fs32 fw_b textBox" id="mobile" placeholder="账号">
         </div>
         <div class="inputBlock bor_b">
-            <div class="tips fs34 color_9">密码</div>           
-              <input type="password" class="fs38 fw_b textBox" id="password">
+            <img src="__STATIC__/mobile/default/images/register02.png" alt="" class="imgIcon">        
+              <input type="password" class="fs32 fw_b textBox" id="password" placeholder="密码">
               <div class="ereBox">
                   <img src="__STATIC__/mobile/default/images/login01.png" alt="" data-type="0">
               </div>
         </div>
         {if condition="$sms_fun['login']==1"}
         <div class="inputBlock bor_b">
-            <div class="tips fs34 color_9">验证码</div>           
-              <input type="text" class="fs34 fw_b textBox code" id="code">
+            <img src="__STATIC__/mobile/default/images/register04.png" alt="" class="imgIcon">          
+              <input type="text" class="fs32 fw_b textBox code" id="code" placeholder="验证码">
               <div class="codeBox">
-                  <input type="text" value="获取验证码" id="codebtn" class="color_r fs28 fw_b" readonly onclick="codeButton()">
+                  <span class="color_r fs28 fw_b getCode" onclick="codeButton()">获取验证码</span>
+                  <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
               </div>  
         </div>
         {/if}
@@ -41,14 +42,6 @@
 {block name="footer"}
     <script>
     $(function(){
-      $('.textBox').on('click',function(){
-        $(this).siblings('.tips').animate({'fontSize':'0.186666rem','top':'0.15rem'})
-      })
-      $('.inputBlock input').blur(function(){
-        if($(this).val()==''){
-          $(this).siblings('.tips').animate({'fontSize':'0.226666rem','top':'0.36rem'})
-        }
-      })
       $('.ereBox').on('click',function(){
         var obj=$(this).find('img')
         if(obj.attr('data-type')=='0'){
@@ -111,20 +104,19 @@
                 _alert(res.msg);
                 return false;
             }
-            var codebtn = $("#codebtn");
-            setTimeout(function(){
-                codebtn.css("color","#999");
-                codebtn.attr("disabled","disabled");
-            },1000)
+            var timeObj=$('.time')
+            var getCodeObj=$('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
             var time = 60;
             var set=setInterval(function(){
-                codebtn.val(""+--time+"s");
+                timeObj.text(""+--time+"s");
+                if (time<=0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
             }, 1000);
-            setTimeout(function(){
-                codebtn.attr("disabled",false).val("获取验证码");
-                codebtn.css("color","#F65236");
-                clearInterval(set);
-            }, 60000);
         })
 
     }

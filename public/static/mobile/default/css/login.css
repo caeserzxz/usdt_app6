@@ -30,10 +30,10 @@ body {
 }
 
 .inputBlock {
-  height: 0.866667rem;
+  height: 0.6rem;
   background-color: #fff;
   margin: 0 0.493333rem;
-  margin-top: 0.133333rem;
+  margin-top: 0.4rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -43,17 +43,16 @@ body {
           align-items: center;
 }
 
-.inputBlock .tips {
-  position: absolute;
-  top: 0.36rem;
-  z-index: 0;
-}
-
 .inputBlock input {
-  margin-top: 0.4rem;
   position: relative;
   z-index: 99;
   width: 90%;
+}
+
+.inputBlock .imgIcon {
+  width: 0.226667rem;
+  height: 0.226667rem;
+  margin-right: 0.12rem;
 }
 
 .inputBlock .ereBox {
@@ -64,13 +63,16 @@ body {
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
           justify-content: flex-end;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100%;
 }
 
-.inputBlock img {
+.inputBlock .ereBox img {
   width: 0.226667rem;
   height: 0.16rem;
   float: right;
-  margin-top: 0.4rem;
 }
 
 .inputBlock .code {
@@ -92,7 +94,6 @@ body {
   text-align: end;
   padding-right: 0.026667rem;
 }
-
 .remPassword {
   display: -webkit-box;
   display: -webkit-flex;
