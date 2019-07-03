@@ -265,7 +265,7 @@ class Order extends AdminController
         $this->assign("operating", $operating);
         $orderInfo['dividend_role_name'] = (new DividendRoleModel)->info($orderInfo['dividend_role_id'], true);
         $this->assign('orderInfo', $orderInfo);
-        $logWhere[] = ['order_type', '=', 'order'];
+        $logWhere[] = ['order_type', 'in', ['order','up_back']];
         $logWhere[] = ['order_id', '=', $order_id];
         $dividend_log = (new DividendModel)->where($logWhere)->order('award_id,level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);
@@ -307,10 +307,11 @@ class Order extends AdminController
                 $data['shipping_name'] = $shipping[$data['shipping_id']]['shipping_name'];
                 $data['invoice_no'] = $invoice_no;
             }
+
             $data['shipping_status'] = $config['SS_SHIPPED'];
             $data['shipping_time'] = time();
             $res = $this->Model->upInfo($data,'sys');
-            if ($res != true) return $this->error($res);
+            if ($res !== true) return $this->error($res);
             $orderInfo['shipping_status'] = $data['shipping_status'];
             $this->Model->_log($orderInfo, '操作发货');
             return $this->success('操作发货成功！', url('info', array('order_id' => $order_id)));

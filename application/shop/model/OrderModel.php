@@ -190,7 +190,7 @@ class OrderModel extends BaseModel
             } elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
                 $info['ostatus'] = '已完成';
                 $shop_after_sale_limit = settings('shop_after_sale_limit');
-                if ($shop_after_sale_limit > 0){//开启售后
+                if ($shop_after_sale_limit > 0 && $info['back_dividend_amount'] == 0){//开启售后,back_dividend_amount>0时不能售后
                     if ($info['sign_time'] > time() - $shop_after_sale_limit * 86400){
                         $info['isAfterSale'] = 1;//可操作：申请售后
                     }
@@ -479,7 +479,6 @@ class OrderModel extends BaseModel
             }
         }
         $upData['update_time'] = $time;
-
         $res = $this->where('order_id', $order_id)->update($upData);
         if ($res < 1) {
             Db::rollback();
@@ -495,6 +494,8 @@ class OrderModel extends BaseModel
                     $sendData['send_scene'] = 'order_cancel_msg';//订单取消通知
                 } else {
                     $sendData['send_scene'] = 'order_shipping_msg';//订单发货通知
+                    $sendData['shipping_name'] = $upData['shipping_name'];
+                    $sendData['invoice_no'] = $upData['invoice_no'];
                 }
                 $sendData['openid'] = $WeiXinUsersModel->where('user_id', $orderInfo['user_id'])->value('wx_openid');
                 $sendData['order_id'] = $orderInfo['order_id'];
@@ -502,8 +503,6 @@ class OrderModel extends BaseModel
                 $sendData['consignee'] = $orderInfo['consignee'];
                 $sendData['order_amount'] = $orderInfo['order_amount'];
                 $sendData['add_time'] = $orderInfo['add_time'];
-                $sendData['shipping_name'] = $orderInfo['shipping_name'];
-                $sendData['invoice_no'] = $orderInfo['invoice_no'];
                 $WeiXinMsgTplModel->send($sendData);
         }
         $this->cleanMemcache($order_id);
@@ -599,7 +598,7 @@ class OrderModel extends BaseModel
     {
         if (empty($orderInfo)) return false;
         if ($orderInfo['order_type'] == 1) {//积分商品不返利
-            return false;
+            return true;
         }
         $orderInfo['d_type'] = 'order';//普通订单
         return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
@@ -747,6 +746,7 @@ class OrderModel extends BaseModel
                 return false;
             }
             Db::commit();// 提交事务
+            $orderInfo['is_stock'] = 1;
         }//end
 
         //确认订单，执行拆单处理，独立出来并外部使用事务
