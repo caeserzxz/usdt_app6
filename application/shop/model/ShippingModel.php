@@ -2,6 +2,7 @@
 
 namespace app\shop\model;
 use app\BaseModel;
+use app\mainadmin\model\RegionModel;
 use think\facade\Cache;
 use kuaidi\Kdapieorder;
 //*------------------------------------------------------ */
@@ -63,6 +64,7 @@ class ShippingModel extends BaseModel
         $kdn_city = settings('kdn_city');
         $kdn_area = settings('kdn_area');
         $kdn_address = settings('kdn_address');
+        $kdn_postcode = settings('kdn_postcode');
         if ($kdn_appid == "") return "请先配置电商ID（快递鸟）";
         if ($kdn_apikey == "") return "请先配置电商加密私钥（快递鸟）";
         if ($kdn_apiurl == "") return "请先配置接口地址（快递鸟）";
@@ -79,9 +81,11 @@ class ShippingModel extends BaseModel
             $kd_config['ke_requrl'] = $kdn_apiurl;
             $kdapiorder = new Kdapieorder($kd_config);
         }
-        $customer_name = $this->field('customer_name','customer_pwd')->where(['shipping_id' => $kdn_shipping_id])->find();
-
+        //$customer_name = $this->field('customer_name','customer_pwd')->where(['shipping_id' => $kdn_shipping_id])->find();
         //构造电子面单提交信息
+        $regionfrist = new RegionModel();
+        $district = $regionfrist->info($orderInfo['district']);
+
         $eorder = [];
         $eorder["ShipperCode"] = $shipping['kdn_code']; //发件地邮编
         $eorder["OrderCode"] = $orderInfo['order_sn'];
@@ -98,6 +102,7 @@ class ShippingModel extends BaseModel
         $sender["CityName"] = $kdn_city;
         $sender["ExpAreaName"] = $kdn_area;
         $sender["Address"] = $kdn_address;
+        $sender["PostCode"] = $kdn_postcode;
 
         //收件人
         list($ProvinceName, $CityName, $ExpAreaName) = $merger_name = explode(',', $orderInfo['merger_name']);
@@ -108,6 +113,7 @@ class ShippingModel extends BaseModel
         $receiver["CityName"] = $CityName;
         $receiver["ExpAreaName"] = $ExpAreaName;
         $receiver["Address"] = $orderInfo['address'];
+        $receiver["PostCode"] = $district['zip_code'];
 
         $commodityOne = [];
         $commodityOne["GoodsName"] = $kdeorder_goods_name; //商品名称【必填写】
