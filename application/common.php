@@ -355,8 +355,8 @@ function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 
 	$selected = explode(',',$selected);
 	foreach ($rows AS $key=>$val){
 		if (is_array($val) == false){
-			$selected = (in_array($key,$selected)) ? "selected='selected'" : '';
-			$select .= '<option value="'.$key.'" '.$selected.'>'.$val.'</option>';
+			$selectedArr = (in_array($key,$selected)) ? "selected='selected'" : '';
+			$select .= '<option value="'.$key.'" '.$selectedArr.'>'.$val.'</option>';
 			 continue;	
 		}
 		if ($level > 0 && $val['level'] > $level) continue;		

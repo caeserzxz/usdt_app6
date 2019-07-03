@@ -41,7 +41,15 @@
         
         {volist name="allSort.rows" id="class" }
               <div class="rightBox" style="{if condition="empty($allSort['best']) && $i == 1"}display:block{/if}">
-              	 {volist name="class.children"  id="cids" }
+            {empty name="$class.children"}
+                <div class="block">
+                    <div class="title"><i></i><span class="fs28 fw_b color_3">{$class['m_name']?$class['m_name']:$class['name']}</span><i></i></div>
+                    <div class="list">
+                        <a href='{:url("goods/index",['cid'=>$class.cid])}'><img src="{$class['pic']}" alt=""><span class="fs26 color_6">{$class['m_name']?$class['m_name']:$class['name']}</span></a>
+                    </div>
+                </div>
+            {else/}
+                {volist name="class.children"  id="cids" }
                   <div class="block">
                       <div class="title"><i></i><span class="fs28 fw_b color_3">{$classList[$key]['m_name']?$classList[$key]['m_name']:$classList[$key]['name']}</span><i></i></div>
                       <div class="list">
@@ -50,7 +58,8 @@
                        {/volist}
                       </div>
                   </div>
-                 {/volist} 
+                 {/volist}
+            {/empty}
               </div>
          {/volist}
         </div>
