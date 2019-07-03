@@ -1,18 +1,18 @@
 <view class='page'>
   <view class="coupon_list_box">
     <block wx:for="{{coupons}}" wx:key="*this">
-      <view id='{{item.id}}' class="big_coupon {{item.select? 'active': ''}}" bindtap='selectCoupon'>
+      <view id='{{item.bonus_id}}' class="big_coupon {{item.bonus_id == bonus_id? 'active': ''}}" bindtap='selectCoupon'>
         <view class='rtok'>
           <image src="/images/useing.png" />
         </view>
         <view class="bd">
-          <view class="fs30">{{item.name}}</view>
-          <view class="fs26 text-muted">{{item.stitle}}</view>
-          <view class="fs24 text-muted mt20">{{item.time}}</view>
+          <view class="fs30">{{item.bonus.type_name}}</view>
+          <view class="fs26 text-muted">满{{item.bonus.min_amount}}元可用</view>
+          <view class="fs24 text-muted mt20">{{item.bonus._use_start_date}}--{{item.bonus._use_end_date}}</view>
         </view>
         <view class="hd">
           ￥
-          <text>{{item.money}}</text>
+          <text>{{item.bonus.type_money}}</text>
         </view>
       </view>
     </block>

@@ -263,6 +263,10 @@
   transform: translateY(100%);
 }
 
+.display-none{
+  display: none
+}
+
 .model_show{
   transform: translateY(0);
 }

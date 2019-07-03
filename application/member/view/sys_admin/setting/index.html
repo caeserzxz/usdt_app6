@@ -23,19 +23,19 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="basic">
                     <div class="form-group">
-                          <label class="col-sm-2 control-label">注册相关：</label>
-                          <div class="controls">
-                           <label class="radio-inline">
-                              <input name="register_status" value="0" {$setting['register_status']==0?'checked':''} type="radio" >关闭注册
-                            </label>
-                            <label class="radio-inline">
-                              <input name="register_status" value="1" {$setting['register_status']==1?'checked':''} type="radio">开放注册
-                            </label>
-                            <label class="radio-inline">
-                              <input name="register_status" value="2" {$setting['register_status']==2?'checked':''} type="radio" >微信自动注册（使用微信自动注册，将关闭页面注册）
-                            </label>
-                          </div>
-                     </div>
+                        <label class="col-sm-2 control-label">注册相关：</label>
+                        <div class="controls">
+                         <label class="radio-inline">
+                            <input name="register_status" value="0" {$setting['register_status']==0?'checked':''} type="radio" >关闭注册
+                          </label>
+                          <label class="radio-inline">
+                            <input name="register_status" value="1" {$setting['register_status']==1?'checked':''} type="radio">开放注册
+                          </label>
+                          <label class="radio-inline">
+                            <input name="register_status" value="2" {$setting['register_status']==2?'checked':''} type="radio" >微信自动注册（使用微信自动注册，将关闭页面注册）
+                          </label>
+                        </div>
+                    </div>
                     <div class="form-group ">
                           <label class="col-sm-2 control-label">注册赠送积分：</label>
                           <div class="controls">
@@ -44,7 +44,7 @@
                           </div>
                      </div>
                     <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                    <div class="form-group hide">
+                    <div class="form-group">
                           <label class="col-sm-2 control-label">是否开放签到：</label>
                           <div class="controls">
                             <label class="radio-inline">
@@ -53,6 +53,13 @@
                             <label class="radio-inline">
                               <input name="sign_in" value="0" {$setting['sign_in']==0?'checked':''} type="radio" >关闭
                             </label>
+                          </div>
+                     </div>
+                     <div class="form-group ">
+                          <label class="col-sm-2 control-label">签到赠送积分：</label>
+                          <div class="controls">
+                           <input type="text" value="{$setting['sign_integral']}" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="sign_integral">
+                            <span class="help-line"> 签到赠送积分的积分数量</span>
                           </div>
                      </div>
                 </div>

@@ -1,25 +1,25 @@
 <view class='page'>
+ <button open-type="share">
   <view class='bottom_box'>
-    <view>
-      <image src='/images/goodsIcon04.png' />保存图片</view>
+    <!-- <view><image src='/images/goodsIcon04.png' />保存图片</view> -->
     <view class='vux-1px-l'>
       <image src='/images/goodsIcon01.png' />分享链接</view>
   </view>
-
+ </button>
   <view class='weui-cells'>
     <view class='weui-cell'>
       <view class='weui-cell__bd'>
         <view class='imgbox'>
-          <image src="{{imgBase}}goods01.png" />
+          <image src="{{imgBase}}{{goods.goods_img}}" />
         </view>
-        <view class='fs34 mt30'>冬季新款羽绒服宽松面包服休闲百搭短款羽绒服女红色喜庆</view>
+        <view class='fs34 mt30'>{{goods.goods_name}}</view>
         <view class='weui-flex flex-center'>
           <view class='weui-flex__item'>
-            <view class='price'><text class='fs30'>￥</text><text class='fs54 ff'>369.00</text></view>
-            <view class='user mt30'><image src='/images/df_tx.png'/>狂风扫落叶</view>
+            <view class='price'><text class='fs30'>￥</text><text class='fs54 ff'>{{goods.shop_price}}</text></view>
+            <view class='user mt30'><image src="{{memberinfo.headimgurl ? memberinfo.headimgurl : '/images/df_tx.png'}}"/>{{memberinfo.nick_name}}</view>
           </view>
           <view class='rwmbox'>
-            <image src="/images/code.png" />
+            <image src="{{qrimg}}" data-vad="{{qrimg}}"/>
           </view>
         </view>
       </view>

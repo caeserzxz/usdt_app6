@@ -659,6 +659,15 @@ class Goods extends AdminController
     /*------------------------------------------------------ */
     public function afterEdit($row)
     {
+        $GoodsImages = input('post.GoodsImages');
+        $GoodsImgsModel = new GoodsImgsModel();
+        foreach ($GoodsImages['id'] as $key => $img_id) {
+            $imgwhere = array();
+            $imgwhere[] = ['img_id', '=', $img_id];
+            $imgwhere[] = ['goods_id', '=', $row['goods_id']];
+            $GoodsImgsModel->where($imgwhere)->update(['sort_order'=>$key]);
+        }
+        unset($imgwhere);
         if ($row['is_spec'] == 1) {
             $GoodsSkuModel = new GoodsSkuModel();
             //查询不同模型的sku,如果查询有删除

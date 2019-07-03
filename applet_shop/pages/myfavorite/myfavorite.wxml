@@ -1,7 +1,7 @@
 <view class='page2'>
   <view class='weui-cells top_box'>
     <view class='weui-cell'>
-      <view class='weui-cell__bd fs32'>当前收藏夹共12件商品</view>
+      <view class='weui-cell__bd fs32'>当前收藏夹共{{counts}}件商品</view>
       <view class='weui-cell__ft fs28'>
         <text wx:if="{{edit}}" class='text-red' bindtap='editDone'>完成</text>
         <text wx:else class='text-red' bindtap='openEdit'>编辑</text>
@@ -17,39 +17,39 @@
         </label>
       </view>
       <view class='weui-cell__ft fs28'>
-        <view class='qx_btn'>取消收藏</view>
+        <view class='qx_btn' bindtap='qxCollect'>取消收藏</view>
       </view>
     </view>
   </view>
 
 
   <view class='page-bd'>
-    <checkbox-group bindchange="checkboxChange">
+    <checkbox-group bindchange="">
       <view class='weui-cells border-none mt0 card_lilst'>
         <block wx:for="{{list}}" wx:key="list">
           <view class='weui-cell border-none cell_swiped' style="left:-{{offsetRecord.index == index ? offsetRecord.offset : 0}}rpx;" bindtouchstart="onTableCellTouchStart" bindtouchmove="onTableCellTouchMove" bindtouchend="onTableCellTouchEnd" bindtouchcancel="onTableCellTouchEnd"
             data-index="{{index}}">
             <view wx:if="{{edit}}">
-              <label class="checkbox" id='{{item.id}}' bindtap='checkboxTap'>
-                <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+              <label class="checkbox" id='{{item.goods_id}}' bindtap='checkboxTap'>
+                <checkbox value="{{item.goods_id}}" checked="{{item.checked}}" />
               </label>
             </view>
             <view class='weui-cell__hd'>
-              <image class='hd_img' src='{{imgBase}}seckillimg.png'></image>
+              <image class='hd_img' src='{{https_path}}{{item.goods_thumb}}'></image>
             </view>
-            <navigator url='/pages/productDetails/productDetails' class='weui-cell__bd'>
-              <view class='title ellipsisLn1'>{{item.title}}</view>
-              <view class='text-muted mt10'>{{item.desc}}</view>
+            <navigator url='/pages/productDetails/productDetails?goods_id={{item.goods_id}}' class='weui-cell__bd'>
+              <view class='title ellipsisLn1'>{{item.goods_name}}</view>
+              <view class='text-muted mt10'>{{item.short_name}}</view>
               <view class='weui-flex mt20'>
                 <view class='weui-flex__item money'>
                   <text class='fs24 fw_b'>￥</text>
-                  <text class='price ff'>899</text>
-                  <text class='ff fs24'>.00</text>
+                  <text class='price ff'>{{item.exp_price[0]}}</text>
+                  <text class='ff fs24'>.{{item.exp_price[1]}}</text>
                 </view>
               </view>
             </navigator>
             <view class='swipeout_btns'>
-              <view class='btn1' id='{{item.id}}' bindtap='del'>
+              <view class='btn1' id='{{item.goods_id}}' bindtap='delgoods'>
                 <image src='/images/delectIcon.png' />
               </view>
             </view>
@@ -60,12 +60,12 @@
   </view>
 </view>
 
-<view class='nodata' hidden='{{true}}'>
+<view class='nodata' hidden='{{list == null}}'>
   <view>
     <image src="/images/emptyCart.png" mode="widthFix" />
   </view>
   <view class='fs30 text-muted'>
     暂无收藏~
-    <text class='text-red'>去逛逛</text>
+    <text class='text-red' bindtap='goCollect'>去逛逛</text>
   </view>
 </view>

@@ -169,12 +169,6 @@
                                 订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">总提成金额：￥{$orderInfo.dividend_amount|priceFormat}</span>
                                 <span class="m-l-lg hide">实收：{$orderInfo.real_amount|priceFormat}</span>
                                 <span class="m-l-lg ">下单时身份：{$orderInfo.buy_role_name}</span>
-                                <a href="javascript:;"
-                                   data-remote="{:url('upDividend',array('id'=>$orderInfo['order_id']))}"
-                                   data-msg="确定重新计算分佣？" data-toggle="ajaxCurl" class="btn  btn-sm fr "
-                                   title="重新计算分佣">重新计算分佣</a>
-
-
                             </div>
                         </div>
                         <div class="col-sm-12 table-responsive">

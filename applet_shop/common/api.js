@@ -1,4 +1,5 @@
-var https_path = 'http://www.moduleshop.top/';
+var domain_name = require("domain_name.js")
+var https_path = domain_name.https_path
 var md5 = require("md5.js")
 var sms = require("smscode.js")
 var keys = 'eb5c6b3e4505c1fd7878bde2ed8544cf'
@@ -149,6 +150,19 @@ function error_msg(_msg, _time) {
 }
 
 /**
+ * 加载信息提示
+ */
+function loading_msg(_msg) {
+    var _msg = _msg == undefined ? "加载中" : _msg
+    wx.showLoading({
+        title: _msg,
+    })
+    setTimeout(function() {
+        wx.hideLoading()
+    }, 600)
+}
+
+/**
  * 获取缓存中的数据
  */
 function getcache(_name) {
@@ -170,8 +184,17 @@ function putcache(_name, _value) {
 /**
  * 加载更多数据
  */
-function pagelist(_url, _pages, _data) {
-    _data.pages = _pages
+function pagelist(_url, _pages, _data, callback) {
+    _data.p = _pages
+    var user_devtoken = getcache('user_devtoken')
+    var timestamp = (new Date()).getTime()
+    var new_time = timestamp
+    if (user_devtoken) {
+        _data.devtoken = user_devtoken
+        _data.source = 'developers'
+        _data.timeStamp = new_time
+        _data.sign = md5.hexMD5(user_devtoken + new_time + keys)
+    }
     wx.request({
         method: 'POST',
         url: _url,
@@ -188,12 +211,14 @@ function pagelist(_url, _pages, _data) {
     })
 }
 
-function islogin(_name) {
-    const userid = getcache(_name)
-    if (userid) {
-        return userid;
-    } else {
-        return false;
+//判断是否已经登录
+function islogin() {
+    const user_devtoken = getcache('user_devtoken')
+    if (user_devtoken == "") {
+        wx.redirectTo({
+          url: '/pages/authorizeLogin/authorizeLogin',
+        })
+        return false
     }
 }
 
@@ -244,8 +269,32 @@ function sendsms(_mobile, _types, callback) {
     })
 }
 
+//检测数组中是否存在某个字符串
+function in_array(search, array) {
+    for (var i in array) {
+        if (array[i] == search) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/**
+ * 加载信息提示
+ */
+function loading_msgs(_msg) {
+    var _msg = _msg == undefined ? "加载中" : _msg
+    wx.showLoading({
+        title: _msg,
+    })
+}
+
 //模块化
 module.exports = {
+    in_array: in_array,
+    loading_msgs: loading_msgs, //加载提示
+    loading_msg: loading_msg, //加载提示
     sendsms: sendsms, //发送验证码
     fetchPostOther: fetchPostOther, // POST请求，不带验证
     getconfig: getconfig, //读取配置项

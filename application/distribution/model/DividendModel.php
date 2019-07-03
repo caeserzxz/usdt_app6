@@ -57,7 +57,7 @@ class DividendModel extends BaseModel
     //-- 执行分佣到帐
     //-- order_id int 订单ID
     /*------------------------------------------------------ */
-    public function evalArrival($order_id = 0, $limit_id = 0)
+    public function evalArrival($order_id = 0, $type = '',$limit_id=0)
     {
         $time = time();
         $OrderModel = new OrderModel();
@@ -65,16 +65,28 @@ class DividendModel extends BaseModel
         if ($order_id > 0) {
             $where[] = ['order_id', '=', $order_id];
             $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
+            if ($type == 'role_order'){
+                $where[] = ['order_type', '=', $type];
+            }else{
+                $where[] = ['order_type', 'in', ['order','up_back']];
+            }
             $rows = $this->where($where)->select()->toArray();
         } else {
-            if ($shop_after_sale_limit > 0 ){
-                $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
-                $limit_time = $shop_after_sale_limit * 86400;
-                $where[] = ['d.update_time', '<', $time - $limit_time];
-                $rows = $this->alias('d')->join('shop_order o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
-            }else{
+            if ($type == 'role_order'){
                 $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
+                $where[] = ['order_type', '=', $type];
                 $rows = $this->where($where)->select()->toArray();
+            }else{
+                $where[] = ['order_type', '=', $type];
+                if ($shop_after_sale_limit > 0 ){
+                    $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
+                    $limit_time = $shop_after_sale_limit * 86400;
+                    $where[] = ['d.update_time', '<', $time - $limit_time];
+                    $rows = $this->alias('d')->join('shop_order o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
+                }else{
+                    $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
+                    $rows = $this->where($where)->select()->toArray();
+                }
             }
         }
 
@@ -84,12 +96,19 @@ class DividendModel extends BaseModel
         $log_id = [];
         foreach ($rows as $row) {
             if ($shop_after_sale_limit > 0 ){
-                if ($row['is_after_sale'] == 1){
+                if (isset($row['is_after_sale']) && $row['is_after_sale'] == 1){
                     continue;//有售后，暂不能分佣
                 }
             }
-            $changedata['change_desc'] = '订单佣金到帐';
-            $changedata['change_type'] = 4;
+
+            if ($row['order_type'] == 'role_order'){
+                $changedata['change_desc'] = '身份单佣金到帐';
+                $changedata['change_type'] = 10;
+            }else{
+                $changedata['change_desc'] = '订单佣金到帐';
+                $changedata['change_type'] = 4;
+            }
+
             $changedata['by_id'] = $row['order_id'];
             $changedata['balance_money'] = $row['dividend_amount'];
             $changedata['bean_value'] = $row['dividend_bean'];
@@ -107,7 +126,9 @@ class DividendModel extends BaseModel
             }
             $log_id[] = $row['log_id'];
         }
-       $this->sendMsg('sign',$order_id);
+        if ($order_id > 0){
+            $this->sendMsg('sign',$order_id);
+        }
         return $log_id;
     }
     /*------------------------------------------------------ */
@@ -119,6 +140,7 @@ class DividendModel extends BaseModel
         $time = time();
         $OrderModel = new OrderModel();
         $where[] = ['order_id', '=', $order_id];
+        $where[] = ['order_type','=','order'];
         $rows = $this->where($where)->select()->toArray();
         if (empty($rows)) return true;//没有找到相关佣金记录
 

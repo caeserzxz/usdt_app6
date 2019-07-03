@@ -70,10 +70,7 @@ class Payment extends ClientbaseController
                 return $this->error('此订单，已取消不能执行支付.', url('shop/order/info', ['order_id' => $order_id]));
             }
         }
-        //如果有使用积分，判断积分是否也足够扣减
-        if ($order['use_integral'] > 0 && $order['use_integral'] > $this->userInfo['account']['use_integral']) {
-            return $this->error('积分不足，无法完成支付.', url('integral/flow/done', ['order_id' => $order_id]));
-        }
+
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
         if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
             if ($order['user_id'] != $this->userInfo['user_id']){

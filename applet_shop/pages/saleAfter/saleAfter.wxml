@@ -1,79 +1,78 @@
+<wxs module="filter" src="../../common/wxsfun.wxs"></wxs>
 <view class="page2">
-  <view class="weui-media-box pro-cell weui-media-box_appmsg  border-before bg-fff" style="align-items:flex-start">
-    <view class="weui-media-box__hd">
-      <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
-    </view>
-    <view class="weui-media-box__bd" style="width:100%;">
-      <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
-      <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+    <view class="weui-media-box pro-cell weui-media-box_appmsg  border-before bg-fff" style="align-items:flex-start">
+        <view class="weui-media-box__hd">
+            <image class="weui-media-box__thumb proimg" src="{{imgUrl}}{{goodsinfo.pic}}" />
+        </view>
+        <view class="weui-media-box__bd" style="width:100%;">
+            <view class="weui-media-box__title fs28 pro-title">{{goodsinfo.goods_name}}</view>
+            <p class="weui-media-box__desc mt10 fs28">{{goodsinfo.sku_name}}</p>
             <view class="mt10 money">
-              <text class="fs24 fw_b">￥</text>
-              <text class="fs36 fw500 num ff">328</text>
-              <text class="fs24 num ff">.00</text>
-              <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                <text class="fs24 fw_b">￥</text>
+                <text class="fs36 fw500 num ff">{{goodsinfo.goods_price}}</text>
+                <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x{{goodsinfo.goods_number}}</text>
             </view>
-    </view>
-  </view>
-  <view class="weui-cells mt0 border-after border-before pb50">
-    <view class="weui-cells__title mt0 pt30 pb30">
-      <text class="fs28 fw800 text-default">服务类型</text>
-    </view>
-    <view class="weui-flex pl30 mb60">
-      <view class="weui-cell__item btn1 fs28 fw500 tc mr10 {{type1 == 1? 'active':''}}" bindtap='onType' data-index="1">退货</view>
-      <view class="weui-cell__item btn1 fs28 fw500 tc mr10 {{type1 == 2? 'active':''}}" bindtap='onType' data-index="2">换货</view>
-      <view class="weui-cell__item btn1 fs28 fw500 tc mr10  {{type1 == 3? 'active':''}}" bindtap='onType' data-index="3">仅退款</view>
-    </view>
-    <view class="weui-cell border-before pt0 pb30 pb0">
-      <view class="weui-cell__bd">
-        <text class="fs28 fw_b">申请退货数量</text>
-      </view>
-      <view class="weui-cell__ft number text-default">
-        <span class="number-sub fs30" bindtap='minus'>-</span>
-        <input class="number-input fs28" type="text" value="{{numVal}}" />
-        <span class="number-plus fs30" bindtap='add'>+</span>
-      </view>
-    </view>
-  </view>
-  <view class="weui-cells mt20 border-after border-before bg-none" style="padding-bottom:80rpx;">
-    <view class="weui-cell pt50 pb50 bg-fff">
-
-      <view class="weui-cell__bd">
-        <view class="fs26 text-muted mb20" wx:if="{{active1}}">退款金额(元)</view>
-        <input placeholder='退款金额' type='digit' class="fs38 ff" value="{{value1}}" bindinput='inputChange1'></input>
-      </view>
-    </view>
-    <view class="weui-cell pt70 pb70 border-before mt20 bg-fff">
-      <view class="weui-cell__bd">
-        <view class="fs26 text-muted mb20" wx:if="{{active2}}">退款原因</view>
-        <input placeholder='退款原因' class="fs28" value="{{value2}}" bindinput='inputChange2'></input>
-      </view>
-    </view>
-    <view class="weui-cell pt40 pb40 border-before mt20 bg-fff">
-      <view class="weui-cell__bd">
-        <view class="weui-cell__title pb30">
-          <text class="fs28 fw800">上传照片</text>
         </view>
-        <view class="weui-cell__ctn">
-          <view class="weui-uploader">
-            <view class="weui-uploader__bd">
-              <!-- 图片盒子 -->
-              <view class="weui-uploader__files" id="uploaderFiles">
-                <view class="weui-uploader__file">
-                  <image src="{{imgUrl}}proimg.jpg" class="imgup" />
-                  <view class="dele-btn"></view>
+    </view>
+    <view class="weui-cells mt0 border-after border-before pb50">
+        <view class="weui-cells__title mt0 pt30 pb30">
+            <text class="fs28 fw800 text-default">服务类型</text>
+        </view>
+        <view class="weui-flex pl30 mb60">
+            <view class="weui-cell__item btn1 fs28 fw500 tc mr10 {{service_tag_value == 1 ? 'active':''}}" bindtap='bindservicetag' data-index="1">退货退款</view>
+        </view>
+        <view class="weui-cell border-before pt0 pb30 pb0">
+            <view class="weui-cell__bd">
+                <text class="fs28 fw_b">退货数量</text>
+            </view>
+            <view class="weui-cell__ft number text-default">
+                <span class="number-sub fs30" bindtap='minus'>-</span>
+                <input class="number-input fs28" disabled='disabled' type="text" value="{{numval}}" />
+                <span class="number-plus fs30" bindtap='add'>+</span>
+            </view>
+        </view>
+    </view>
+    <view class="weui-cells mt20 border-after border-before bg-none" style="padding-bottom:80rpx;">
+        <view class="weui-cell border-before pt0 pb30 pb0">
+            <view class="weui-cell__bd">
+                <text class="fs28 fw_b">退款金额</text>
+            </view>
+            <view class="weui-cell__ft number text-default">
+                <text style='text-align: right;width:100%; font-size:32rpx;'>{{filter.formatmoney(refund_amount)}}</text>
+            </view>
+        </view>
+        <view class="weui-cell pt70 pb70 border-before mt20 bg-fff">
+            <view class="weui-cell__bd">
+                <view class="fs28 fw_b">退款原因</view>
+                <input placeholder='退款原因' class="fs28" bindinput='refundreason'></input>
+            </view>
+        </view>
+        <view class="weui-cell pt40 pb40 border-before mt20 bg-fff">
+            <view class="weui-cell__bd">
+                <view class="weui-cell__title pb30">
+                    <text class="fs28 fw800">上传照片</text>
                 </view>
-              </view>
-              <!-- 图片盒子 -->
-              <view class="weui-uploader__input-box">
-                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
-              </view>
+                <view class="weui-cell__ctn">
+                    <view class="weui-uploader">
+                        <view class="weui-uploader__bd">
+                            <!-- 图片盒子 -->
+                            <view wx:for="{{images_list}}" wx:key="key" class="weui-uploader__files" id="uploaderFiles">
+                                <view class="weui-uploader__file">
+                                    <image src="{{imgUrl}}{{item}}" class="imgup" />
+                                    <view bindtap='deleteimages' data-imagesindex='{{index}}' class="dele-btn"></view>
+                                </view>
+                            </view>
+                            <!-- 图片盒子 -->
+                            <view class="weui-uploader__input-box">
+                                <input bindtap="uploaderimages" class="weui-uploader__input" />
+                            </view>
+                        </view>
+                    </view>
+                </view>
             </view>
-          </view>
         </view>
-      </view>
     </view>
-  </view>
-  <view class='btn_box'>
-    <navigator url='' hover-class="none" class='btn_primary'>提交申请</navigator>
-  </view>
+    <view class='btn_box'>
+        <button hover-class="none" bindtap='dosaleafter' class='btn_primary'>提交申请</button>
+    </view>
 </view>

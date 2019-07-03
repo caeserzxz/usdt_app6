@@ -7,8 +7,8 @@
 <div class="page-bd">
         <!-- 页面内容-->
           <div class="inputBlock">
-            <div class="tips fs60 fw_b color_9">充值金额(元)</div>
-            <input type="text" class="fs60 num textBox" id="order_amount">
+            <div class="tips fs26 fw_b color_9">充值金额(元)</div>
+            <input type="text" class="fs52 num textBox" id="order_amount" placeholder="请输入充值金额">
           </div>
           <div class="paytype">
               <div class="title fs34 color_3 fw_b">请选择支付方式</div>
@@ -63,14 +63,6 @@ $(function(){
         }
         $('.cells').html(template('payListTpl',res));
     });
-	$('.textBox').on('click',function(){
-	  $(this).siblings().animate({'fontSize':'0.173333rem','top':'0.2666666rem'})
-	})
-	$('.inputBlock input').blur(function(){
-	  if($(this).val()==''){
-		$(this).siblings().animate({'fontSize':'0.4rem','top':'0.386667rem'})
-	  }
-	})
 	$(document).on('click',".check",function(){
         $('.uploading').hide();
 	  if ($(this).is(":checked") && $(this).val() == 'offline') {

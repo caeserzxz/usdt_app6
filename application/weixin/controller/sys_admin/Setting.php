@@ -40,4 +40,12 @@ class Setting extends AdminController
         Cache::rm('weixin_access_token');
 		return $this->success('设置成功.');
     }
+    /*
+	// 小程序配置
+    */
+    public function xcxconfig(){
+        $this->assign("domain", $this->request->domain());
+        $this->assign("setting", $this->Model->getRows());
+        return $this->fetch();
+    }
 }

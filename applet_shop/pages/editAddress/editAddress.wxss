@@ -1,4 +1,71 @@
-/* pages/editAddress/editAddress.wxss */
-.weui-cell__hd{
-  margin-right: 20rpx;
+/* pages/addAddress/addAddress.wxss */
+
+.protect-layer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+
+.area-list-container {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    bottom: 0;
+    z-index: 9999;
+    background: #fff;
+}
+
+.area-title {
+    border-bottom: 2rpx solid #ddd;
+    text-align: center;
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 32rpx;
+    position: relative;
+}
+
+.area-title span {
+    width: 100%;
+    text-align: center;
+    left: 0;
+}
+
+.area-title text {
+    position: absolute;
+    right: 0;
+    padding: 0 20rpx;
+    font-size: 24rpx;
+}
+
+.select-area-title {
+    display: flex;
+    height: 90rpx;
+    line-height: 90rpx;
+}
+
+.select-area-title view {
+    padding: 0 20rpx;
+    font-size: 28rpx;
+    margin-right: 10rpx;
+}
+
+.select-area-title view.on {
+    border-bottom: solid 2rpx red;
+}
+
+.area-list {
+    padding: 0 20rpx;
+    overflow: auto;
+    height: calc(100% - 200rpx);
+}
+
+.area-list .view-area {
+    line-height: 80rpx;
+    height: 80rpx;
+    border-bottom: solid 2rpx #f1f1f1;
 }

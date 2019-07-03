@@ -69,11 +69,15 @@ class WeiXinKeywordsModel extends BaseModel
 				$Articles[$key]['Title'] = $row['title'];
 				if ($key == 0) $Articles[$key]['Description'] = $row['description'];
 				if (strstr($row['imgurl'],'http://') == false){
-					$Articles[$key]['PicUrl'] = _url('/',false,true) .$row['imgurl'];
+					$Articles[$key]['PicUrl'] = config('config.host_path').'/'.$row['imgurl'];
 				}
 				switch($row['bind_type']){
 					case 'link':
-						$Articles[$key]['Url'] = $row['data'];
+                        if (strstr($row['data'],'http://') == false) {
+                            $Articles[$key]['Url'] = config('config.host_path').$row['data'];
+                        }else{
+                            $Articles[$key]['Url'] = $row['data'];
+                        }
 					break;
 					case 'article':
 						$Articles[$key]['Url'] = _url('shop/article/info',array('id'=>$row['ext_id']),false,true);

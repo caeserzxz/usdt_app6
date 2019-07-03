@@ -1,0 +1,8 @@
+var filter = {
+    formatmoney: function(value) {
+        return parseFloat(value).toFixed(2)
+    }
+}
+module.exports = {
+    formatmoney: filter.formatmoney
+}

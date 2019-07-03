@@ -1,0 +1,329 @@
+<!--pages/myorders/myorders.wxml-->
+<view class="small_page">
+    <view class="weui-flex flex-tbtn mb10">
+        <view id='1' class="weui-flex__item {{active==1? 'active':''}}" bindtap="tabchang">
+            全部
+        </view>
+        <view id='2' class="weui-flex__item {{active==2? 'active':''}}" bindtap="tabchang">
+            待付款
+        </view>
+        <view id='3' class="weui-flex__item {{active==3? 'active':''}}" bindtap="tabchang">
+            待发货
+        </view>
+        <view id='4' class="weui-flex__item {{active==4? 'active':''}}" bindtap="tabchang">
+            待收货
+        </view>
+        <view id='5' class="weui-flex__item {{active==5? 'active':''}}" bindtap="tabchang">
+            已完成
+        </view>
+    </view>
+    <view class="orders-box">
+        <view class="weui-cells">
+            <navigator class="weui-cell" url='/pages/orderDetails/orderDetails?orderType=1'>
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:256385423663</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-muted fs28">已完成</text>
+                </view>
+            </navigator>
+            <view class="weui-media-boxs">
+                <view class="weui-media-box pro-cell weui-media-box_appmsg">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-cell hj-cell">
+                <view class="weui-cell__bd tl">
+                    <text class="fs24 text-muted">共2件商品 实付款</text>
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 fw500 ff">752</text>
+                    <text class="fs28 ff">.00</text>
+                </view>
+            </view>
+            <view class="weui-cell pb0 mt10">
+                <view class="weui-cell__bd"></view>
+                <view class="weui-cell__ft">
+                    <text class="link-btn black">联系客服</text>
+                </view>
+            </view>
+        </view>
+        <view class="weui-cells">
+            <navigator class="weui-cell" url='/pages/orderDetails/orderDetails?orderType=1'>
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:256385423663</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-red fs26">待提货</text>
+                </view>
+            </navigator>
+            <view class="weui-media-boxs">
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-cell hj-cell">
+                <view class="weui-cell__bd tl">
+                    <text class="fs24 text-muted">共2件商品 实付款</text>
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 fw500 ff">752</text>
+                    <text class="fs28 ff">.00</text>
+                </view>
+            </view>
+            <view class="weui-cell pb0 mt10">
+                <view class="weui-cell__bd"></view>
+                <view class="weui-cell__ft">
+                    <text class="link-btn">联系客服</text>
+                    <text class="link-btn black">确认收货</text>
+                </view>
+            </view>
+
+        </view>
+        <view class="weui-cells">
+            <navigator class="weui-cell" url='/pages/orderDetails/orderDetails?orderType=3'>
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:256385423663</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-red fs26">待付款</text>
+                </view>
+            </navigator>
+            <view class="weui-media-boxs">
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-cell hj-cell">
+                <view class="weui-cell__bd tl">
+                    <text class="fs24 text-muted">共2件商品 实付款</text>
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 fw500 ff">752</text>
+                    <text class="fs28 ff">.00</text>
+                </view>
+            </view>
+            <view class="weui-cell pb0 mt10">
+                <view class="weui-cell__bd"></view>
+                <view class="weui-cell__ft">
+                    <text class="link-btn">联系客服</text>
+                    <text class="link-btn">取消订单</text>
+                    <text class="link-btn red">立即支付</text>
+                </view>
+            </view>
+
+        </view>
+        <view class="weui-cells">
+            <navigator class="weui-cell" url='/pages/orderDetails/orderDetails?orderType=4'>
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:256385423663</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-muted fs26">已取消</text>
+                </view>
+            </navigator>
+            <view class="weui-media-boxs">
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-cell hj-cell">
+                <view class="weui-cell__bd tl">
+                    <text class="fs24 text-muted">共2件商品 实付款</text>
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 fw500 ff">752</text>
+                    <text class="fs28 ff">.00</text>
+                </view>
+            </view>
+            <view class="weui-cell pb0 mt10">
+                <view class="weui-cell__bd"></view>
+                <view class="weui-cell__ft">
+                    <text class="link-btn">删除</text>
+                </view>
+            </view>
+
+        </view>
+        <view class="weui-cells">
+            <navigator class="weui-cell" url='/pages/orderDetails/orderDetails?orderType=2'>
+                <view class="weui-cell__bd">
+                    <text class="text-default fs28">订单编号:256385423663</text>
+                </view>
+                <view class="weui-cell__ft">
+                    <text class="text-muted fs26">待发货</text>
+                </view>
+            </navigator>
+            <view class="weui-media-boxs">
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="weui-media-box pro-cell weui-media-box_appmsg ">
+                    <view class="weui-media-box__hd">
+                        <image class="weui-media-box__thumb proimg" src="{{imgUrl}}proimg.jpg" />
+                    </view>
+                    <view class="weui-media-box__bd" style="width:100%;">
+                        <view class="weui-media-box__title fs28 pro-title">纯色简约套头淑女针织 毛衣宽松休闲毛衣宽松休闲毛衣宽松休闲</view>
+                        <p class="weui-media-box__desc mt10 fs28">粉红色- S码</p>
+                        <view class="mt10 money">
+                            <text class="fs24 fw_b">￥</text>
+                            <text class="fs36 fw500 num ff">328</text>
+                            <text class="fs24 num ff">.00</text>
+                            <text class="fs28 fr payNum" style="float:right;margin-top:15rpx;">x10</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="weui-cell hj-cell">
+                <view class="weui-cell__bd tl">
+                    <text class="fs24 text-muted">共2件商品 实付款</text>
+                    <text class="fs28 fw_b">￥</text>
+                    <text class="fs34 fw500 ff">752</text>
+                    <text class="fs28 ff">.00</text>
+                </view>
+            </view>
+            <view class="weui-cell pb0 mt10">
+                <view class="weui-cell__bd"></view>
+                <view class="weui-cell__ft">
+                    <text class="link-btn">联系客服</text>
+                    <text class="link-btn black">提醒发货</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+
+
+<view class='nodata' hidden='{{true}}'>
+    <view>
+        <image src="/images/emptyData.png" mode="widthFix" />
+    </view>
+    <view class='fs30 text-muted'>
+        暂无数据
+    </view>
+</view>
+
+
+<view class='nodata' hidden='{{true}}'>
+    <view>
+        <image src="/images/empty404.png" mode="widthFix" />
+    </view>
+    <view class='fs30 text-muted'>
+        网络异常点，击屏幕重试
+    </view>
+</view>

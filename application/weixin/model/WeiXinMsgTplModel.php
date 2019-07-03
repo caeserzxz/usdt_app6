@@ -82,7 +82,8 @@ class WeiXinMsgTplModel extends BaseModel
                     'add_time'=> '[产生时间]',
                     'as_sn'=> '[售后编号]',
                     'now_time'=>'[当前时间]',
-                    'remark'=>'[拒绝说明]'
+                    'remark'=>'[拒绝说明]',
+                    'return_money'=>'[退款金额]'
                 ]
             ]
 
@@ -124,7 +125,7 @@ class WeiXinMsgTplModel extends BaseModel
         if (empty($data['url']) == false){
             $msgTemp['url'] = $data['url'];
         }elseif (empty($tplData['url']) == false){
-            $msgTemp['url'] = $tplData['url'];
+            $msgTemp['url'] = config('config.host_path').$tplData['url'];
         }
         list($first,$tpl_keys,$remark) = $this->replaceTpl($data,$tplData);
 

@@ -37,7 +37,6 @@ class Menu extends AdminController
 	//-- 保存菜单
 	/*------------------------------------------------------ */
     public function save(){
-		
 		$add_menu = input('new','', 'trim');
         $save_menu = input('ps','', 'trim');
 		$res = $this->Model->saveMenu($add_menu,$save_menu);
@@ -79,7 +78,14 @@ class Menu extends AdminController
 						if ($rowb['keyword'] >= 1){							
 							$_row['url'] = _url('shop/article/info',array('id'=>$rowb['keyword']),false,true);
 						}else{
-							$_row['url'] = $_row['type'] == 'view' ? $rowb['keyword_value'] : urlencode($rowb['keyword_value']);
+						    if ($_row['type'] == 'view'){
+                                if (strstr($rowb['keyword_value'],'http://') == false) {
+                                    $rowb['keyword_value'] = config('config.host_path').$rowb['keyword_value'];
+                                }
+                                $_row['url'] = $rowb['keyword_value'];
+                            }else{
+                                $_row['url'] = urlencode($rowb['keyword_value']);
+                            }
 						}
 					}
 					$_row['name'] = urlencode($rowb['name']);
@@ -93,7 +99,14 @@ class Menu extends AdminController
 					if ($row['keyword'] >= 1){
 						$p_row['url'] = _url('shop/article/info',array('id'=>$row['keyword']),false,true);
 					}else{
-						$p_row['url'] = $p_row['type'] == 'view' ? $row['keyword_value'] : urlencode($row['keyword_value']);
+                        if ($p_row['type'] == 'view'){
+                            if (strstr($row['keyword_value'],'http://') == false) {
+                                $row['keyword_value'] = config('config.host_path').$row['keyword_value'];
+                            }
+                            $p_row['url'] = $row['keyword_value'];
+                        }else{
+                            $p_row['url'] = urlencode($row['keyword_value']);
+                        }
 					}
 				}
 			}			
@@ -101,10 +114,8 @@ class Menu extends AdminController
 		}
 		
 		if (empty($bntarr)) return $this->error('没有可推送的菜单定义');				
-		$bntarr = urldecode(json_encode($bntarr));
-		
-		$WeiXinModel = new WeiXinModel();		
-		$res = $WeiXinModel->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/create?',$bntarr);
+		$bntarr = urldecode(json_encode($bntarr,JSON_UNESCAPED_UNICODE));
+		$res = (new WeiXinModel)->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/create?',$bntarr);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
 		
@@ -115,7 +126,7 @@ class Menu extends AdminController
 	/*------------------------------------------------------ */
 	function remove()
 	{
-		$res = D('WeiXin')->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/delete?',$bntarr);
+		$res = (new WeiXinModel)->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/delete?',[]);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
 		

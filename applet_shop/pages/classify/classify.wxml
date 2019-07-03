@@ -1,51 +1,57 @@
 <view class='page'>
-    <view class='search_bar'>
-        <view class='input_box'>
-            <image src='/images/selech01.png'></image>
-            <input placeholder='请输入关键词' class='input' bindfocus='goSearch'></input>
-        </view>
-        <view class='qx'>搜索</view>
+  <view class='search_bar'>
+    <view class='input_box'>
+      <image src='/images/selech01.png'></image>
+      <input placeholder='请输入关键词' class='input' bindfocus='goSearch'></input>
     </view>
-    <view class='classify_box'>
-        <view class='left'>
-            <scroll-view class='right_scroll' scroll-y>
-                <block wx:if="{{bestlsitcount > 0}}">
-                    <view id='0' bindtap='changeMenu' class='left_item {{categoryselect == 0 ?"active":""}}'>推荐</view>
-                </block>
-                <block wx:for="{{rowslist}}" wx:key="left">
-                    <view id='{{item.id}}' bindtap='changeMenu' class='left_item {{categoryselect==item.id ?"active":""}}'>
-                        {{item.name}}
-                    </view>
-                </block>
-            </scroll-view>
-        </view>
-        <view class='right'>
-            <scroll-view class='right_scroll' scroll-y>
-               <!-- start 推荐分类 -->
-                <view wx:if="{{categoryselect == 0}}" wx:for="{{bestlsit}}" wx:key="left" class='right-category-list'>
-                    <view class='title'>-{{item.name}}-</view>
-                    <view class='card-flex grid3'>
-                         <navigator wx:for="{{item.children}}" wx:key="child" wx:for-index="idxx" wx:for-item="vo" url="/pages/goodsList/goodsList?categoryid={{vo}}" class='flex_item'>
-                            <view class='icon'><image src="{{childlist[vo].pic}}" /></view>
-                            <view class='text'>{{childlist[vo].name}}</view>
-                        </navigator>
-                    </view>
-                </view>
-                <!-- end 推荐分类 -->
-
-                <!-- start 正常分类 -->
-                <view wx:if="{{categoryselect == item.id}}" wx:for="{{rowslist}}" wx:key="left" class='right-category-list'>
-                    <view class='title'>-{{item.name}}-</view>
-                    <view class='card-flex grid3'>
-                        <navigator wx:if="{{item.id == vo.pid}}" wx:for="{{childlist}}" wx:key="child" wx:for-index="idxx" wx:for-item="vo" url="/pages/goodsList/goodsList?categoryid={{item.id}}" class='flex_item'>
-                            <view class='icon'><image src="{{vo.pic}}" /></view>
-                            <view class='text'>{{vo.name}}</view>
-                        </navigator>
-                    </view>
-                </view>
-                 <!-- end 正常分类 -->
-
-            </scroll-view>
-        </view>
+    <view class='qx'>搜索</view>
+  </view>
+  <view class='classify_box'>
+    <view class='left'>
+      <scroll-view class='right_scroll' scroll-y>
+        <block wx:if="{{bestlsitcount > 0}}">
+          <view id='0' bindtap='changeMenu' class='left_item {{categoryselect == 0 ?"active":""}}'>推荐</view>
+        </block>
+        <block wx:for="{{rowslist}}" wx:key="left">
+          <view id='{{item.id}}' bindtap='changeMenu' class='left_item {{categoryselect==item.id ?"active":""}}'>
+            {{item.name}}
+          </view>
+        </block>
+      </scroll-view>
     </view>
+    <view class='right'>
+      <scroll-view class='right_scroll' scroll-y>
+        <!-- start 推荐分类 -->
+        <view wx:if="{{categoryselect == 0}}" wx:for="{{bestlsit}}" wx:key="left" class='right-category-list'>
+          <view class='title'>-{{item.name}}-</view>
+          <view class='card-flex grid3'>
+            <navigator wx:for="{{item.children}}" wx:key="child" wx:for-index="idxx" wx:for-item="vo" url="/pages/goodsList/goodsList?categoryid={{vo}}&pid={{item.id}}" class='flex_item'>
+              <view class='icon'>
+                <image src="{{childlist[vo].pic}}" />
+              </view>
+              <view class='text'>{{childlist[vo].name}}</view>
+            </navigator>
+          </view>
+        </view>
+        <!-- end 推荐分类 -->
+
+        <!-- start 正常分类 -->
+        <view wx:if="{{categoryselect == item.id}}" wx:for="{{rowslist}}" wx:key="left" class='right-category-list'>
+          <view wx:for="{{item.children}}" wx:key wx:for-item="cids">
+            <view class='title'>-{{childlist[index].name}}-</view>
+            <view class='card-flex grid3'>
+              <navigator wx:for="{{cids}}" wx:key="child" wx:for-index="idxx" wx:for-item="vo" url="/pages/goodsList/goodsList?categoryid={{childlist[vo].id}}&pid={{item.id}}" class='flex_item'>
+                <view class='icon'>
+                  <image src="{{childlist[vo].pic}}" />
+                </view>
+                <view class='text'>{{childlist[vo].name}}</view>
+              </navigator>
+            </view>
+          </view>
+        </view>
+        <!-- end 正常分类 -->
+
+      </scroll-view>
+    </view>
+  </view>
 </view>

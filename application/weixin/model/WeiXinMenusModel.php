@@ -83,7 +83,7 @@ class WeiXinMenusModel extends BaseModel
 				if (empty($update_menus['type'][$key])) return array('res'=>1,'error'=>$val.' - 请选择响应动作类型！');
 				if ($update_menus['type'][$key] == 'click') return array('res'=>1,'error'=>$val.' - 请选择对应关键字！');
 				if ($update_menus['keyword_value'][$key] == 'http://') return array('res'=>1,'error'=>$val.' - 请填写完整的网址！');
-				if (!strstr($update_menus['keyword_value'][$key],'http://'))return array('res'=>1,'error'=>$val.' - 请选择对应的文章！');				
+				if (!strstr($update_menus['keyword_value'][$key],'/'))return array('res'=>1,'error'=>$val.' - 请选择对应的文章！');
 			}
 			if($update_menus['is_show'][$key] == 1){
 				$update_menus['parent_id'][$key] == 0 ? $menu_p_nums++ : $menu_un_arr[$update_menus['parent_id'][$key]]++;
@@ -96,7 +96,7 @@ class WeiXinMenusModel extends BaseModel
 				if (empty($v['type'])) return array('res'=>1,'error'=>$v['name'].' - 请选择响应动作类型！');
 				if ($v['type'] == 'click') return array('res'=>1,'error'=>$v['name'].' - 请选择对应关键字！');
 				if ($v['keyword_value'] == 'http://') return array('res'=>1,'error'=>$v['name'].' - 请填写完整的网址！');
-				if (!strstr($v['keyword_value'],'http://')) return array('res'=>1,'error'=>$v['name'].' - 请选择对应的文章！');				
+				if (!strstr($v['keyword_value'],'/')) return array('res'=>1,'error'=>$v['name'].' - 请选择对应的文章！');
 			}			
 			if($v['is_show'] == 1){
 				$v['parent_id'] == 0 ? $menu_p_nums++ : $menu_un_arr[$v['parent_id']]++;

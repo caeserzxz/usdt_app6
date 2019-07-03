@@ -56,7 +56,7 @@ class Wallet extends ApiController
 			$inArr['imgs'] = join(',',$imgs);
 		}
         $payment = $payList[$inArr['pay_code']];
-        $inArr['order_sn'] = 'recharge'.date('Ymdhis').rand(1000,9999);
+        $inArr['order_sn'] = 'recharge'.time().rand(10,99);
 		$inArr['pay_id'] = $payment['pay_id'];
         $inArr['pay_name'] = $payment['pay_name'];
 		$inArr['user_id'] = $this->userInfo['user_id'];

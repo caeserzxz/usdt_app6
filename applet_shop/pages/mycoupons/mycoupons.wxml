@@ -2,48 +2,48 @@
   <!-- tab头部切换 -->
   <view class="swiper-tab">
     <view class="swiper-tab-item {{currentTab==0?'active':''}}" id='0' bindtap="clickTab">未使用
-      <text class='fs26'>(12)</text>
+      <text class='fs26'>({{unusedNum}})</text>
     </view>
     <view class="swiper-tab-item {{currentTab==1?'active':''}}" id='1' bindtap="clickTab">已使用
-      <text class='fs26'>(2)</text>
+      <text class='fs26'>({{usedNum}})</text>
     </view>
     <view class="swiper-tab-item {{currentTab==2?'active':''}}" id='2' bindtap="clickTab">已过期
-      <text class='fs26'>(10)</text>
+      <text class='fs26'>({{expiredNum}})</text>
     </view>
   </view>
 
   <view wx:if="{{currentTab==0?'active':''}}" class="coupon_list_box" >
-    <view wx:for="{{coupons0}}" wx:key="cp" class="big_coupon">
+    <view wx:for="{{unusedlist}}" wx:key="cp" class="big_coupon">
       <view class='rtok'>
         <image src="/images/useing.png" />
       </view>
       <view class="bd">
-        <view class="fs30">{{item.name}}</view>
-        <view class="fs26 text-muted">{{item.stitle}}</view>
-        <view class="fs24 text-muted mt20">{{item.time}}</view>
+        <view class="fs30">{{item.bonus.type_name}}</view>
+        <view class="fs26 text-muted">满{{item.bonus.min_amount}}元可用</view>
+        <view class="fs24 text-muted mt20">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</view>
       </view>
       <view class="hd">
         <view>
-          <view class='hd_price'><text class='rmb fw_b'>￥</text><text class='ff'>{{item.money}}</text></view>
-          <view class='sbtn'>去使用</view>
+          <view class='hd_price'><text class='rmb fw_b'>￥</text><text class='ff'>{{item.bonus.type_money}}</text></view>
+          <view class='sbtn' bindtap='goshop'>去使用</view>
         </view>
       </view>
     </view>
   </view>
 
   <view wx:if="{{currentTab==1?'active':''}}"  class="coupon_list_box">
-    <view wx:for="{{coupons1}}" wx:key="cp" class="big_coupon big_coupon_gray">
+    <view wx:for="{{usedlist}}" wx:key="cp" class="big_coupon big_coupon_gray">
       <view class='rtok'>
         <image src="/images/useing.png" />
       </view>
       <view class="bd">
-        <view class="fs30">{{item.name}}</view>
-        <view class="fs26 text-muted">{{item.stitle}}</view>
-        <view class="fs24 text-muted mt20">{{item.time}}</view>
+        <view class="fs30">{{item.bonus.type_name}}</view>
+        <view class="fs26 text-muted">满{{item.bonus.min_amount}}元可用</view>
+        <view class="fs24 text-muted mt20">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</view>
       </view>
       <view class="hd">
         <view>
-          <view class='hd_price'><text class='rmb fw_b'>￥</text><text>{{item.money}}</text></view>
+          <view class='hd_price'><text class='rmb fw_b'>￥</text><text>{{item.bonus.type_money}}</text></view>
           <view class='sbtn btn_gray'>已使用</view>
         </view>
       </view>
@@ -51,18 +51,18 @@
   </view>
 
   <view wx:if="{{currentTab==2?'active':''}}"  class="coupon_list_box">
-    <view wx:for="{{coupons2}}" wx:key="cp" class="big_coupon big_coupon_gray">
+    <view wx:for="{{expiredlist}}" wx:key="cp" class="big_coupon big_coupon_gray">
       <view class='rtok'>
         <image src="/images/useing.png" />
       </view>
       <view class="bd">
-        <view class="fs30">{{item.name}}</view>
-        <view class="fs26 text-muted">{{item.stitle}}</view>
-        <view class="fs24 text-muted mt20">{{item.time}}</view>
+        <view class="fs30">{{item.bonus.type_name}}</view>
+        <view class="fs26 text-muted">满{{item.bonus.min_amount}}元可用</view>
+        <view class="fs24 text-muted mt20">{{item.bonus._use_start_date}}-{{item.bonus._use_end_date}}</view>
       </view>
       <view class="hd">
         <view>
-          <view class='hd_price'><text class='rmb fw_b'>￥</text><text>{{item.money}}</text></view>
+          <view class='hd_price'><text class='rmb fw_b'>￥</text><text>{{item.bonus.type_money}}</text></view>
           <view class='sbtn btn_gray'>已过期</view>
         </view>
       </view>
@@ -72,8 +72,8 @@
 </view>
 <view class='emptyData' hidden='{{emptyData}}'>
    <image src='/images/emptyData.png'></image>
-   <text class='fs28 text-default'>~没有相关优惠券</text>
+   <text class='fs28 text-default'>~没有相关优惠券~</text>
 </view>
-<view class='btn_box'>
+<!-- <view class='btn_box'>
   <navigator class='btn_primary'>去领券中心</navigator>
-</view>
+</view> -->

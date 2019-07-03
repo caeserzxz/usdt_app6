@@ -46,7 +46,7 @@ class IntegralGoodsModel extends BaseModel
             $goods['shop_price'] = $goods['sale_price'];
             $goods['exp_sale_price'] = explode('.', $goods['sale_price']);
             $igGoods = (new IntegralGoodsListModel)->where('ig_id', $ig_id)->find()->toArray();
-            $goods['ig_number'] = $igGoods['goods_number'];
+            $goods['BuyMaxNum'] = $igGoods['goods_number'];
             $goods['sale_num'] = $igGoods['sale_num'];
             $goods['integral'] = $igGoods['integral'];
         }

@@ -1,285 +1,321 @@
-.weui-panel::after{
-  display: none;
+.weui-panel::after {
+    display: none;
 }
+
 .weui-media-box__bd {
-  flex: 1;
+    flex: 1;
 }
+
 .weui-panel {
-  background-color: transparent; 
+    background-color: transparent;
 }
+
 .weui-media-box__hd {
-  width: 140rpx;
-  height: 140rpx;
-  margin-right: 10px;
+    width: 140rpx;
+    height: 140rpx;
+    margin-right: 10px;
 }
 
 .weui-media-box__title {
-  font-size: 28rpx;
-  width: 460rpx;
+    font-size: 28rpx;
+    width: 460rpx;
 }
 
 .weui-badge {
-  border-radius: 3px;
+    border-radius: 3px;
 }
 
 .badge-yellow {
-  background-color: #f8a64f;
+    background-color: #f8a64f;
 }
+
 @media only screen and (max-width: 320px) {
-  .number {
-    transform: scale(0.8);
-    margin-right: -10px;
-    margin-top: -24px;
-  }
+    .number {
+        transform: scale(0.8);
+        margin-right: -10px;
+        margin-top: -24px;
+    }
 }
 
 .fr {
-  float: right;
+    float: right;
 }
 
 .cart_swiped {
-  position: relative;
- 
-
+    position: relative;
 }
 
 .cart-action {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 100px;
-  left: 100%;
-  top: 0;
-  bottom: 0;
-  background-color: #fff;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100px;
+    left: 100%;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .cart-action >view {
-  flex: 1;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete-btn {
-  color: #fff;
-  background-color: #f95850;
+    color: #fff;
+    background-color: #f95850;
 }
+
 .icon_trash2 {
-  width: 48rpx;
-  height: 48rpx;
+    width: 48rpx;
+    height: 48rpx;
 }
 
 .fixed-bottom3 {
-  height: 90rpx;
-  margin-top: 20rpx;
+    height: 90rpx;
+    margin-top: 20rpx;
 }
 
 .fixed-bottom3>.weui-flex {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  box-shadow: 0 -3px 7px rgba(0, 0, 0, 0.05);
-  position: fixed;
-  z-index: 999;
-  left: 0;
-  right: 0;
-  bottom: 0px;
-  height: 90rpx;
-  line-height: 90rpx;
-  background-color: #fff;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-  overflow: hidden;
-  border-bottom:1px solid #eeeeee;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    box-shadow: 0 -3px 7px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 90rpx;
+    line-height: 90rpx;
+    background-color: #fff;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
 }
 
 .fixed-bottom3>.weui-flex .btn {
-  line-height: 80rpx;
-  display: block;
-  background-color: #f65236;
-  color: #fff;
-  width: 200rpx;
-  text-align: center;
-  border-radius: 0;
-  padding: 0px;
-  height: 80rpx;
-  margin-top: 5rpx;
+    line-height: 80rpx;
+    display: block;
+    background-color: #f65236;
+    color: #fff;
+    width: 200rpx;
+    text-align: center;
+    border-radius: 0;
+    padding: 0px;
+    height: 80rpx;
+    margin-top: 5rpx;
 }
 
 .weui-panel__hd .weui-flex {
-  width: 100%;
+    width: 100%;
 }
 
 .allcheckbox {
-  padding-left: 8rpx;
+    padding-left: 8rpx;
 }
 
 .allcheckbox span {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
 .zytext {
-  vertical-align: middle;
-  line-height: 1;
-  position: relative;
-  top: 2rpx;
+    vertical-align: middle;
+    line-height: 1;
+    position: relative;
+    top: 2rpx;
 }
 
 .chapter-item {
-  overflow: hidden;
-  border-bottom: 1px solid #eee;
-  position: relative;
-  height: 80px;
-  display: flex;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    height: 80px;
+    display: flex;
 }
 
 .left-side, .right-side {
-  float: left;
-  display: inline-block;
-  position: relative;
-  height: 58px;
+    float: left;
+    display: inline-block;
+    position: relative;
+    height: 58px;
 }
 
 .right-side {
-  flex: 1;
+    flex: 1;
 }
 
 .left-side {
-  width: 105px;
-  padding-right: 10px;
-  flex: 0 0 105px;
+    width: 105px;
+    padding-right: 10px;
+    flex: 0 0 105px;
 }
 
 .chapter-name {
-  flex: 1;
-  display: block;
-  color: #2e3330;
+    flex: 1;
+    display: block;
+    color: #2e3330;
 }
 
 .chapter-time {
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 .chapter-image {
-  width: 104px;
-  height: 58px;
+    width: 104px;
+    height: 58px;
 }
 
 .chapter-text {
-  display: block;
+    display: block;
 }
 
 .klg-content {
-  position: absolute;
-  left: 12px;
-  top: 10px;
+    position: absolute;
+    left: 12px;
+    top: 10px;
 }
 
 .operates {
-  position: absolute;
-  top: 0;
-  overflow: hidden;
-  z-index: 99;
-  right: -160px;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    z-index: 99;
+    right: -160px;
 }
 
 .klg-btn {
-  color: #34bc67;
-  width: 80px;
-  line-height: 60px;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  position: relative;
-  padding-top: 24px;
+    color: #34bc67;
+    width: 80px;
+    line-height: 60px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    position: relative;
+    padding-top: 24px;
 }
 
 .btn-icon {
-  width: 28px;
-  height: 28px;
-  text-align: center;
-  position: absolute;
-  top: 14px;
-  left: 25px;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    position: absolute;
+    top: 14px;
+    left: 25px;
 }
 
 .cart_swiped .del {
-  position: absolute;
-  left: 100%;
-  top: 20rpx;
-  bottom: 0;
-  background-color: #333333;
-  color: #fff;
-  text-align: center;
-  width: 120rpx;
-  height: 180rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    left: 100%;
+    top: 20rpx;
+    bottom: 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    width: 120rpx;
+    height: 180rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .wrap-main {
-  position: relative;
-  background: #fff;
+    position: relative;
+    background: #fff;
 }
-.weui-cells_checkbox .fs22{
-  position: relative;
-  top: 2rpx;
+
+.weui-cells_checkbox .fs22 {
+    position: relative;
+    top: 2rpx;
 }
+
 .img-zz {
-  position: relative;
+    position: relative;
 }
+
 .img-zz:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0,0,0,.5);
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-.goodsinfo{
-  height: 140rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+
+.goodsinfo {
+    height: 140rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
-.goodsinfo .bonttom{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+
+.goodsinfo .bonttom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
-.goodsinfo .bonttom .money{
-  display: flex;
-  align-items: baseline;
-  line-height: 34rpx;
+
+.goodsinfo .bonttom .money {
+    display: flex;
+    align-items: baseline;
+    line-height: 34rpx;
 }
-.fs52{
-  font-size: 52rpx;
+
+.fs52 {
+    font-size: 52rpx;
 }
-.allMoney{
-  display: flex;
-  align-items: baseline;
+
+.allMoney {
+    display: flex;
+    align-items: baseline;
 }
+
 checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-  background: #f65236;
-  border-radius: 50%;
-  border: 1rpx solid #f65236;
+    background: #f65236;
+    border-radius: 50%;
+    border: 1rpx solid #f65236;
 }
+
 checkbox .wx-checkbox-input {
-  border-radius: 50%;
+    border-radius: 50%;
 }
-.btnBox{
-  display: flex;
-  align-items: center;
+
+.btnBox {
+    display: flex;
+    align-items: center;
 }
-.fixed-bottom3>.weui-flex .del{
-  background-color: #333;
+
+.fixed-bottom3>.weui-flex .del {
+    background-color: #333;
+}
+
+.emptyBox {
+    height: 500rpx;
+}
+
+.no-data {
+    width: 100%;
+    height: 100%;
+}
+
+.str_desc {
+    text-align: center;
+    line-height: 80px;
+    color: #888;
+}
+
+.go-shop {
+    text-align: center;
+    color: red;
+    font-size: 18px;
 }

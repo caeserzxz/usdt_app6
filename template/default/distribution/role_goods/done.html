@@ -97,7 +97,7 @@ var goPay = {$goPay};
 	  window.location.href = '{:_url("shop/payment/getRolePay",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
   });
   if (goPay == 1){
-	   window.location.href = '{:_url("shop/payment/getRolePay",'',false)}?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
+	   window.location.href = '{:_url("shop/payment/getRolePay",'',false)}/?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
  }
 </script>
 {/block}
