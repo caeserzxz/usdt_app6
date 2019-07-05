@@ -121,7 +121,7 @@ button {
 
 .zx_select > div > div.ub-f1 {
   max-width: 100%;
-  min-width: 100%;
+  min-width: 50%;
 }
 
 .zx_select ul {
