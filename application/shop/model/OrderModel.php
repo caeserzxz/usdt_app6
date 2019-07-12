@@ -290,10 +290,10 @@ class OrderModel extends BaseModel
                     $changedata['change_type'] = 3;
                     $changedata['by_id'] = $order_id;
                     $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-                    if ($orderInfo['use_integral'] > 0) {//如果额外使用积分，同时处理扣减
+                    /*if ($orderInfo['use_integral'] > 0) {//如果额外使用积分，同时处理扣减
                         $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
                         $changedata['change_desc'] .= '&积分抵扣';
-                    }
+                    }*/
                     $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
                     if ($res !== true) {
                         Db::rollback();// 回滚事务
