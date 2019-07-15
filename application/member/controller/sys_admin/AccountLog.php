@@ -67,7 +67,7 @@ class AccountLog extends AdminController
 		if (0 < $this->search['user_id'] ){
 			$where[] = ['user_id','=',$this->search['user_id'] ];
 		}
-		$this->sqlOrder = 'change_time DESC';
+		$this->sqlOrder = 'log_id DESC';
         $data = $this->getPageList($this->Model,$where);			
 		$this->assign("data", $data);
 		if ($runData == false){

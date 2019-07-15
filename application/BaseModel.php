@@ -142,7 +142,7 @@ class BaseModel extends Model
 			$count = Db::query($viewObj->count());
 			$count = $count[0]['tp_count'];
 			if ($count > 0){
-				 $list = $Obj->field($field)->order($sqlOrder)->select()->toArray();
+				 $list = $viewObj->field($field)->order($sqlOrder)->select()->toArray();
 			}
             $page_count = 1;
         } else {

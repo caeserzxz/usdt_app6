@@ -15,8 +15,11 @@ class DividendModel extends BaseModel
     protected $table = 'distribution_dividend_log';
     public $pk = 'log_id';
 
-     /*------------------------------------------------------ */
-    //-- 计算提成并记录或更新f
+    /*------------------------------------------------------ */
+    //-- 计算提成并记录或更新
+    //-- $orderInfo array 订单详细
+    //-- $type string 订单操作
+    //-- $status int 额外订单状态
     /*------------------------------------------------------ */
     public function _eval(&$orderInfo, $type = '',$status=0){
         $fun = str_replace('/', '\\', '/distribution/'.config('config.dividend_type').'/Dividend');
@@ -26,9 +29,19 @@ class DividendModel extends BaseModel
     }
     /*------------------------------------------------------ */
     //-- 发送模板消息通知
+    //-- $type string 操作类型
+    //-- $order_id int 订单ID
+    //-- $order_operating string 订单操作
+    //-- $order_type string 订单类型
     /*------------------------------------------------------ */
-    public function sendMsg($type,$order_id,$order_operating=''){
-        $rows = $this->where('order_id', $order_id)->select()->toArray();
+    public function sendMsg($type,$order_id,$order_operating='',$order_type = 'order'){
+        $where[] = ['order_id','=',$order_id];
+        if ($order_type == 'order'){
+            $where[] = ['order_type', 'in', ['order','up_back']];
+        }else{
+            $where[] = ['order_type','=',$order_type];
+        }
+        $rows = $this->where($where)->select()->toArray();
         if (empty($rows)) return false;
         $WeiXinUsersModel = new WeiXinUsersModel();
         $WeiXinMsgTplModel = new WeiXinMsgTplModel();
@@ -56,8 +69,10 @@ class DividendModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 执行分佣到帐
     //-- order_id int 订单ID
+    //-- $order_type string 订单类型
+    //-- $limit_id int 指定时间分佣的ID,暂时无用
     /*------------------------------------------------------ */
-    public function evalArrival($order_id = 0, $type = '',$limit_id=0)
+    public function evalArrival($order_id = 0, $order_type = 'order',$limit_id=0)
     {
         $time = time();
         $OrderModel = new OrderModel();
@@ -65,25 +80,26 @@ class DividendModel extends BaseModel
         if ($order_id > 0) {
             $where[] = ['order_id', '=', $order_id];
             $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-            if ($type == 'role_order'){
-                $where[] = ['order_type', '=', $type];
+            if ($order_type == 'role_order'){
+                $where[] = ['order_type', '=', $order_type];
             }else{
                 $where[] = ['order_type', 'in', ['order','up_back']];
             }
             $rows = $this->where($where)->select()->toArray();
         } else {
-            if ($type == 'role_order'){
+            if ($order_type == 'role_order'){
                 $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-                $where[] = ['order_type', '=', $type];
+                $where[] = ['order_type', '=', $order_type];
                 $rows = $this->where($where)->select()->toArray();
             }else{
-                $where[] = ['order_type', '=', $type];
                 if ($shop_after_sale_limit > 0 ){
+                    $where[] = ['d.order_type', 'in', ['order','up_back']];
                     $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
                     $limit_time = $shop_after_sale_limit * 86400;
                     $where[] = ['d.update_time', '<', $time - $limit_time];
-                    $rows = $this->alias('d')->join('shop_order o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
+                    $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
                 }else{
+                    $where[] = ['order_type', 'in', ['order','up_back']];
                     $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
                     $rows = $this->where($where)->select()->toArray();
                 }
@@ -127,13 +143,14 @@ class DividendModel extends BaseModel
             $log_id[] = $row['log_id'];
         }
         if ($order_id > 0){
-            $this->sendMsg('sign',$order_id);
+            $this->sendMsg('sign',$order_id,'',$order_type);
         }
         return $log_id;
     }
     /*------------------------------------------------------ */
     //-- 退回分佣到帐,只有普通订单可操作
     //-- order_id int 订单ID
+    //-- $type string 操作类型
     /*------------------------------------------------------ */
     public function returnArrival($order_id = 0, $type = '')
     {
