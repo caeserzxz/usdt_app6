@@ -85,6 +85,7 @@ class Index  extends ClientbaseController{
 							  foreach ($rowb['products'] as $keyc=>$rowc){
 								  if (!is_numeric($rowc['id'])){
 									$rowb['products'][$keyc] = $d_products[$rowc['id']];
+                                      $rowb['products'][$keyc]['id'] = '#';
 								  }else{							 
 									  $grow = $GoodsModel->info($rowc['id']);
 									  if(!$grow['is_on_sale']){

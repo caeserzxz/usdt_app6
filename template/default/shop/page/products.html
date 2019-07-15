@@ -18,7 +18,7 @@
             <div class="tab-{$key} tab-content clearfix {$key?'hide':''}">
             		{volist name="row.products" id="prow" key="i" mod="2"}
                     	{if condition="$i elt $theme_row['dataLimit']"}
-                            <a href="{:url('Goods/info',array('id'=>$prow['id']))}">
+                            <a href="{$prow['id'] == '#'?'#':url('Goods/info',array('id'=>$prow['id']))}">
                                 <div class="product-wrapper">
                                     <div class="product clearfix">
                                        {if condition="$theme_row['templateId'] eq 'tpl_1' "}
