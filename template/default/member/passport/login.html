@@ -34,19 +34,16 @@
               </div>  
         </div>
         {/if}
-        <div class="inputBlock bor_b">
-          <div class="menu">
-            <input id="remember" type="checkbox">记住密码
-          </div>
-          <div class="menu">
-            <a href="{:url('forgetPwd')}" class="fs30 color_9 remPassword">忘记密码</a>
-          </div>
+        <div class="remPassword">
+            <label for="remember">
+                <div class="iconBox">
+                  <input type="checkbox" class="check" name="checkbox1" id="remember" value="1">
+                  <i class="icon_checked"></i>
+                </div>
+                <span class="fs28 color_9">记住密码</span>
+            </label>
+            <a href="{:url('forgetPwd')}" class="fs28 color_9 ">忘记密码</a>
         </div>
-        <style>
-          .menu { width: 50%;float: left; height: 0.666667rem;line-height: 0.666667rem}
-          .menu input {width: auto;margin: 0 2%}
-          .menu a { padding: 0}
-        </style>
         <div class="loginbutton fs32 fw_b color_w BGcolor_r login">登录</div>
         <div class="fs30 goregister"><a href="{:url('download')}" class="fw_b color_3">立即下载</a></div>
         {eq name="$register_status" value="1"}
