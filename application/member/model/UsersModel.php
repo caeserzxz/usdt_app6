@@ -489,7 +489,7 @@ class UsersModel extends BaseModel
             $inArr['user_id'] = $user_id;
             $inArr['pid'] = $_pid;
             $res = $UsersBindModel->create($inArr);
-            if ($is_edit == true && $res->bid < 1) return false;
+            if ($is_edit == true && $res->pid < 1) return false;
             $_pid = $this->where('user_id', $_pid)->value('pid');
         }
 
