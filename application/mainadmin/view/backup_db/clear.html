@@ -1,0 +1,91 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+       <div class="page-breadcrumbs">
+              <ul class="breadcrumb">
+                  <li>
+                      <i class="fa fa-ellipsis-v"></i>
+                      <strong>清理数据</strong>
+                  </li>                                  
+              </ul>
+          </div>
+  </header>
+
+  <section  id="explanation" class="scrollable wrapper ">
+      <section class="panel panel-default padding">
+
+          <form  method="post" id="form" >
+
+          <table class="table table-bordered table-striped ">
+              <tr>
+                  <td>
+                      请小心操作，核实需要清理的数据。
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label><input type="checkbox" name="setting[]" value="kdn" > 清理快递鸟配置</label>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label><input type="checkbox" name="setting[]" value="payment" > 清理支付配置</label>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label><input type="checkbox" name="setting[]" value="sms" > 清理短信配置</label>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <label><input type="checkbox" name="setting[]" value="weixin" > 清理微信配置</label>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <input value="" name="check_code" id="check_code" type="text" placeholder="输入校验码">
+                      <button type="button" class="btn btn-primary" id="clearbtn" data-loading-text="执行中...">执行</button>
+                      <button type="button" class="btn " data-remote="{:url('notClear')}"
+                              data-toggle="ajaxCurl" class="btn btn-default btn-sm" data-msg="确定不执行清理？"data-icon="info" >确定已是最新，去除提示</button>
+                  </td>
+              </tr>
+          </table>
+
+     </form>
+</section>
+
+    
+    
+<script>
+	(function($){
+		var $form = $("#form"), $clearbtn = $("#clearbtn");
+        $clearbtn.click(function(){
+			if($("input[name^='setting']:checked").length == 0){
+				_alert('请选中要清理的配置');
+				return false;
+			}
+			if ($('#check_code').val() == ''){
+                _alert('请输入校验码.');
+                return false;
+            }
+            $clearbtn.addClass("disabled");
+            $clearbtn.html("正在执行...");
+			$.post(
+					"{:url('clear')}",
+					$form.serialize(),
+					function(res){
+                        $clearbtn.removeClass("disabled");
+                        _alert(res.msg,true);
+                        $clearbtn.html("重新执行");
+					},
+					"json"
+			);
+			return false;
+		});
+
+	})(jQuery);
+</script>
+
+{/block}
+

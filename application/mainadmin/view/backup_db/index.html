@@ -20,7 +20,7 @@
                <p>建议定期备份数据库</p>
               <p class="ftitle">
               <span>数据库表列表</span>
-              <span>(共{$tableNum}张记录，共计{$total})</span>
+              <span>(共{$tableNum}张表，共计{$total})</span>
               <a href="javascript:;" title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></a>
               
           </p>
@@ -80,9 +80,9 @@
                           
                           <td align="center" class="handle">
                               
-                                  <a href="{:url('BackupDb/optimize',array('tablename'=>$vo['Name']))}" data-toggle="ajaxPost" data-noturl="1" title="优化" class="m-r-xs"><i class="fa fa-magic"></i></a>
+                                  <a href="{:url('BackupDb/optimize',array('tablename'=>$vo['Name']))}" data-toggle="ajaxCurl" data-noturl="1" title="优化" class="m-r-xs"><i class="fa fa-magic"></i></a>
                                   
-                                  <a  href="{:url('BackupDb/repair',array('tablename'=>$vo['Name']))}" data-toggle="ajaxPost" data-noturl="1" title="修复"><i class="fa fa-wrench"></i></a>
+                                  <a  href="{:url('BackupDb/repair',array('tablename'=>$vo['Name']))}" data-toggle="ajaxCurl" data-noturl="1" title="修复"><i class="fa fa-wrench"></i></a>
                               
                           </td>
                           

@@ -3,7 +3,13 @@
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
 <section class="scrollable wrapper  ">
+
     <section class="panel panel-default ">
+        {if condition="$isClearSetTip == true"}
+        <header class="panel-heading font-bold red">
+            检测到网站发现变化，是否要清理相关配置，<a href="{:url('backup_db/clear')}" class="btn btn-sm" >前往清理</a>
+        </header>
+        {/if}
         <div class="row m-l-none m-r-none bg-light lter">
             <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
 

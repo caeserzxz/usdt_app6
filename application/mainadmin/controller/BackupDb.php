@@ -212,5 +212,61 @@ class BackupDb  extends AdminController{
 			}
 		}
 	}
+    /*------------------------------------------------------ */
+    //-- 清理数据
+    /*------------------------------------------------------ */
+    public function clear() {
+        if ($this->request->isPost()){
+            $setting = input('setting');
+            if (empty($setting)){
+                return $this->error('请选择需要清理的数据.');
+            }
+            $check_code = input('check_code');
+            if (empty($check_code)){
+                return $this->error('请输入校验码.');
+            }
+            if ($check_code != 'zp'.date('Ymd')){
+                return $this->error('校验码错误.');
+            }
+            $SettingsModel = new \app\mainadmin\model\SettingsModel();
+            $PaymentModel = new \app\mainadmin\model\PaymentModel();
+            foreach ($setting as $val){
+                $where = [];
+                $whereOr = [];
+                if ($val == 'kdn'){
+                    $where[] = ['name','like','kdn_%'];
+                    $SettingsModel->where($where)->update(['data'=>'']);
+                }elseif($val == 'sms'){
+                    $row = $SettingsModel->where('name','sms_fun')->find();
+                    $data = json_decode($row['data'],true);
+                    $data['function_val'] = '';
+                    $data['function'] = '';
+                    $data = json_encode($data);
+                    $SettingsModel->where('name','sms_fun')->update(['data'=>$data]);
+                }elseif($val == 'weixin'){
+                    $where[] = ['name','like','weixin_%'];
+                    $whereOr[] = ['name','=','plc_name'];
+                    $SettingsModel->where($where)->whereor($whereOr)->update(['data'=>'']);
+
+                }elseif($val == 'payment'){
+                    $where[] = ['pay_id','>',0];
+                    $PaymentModel->where($where)->update(['pay_config'=>'']);
+                }
+            }
+            file_put_contents(DATA_PATH.$_SERVER['SERVER_NAME'], time());
+            $this->_log(0,'清理配置数据.');
+            return $this->success("清理完成." );
+        }
+
+        return $this->fetch('clear');
+    }
+    /*------------------------------------------------------ */
+    //-- 清理数据
+    /*------------------------------------------------------ */
+    public function notClear() {
+        file_put_contents(DATA_PATH.$_SERVER['SERVER_NAME'], time());
+        $this->_log(0,'执行不清理操作，去除提示.');
+        return $this->success("操作成功." );
+    }
 }
 ?>

@@ -199,31 +199,7 @@ function(a) {
         }),
         !f && g()
     })
-	 b(document).on("click", 'div [data-toggle="ajaxCurl"]',
-    function(a) {
-        a.preventDefault();
-        var c = b(this),
-        e = c.data("remote") || c.attr("href");
-        f = 0,
-        c.data("loadingText", '<i class="fa fa-spinner fa-spin"></i>');
-		//c.button("loading");
-        if (c.data("msg")){
-			G.ui.tips.confirm_flag(c.data("msg"),
-			function(a) {
-				c.button("reset");
-				$('#fallr-wrapper').remove();
-				$.post(e,'',function(res){
-						
-						G.ui.tips.suc(res.msg,res.code == 1?'reload':'');	
-				 });
-			});
-		}else{
-			$.post(e,'',function(res){
-						c.button("reset");
-						G.ui.tips.suc(res.msg,res.code == 0?'reload':'');	
-			});
-		}
-    })
+
 }),
 define(assets_path + "/assets/dist/table/paginator", ["$"],
 function(a) {

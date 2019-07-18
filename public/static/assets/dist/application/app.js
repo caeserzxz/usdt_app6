@@ -599,6 +599,30 @@ function(a) {
             a.remove()
         })
     }),
+   b(document).on("click", 'div [data-toggle="ajaxCurl"]',
+            function(a) {
+                a.preventDefault();
+                var c = b(this),
+                    e = c.data("remote") || c.attr("href"),
+                    icon = c.data("icon");
+
+                    c.data("loadingText", '<i class="fa fa-spinner fa-spin"></i>');
+                if (c.data("msg")){
+                    G.ui.tips.confirm_flag(c.data("msg"),
+                        function(a) {
+                            c.button("reset");
+                            $('#fallr-wrapper').remove();
+                            $.post(e,'',function(res){
+                                G.ui.tips.suc(res.msg,res.code == 1?'reload':'');
+                            });
+                        },0,icon)
+                }else{
+                    $.post(e,'',function(res){
+                        c.button("reset");
+                        G.ui.tips.suc(res.msg,res.code == 0?'reload':'');
+                    });
+                }
+      })
     b(document).on("click", '[data-toggle="ajaxPost"]',
     function(a) {
         a.preventDefault();
