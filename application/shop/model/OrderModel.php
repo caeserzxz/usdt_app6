@@ -224,9 +224,8 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 获取订单商品
     //-- $order_id int 订单ID
-    //-- $isAll bool 是否返回多项，false只返回商品列表
     /*------------------------------------------------------ */
-    function orderGoods($order_id,$isAll = true)
+    function orderGoods($order_id)
     {
         static $OrderGoodsModel;
         if (empty($OrderGoodsModel)) {
@@ -244,7 +243,6 @@ class OrderModel extends BaseModel
                 $isReview = 1;
             }
         }
-        if ($isAll == false) return $goodsList;
         return [$goodsList, $allNum, $isReview];
     }
 
@@ -330,7 +328,7 @@ class OrderModel extends BaseModel
                 }
             }//end
             if ($orderInfo['is_stock'] == 1) {//执行商品库存和销量处理
-                $goodsList = $this->orderGoods($order_id,false);
+                $goodsList = $this->orderGoods($order_id);
                 if ($orderInfo['order_type'] == 1) {//积分订单
                     $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList'], 'cancel');
                     if ($res != true) {
@@ -731,7 +729,7 @@ class OrderModel extends BaseModel
         //执行库存扣除，下单时未扣库存，则支付成功后扣除
         //先扣库存才能拆分订单，拆分订单时不扣库存
         if ($orderInfo['is_stock'] == 0) {
-            $goodsList = $this->orderGoods($orderInfo['order_id'],false);
+            $goodsList = $this->orderGoods($orderInfo['order_id']);
             Db::startTrans();//启动事务
             if ($orderInfo['order_type'] == 1) {//积分订单
                 $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList']);
