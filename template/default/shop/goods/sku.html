@@ -83,7 +83,7 @@
             sku.push(skukey);
         });
        var _sku = sku.join(":");
-        $('.buyBtn').attr('data-sku',_sku);
+        $('.buyBtn').data('sku',_sku);
         var skuName = new Array();
         $.each(sku,function (k,v) {
             skuName.push(skuCstom[v]);
