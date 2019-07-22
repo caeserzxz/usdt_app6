@@ -83,7 +83,7 @@ class Goods extends AdminController
         }
 
         $this->classList = $this->Model->getClassList();
-        $search['cid'] = input('cid', 0, 'intval');
+        $search['cid'] = input('cat_id', 0, 'intval');
         if ($search['cid'] > 0) {
             $where[] = ['cid', 'in', $this->classList[$search['cid']]['children']];
         }

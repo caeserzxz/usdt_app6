@@ -27,10 +27,11 @@ function toUnderScore($str)
  * 自定义URL
 */
 function _url($url,$arr=[],$isNotHtml=true,$domain = false){
-    if ($domain == '/'){
+
+    if ($domain === '/'){
         $url = url($url,$arr,$isNotHtml,false);
     }else{
-        $url = url($url,$arr,$isNotHtml,$domain);
+         $url = url($url,$arr,$isNotHtml,$domain);
     }
     if (empty($domain) == false){
         $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);

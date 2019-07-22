@@ -91,7 +91,7 @@ class ClientbaseController extends BaseController{
             $wxInfo = session('wxInfo');
             if (empty($wxInfo)){
                 //微信网页访问执行
-                if ($this->is_wx == 1){
+                if ($this->is_wx == 1 && settings('weixin_auto_login') == 0){
                     $access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId
                     if (empty($access_token['openid'])){//获取openid，跳转登陆
                          return true;

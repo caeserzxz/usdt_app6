@@ -318,7 +318,7 @@ class Users extends ApiController
         if (empty($upArr['nick_name']) == true) {
             return $this->error('请填写用户昵称.');
         }
-        $upArr['mobile'] = input('mobile', '', 'trim');
+
         $where[] = ['nick_name', '=', $upArr['nick_name']];
         $where[] = ['user_id', '<>', $this->userInfo['user_id']];
         $count = $this->Model->where($where)->count('user_id');
