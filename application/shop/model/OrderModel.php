@@ -300,7 +300,7 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
                     }
-                    $balance_money = $AccountLogModel->where('user_id',$orderInfo['user_id'])->value('balance_money');
+                    $balance_money = $AccountLogModel->where('user_id',$orderInfo['user_id'])->order('log_id DESC')->value('balance_money');
                     if ($balance_money < 0){
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
