@@ -52,9 +52,25 @@ class Order extends AdminController
             $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
             $this->assign("end_date", date('Y/m/d'));
         }
+
         $this->getList(true);
         return $this->fetch('index');
     }
+
+    /*------------------------------------------------------ */
+    //-- 首页
+    /*------------------------------------------------------ */
+    public function welcome(){
+        return (new \app\mainadmin\controller\Index())->index();
+    }
+
+    /*------------------------------------------------------ */
+    //-- 文章
+    /*------------------------------------------------------ */
+    public function article(){
+        return (new \app\mainadmin\controller\Article())->index();
+    }
+
     /*------------------------------------------------------ */
     //-- 获取列表
     //-- $runData boolean 是否返回模板
@@ -103,7 +119,6 @@ class Order extends AdminController
             if ($is_cancel == true) {
                 $where[] = ['order_status', '=', config('config.OS_CANCELED')];
             }
-
         }
 
         $search['order_sn'] = input('order_sn', '', 'trim');

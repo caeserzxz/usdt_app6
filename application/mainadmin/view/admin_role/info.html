@@ -6,9 +6,9 @@
                 <h4 class="modal-title">{$row['role_id'] > 0?'编缉角色':'添加角色'}</h4>
             </div>
             <div class="modal-body tableinfo">
-{eq name="row.is_sys" value="1"}   
+{eq name="row.is_sys" value="1"}
 系统默认角色不能修改
-{else/}        
+{else/}
  <table border="0" cellpadding="0" cellspacing="0" width="100%" >
   <tr>
     <td width="100" align="right">角色名称：</td>
@@ -22,7 +22,7 @@
     <td align="right">角色说明：</td>
     <td><textarea name="info" id="info"  class="input-max">{$row.info}</textarea></td>
   </tr>
-	
+
   {volist name="menuList" id="va"}
      <tbody class="purview_box">
            <tr >
@@ -31,8 +31,8 @@
                     {volist name="va.list" id="vb"}
                         {if condition="empty($vb['submenu']) &&  empty($vb['right']) == false" }
                         	 {if condition="$vb['right'] == 'manage'" }
-                          			<label><input name="role_action[]" type="checkbox" {:in_array($vb.group.'|'.$vb.controller.'|'.$vb.right,$row['role_action'])?'checked':''} value="{$vb.group}|{$vb.controller}|{$vb.right}" /> {$vb.name}</label>                                  
-                              {/if}                              
+                          			<label><input name="role_action[]" type="checkbox" {:in_array($vb.group.'|'.$vb.controller.'|'.$vb.right,$row['role_action'])?'checked':''} value="{$vb.group}|{$vb.controller}|{$vb.right}" /> {$vb.name}</label>
+                              {/if}
                         {/if}
                     {/volist}
                 </td>
@@ -59,18 +59,18 @@
           			  </tr>
                  {/if}
              {/volist}
-      </tbody>   
+      </tbody>
     {/volist}
 </table>
     <input type="hidden" pkid name="role_id" value="{$row.role_id|intval}">
- 			
+
         </div>
          <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" data-loading-text="保存中..."  ><i class="fa fa-edit"></i>保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
-            
-{/eq}         
+
+{/eq}
     </div>
 </div>
 </form>

@@ -22,7 +22,7 @@ class Menus extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
-        $rows = $this->Model->order('pid DESC sort_order ASC')->select()->toArray();
+        $rows = $this->Model->order('pid DESC,sort_order DESC')->select()->toArray();
         $list = returnRecArr($rows);
         if (empty($list)) $list[0] = array();
         $this->assign('list', $list);

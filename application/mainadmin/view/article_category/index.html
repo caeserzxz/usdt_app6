@@ -37,7 +37,7 @@
                     {volist name="list[0]" id="vo" }
                         <li class="dd-item" data-id="{$vo.id}">
                             <div class="dd-handle">
-                                <img src="{$vo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; height:18px;" /> {$vo.name}
+                                <img src="{$vo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; " /> {$vo.name}
                                 <span class="pull-right">
                                     <a href="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
                                     <a href="{:url('info',array('pid'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
@@ -49,7 +49,7 @@
                             {volist name="list[$vo['id']]" id="co" }
                                     <li class="dd-item" data-id="{$co.id}">
                                         <div class="dd-handle">
-                                            <img src="{$co.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; height:18px;" /> {$co.name}
+                                            <img src="{$co.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px;" /> {$co.name}
                                             <span class="pull-right">
                                                 <a href="{:url('info',array('id'=>$co['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a> <a href="{:url('info',array('pid'=>$co['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
                                                 <a href="{:url('del',array('id'=>$co['id']))}" data-toggle="ajaxRemove" data-msg="确定删除{$co.name}分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
@@ -60,7 +60,7 @@
                                                   {volist name="list[$co['id']]" id="eo"}
                                                       <li class="dd-item" data-id="{$eo.id}">
                                                           <div class="dd-handle">
-                                                              <img src="{$eo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; height:18px;"/> {$eo.name}
+                                                              <img src="{$eo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px;"/> {$eo.name}
                                                               <span class="pull-right">
                                                           <a href="{:url('info',array('id'=>$eo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
                                                           <a href="{:url('del',array('id'=>$eo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除{$co.name}分类 ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>

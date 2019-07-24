@@ -47,31 +47,36 @@
 </div>
 {literal}
 <script type="text/html" id="liTpl">
-{{each list as item index}}
-<li>
-	<object>
-	  <div class="checkbox">
-		<div class="block">
-		  <div class="info">
-		  {{if item.type == 'bank'}}
-			<div class="left"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""><span class="fs32 color_3 fw_b">{{item.bank_name}}</span></div>			
-			<img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
-			</div>
-		    <div class="cardCode"><p class="fs38 color_3 num">{{item.bank_card_number}}</p><span class="fs28 color_9 fw_b">{{item.bank_cardholder}}</span></div> 
-		  {{else}}
-		  <div class="left"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""><span class="fs32 color_3 fw_b">支付宝</span></div>			
-			<img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
-			</div>
-		    <div class="cardCode"><p class="fs38 color_3 num">{{item.alipay_account}}</p><span class="fs28 color_9 fw_b">{{item.alipay_user_name}}</span></div> 
-		  {{/if}}
-		</div>
-		<div class="swiped BGcolor_3">
-		  <div class="delect" data-account_id="{{item.account_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
-		</div>   
-	  </div>
-	</object>
-</li>
-{{/each}}
+    {{if list != ''}}
+
+        {{each list as item index}}
+        <li>
+            <object>
+              <div class="checkbox">
+                <div class="block">
+                  <div class="info">
+                  {{if item.type == 'bank'}}
+                    <div class="left"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""><span class="fs32 color_3 fw_b">{{item.bank_name}}</span></div>
+                    <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+                    </div>
+                    <div class="cardCode"><p class="fs38 color_3 num">{{item.bank_card_number}}</p><span class="fs28 color_9 fw_b">{{item.bank_cardholder}}</span></div>
+                  {{else}}
+                  <div class="left"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""><span class="fs32 color_3 fw_b">支付宝</span></div>
+                    <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+                    </div>
+                    <div class="cardCode"><p class="fs38 color_3 num">{{item.alipay_account}}</p><span class="fs28 color_9 fw_b">{{item.alipay_user_name}}</span></div>
+                  {{/if}}
+                </div>
+                <div class="swiped BGcolor_3">
+                  <div class="delect" data-account_id="{{item.account_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+                </div>
+              </div>
+            </object>
+        </li>
+        {{/each}}
+    {{else}}
+        <div style="text-align: center;-webkit-box-flex: 1;-webkit-flex: 1; font-size: 0.213333rem;white-space: nowrap;overflow: hidden;font-weight: bold;">暂无提现方式，请点击下方按钮添加</div>
+    {{/if}}
 </script>
 {/literal}
 {/block}

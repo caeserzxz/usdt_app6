@@ -33,7 +33,7 @@ class Withdraw  extends ClientbaseController{
     //-- 银行卡
     /*------------------------------------------------------ */
     public function bankList(){
-        $this->assign('title', '银行卡');
+        $this->assign('title', '提现方式');
         return $this->fetch('bankList');
     }
 	/*------------------------------------------------------ */

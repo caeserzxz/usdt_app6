@@ -38,8 +38,10 @@ class AdminUser extends AdminController
 			$where[] = ['role_id','=',$this->roleId]; 
 		}
 		$keyword = input("keyword");
-        if($keyword) $where[] = ['user_name|user_id','like','%'.$keyword.'%'];    
-		
+        if($keyword){
+            $where = "user_name LIKE '%".$keyword."%' OR user_id LIKE '%".$keyword."%'";
+        }
+
         $data = $this->getPageList($this->Model, $where);			
 		$this->assign("data", $data);
 		if ($runData == false){

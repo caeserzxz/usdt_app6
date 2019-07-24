@@ -28,7 +28,7 @@ class Article extends AdminController
 		$cid = input('id',0,'intval');
 		$this->getList(true);
 		$this->assign("cgOpt", arrToSel($this->cg_list,$cid));
-        return $this->fetch('index');
+        return $this->fetch('mainadmin@article/index');
     }  
 	/*------------------------------------------------------ */
     //-- 获取列表

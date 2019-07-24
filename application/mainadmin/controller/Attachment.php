@@ -30,6 +30,8 @@ class Attachment extends AdminController{
         if ($this->supplyer_id > 0) {
             $dir = 'supplyer/' . $this->supplyer_id . '/image/';
         }
+        if($_FILES['imgFile']['size'] > 2000000)exit('上传文件过大');
+
         $result = $this->_upload($_FILES['imgFile'],$dir);
         if ($result['error']) {
             echo json_encode(array('error'=>1, 'message'=>$result['info']));

@@ -19,7 +19,7 @@
                   {/volist}
             </select>
             <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-            <a href="{:url('info')}" data-toggle="ajaxModal" title="添加属性" class="btn btn-sm btn-default fr m-t-md m-r-tm"><i class="fa fa-plus m-r-xs"></i>添加属性</a>
+            <a href="{:url('info',array('model_id'=>$model_id))}" data-toggle="ajaxModal" title="添加属性" class="btn btn-sm btn-default fr m-t-md m-r-tm"><i class="fa fa-plus m-r-xs"></i>添加属性</a>
         </div>
 </header>
 
@@ -29,7 +29,7 @@
             <table id="listTable" class="table table-hover dataTable">
 <thead>
 <tr>
-    <th width="200">属性名称</th>
+
     <th width="150">属性类型</th>
     <th width="120">录入方式</th>
     <th>可选值列表</th>
@@ -40,7 +40,7 @@
 <tbody>
 {volist name="list" id="vo" }
   <tr>
-      	<td>{$vo.attr_name}</td>
+
         <td>{$listOpt[$vo['model_id']]['name']}</td>
         <td>{$attr_input_type[$vo['attr_input_type']]}</td>
         <td>{$vo.attr_values}</td>

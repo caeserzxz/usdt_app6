@@ -2,6 +2,7 @@
 <thead>
 <tr>
     <th>商品信息</th>
+    <th>商品信息</th>
     <th width="150" >实收款</th>
     <th width="150" align="center">收货人</th>
     <th width="100">支付方式</th>
@@ -19,7 +20,7 @@
     </td>
 </tr>
 <tr>
- 
+
     <td>
         <ul class="list-group no-borders">
             {volist name="vo.goodsList" id="grow" }
@@ -38,6 +39,22 @@
             </li>
             {/volist}
         </ul>
+    </td>
+    <td>
+        <p class=" m-b-xs">
+            {if condition='$vo.order_type == 0'}
+                普通订单
+            {elseif condition='$vo.order_type == 1'}
+                积分兑换订单
+            {elseif condition='$vo.order_type == 2'}
+                拼团订单
+            {elseif condition='$vo.order_type == 3'}
+                秒杀订单
+            {elseif condition='$vo.order_type == 9'}
+                售后订单
+            {/if}
+
+        </p>
     </td>
     <td>
         <p class=" m-b-xs">
@@ -65,15 +82,15 @@
             </a>
             {/eq}
         </p>
-        
+
     </td>
 
 </tr>
-{/volist} 
+{/volist}
 </tbody>
 </table>
 {empty name="data.list"}
 <table width="100%" >
  	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
 </table>
-{/empty}  
+{/empty}

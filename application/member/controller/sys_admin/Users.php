@@ -50,6 +50,7 @@ class Users extends AdminController
     public function getList($runData = false, $is_ban = -1)
     {
 
+        $home_jump = input('home_jump',0,'intval');//首页跳转,显示所有身份产品
         $this->search['roleId'] = input('rode_id', 0, 'intval');
         $this->search['levelId'] = input('level_id', 0, 'intval');
         $this->search['keyword'] = input("keyword");
@@ -83,8 +84,10 @@ class Users extends AdminController
                 break;
         }
 
-        if ($this->search['roleId'] > 0) {
+        if ($this->search['roleId'] > 0 && empty($home_jump)) {
             $where[] = ' u.role_id = ' . $this->search['roleId'];
+        }elseif($home_jump > 0){
+            $where[] = 'u.role_id in (6,7,8)';
         }
         if ($this->search['levelId'] > 0) {
             $level = $this->levelList[$this->search['levelId']];
@@ -236,9 +239,15 @@ class Users extends AdminController
     public function pubSearch()
     {
         $keyword = input('keyword', '', 'trim');
+        $user_level = input('user_level', '', 'trim');
 
+        $where="user_id > 0";
         if (!empty($keyword)) {
-            $where = "( mobile LIKE '%" . $keyword . "%' OR user_id = '" . $keyword . "' OR nick_name LIKE '%" . $keyword . "%' OR mobile LIKE '%" . $keyword . "%')";
+            $where .= " AND  ( mobile LIKE '%" . $keyword . "%' OR user_id = '" . $keyword . "' OR nick_name LIKE '%" . $keyword . "%' OR mobile LIKE '%" . $keyword . "%')";
+        }
+        if($user_level>0){
+            $level = $this->levelList[$this->search['levelId']];
+            $where.=' AND total_integral between ' . $level['min'] . ' AND ' . $level['max'];
         }
         $_list = $this->Model->where($where)->field("user_id,mobile,nick_name,user_name")->limit(20)->select();
         foreach ($_list as $key => $row) {

@@ -41,7 +41,7 @@ class GoodsComment extends AdminController {
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
-		$search['status'] = input('status',1,'intval');
+		$search['status'] = input('status',0,'intval');
 		$search['keyword'] = input('keyword','','trim');
 		$search['select_goods'] = input('select_goods',0,'intval');
 		$where = array();
@@ -102,7 +102,7 @@ class GoodsComment extends AdminController {
 		  $_root_ = Request::root();
 		  $addArr['comment_id'] = input('post.comment_id',0,'intval');
 		  $addArr['admin_id'] = AUID;
-		  $addArr['image'] = $file_url = str_replace('./','/',$_root_.$result['info'][0]['savepath'].$result['info'][0]['savename']);
+		  $addArr['image'] = $file_url = str_replace('./','/',$result['info'][0]['savepath'].$result['info'][0]['savename']);
 		  $addArr['thumbnail'] = str_replace('.','_thumb.',$addArr['image']);
 		  $GoodsCommentImagesModel =  new GoodsCommentImagesModel();
 		  $GoodsCommentImagesModel->save($addArr);	
@@ -129,6 +129,9 @@ class GoodsComment extends AdminController {
 		if ($data['type'] == 'goods_category' && $data['cat_id'] < 1){
 			return $this->error('请选择分类.');
 		}
+		if(count($data['GoodsImages']['id']) > 3){
+		    return $this->error('上传图片请少于3张');
+        }
 		$AvatarUserModel = new AvatarUserModel();
 		if ($data['avatar_user'] == 0){
 			$avatarUser = $AvatarUserModel->orderRaw('RAND()')->find();

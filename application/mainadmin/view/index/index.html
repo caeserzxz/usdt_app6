@@ -3,13 +3,7 @@
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="__STATIC__/js/highcharts/highcharts_more.js"></script>
 <section class="scrollable wrapper  ">
-
     <section class="panel panel-default ">
-        {if condition="$isClearSetTip == true"}
-        <header class="panel-heading font-bold red">
-            检测到网站发现变化，是否要清理相关配置，<a href="{:url('backup_db/clear')}" class="btn btn-sm" >前往清理</a>
-        </header>
-        {/if}
         <div class="row m-l-none m-r-none bg-light lter">
             <div class="col-sm-6 col-md-3 padder-v b-r b-light ">
 
@@ -107,11 +101,11 @@
                                   data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
                                   data-animate="2000" data-target="#bugs" data-update="3000"></span>
                         </span>
-                <a class="fl">
+                <a class="fl" href="{:url('member/sys_admin.users/index')}">
                     <span class="h3 block m-t-xs"><strong id="t_day_new_user">{$userStats['today_reg']}</strong></span>
                     <small class="text-muted text-uc">今天新增会员</small>
                 </a>
-                <a class="fr">
+                <a class="fr" >
                     <span class="h3 block m-t-xs"><strong id="y_day_new_user">{$userStats['yesterday_reg']}</strong></span>
                     <small class="text-muted text-uc">昨天新增会员</small>
                 </a>
@@ -122,11 +116,11 @@
                             <i class="fa fa-circle fa-stack-2x text-info"></i>
                             <i class="fa fa-users fa-stack-1x text-white"></i>
                         </span>
-                <a class="fl" href="#">
+                <a class="fl" href="{:url('member/sys_admin.users/index')}">
                     <span class="h3 block m-t-xs"><strong id="user_num">{$userStats['all_num']}</strong></span>
                     <small class="text-muted text-uc">会员总数</small>
                 </a>
-                <a class="fr" href="#">
+                <a class="fr" href="{:url('member/sys_admin.users/index',array('home_jump'=>1))}">
                     <span class="h3 block m-t-xs"><strong id="user_role_num">{$userStats['role_num']}</strong></span>
                     <small class="text-muted text-uc">身份会员总数</small>
                 </a>

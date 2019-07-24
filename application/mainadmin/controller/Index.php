@@ -20,7 +20,7 @@ class Index extends AdminController
 	
 
     public function index()
-    {		
+    {
 		//判断订单模块是否存在
 		if(class_exists('app\shop\model\OrderModel')){
 			//执行订单自动签收
@@ -124,14 +124,10 @@ class Index extends AdminController
             $i++;
         }
         //订单统计相关end
-        $isClearSetTip = false;
-        if ($this->admin['info']['role_action'] == 'all' && file_exists(DATA_PATH.$_SERVER['SERVER_NAME']) == false){
-            $isClearSetTip = true;
-        }
-        $this->assign('isClearSetTip',$isClearSetTip);
+
         $this->assign('stats',$stats);
         $this->assign('riqi',json_encode($riqi));
-        return $this->fetch('index');
+        return $this->fetch('mainadmin@Index/index');
     }
 
     /*------------------------------------------------------ */

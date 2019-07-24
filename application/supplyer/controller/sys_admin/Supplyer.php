@@ -33,7 +33,10 @@ class Supplyer extends AdminController
 		$where = [];
 
 		$keyword = input("keyword");
-        if($keyword) $where[] = ['supplyer_name|supplyer_id','like','%'.$keyword.'%'];
+        if($keyword){
+            $where[] = ['supplyer_name','like','%'.$keyword.'%'];
+            $where['or'][] = 'supplyer_id = '.$keyword * 1;
+        }
 		
         $data = $this->getPageList($this->Model, $where);			
 		$this->assign("data", $data);

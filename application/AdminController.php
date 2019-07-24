@@ -150,7 +150,7 @@ class AdminController extends BaseController
         if (empty($data) == false) {
             return $data;
         }
-        $rows = (new \app\mainadmin\model\MenuListModel)->where('status', 1)->order('pid DESC sort_order ASC')->select()->toArray();
+        $rows = (new \app\mainadmin\model\MenuListModel)->where('status', 1)->order('pid DESC,sort_order DESC')->select()->toArray();
         //权限过滤
         foreach ($rows as $row) {
             if (empty($row['right']) == false && $this->_privIf($row['group'] . '|' . $row['controller'], $row['action']) == false) {

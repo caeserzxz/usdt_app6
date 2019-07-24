@@ -7,7 +7,7 @@
               <li>
                   <i class="fa fa-ellipsis-v"></i>
                   <strong>{$row['pay_id']>0?'编缉支付':'添加支付'}</strong>
-              </li>                                  
+              </li>
           </ul>
           <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
       </div>
@@ -16,10 +16,10 @@
 <section class="scrollable  wrapper">
 <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
       <section class="panel panel-default">
-        
-          <div class="panel-body">  
+
+          <div class="panel-body">
                     <div class="form-group">
-                             <label class="col-sm-2 control-label">支付名称：</label>
+                             <label class="col-sm-2 control-label">支付方式：</label>
                              <div class="col-sm-10">
                                <span class="help-inline">{$row.pay_name}</span>
                             </div>
@@ -31,7 +31,7 @@
                                <span class="help-inline">{$row.pay_code}</span>
                             </div>
                         </div>
-                  		
+
                         {volist name="row.def_config" id="prow"}
                         <div class="form-group">
                              <label class="col-sm-2 control-label">{$prow['label']}：</label>
@@ -41,7 +41,9 @@
                                      <img class="thumb_img" name="imagefile" src="{$row['pay_config'][$prow['name']]}" style="max-height: 100px;" />
                                       <input class="hide" type="text" name="pay_config[{$prow['name']}]" value="{$row['pay_config'][$prow['name']]}" />
                                       <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                                        <div style="color:red;margin-top:0.5rem">(请上传500*500的图片)</div>
                                   </div>
+
                                {elseif condition="$prow['type'] == 'select'"/}
                                		<select name="pay_config[{$prow['name']}]">
                                     	{volist name="prow.option" id="val" key='k'}
@@ -51,14 +53,14 @@
                                {elseif condition="$prow['type'] == 'textarea'"/}
                                		<textarea data-rule-required="true" name="pay_config[{$prow['name']}]"  style="width:80%; height:130px;">{$row['pay_config'][$prow['name']]}</textarea>
                                {else/}
-                                	<input type="text" class="input-xlarge" data-rule-required="true" name="pay_config[{$prow['name']}]" value="{$row['pay_config'][$prow['name']]}"  />  		
+                                	<input type="text" class="input-xlarge" data-rule-required="true" name="pay_config[{$prow['name']}]" value="{$row['pay_config'][$prow['name']]}"  />
                                     <span class="maroon">*</span>
                                {/if}
-                             
+
                             </div>
                         </div>
-                        {/volist}                
-                   
+                        {/volist}
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label">排序（升序）：</label>
                              <div class="col-sm-10">
@@ -103,5 +105,5 @@
 </form>
 </section>
 
-   
+
 {/block}

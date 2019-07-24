@@ -67,7 +67,7 @@ class AccountLog extends AdminController
 		if (0 < $this->search['user_id'] ){
 			$where[] = ['user_id','=',$this->search['user_id'] ];
 		}
-		$this->sqlOrder = 'log_id DESC';
+		$this->sqlOrder = 'change_time DESC';
         $data = $this->getPageList($this->Model,$where);			
 		$this->assign("data", $data);
 		if ($runData == false){
@@ -87,29 +87,35 @@ class AccountLog extends AdminController
 			
 			$total_dividend_type = input('total_dividend_type','add','trim');
 			$total_dividend = input('total_dividend',0,'float');
+			$name = '';
+			$number = '';
 			if ($total_dividend > 0){
-				
-				 $data['total_dividend'] = $total_dividend_type == 'add' ? $total_dividend : $total_dividend * -1;
+                $name = '历史总佣金';
+				 $data['total_dividend'] = $number = $total_dividend_type == 'add' ? $total_dividend : $total_dividend * -1;
 			}
 			$balance_money_type = input('balance_money_type','add','trim');
 			$balance_money = input('balance_money',0,'float');
 			if ($balance_money > 0){
-				$data['balance_money'] = $balance_money_type == 'add' ? $balance_money : $balance_money * -1;
+                $name = '余额';
+				$data['balance_money'] = $number = $balance_money_type == 'add' ? $balance_money : $balance_money * -1;
 			}
             $bean_value_type = input('bean_value_type','add','trim');
             $bean_value = input('bean_value',0,'float');
             if ($bean_value > 0){
-                $data['bean_value'] = $bean_value_type == 'add' ? $bean_value : $bean_value * -1;
+                $name = '旅游币';
+                $data['bean_value'] = $number = $bean_value_type == 'add' ? $bean_value : $bean_value * -1;
             }
 			$total_integral_type = input('total_integral_type','add','trim');
 			$total_integral = input('total_integral',0,'intval');
 			if ($total_integral > 0){
-				 $data['total_integral'] = $total_integral_type == 'add' ? $total_integral : $total_integral * -1;
+                $name = '历史总积分';
+				 $data['total_integral'] = $number = $total_integral_type == 'add' ? $total_integral : $total_integral * -1;
 			}
 			$use_integral_type = input('use_integral_type','add','trim');
 			$use_integral = input('use_integral',0,'intval');
 			if ($use_integral > 0){
-				 $data['use_integral'] = $use_integral_type == 'add' ? $use_integral : $use_integral * -1;
+			    $name = '可用积分';
+				 $data['use_integral'] = $number = $use_integral_type == 'add' ? $use_integral : $use_integral * -1;
 			}
 			if (empty($data)) return $this->error('请核实是否有输入正确的更改值？');
 			$data['user_id'] = $user_id;
@@ -118,6 +124,7 @@ class AccountLog extends AdminController
 			$data['by_id'] = AUID;
 			$res = $this->Model->change($data,$user_id);
 			if ($res < 1) return $this->error();
+            $this->_log($user_id, '调节会员账户：' . $name. '-(' . $number.')','member');
 			return $this->success('操作成功','reload');
 		}
         $account = model(UsersModel)->getAccount($user_id,false);

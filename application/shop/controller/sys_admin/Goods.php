@@ -263,7 +263,7 @@ class Goods extends AdminController
         $row['goods_desc'] = input('goods_desc', '', 'trim,stripslashes');
         $row['m_goods_desc'] = input('m_goods_desc', '', 'trim,stripslashes');
         if (empty($row['goods_desc']) && empty($row['m_goods_desc'])) {
-            return $this->error('获取商品详情失败，请核实是否已填写.');
+            return $this->error('未上传商品详情，请上传后再保存.');
         }
         if ($row['is_spec'] == 0) {//单规格
             if ($this->is_supplyer == false) {//平台管理供应商时，不判断以下
@@ -902,7 +902,13 @@ class Goods extends AdminController
         if (!empty($keyword)) {
             $where = "( goods_name LIKE '%" . $keyword . "%' OR goods_sn LIKE '%" . $keyword . "%' )";
         }
-        $_list = $this->Model->where($where)->field("goods_id,goods_name,is_spec,goods_sn,goods_thumb")->limit(20)->select();
+        $search['cid'] = input('cid', 0, 'intval');
+        if ($search['cid'] > 0) {
+            $this->classList = $this->Model->getClassList();
+            $where[] = ['cid', 'in', $this->classList[$search['cid']]['children']];
+        }
+
+        $_list = $this->Model->where($where)->field("goods_id,goods_name,shop_price,is_spec,goods_sn,goods_thumb")->limit(20)->select();
         foreach ($_list as $key => $row) {
             $_list[$key] = $row;
         }

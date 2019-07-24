@@ -18,6 +18,7 @@ class UsersModel extends BaseModel
     protected $table = 'users';
     protected $mkey = 'user_info_mkey_';
     public $pk = 'user_id';
+
     /*------------------------------------------------------ */
     //--  清除memcache
     /*------------------------------------------------------ */
@@ -228,13 +229,11 @@ class UsersModel extends BaseModel
             //写入九级关系链
             $this->regUserBind($user_id,$inArr['pid']);
         }
-
         //红包模块存在执行
         if (class_exists('app\shop\model\BonusModel')) {
             //注册送红包
             (new \app\shop\model\BonusModel)->sendByReg($user_id);
         }
-
         return true;
     }
     /*------------------------------------------------------ */

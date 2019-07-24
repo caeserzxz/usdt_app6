@@ -36,6 +36,8 @@ class Index  extends ClientbaseController{
 		$this->assign('bestGoods',$GoodsModel->getIndexBestGoods());//获取首页分类
 		return $this->fetch('index');
 	}
+
+
 	/*------------------------------------------------------ */
 	//-- 分类页
 	/*------------------------------------------------------ */

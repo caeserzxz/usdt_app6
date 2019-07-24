@@ -2,6 +2,7 @@
 namespace app\mainadmin\controller;
 use app\AdminController;
 use app\mainadmin\model\ArticleCategoryModel;
+use app\mainadmin\model\ArticleModel;
 
 /**
  * 文章分类

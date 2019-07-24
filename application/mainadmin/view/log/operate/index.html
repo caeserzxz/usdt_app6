@@ -19,8 +19,10 @@
                     </a>
               </div>
               <input type="text" class="form-control input-large" value="" name="user_id" placeholder="操作用户ID" data-rule-required="true" />
+             <input type="hidden" value="0" name="export">
               <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
-        
+             <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出</a>
+
         </div>
     </form>
 </header>
@@ -32,5 +34,11 @@
         </div>
     </section>
 </section>
-
+<script>
+    function ExportLog(){
+        $('input[name="export"]').val('1');
+        $('#forms').submit();
+        $('input[name="export"]').val('0');
+    }
+</script>
 {/block}

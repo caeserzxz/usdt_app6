@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">网站名称：</label>
                         <div class="controls col-sm-4 ">
-                            <input type="text" name="setting[shop_title]" class="input-max" data-rule-required="true"
+                            <input type="text" name="setting[shop_title]" placeholder="请输入商城名称" class="input-max" data-rule-required="true"
                                    value="{$setting.shop_title}">
                         </div>
                     </div>
@@ -99,6 +99,10 @@
                                        type="radio" {$setting['about_us_status']|tplckval='=1','checked'}>
                                 显示
                             </label>
+                            <label class="radio-inline">
+                                <span>(隐藏或者显示在手机端个人中心页面)</span>
+                            </label>
+
                         </div>
                         <div class="clearfix"></div>
                     </div>

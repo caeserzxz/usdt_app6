@@ -1,5 +1,5 @@
 
-<div class="form-group">               
+<div class="form-group">
 	<label class="col-sm-2 control-label">是否分销商品：</label>
     <div class="col-sm-10">
           <label class="radio-inline">
@@ -29,28 +29,28 @@
             <input type="radio" name="isputaway"   value="0" {$row.isputaway|tplckval='=0','checked'} >暂不上架，放入仓库中
         </label>
         <label class="radio" style="padding-left:20px;width:200px;">
-                <input type="radio" name="isputaway" value="2" {$row.isputaway|tplckval='=2','checked'}/>设定商品上下架时间 
+                <input type="radio" name="isputaway" value="2" {$row.isputaway|tplckval='=2','checked'}/>设定商品上下架时间
          </label>
-  
-       
+
+
         <div class="col-sm-1" style="width:70px;padding:0; margin:0;">
             <label style="padding:0;margin:0;">上架时间</label>
         </div>
         <div class="col-sm-3"  style="width:180px;padding:0; margin:0;">
-            <div class="input-group"> <input type="text" class="input-max" name="added_time" readonly="readonly" value="{$row.added_time|dateTpl='Y-m-d H:i',true}" data-before="#solddate"   data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+            <div class="input-group"> <input type="text" class="input-max" name="added_time" readonly="readonly" value="{$row.added_time|dateTpl='Y-m-d H:i',true}" data-before="#solddate"   data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
         </div>
          <div class="col-sm-1" style="width:70px;margin:0; margin-left:10px;">
             <label style="padding:0;margin:0;">下架时间</label>
         </div>
         <div class="col-sm-3"  style="width:180px;padding:0; margin:0;">
-            <div class="input-group"> <input type="text" class="input-max" name="shelf_time" value="{$row.shelf_time|dateTpl='Y-m-d H:i',true}" data-after="#groundingdate" data-offsetday="0"  readonly="readonly" data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+            <div class="input-group"> <input type="text" class="input-max" name="shelf_time" value="{$row.shelf_time|dateTpl='Y-m-d H:i',true}" data-after="#groundingdate" data-offsetday="0"  readonly="readonly" data-toggle="datetimepicker" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
         </div>
 
     </div>
 </div>
 {/if}
 <div class="line line-dashed line-lg pull-in"></div>
- 
+
 <div class="form-group">
     <label class="col-sm-2 control-label">加入推荐：</label>
     <div class="col-sm-6">

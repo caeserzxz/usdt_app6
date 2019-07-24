@@ -5,6 +5,7 @@
 {/block}
 {block name='pageType'}Goods{/block}
 {block name="main" }
+
 <div class="page-hd">
           <div class="header">
               <div class="header-left back">
@@ -263,6 +264,12 @@ function addToCart(obj) {
 		}
 		$('.cartNum').html(res.cartInfo.num);
 	}
+	if (arr.type == 'onbuy') {
+        if (res.msg) _alert(res.msg,function(){
+            window.location.href = '{:_url("member/passport/login")}';
+        });
+        return;
+    }
 	if (res.msg) _alert(res.msg);
 }
 

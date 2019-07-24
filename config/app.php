@@ -55,13 +55,13 @@ return [
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'         => defined('INDEX')?'shop':'mainadmin',
+    'default_module'         => defined('INDEX')?'shop':'shop',
     // 禁止访问模块
     'deny_module_list'       => defined('INDEX')?['common','mainadmin']:['common'],
     // 默认控制器名
-    'default_controller'     => 'Index',
+    'default_controller'     =>  defined('INDEX')?'Index':'sys_admin.order',
     // 默认操作名
-    'default_action'         => 'index',
+    'default_action'         => defined('INDEX')?'Index':'welcome',
     // 默认验证器
     'default_validate'       => '',
     // 默认的空模块名

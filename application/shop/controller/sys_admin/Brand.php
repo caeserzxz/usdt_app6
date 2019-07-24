@@ -3,6 +3,7 @@ namespace app\shop\controller\sys_admin;
 use app\AdminController;
 use app\shop\model\BrandModel;
 use app\shop\model\CategoryModel;
+use app\mainadmin\model\ArticleModel;
 /**
  * 商品品牌
  * Class Index

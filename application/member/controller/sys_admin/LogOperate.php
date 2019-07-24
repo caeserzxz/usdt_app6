@@ -54,6 +54,10 @@ class LogOperate extends AdminController
 		if ($this->search['edit_id'] > 0){
 			$where[] = ['edit_id','=',$this->search['edit_id']];
 		}
+        $export = input('export', 0, 'intval');
+        if ($export > 0) {
+            return $this->exportOrder($where);
+        }
         $data = $this->getPageList($this->Model,$where);
 		$this->assign("data", $data);
 		if ($runData == false){
@@ -63,7 +67,61 @@ class LogOperate extends AdminController
 		}
         return true;
     }
-  
 
+    /*------------------------------------------------------ */
+    //-- 导出订单
+    /*------------------------------------------------------ */
+    public function exportOrder($where)
+    {
+
+        $count = $this->Model->where($where)->count('log_id');
+
+        if ($count < 1) return $this->error('没有找到可导出的日志资料！');
+        $filename = '会员操作日志资料_' . date("YmdHis") . '.xls';
+        $export_arr['LOGID'] = 'log_id';
+        $export_arr['操作用户ID'] = 'user_id';
+        $export_arr['操作用户名'] = '';
+        $export_arr['操作时间'] = 'log_time';
+        $export_arr['操作IP'] = 'log_ip';
+        $export_arr['影响数据ID'] = 'edit_id';
+        $export_arr['记录'] = 'log_info';
+
+        $export_field = $export_arr;
+        $page = 0;
+        $page_size = 500;
+        $page_count = 100;
+
+        $title = join("\t", array_keys($export_arr)) . "\t";
+        unset($export_field['操作用户名']);
+        $field = join(",", $export_field);
+
+
+        $data = '';
+        do {
+            $rows = $this->Model->field('log_id,' . $field)->where($where)->limit($page * $page_size, $page_size)->select();
+
+            if (empty($rows))return;
+            foreach ($rows as $row) {
+                foreach ($export_arr as $val) {
+                    if (strstr($val, '_time')) {
+                        $data .= dateTpl($row[$val]) . "\t";
+                    } elseif ($val == '') {
+                        $data .= adminInfo($row['user_id']) . "\t";
+                    } else {
+                        $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
+                    }
+                }
+                $data .= "\n";
+            }
+
+            $page++;
+        } while ($page <= $page_count);
+
+        $filename = iconv('utf-8', 'GBK//IGNORE', $filename);
+        header("Content-type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=$filename");
+        echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
+        exit;
+    }
 
 }

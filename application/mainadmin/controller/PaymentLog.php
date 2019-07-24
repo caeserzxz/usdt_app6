@@ -18,7 +18,7 @@ class PaymentLog extends AdminController
    public function initialize()
    {	
    		parent::initialize();
-		$this->Model = new PaymentLogModel(); 
+		$this->Model = new PaymentLogModel();
 		$this->assign('ss',$this->Model->statusArr);
     }
 	/*------------------------------------------------------ */
@@ -37,7 +37,9 @@ class PaymentLog extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
         $reportrange = input('reportrange');
+        $status = input('status');
 		$where = [];
+		if(strlen($status) > 0)$where[] = ['status','=',$status];
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
 			$where[] = ['log_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];

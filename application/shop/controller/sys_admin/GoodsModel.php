@@ -68,7 +68,7 @@ class GoodsModel extends AdminController
 	/*------------------------------------------------------ */
 	public function del(){
 		$id = input('id',0,'intval');
-		if ($map['id'] < 1) return $this->error('传递参数失败！'); 
+		if ($id < 1) return $this->error('传递参数失败！');
 		$list = $this->Model->getRows();
 		$info = $list[$id];
 		if (empty($info))  return $this->error('模型不存在！');

@@ -189,11 +189,12 @@ $('.postBtn').click(function(){
 		  contentType: false,
 		  data: fd,
 		  success: function (res) {
-			 if (res.code == 0){
+
+		      if (res.code == 0){
 				  _alert(res.msg);
 				  return false;	
 			  }
-			  _alert(res.msg,'{:url("member/center/index")}');			  
+              window.location.href = '{:url("member/center/index")}';
 		  }
 	})
 })

@@ -577,8 +577,9 @@ class GoodsModel extends BaseModel
     //-- 获取搜索记录
     /*------------------------------------------------------ */
     public function searchKeys($keyword = '')
-    {
-        $keys = session('searchKeys');
+    {   $user_id = $this->userInfo['user_id'];
+        if(empty($user_id))return false;
+        $keys = Cache::get('searchKeys' . $user_id);
         if (empty($keys)) $keys = array();
         if (empty($keyword) == false) {
             foreach ($keys as $key => $val) {
@@ -591,6 +592,7 @@ class GoodsModel extends BaseModel
             }
             $keys[] = $keyword;
             session('searchKeys', $keys);
+            $keys = Cache::set('searchKeys' . $user_id ,$keys,2592000);
         }
         return array_reverse($keys);
     }

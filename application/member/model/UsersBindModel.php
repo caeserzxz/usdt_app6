@@ -8,4 +8,5 @@ use think\facade\Cache;
 class UsersBindModel extends BaseModel
 {
 	protected $table = 'users_bind';
+    public $pk = 'bid';
 }
