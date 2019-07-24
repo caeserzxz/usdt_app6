@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 19/06/2019 11:20:52
+ Date: 24/07/2019 11:02:51
 */
 
 SET NAMES utf8mb4;
@@ -38,7 +38,7 @@ CREATE TABLE `distribution_dividend_award` (
   `add_time` int(10) DEFAULT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`award_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='分销奖项表';
 
 -- ----------------------------
 -- Records of distribution_dividend_award
@@ -56,28 +56,28 @@ COMMIT;
 DROP TABLE IF EXISTS `distribution_dividend_log`;
 CREATE TABLE `distribution_dividend_log` (
   `log_id` bigint(15) unsigned NOT NULL AUTO_INCREMENT,
-  `order_type` varchar(15) NOT NULL DEFAULT '0' COMMENT '订单类型，order普通订单，role_order身份订单',
+  `order_type` varchar(15) CHARACTER SET utf8 NOT NULL DEFAULT '0' COMMENT '订单类型，order普通订单，role_order身份订单',
   `order_id` mediumint(8) NOT NULL COMMENT '订单ID',
-  `order_sn` varchar(20) DEFAULT '' COMMENT '订单编号',
+  `order_sn` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '订单编号',
   `buy_uid` mediumint(8) NOT NULL COMMENT '购买会员',
   `dividend_uid` mediumint(8) NOT NULL COMMENT '分佣会员',
   `role_id` mediumint(8) DEFAULT '0' COMMENT '分佣身份ID',
-  `role_name` varchar(50) DEFAULT '' COMMENT '分佣身份',
+  `role_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '分佣身份',
   `level` tinyint(3) NOT NULL DEFAULT '0' COMMENT '分佣层级',
   `order_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '计算的分佣金额',
   `award_id` int(10) DEFAULT '0' COMMENT '奖项ID',
-  `award_name` varchar(50) DEFAULT '' COMMENT '奖项名称',
-  `level_award_name` varchar(20) DEFAULT '' COMMENT '奖励名称',
+  `award_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '奖项名称',
+  `level_award_name` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '奖励名称',
   `dividend_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '分佣金额（金币）',
   `dividend_bean` decimal(10,2) DEFAULT '0.00' COMMENT '分佣旅游豆',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态',
-  `limit_id` int(11) DEFAULT NULL COMMENT '限制间隔时间返佣操作ID',
+  `limit_id` int(11) DEFAULT '0' COMMENT '限制间隔时间返佣操作ID',
   `add_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   `is_hide` tinyint(1) DEFAULT '0' COMMENT '是否隐藏',
   PRIMARY KEY (`log_id`,`order_id`,`dividend_uid`) USING BTREE,
   KEY `order_id_type` (`order_id`,`order_type`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=537 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='分销明细流水';
+) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='分销明细流水';
 
 -- ----------------------------
 -- Records of distribution_dividend_log
@@ -90,24 +90,24 @@ INSERT INTO `distribution_dividend_log` VALUES (4, '0', 6, '2019030946121', 2989
 INSERT INTO `distribution_dividend_log` VALUES (5, '0', 8, '2019030941986', 29890, 29889, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 1, 0, 1552126940, 1552270250, 0);
 INSERT INTO `distribution_dividend_log` VALUES (6, '0', 9, '2019030915055', 29891, 29890, 1, '普通会员', 1, 72.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 0, 0, 1552127859, 1552127859, 0);
 INSERT INTO `distribution_dividend_log` VALUES (7, '0', 10, '2019030944023', 29892, 29891, 1, '普通会员', 1, 72.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 0, 0, 1552128945, 1552128945, 0);
-INSERT INTO `distribution_dividend_log` VALUES (53, '0', 11, '2019030929776', 29893, 29892, 2, 'VIP会员', 1, 72.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 9, 0, 1552383776, 1552904028, 0);
-INSERT INTO `distribution_dividend_log` VALUES (73, '0', 14, '2019031244092', 29893, 29890, 1, '普通会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552384897, 1552384897, 0);
 INSERT INTO `distribution_dividend_log` VALUES (47, '0', 13, '2019031258934', 29892, 29891, 1, '普通会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1552383776, 1552383776, 0);
-INSERT INTO `distribution_dividend_log` VALUES (70, '0', 15, '2019031242333', 29893, 29890, 1, '普通会员', 3, 834.00, 2, '会员399分销奖', '市场扶持金', 0.00, 120.00, 9, 198, 1552384570, 1553233770, 0);
-INSERT INTO `distribution_dividend_log` VALUES (69, '0', 15, '2019031242333', 29893, 29891, 1, '普通会员', 2, 834.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 80.00, 9, 198, 1552384570, 1553233770, 0);
-INSERT INTO `distribution_dividend_log` VALUES (68, '0', 15, '2019031242333', 29893, 29892, 2, 'VIP会员', 1, 834.00, 2, '会员399分销奖', '培训奖金', 200.00, 0.00, 9, 0, 1552384570, 1553151128, 0);
-INSERT INTO `distribution_dividend_log` VALUES (72, '0', 14, '2019031244092', 29893, 29891, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552384897, 1552384897, 0);
-INSERT INTO `distribution_dividend_log` VALUES (71, '0', 14, '2019031244092', 29893, 29892, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1552384897, 1552384897, 0);
 INSERT INTO `distribution_dividend_log` VALUES (48, '0', 13, '2019031258934', 29892, 29890, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552383776, 1552383776, 0);
 INSERT INTO `distribution_dividend_log` VALUES (49, '0', 13, '2019031258934', 29892, 29889, 2, 'VIP会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552383776, 1552383776, 0);
 INSERT INTO `distribution_dividend_log` VALUES (50, '0', 12, '2019031280868', 29892, 29891, 1, '普通会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1552383776, 1552383776, 0);
 INSERT INTO `distribution_dividend_log` VALUES (51, '0', 12, '2019031280868', 29892, 29890, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552383776, 1552383776, 0);
 INSERT INTO `distribution_dividend_log` VALUES (52, '0', 12, '2019031280868', 29892, 29889, 2, 'VIP会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552383776, 1552383776, 0);
+INSERT INTO `distribution_dividend_log` VALUES (53, '0', 11, '2019030929776', 29893, 29892, 2, 'VIP会员', 1, 72.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 9, 0, 1552383776, 1552904028, 0);
 INSERT INTO `distribution_dividend_log` VALUES (54, '0', 11, '2019030929776', 29893, 29891, 1, '普通会员', 2, 72.00, 1, '爆款产品分销奖', '销售奖金', 0.00, 15.00, 9, 198, 1552383776, 1553233770, 0);
 INSERT INTO `distribution_dividend_log` VALUES (55, '0', 11, '2019030929776', 29893, 29890, 1, '普通会员', 3, 72.00, 1, '爆款产品分销奖', '销售奖金', 0.00, 10.00, 9, 198, 1552383776, 1553233770, 0);
-INSERT INTO `distribution_dividend_log` VALUES (145, '0', 20, '2019031545596', 29893, 29890, 1, '普通会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552618374, 1552618374, 0);
-INSERT INTO `distribution_dividend_log` VALUES (144, '0', 20, '2019031545596', 29893, 29891, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552618374, 1552618374, 0);
+INSERT INTO `distribution_dividend_log` VALUES (68, '0', 15, '2019031242333', 29893, 29892, 2, 'VIP会员', 1, 834.00, 2, '会员399分销奖', '培训奖金', 200.00, 0.00, 9, 0, 1552384570, 1553151128, 0);
+INSERT INTO `distribution_dividend_log` VALUES (69, '0', 15, '2019031242333', 29893, 29891, 1, '普通会员', 2, 834.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 80.00, 9, 198, 1552384570, 1553233770, 0);
+INSERT INTO `distribution_dividend_log` VALUES (70, '0', 15, '2019031242333', 29893, 29890, 1, '普通会员', 3, 834.00, 2, '会员399分销奖', '市场扶持金', 0.00, 120.00, 9, 198, 1552384570, 1553233770, 0);
+INSERT INTO `distribution_dividend_log` VALUES (71, '0', 14, '2019031244092', 29893, 29892, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1552384897, 1552384897, 0);
+INSERT INTO `distribution_dividend_log` VALUES (72, '0', 14, '2019031244092', 29893, 29891, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552384897, 1552384897, 0);
+INSERT INTO `distribution_dividend_log` VALUES (73, '0', 14, '2019031244092', 29893, 29890, 1, '普通会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552384897, 1552384897, 0);
 INSERT INTO `distribution_dividend_log` VALUES (143, '0', 20, '2019031545596', 29893, 29892, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1552618374, 1552618374, 0);
+INSERT INTO `distribution_dividend_log` VALUES (144, '0', 20, '2019031545596', 29893, 29891, 1, '普通会员', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 0, 0, 1552618374, 1552618374, 0);
+INSERT INTO `distribution_dividend_log` VALUES (145, '0', 20, '2019031545596', 29893, 29890, 1, '普通会员', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 0, 0, 1552618374, 1552618374, 0);
 INSERT INTO `distribution_dividend_log` VALUES (146, '0', 20, '2019031545596', 29893, 29889, 3, '合伙人', 4, 432.00, 3, '管理奖', '旅游银币', 0.00, 10.00, 0, 0, 1552618374, 1552618374, 0);
 INSERT INTO `distribution_dividend_log` VALUES (147, '0', 25, '2019032072577', 29894, 29889, 3, '合伙人', 1, 72.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 0, 0, 1553064076, 1553064076, 0);
 INSERT INTO `distribution_dividend_log` VALUES (148, '0', 27, '2019032233560', 29896, 29889, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 0, 0, 1553240743, 1553240743, 0);
@@ -130,16 +130,16 @@ INSERT INTO `distribution_dividend_log` VALUES (164, '0', 35, '2019032202621', 2
 INSERT INTO `distribution_dividend_log` VALUES (210, '0', 36, '2019032259861', 29896, 29892, 2, 'VIP会员', 2, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 1, 0, 1553250305, 1553565264, 0);
 INSERT INTO `distribution_dividend_log` VALUES (211, '0', 36, '2019032259861', 29896, 29889, 5, '钻石合伙人', 5, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 1, 0, 1553250305, 1553565264, 0);
 INSERT INTO `distribution_dividend_log` VALUES (212, '0', 36, '2019032259861', 29896, 29889, 5, '钻石合伙人', 5, 432.00, 3, '管理奖', '旅游白金币', 0.00, 40.00, 1, 0, 1553250305, 1553565264, 0);
-INSERT INTO `distribution_dividend_log` VALUES (228, '0', 42, '2019032764291', 29892, 29889, 5, '钻石合伙人', 2, 39.00, 1, '爆款产品分销奖', '销售奖金', 0.00, 15.00, 1, 0, 1553686468, 1553686468, 0);
 INSERT INTO `distribution_dividend_log` VALUES (227, '0', 42, '2019032764291', 29892, 29891, 1, '普通会员', 1, 39.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 1, 0, 1553686468, 1553686468, 0);
+INSERT INTO `distribution_dividend_log` VALUES (228, '0', 42, '2019032764291', 29892, 29889, 5, '钻石合伙人', 2, 39.00, 1, '爆款产品分销奖', '销售奖金', 0.00, 15.00, 1, 0, 1553686468, 1553686468, 0);
 INSERT INTO `distribution_dividend_log` VALUES (229, '0', 43, '2019032702145', 29892, 29891, 1, '普通会员', 1, 39.00, 1, '爆款产品分销奖', '销售奖金', 10.00, 0.00, 1, 0, 1553686642, 1553686657, 0);
 INSERT INTO `distribution_dividend_log` VALUES (230, '0', 43, '2019032702145', 29892, 29889, 5, '钻石合伙人', 2, 39.00, 1, '爆款产品分销奖', '销售奖金', 0.00, 15.00, 1, 0, 1553686642, 1553686657, 0);
-INSERT INTO `distribution_dividend_log` VALUES (411, '0', 44, '2019032802208', 29896, 29889, 5, '钻石合伙人', 4, 432.00, 5, '钻石平推奖（会员产品）', '伯爵', 0.00, 4.00, 10, 0, 1553761334, 1553773829, 0);
+INSERT INTO `distribution_dividend_log` VALUES (406, '0', 44, '2019032802208', 29896, 29893, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 10, 0, 1553761334, 1553773829, 0);
+INSERT INTO `distribution_dividend_log` VALUES (407, '0', 44, '2019032802208', 29896, 29892, 5, '钻石合伙人', 2, 432.00, 5, '钻石平推奖（会员产品）', '星爵', 0.00, 20.00, 10, 0, 1553761334, 1553773829, 0);
+INSERT INTO `distribution_dividend_log` VALUES (408, '0', 44, '2019032802208', 29896, 29892, 5, '钻石合伙人', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 10, 0, 1553761334, 1553773829, 0);
 INSERT INTO `distribution_dividend_log` VALUES (409, '0', 44, '2019032802208', 29896, 29891, 5, '钻石合伙人', 3, 432.00, 5, '钻石平推奖（会员产品）', '候爵', 0.00, 10.00, 10, 0, 1553761334, 1553773829, 0);
 INSERT INTO `distribution_dividend_log` VALUES (410, '0', 44, '2019032802208', 29896, 29891, 5, '钻石合伙人', 3, 432.00, 2, '会员399分销奖', '市场扶持金', 0.00, 60.00, 10, 0, 1553761334, 1553773829, 0);
-INSERT INTO `distribution_dividend_log` VALUES (408, '0', 44, '2019032802208', 29896, 29892, 5, '钻石合伙人', 2, 432.00, 2, '会员399分销奖', '产品差价奖金', 0.00, 40.00, 10, 0, 1553761334, 1553773829, 0);
-INSERT INTO `distribution_dividend_log` VALUES (407, '0', 44, '2019032802208', 29896, 29892, 5, '钻石合伙人', 2, 432.00, 5, '钻石平推奖（会员产品）', '星爵', 0.00, 20.00, 10, 0, 1553761334, 1553773829, 0);
-INSERT INTO `distribution_dividend_log` VALUES (406, '0', 44, '2019032802208', 29896, 29893, 2, 'VIP会员', 1, 432.00, 2, '会员399分销奖', '培训奖金', 100.00, 0.00, 10, 0, 1553761334, 1553773829, 0);
+INSERT INTO `distribution_dividend_log` VALUES (411, '0', 44, '2019032802208', 29896, 29889, 5, '钻石合伙人', 4, 432.00, 5, '钻石平推奖（会员产品）', '伯爵', 0.00, 4.00, 10, 0, 1553761334, 1553773829, 0);
 INSERT INTO `distribution_dividend_log` VALUES (412, '0', 16, 'role2019051444989', 29890, 29890, 0, '粉丝', 0, 100.01, 6, '会员身份培养奖(粉丝)', '自购返佣', 10.00, 0.00, 9, 0, 1557835513, 1558462349, 0);
 INSERT INTO `distribution_dividend_log` VALUES (413, '0', 16, 'role2019051444989', 29890, 29889, 0, '粉丝', 1, 100.01, 6, '会员身份培养奖(粉丝)', '直推身份培养奖', 20.00, 0.00, 9, 0, 1557835513, 1558462349, 0);
 INSERT INTO `distribution_dividend_log` VALUES (414, '0', 16, 'role2019051444989', 29890, 29890, 0, '粉丝', 0, 100.01, 7, '代理身份培养奖(粉丝)', '自购返佣', 20.00, 0.00, 9, 0, 1557835513, 1558462349, 0);
@@ -247,23 +247,23 @@ COMMIT;
 DROP TABLE IF EXISTS `distribution_dividend_role`;
 CREATE TABLE `distribution_dividend_role` (
   `role_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(50) DEFAULT '' COMMENT '身份名称',
+  `role_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '身份名称',
   `level` tinyint(3) DEFAULT '0' COMMENT '身份级别',
-  `uplevel_fun_name` varchar(50) DEFAULT '' COMMENT '升级方法名',
-  `upleve_function` varchar(50) DEFAULT NULL COMMENT '升级方法',
-  `upleve_value` varchar(500) DEFAULT NULL COMMENT '升级配置',
+  `uplevel_fun_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '升级方法名',
+  `upleve_function` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '升级方法',
+  `upleve_value` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '升级配置',
   `add_time` int(10) DEFAULT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='分销身份表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='分销身份表';
 
 -- ----------------------------
 -- Records of distribution_dividend_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `distribution_dividend_role` VALUES (8, '业务员', 3, '升级方案', 'BasalFunLevel', '{\"is_auto\":\"9\",\"total_consume\":\"0\"}', 1557304579, 1557851673);
 INSERT INTO `distribution_dividend_role` VALUES (6, '会员', 1, '升级方案', 'BasalFunLevel', '{\"is_auto\":\"1\",\"total_consume\":\"1001\"}', 1557281874, 1557851664);
 INSERT INTO `distribution_dividend_role` VALUES (7, '代理商', 2, '升级方案', 'BasalFunLevel', '{\"is_auto\":\"1\",\"total_consume\":\"2000\"}', 1557304447, 1557851669);
+INSERT INTO `distribution_dividend_role` VALUES (8, '业务员', 3, '升级方案', 'BasalFunLevel', '{\"is_auto\":\"9\",\"total_consume\":\"0\"}', 1557304579, 1557851673);
 COMMIT;
 
 -- ----------------------------
@@ -275,7 +275,7 @@ CREATE TABLE `distribution_eval_arrival_log` (
   `admin_id` mediumint(8) DEFAULT '0' COMMENT '操作管理员,0为系统操作',
   `log_time` int(10) DEFAULT '0' COMMENT '执行时间',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='间隔到帐佣金日志';
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='间隔到帐佣金日志';
 
 -- ----------------------------
 -- Records of distribution_eval_arrival_log
@@ -508,7 +508,7 @@ CREATE TABLE `distribution_role_goods` (
   `info` varchar(500) DEFAULT NULL COMMENT '简介',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`rg_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='身份商品表';
 
 -- ----------------------------
 -- Records of distribution_role_goods
@@ -529,6 +529,7 @@ CREATE TABLE `distribution_role_order` (
   `pay_status` tinyint(1) DEFAULT '0' COMMENT '支付状态，0未支付，1已支付',
   `transaction_id` varchar(150) DEFAULT '' COMMENT '第三方平台交易流水号',
   `user_id` mediumint(8) NOT NULL COMMENT '购买会员',
+  `is_pay` tinyint(1) DEFAULT '0' COMMENT '是否需要支付',
   `pay_id` tinyint(3) DEFAULT NULL COMMENT '支付ID',
   `pay_code` varchar(20) DEFAULT NULL COMMENT '支付Code',
   `pay_name` varchar(120) DEFAULT NULL COMMENT '支付名称',
@@ -553,57 +554,57 @@ CREATE TABLE `distribution_role_order` (
   `is_dividend` tinyint(1) DEFAULT '0' COMMENT '是否执行分销处理',
   PRIMARY KEY (`order_id`) USING BTREE,
   KEY `order_sn` (`order_sn`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COMMENT='身份订单表';
 
 -- ----------------------------
 -- Records of distribution_role_order
 -- ----------------------------
 BEGIN;
-INSERT INTO `distribution_role_order` VALUES (1, 'role2019051430606', 0.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802148, 1557802713, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (2, 'role2019051481174', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802759, 1557802759, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (3, 'role2019051485303', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802867, 1557802867, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (4, 'role2019051472846', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557804419, 1557804420, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (5, 'role2019051461575', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834331, 1557834332, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (6, 'role2019051457774', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834379, 1557834379, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (7, 'role2019051468307', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834474, 1557834475, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (8, 'role2019051421307', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834550, 1557834550, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (9, 'role2019051444393', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834627, 1557834627, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (10, 'role2019051491793', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835116, 1557835117, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (11, 'role2019051455675', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835148, 1557835149, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (12, 'role2019051478111', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835187, 1557835188, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (13, 'role2019051400419', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835288, 1557835288, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (14, 'role2019051401822', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835316, 1557835316, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (15, 'role2019051429912', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835376, 1557835377, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (16, 'role2019051444989', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835513, 1557835513, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (17, 'role2019051433919', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835794, 1557835794, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (18, 'role2019051441768', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835946, 1557835947, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (19, 'role2019051477511', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847478, 1557847478, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (20, 'role2019051494800', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847616, 1557847616, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (21, 'role2019051435870', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847652, 1557847652, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (22, 'role2019051407978', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847704, 1557847704, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (23, 'role2019051457450', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847731, 1557847731, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (24, 'role2019051435292', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847874, 1557847874, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (25, 'role2019051486538', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847904, 1557847905, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (26, 'role2019051418810', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847964, 1557847965, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (27, 'role2019051427454', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848275, 1557848276, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (28, 'role2019051426139', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848333, 1557848333, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (29, 'role2019051444651', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848376, 1557848376, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (30, 'role2019051429923', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848892, 1557848892, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (31, 'role2019051464999', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849081, 1557849081, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (32, 'role2019051402780', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849206, 1557849206, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (33, 'role2019051475496', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849295, 1557849295, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (34, 'role2019051421114', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849347, 1557849347, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (35, 'role2019051464998', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849477, 1557849478, 0, 0.00, 0);
-INSERT INTO `distribution_role_order` VALUES (36, 'role2019051495234', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849534, 1557849535, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (37, 'role2019051545344', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849698, 1557849698, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (38, 'role2019051569339', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849985, 1557849985, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (39, 'role2019051581153', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850046, 1557850046, 1, 0.00, 1);
-INSERT INTO `distribution_role_order` VALUES (40, 'role2019051523710', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850169, 1557850169, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (41, 'role2019051550869', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850957, 1557850957, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (42, 'role2019051510423', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557851826, 1557851826, 1, 30.00, 1);
-INSERT INTO `distribution_role_order` VALUES (43, 'role2019052027679', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, '::1', 1558323608, 1558323609, 1, 41.00, 1);
-INSERT INTO `distribution_role_order` VALUES (44, 'role2019052009193', 200.00, 1, '', 29890, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1558323657, 1558323657, 1, 42.00, 1);
-INSERT INTO `distribution_role_order` VALUES (45, 'role2019052434916', 100.01, 1, '', 29890, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, '姓名', '440782198406282118', '15625077763', 110000, 110100, 110101, '北京,北京市,东城区', '', 0, '::1', 1558682304, 1558682305, 1, 23.00, 1);
+INSERT INTO `distribution_role_order` VALUES (1, 'role2019051430606', 0.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802148, 1557802713, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (2, 'role2019051481174', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802759, 1557802759, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (3, 'role2019051485303', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557802867, 1557802867, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (4, 'role2019051472846', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '2', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557804419, 1557804420, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (5, 'role2019051461575', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834331, 1557834332, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (6, 'role2019051457774', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834379, 1557834379, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (7, 'role2019051468307', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834474, 1557834475, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (8, 'role2019051421307', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834550, 1557834550, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (9, 'role2019051444393', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '::1', 1557834627, 1557834627, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (10, 'role2019051491793', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835116, 1557835117, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (11, 'role2019051455675', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835148, 1557835149, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (12, 'role2019051478111', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835187, 1557835188, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (13, 'role2019051400419', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835288, 1557835288, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (14, 'role2019051401822', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835316, 1557835316, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (15, 'role2019051429912', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835376, 1557835377, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (16, 'role2019051444989', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835513, 1557835513, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (17, 'role2019051433919', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835794, 1557835794, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (18, 'role2019051441768', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557835946, 1557835947, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (19, 'role2019051477511', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847478, 1557847478, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (20, 'role2019051494800', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847616, 1557847616, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (21, 'role2019051435870', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847652, 1557847652, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (22, 'role2019051407978', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847704, 1557847704, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (23, 'role2019051457450', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847731, 1557847731, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (24, 'role2019051435292', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847874, 1557847874, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (25, 'role2019051486538', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847904, 1557847905, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (26, 'role2019051418810', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557847964, 1557847965, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (27, 'role2019051427454', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848275, 1557848276, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (28, 'role2019051426139', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848333, 1557848333, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (29, 'role2019051444651', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848376, 1557848376, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (30, 'role2019051429923', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557848892, 1557848892, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (31, 'role2019051464999', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849081, 1557849081, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (32, 'role2019051402780', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849206, 1557849206, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (33, 'role2019051475496', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849295, 1557849295, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (34, 'role2019051421114', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849347, 1557849347, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (35, 'role2019051464998', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849477, 1557849478, 0, 0.00, 0);
+INSERT INTO `distribution_role_order` VALUES (36, 'role2019051495234', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849534, 1557849535, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (37, 'role2019051545344', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849698, 1557849698, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (38, 'role2019051569339', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557849985, 1557849985, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (39, 'role2019051581153', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850046, 1557850046, 1, 0.00, 1);
+INSERT INTO `distribution_role_order` VALUES (40, 'role2019051523710', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850169, 1557850169, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (41, 'role2019051550869', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557850957, 1557850957, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (42, 'role2019051510423', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1557851826, 1557851826, 1, 30.00, 1);
+INSERT INTO `distribution_role_order` VALUES (43, 'role2019052027679', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, '::1', 1558323608, 1558323609, 1, 41.00, 1);
+INSERT INTO `distribution_role_order` VALUES (44, 'role2019052009193', 200.00, 1, '', 29890, 0, 2, 'balance', '余额支付', 2, '火星UI（代理商）', '/upload/image/20190422/5cbd1a304f126.png', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '::1', 1558323657, 1558323657, 1, 42.00, 1);
+INSERT INTO `distribution_role_order` VALUES (45, 'role2019052434916', 100.01, 1, '', 29890, 0, 2, 'balance', '余额支付', 1, '火星UI(会员)', '/upload/image/20190422/5cbd1a304f126.png', 6, '姓名', '440782198406282118', '15625077763', 110000, 110100, 110101, '北京,北京市,东城区', '', 0, '::1', 1558682304, 1558682305, 1, 23.00, 1);
 COMMIT;
 
 -- ----------------------------
@@ -824,7 +825,7 @@ CREATE TABLE `main_admin_user` (
 -- Records of main_admin_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `main_admin_user` VALUES (10002, 1, 'test', '老关', '42bc491a8917d524b86f3c4dae21308a', '', 1542197433, 1542705280, 1558676562, '::1', 1558666874, '::1', 1);
+INSERT INTO `main_admin_user` VALUES (10002, 1, 'test', '老关', '42bc491a8917d524b86f3c4dae21308a', '', 1542197433, 1542705280, 1563932543, '::1', 1563867754, '::1', 1);
 INSERT INTO `main_admin_user` VALUES (10003, 2, 'testv', 'testb', '3e1222ea46ddc1bb38ff367ec60c6d28', '', 1550223837, 1550223856, 0, '', 0, '', 1);
 INSERT INTO `main_admin_user` VALUES (10004, 2, 'testx', 'xxxx', '3e1222ea46ddc1bb38ff367ec60c6d28', '', 1550223936, 1550223963, 0, '', 0, '', 1);
 COMMIT;
@@ -890,7 +891,7 @@ CREATE TABLE `main_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=567 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=612 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台登陆日志';
 
 -- ----------------------------
 -- Records of main_log_login
@@ -1405,6 +1406,24 @@ INSERT INTO `main_log_login` VALUES (506, '::1', 1558590280, 10002);
 INSERT INTO `main_log_login` VALUES (507, '::1', 1558662194, 10002);
 INSERT INTO `main_log_login` VALUES (508, '::1', 1558666874, 10002);
 INSERT INTO `main_log_login` VALUES (509, '::1', 1558676562, 10002);
+INSERT INTO `main_log_login` VALUES (594, '::1', 1562641303, 10002);
+INSERT INTO `main_log_login` VALUES (595, '::1', 1562650423, 10002);
+INSERT INTO `main_log_login` VALUES (596, '::1', 1562671719, 10002);
+INSERT INTO `main_log_login` VALUES (597, '::1', 1562922333, 10002);
+INSERT INTO `main_log_login` VALUES (598, '::1', 1562991915, 10002);
+INSERT INTO `main_log_login` VALUES (599, '::1', 1562994347, 10002);
+INSERT INTO `main_log_login` VALUES (600, '::1', 1563154455, 10002);
+INSERT INTO `main_log_login` VALUES (601, '::1', 1563177134, 10002);
+INSERT INTO `main_log_login` VALUES (602, '::1', 1563182024, 10002);
+INSERT INTO `main_log_login` VALUES (603, '::1', 1563420029, 10002);
+INSERT INTO `main_log_login` VALUES (604, '::1', 1563429473, 10002);
+INSERT INTO `main_log_login` VALUES (605, '::1', 1563441486, 10002);
+INSERT INTO `main_log_login` VALUES (606, '::1', 1563501443, 10002);
+INSERT INTO `main_log_login` VALUES (607, '::1', 1563517940, 10002);
+INSERT INTO `main_log_login` VALUES (608, '::1', 1563779088, 10002);
+INSERT INTO `main_log_login` VALUES (609, '::1', 1563787505, 10002);
+INSERT INTO `main_log_login` VALUES (610, '::1', 1563867754, 10002);
+INSERT INTO `main_log_login` VALUES (611, '::1', 1563932543, 10002);
 COMMIT;
 
 -- ----------------------------
@@ -1420,7 +1439,7 @@ CREATE TABLE `main_log_sys` (
   `module` varchar(50) DEFAULT '' COMMENT '操作模块',
   `edit_id` int(10) DEFAULT '0' COMMENT '影响ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=566 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台操作日志';
+) ENGINE=MyISAM AUTO_INCREMENT=575 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Records of main_log_sys
@@ -1970,6 +1989,9 @@ INSERT INTO `main_log_sys` VALUES (541, '::1', 1558322569, 10002, '修改分销�
 INSERT INTO `main_log_sys` VALUES (542, '::1', 1558436700, 10002, '供应商帐号状态：正常', 'supplyer/sys_admin.supplyer/info', 3);
 INSERT INTO `main_log_sys` VALUES (543, '::1', 1558668392, 10002, '修改身份商品', 'distribution/sys_admin.role_goods/info', 2);
 INSERT INTO `main_log_sys` VALUES (544, '::1', 1558676574, 10002, '修改身份商品', 'distribution/sys_admin.role_goods/info', 1);
+INSERT INTO `main_log_sys` VALUES (572, '::1', 1563433673, 10002, '清理配置数据.', 'mainadmin/backup_db/clear', 0);
+INSERT INTO `main_log_sys` VALUES (573, '::1', 1563435850, 10002, '执行不清理操作，去除提示.', 'mainadmin/backup_db/notclear', 0);
+INSERT INTO `main_log_sys` VALUES (574, '::1', 1563435920, 10002, '执行不清理操作，去除提示.', 'mainadmin/backup_db/notclear', 0);
 COMMIT;
 
 -- ----------------------------
@@ -1991,24 +2013,24 @@ CREATE TABLE `main_menu_list` (
   `sort_order` tinyint(1) DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `right` (`right`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单列表';
+) ENGINE=MyISAM AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单列表';
 
 -- ----------------------------
 -- Records of main_menu_list
 -- ----------------------------
 BEGIN;
-INSERT INTO `main_menu_list` VALUES (1, 0, 'mainadmin', '系统', '', '', '', '', '', 1, 'fa-cog', 1);
-INSERT INTO `main_menu_list` VALUES (2, 1, 'mainadmin', '首页', 'index', 'index', '', '', '', 1, 'fa-home', 0);
+INSERT INTO `main_menu_list` VALUES (1, 0, 'mainadmin', '系统', '', '', '', NULL, '', 1, 'fa-cog', 0);
+INSERT INTO `main_menu_list` VALUES (2, 1, 'mainadmin', '首页', 'index', 'index', '', '', '', 0, 'fa-home', 0);
 INSERT INTO `main_menu_list` VALUES (3, 1, 'mainadmin', '管理员', '', '', '', '', '', 1, 'fa-id-card', 0);
 INSERT INTO `main_menu_list` VALUES (5, 1, 'mainadmin', '系统设置', '', '', '', '', '', 1, 'fa-cogs', 0);
 INSERT INTO `main_menu_list` VALUES (6, 1, 'mainadmin', '日志管理', '', '', '', '', '', 1, 'fa-calendar', 0);
 INSERT INTO `main_menu_list` VALUES (7, 3, 'mainadmin', '管理员列表', 'admin_user', 'index', 'admin_user/info', 'manage', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (8, 3, 'mainadmin', '管理员角色', 'admin_role', 'index', '', 'manage', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (9, 6, 'mainadmin', '登陆日志', 'log.login', 'index', '', '', '', 1, '', 0);
-INSERT INTO `main_menu_list` VALUES (10, 0, 'shop', '商城', '', '', '', '', '', 1, 'fa-shopping-cart', 3);
-INSERT INTO `main_menu_list` VALUES (11, 0, 'distribution', '分销', '', '', '', '', '', 1, 'fa-group', 4);
+INSERT INTO `main_menu_list` VALUES (10, 0, 'shop', '商城', '', '', '', NULL, '', 1, 'fa-shopping-cart', 1);
+INSERT INTO `main_menu_list` VALUES (11, 0, 'distribution', '分销', '', '', '', '', '', 1, 'fa-group', 0);
 INSERT INTO `main_menu_list` VALUES (12, 5, 'mainadmin', '网站设置', 'setting', 'index', '', 'manage', '', 1, '', 0);
-INSERT INTO `main_menu_list` VALUES (13, 0, 'weixin', '微信', '', '', '', '', '', 1, 'fa-weixin', 2);
+INSERT INTO `main_menu_list` VALUES (13, 0, 'weixin', '微信', '', '', '', '', '', 1, 'fa-weixin', 0);
 INSERT INTO `main_menu_list` VALUES (14, 10, 'shop', '订单管理', '', '', '', '', '', 1, 'fa-shopping-cart', 0);
 INSERT INTO `main_menu_list` VALUES (15, 14, 'shop', '订单列表', 'sys_admin.order', 'index', 'sys_admin.order/info', 'view', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (16, 10, 'shop', '商品管理', '', '', '', '', '', 1, 'fa-gift', 0);
@@ -2022,7 +2044,7 @@ INSERT INTO `main_menu_list` VALUES (23, 11, 'distribution', '佣金明细', 'sy
 INSERT INTO `main_menu_list` VALUES (24, 27, 'member', '会员列表', 'sys_admin.users', 'index', 'sys_admin.users/info,sys_admin.account_log/index', 'view,edit', '', 1, 'fa-user', -2);
 INSERT INTO `main_menu_list` VALUES (26, 13, 'weixin', '菜单管理', 'sys_admin.menu', 'index', '', 'manage', '', 1, 'fa-navicon ', 0);
 INSERT INTO `main_menu_list` VALUES (25, 11, 'distribution', '统计报表', '', '', '', 'view', '', 0, 'fa-line-chart', 0);
-INSERT INTO `main_menu_list` VALUES (27, 0, 'member', '会员', '', '', '', '', '', 1, 'fa-user', 5);
+INSERT INTO `main_menu_list` VALUES (27, 0, 'member', '会员', '', '', '', '', '', 1, 'fa-user', 0);
 INSERT INTO `main_menu_list` VALUES (28, 13, 'weixin', '素材库', '', '', '', 'view,edit', '', 1, 'fa-folder-open', 0);
 INSERT INTO `main_menu_list` VALUES (29, 28, 'weixin', '文本回复', 'sys_admin.reply_text', 'index', 'sys_admin.reply_text/info', 'view,edit,del', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (30, 28, 'weixin', '图文回复', 'sys_admin.reply_news', 'index', 'sys_admin.reply_news/info', 'view,edit,del', '', 1, '', 0);
@@ -2111,6 +2133,7 @@ INSERT INTO `main_menu_list` VALUES (113, 112, 'supplyer', '结算列表', 'sys_
 INSERT INTO `main_menu_list` VALUES (114, 112, 'supplyer', '待认领', 'sys_admin.settlement', 'wait_check', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (115, 112, 'supplyer', '待打款', 'sys_admin.settlement', 'wait_pay', '', '', '', 1, '', 0);
 INSERT INTO `main_menu_list` VALUES (116, 112, 'supplyer', '已完成', 'sys_admin.settlement', 'complete', '', '', '', 1, '', 0);
+INSERT INTO `main_menu_list` VALUES (117, 10, 'shop', '首页', 'sys_admin.order', 'welcome', '', '', '', 1, 'fa-home', 127);
 COMMIT;
 
 -- ----------------------------
@@ -2133,7 +2156,7 @@ CREATE TABLE `main_payment` (
   `sort_order` tinyint(3) DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`pay_id`) USING BTREE,
   UNIQUE KEY `pay_code` (`pay_code`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='支付列表';
 
 -- ----------------------------
 -- Records of main_payment
@@ -2141,12 +2164,12 @@ CREATE TABLE `main_payment` (
 BEGIN;
 INSERT INTO `main_payment` VALUES (1, 'cod', '货到付款', 0, '', '', 1, 1, 0, 0, 'codPay.png', '由快递公司送货上门，您签收后直接将货款交付给快递员', 0);
 INSERT INTO `main_payment` VALUES (2, 'balance', '余额支付', 1, '', '', 1, 0, 0, 0, 'balancePay.png', '使用帐号余额进行支付', 0);
-INSERT INTO `main_payment` VALUES (3, 'offline', '线下打款', 2, '[{\"name\":\"qcode\",\"label\":\"上传支付二维码\",\"type\":\"file\",\"value\":\"\"}]', '%7B%22qcode%22%3A%22%5C%2Fupload%5C%2Fimage%5C%2F20190118%5C%2F5c41449985ad7.png%22%7D', 1, 0, 0, 1, 'offlinePay.png', '显示指定二维码给客户扫码支付', 0);
-INSERT INTO `main_payment` VALUES (4, 'weixin', '微支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"appsecret\",\"label\":\"公众帐号secert（仅JSAPI支付的时候需要配置)\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"smchid\",\"label\":\"服务商商户号，企业在线付款需用到\",\"type\":\"text\",\"value\":\"\"}]', '%7B%22appid%22%3A%22wx1f5fe14c158bf02b%22%2C%22mchid%22%3A%221528012361%22%2C%22key%22%3A%222298a31180493658566ecd2f401fbda5%22%2C%22appsecret%22%3A%222298a31180493658566ecd2f401fbda5%22%2C%22smchid%22%3A%221528012361%22%7D', 1, 0, 0, 1, 'weixinPay.png', '微支付，支付就这么简单。', 0);
-INSERT INTO `main_payment` VALUES (5, 'alipayMobile', '支付宝', 1, '[{\"name\":\"alipay_account\",\"label\":\"支付宝帐户\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"alipay_key\",\"label\":\"交易安全校验码\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"alipay_partner\",\"label\":\"支付APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"transfer_alipay_partner\",\"label\":\"退款APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"developer_private_key\",\"label\":\"开发者私钥\",\"type\":\"textarea\",\"value\":\"\"},{\"name\":\"alipay_public_Key\",\"label\":\"支付宝公钥\",\"type\":\"textarea\",\"value\":\"\"},{\"name\":\"alipay_pay_method\",\"label\":\" 选择接口类型\",\"type\":\"select\",\"option\":[\"使用担保交易接口\",\"使用即时到帐交易接口\"]},{\"name\":\"is_bank\",\"label\":\"是否开通网银\",\"type\":\"select\",\"option\":[\"否\",\"是\"]}]', '%7B%22alipay_account%22%3A%22348733506%40qq.com%22%2C%22alipay_key%22%3A%22iiw86kiazt55b6bttclbv3fwtx8eayng%22%2C%22alipay_partner%22%3A%222088331451302453%22%2C%22transfer_alipay_partner%22%3A%222019031463541608%22%2C%22developer_private_key%22%3A%22MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCm5BpMWdjfi81BY0AeSboGuEXt%2BhWye5%5C%2FTbfO7l5waIM25UGhUYhYXhYRKR%2Bnik3s2r77eOVROnSjOkoaw4H3HK3uTPpbXh%2Bp84Sn5WIfIDj3sBBvACODXRnck1gVwooZ56%2BtbjOf4NWGkGFQuYiYTTllhETISi0MF2qV5%5C%2F1%5C%2Fnc%5C%2FxP95CP4eznGOZAA9TIwp55Bw3bdfK60ZpW5Pze9J6XsRzZiFJMgxlWhRjcZsXdEKdndSIi%5C%2Fdz112EqNXe%2BV2mNNZAxN%2BHw8gxhpCb5xCjzglvw7i0AMRzjcRdH9As3MJASoNl22OO2%2BnVi0x0PKstWAMxEVVKMOkt%2BIaO2JhfZAgMBAAECggEAa7MmeYE94L2CfyECvskLYMzIbBQIrn7zHGmHcdccKQxkVqPaQCJwaUuDnMAd4lcUm6z8usI6cuUe8XhDrZ%2Bh68dW3yX0CDExFNfl04DbVzJBqa7ZDattFd%5C%2FmgYIQTqjDqaii4Rjklhw038XHhYtXUPwt1%2BNV8funC%5C%2F8W7Mzt4hm%5C%2FH6FjsHmDHn2R233DkCKmDCx7U5sOSVCnwaTuthtzXWGVs4xvE4MFz559QOVdu%5C%2F5ITrG6%5C%2Fh%5C%2FPgOcK439LwTVGE6GYGtEEXsva8aAXd6MCmoZpfCs9UX3dQ7EutQS%2BZijLzxWsEchg%2BJ79kBedF1QMnGzii6ZJfJ52DUQohFKWNQKBgQDdaEq0reqdLuEOdDbAAhAXaKjar45YgQcuN4Dm3FALdpntsjprHCv5UlFCkSXob%5C%2FqQYB4Ff9v00wCS8jpe5kSV%5C%2F0xC9oVDkDXoMnUHP%2BvcQ4%2BKS03KrLufUonYPlyz3u16OAT%5C%2F9gnY80rrRWAJY9Y1MhHCuKHVdSoniYARcO8ycwKBgQDA900OVEzXyQRiWu7R%5C%2F%5C%2FzjQigmRy7s%5C%2FH%2BO62jahWYnOSbOd81vrbKViCBEupOcoexEk%2BWjUU8c6HE%5C%2F17A86S9rSSav1h7CuKXCRiF98uK3IFKT15ueDwpofG90aWU%5C%2F%5C%2F7epFo4NytiythQp5VfUxEezMrAfWfoGByZmPNq5p4bdgwKBgAv3VQJK3AE%2BxV8YnNTnx6LcPzQChPj3kEHJMihIA%5C%2FN6p3sXRN0BGsdQ0Z99ZMUZODuRVk4JyQOEW%2BWVPd5fJ5nLwH1mAXHTW3Z%5C%2FM5%5C%2F%2BrmqrJBjfVQb9Ku7DcTvEsxHtnHwchvimfYXCMGxixXv8b1lUqW0SuXxl5q9YWRmYNvVNAoGAaPJW4zMv86%5C%2FtBX0FJAtAQ20InwDZ4aPV0CnyBd7FVxG7LFF11oY2eSLmwdpjS6247Pcuzmr7RvKYHSu2OvprgsLvGnSumCKKbCVuM6y0ZvpaTvPVO9pcQ8VhbIOhwHPYNEsDCTdIMbHbN4n3Ac2aXTh1Fyf9Vefvl20DXDNjovcCgYBS7plUid8em5x%5C%2FTCQ0aaRepKhl6OiXYbBJ4b8M50VpWzQmta6BBjuS5UTpfXCkVsf17JukxZp9bJU2Cjdd9OLtuG9%2BXvz%5C%2FgHLrLOBMYW3VXUDKvWAXpCVmdkttMT%5C%2F0WHIWNFffsyEkOGw20envmmlkmgt0KGXpEvfVzjuVHDO3Qg%3D%3D%22%2C%22alipay_public_Key%22%3A%22MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlCWgHPL33hfPOQzqIT9pg6qPmXP%5C%2FfGJxiPvbBPlWQs3l5teI9N%2BptAI05A0bgogQZeC1WYU2zyMI6SZ%2B8XczbTm%5C%2Ff2NB5F5R19W%5C%2F2MyL7fRJB%5C%2FAsR2SDseFkoG9PqPARcdbEJYthkj6M7mEm%5C%2FyCzLyJRcHTxPiXp2GBBx230jraDldzZ9Sp%5C%2F8OOS%2BYd6ik3MuGLgerc7ImcRvlNpE5A%5C%2FiJILKgln07VVaol%2B3JIbK4rchUOO9UHj79rUMTRdtjfOD6snDWQyjH%2BOGoGZkSz9V%2B%5C%2Fg1TYa7R1zPhxasb%2BrIdnuG6EKQi06K4iOySSeuEE9jn3N57Hh3SeUfejvh1vN1wIDAQAB%22%2C%22alipay_pay_method%22%3A%22%22%2C%22is_bank%22%3A%22%22%7D', 1, 0, 0, 1, 'AliPay.png', '中国领先的在线支付平台，致力于为互联网用户和企业提供安全、便捷、专业的在线支付服务。<a href=\"https://b.alipay.com/order/productDetail.htm?productId=2013080604609688\" class=\"red\" target=\"_blank\"><span class=\"red\">立即申请</span></a>', 0);
-INSERT INTO `main_payment` VALUES (6, 'weixinH5', 'H5微信支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"}]', '%7B%22appid%22%3A%22wx1f5fe14c158bf02b%22%2C%22mchid%22%3A%223123121111%22%2C%22key%22%3A%223123123213%22%7D', 1, 0, 0, 0, 'weixinPay.png', 'H5微支付，支付就这么简单。', 0);
-INSERT INTO `main_payment` VALUES (7, 'appWeixinPay', 'App微信支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\",\"hint\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"}]', NULL, 1, 0, 0, 0, 'weixinPay.png', 'App微信支付', 0);
-INSERT INTO `main_payment` VALUES (8, 'miniAppPay', '微信小程序支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\",\"hint\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"appsecret\",\"label\":\"小程序secret\",\"type\":\"text\",\"value\":\"\"}]', NULL, 1, 0, 0, 0, 'weixinPay.png', '小程序支付', 0);
+INSERT INTO `main_payment` VALUES (3, 'offline', '线下打款', 2, '[{\"name\":\"qcode\",\"label\":\"上传支付二维码\",\"type\":\"file\",\"value\":\"\"}]', '', 1, 0, 0, 1, 'offlinePay.png', '显示指定二维码给客户扫码支付', 0);
+INSERT INTO `main_payment` VALUES (4, 'weixin', '微支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"appsecret\",\"label\":\"公众帐号secert（仅JSAPI支付的时候需要配置)\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"smchid\",\"label\":\"服务商商户号，企业在线付款需用到\",\"type\":\"text\",\"value\":\"\"}]', '', 1, 0, 0, 1, 'weixinPay.png', '微支付，支付就这么简单。', 0);
+INSERT INTO `main_payment` VALUES (5, 'alipayMobile', '支付宝', 1, '[{\"name\":\"alipay_account\",\"label\":\"支付宝帐户\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"alipay_key\",\"label\":\"交易安全校验码\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"alipay_partner\",\"label\":\"支付APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"transfer_alipay_partner\",\"label\":\"退款APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"developer_private_key\",\"label\":\"开发者私钥\",\"type\":\"textarea\",\"value\":\"\"},{\"name\":\"alipay_public_Key\",\"label\":\"支付宝公钥\",\"type\":\"textarea\",\"value\":\"\"},{\"name\":\"alipay_pay_method\",\"label\":\" 选择接口类型\",\"type\":\"select\",\"option\":[\"使用担保交易接口\",\"使用即时到帐交易接口\"]},{\"name\":\"is_bank\",\"label\":\"是否开通网银\",\"type\":\"select\",\"option\":[\"否\",\"是\"]}]', '', 1, 0, 0, 1, 'AliPay.png', '中国领先的在线支付平台，致力于为互联网用户和企业提供安全、便捷、专业的在线支付服务。<a href=\"https://b.alipay.com/order/productDetail.htm?productId=2013080604609688\" class=\"red\" target=\"_blank\"><span class=\"red\">立即申请</span></a>', 0);
+INSERT INTO `main_payment` VALUES (6, 'weixinH5', 'H5微信支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"}]', '', 1, 0, 0, 0, 'weixinPay.png', 'H5微支付，支付就这么简单。', 0);
+INSERT INTO `main_payment` VALUES (7, 'appWeixinPay', 'App微信支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\",\"hint\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"}]', '', 1, 0, 0, 0, 'weixinPay.png', 'App微信支付', 0);
+INSERT INTO `main_payment` VALUES (8, 'miniAppPay', '微信小程序支付', 1, '[{\"name\":\"appid\",\"label\":\"绑定支付的APPID\",\"type\":\"text\",\"value\":\"\",\"hint\":\"\"},{\"name\":\"mchid\",\"label\":\"商户号\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"key\",\"label\":\"商户支付密钥\",\"type\":\"text\",\"value\":\"\"},{\"name\":\"appsecret\",\"label\":\"小程序secret\",\"type\":\"text\",\"value\":\"\"}]', '', 1, 0, 0, 0, 'weixinPay.png', '小程序支付', 0);
 COMMIT;
 
 -- ----------------------------
@@ -2169,7 +2192,7 @@ CREATE TABLE `main_payment_log` (
   `user_id` mediumint(8) DEFAULT '0' COMMENT '会员ID',
   `serial_number` varchar(100) DEFAULT '' COMMENT '支付流水号',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='支付日志表';
 
 -- ----------------------------
 -- Table structure for main_pub_dict
@@ -6547,7 +6570,7 @@ CREATE TABLE `main_settings` (
   `data` text CHARACTER SET utf8 COMMENT '内容',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `name` (`name`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='系统主设置表';
+) ENGINE=MyISAM AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='系统主设置表';
 
 -- ----------------------------
 -- Records of main_settings
@@ -6563,11 +6586,12 @@ INSERT INTO `main_settings` VALUES (7, 'keywords', '');
 INSERT INTO `main_settings` VALUES (8, 'description', '1111');
 INSERT INTO `main_settings` VALUES (9, 'bulletin_status', '1');
 INSERT INTO `main_settings` VALUES (10, 'bulletin', '');
-INSERT INTO `main_settings` VALUES (11, 'sms_fun', '{\"register\":0,\"forget_password\":1,\"bind_mobile\":0,\"shipping\":0,\"login\":0,\"admin_login\":0,\"supplier\":\"\\u963f\\u91cc\\u5927\\u9c7c\",\"function\":\"Alidayu\",\"function_val\":{\"AlidayuSmsSgin\":\"BOBO\\u6536\\u94f6\\u5b9d\",\"AlidayuAppKey\":\"LTAIZ23Jd32krZQD\",\"AlidayuAppSecret\":\"4ffsEAWzT2XXNRvtQOBoldUPCbpz0M\"}}');
+INSERT INTO `main_settings` VALUES (11, 'sms_fun', '{\"register\":0,\"forget_password\":1,\"bind_mobile\":0,\"shipping\":0,\"login\":0,\"admin_login\":0,\"supplier\":\"\\u963f\\u91cc\\u5927\\u9c7c\",\"function\":\"Alidayu\",\"function_val\":\"\"}');
+INSERT INTO `main_settings` VALUES (73, 'weixin_auto_login', '0');
 INSERT INTO `main_settings` VALUES (12, 'plc_name', '黛莱购');
 INSERT INTO `main_settings` VALUES (13, 'weixin_appid', 'wx1f5fe14c158bf02b');
 INSERT INTO `main_settings` VALUES (14, 'weixin_appsecret', '2298a31180493658566ecd2f401fbda5');
-INSERT INTO `main_settings` VALUES (15, 'weixin_type', '订阅号');
+INSERT INTO `main_settings` VALUES (15, 'weixin_type', '服务号');
 INSERT INTO `main_settings` VALUES (16, 'weixin_token', '4DS13G23');
 INSERT INTO `main_settings` VALUES (17, 'weixin_qrcode', '/upload/image/20190110/5c36e5f666550.png');
 INSERT INTO `main_settings` VALUES (18, 'DividendInfo', '{\"level_up_type\":\"1\",\"bind_type\":\"0\",\"share_by_role\":\"1\"}');
@@ -6597,15 +6621,15 @@ INSERT INTO `main_settings` VALUES (42, 'shop_goods_answer', '0');
 INSERT INTO `main_settings` VALUES (43, 'shop_shippping_view_fun', 'Kd100');
 INSERT INTO `main_settings` VALUES (44, 'share_bg', '/upload/image/20190309/5c837c7a1edd0.png');
 INSERT INTO `main_settings` VALUES (45, 'DividendShareByRole', '1');
-INSERT INTO `main_settings` VALUES (46, 'kdn_appid', '1450951');
-INSERT INTO `main_settings` VALUES (47, 'kdn_apikey', 'e3292fad-0a7b-4827-96f2-eea123b5e3da');
-INSERT INTO `main_settings` VALUES (48, 'kdn_apiurl', 'http://api.kdniao.com/api/Eorderservice');
-INSERT INTO `main_settings` VALUES (49, 'kdn_name', '张淑媛');
-INSERT INTO `main_settings` VALUES (50, 'kdn_phone', '18122200900');
-INSERT INTO `main_settings` VALUES (51, 'kdn_province', '广东省');
-INSERT INTO `main_settings` VALUES (52, 'kdn_city', '广州');
-INSERT INTO `main_settings` VALUES (53, 'kdn_area', '天河');
-INSERT INTO `main_settings` VALUES (54, 'kdn_address', '棠东');
+INSERT INTO `main_settings` VALUES (46, 'kdn_appid', '');
+INSERT INTO `main_settings` VALUES (47, 'kdn_apikey', '');
+INSERT INTO `main_settings` VALUES (48, 'kdn_apiurl', '');
+INSERT INTO `main_settings` VALUES (49, 'kdn_name', '');
+INSERT INTO `main_settings` VALUES (50, 'kdn_phone', '');
+INSERT INTO `main_settings` VALUES (51, 'kdn_province', '');
+INSERT INTO `main_settings` VALUES (52, 'kdn_city', '');
+INSERT INTO `main_settings` VALUES (53, 'kdn_area', '');
+INSERT INTO `main_settings` VALUES (54, 'kdn_address', '');
 INSERT INTO `main_settings` VALUES (55, 'register_agreement', '一、总则<br />\n1.1 本站的所有权和运营权归本公司所有。<br />\n1.2 用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与本站之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。<br />\n1.3 本协议则可由本站随时更新，用户应当及时关注并同意本站不承担通知义务。本站的通知、公告、声明或其它类似内容是本协议的一部分。<br />\n<br />\n<br />\n二、服务内容<br />\n2.1 本站的具体内容由本站根据实际情况提供。<br />\n2.2 本站仅提供相关的网络服务，除此之外与相关网络服务有关的设备(如个人电脑、手机、及其他与接入互联网或移动网有关的装置)及所需的费用(如为接入互联网而支付的电话费及上网费、为使用移动网而支付的手机费)均应由用户自行负担。<br />\n<br />\n<br />\n三、用户帐号<br />\n3.1 经本站注册系统完成注册程序并通过身份认证的用户即成为正式用户，可以获得本站规定用户所应享有的一切权限；未经认证仅享有本站规定的部分会员权限。本站有权对会员的权限设计进行变更。<br />\n3.2 用户只能按照注册要求使用真实姓名，及身份证号注册。用户有义务保证密码和帐号的安全，用户利用该密码和帐号所进行的一切活动引起的任何损失或损害，由用户自行承担全部责任，本站不承担任何责任。如用户发现帐号遭到未授权的使用或发生其他任何安全问题，应立即修改帐号密码并妥善保管，如有必要，请通知本站。因黑客行为或用户的保管疏忽导致帐号非法使用，本站不承担任何责任。<br />\n<br />\n<br />\n四、使用规则<br />\n4.1 遵守中华人民共和国相关法律法规，包括但不限于《中华人民共和国计算机信息系统安全保护条例》、《计算机软件保护条例》、《最高人民法院关于审理涉及计算机网络著作权纠纷案件适用法律若干问题的解释(法释[2004]1号)》、《全国人大常委会关于维护互联网安全的决定》、《互联网电子公告服务管理规定》、《互联网新闻信息服务管理规定》、《互联网著作权行政保护办法》和《信息网络传播权保护条例》等有关计算机互联网规定和知识产权的法律和法规、实施办法。<br />\n4.2 用户对其自行发表、上传或传送的内容负全部责任，所有用户不得在本站任何页面发布、转载、传送含有下列内容之一的信息，否则本站有权自行处理并不通知用户：<br />\n(1)违反宪法确定的基本原则的；<br />\n(2)危害国家安全，泄漏国家机密，颠覆国家政权，破坏国家统一的；<br />\n(3)损害国家荣誉和利益的；<br />\n(4)煽动民族仇恨、民族歧视，破坏民族团结的；<br />\n(5)破坏国家宗教政策，宣扬邪教和封建迷信的；<br />\n(6)散布谣言，扰乱社会秩序，破坏社会稳定的；<br />\n(7)散布淫秽、色情、赌博、暴力、恐怖或者教唆犯罪的；<br />\n(8)侮辱或者诽谤他人，侵害他人合法权益的；<br />\n(9)煽动非法集会、结社、游行、示威、聚众扰乱社会秩序的；<br />\n(10)以非法民间组织名义活动的；<br />\n(11)含有法律、行政法规禁止的其他内容的。 4.3 用户承诺对其发表或者上传于本站的所有信息(即属于《中华人民共和国著作权法》规定的作品，包括但不限于文字、图片、音乐、电影、表演和录音录像制品和电脑程序等)均享有完整的知识产权，或者已经得到相关权利人的合法授权；如用户违反本条规定造成本站被第三人索赔的，用户应全额补偿本站一切费用(包括但不限于各种赔偿费、诉讼代理费及为此支出的其它合理费用)；<br />\n4.4 当第三方认为用户发表或者上传于本站的信息侵犯其权利，并根据《信息网络传播权保护条例》或者相关法律规定向本站发送权利通知书时，用户同意本站可以自行判断决定删除涉嫌侵权信息，除非用户提交书面证据材料排除侵权的可能性，本站将不会自动恢复上述删除的信息； (1)不得为任何非法目的而使用网络服务系统；<br />\n(2)遵守所有与网络服务有关的网络协议、规定和程序； (3)不得利用本站进行任何可能对互联网的正常运转造成不利影响的行为；<br />\n(4)不得利用本站进行任何不利于本站的行为。 4.5 如用户在使用网络服务时违反上述任何规定，本站有权要求用户改正或直接采取一切必要的措施(包括但不限于删除用户张贴的内容、暂停或终止用户使用网络服务的权利)以减轻用户不当行为而造成的影响。<br />\n<br />\n<br />\n五、隐私保护<br />\n5.1 本站不对外公开或向第三方提供单个用户的注册资料及用户在使用网络服务时存储在本站的非公开内容，但下列情况除外： (1)事先获得用户的明确授权；<br />\n(2)根据有关的法律法规要求；<br />\n(3)按照相关政府主管部门的要求；<br />\n(4)为维护社会公众的利益。 5.2 本站可能会与第三方合作向用户提供相关的网络服务，在此情况下，如该第三方同意承担与本站同等的保护用户隐私的责任，则本站有权将用户的注册资料等提供给该第三方。<br />\n5.3 在不透露单个用户隐私资料的前提下，本站有权对整个用户数据库进行分析并对用户数据库进行商业上的利用。<br />\n<br />\n<br />\n六、版权声明<br />\n6.1 本站的文字、图片、音频、视频等版权均归永兴元科技有限公司享有或与作者共同享有，未经本站许可，不得任意转载。<br />\n6.2 本站特有的标识、版面设计、编排方式等版权均属永兴元科技有限公司享有，未经本站许可，不得任意复制或转载。<br />\n6.3 使用本站的任何内容均应注明“来源于本站”及署上作者姓名，按法律规定需要支付稿酬的，应当通知本站及作者及支付稿酬，并独立承担一切法律责任。<br />\n6.4 本站享有所有作品用于其它用途的优先权，包括但不限于网站、电子杂志、平面出版等，但在使用前会通知作者，并按同行业的标准支付稿酬。<br />\n6.5 本站所有内容仅代表作者自己的立场和观点，与本站无关，由作者本人承担一切法律责任。<br />\n6.6 恶意转载本站内容的，本站保留将其诉诸法律的权利。<br />\n<br />\n<br />\n七、责任声明<br />\n7.1 用户明确同意其使用本站网络服务所存在的风险及一切后果将完全由用户本人承担，本站对此不承担任何责任。<br />\n7.2 本站无法保证网络服务一定能满足用户的要求，也不保证网络服务的及时性、安全性、准确性。<br />\n7.3 本站不保证为方便用户而设置的外部链接的准确性和完整性，同时，对于该等外部链接指向的不由本站实际控制的任何网页上的内容，本站不承担任何责任。<br />\n7.4 对于因不可抗力或本站不能控制的原因造成的网络服务中断或其它缺陷，本站不承担任何责任，但将尽力减少因此而给用户造成的损失和影响。<br />\n7.5 对于站向用户提供的下列产品或者服务的质量缺陷本身及其引发的任何损失，本站无需承担任何责任： (1)本站向用户免费提供的各项网络服务；<br />\n(2)本站向用户赠送的任何产品或者服务。 7.6 本站有权于任何时间暂时或永久修改或终止本服务(或其任何部分)，而无论其通知与否，本站对用户和任何第三人均无需承担任何责任。<br />\n<br />\n<br />\n八、附则<br />\n8.1 本协议的订立、执行和解释及争议的解决均应适用中华人民共和国法律。<br />\n8.2 如本协议中的任何条款无论因何种原因完全或部分无效或不具有执行力，本协议的其余条款仍应有效并且有约束力。<br />\n8.3 本协议解释权及修订权归深圳永兴元科技有限公司所有。');
 INSERT INTO `main_settings` VALUES (56, 'about_us_status', '1');
 INSERT INTO `main_settings` VALUES (57, 'about_us', '1');
@@ -6615,6 +6639,11 @@ INSERT INTO `main_settings` VALUES (60, 'role_directions_status', '0');
 INSERT INTO `main_settings` VALUES (61, 'role_directions', '312313123123123<br />');
 INSERT INTO `main_settings` VALUES (62, 'shop_used_bonus', '1');
 INSERT INTO `main_settings` VALUES (63, 'role_goods_directions', '123213');
+INSERT INTO `main_settings` VALUES (68, 'return_consignee', '');
+INSERT INTO `main_settings` VALUES (69, 'return_mobile', '');
+INSERT INTO `main_settings` VALUES (70, 'return_address', '');
+INSERT INTO `main_settings` VALUES (71, 'return_desc', '');
+INSERT INTO `main_settings` VALUES (72, 'kdn_postcode', '');
 COMMIT;
 
 -- ----------------------------
@@ -6629,7 +6658,7 @@ CREATE TABLE `main_sms_tpl` (
   `send_scene` varchar(20) DEFAULT '' COMMENT '短信发送场景',
   `add_time` int(11) DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`tpl_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='短信模板';
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='短信模板';
 
 -- ----------------------------
 -- Records of main_sms_tpl
@@ -6642,6 +6671,7 @@ INSERT INTO `main_sms_tpl` VALUES (4, '发货短信', '', '尊敬的${userName}�
 INSERT INTO `main_sms_tpl` VALUES (5, '后台验证短信', '', '尊敬的用户，您的验证码为${code}，用于登陆系统后台， 请勿告诉他人.', 'admin_login', 1524622828);
 INSERT INTO `main_sms_tpl` VALUES (6, '公用验证短信', 'SMS_152541901', '尊敬的用户，您的验证码为${code}, 请勿告诉他人.', 'public', 1524622828);
 INSERT INTO `main_sms_tpl` VALUES (7, '绑定手机短信', 'SMS_152541901', '尊敬的用户，您的验证码为${code}, 请勿告诉他人.', 'bind_mobile', 1524622828);
+INSERT INTO `main_sms_tpl` VALUES (8, '找回支付密码短信', 'SMS_152541901', '验证码${code}，用于密码找回，如非本人操作，请及时检查账户安全', 'edit_pay_pwd', 1524622828);
 COMMIT;
 
 -- ----------------------------
@@ -6656,7 +6686,7 @@ CREATE TABLE `second_goods` (
   `last_number` smallint(5) DEFAULT '0' COMMENT '剩余库顾',
   `goods_price` decimal(10,2) DEFAULT '0.00' COMMENT '秒杀价',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='积分商品表';
 
 -- ----------------------------
 -- Records of second_goods
@@ -6885,13 +6915,16 @@ CREATE TABLE `shop_cart` (
   `is_buy_now` tinyint(1) DEFAULT '0' COMMENT '是否直接购买',
   PRIMARY KEY (`rec_id`) USING BTREE,
   KEY `session_id` (`session_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=173 DEFAULT CHARSET=utf8 COMMENT='购物车表';
 
 -- ----------------------------
 -- Records of shop_cart
 -- ----------------------------
 BEGIN;
 INSERT INTO `shop_cart` VALUES (41, 29895, 'cgne8ausbrelksf9lubpp7odm3', 0, 6, 1, 0, 0, 101, 0, '', '', 'xx1', '爆款产品', 39.00, 39.00, 39.00, NULL, 0.00, 0.00, 0.00, 1, '/upload/gimg/20190124/5c4988b1e20bb_thumb.jpg', NULL, 0, 1553220398, 1, 0, 0);
+INSERT INTO `shop_cart` VALUES (170, 0, 'dc5a41d4b0f5c8585e4ce93174011176', 0, 7, 0, 0, 0, 106, 4, '颜色:红色,尺寸:M码', '2:5', '11', '31231', 11.00, 321313.00, 11.00, 11.00, 0.00, 321302.00, 0.00, 1, '/_thumb./upload/gimg/20190329/5c9dbf771851c_thumb.jpg', 321313, 0, 1563796130, 1, 0, 0);
+INSERT INTO `shop_cart` VALUES (171, 0, 'dc5a41d4b0f5c8585e4ce93174011176', 0, 7, 0, 0, 0, 106, 5, '颜色:蓝色,尺寸:M码', '3:5', '1111', '31231', 11.00, 321313.00, 11.00, 11.00, 0.00, 321302.00, 0.00, 1, '/_thumb./upload/gimg/20190329/5c9dbf771851c_thumb.jpg', 321313, 0, 1563795753, 1, 0, 0);
+INSERT INTO `shop_cart` VALUES (172, 0, 'dc5a41d4b0f5c8585e4ce93174011176', 0, 7, 0, 0, 0, 106, 6, '颜色:红色,尺寸:L码', '2:6', '23123', '31231', 11.00, 321313.00, 11.00, 11.00, 2.00, 321302.00, 0.00, 1, '/_thumb./upload/gimg/20190329/5c9dbf771851c_thumb.jpg', 321313, 0, 1563796126, 1, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -6974,25 +7007,25 @@ CREATE TABLE `shop_goods` (
 -- Records of shop_goods
 -- ----------------------------
 BEGIN;
-INSERT INTO `shop_goods` VALUES (101, 0, 6, 0, 0, 2, 0, 1, 0, '爆款产品', '爆款产品', 'xx1', '', 982, 0.00, 0, 39.00, 39.00, 0.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '1', '', '/upload/gimg/20190508/5cd23dfcb0746_thumb.png', '/upload/gimg/20190508/5cd23dfcb0746.png', 18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687345, 0, '', 1, 30.01, 1, 1555998600, 1556617800, '', '', 0, 10, 1);
-INSERT INTO `shop_goods` VALUES (102, 0, 6, 0, 0, 2, 0, 1, 0, '会员产品', '会员产品', 'xx2', '', 970, 0.00, 0, 399.00, 399.00, 0.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '11<img src=\"/upload/image/20190316/5c8cb50ae5d5c.jpg\" alt=\"\" /><iframe src=\"http://player.youku.com/embed/XNDA3OTMzMTE4MA==\" \'allowfullscreen\'=\"\" width=\"510\" height=\"498\" frameborder=\"0\">\n	</iframe>', '', '/upload/gimg/20190316/5c8cb513953f1_thumb.jpg', '/upload/gimg/20190316/5c8cb513953f1.jpg', 30, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687345, -1, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 11);
-INSERT INTO `shop_goods` VALUES (106, 0, 7, 0, 0, 2, 0, 0, 0, '31231', '3213213', '', '', 0, 0.00, 1, 11.00, 321313.00, 0.00, 11.00, 11.00, NULL, NULL, 0, 0, 1, '', '', '321313', '', '/_thumb./upload/gimg/20190329/5c9dbf771851c_thumb.jpg', '/./upload/gimg/20190329/5c9dbf771851c.jpg', 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687345, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_goods` VALUES (101, 0, 6, 0, 0, 2, 0, 1, 0, '爆款产品', '爆款产品', 'xx1', '', 982, 0.00, 0, 39.00, 39.00, 0.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '1', '', '/upload/gimg/20190508/5cd23dfcb0746_thumb.png', '/upload/gimg/20190508/5cd23dfcb0746.png', 18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1563865727, 0, '', 1, 30.01, 1, 1555998600, 1556617800, '', '', 0, 10, 1);
+INSERT INTO `shop_goods` VALUES (102, 0, 6, 0, 0, 2, 0, 1, 0, '会员产品', '会员产品', 'xx2', '', 970, 0.00, 0, 399.00, 399.00, 0.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '11<img src=\"/upload/image/20190316/5c8cb50ae5d5c.jpg\" alt=\"\" /><iframe src=\"http://player.youku.com/embed/XNDA3OTMzMTE4MA==\" \'allowfullscreen\'=\"\" width=\"510\" height=\"498\" frameborder=\"0\">\n	</iframe>', '', '/upload/gimg/20190316/5c8cb513953f1_thumb.jpg', '/upload/gimg/20190316/5c8cb513953f1.jpg', 30, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1563865727, -1, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 11);
+INSERT INTO `shop_goods` VALUES (106, 0, 7, 0, 0, 2, 0, 0, 0, '31231', '3213213', '', '', 0, 0.00, 1, 11.00, 321313.00, 0.00, 11.00, 11.00, NULL, NULL, 0, 0, 1, '', '', '321313', '', '/_thumb./upload/gimg/20190329/5c9dbf771851c_thumb.jpg', '/./upload/gimg/20190329/5c9dbf771851c.jpg', 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1563865727, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (107, 0, 6, 0, 0, 2, 0, 0, 0, '31231', '3213213', '111', '', 111, 0.00, 0, 1.00, 1.00, 3213.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '31231313123<br />', '', '/upload/supplyer/4/gimg20190408/5caaef1dae17a_thumb.jpg', '/upload/supplyer/4/gimg20190408/5caaef1dae17a.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1557731662, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_goods` VALUES (108, 0, 6, 0, 0, 2, 0, 0, 0, '31231工工工工aa', '3213213', '111xxx12', '', 10, 0.00, 0, 330.00, 101.00, 0.00, 101.00, 116.00, NULL, NULL, 0, 0, 1, '', '', '3123123123123', '', '/upload/gimg/20190422/5cbd627b1d195_thumb.jpg', '/upload/gimg/20190422/5cbd627b1d195.jpg', 25, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687345, -1, '', 1, 0.00, 1, 1555995900, 1556262900, '', '', 0, 0, 0);
+INSERT INTO `shop_goods` VALUES (108, 0, 2, 0, 0, 2, 0, 0, 0, '31231工工工工aa', '3213213', '111xxx12', '', 10, 0.00, 0, 330.00, 101.00, 0.00, 101.00, 116.00, NULL, NULL, 0, 0, 1, '', '', '3123123123123', '', '/upload/gimg/20190422/5cbd627b1d195_thumb.jpg', '/upload/gimg/20190422/5cbd627b1d195.jpg', 25, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1563865727, -1, '', 1, 0.00, 1, 1555995900, 1556262900, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (109, 0, 6, 0, 0, 2, 0, 0, 0, '312311', '3213213', '111xxx', '', 111, 0.00, 0, 99.00, 1.06, 3213.00, 0.00, 0.00, NULL, NULL, 0, 0, 1, '', '', '31231313123<br />', '', '/upload/supplyer/4/gimg20190408/5caaf32c95dcf_thumb.jpg', '/upload/supplyer/4/gimg20190408/5caaf32c95dcf.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1557892828, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (110, 0, 6, 0, 4, 2, 0, 0, 0, '31231', '3213213', '111xxx11', '', 111, 0.00, 0, 3501.01, 0.00, 3213.00, 0.00, 10.00, NULL, NULL, 0, 0, 1, '', '', '312313131233123<br />', '', '/upload/supplyer/4/gimg20190408/5caaf47dc187a_thumb.jpg', '/upload/supplyer/4/gimg20190408/5caaf47dc187a.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13, 0, 0, 0, 1557731664, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (111, 0, 7, 0, 4, 3, 0, 0, 0, '31231', '3213213', '', '', 0, 0.00, 1, 211.00, 0.00, 111.00, NULL, 111.00, 111.00, 111.00, 0, 0, 0, '', '', '1231313123', '', '/upload/supplyer/4/gimg20190509/5cd3bed099be2_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3bed099be2.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1557888605, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (112, 0, 7, 0, 4, 3, 0, 0, 0, '爆款产品22', '321321322', '111xxx1', '', 0, 1.00, 1, 1.00, 0.00, 111.00, 111.00, 111.00, 111.00, 121.00, 0, 0, 0, '', '', '312313123', '', '/upload/supplyer/4/gimg20190509/5cd3bf1397e8e_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3bf1397e8e.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1557384721, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (113, 0, 5, 0, 4, 3, 0, 0, 0, '爆款产品222', '312313', '', '', 11, 0.00, 1, 0.00, 0.00, 0.00, 0.00, 12.00, 12.00, 12.00, 0, 0, 0, '', '', '31231313123123', '', '/upload/supplyer/4/gimg20190509/5cd3c684a60e9_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3c684a60e9.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1557892830, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_goods` VALUES (114, 0, 7, 0, 4, 2, 0, 0, 0, '爆款产品222xx', '3213213', '111xxx1xx', '', 111, 0.00, 0, 3501.00, 1220.00, 0.00, 0.00, 1111.00, 0.00, 0.00, 0, 0, 1, '', '', '21321312312312', '', '/upload/supplyer/4/gimg20190509/5cd3d3e901613_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3d3e901613.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687345, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_goods` VALUES (115, 0, 5, 0, 4, 3, 0, 0, 0, '31231xxx', '爆款产品', '', '', 0, 0.00, 1, NULL, 210.00, 210.00, 210.00, 120.00, 120.00, 120.00, 0, 0, 1, '', '', '312313123', '', '/upload/supplyer/4/gimg20190509/5cd3d43140608_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3d43140608.jpg', 18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1558687346, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_goods` VALUES (114, 0, 7, 0, 4, 2, 0, 0, 0, '爆款产品222xx', '3213213', '111xxx1xx', '', 111, 0.00, 0, 3501.00, 1220.00, 0.00, 0.00, 1111.00, 0.00, 0.00, 0, 0, 1, '', '', '21321312312312', '', '/upload/supplyer/4/gimg20190509/5cd3d3e901613_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3d3e901613.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1563865727, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_goods` VALUES (115, 0, 5, 0, 4, 3, 0, 0, 0, '31231xxx', '爆款产品', '', '', 0, 0.00, 1, NULL, 210.00, 210.00, 210.00, 120.00, 120.00, 120.00, 0, 0, 1, '', '', '312313123', '', '/upload/supplyer/4/gimg20190509/5cd3d43140608_thumb.jpg', '/upload/supplyer/4/gimg20190509/5cd3d43140608.jpg', 18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1563865727, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (116, 0, 7, 0, 4, 2, 0, 0, 0, '312331233', '312331233', '111s2', '', 111, 0.00, 0, NULL, 0.00, 0.00, 0.00, 3123313.00, 0.00, 0.00, 0, 0, 0, '', '', '31233213213', '', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c_thumb.jpg', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (117, 0, 7, 0, 4, 2, 0, 0, 0, '31231xxx', '3213213', '3123313', '', 111, 0.00, 0, NULL, 0.00, 0.00, 0.00, 133.00, 0.00, 0.00, 0, 0, 0, '', '', '2131233', '', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c_thumb.jpg', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (118, 0, 7, 0, 4, 2, 0, 0, 0, '3123123', '3123123313', '3123dd', '', 312, 0.00, 0, NULL, 0.00, 0.00, 0.00, 1111.00, 0.00, 0.00, 0, 0, 0, '', '', '31233123', '', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c_thumb.jpg', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (119, 0, 7, 0, 4, 2, 0, 0, 0, '3123123', '3123123313', '3123dd1', '', 312, 0.00, 0, NULL, 0.00, 0.00, 0.00, 1111.00, 0.00, 0.00, 0, 0, 0, '', '', '31233123', '', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c_thumb.jpg', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (120, 0, 7, 0, 4, 2, 0, 0, 0, '31233213', '爆款产品11', '3123321', '', 111, 0.00, 0, NULL, 0.00, 0.00, 0.00, 1312.00, 0.00, 0.00, 0, 0, 0, '', '', '312331233', '', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c_thumb.jpg', '/upload/supplyer/4/gimg20190520/5ce25ab3b6c5c.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 INSERT INTO `shop_goods` VALUES (121, 0, 7, 0, 4, 3, 0, 0, 0, '312331233', '31233123', '3123', '', 0, 0.00, 1, NULL, 110.00, 110.00, 121.00, 11.00, 11.00, 11.00, 0, 0, 1, '', '', '312331233123', '', '/upload/supplyer/4/gimg20190521/5ce3b92ab3e59_thumb.jpg', '/upload/supplyer/4/gimg20190521/5ce3b92ab3e59.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1558429512, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_goods` VALUES (122, 0, 5, 0, 4, 3, 0, 0, 0, '31231xxxx', '3213213', '', '', 0, 0.00, 1, NULL, 0.00, 0.00, 10.00, 1.00, 1.00, 1.00, 0, 0, 1, '', '', '3123312331233', '', '/upload/supplyer/4/gimg20190521/5ce3bb9a97650_thumb.jpg', '/upload/supplyer/4/gimg20190521/5ce3bb9a97650.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1558429760, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_goods` VALUES (122, 0, 5, 0, 4, 3, 0, 0, 0, '31231xxxx', '3213213', '', '', 0, 0.00, 1, NULL, 0.00, 0.00, 10.00, 1.00, 1.00, 1.00, 0, 0, 1, '', '', '3123312331233', '', '/upload/supplyer/4/gimg20190521/5ce3bb9a97650_thumb.jpg', '/upload/supplyer/4/gimg20190521/5ce3bb9a97650.jpg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1563521493, 0, '', 0, 0.00, 1, 0, 0, '', '', 0, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -7012,7 +7045,7 @@ CREATE TABLE `shop_goods_attribute` (
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`attr_id`) USING BTREE,
   KEY `cat_id` (`model_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商品类型属性表';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商品类型属性表';
 
 -- ----------------------------
 -- Records of shop_goods_attribute
@@ -7092,7 +7125,7 @@ CREATE TABLE `shop_goods_category` (
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='商品分类表';
 
 -- ----------------------------
 -- Records of shop_goods_category
@@ -7269,7 +7302,7 @@ CREATE TABLE `shop_goods_log` (
   `log_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '记录时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8 COMMENT='商品操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8 COMMENT='商品操作日志';
 
 -- ----------------------------
 -- Records of shop_goods_log
@@ -7424,6 +7457,9 @@ INSERT INTO `shop_goods_log` VALUES (146, 122, 'admin', 10002, '未上架', '修
 INSERT INTO `shop_goods_log` VALUES (147, 108, 'admin', 10002, '上架中', '修改商品：31231工工工工aa', 1558429868);
 INSERT INTO `shop_goods_log` VALUES (148, 115, 'admin', 10002, '上架中', '修改商品：31231xxx', 1558687274);
 INSERT INTO `shop_goods_log` VALUES (149, 114, 'admin', 10002, '上架中', '修改商品：爆款产品222xx', 1558687316);
+INSERT INTO `shop_goods_log` VALUES (150, 108, 'admin', 10002, '上架中', '快速修改商品', 1563182536);
+INSERT INTO `shop_goods_log` VALUES (151, 108, 'admin', 10002, '上架中', '快速修改商品', 1563182537);
+INSERT INTO `shop_goods_log` VALUES (152, 108, 'admin', 10002, '上架中', '修改商品：31231工工工工aa', 1563521790);
 COMMIT;
 
 -- ----------------------------
@@ -7455,12 +7491,12 @@ DROP TABLE IF EXISTS `shop_goods_prices`;
 CREATE TABLE `shop_goods_prices` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品ID',
-  `type` set('level','role') DEFAULT NULL COMMENT '类型',
+  `type` set('level','role') CHARACTER SET utf8 DEFAULT NULL COMMENT '类型',
   `by_id` tinyint(3) NOT NULL DEFAULT '0' COMMENT '会员等级/身份ID',
   `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `goods_id` (`goods_id`,`by_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员等级或身份价格表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员等级或身份价格表';
 
 -- ----------------------------
 -- Table structure for shop_goods_sku
@@ -7472,11 +7508,11 @@ CREATE TABLE `shop_goods_sku` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   `goods_id` int(10) NOT NULL DEFAULT '0' COMMENT '商品ID',
   `sku_model` mediumint(8) DEFAULT '0' COMMENT '模型ID',
-  `sku` varchar(100) DEFAULT '' COMMENT '规格',
-  `sku_val` varchar(100) DEFAULT '' COMMENT '规格值',
-  `sku_name` varchar(150) DEFAULT '' COMMENT '规格名',
-  `goods_sn` varchar(60) DEFAULT '' COMMENT '商品货号',
-  `bar_code` varchar(60) DEFAULT '' COMMENT '商品条形码',
+  `sku` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '规格',
+  `sku_val` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '规格值',
+  `sku_name` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '规格名',
+  `goods_sn` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '商品货号',
+  `bar_code` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '商品条形码',
   `goods_number` smallint(5) DEFAULT '0' COMMENT '商品库存',
   `goods_weight` decimal(10,2) DEFAULT '0.00' COMMENT '商品重量',
   `market_price` decimal(10,2) DEFAULT '0.00' COMMENT '市场金额',
@@ -7487,7 +7523,7 @@ CREATE TABLE `shop_goods_sku` (
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`sku_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COMMENT='商品sku表';
 
 -- ----------------------------
 -- Records of shop_goods_sku
@@ -7521,10 +7557,10 @@ CREATE TABLE `shop_goods_sku_custom` (
   `id` bigint(15) NOT NULL AUTO_INCREMENT,
   `model_id` mediumint(8) DEFAULT '0' COMMENT '所属模型',
   `speid` bigint(15) DEFAULT '0' COMMENT '关联属性',
-  `val` varchar(20) DEFAULT '' COMMENT '值',
+  `val` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '值',
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='sku类目子项表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='sku类目子项表';
 
 -- ----------------------------
 -- Records of shop_goods_sku_custom
@@ -7549,7 +7585,7 @@ CREATE TABLE `shop_goods_volume_price` (
   `goods_id` int(10) DEFAULT NULL COMMENT '商品ID',
   `number` smallint(5) DEFAULT '0' COMMENT '购买数量',
   `price` decimal(10,2) DEFAULT '0.00' COMMENT '出售价格,根据商品阶梯定义，是折扣或固定售价'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='价格阶梯表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='价格阶梯表';
 
 -- ----------------------------
 -- Table structure for shop_nav_menu
@@ -7557,17 +7593,17 @@ CREATE TABLE `shop_goods_volume_price` (
 DROP TABLE IF EXISTS `shop_nav_menu`;
 CREATE TABLE `shop_nav_menu` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `imgurl` varchar(150) DEFAULT '' COMMENT '图标地址',
-  `title` varchar(30) DEFAULT '' COMMENT '标题',
-  `bind_type` varchar(20) DEFAULT NULL COMMENT '绑定链接类型',
+  `imgurl` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '图标地址',
+  `title` varchar(30) CHARACTER SET utf8 DEFAULT '' COMMENT '标题',
+  `bind_type` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '绑定链接类型',
   `ext_id` mediumint(8) DEFAULT NULL COMMENT '额外ID,关联文章、商品ID',
-  `data` varchar(150) DEFAULT '' COMMENT '绑定URL',
+  `data` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '绑定URL',
   `status` tinyint(1) DEFAULT '1' COMMENT '是否启用（1是 2否）',
   `sort_order` smallint(5) DEFAULT '0' COMMENT '排序',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商城首页导航菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商城首页导航菜单';
 
 -- ----------------------------
 -- Records of shop_nav_menu
@@ -7594,11 +7630,11 @@ CREATE TABLE `shop_order_goods` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品ID',
   `sku_id` int(11) DEFAULT '0' COMMENT 'skuID',
-  `sku_val` varchar(100) DEFAULT '' COMMENT '规格值',
-  `sku_name` varchar(100) DEFAULT '' COMMENT '规格名称',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
-  `pic` varchar(255) DEFAULT '' COMMENT '商品图片',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品货号',
+  `sku_val` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '规格值',
+  `sku_name` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '规格名称',
+  `goods_name` varchar(120) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '商品名称',
+  `pic` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '商品图片',
+  `goods_sn` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '商品货号',
   `goods_number` smallint(5) unsigned NOT NULL DEFAULT '1' COMMENT '订购数量',
   `market_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '市场售价',
   `shop_price` decimal(10,2) DEFAULT '0.00' COMMENT '商城售价',
@@ -7619,7 +7655,7 @@ CREATE TABLE `shop_order_goods` (
   KEY `goods_id` (`goods_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `is_evalueate` (`is_evaluate`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COMMENT='订单商品表';
 
 -- ----------------------------
 -- Records of shop_order_goods
@@ -7767,7 +7803,7 @@ CREATE TABLE `shop_order_info` (
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   `is_split` tinyint(1) DEFAULT '0' COMMENT '是否拆单，0不需要折，1待拆单，2已拆单',
   `pid` bigint(10) DEFAULT '0' COMMENT '主订单ID/拼团ID',
-  `order_sn` varchar(20) DEFAULT '' COMMENT '订单编号',
+  `order_sn` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '订单编号',
   `order_type` tinyint(1) DEFAULT '0' COMMENT '类型:0普通订单,1积分兑换订单,2拼团订单,3秒杀订单,9售后订单',
   `is_initiate` tinyint(1) DEFAULT '0' COMMENT '是否拼团发起订单',
   `is_success` tinyint(1) DEFAULT '0' COMMENT '拼团是否成功',
@@ -7777,24 +7813,24 @@ CREATE TABLE `shop_order_info` (
   `order_status` tinyint(1) DEFAULT '0' COMMENT '订单状态',
   `shipping_status` tinyint(1) DEFAULT '0' COMMENT '物流状态',
   `pay_status` tinyint(1) DEFAULT '0' COMMENT '支付状态',
-  `transaction_id` varchar(150) DEFAULT '' COMMENT '第三方平台交易流水号',
-  `consignee` varchar(60) DEFAULT '' COMMENT '收货人',
+  `transaction_id` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '第三方平台交易流水号',
+  `consignee` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '收货人',
   `province` mediumint(8) DEFAULT '0' COMMENT '省',
   `city` mediumint(8) DEFAULT '0' COMMENT '市',
   `district` mediumint(8) DEFAULT '0' COMMENT '区',
-  `merger_name` varchar(50) DEFAULT '' COMMENT '省市区',
-  `address` varchar(255) DEFAULT '' COMMENT '地址',
-  `zipcode` varchar(15) DEFAULT '' COMMENT '邮编',
-  `tel` varchar(60) DEFAULT '' COMMENT '其它号码',
-  `mobile` varchar(60) DEFAULT '' COMMENT '手机号码',
-  `best_time` varchar(120) DEFAULT '' COMMENT '送货时间',
-  `buyer_message` varchar(255) DEFAULT '' COMMENT '买家留言',
-  `shipping_type` varchar(20) DEFAULT '' COMMENT '用户选择快递',
+  `merger_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '省市区',
+  `address` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '地址',
+  `zipcode` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '邮编',
+  `tel` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '其它号码',
+  `mobile` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '手机号码',
+  `best_time` varchar(120) CHARACTER SET utf8 DEFAULT '' COMMENT '送货时间',
+  `buyer_message` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '买家留言',
+  `shipping_type` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '用户选择快递',
   `shipping_id` tinyint(3) DEFAULT '0' COMMENT '快递ID',
-  `shipping_name` varchar(120) DEFAULT '' COMMENT '快递名称',
+  `shipping_name` varchar(120) CHARACTER SET utf8 DEFAULT '' COMMENT '快递名称',
   `pay_id` tinyint(3) DEFAULT '0' COMMENT '支付ID',
-  `pay_code` varchar(20) DEFAULT '' COMMENT '支付Code',
-  `pay_name` varchar(120) DEFAULT '' COMMENT '支付名称',
+  `pay_code` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '支付Code',
+  `pay_name` varchar(120) CHARACTER SET utf8 DEFAULT '' COMMENT '支付名称',
   `is_pay` tinyint(1) DEFAULT '0' COMMENT '是否需要支付',
   `goods_amount` decimal(10,2) DEFAULT '0.00' COMMENT '商品总金额',
   `use_integral` int(10) DEFAULT '0' COMMENT '使用积分',
@@ -7811,26 +7847,27 @@ CREATE TABLE `shop_order_info` (
   `sign_time` int(10) DEFAULT '0' COMMENT '签收时间',
   `returned_time` int(10) DEFAULT '0' COMMENT '退货时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
-  `invoice_no` varchar(100) DEFAULT '' COMMENT '发货单号',
+  `invoice_no` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '发货单号',
   `discount` decimal(10,2) DEFAULT '0.00' COMMENT '折扣金额',
   `diy_discount` decimal(10,2) DEFAULT '0.00' COMMENT '后台设置折扣金额',
   `buy_again_discount` decimal(10,2) DEFAULT '0.00' COMMENT '复购折扣',
   `dividend_amount` decimal(10,2) DEFAULT '0.00' COMMENT '分成总金额',
+  `back_dividend_amount` decimal(10,2) DEFAULT '0.00' COMMENT '下单立返金额（佣金形式返回）',
   `give_integral` int(10) DEFAULT '0' COMMENT '获赠积分总数',
-  `buy_goods_sn` varchar(255) DEFAULT '' COMMENT '购买商品SN',
-  `buy_goods_id` varchar(255) DEFAULT NULL COMMENT '购买商品ID',
+  `buy_goods_sn` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '购买商品SN',
+  `buy_goods_id` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '购买商品ID',
   `is_dividend` tinyint(1) DEFAULT '0' COMMENT '是否执行分销处理',
   `is_pay_eval` tinyint(1) DEFAULT '0' COMMENT '是否执行支付成功后的相关处理，0不处理，1待处理，2已处理',
-  `invoice_title` varchar(50) DEFAULT '' COMMENT '发票抬头',
-  `ipadderss` varchar(20) DEFAULT '' COMMENT '下单IP',
+  `invoice_title` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '发票抬头',
+  `ipadderss` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '下单IP',
   `is_phone` tinyint(1) DEFAULT '0' COMMENT '是否手机下单',
   `is_settlement` tinyint(1) DEFAULT '0' COMMENT '是否已结算',
   `settlement_time` int(10) DEFAULT '0' COMMENT '结算时间，签收后计算',
   `settle_price` decimal(10,2) DEFAULT '0.00' COMMENT '门店或供应商与平台结算价',
   `tuikuan_money` decimal(10,2) DEFAULT '0.00' COMMENT '退款金额',
   `tuikuan_time` int(10) DEFAULT '0' COMMENT '退款时间',
-  `to_buyer` varchar(255) DEFAULT '' COMMENT '给买家留言',
-  `cfmpay_user` varchar(50) DEFAULT '' COMMENT '线下点款管理员',
+  `to_buyer` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '给买家留言',
+  `cfmpay_user` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '线下点款管理员',
   `is_stock` tinyint(1) DEFAULT '0' COMMENT '是否执行扣库存,1为已执行',
   `is_del` tinyint(1) DEFAULT '0' COMMENT '是否删除',
   `is_after_sale` tinyint(1) DEFAULT '0' COMMENT '是否售后，0无售后，1售后中，9已处理',
@@ -7846,135 +7883,135 @@ CREATE TABLE `shop_order_info` (
   KEY `status_pay` (`order_status`,`is_pay`) USING BTREE,
   KEY `user_id` (`user_id`,`is_del`,`pid`,`order_type`) USING BTREE,
   KEY `supplyer_id` (`supplyer_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of shop_order_info
 -- ----------------------------
 BEGIN;
-INSERT INTO `shop_order_info` VALUES (1, 0, 0, 0, 0, '2019030839983', 1, 0, 0, 0, 29889, 0, 2, 0, 0, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '312312312312', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 33.00, 0.00, 72.00, 0.00, 1552033397, 0, 1552465348, 0, 0, 0, 0, 1552465348, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (2, 0, 0, 0, 0, '2019030957023', 1, 0, 0, 0, 29889, 0, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552119209, 0, 0, 1552119209, 0, 0, 0, 1552120565, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (3, 0, 0, 0, 0, '2019030912360', 1, 0, 0, 0, 29890, 0, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552123372, 0, 0, 1552123372, 1554003907, 1554003914, 0, 1554003914, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (4, 0, 0, 0, 0, '2019030901289', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126035, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (5, 0, 0, 0, 0, '2019030919185', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126432, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (6, 0, 0, 0, 0, '2019030946121', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126619, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (7, 0, 0, 0, 0, '2019030903355', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126841, 0, 1552464776, 0, 0, 0, 0, 1552464776, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (8, 0, 0, 0, 0, '2019030941986', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126922, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (9, 0, 0, 0, 0, '2019030915055', 1, 0, 0, 0, 29891, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552127858, 0, 0, 1552127858, 0, 0, 0, 1552127859, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (10, 0, 0, 0, 0, '2019030944023', 1, 0, 0, 0, 29892, 0, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552128944, 0, 0, 1552128944, 0, 0, 0, 1552128945, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (11, 0, 0, 0, 0, '2019030929776', 1, 0, 0, 0, 29893, 0, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 5, '韵达快递', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552129886, 0, 0, 1552129886, 1552298572, 1552904027, 0, 1552904028, '3834593319876', 0.00, 0.00, 0.00, 35.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (12, 0, 0, 0, 0, '2019031280868', 1, 0, 0, 0, 29892, 1, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552373852, 0, 0, 1552373852, 0, 0, 0, 1552383776, '', 0.00, 0.00, 0.00, 200.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (13, 0, 0, 0, 0, '2019031258934', 1, 0, 0, 0, 29892, 1, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552374106, 0, 0, 1552374106, 0, 0, 0, 1552383776, '', 0.00, 0.00, 0.00, 200.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (14, 0, 0, 0, 0, '2019031244092', 1, 0, 0, 0, 29893, 1, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552378802, 0, 0, 1552378802, 0, 0, 0, 1552384897, '', 0.00, 0.00, 0.00, 200.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (15, 0, 0, 0, 0, '2019031242333', 1, 0, 0, 0, 29893, 2, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 798.00, 0, 0.00, 36.00, 834.00, 834.00, 0.00, 1552379688, 0, 0, 1552379688, 1552545663, 1553151128, 0, 1553151128, '', 0.00, 0.00, 0.00, 400.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (16, 0, 0, 0, 0, '2019031326887', 1, 0, 0, 0, 29889, 2, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552443159, 1552464639, 1552464634, 1552464639, 1552545200, 1553151128, 0, 1553151128, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (17, 0, 0, 0, 0, '2019031331145', 1, 0, 0, 0, 29889, 2, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552464891, 1552464912, 0, 1552464912, 0, 0, 0, 1552464912, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (18, 0, 0, 0, 0, '2019031387113', 1, 0, 0, 0, 29889, 2, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552464965, 0, 1552527828, 0, 0, 0, 0, 1552527828, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (19, 0, 0, 0, 0, '2019031312312', 1, 0, 0, 0, 29889, 2, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552465329, 0, 1552527828, 0, 0, 0, 0, 1552527828, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (20, 0, 0, 0, 0, '2019031545596', 1, 0, 0, 0, 29893, 2, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552617494, 0, 0, 1552617494, 0, 0, 0, 1552618374, '', 0.00, 0.00, 0.00, 210.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (21, 0, 0, 0, 0, '2019031524578', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552618205, 0, 0, 1552618205, 1552618205, 1552618205, 0, 1552962031, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (22, 0, 0, 0, 0, '2019031697690', 1, 0, 0, 0, 29889, 3, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552742409, 0, 1552879305, 0, 0, 0, 0, 1552879305, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (23, 0, 0, 0, 0, '2019031813026', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552896814, 0, 0, 1552896814, 1552961907, 1553571883, 0, 1553571883, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (24, 0, 0, 0, 0, '2019031932329', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552962312, 0, 0, 1552962312, 1552963156, 1552963184, 0, 1552963184, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (25, 0, 0, 0, 0, '2019032072577', 1, 0, 0, 0, 29894, 0, 1, 0, 1, '', '地址', 110000, 110100, 110101, '北京,北京市,东城区', '地址地址地址地址', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1553064076, 0, 0, 1553064076, 0, 0, 0, 1553064076, '', 0.00, 0.00, 0.00, 10.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (26, 0, 0, 0, 0, '2019032176552', 1, 0, 0, 0, 29889, 3, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 11.00, 0, 0.00, 33.00, 0.00, 44.00, 0.00, 1553154962, 0, 1553173942, 0, 0, 0, 0, 1553173942, '', 0.00, 0.00, 0.00, 0.00, 0, '11', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (27, 0, 0, 0, 0, '2019032233560', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553240743, 0, 0, 1553240743, 0, 0, 0, 1553240743, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (28, 0, 0, 0, 0, '2019032272167', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553240944, 0, 0, 1553240944, 0, 0, 0, 1553240944, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (29, 0, 0, 0, 0, '2019032243441', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241122, 0, 0, 1553241122, 0, 0, 0, 1553241123, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (30, 0, 0, 0, 0, '2019032277721', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241239, 0, 0, 1553241239, 0, 0, 0, 1553241240, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (31, 0, 0, 0, 0, '2019032226991', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241414, 0, 0, 1553241414, 0, 0, 0, 1553241415, '', 0.00, 0.00, 0.00, 100.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (32, 0, 0, 0, 0, '2019032204096', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553243238, 0, 0, 1553243238, 0, 0, 0, 1553243238, '', 0.00, 0.00, 0.00, 160.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (33, 0, 0, 0, 0, '2019032258460', 1, 0, 0, 0, 29896, 0, 2, 0, 2, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553243429, 0, 1553592843, 1553243429, 0, 0, 0, 1553592850, '', 0.00, 0.00, 0.00, 160.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553592850, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (34, 0, 0, 0, 0, '2019032282226', 1, 0, 0, 0, 29896, 0, 2, 0, 1, '4200000293201903256368848438', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'weixin', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.01, 0.01, 0.00, 1553243999, 0, 1553579183, 1553243999, 0, 0, 0, 1553580829, '', 0.00, 0.00, 0.00, 160.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.01, 1553580828, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (35, 0, 0, 0, 0, '2019032202621', 1, 0, 0, 0, 29896, 0, 2, 0, 1, '2019032522001404710542175840', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'alipayMobile', 'H5支付宝', 1, 399.00, 0, 0.00, 33.00, 432.00, 0.01, 0.00, 1553244025, 0, 1553568292, 1553244025, 0, 0, 0, 1553568301, '', 0.00, 0.00, 0.00, 160.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553568301, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (36, 0, 0, 0, 0, '2019032253069', 1, 0, 0, 0, 29896, 0, 2, 0, 0, '2019032222001415561023450212', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'alipayMobile', 'H5支付宝', 1, 399.00, 0, 0.00, 33.00, 0.01, 0.01, 0.00, 1553247441, 1553254641, 1553565264, 1553247441, 0, 0, 0, 1553570168, '', 0.00, 0.00, 0.00, 180.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.01, 1553570166, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (37, 0, 0, 0, 0, '2019032219213', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '2019032222001415561023627944', '光1', 110000, 110100, 110102, '北京,北京市,西城区', '堙震在地愿为连理枝霜1', '', '', '15625077761', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 0.00, 0.00, 39.00, 0.00, 1553254841, 1553258680, 1553514160, 1553258680, 0, 0, 0, 1553514160, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (38, 0, 0, 0, 0, '2019032535950', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 0.00, 0.00, 39.00, 0.00, 1553506886, 0, 0, 0, 0, 0, 0, 1553518067, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (39, 0, 0, 0, 0, '2019032613042', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553569437, 1553582027, 0, 1553582027, 0, 0, 0, 1553582223, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (40, 0, 0, 0, 0, '2019032653633', 1, 0, 0, 0, 29889, 5, 3, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 9, '邮政快递包裹', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553596458, 0, 0, 1553596458, 1553655465, 1554274734, 1553655902, 1554274734, '31231313', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (41, 0, 0, 0, 0, '2019032782512', 1, 0, 0, 0, 29889, 5, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553685320, 0, 0, 1553685320, 0, 0, 0, 1553685321, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (42, 0, 0, 0, 0, '2019032764291', 1, 0, 0, 0, 29892, 2, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553685399, 0, 0, 1553685399, 0, 0, 0, 1553686468, '', 0.00, 0.00, 0.00, 25.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (43, 0, 0, 0, 0, '2019032702145', 1, 0, 0, 0, 29892, 2, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553686641, 1553686657, 0, 1553686657, 0, 0, 0, 1553686657, '', 0.00, 0.00, 0.00, 25.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (44, 0, 4, 0, 0, '2019032802208', 1, 0, 0, 0, 29896, 5, 2, 0, 2, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553743977, 0, 1553773829, 1553743977, 0, 0, 0, 1553773839, '', 0.00, 0.00, 0.00, 234.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553773839, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (47, 0, 0, 0, 1, '2019042251883', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 72.00, 0, 0.00, 48.00, 120.00, 120.00, 0.00, 1555928632, 0, 1557308468, 1555928632, 0, 0, 0, 1555932139, '', 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (74, 0, 0, 0, 1, '2019042274547', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 12.00, 0, 0.00, 33.00, 45.00, 45.00, 0.00, 1555932111, 0, 1557308468, 1555932111, 0, 0, 0, 1555932139, '', 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (76, 0, 0, 0, 1, '2019042296904', 2, 0, 0, 5, 29890, 4, 2, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 6, '顺丰', 2, 'balance', '余额支付', 1, 12.00, 0, 0.00, 33.00, 45.00, 45.00, 0.00, 1555933643, 0, 1557308468, 1555933643, 1555990256, 1556958836, 0, 1556958836, '363148814359', 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (85, 0, 0, 0, 1, '2019042315729', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556012264, 0, 1557306738, 1556012264, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (86, 0, 0, 0, 0, '2019042441370', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 486.00, 0, 0.00, 45.00, 301.00, 301.00, 0.00, 1556040489, 0, 0, 1556040489, 0, 0, 0, 1556040489, '', 230.00, 0.00, 0.00, 0.00, 0, 'xxx1,eweqe,af123,xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (87, 0, 0, 0, 0, '2019042462089', 0, 0, 1, 0, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 33.00, 34.00, 34.00, 0.00, 1556041239, 0, 1556041256, 1556041239, 0, 0, 0, 1556041256, '', 110.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (88, 0, 0, 0, 1, '2019042493691', 2, 0, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, NULL, 0.00, 29.00, 0.00, 1556041397, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (89, 0, 0, 0, 0, '2019042498978', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 222.00, 0, 0.00, 36.00, 38.00, 38.00, 0.00, 1556071402, 0, 0, 1556071402, 0, 0, 0, 1556071402, '', 220.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (90, 0, 0, 0, 0, '2019042466334', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 222.00, 0, 0.00, 36.00, 38.00, 38.00, 0.00, 1556072480, 0, 0, 1556072480, 0, 0, 0, 1556072481, '', 220.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (91, 0, 0, 0, 0, '2019042483634', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 4.00, 0, 0.00, 42.00, 46.00, 46.00, 0.00, 1556091468, 0, 0, 1556091468, 0, 0, 0, 1556091468, '', 440.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (92, 0, 0, 0, 0, '2019042482581', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, 101.00, 0, 0.00, 33.00, 0.00, 134.00, 0.00, 1556093571, 0, 1556156745, 0, 0, 0, 0, 1556156745, '', 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (93, 0, 0, 0, 0, '2019042458222', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 3.00, 0, 0.00, 39.00, 42.00, 42.00, 0.00, 1556096367, 0, 0, 1556096367, 0, 0, 0, 1556096367, '', 300.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (94, 0, 0, 0, 0, '2019042597308', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', '支付宝', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1556157473, 0, 1556178343, 0, 0, 0, 0, 1556178343, '', 10.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (95, 0, 0, 0, 1, '2019042558951', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556159613, 0, 1557306738, 1556159613, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (96, 0, 0, 0, 0, '2019042556181', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, 677.00, 0, 0.00, 51.00, 0.00, 728.00, 0.00, 1556179741, 0, 1556521302, 0, 0, 0, 0, 1556521302, '', 52.00, 0.00, 0.00, 0.00, 0, 'af123,eweqe,xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (97, 0, 0, 0, 1, '2019042592219', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556181065, 1556181116, 1557306738, 1556181116, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (98, 0, 0, 0, 1, '2019042538165', 2, 0, 0, 4, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 1.00, 0, 0.00, 33.00, 34.00, 34.00, 0.00, 1556197928, 0, 1557308468, 1556197928, 0, 0, 0, 1556197929, '', 0.00, 0.00, 0.00, 0.00, 0, 'af123', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (99, 0, 0, 0, 1, '2019042656493', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556292306, 0, 1557306738, 1556292306, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (100, 0, 0, 0, 2, '2019043080942', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 11.00, 0, 0.00, 33.00, 44.00, 44.00, 0.00, 1556618376, 0, 1557308468, 1556618376, 0, 0, 0, 1556958840, '', 0.00, 0.00, 0.00, 0.00, 0, 'af123', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (101, 0, 0, 0, 3, '2019050441283', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556958917, 0, 1557308468, 1556958917, 0, 0, 0, 1556960385, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (102, 0, 0, 0, 4, '2019050479700', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556959352, 0, 1557308468, 1556959352, 0, 0, 0, 1556960385, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (103, 0, 0, 0, 5, '2019050441894', 2, 0, 1, 7, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556959640, 0, 1557022271, 1556959640, 0, 0, 0, 1556959824, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (104, 0, 0, 0, 6, '2019050457913', 2, 0, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1556960755, 0, 1557308468, 0, 0, 0, 0, 1556960755, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (105, 0, 0, 0, 5, '2019050425228', 2, 0, 1, 7, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1556962726, 0, 1557022271, 1556962726, 0, 0, 0, 1556962727, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (106, 0, 0, 0, 7, '2019050410683', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1556979257, 0, 1557308468, 1556979257, 0, 0, 0, 1556979257, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (107, 0, 0, 0, 8, '2019050767628', 2, 1, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557212447, 1557212488, 1557306738, 1557212488, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (108, 0, 0, 0, 9, '2019050720489', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213514, 0, 1557308468, 0, 0, 0, 0, 1557213514, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (109, 0, 0, 0, 10, '2019050758260', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213803, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (110, 0, 0, 0, 11, '2019050725524', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213854, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (111, 0, 0, 0, 12, '2019050744005', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213858, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (112, 0, 0, 0, 13, '2019050742059', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213881, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (113, 0, 0, 0, 14, '2019050717632', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214670, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (114, 0, 0, 0, 15, '2019050717923', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214682, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (115, 0, 0, 0, 16, '2019050755268', 2, 1, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557214887, 0, 1557308468, 1557214887, 0, 0, 0, 1557214887, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (116, 0, 0, 0, 17, '2019050722066', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214893, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (117, 0, 0, 0, 18, '2019050793556', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214900, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (118, 0, 0, 0, 19, '2019050708572', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557215107, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (119, 0, 0, 0, 20, '2019050855725', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557309561, 0, 1557310106, 0, 0, 0, 0, 1557310106, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (120, 0, 0, 0, 21, '2019050848846', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557310111, 0, 1557310796, 0, 0, 0, 0, 1557310796, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (121, 0, 0, 0, 22, '2019050832992', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311046, 0, 1557311079, 0, 0, 0, 0, 1557311079, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (122, 0, 0, 0, 23, '2019050857842', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311115, 0, 1557311185, 0, 0, 0, 0, 1557311185, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (123, 0, 0, 0, 24, '2019050890284', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311788, 0, 1557311809, 0, 0, 0, 0, 1557311809, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (124, 0, 0, 0, 25, '2019050859535', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311863, 0, 1557311878, 0, 0, 0, 0, 1557311878, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (125, 0, 0, 0, 26, '2019050857680', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311913, 0, 1557311924, 0, 0, 0, 0, 1557311924, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (126, 0, 0, 0, 27, '2019050866599', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311970, 0, 1557311996, 0, 0, 0, 0, 1557311996, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (127, 0, 0, 0, 28, '2019050822611', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312040, 0, 1557312067, 0, 0, 0, 0, 1557312067, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (128, 0, 0, 0, 29, '2019050848595', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312092, 0, 1557312110, 0, 0, 0, 0, 1557312110, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (129, 0, 0, 0, 30, '2019050828452', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312208, 0, 1557312234, 0, 0, 0, 0, 1557312234, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (130, 0, 0, 0, 31, '2019050802764', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557313987, 0, 1557380243, 1557313987, 0, 0, 0, 1557380243, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (131, 0, 0, 0, 32, '2019050833403', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557314957, 0, 1557393572, 1557314957, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (132, 0, 0, 0, 33, '2019050830484', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 319.00, 0, 0.00, 0.00, 319.00, 319.00, 0.00, 1557314974, 0, 1557393572, 1557314974, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (133, 0, 0, 0, 34, '2019050883205', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 58.00, 0, 0.00, 0.00, 58.00, 58.00, 0.00, 1557315054, 0, 1557393572, 1557315054, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (134, 0, 0, 0, 35, '2019050910367', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557400468, 0, 1557481212, 1557400468, 0, 0, 0, 1557481212, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (135, 0, 0, 0, 0, '2019051370310', 0, 0, 1, 0, 29890, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1557679390, 0, 0, 1557679390, 0, 0, 0, 1557679390, '', 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (136, 0, 4, 0, 0, '2019051389489', 0, 0, 1, 0, 29890, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1557680728, 0, 0, 1557680728, 0, 0, 0, 1557680728, '', 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (137, 0, 0, 0, 36, '2019051381206', 2, 1, 0, 8, 29890, 6, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557732906, 0, 1557739405, 1557732906, 0, 0, 0, 1557739405, '', 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (138, 0, 0, 0, 0, '2019051385319', 0, 0, 1, 0, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1557749566, 1557749567, 0, 1557749567, 0, 0, 0, 1557749567, '', 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (139, 0, 0, 0, 0, '2019051315230', 0, 0, 1, 0, 29890, 6, 1, 1, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1557750173, 1557750173, 0, 1557750173, 1558424442, 0, 0, 1558463252, '', 0.00, 0.00, 0.00, 0.39, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (140, 0, 0, 0, 37, '2019051313094', 2, 1, 0, 8, 29890, 6, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557750787, 0, 1557797831, 1557750787, 0, 0, 0, 1557797831, '', 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (144, 0, 0, 0, 41, '2019051311448', 2, 1, 0, 6, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 9.00, 0, 0.00, 33.00, 42.00, 42.00, 0.00, 1557751327, 1557751328, 0, 1557751328, 0, 0, 0, 1557751328, '', 0.00, 0.00, 0.00, 0.00, 0, '111xxx12', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (145, 0, 0, 0, 42, '2019051612756', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557971276, 1557971277, 0, 1557971277, 0, 0, 0, 1557971277, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (150, 0, 0, 0, 47, '2019051603561', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557971672, 1557971672, 0, 1557971672, 0, 0, 0, 1557971672, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (151, 0, 0, 0, 48, '2019051689577', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557972042, 1557972042, 0, 1557972042, 0, 0, 0, 1557972042, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (152, 0, 0, 0, 49, '2019051631343', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557972432, 1557972432, 0, 1557972432, 0, 0, 0, 1557972432, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (153, 0, 0, 0, 50, '2019051611630', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557973141, 1557973141, 0, 1557973141, 0, 0, 0, 1557973141, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (154, 0, 0, 0, 57, '2019051612422', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557979669, 1557979957, 0, 1557979957, 0, 0, 0, 1557979957, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (155, 0, 0, 0, 58, '2019051607288', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557980010, 1557980655, 0, 1557980655, 0, 0, 0, 1557980655, '', 0.00, 0.00, 0.00, 61.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (156, 0, 4, 0, 0, '2019052041005', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1558354658, 1558354659, 0, 1558354659, 1558514589, 1558514613, 0, 1558514613, '', 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 110.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (157, 0, 4, 0, 59, '2019052144718', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558436857, 1558436858, 0, 1558436858, 0, 0, 0, 1558436858, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (158, 0, 4, 0, 60, '2019052133243', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558436880, 1558436881, 0, 1558436881, 0, 0, 0, 1558436881, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (159, 0, 4, 0, 61, '2019052140215', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558437064, 1558437191, 0, 1558437191, 0, 0, 0, 1558437191, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (160, 0, 0, 0, 62, '2019052114601', 2, 1, 0, 6, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 2, 9.00, 0, 0.00, 33.00, 42.00, 42.00, 0.00, 1558437788, 1558438016, 0, 1558438016, 0, 0, 0, 1558438016, '', 0.00, 0.00, 0.00, 0.09, 0, '111xxx12', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (161, 0, 4, 0, 63, '2019052116521', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558438049, 1558438050, 0, 1558438050, 0, 0, 0, 1558438050, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (162, 0, 4, 0, 64, '2019052157628', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558440502, 1558440502, 0, 1558440502, 0, 0, 0, 1558440502, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (163, 0, 4, 0, 65, '2019052205928', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 2, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558456919, 1558512178, 0, 1558512178, 0, 0, 0, 1558512178, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (164, 0, 4, 0, 66, '2019052244024', 2, 1, 0, 8, 29890, 7, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558512202, 1558512203, 1558593706, 1558512203, 0, 0, 0, 1558593706, '', 0.00, 0.00, 0.00, 1.11, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
-INSERT INTO `shop_order_info` VALUES (165, 0, 4, 0, 0, '2019052249363', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558514911, 1558514912, 0, 1558514912, 1558514925, 1558514929, 0, 1558514929, '', 0.00, 0.00, 0.00, 2.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (166, 0, 4, 0, 0, '2019052294436', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558515281, 1558515282, 0, 1558515282, 1558515294, 1558515297, 0, 1558515297, '', 0.00, 0.00, 0.00, 2.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
-INSERT INTO `shop_order_info` VALUES (167, 0, 4, 0, 0, '2019052242424', 0, 0, 1, 0, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558516083, 1558516084, 0, 1558516084, 0, 0, 0, 1558516084, '', 0.00, 0.00, 0.00, 2.10, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 120.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (1, 0, 0, 0, 0, '2019030839983', 1, 0, 0, 0, 29889, 0, 2, 0, 0, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '312312312312', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 33.00, 0.00, 72.00, 0.00, 1552033397, 0, 1552465348, 0, 0, 0, 0, 1552465348, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (2, 0, 0, 0, 0, '2019030957023', 1, 0, 0, 0, 29889, 0, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552119209, 0, 0, 1552119209, 0, 0, 0, 1552120565, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (3, 0, 0, 0, 0, '2019030912360', 1, 0, 0, 0, 29890, 0, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552123372, 0, 0, 1552123372, 1554003907, 1554003914, 0, 1554003914, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (4, 0, 0, 0, 0, '2019030901289', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126035, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (5, 0, 0, 0, 0, '2019030919185', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126432, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (6, 0, 0, 0, 0, '2019030946121', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126619, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (7, 0, 0, 0, 0, '2019030903355', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126841, 0, 1552464776, 0, 0, 0, 0, 1552464776, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (8, 0, 0, 0, 0, '2019030941986', 1, 0, 0, 0, 29890, 1, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, '', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552126922, 0, 1552270250, 0, 0, 0, 0, 1552270250, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (9, 0, 0, 0, 0, '2019030915055', 1, 0, 0, 0, 29891, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552127858, 0, 0, 1552127858, 0, 0, 0, 1552127859, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (10, 0, 0, 0, 0, '2019030944023', 1, 0, 0, 0, 29892, 0, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552128944, 0, 0, 1552128944, 0, 0, 0, 1552128945, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (11, 0, 0, 0, 0, '2019030929776', 1, 0, 0, 0, 29893, 0, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 5, '韵达快递', 2, '', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1552129886, 0, 0, 1552129886, 1552298572, 1552904027, 0, 1552904028, '3834593319876', 0.00, 0.00, 0.00, 35.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (12, 0, 0, 0, 0, '2019031280868', 1, 0, 0, 0, 29892, 1, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552373852, 0, 0, 1552373852, 0, 0, 0, 1552383776, '', 0.00, 0.00, 0.00, 200.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (13, 0, 0, 0, 0, '2019031258934', 1, 0, 0, 0, 29892, 1, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552374106, 0, 0, 1552374106, 0, 0, 0, 1552383776, '', 0.00, 0.00, 0.00, 200.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (14, 0, 0, 0, 0, '2019031244092', 1, 0, 0, 0, 29893, 1, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552378802, 0, 0, 1552378802, 0, 0, 0, 1552384897, '', 0.00, 0.00, 0.00, 200.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (15, 0, 0, 0, 0, '2019031242333', 1, 0, 0, 0, 29893, 2, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, '', '余额支付', 1, 798.00, 0, 0.00, 36.00, 834.00, 834.00, 0.00, 1552379688, 0, 0, 1552379688, 1552545663, 1553151128, 0, 1553151128, '', 0.00, 0.00, 0.00, 400.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (16, 0, 0, 0, 0, '2019031326887', 1, 0, 0, 0, 29889, 2, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552443159, 1552464639, 1552464634, 1552464639, 1552545200, 1553151128, 0, 1553151128, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (17, 0, 0, 0, 0, '2019031331145', 1, 0, 0, 0, 29889, 2, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552464891, 1552464912, 0, 1552464912, 0, 0, 0, 1552464912, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (18, 0, 0, 0, 0, '2019031387113', 1, 0, 0, 0, 29889, 2, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552464965, 0, 1552527828, 0, 0, 0, 0, 1552527828, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (19, 0, 0, 0, 0, '2019031312312', 1, 0, 0, 0, 29889, 2, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552465329, 0, 1552527828, 0, 0, 0, 0, 1552527828, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (20, 0, 0, 0, 0, '2019031545596', 1, 0, 0, 0, 29893, 2, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552617494, 0, 0, 1552617494, 0, 0, 0, 1552618374, '', 0.00, 0.00, 0.00, 210.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (21, 0, 0, 0, 0, '2019031524578', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552618205, 0, 0, 1552618205, 1552618205, 1552618205, 0, 1552962031, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (22, 0, 0, 0, 0, '2019031697690', 1, 0, 0, 0, 29889, 3, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 399.00, 0, 0.00, 33.00, 0.00, 432.00, 0.00, 1552742409, 0, 1552879305, 0, 0, 0, 0, 1552879305, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (23, 0, 0, 0, 0, '2019031813026', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552896814, 0, 0, 1552896814, 1552961907, 1553571883, 0, 1553571883, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (24, 0, 0, 0, 0, '2019031932329', 1, 0, 0, 0, 29889, 3, 1, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1552962312, 0, 0, 1552962312, 1552963156, 1552963184, 0, 1552963184, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (25, 0, 0, 0, 0, '2019032072577', 1, 0, 0, 0, 29894, 0, 1, 0, 1, '', '地址', 110000, 110100, 110101, '北京,北京市,东城区', '地址地址地址地址', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, 33.00, 72.00, 72.00, 0.00, 1553064076, 0, 0, 1553064076, 0, 0, 0, 1553064076, '', 0.00, 0.00, 0.00, 10.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (26, 0, 0, 0, 0, '2019032176552', 1, 0, 0, 0, 29889, 3, 2, 0, 0, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 11.00, 0, 0.00, 33.00, 0.00, 44.00, 0.00, 1553154962, 0, 1553173942, 0, 0, 0, 0, 1553173942, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, '11', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (27, 0, 0, 0, 0, '2019032233560', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553240743, 0, 0, 1553240743, 0, 0, 0, 1553240743, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (28, 0, 0, 0, 0, '2019032272167', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553240944, 0, 0, 1553240944, 0, 0, 0, 1553240944, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (29, 0, 0, 0, 0, '2019032243441', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241122, 0, 0, 1553241122, 0, 0, 0, 1553241123, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (30, 0, 0, 0, 0, '2019032277721', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241239, 0, 0, 1553241239, 0, 0, 0, 1553241240, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (31, 0, 0, 0, 0, '2019032226991', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553241414, 0, 0, 1553241414, 0, 0, 0, 1553241415, '', 0.00, 0.00, 0.00, 100.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (32, 0, 0, 0, 0, '2019032204096', 1, 0, 0, 0, 29896, 0, 1, 0, 1, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553243238, 0, 0, 1553243238, 0, 0, 0, 1553243238, '', 0.00, 0.00, 0.00, 160.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (33, 0, 0, 0, 0, '2019032258460', 1, 0, 0, 0, 29896, 0, 2, 0, 2, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553243429, 0, 1553592843, 1553243429, 0, 0, 0, 1553592850, '', 0.00, 0.00, 0.00, 160.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553592850, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (34, 0, 0, 0, 0, '2019032282226', 1, 0, 0, 0, 29896, 0, 2, 0, 1, '4200000293201903256368848438', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'weixin', '微支付', 1, 399.00, 0, 0.00, 33.00, 0.01, 0.01, 0.00, 1553243999, 0, 1553579183, 1553243999, 0, 0, 0, 1553580829, '', 0.00, 0.00, 0.00, 160.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.01, 1553580828, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (35, 0, 0, 0, 0, '2019032202621', 1, 0, 0, 0, 29896, 0, 2, 0, 1, '2019032522001404710542175840', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'alipayMobile', 'H5支付宝', 1, 399.00, 0, 0.00, 33.00, 432.00, 0.01, 0.00, 1553244025, 0, 1553568292, 1553244025, 0, 0, 0, 1553568301, '', 0.00, 0.00, 0.00, 160.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553568301, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (36, 0, 0, 0, 0, '2019032253069', 1, 0, 0, 0, 29896, 0, 2, 0, 0, '2019032222001415561023450212', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'alipayMobile', 'H5支付宝', 1, 399.00, 0, 0.00, 33.00, 0.01, 0.01, 0.00, 1553247441, 1553254641, 1553565264, 1553247441, 0, 0, 0, 1553570168, '', 0.00, 0.00, 0.00, 180.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.01, 1553570166, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (37, 0, 0, 0, 0, '2019032219213', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '2019032222001415561023627944', '光1', 110000, 110100, 110102, '北京,北京市,西城区', '堙震在地愿为连理枝霜1', '', '', '15625077761', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 0.00, 0.00, 39.00, 0.00, 1553254841, 1553258680, 1553514160, 1553258680, 0, 0, 0, 1553514160, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (38, 0, 0, 0, 0, '2019032535950', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', 'H5支付宝', 1, 39.00, 0, 0.00, 0.00, 0.00, 39.00, 0.00, 1553506886, 0, 0, 0, 0, 0, 0, 1553518067, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (39, 0, 0, 0, 0, '2019032613042', 1, 0, 0, 0, 29889, 5, 2, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553569437, 1553582027, 0, 1553582027, 0, 0, 0, 1553582223, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (40, 0, 0, 0, 0, '2019032653633', 1, 0, 0, 0, 29889, 5, 3, 2, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 9, '邮政快递包裹', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553596458, 0, 0, 1553596458, 1553655465, 1554274734, 1553655902, 1554274734, '31231313', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (41, 0, 0, 0, 0, '2019032782512', 1, 0, 0, 0, 29889, 5, 1, 0, 1, '', '光', 110000, 110100, 110101, '北京,北京市,东城区', '堙震在地愿为连理枝霜', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553685320, 0, 0, 1553685320, 0, 0, 0, 1553685321, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (42, 0, 0, 0, 0, '2019032764291', 1, 0, 0, 0, 29892, 2, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553685399, 0, 0, 1553685399, 0, 0, 0, 1553686468, '', 0.00, 0.00, 0.00, 25.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (43, 0, 0, 0, 0, '2019032702145', 1, 0, 0, 0, 29892, 2, 1, 0, 1, '', '收货人', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1553686641, 1553686657, 0, 1553686657, 0, 0, 0, 1553686657, '', 0.00, 0.00, 0.00, 25.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (44, 0, 4, 0, 0, '2019032802208', 1, 0, 0, 0, 29896, 5, 2, 0, 2, '', '3123', 110000, 110100, 110101, '北京,北京市,东城区', '3123213123', '', '', '15625077712', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1553743977, 0, 1553773829, 1553743977, 0, 0, 0, 1553773839, '', 0.00, 0.00, 0.00, 234.00, 0.00, 0, 'xx2', NULL, 1, 0, '', '127.0.0.1', 0, 0, 0, 0.00, 432.00, 1553773839, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (47, 0, 0, 0, 1, '2019042251883', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 72.00, 0, 0.00, 48.00, 120.00, 120.00, 0.00, 1555928632, 0, 1557308468, 1555928632, 0, 0, 0, 1555932139, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (74, 0, 0, 0, 1, '2019042274547', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 12.00, 0, 0.00, 33.00, 45.00, 45.00, 0.00, 1555932111, 0, 1557308468, 1555932111, 0, 0, 0, 1555932139, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (76, 0, 0, 0, 1, '2019042296904', 2, 0, 0, 5, 29890, 4, 2, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 6, '顺丰', 2, 'balance', '余额支付', 1, 12.00, 0, 0.00, 33.00, 45.00, 45.00, 0.00, 1555933643, 0, 1557308468, 1555933643, 1555990256, 1556958836, 0, 1556958836, '363148814359', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'af444', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (85, 0, 0, 0, 1, '2019042315729', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556012264, 0, 1557306738, 1556012264, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (86, 0, 0, 0, 0, '2019042441370', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 486.00, 0, 0.00, 45.00, 301.00, 301.00, 0.00, 1556040489, 0, 0, 1556040489, 0, 0, 0, 1556040489, '', 230.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1,eweqe,af123,xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (87, 0, 0, 0, 0, '2019042462089', 0, 0, 1, 0, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 33.00, 34.00, 34.00, 0.00, 1556041239, 0, 1556041256, 1556041239, 0, 0, 0, 1556041256, '', 110.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (88, 0, 0, 0, 1, '2019042493691', 2, 0, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, NULL, 0.00, 29.00, 0.00, 1556041397, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (89, 0, 0, 0, 0, '2019042498978', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 222.00, 0, 0.00, 36.00, 38.00, 38.00, 0.00, 1556071402, 0, 0, 1556071402, 0, 0, 0, 1556071402, '', 220.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (90, 0, 0, 0, 0, '2019042466334', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 222.00, 0, 0.00, 36.00, 38.00, 38.00, 0.00, 1556072480, 0, 0, 1556072480, 0, 0, 0, 1556072481, '', 220.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (91, 0, 0, 0, 0, '2019042483634', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 4.00, 0, 0.00, 42.00, 46.00, 46.00, 0.00, 1556091468, 0, 0, 1556091468, 0, 0, 0, 1556091468, '', 440.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (92, 0, 0, 0, 0, '2019042482581', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, 101.00, 0, 0.00, 33.00, 0.00, 134.00, 0.00, 1556093571, 0, 1556156745, 0, 0, 0, 0, 1556156745, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (93, 0, 0, 0, 0, '2019042458222', 0, 0, 1, 0, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 3.00, 0, 0.00, 39.00, 42.00, 42.00, 0.00, 1556096367, 0, 0, 1556096367, 0, 0, 0, 1556096367, '', 300.00, 0.00, 0.00, 0.00, 0.00, 0, 'xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (94, 0, 0, 0, 0, '2019042597308', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 5, 'alipayMobile', '支付宝', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1556157473, 0, 1556178343, 0, 0, 0, 0, 1556178343, '', 10.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (95, 0, 0, 0, 1, '2019042558951', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556159613, 0, 1557306738, 1556159613, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (96, 0, 0, 0, 0, '2019042556181', 0, 0, 1, 0, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, 677.00, 0, 0.00, 51.00, 0.00, 728.00, 0.00, 1556179741, 0, 1556521302, 0, 0, 0, 0, 1556521302, '', 52.00, 0.00, 0.00, 0.00, 0.00, 0, 'af123,eweqe,xxx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (97, 0, 0, 0, 1, '2019042592219', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556181065, 1556181116, 1557306738, 1556181116, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (98, 0, 0, 0, 1, '2019042538165', 2, 0, 0, 4, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 1.00, 0, 0.00, 33.00, 34.00, 34.00, 0.00, 1556197928, 0, 1557308468, 1556197928, 0, 0, 0, 1556197929, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'af123', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (99, 0, 0, 0, 1, '2019042656493', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556292306, 0, 1557306738, 1556292306, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (100, 0, 0, 0, 2, '2019043080942', 2, 0, 0, 5, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 11.00, 0, 0.00, 33.00, 44.00, 44.00, 0.00, 1556618376, 0, 1557308468, 1556618376, 0, 0, 0, 1556958840, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'af123', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (101, 0, 0, 0, 3, '2019050441283', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556958917, 0, 1557308468, 1556958917, 0, 0, 0, 1556960385, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (102, 0, 0, 0, 4, '2019050479700', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556959352, 0, 1557308468, 1556959352, 0, 0, 0, 1556960385, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (103, 0, 0, 0, 5, '2019050441894', 2, 0, 1, 7, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, NULL, 29.00, 29.00, 0.00, 1556959640, 0, 1557022271, 1556959640, 0, 0, 0, 1556959824, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (104, 0, 0, 0, 6, '2019050457913', 2, 0, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1556960755, 0, 1557308468, 0, 0, 0, 0, 1556960755, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (105, 0, 0, 0, 5, '2019050425228', 2, 0, 1, 7, 29890, 4, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1556962726, 0, 1557022271, 1556962726, 0, 0, 0, 1556962727, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (106, 0, 0, 0, 7, '2019050410683', 2, 0, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1556979257, 0, 1557308468, 1556979257, 0, 0, 0, 1556979257, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (107, 0, 0, 0, 8, '2019050767628', 2, 1, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557212447, 1557212488, 1557306738, 1557212488, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (108, 0, 0, 0, 9, '2019050720489', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213514, 0, 1557308468, 0, 0, 0, 0, 1557213514, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (109, 0, 0, 0, 10, '2019050758260', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213803, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (110, 0, 0, 0, 11, '2019050725524', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213854, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (111, 0, 0, 0, 12, '2019050744005', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213858, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (112, 0, 0, 0, 13, '2019050742059', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557213881, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (113, 0, 0, 0, 14, '2019050717632', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214670, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (114, 0, 0, 0, 15, '2019050717923', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214682, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (115, 0, 0, 0, 16, '2019050755268', 2, 1, 0, 7, 29890, 4, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557214887, 0, 1557308468, 1557214887, 0, 0, 0, 1557214887, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (116, 0, 0, 0, 17, '2019050722066', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214893, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (117, 0, 0, 0, 18, '2019050793556', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557214900, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (118, 0, 0, 0, 19, '2019050708572', 2, 1, 0, 7, 29890, 4, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 6, 'weixinH5', 'H5微信支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557215107, 0, 1557306738, 0, 0, 0, 0, 1557306739, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (119, 0, 0, 0, 20, '2019050855725', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557309561, 0, 1557310106, 0, 0, 0, 0, 1557310106, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (120, 0, 0, 0, 21, '2019050848846', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557310111, 0, 1557310796, 0, 0, 0, 0, 1557310796, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (121, 0, 0, 0, 22, '2019050832992', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311046, 0, 1557311079, 0, 0, 0, 0, 1557311079, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (122, 0, 0, 0, 23, '2019050857842', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311115, 0, 1557311185, 0, 0, 0, 0, 1557311185, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (123, 0, 0, 0, 24, '2019050890284', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311788, 0, 1557311809, 0, 0, 0, 0, 1557311809, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (124, 0, 0, 0, 25, '2019050859535', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311863, 0, 1557311878, 0, 0, 0, 0, 1557311878, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (125, 0, 0, 0, 26, '2019050857680', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311913, 0, 1557311924, 0, 0, 0, 0, 1557311924, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (126, 0, 0, 0, 27, '2019050866599', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557311970, 0, 1557311996, 0, 0, 0, 0, 1557311996, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (127, 0, 0, 0, 28, '2019050822611', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312040, 0, 1557312067, 0, 0, 0, 0, 1557312067, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (128, 0, 0, 0, 29, '2019050848595', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312092, 0, 1557312110, 0, 0, 0, 0, 1557312110, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (129, 0, 0, 0, 30, '2019050828452', 2, 1, 0, 7, 29890, 0, 2, 0, 0, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 4, 'weixin', '微支付', 1, 29.00, 0, 0.00, 0.00, 0.00, 29.00, 0.00, 1557312208, 0, 1557312234, 0, 0, 0, 0, 1557312234, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (130, 0, 0, 0, 31, '2019050802764', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557313987, 0, 1557380243, 1557313987, 0, 0, 0, 1557380243, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (131, 0, 0, 0, 32, '2019050833403', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557314957, 0, 1557393572, 1557314957, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (132, 0, 0, 0, 33, '2019050830484', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 319.00, 0, 0.00, 0.00, 319.00, 319.00, 0.00, 1557314974, 0, 1557393572, 1557314974, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (133, 0, 0, 0, 34, '2019050883205', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 58.00, 0, 0.00, 0.00, 58.00, 58.00, 0.00, 1557315054, 0, 1557393572, 1557315054, 0, 0, 0, 1557393572, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (134, 0, 0, 0, 35, '2019050910367', 2, 1, 0, 7, 29890, 0, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 29.00, 0, 0.00, 0.00, 29.00, 29.00, 0.00, 1557400468, 0, 1557481212, 1557400468, 0, 0, 0, 1557481212, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (135, 0, 0, 0, 0, '2019051370310', 0, 0, 1, 0, 29890, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1557679390, 0, 0, 1557679390, 0, 0, 0, 1557679390, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (136, 0, 4, 0, 0, '2019051389489', 0, 0, 1, 0, 29890, 0, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1557680728, 0, 0, 1557680728, 0, 0, 0, 1557680728, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (137, 0, 0, 0, 36, '2019051381206', 2, 1, 0, 8, 29890, 6, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557732906, 0, 1557739405, 1557732906, 0, 0, 0, 1557739405, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (138, 0, 0, 0, 0, '2019051385319', 0, 0, 1, 0, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1557749566, 1557749567, 0, 1557749567, 0, 0, 0, 1557749567, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (139, 0, 0, 0, 0, '2019051315230', 0, 0, 1, 0, 29890, 6, 1, 1, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 39.00, 0, 0.00, NULL, 39.00, 39.00, 0.00, 1557750173, 1557750173, 0, 1557750173, 1558424442, 0, 0, 1558463252, '', 0.00, 0.00, 0.00, 0.39, 0.00, 0, 'xx1', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (140, 0, 0, 0, 37, '2019051313094', 2, 1, 0, 8, 29890, 6, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557750787, 0, 1557797831, 1557750787, 0, 0, 0, 1557797831, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (144, 0, 0, 0, 41, '2019051311448', 2, 1, 0, 6, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 9.00, 0, 0.00, 33.00, 42.00, 42.00, 0.00, 1557751327, 1557751328, 0, 1557751328, 0, 0, 0, 1557751328, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, '111xxx12', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (145, 0, 0, 0, 42, '2019051612756', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557971276, 1557971277, 0, 1557971277, 0, 0, 0, 1557971277, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (150, 0, 0, 0, 47, '2019051603561', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557971672, 1557971672, 0, 1557971672, 0, 0, 0, 1557971672, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (151, 0, 0, 0, 48, '2019051689577', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557972042, 1557972042, 0, 1557972042, 0, 0, 0, 1557972042, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (152, 0, 0, 0, 49, '2019051631343', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557972432, 1557972432, 0, 1557972432, 0, 0, 0, 1557972432, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (153, 0, 0, 0, 50, '2019051611630', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557973141, 1557973141, 0, 1557973141, 0, 0, 0, 1557973141, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (154, 0, 0, 0, 57, '2019051612422', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557979669, 1557979957, 0, 1557979957, 0, 0, 0, 1557979957, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (155, 0, 0, 0, 58, '2019051607288', 2, 1, 0, 8, 29890, 6, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1557980010, 1557980655, 0, 1557980655, 0, 0, 0, 1557980655, '', 0.00, 0.00, 0.00, 61.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (156, 0, 4, 0, 0, '2019052041005', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, NULL, 210.00, 210.00, 0.00, 1558354658, 1558354659, 0, 1558354659, 1558514589, 1558514613, 0, 1558514613, '', 0.00, 0.00, 0.00, 0.00, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 110.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (157, 0, 4, 0, 59, '2019052144718', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558436857, 1558436858, 0, 1558436858, 0, 0, 0, 1558436858, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (158, 0, 4, 0, 60, '2019052133243', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558436880, 1558436881, 0, 1558436881, 0, 0, 0, 1558436881, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (159, 0, 4, 0, 61, '2019052140215', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558437064, 1558437191, 0, 1558437191, 0, 0, 0, 1558437191, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (160, 0, 0, 0, 62, '2019052114601', 2, 1, 0, 6, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 2, 9.00, 0, 0.00, 33.00, 42.00, 42.00, 0.00, 1558437788, 1558438016, 0, 1558438016, 0, 0, 0, 1558438016, '', 0.00, 0.00, 0.00, 0.09, 0.00, 0, '111xxx12', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (161, 0, 4, 0, 63, '2019052116521', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558438049, 1558438050, 0, 1558438050, 0, 0, 0, 1558438050, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (162, 0, 4, 0, 64, '2019052157628', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558440502, 1558440502, 0, 1558440502, 0, 0, 0, 1558440502, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (163, 0, 4, 0, 65, '2019052205928', 2, 1, 0, 8, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 2, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558456919, 1558512178, 0, 1558512178, 0, 0, 0, 1558512178, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (164, 0, 4, 0, 66, '2019052244024', 2, 1, 0, 8, 29890, 7, 2, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 111.00, 0, 0.00, 0.00, 111.00, 111.00, 0.00, 1558512202, 1558512203, 1558593706, 1558512203, 0, 0, 0, 1558593706, '', 0.00, 0.00, 0.00, 1.11, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 0, 0, 0);
+INSERT INTO `shop_order_info` VALUES (165, 0, 4, 0, 0, '2019052249363', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558514911, 1558514912, 0, 1558514912, 1558514925, 1558514929, 0, 1558514929, '', 0.00, 0.00, 0.00, 2.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (166, 0, 4, 0, 0, '2019052294436', 0, 0, 1, 0, 29890, 7, 1, 2, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558515281, 1558515282, 0, 1558515282, 1558515294, 1558515297, 0, 1558515297, '', 0.00, 0.00, 0.00, 2.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 1, 0, 0.00, 0.00, 0, '', '', 1, 0, 0);
+INSERT INTO `shop_order_info` VALUES (167, 0, 4, 0, 0, '2019052242424', 0, 0, 1, 0, 29890, 7, 1, 0, 1, '', '收货人2', 110000, 110100, 110101, '北京,北京市,东城区', '收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人收货人', '', '', '15625077763', '', '', '', 0, '', 2, 'balance', '余额支付', 1, 210.00, 0, 0.00, 0.00, 210.00, 210.00, 0.00, 1558516083, 1558516084, 0, 1558516084, 0, 0, 0, 1558516084, '', 0.00, 0.00, 0.00, 2.10, 0.00, 0, 'P00041', NULL, 1, 0, '', '::1', 0, 0, 0, 120.00, 0.00, 0, '', '', 1, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -7988,11 +8025,11 @@ CREATE TABLE `shop_order_log` (
   `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态',
   `shipping_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '发货状态',
   `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '支付状态',
-  `log_info` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `log_info` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '备注',
   `log_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '记录时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `order_id` (`order_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8 COMMENT='订单操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=492 DEFAULT CHARSET=utf8mb4 COMMENT='订单操作日志';
 
 -- ----------------------------
 -- Records of shop_order_log
@@ -8390,6 +8427,63 @@ INSERT INTO `shop_order_log` VALUES (431, 166, 10002, 1, 1, 1, '操作发货', 1
 INSERT INTO `shop_order_log` VALUES (432, 166, 10002, 1, 2, 1, '设为签收', 1558515297);
 INSERT INTO `shop_order_log` VALUES (433, 167, 0, 0, 0, 0, '生成订单', 1558516083);
 INSERT INTO `shop_order_log` VALUES (434, 167, 0, 1, 0, 1, '余额支付成功.', 1558516084);
+INSERT INTO `shop_order_log` VALUES (435, 139, 10002, 1, 1, 1, '自动签收', 1562641305);
+INSERT INTO `shop_order_log` VALUES (436, 139, 10002, 1, 1, 1, '自动签收', 1562641310);
+INSERT INTO `shop_order_log` VALUES (437, 139, 10002, 1, 1, 1, '自动签收', 1562641350);
+INSERT INTO `shop_order_log` VALUES (438, 139, 10002, 1, 1, 1, '自动签收', 1562650425);
+INSERT INTO `shop_order_log` VALUES (439, 139, 10002, 1, 1, 1, '自动签收', 1562650430);
+INSERT INTO `shop_order_log` VALUES (440, 139, 10002, 1, 1, 1, '自动签收', 1562651260);
+INSERT INTO `shop_order_log` VALUES (441, 139, 10002, 1, 1, 1, '自动签收', 1562671721);
+INSERT INTO `shop_order_log` VALUES (442, 139, 10002, 1, 1, 1, '自动签收', 1562922335);
+INSERT INTO `shop_order_log` VALUES (443, 139, 10002, 1, 1, 1, '自动签收', 1562991916);
+INSERT INTO `shop_order_log` VALUES (444, 139, 10002, 1, 1, 1, '自动签收', 1562994349);
+INSERT INTO `shop_order_log` VALUES (445, 139, 10002, 1, 1, 1, '自动签收', 1563154457);
+INSERT INTO `shop_order_log` VALUES (446, 139, 10002, 1, 1, 1, '自动签收', 1563177136);
+INSERT INTO `shop_order_log` VALUES (447, 139, 10002, 1, 1, 1, '自动签收', 1563182026);
+INSERT INTO `shop_order_log` VALUES (448, 139, 10002, 1, 1, 1, '自动签收', 1563420031);
+INSERT INTO `shop_order_log` VALUES (449, 139, 10002, 1, 1, 1, '自动签收', 1563420317);
+INSERT INTO `shop_order_log` VALUES (450, 139, 10002, 1, 1, 1, '自动签收', 1563429475);
+INSERT INTO `shop_order_log` VALUES (451, 139, 10002, 1, 1, 1, '自动签收', 1563429846);
+INSERT INTO `shop_order_log` VALUES (452, 139, 10002, 1, 1, 1, '自动签收', 1563429861);
+INSERT INTO `shop_order_log` VALUES (453, 139, 10002, 1, 1, 1, '自动签收', 1563433958);
+INSERT INTO `shop_order_log` VALUES (454, 139, 10002, 1, 1, 1, '自动签收', 1563433997);
+INSERT INTO `shop_order_log` VALUES (455, 139, 10002, 1, 1, 1, '自动签收', 1563434002);
+INSERT INTO `shop_order_log` VALUES (456, 139, 10002, 1, 1, 1, '自动签收', 1563434050);
+INSERT INTO `shop_order_log` VALUES (457, 139, 10002, 1, 1, 1, '自动签收', 1563434102);
+INSERT INTO `shop_order_log` VALUES (458, 139, 10002, 1, 1, 1, '自动签收', 1563434118);
+INSERT INTO `shop_order_log` VALUES (459, 139, 10002, 1, 1, 1, '自动签收', 1563434130);
+INSERT INTO `shop_order_log` VALUES (460, 139, 10002, 1, 1, 1, '自动签收', 1563434179);
+INSERT INTO `shop_order_log` VALUES (461, 139, 10002, 1, 1, 1, '自动签收', 1563434183);
+INSERT INTO `shop_order_log` VALUES (462, 139, 10002, 1, 1, 1, '自动签收', 1563434191);
+INSERT INTO `shop_order_log` VALUES (463, 139, 10002, 1, 1, 1, '自动签收', 1563434214);
+INSERT INTO `shop_order_log` VALUES (464, 139, 10002, 1, 1, 1, '自动签收', 1563434329);
+INSERT INTO `shop_order_log` VALUES (465, 139, 10002, 1, 1, 1, '自动签收', 1563434369);
+INSERT INTO `shop_order_log` VALUES (466, 139, 10002, 1, 1, 1, '自动签收', 1563435812);
+INSERT INTO `shop_order_log` VALUES (467, 139, 10002, 1, 1, 1, '自动签收', 1563435814);
+INSERT INTO `shop_order_log` VALUES (468, 139, 10002, 1, 1, 1, '自动签收', 1563435874);
+INSERT INTO `shop_order_log` VALUES (469, 139, 10002, 1, 1, 1, '自动签收', 1563435876);
+INSERT INTO `shop_order_log` VALUES (470, 139, 10002, 1, 1, 1, '自动签收', 1563435912);
+INSERT INTO `shop_order_log` VALUES (471, 139, 10002, 1, 1, 1, '自动签收', 1563435917);
+INSERT INTO `shop_order_log` VALUES (472, 139, 10002, 1, 1, 1, '自动签收', 1563435923);
+INSERT INTO `shop_order_log` VALUES (473, 139, 10002, 1, 1, 1, '自动签收', 1563436203);
+INSERT INTO `shop_order_log` VALUES (474, 139, 10002, 1, 1, 1, '自动签收', 1563437241);
+INSERT INTO `shop_order_log` VALUES (475, 139, 10002, 1, 1, 1, '自动签收', 1563437241);
+INSERT INTO `shop_order_log` VALUES (476, 139, 10002, 1, 1, 1, '自动签收', 1563441488);
+INSERT INTO `shop_order_log` VALUES (477, 139, 10002, 1, 1, 1, '自动签收', 1563501445);
+INSERT INTO `shop_order_log` VALUES (478, 139, 10002, 1, 1, 1, '自动签收', 1563517942);
+INSERT INTO `shop_order_log` VALUES (479, 139, 10002, 1, 1, 1, '自动签收', 1563779090);
+INSERT INTO `shop_order_log` VALUES (480, 139, 10002, 1, 1, 1, '自动签收', 1563787507);
+INSERT INTO `shop_order_log` VALUES (481, 139, 10002, 1, 1, 1, '自动签收', 1563867756);
+INSERT INTO `shop_order_log` VALUES (482, 139, 10002, 1, 1, 1, '自动签收', 1563932545);
+INSERT INTO `shop_order_log` VALUES (483, 139, 10002, 1, 1, 1, '自动签收', 1563934113);
+INSERT INTO `shop_order_log` VALUES (484, 139, 10002, 1, 1, 1, '自动签收', 1563936866);
+INSERT INTO `shop_order_log` VALUES (485, 139, 10002, 1, 1, 1, '自动签收', 1563936870);
+INSERT INTO `shop_order_log` VALUES (486, 139, 10002, 1, 1, 1, '自动签收', 1563936876);
+INSERT INTO `shop_order_log` VALUES (487, 139, 10002, 1, 1, 1, '自动签收', 1563936879);
+INSERT INTO `shop_order_log` VALUES (488, 139, 10002, 1, 1, 1, '自动签收', 1563936881);
+INSERT INTO `shop_order_log` VALUES (489, 139, 10002, 1, 1, 1, '自动签收', 1563936930);
+INSERT INTO `shop_order_log` VALUES (490, 139, 10002, 1, 1, 1, '自动签收', 1563936945);
+INSERT INTO `shop_order_log` VALUES (491, 139, 10002, 1, 1, 1, '自动签收', 1563937301);
 COMMIT;
 
 -- ----------------------------
@@ -8404,13 +8498,13 @@ CREATE TABLE `shop_page_theme` (
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`st_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='自定义首页表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='自定义首页表';
 
 -- ----------------------------
 -- Records of shop_page_theme
 -- ----------------------------
 BEGIN;
-INSERT INTO `shop_page_theme` VALUES (1, 'fresh', '05', '{\"pageElement\":[{\"componentId\":\"\",\"componentName\":\"\\u5e7b\\u706f\\u7247\",\"componentType\":\"slideshow\",\"rtl\":0,\"hasBorder\":\"no\",\"autoplayTimeout\":3000,\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u56fe1\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703150243_c.jpg\",\"link\":\"\"},{\"name\":\"\\u56fe2\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703151782_c.png\",\"link\":\"\"},{\"name\":\"\\u56fe3\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703152575_c.jpg\",\"link\":\"\"}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"search\",\"componentName\":\"\\u641c\\u7d22\\u6761\",\"placeholder\":\"\\u8bf7\\u8f93\\u5165\\u5546\\u54c1\\u540d\\u79f0\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-2\",\"logo\":\"\\/static\\/editPage\\/images\\/search\\/images\\/default_logo.png\",\"free\":true},{\"hasTitle\":\"no\",\"componentType\":\"mainmenu\",\"componentId\":\"\",\"componentName\":\"\\u4e3b\\u83dc\\u5355\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"0\":{\"name\":\"\\u9996\\u9875\",\"active\":1,\"visible\":1},\"12\":{\"id\":2,\"name\":\"\\u5316\\u5986\\u54c1\",\"visible\":1,\"active\":0},\"13\":{\"id\":5,\"name\":\"\\u6570\\u7801\\u4ea7\\u54c1\",\"visible\":1,\"active\":0},\"14\":{\"id\":9,\"name\":\"\\u670d\\u88c5\",\"visible\":1,\"active\":0}},\"free\":true},{\"componentId\":\"\",\"componentType\":\"products\",\"hasTitle\":\"yes\",\"componentName\":\"\\u5546\\u54c1\\u6a71\\u7a97\",\"titleTheme\":\"title-theme-1\",\"hasBorder\":\"no\",\"hasMarginTop\":\"no\",\"showSaleNum\":\"yes\",\"dataLimit\":4,\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"tabsVisible\":0,\"tabsWidth\":\"50.00%\",\"activeTab\":0,\"data\":[{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u4e00\",\"visible\":1,\"products\":[{\"id\":\"T1\"},{\"id\":\"T2\"},{\"id\":4}]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u4e8c\",\"visible\":false,\"products\":[]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u4e09\",\"visible\":0,\"products\":[]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u56db\",\"visible\":0,\"products\":[]}],\"free\":true,\"toggle\":0.94445370729662},{\"componentId\":\"\",\"componentType\":\"exttypeset\",\"componentName\":\"\\u6269\\u5c55\\u6392\\u7248\",\"hasTitle\":\"yes\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_7\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u6807\\u98981\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":1},{\"name\":\"\\u6807\\u98982\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":2},{\"name\":\"\\u6807\\u98983\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":3},{\"name\":\"\\u6807\\u98984\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":4},{\"name\":\"\\u6807\\u98985\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":5}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"extmenu\",\"componentName\":\"\\u81ea\\u5b9a\\u83dc\\u5355\",\"hasTitle\":\"yes\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"ads\",\"componentName\":\"\\u5e7f\\u544a\\u56fe\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"yes\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"name\":\"\\u56fe1\",\"src\":\"\\/.\\/upload\\/adorn\\/ads\\/19010703083640.jpg\",\"link\":\"\"},\"free\":true},{\"componentId\":\"\",\"componentType\":\"navigator\",\"componentName\":\"\\u5bfc\\u822a\\u680f\",\"titleTheme\":\"title-theme-1\",\"hasBorder\":\"no\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u8d2d\\u7269\\u8f66\",\"code\":\"shopping-cart\",\"link\":\"Flow\\/cart\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u8ba2\\u5355\",\"code\":\"orders\",\"link\":\"Order\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u4fe1\\u606f\",\"code\":\"collect\",\"link\":\"Center\\/myInfo\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e2a\\u4eba\\u4e2d\\u5fc3\",\"code\":\"profile\",\"link\":\"Center\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u90e8\\u5206\\u7c7b\",\"code\":\"categories\",\"link\":\"Goods\\/categories\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6b63\\u54c1\\u4fdd\\u969c\",\"code\":\"guarantee\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e03\\u5929\\u9000\\u6362\",\"code\":\"returns\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u514d\\u8d39\\u7ef4\\u62a4\",\"code\":\"maintain\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u573a\\u5305\\u90ae\",\"code\":\"postage\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u95ea\\u7535\\u53d1\\u8d27\",\"code\":\"deliver\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u8d27\\u5230\\u4ed8\\u6b3e\",\"code\":\"cod\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5ba2\\u6237\\u670d\\u52a1\",\"code\":\"service\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"}],\"free\":true},{\"hasTitle\":\"no\",\"componentType\":\"mainmenu\",\"componentId\":\"\",\"componentName\":\"\\u4e3b\\u83dc\\u5355\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"0\":{\"name\":\"\\u9996\\u9875\",\"active\":1,\"visible\":1},\"4\":{\"id\":2,\"name\":\"\\u5316\\u5986\\u54c1\",\"visible\":1,\"active\":0},\"5\":{\"id\":5,\"name\":\"\\u6570\\u7801\\u4ea7\\u54c1\",\"visible\":1,\"active\":0},\"6\":{\"id\":9,\"name\":\"\\u670d\\u88c5\",\"visible\":1,\"active\":0}},\"free\":true}]}', 1545803903, 1547725904);
+INSERT INTO `shop_page_theme` VALUES (1, 'fresh', '07', '{\"pageElement\":[{\"componentId\":\"\",\"componentType\":\"search\",\"componentName\":\"\\u641c\\u7d22\\u6761\",\"placeholder\":\"\\u8bf7\\u8f93\\u5165\\u5546\\u54c1\\u540d\\u79f0\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_5\",\"themeId\":\"theme-2\",\"logo\":\"\\/static\\/editPage\\/images\\/search\\/images\\/default_logo.png\",\"free\":true},{\"componentId\":\"\",\"componentName\":\"\\u5e7b\\u706f\\u7247\",\"componentType\":\"slideshow\",\"rtl\":0,\"hasBorder\":\"no\",\"autoplayTimeout\":3000,\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u56fe1\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703150243_c.jpg\",\"link\":\"\"},{\"name\":\"\\u56fe2\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703151782_c.png\",\"link\":\"\"},{\"name\":\"\\u56fe3\",\"src\":\"\\/.\\/upload\\/adorn\\/slide\\/19010703152575_c.jpg\",\"link\":\"\"}],\"free\":true},{\"hasTitle\":\"no\",\"componentType\":\"mainmenu\",\"componentId\":\"\",\"componentName\":\"\\u4e3b\\u83dc\\u5355\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"0\":{\"name\":\"\\u9996\\u9875\",\"active\":1,\"visible\":1},\"30\":{\"id\":2,\"name\":\"\\u5316\\u5986\\u54c1\",\"visible\":1,\"active\":0},\"31\":{\"id\":5,\"name\":\"\\u6570\\u7801\\u4ea7\\u54c1\",\"visible\":1,\"active\":0},\"32\":{\"id\":9,\"name\":\"\\u670d\\u88c5\",\"visible\":1,\"active\":0}},\"free\":true},{\"componentId\":\"\",\"componentType\":\"products\",\"hasTitle\":\"yes\",\"componentName\":\"\\u5546\\u54c1\\u6a71\\u7a97\",\"titleTheme\":\"title-theme-1\",\"hasBorder\":\"no\",\"hasMarginTop\":\"no\",\"showSaleNum\":\"no\",\"dataLimit\":5,\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"tabsVisible\":1,\"tabsWidth\":\"50.00%\",\"activeTab\":0,\"data\":[{\"goodsDataType\":\"new\",\"goodsVisible\":0,\"tabName\":\"\\u6807\\u7b7e\",\"visible\":1,\"products\":[{\"id\":\"T1\"},{\"id\":\"T2\"}]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u4e8c\",\"visible\":true,\"products\":[{\"id\":122}]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u4e09\",\"visible\":0,\"products\":[]},{\"goodsDataType\":\"custom\",\"goodsVisible\":1,\"tabName\":\"\\u6807\\u7b7e\\u56db\",\"visible\":0,\"products\":[]}],\"free\":true,\"toggle\":0.684190860017},{\"componentId\":\"\",\"componentType\":\"exttypeset\",\"componentName\":\"\\u6269\\u5c55\\u6392\\u7248\",\"hasTitle\":\"yes\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_4\",\"themeId\":\"theme-1\",\"data\":[{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":1},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":2},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":3},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":4}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"ads\",\"componentName\":\"\\u5e7f\\u544a\\u56fe\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"name\":\"\\u56fe1\",\"src\":\"\\/static\\/editPage\\/images\\/ads\\/images\\/ad.png\",\"link\":\"\"},\"free\":true},{\"componentId\":\"\",\"componentType\":\"exttypeset\",\"componentName\":\"\\u6269\\u5c55\\u6392\\u7248\",\"hasTitle\":\"no\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"yes\",\"templateId\":\"tpl_3\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u6807\\u98981\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":1},{\"name\":\"\\u6807\\u98982\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":2},{\"name\":\"\\u6807\\u98983\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":3},{\"name\":\"\\u6807\\u98984\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":4},{\"name\":\"\\u6807\\u98985\",\"nameb\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\",\"key\":5}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"navigator\",\"componentName\":\"\\u5bfc\\u822a\\u680f\",\"titleTheme\":\"title-theme-1\",\"hasBorder\":\"no\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u8d2d\\u7269\\u8f66\",\"code\":\"shopping-cart\",\"link\":\"shop\\/flow\\/cart\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u8ba2\\u5355\",\"code\":\"orders\",\"link\":\"shop\\/order\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u4fe1\\u606f\",\"code\":\"collect\",\"link\":\"member\\/center\\/userinfo\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e2a\\u4eba\\u4e2d\\u5fc3\",\"code\":\"profile\",\"link\":\"member\\/center\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u90e8\\u5206\\u7c7b\",\"code\":\"categories\",\"link\":\"shop\\/index\\/allsort\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6b63\\u54c1\\u4fdd\\u969c\",\"code\":\"guarantee\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e03\\u5929\\u9000\\u6362\",\"code\":\"returns\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u514d\\u8d39\\u7ef4\\u62a4\",\"code\":\"maintain\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u573a\\u5305\\u90ae\",\"code\":\"postage\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u95ea\\u7535\\u53d1\\u8d27\",\"code\":\"deliver\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u8d27\\u5230\\u4ed8\\u6b3e\",\"code\":\"cod\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5ba2\\u6237\\u670d\\u52a1\",\"code\":\"service\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"exttypeset\",\"componentName\":\"\\u6269\\u5c55\\u6392\\u7248\",\"hasTitle\":\"yes\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_7\",\"themeId\":\"theme-1\",\"data\":[{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\\/shop\\/goods\\/index\\/cid\\/5\",\"key\":1},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\\/shop\\/goods\\/info\\/id\\/123\",\"key\":2},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\\/shop\\/article\\/info\\/id\\/3\",\"key\":3},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\\/shop\\/goods\\/index\",\"key\":4},{\"src\":\"\\/static\\/editPage\\/images\\/exttypeset\\/images\\/d.png\",\"link\":\"\\/member\\/center\\/userinfo\",\"key\":5}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"extmenu\",\"componentName\":\"\\u81ea\\u5b9a\\u83dc\\u5355\",\"hasTitle\":\"yes\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"},{\"name\":\"\",\"src\":\"\\/static\\/editPage\\/images\\/extmenu\\/images\\/d.png\",\"link\":\"\",\"width\":\"25%\"}],\"free\":true},{\"componentId\":\"\",\"componentType\":\"navigator\",\"componentName\":\"\\u5bfc\\u822a\\u680f\",\"titleTheme\":\"title-theme-1\",\"hasBorder\":\"no\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":[{\"name\":\"\\u8d2d\\u7269\\u8f66\",\"code\":\"shopping-cart\",\"link\":\"Flow\\/cart\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u8ba2\\u5355\",\"code\":\"orders\",\"link\":\"Order\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6211\\u7684\\u4fe1\\u606f\",\"code\":\"collect\",\"link\":\"Center\\/myInfo\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e2a\\u4eba\\u4e2d\\u5fc3\",\"code\":\"profile\",\"link\":\"Center\\/index\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u90e8\\u5206\\u7c7b\",\"code\":\"categories\",\"link\":\"Goods\\/categories\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u6b63\\u54c1\\u4fdd\\u969c\",\"code\":\"guarantee\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u4e03\\u5929\\u9000\\u6362\",\"code\":\"returns\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u514d\\u8d39\\u7ef4\\u62a4\",\"code\":\"maintain\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5168\\u573a\\u5305\\u90ae\",\"code\":\"postage\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u95ea\\u7535\\u53d1\\u8d27\",\"code\":\"deliver\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u8d27\\u5230\\u4ed8\\u6b3e\",\"code\":\"cod\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"},{\"name\":\"\\u5ba2\\u6237\\u670d\\u52a1\",\"code\":\"service\",\"link\":\"#\",\"visible\":1,\"width\":\"8%\"}],\"free\":true},{\"hasTitle\":\"no\",\"componentType\":\"mainmenu\",\"componentId\":\"\",\"componentName\":\"\\u4e3b\\u83dc\\u5355\",\"titleTheme\":\"title-theme-1\",\"hasMarginTop\":\"no\",\"templateId\":\"tpl_1\",\"themeId\":\"theme-1\",\"data\":{\"0\":{\"name\":\"\\u9996\\u9875\",\"active\":1,\"visible\":1},\"22\":{\"id\":2,\"name\":\"\\u5316\\u5986\\u54c1\",\"visible\":1,\"active\":0},\"23\":{\"id\":5,\"name\":\"\\u6570\\u7801\\u4ea7\\u54c1\",\"visible\":1,\"active\":0},\"24\":{\"id\":9,\"name\":\"\\u670d\\u88c5\",\"visible\":1,\"active\":0}},\"free\":true}]}', 1545803903, 1563182423);
 COMMIT;
 
 -- ----------------------------
@@ -8419,22 +8513,22 @@ COMMIT;
 DROP TABLE IF EXISTS `shop_shipping`;
 CREATE TABLE `shop_shipping` (
   `shipping_id` tinyint(6) unsigned NOT NULL AUTO_INCREMENT,
-  `shipping_code` varchar(20) NOT NULL COMMENT '快递编号',
-  `shipping_name` varchar(120) NOT NULL DEFAULT '' COMMENT '快递名称',
-  `shipping_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '快递简介',
+  `shipping_code` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '快递编号',
+  `shipping_name` varchar(120) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '快递名称',
+  `shipping_desc` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '快递简介',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否启用',
   `support_cod` tinyint(1) DEFAULT '0' COMMENT '是否支付货到付款',
   `is_front` tinyint(1) DEFAULT '0' COMMENT '是否前台选择',
   `is_zt` tinyint(1) DEFAULT '0' COMMENT '是否自提',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `is_sys` tinyint(1) DEFAULT '0' COMMENT '系统定义',
-  `kdn_code` varchar(20) DEFAULT '' COMMENT '快递鸟编号',
-  `customer_name` varchar(50) DEFAULT '' COMMENT '电子面单客户号（快递鸟）',
-  `customer_pwd` varchar(255) DEFAULT '' COMMENT '电子面单密码（快递鸟）',
+  `kdn_code` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '快递鸟编号',
+  `customer_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '电子面单客户号（快递鸟）',
+  `customer_pwd` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '电子面单密码（快递鸟）',
   PRIMARY KEY (`shipping_id`) USING BTREE,
   KEY `kd_type` (`kdn_code`) USING BTREE,
   KEY `shipping_code` (`shipping_code`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='快递列表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='快递列表';
 
 -- ----------------------------
 -- Records of shop_shipping
@@ -8470,7 +8564,7 @@ CREATE TABLE `shop_shipping_log` (
   `data` text CHARACTER SET utf8 COMMENT '内容',
   `update_time` int(10) DEFAULT '0' COMMENT '最近更新时间',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物流信息日志表';
 
 -- ----------------------------
 -- Records of shop_shipping_log
@@ -8510,16 +8604,16 @@ COMMIT;
 DROP TABLE IF EXISTS `shop_slide`;
 CREATE TABLE `shop_slide` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `imgurl` varchar(150) DEFAULT '' COMMENT '幻灯图片地址',
-  `bind_type` varchar(20) DEFAULT NULL COMMENT '绑定链接类型',
+  `imgurl` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '幻灯图片地址',
+  `bind_type` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '绑定链接类型',
   `ext_id` mediumint(8) DEFAULT NULL COMMENT '额外ID,关联文章、商品ID',
-  `data` varchar(150) DEFAULT '' COMMENT '绑定URL',
+  `data` varchar(150) CHARACTER SET utf8 DEFAULT '' COMMENT '绑定URL',
   `status` tinyint(1) DEFAULT '1' COMMENT '是否启用（1是 2否）',
   `sort_order` smallint(5) DEFAULT '0' COMMENT '排序',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商城首页幻灯片';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商城首页幻灯片';
 
 -- ----------------------------
 -- Records of shop_slide
@@ -8534,31 +8628,31 @@ COMMIT;
 DROP TABLE IF EXISTS `supplyer`;
 CREATE TABLE `supplyer` (
   `supplyer_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `supplyer_name` varchar(20) NOT NULL COMMENT '供应商名称',
-  `password` varchar(32) NOT NULL COMMENT '供应商密码',
-  `info` varchar(255) DEFAULT '' COMMENT '简介',
-  `moblie` varchar(15) DEFAULT '' COMMENT '联系电话',
-  `consignee` varchar(10) DEFAULT '' COMMENT '联系人',
+  `supplyer_name` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '供应商名称',
+  `password` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '供应商密码',
+  `info` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '简介',
+  `moblie` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '联系电话',
+  `consignee` varchar(10) CHARACTER SET utf8 DEFAULT '' COMMENT '联系人',
   `province` mediumint(8) DEFAULT '0' COMMENT '省份',
   `city` mediumint(8) DEFAULT '0' COMMENT '城市',
   `district` mediumint(8) DEFAULT '0' COMMENT '区域',
-  `merger_name` varchar(20) DEFAULT '' COMMENT '省市区',
-  `address` varchar(120) DEFAULT '' COMMENT '联系地址',
+  `merger_name` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '省市区',
+  `address` varchar(120) CHARACTER SET utf8 DEFAULT '' COMMENT '联系地址',
   `sales_amount` decimal(10,2) DEFAULT '0.00' COMMENT '历史销售金额',
   `balance_money` decimal(10,2) DEFAULT '0.00' COMMENT '帐户余额，只用于提现',
-  `return_consignee` varchar(50) DEFAULT NULL COMMENT '退货收货人',
-  `return_mobile` varchar(30) DEFAULT NULL COMMENT '退货联系电话',
-  `return_addrss` varchar(150) DEFAULT NULL COMMENT '退货地址',
-  `return_desc` varchar(255) DEFAULT NULL COMMENT '退货说明',
+  `return_consignee` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '退货收货人',
+  `return_mobile` varchar(30) CHARACTER SET utf8 DEFAULT NULL COMMENT '退货联系电话',
+  `return_addrss` varchar(150) CHARACTER SET utf8 DEFAULT NULL COMMENT '退货地址',
+  `return_desc` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '退货说明',
   `is_ban` tinyint(1) DEFAULT '0' COMMENT '是否封禁（1是 0否）',
   `login_time` int(10) DEFAULT '0' COMMENT '最近登陆时间',
-  `login_ip` varchar(15) DEFAULT '' COMMENT '最近登陆IP',
+  `login_ip` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '最近登陆IP',
   `last_login_time` int(10) DEFAULT '0' COMMENT '上次登陆时间',
-  `last_login_ip` varchar(15) DEFAULT '' COMMENT '上次登陆IP',
+  `last_login_ip` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '上次登陆IP',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`supplyer_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商品供应商表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='商品供应商表';
 
 -- ----------------------------
 -- Records of supplyer
@@ -8578,7 +8672,7 @@ CREATE TABLE `supplyer_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `supplyer_id` mediumint(8) DEFAULT '0' COMMENT '供应商ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商登陆日志';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商登陆日志';
 
 -- ----------------------------
 -- Records of supplyer_log_login
@@ -8630,7 +8724,7 @@ CREATE TABLE `supplyer_log_sys` (
   `module` varchar(50) DEFAULT '' COMMENT '操作模块',
   `edit_id` int(10) DEFAULT '0' COMMENT '影响ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=563 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='后台操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Table structure for supplyer_menu_list
@@ -8648,7 +8742,7 @@ CREATE TABLE `supplyer_menu_list` (
   `icon` varchar(20) DEFAULT '' COMMENT '图标',
   `sort_order` tinyint(1) DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商后台菜单列表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 COMMENT='供应商后台菜单列表';
 
 -- ----------------------------
 -- Records of supplyer_menu_list
@@ -8718,15 +8812,15 @@ CREATE TABLE `users` (
   `user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `pid` mediumint(9) DEFAULT '0' COMMENT '介绍人',
   `role_id` mediumint(8) DEFAULT '0' COMMENT '分佣身份ID',
-  `mobile` varchar(35) DEFAULT '' COMMENT '用户手机',
-  `user_name` varchar(35) DEFAULT '' COMMENT '用户名',
-  `password` varchar(32) DEFAULT '' COMMENT '用户密码',
-  `pay_password` varchar(32) DEFAULT '' COMMENT '支付密码',
-  `nick_name` varchar(20) DEFAULT '' COMMENT '昵称',
-  `headimgurl` varchar(255) DEFAULT '' COMMENT '头像',
+  `mobile` varchar(35) CHARACTER SET utf8 DEFAULT '' COMMENT '用户手机',
+  `user_name` varchar(35) CHARACTER SET utf8 DEFAULT '' COMMENT '用户名',
+  `password` varchar(32) CHARACTER SET utf8 DEFAULT '' COMMENT '用户密码',
+  `pay_password` varchar(32) CHARACTER SET utf8 DEFAULT '' COMMENT '支付密码',
+  `nick_name` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '昵称',
+  `headimgurl` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '头像',
   `birthday` date DEFAULT NULL COMMENT '生日',
-  `token` varchar(20) DEFAULT '' COMMENT '个人随机识别码',
-  `signature` varchar(20) DEFAULT '' COMMENT '个性签名',
+  `token` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '个人随机识别码',
+  `signature` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '个性签名',
   `show_mobile` tinyint(1) DEFAULT '0' COMMENT '显示手机',
   `province` mediumint(8) DEFAULT '0' COMMENT '省份',
   `city` mediumint(8) DEFAULT '0' COMMENT '城市',
@@ -8738,9 +8832,9 @@ CREATE TABLE `users` (
   `last_buy_time` int(10) DEFAULT '0' COMMENT '最近消费时间',
   `last_up_role_time` int(10) DEFAULT '0' COMMENT '最近升级会员时间',
   `login_time` int(10) DEFAULT '0' COMMENT '最近登陆时间',
-  `login_ip` varchar(15) DEFAULT '' COMMENT '最近登陆IP',
+  `login_ip` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '最近登陆IP',
   `last_login_time` int(10) DEFAULT '0' COMMENT '上次登陆时间',
-  `last_login_ip` varchar(15) DEFAULT '' COMMENT '上次登陆IP',
+  `last_login_ip` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '上次登陆IP',
   `is_ban` tinyint(1) DEFAULT '0' COMMENT '是否封禁（1是 0否）',
   `login_odd_time` int(10) DEFAULT '0' COMMENT '登陆异常时间',
   `login_odd_num` int(10) DEFAULT '0' COMMENT '登陆异常次数，超过10次限制登陆',
@@ -8750,7 +8844,7 @@ CREATE TABLE `users` (
   KEY `pid` (`pid`) USING BTREE,
   KEY `mobile` (`mobile`) USING BTREE,
   KEY `nick_name` (`nick_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员表';
 
 -- ----------------------------
 -- Table structure for users_account
@@ -8783,16 +8877,16 @@ CREATE TABLE `users_account_log` (
   `use_integral` int(10) NOT NULL DEFAULT '0' COMMENT '消费积分,可以用于兑换-调整值',
   `old_use_integral` int(10) DEFAULT '0' COMMENT '更换前-消费积分',
   `change_time` int(10) unsigned NOT NULL COMMENT '操作时间',
-  `change_ip` varchar(30) DEFAULT NULL COMMENT '操作IP',
-  `change_desc` varchar(255) NOT NULL COMMENT '操作备注',
-  `change_type` tinyint(3) unsigned NOT NULL COMMENT '更改类型：1人工调整,2订单赠送,3商城购物,4佣金收入,5提现,6充值,7注册,8兑换,9售后',
-  `sign` varchar(32) DEFAULT '' COMMENT '签名',
-  `by_id` mediumint(8) DEFAULT '0' COMMENT '相关ID，1为后台管理员ID，2,3，4为订单ID',
+  `change_ip` varchar(30) CHARACTER SET utf8 DEFAULT NULL COMMENT '操作IP',
+  `change_desc` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '操作备注',
+  `change_type` tinyint(3) unsigned NOT NULL COMMENT '更改类型：1人工调整,2订单赠送,3商城购物,4佣金收入,5提现,6充值,7注册,8兑换,9售后,10身份订单佣金',
+  `sign` varchar(32) CHARACTER SET utf8 DEFAULT '' COMMENT '签名',
+  `by_id` mediumint(8) DEFAULT '0' COMMENT '相关ID，1为后台管理员ID，2,3,4为订单ID，10身份订单佣金',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `change_type` (`change_type`) USING BTREE,
   KEY `by_id` (`by_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
 
 -- ----------------------------
 -- Table structure for users_address
@@ -8801,33 +8895,34 @@ DROP TABLE IF EXISTS `users_address`;
 CREATE TABLE `users_address` (
   `address_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '关联用户ID',
-  `consignee` varchar(60) NOT NULL DEFAULT '' COMMENT '收货人',
+  `consignee` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '收货人',
   `province` mediumint(8) NOT NULL DEFAULT '0' COMMENT '省份',
   `city` mediumint(8) NOT NULL DEFAULT '0' COMMENT '城市',
   `district` mediumint(8) NOT NULL DEFAULT '0' COMMENT '区域',
-  `merger_name` varchar(50) DEFAULT '' COMMENT '省市区',
-  `address` varchar(120) NOT NULL DEFAULT '' COMMENT '收货地址',
-  `zipcode` varchar(60) DEFAULT '' COMMENT '邮编',
-  `tel` varchar(60) NOT NULL DEFAULT '' COMMENT '其它电话',
-  `mobile` varchar(60) NOT NULL DEFAULT '' COMMENT '手机',
+  `merger_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '省市区',
+  `address` varchar(120) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '收货地址',
+  `zipcode` varchar(60) CHARACTER SET utf8 DEFAULT '' COMMENT '邮编',
+  `tel` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '其它电话',
+  `mobile` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '手机',
   `is_default` tinyint(1) DEFAULT '0' COMMENT '默认',
-  `best_time` varchar(120) NOT NULL DEFAULT '' COMMENT '收货时间',
+  `best_time` varchar(120) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '收货时间',
   PRIMARY KEY (`address_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户地址表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户地址表';
 
 -- ----------------------------
 -- Table structure for users_bind
 -- ----------------------------
 DROP TABLE IF EXISTS `users_bind`;
 CREATE TABLE `users_bind` (
+  `bid` bigint(15) NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(8) NOT NULL COMMENT '用户ID',
   `pid` mediumint(8) NOT NULL COMMENT '关联上级',
   `level` tinyint(1) NOT NULL COMMENT '关联等级',
-  PRIMARY KEY (`user_id`,`pid`) USING BTREE,
+  PRIMARY KEY (`bid`) USING BTREE,
   KEY `pid` (`pid`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='会员关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员关系表';
 
 -- ----------------------------
 -- Table structure for users_level
@@ -8835,12 +8930,12 @@ CREATE TABLE `users_bind` (
 DROP TABLE IF EXISTS `users_level`;
 CREATE TABLE `users_level` (
   `level_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `level_name` varchar(50) DEFAULT '' COMMENT '等级名称',
+  `level_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '等级名称',
   `min` bigint(15) DEFAULT '0' COMMENT '积分下限',
   `max` bigint(15) DEFAULT '0' COMMENT '积分上限',
   `level_pro` decimal(10,2) DEFAULT '0.00' COMMENT '等级折扣',
   PRIMARY KEY (`level_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员等级表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员等级表';
 
 -- ----------------------------
 -- Table structure for users_log_login
@@ -8852,7 +8947,7 @@ CREATE TABLE `users_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '会员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
 
 -- ----------------------------
 -- Table structure for users_log_sys
@@ -8911,7 +9006,7 @@ CREATE TABLE `users_withdraw_account` (
   `is_del` tinyint(1) DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`account_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='提现帐户表';
 
 -- ----------------------------
 -- Table structure for users_withdraw_log
@@ -8919,7 +9014,7 @@ CREATE TABLE `users_withdraw_account` (
 DROP TABLE IF EXISTS `users_withdraw_log`;
 CREATE TABLE `users_withdraw_log` (
   `log_id` bigint(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '申请提现记录ID',
-  `account_id` varchar(15) DEFAULT '' COMMENT '帐号Id',
+  `account_id` varchar(15) CHARACTER SET utf8 DEFAULT '' COMMENT '帐号Id',
   `amount` decimal(10,2) NOT NULL COMMENT '提现金额',
   `withdraw_fee` decimal(10,2) DEFAULT '0.00' COMMENT '提现手续费',
   `user_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
@@ -8928,13 +9023,13 @@ CREATE TABLE `users_withdraw_log` (
   `refuse_time` int(10) DEFAULT '0' COMMENT '拒绝时间',
   `complete_time` int(10) DEFAULT '0' COMMENT '打款时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '修改时间',
-  `admin_note` varchar(255) NOT NULL DEFAULT '' COMMENT '管理员备注',
-  `pay_info` varchar(255) DEFAULT '' COMMENT '打款信息',
+  `admin_note` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '管理员备注',
+  `pay_info` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '打款信息',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态,1拒绝申请，9已打款',
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='提现日志表';
 
 -- ----------------------------
 -- Table structure for weixin_keywords
@@ -8943,15 +9038,15 @@ DROP TABLE IF EXISTS `weixin_keywords`;
 CREATE TABLE `weixin_keywords` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `pid` mediumint(8) DEFAULT '0' COMMENT '关联上级',
-  `keyword` varchar(255) NOT NULL DEFAULT '' COMMENT '关键字',
-  `type` varchar(20) NOT NULL DEFAULT '' COMMENT '类型',
+  `keyword` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '关键字',
+  `type` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '类型',
   `subscribe` tinyint(1) DEFAULT '0' COMMENT '关注回复',
   `default` tinyint(1) DEFAULT '0' COMMENT '默认回复',
-  `bind_type` varchar(20) DEFAULT '' COMMENT '捆绑类型',
-  `title` varchar(100) DEFAULT '' COMMENT '标题',
-  `description` varchar(200) DEFAULT '' COMMENT '简介',
-  `data` varchar(200) DEFAULT '' COMMENT '内容',
-  `imgurl` varchar(200) DEFAULT '' COMMENT '图片',
+  `bind_type` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '捆绑类型',
+  `title` varchar(100) CHARACTER SET utf8 DEFAULT '' COMMENT '标题',
+  `description` varchar(200) CHARACTER SET utf8 DEFAULT '' COMMENT '简介',
+  `data` varchar(200) CHARACTER SET utf8 DEFAULT '' COMMENT '内容',
+  `imgurl` varchar(200) CHARACTER SET utf8 DEFAULT '' COMMENT '图片',
   `ext_id` mediumint(8) DEFAULT '0' COMMENT '额外ID,关联文章、商品ID',
   `is_more` tinyint(1) DEFAULT '0' COMMENT '是否多图文',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态1正常',
@@ -8959,7 +9054,7 @@ CREATE TABLE `weixin_keywords` (
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `pid` (`pid`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信关键字表';
 
 -- ----------------------------
 -- Table structure for weixin_menus
@@ -8968,16 +9063,16 @@ DROP TABLE IF EXISTS `weixin_menus`;
 CREATE TABLE `weixin_menus` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `pid` mediumint(8) unsigned DEFAULT '0' COMMENT '父ID',
-  `name` varchar(30) DEFAULT NULL COMMENT '主菜单名称',
-  `type` varchar(20) DEFAULT NULL COMMENT '关键词类型，1为普通关键字，2为http开头的超链接地址',
+  `name` varchar(30) CHARACTER SET utf8 DEFAULT NULL COMMENT '主菜单名称',
+  `type` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '关键词类型，1为普通关键字，2为http开头的超链接地址',
   `keyword` mediumint(8) DEFAULT '0' COMMENT '关键字ID或文章ID',
-  `keyword_value` varchar(255) DEFAULT NULL COMMENT '关键词或文章标题',
+  `keyword_value` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '关键词或文章标题',
   `sort` mediumint(8) DEFAULT NULL COMMENT '排序',
   `is_show` tinyint(1) DEFAULT '0' COMMENT '是否启用，0关闭，1开启',
   `add_time` int(10) unsigned DEFAULT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信菜单列表';
 
 -- ----------------------------
 -- Table structure for weixin_msg_tpl
@@ -8985,28 +9080,28 @@ CREATE TABLE `weixin_menus` (
 DROP TABLE IF EXISTS `weixin_msg_tpl`;
 CREATE TABLE `weixin_msg_tpl` (
   `tpl_id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `send_scene` varchar(30) DEFAULT '' COMMENT '短信发送场景',
+  `send_scene` varchar(30) CHARACTER SET utf8 DEFAULT '' COMMENT '短信发送场景',
   `status` tinyint(1) DEFAULT '0' COMMENT '是否开启',
-  `type` varchar(10) DEFAULT '' COMMENT '类型',
-  `tpl_name` varchar(50) DEFAULT '' COMMENT '模板名称',
-  `tpl_code` varchar(50) DEFAULT '' COMMENT '短信模板CODE',
-  `tpl_content` varchar(255) DEFAULT '' COMMENT '模板内容',
-  `tpl_keys` varchar(500) DEFAULT '' COMMENT '模板内容key',
-  `url` varchar(255) DEFAULT '' COMMENT '链接地址',
-  `topcolor` varchar(10) DEFAULT '' COMMENT '标题颜色',
-  `first` varchar(255) DEFAULT '' COMMENT '标题内容',
-  `remark` varchar(255) DEFAULT '' COMMENT '备注内容',
+  `type` varchar(10) CHARACTER SET utf8 DEFAULT '' COMMENT '类型',
+  `tpl_name` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '模板名称',
+  `tpl_code` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '短信模板CODE',
+  `tpl_content` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '模板内容',
+  `tpl_keys` varchar(500) CHARACTER SET utf8 DEFAULT '' COMMENT '模板内容key',
+  `url` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '链接地址',
+  `topcolor` varchar(10) CHARACTER SET utf8 DEFAULT '' COMMENT '标题颜色',
+  `first` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '标题内容',
+  `remark` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '备注内容',
   PRIMARY KEY (`tpl_id`) USING BTREE,
   UNIQUE KEY `send_scene` (`send_scene`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='微信消息模板';
 
 -- ----------------------------
 -- Records of weixin_msg_tpl
 -- ----------------------------
 BEGIN;
-INSERT INTO `weixin_msg_tpl` VALUES (1, 'dividend_return_msg', 1, 'dividend', '佣金退回通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已签收，佣金待到帐状态', '如有问题，请联系客服.');
-INSERT INTO `weixin_msg_tpl` VALUES (2, 'dividend_add_msg', 1, 'dividend', '佣金产生通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[产生时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】下单[订单编号]，您获得佣金。', '如有问题，请联系客服.');
-INSERT INTO `weixin_msg_tpl` VALUES (3, 'dividend_arrival_msg', 1, 'dividend', '佣金到帐通知', '1', '', '{\"1\":\"到帐金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[当前时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已完成，佣金已到帐', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (1, 'dividend_return_msg', 1, 'dividend', '佣金退回通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\"}', '/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已签收，佣金待到帐状态', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (2, 'dividend_add_msg', 1, 'dividend', '佣金产生通知', '1', '', '{\"1\":\"金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[产生时间]\"}', '/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】下单[订单编号]，您获得佣金。', '如有问题，请联系客服.');
+INSERT INTO `weixin_msg_tpl` VALUES (3, 'dividend_arrival_msg', 1, 'dividend', '佣金到帐通知', '1', '', '{\"1\":\"到帐金币：[金币数量]，旅游豆：[旅游豆数]\",\"2\":\"[当前时间]\"}', '/member/wallet/index', '#ff0000', '恭喜你的粉丝【[下单会员昵称]】订单[订单编号]已完成，佣金已到帐', '如有问题，请联系客服.');
 INSERT INTO `weixin_msg_tpl` VALUES (4, 'withdraw_apply_msg', 1, 'withdraw', '提现申请通知', '11', '', '{\"1\":\"[提现金额]\",\"2\":\"[申请时间]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '您的帐户刚发起一笔提现申请', '如有问题，请联系客服.');
 INSERT INTO `weixin_msg_tpl` VALUES (5, 'withdraw_ok_msg', 1, 'withdraw', '提现打款通知', '1', '', '{\"1\":\"[提现金额]\"}', 'http://l.my.com/member/wallet/index', '#ff0000', '平台已打款到您的提现帐号', '如有问题，请联系客服.');
 INSERT INTO `weixin_msg_tpl` VALUES (6, 'withdraw_fail_msg', 1, 'withdraw', '提现拒绝通知', '1', '', '{\"1\":\"[客服备注]\",\"2\":\"[拒绝时间]\"}', '', '#ff0000', '您的提现申请失败', '如有问题，请联系客服.');
@@ -9025,17 +9120,17 @@ DROP TABLE IF EXISTS `weixin_users`;
 CREATE TABLE `weixin_users` (
   `wxuid` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '关联用户ID',
-  `wx_openid` varchar(50) NOT NULL COMMENT '微信帐号ID',
-  `wx_nickname` varchar(50) DEFAULT '' COMMENT '呢称',
-  `wx_headimgurl` varchar(255) DEFAULT '' COMMENT '头像',
-  `wx_city` varchar(20) DEFAULT '' COMMENT '城市',
-  `wx_province` varchar(20) DEFAULT '' COMMENT '省份',
-  `sex` varchar(10) DEFAULT '' COMMENT '性别',
+  `wx_openid` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '微信帐号ID',
+  `wx_nickname` varchar(50) CHARACTER SET utf8 DEFAULT '' COMMENT '呢称',
+  `wx_headimgurl` varchar(255) CHARACTER SET utf8 DEFAULT '' COMMENT '头像',
+  `wx_city` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '城市',
+  `wx_province` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '省份',
+  `sex` varchar(10) CHARACTER SET utf8 DEFAULT '' COMMENT '性别',
   `wx_subscribe_time` int(10) DEFAULT '0' COMMENT '关注时间',
   `subscribe` tinyint(1) DEFAULT '0' COMMENT '是否关注',
   `add_time` int(10) unsigned DEFAULT NULL COMMENT '录入时间',
   `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`wxuid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='微信用户表';
 
 SET FOREIGN_KEY_CHECKS = 1;
