@@ -127,7 +127,7 @@ class Index extends AdminController
 
         $this->assign('stats',$stats);
         $this->assign('riqi',json_encode($riqi));
-        return $this->fetch('mainadmin@Index/index');
+        return $this->fetch('mainadmin@index/index');
     }
 
     /*------------------------------------------------------ */
