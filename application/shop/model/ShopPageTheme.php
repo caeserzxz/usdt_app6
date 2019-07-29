@@ -64,8 +64,8 @@ class ShopPageTheme extends Model {
 	{	
 		$rows = json_decode($info['page'],true);		
 		$defPproducts = $this->defPproducts();
-		$goods_cats = Db::name('shop_goods_category')->where(['pid'=>0])->select();
-		$Goods = Db::name('shop_goods');
+		$goods_cats = (new CategoryModel)->where(['pid'=>0])->select();
+		$Goods = new GoodsModel();
 		foreach ($rows['pageElement'] as $key=>$row){
 			//导航处理
 			if ($row['componentType']=='mainmenu'){		
@@ -86,7 +86,7 @@ class ShopPageTheme extends Model {
 			
 				foreach ($row['data'] as $keyb=>$rowb){
 					foreach ($rowb['products'] as $keyc=>$rowc){						
-						if (is_numeric($rowc['id'])){			 
+						if (is_numeric($rowc['id'])){
 							$goods = $Goods->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale')->where('goods_id',$rowc['id'])->find();
 							$rowc['name'] = $goods['goods_name'];
 							$rowc['par_price'] = $goods['market_price'];
@@ -97,7 +97,7 @@ class ShopPageTheme extends Model {
 						}else{
 							$rowc = $defPproducts[$rowc['id']];							
 						}
-						
+
 						$rowb['products'][$keyc] = $rowc;
 					}
 					$row['data'][$keyb] = $rowb;
