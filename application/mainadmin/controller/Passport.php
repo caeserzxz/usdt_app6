@@ -26,7 +26,12 @@ class Passport extends AdminController
         if ($this->request->isAjax()) {
             $model = new AdminUserModel;
             if ($model->login(input('post.User'))) {
-                return $this->success('登录成功', url('index/index'));
+                if (class_exists('app\shop\model\OrderModel')) {
+                    $url = url('shop/sys_admin.order/welcome');
+                }else{
+                    $url = url('index/index');
+                }
+                return $this->success('登录成功',$url);
             }
             return $this->error($model->getError() ?: '登录失败');
         }
