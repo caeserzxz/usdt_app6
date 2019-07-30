@@ -84,49 +84,51 @@
     </div>
 </div>
 
+
 <div class="line line-dashed line-lg pull-in" ></div>
-<!--<div  class="form-group" >-->
-    <!--<label class="col-sm-2 control-label">商品规格：</label>-->
-    <!--<div class="col-sm-10">-->
-        <!--{if condition="$row.goods_id > 0" }-->
-         <!--<div ><span class="help-inline"> {$row.is_spec==0?'统一规格':'多规格'}</span></div>-->
-        <!--{/if}-->
-            <!--<div class="f-l {$row['goods_id'] < 1?'':'hide'}">-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="is_spec" value="0" data-toggle="specification-enable" data-enable="false"  {$row.is_spec|tplckval='=0','checked',true}  />统一规格-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="is_spec" value="1"  data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>-->
-                    <!--多规格</label>-->
-                <!--<span class=" help-inline">*添加商品后不能修改规格</span>-->
-            <!--</div>-->
+<div  class="form-group" >
+    <label class="col-sm-2 control-label">商品规格：</label>
+    <div class="col-sm-10">
+        {if condition="$row.goods_id > 0" }
+         <div ><span class="help-inline"> {$row.is_spec==0?'统一规格':'多规格'}</span></div>
+        {/if}
+            <div class="f-l {$row['goods_id'] < 1?'':'hide'}">
+                <label class="radio-inline">
+                    <input type="radio" name="is_spec" value="0" data-toggle="specification-enable" data-enable="false"  {$row.is_spec|tplckval='=0','checked',true}  />统一规格
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="is_spec" value="1"  data-toggle="specification-enable" data-enable="true" {$row.is_spec|tplckval='=1','checked'}/>
+                    多规格</label>
+                <span class=" help-inline">*添加商品后不能修改规格</span>
+            </div>
 
-            <!--<div class="m-t-md col-sm-8 specificationstable hd">-->
+            <div class="m-t-md col-sm-8 specificationstable hd">
 
-                <!--选择商品模型-->
-                <!--{if condition="$row.goods_id < 1" }-->
-                <!--<select name="sku_model" id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">-->
-                <!--{$skuModelOpt|raw}-->
-                <!--</select>-->
-                <!--<span  style="color:#f30;">* 修改模型，将会删除旧有的sku记录</span>-->
-                <!--{else/}-->
-                <!--<select disabled id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">-->
-                    <!--{$skuModelOpt|raw}-->
-                <!--</select>-->
-                <!--<input type="hidden" name="sku_model" value="{$row.sku_model|intval}">-->
-                <!--{/if}-->
+                选择商品模型
+                {if condition="$row.goods_id < 1" }
+                <select name="sku_model" id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                {$skuModelOpt|raw}
+                </select>
+                <span  style="color:#f30;">* 修改模型，将会删除旧有的sku记录</span>
+                {else/}
+                <select disabled id="skuModelId" {$is_supplyer==true?'disabled':''} data-toggle="changeSkuModelId">
+                    {$skuModelOpt|raw}
+                </select>
+                <input type="hidden" name="sku_model" value="{$row.sku_model|intval}">
+                {/if}
 
-            <!--</div>-->
-
-
+            </div>
 
 
-        <!--<div class="clearfix"></div>-->
-        <!--<div data-toggle="specifications" class="hd"><i class="fa fa-spinner fa-spin"></i></div>-->
- <!---->
-    <!--</div>-->
-<!--</div>-->
+
+
+        <div class="clearfix"></div>
+        <div data-toggle="specifications" class="hd"><i class="fa fa-spinner fa-spin"></i></div>
+ 
+    </div>
+</div>
 <div class="line line-dashed line-lg pull-in specificationstable hd" style="width:98%;"></div>
+
 
 <div class="form-group specificationstable hd">
     <label class="col-sm-2 control-label">价格&库存：</label>
