@@ -78,80 +78,80 @@ border-bottom: 4px solid #000000;
                               </div>
                         </div>
 
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-2 control-label">运送方式：</label>-->
-                            <!--<div class="col-sm-10">-->
-                            <!--{volist name="shippingList" id="shipping"}-->
-                            	<!--{neq name="shipping.is_zt" value="1"}-->
-                                <!--<label class="checkbox-inline">-->
-                                    <!--<input  name="delivery[]" type="checkbox" value="{$key}"  data-delivery="{$key}" data-toggle="delivery" data-name="{$shipping.shipping_name}" {$row['sf_info'][$key]?'checked':''}/>{$shipping.shipping_name}-->
-                                <!--</label>-->
-                              	<!--{/neq}-->
-                             <!--{/volist}-->
-                            <!--</div>-->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">运送方式：</label>
+                            <div class="col-sm-10">
+                            {volist name="shippingList" id="shipping"}
+                            	{neq name="shipping.is_zt" value="1"}
+                                <label class="checkbox-inline">
+                                    <input  name="delivery[]" type="checkbox" value="{$key}"  data-delivery="{$key}" data-toggle="delivery" data-name="{$shipping.shipping_name}" {$row['sf_info'][$key]?'checked':''}/>{$shipping.shipping_name}
+                                </label>
+                              	{/neq}
+                             {/volist}
+                            </div>
 
-                        <!--</div>-->
-                        <!--<div class="line line-dashed line-lg pull-in"></div>-->
+                        </div>
+                        <div class="line line-dashed line-lg pull-in"></div>
 
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-2 control-label">-->
-                                <!--运费设置：-->
-                            <!--</label>-->
-                            <!--<div class="col-sm-8" data-toggle="delivery_list">-->
-                          		<!--{volist name="row.sf_info" id="rowb"}-->
-                                    <!--{assign name="fs_type" value="$key" /}-->
-                          		<!--<div style="display: block;" class="panel panel-default" id="delivery_item_{$fs_type}" data-delivery="{$fs_type}">-->
-                              		<!--<header class="panel-heading">{$shippingList[$fs_type]['shipping_name']}运费设置</header>-->
-                                    <!--<div class="table-responsive">-->
-                                        <!--<table class="table table-bordered">-->
-                                            <!--<thead>-->
-                                                <!--<tr>-->
-                                                    <!--<th class="col-sm-4">配送区域-->
-                                                    <!--</th>-->
-                                                    <!--<th>{$row['valuation']==1?'首件(个)':'首重(KG)'}</th>-->
-                                                    <!--<th>运费(元)</th>-->
-                                                    <!--<th>{$row['valuation']==1?'续件(个)':'续重(KG)'}</th>-->
-                                                    <!--<th>运费(元)</th>-->
-                                                <!--</tr>-->
-                                            <!--</thead>-->
-                                            <!--<tbody>-->
-                                            	<!--{volist name="rowb" id="rowc"}-->
-                                                <!--<tr>-->
-                                                    <!--<td>-->
-                                                    <!--{notempty name="rowc.area" }-->
-                                                    <!--全国默认地区<input name="{$fs_type}[{$key}][area]" value="all" type="hidden">-->
-                                                    <!--{else/}-->
-                                                    <!--指定地区 <a href="javascript:;" title="编辑运送区域" class="js_edit_area m-r-xs" data-remote="sel_region" data-fun="open_region" data-delivery="{$fs_type}" data-index="{$key}" data-toggle="divModal"><i class="fa fa-edit text-muted"></i></a><a href="javascript:;" title="删除运送区域" data-toggle="removeRow"><i class="fa fa-trash-o text-muted"></i></a>-->
-                <!--<p class="  js_area_item_{$fs_type}_{$key}"><span class="js_no_area"> {$rowc.region_list}</span></p>-->
-				<!--<input name="{$fs_type}[{$key}][region_id]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_id" value="{$rowc.region_id}" type="hidden">-->
-				<!--<input name="{$fs_type}[{$key}][region_list]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_list" value="{$rowc.region_list}" type="hidden">-->
-                                                    <!--{/notempty}-->
-                                                    <!--</td>-->
-                                                    <!--<td style="position:relative;">-->
-                                                        <!--<input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][start]" type="text" value="{$rowc.start}"></td>-->
-                                                    <!--<td style="position:relative;">-->
-                                                        <!--<input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postage]" type="text" value="{$rowc.postage|number_format=2}">-->
-                                                    <!--</td>-->
-                                                    <!--<td style="position:relative;">-->
-                                                        <!--<input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][plus]" type="text" value="{$rowc.plus}">-->
-                                                    <!--</td>-->
-                                                    <!--<td style="position:relative;">-->
-                                                        <!--<input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postageplus]" type="text" value="{$rowc.postageplus|number_format=2}">-->
-                                                    <!--</td>-->
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                运费设置：
+                            </label>
+                            <div class="col-sm-8" data-toggle="delivery_list">
+                          		{volist name="row.sf_info" id="rowb"}
+                                    {assign name="fs_type" value="$key" /}
+                          		<div style="display: block;" class="panel panel-default" id="delivery_item_{$fs_type}" data-delivery="{$fs_type}">
+                              		<header class="panel-heading">{$shippingList[$fs_type]['shipping_name']}运费设置</header>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-sm-4">配送区域
+                                                    </th>
+                                                    <th>{$row['valuation']==1?'首件(个)':'首重(KG)'}</th>
+                                                    <th>运费(元)</th>
+                                                    <th>{$row['valuation']==1?'续件(个)':'续重(KG)'}</th>
+                                                    <th>运费(元)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            	{volist name="rowb" id="rowc"}
+                                                <tr>
+                                                    <td>
+                                                    {notempty name="rowc.area" }
+                                                    全国默认地区<input name="{$fs_type}[{$key}][area]" value="all" type="hidden">
+                                                    {else/}
+                                                    指定地区 <a href="javascript:;" title="编辑运送区域" class="js_edit_area m-r-xs" data-remote="sel_region" data-fun="open_region" data-delivery="{$fs_type}" data-index="{$key}" data-toggle="divModal"><i class="fa fa-edit text-muted"></i></a><a href="javascript:;" title="删除运送区域" data-toggle="removeRow"><i class="fa fa-trash-o text-muted"></i></a>
+                <p class="  js_area_item_{$fs_type}_{$key}"><span class="js_no_area"> {$rowc.region_list}</span></p>
+				<input name="{$fs_type}[{$key}][region_id]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_id" value="{$rowc.region_id}" type="hidden">
+				<input name="{$fs_type}[{$key}][region_list]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_list" value="{$rowc.region_list}" type="hidden">
+                                                    {/notempty}
+                                                    </td>
+                                                    <td style="position:relative;">
+                                                        <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][start]" type="text" value="{$rowc.start}"></td>
+                                                    <td style="position:relative;">
+                                                        <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postage]" type="text" value="{$rowc.postage|number_format=2}">
+                                                    </td>
+                                                    <td style="position:relative;">
+                                                        <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][plus]" type="text" value="{$rowc.plus}">
+                                                    </td>
+                                                    <td style="position:relative;">
+                                                        <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postageplus]" type="text" value="{$rowc.postageplus|number_format=2}">
+                                                    </td>
 
-                                                <!--</tr>-->
-                                                <!--{/volist}-->
-                                            <!--</tbody>-->
-                                        <!--</table>-->
-                                    <!--</div>-->
-                                    <!--<footer class="panel-footer">-->
-                                        <!--<a href="javascript:;" class="js_add_area"><i class="fa fa-map-marker text-muted m-r-xs"></i>指定地区城市设置运费</a>-->
-                                    <!--</footer>-->
-                                <!--</div>-->
-                                <!--{/volist}-->
-                            <!--</div>-->
+                                                </tr>
+                                                {/volist}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <footer class="panel-footer">
+                                        <a href="javascript:;" class="js_add_area"><i class="fa fa-map-marker text-muted m-r-xs"></i>指定地区城市设置运费</a>
+                                    </footer>
+                                </div>
+                                {/volist}
+                            </div>
 
-                        <!--</div>-->
+                        </div>
                         <div class="line line-dashed line-lg pull-in "></div>
 						<div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">

@@ -64,12 +64,7 @@ class Order extends AdminController
         return (new \app\mainadmin\controller\Index())->index();
     }
 
-    /*------------------------------------------------------ */
-    //-- 文章
-    /*------------------------------------------------------ */
-    public function article(){
-        return (new \app\mainadmin\controller\Article())->index();
-    }
+
 
     /*------------------------------------------------------ */
     //-- 获取列表
@@ -846,5 +841,11 @@ class Order extends AdminController
         echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
         exit;
     }
-
+    /**
+     * 自动签收
+     */
+    public function autoSign(){
+        $this->Model->autoSign();
+        return $this->success('完成.');
+    }
 }

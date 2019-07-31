@@ -6,3 +6,4 @@ runtime
 *.DS_Store
 /public/upload
 /config/database.php
+/public/test.php

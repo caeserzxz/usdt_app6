@@ -4,7 +4,6 @@ namespace app\mainadmin\controller;
 use app\AdminController;
 use think\facade\Cache;
 
-use app\shop\model\OrderModel;
 use app\member\model\UsersModel;
 use app\member\model\AccountModel;
 use app\member\model\RechargeLogModel;
@@ -17,17 +16,20 @@ use app\member\model\WithdrawModel;
  */
 class Index extends AdminController
 {
-	
 
+    /*------------------------------------------------------ */
+    //-- 首页
+    /*------------------------------------------------------ */
     public function index()
     {
-		//判断订单模块是否存在
-		if(class_exists('app\shop\model\OrderModel')){
-			//执行订单自动签收
-			(new \app\shop\model\OrderModel)->autoSign();			
-		}
+        $this->stats();
+        return $this->fetch('mainadmin@index/index');
+    }
 
-        $time = time();
+    /*------------------------------------------------------ */
+    //-- 获取信息汇总
+    /*------------------------------------------------------ */
+    public function stats(){
         $start_day = date("Y-m-d",strtotime("-1 week"));
         $this->assign('start_day',$start_day);
         $end_day = date('Y-m-d', strtotime("+1 day") );
@@ -69,67 +71,69 @@ class Index extends AdminController
         $userStats['yesterday_reg'] =  $UsersModel->where($userWhere)->count('user_id');
         $this->assign('userStats',$userStats);
         //end
-		//订单统计相关
 
-        $OrderModel = new OrderModel();
-        $stats = [];
-        $i = 0;
 
-        $where[] = ['order_status', '=', '1'];
-        $where[] = ['shipping_status', '=', '0'];
-        $where[] = ['supplyer_id', '=', '0'];
-        $where[] = ['is_success', '=', '1'];
-        $stats['wait_shipping_num'] = $OrderModel->where($where)->count('order_id');
-        $stats['seven_order_amount_all'] = 0;
-        $stats['seven_real_amount_all'] = 0;
-        $stats['seven_dividend_amount_all'] = 0;
-        $stats['seven_shpping_num'] = 0;
-        $stats['seven_pay_num'] = 0;
-        $stats['seven_add_num'] = 0;
-        $stats['seven_sign_num'] = 0;
+        //判断订单模块是否存在
+        if(class_exists('app\shop\model\OrderModel')) {
 
-        while ($dt_start <=  strtotime($end_day)){
-            $riqi[] = date('Y-m-d',$dt_start);
-            $searchtime =  $dt_start.','.($dt_start+86399);
-            $data = $this->orderStats($OrderModel,$searchtime);
-            if ($dt_start == $today){
-                $stats['today']['all_add_num'] = $data['all_add_num'] * 1;
-                $stats['today']['order_pay_num'] = $data['order_pay_num'] * 1;
-                $stats['today']['order_shipping_num'] = $data['shipping_num'] * 1;
-                $stats['today']['sign_num'] = $data['sign_num'] * 1;
-            }elseif ($dt_start == $yesterday){
-                $stats['yesterday']['all_add_num'] = $data['all_add_num'] * 1;
-                $stats['yesterday']['order_pay_num'] = $data['order_pay_num'] * 1;
-                $stats['yesterday']['order_shipping_num'] = $data['shipping_num'] * 1;
-                $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
+            $OrderModel = new \app\shop\model\OrderModel();
+            //订单统计相关
+            $stats = [];
+            $i = 0;
+            $where[] = ['order_status', '=', '1'];
+            $where[] = ['shipping_status', '=', '0'];
+            $where[] = ['supplyer_id', '=', '0'];
+            $where[] = ['is_success', '=', '1'];
+            $stats['wait_shipping_num'] = $OrderModel->where($where)->count('order_id');
+            $stats['seven_order_amount_all'] = 0;
+            $stats['seven_real_amount_all'] = 0;
+            $stats['seven_dividend_amount_all'] = 0;
+            $stats['seven_shpping_num'] = 0;
+            $stats['seven_pay_num'] = 0;
+            $stats['seven_add_num'] = 0;
+            $stats['seven_sign_num'] = 0;
+
+            while ($dt_start <= strtotime($end_day)) {
+                $riqi[] = date('Y-m-d', $dt_start);
+                $searchtime = $dt_start . ',' . ($dt_start + 86399);
+                $data = $this->orderStats($OrderModel, $searchtime);
+                if ($dt_start == $today) {
+                    $stats['today']['all_add_num'] = $data['all_add_num'] * 1;
+                    $stats['today']['order_pay_num'] = $data['order_pay_num'] * 1;
+                    $stats['today']['order_shipping_num'] = $data['shipping_num'] * 1;
+                    $stats['today']['sign_num'] = $data['sign_num'] * 1;
+                } elseif ($dt_start == $yesterday) {
+                    $stats['yesterday']['all_add_num'] = $data['all_add_num'] * 1;
+                    $stats['yesterday']['order_pay_num'] = $data['order_pay_num'] * 1;
+                    $stats['yesterday']['order_shipping_num'] = $data['shipping_num'] * 1;
+                    $stats['yesterday']['sign_num'] = $data['sign_num'] * 1;
+                }
+
+                if ($dt_start < strtotime($end_day)) {
+                    $stats['seven_order_amount_all'] += $data['order_amount'] * 1;
+                    $stats['seven_real_amount_all'] += $data['order_amount'] - $data['dividend_amount'];
+                    $stats['seven_dividend_amount_all'] += $data['dividend_amount'] * 1;
+                    $stats['seven_order_amount'][$i][] = $data['order_amount'] * 1;
+                    $stats['seven_real_amount'][$i][] = $data['order_amount'] - $data['dividend_amount'];
+                    $stats['seven_dividend_amount'][$i][] = $data['dividend_amount'] * 1;
+                    $stats['seven_shpping_num'] += $data['shipping_num'] * 1;
+                    $stats['seven_pay_num'] += $data['order_pay_num'] * 1;
+                    $stats['seven_add_num'] += $data['all_add_num'] * 1;
+                    $stats['seven_sign_num'] += $data['sign_num'] * 1;
+                    $stats['all_add_num'][$i][] = $data['all_add_num'] * 1;
+                    $stats['order_pay_num'][$i][] = $data['order_pay_num'] * 1;
+                    $stats['shipping_order_num'][$i][] = $data['shipping_num'] * 1;
+                    $stats['sign_order_num'][$i][] = $data['sign_num'] * 1;
+                }
+                $dt_start = strtotime('+1 day', $dt_start);
+                $i++;
             }
-
-            if ($dt_start <  strtotime($end_day)){
-                $stats['seven_order_amount_all'] += $data['order_amount'] * 1;
-                $stats['seven_real_amount_all'] += $data['order_amount'] - $data['dividend_amount'];
-                $stats['seven_dividend_amount_all'] += $data['dividend_amount'] * 1;
-                $stats['seven_order_amount'][$i][] = $data['order_amount'] * 1;
-                $stats['seven_real_amount'][$i][] = $data['order_amount'] - $data['dividend_amount'];
-                $stats['seven_dividend_amount'][$i][] = $data['dividend_amount'] * 1;
-                $stats['seven_shpping_num'] += $data['shipping_num'] * 1;
-                $stats['seven_pay_num'] += $data['order_pay_num'] * 1;
-                $stats['seven_add_num'] += $data['all_add_num'] * 1;
-                $stats['seven_sign_num'] += $data['sign_num'] * 1;
-                $stats['all_add_num'][$i][] = $data['all_add_num'] * 1;
-                $stats['order_pay_num'][$i][] = $data['order_pay_num'] * 1;
-                $stats['shipping_order_num'][$i][] = $data['shipping_num'] * 1;
-                $stats['sign_order_num'][$i][] = $data['sign_num'] * 1;
-            }
-            $dt_start = strtotime('+1 day',$dt_start);
-            $i++;
+            //订单统计相关end
+            $this->assign('stats', $stats);
+            $this->assign('riqi', json_encode($riqi));
+            $this->assign('is_order', 1);
         }
-        //订单统计相关end
-
-        $this->assign('stats',$stats);
-        $this->assign('riqi',json_encode($riqi));
-        return $this->fetch('mainadmin@index/index');
     }
-
     /*------------------------------------------------------ */
     //-- 获取订单信息汇总
     /*------------------------------------------------------ */
