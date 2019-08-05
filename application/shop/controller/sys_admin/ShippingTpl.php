@@ -99,7 +99,8 @@ class ShippingTpl extends AdminController
 	/*------------------------------------------------------ */
 	public function beforeEdit($row){
 		if (empty($row['delivery'])) return $this->error('请选择运送方式！');
-		$this->oldData = $this->Model->find($row['sf_id']);		
+
+		$this->oldData = $this->Model->find($row['sf_id'])->toArray();
 		if ($this->oldData['is_default'] == 1 && $row['is_default'] == 0){
 			return $this->error('默认模板不能直接设为非默认，请修改其它模板为默认.');
 		}
@@ -112,7 +113,6 @@ class ShippingTpl extends AdminController
 		$row['sf_info'] = json_encode($sf_info);
 		unset($row['delivery']);
 		$this->checkUpData($this->oldData,$row);
-		
 		$row['update_time'] = time();
 		return $row;
 	}
