@@ -322,7 +322,6 @@ class CartModel extends BaseModel
             } else {
                 $mkey = 'CartInfo_' . session_id() . '_' . $is_sel . $this->is_integral;
             }
-
             $data = Cache::get($mkey);
         }
 

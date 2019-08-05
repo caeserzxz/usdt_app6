@@ -53,6 +53,15 @@ class Order extends AdminController
             $this->assign("end_date", date('Y/m/d'));
         }
 
+        //首页跳转时间
+        $start_date = input('start_time', '0', 'trim');
+        $end_date = input('end_time', '0', 'trim');
+        if( $start_date || $end_date){
+
+            $this->assign("start_date",str_replace('_', '/', $start_date));
+            $this->assign("end_date",str_replace('_', '/', $end_date));
+        }
+
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -64,7 +73,7 @@ class Order extends AdminController
         return (new \app\mainadmin\controller\Index())->index();
     }
 
-
+  
 
     /*------------------------------------------------------ */
     //-- 获取列表
@@ -841,11 +850,5 @@ class Order extends AdminController
         echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
         exit;
     }
-    /**
-     * 自动签收
-     */
-    public function autoSign(){
-        $this->Model->autoSign();
-        return $this->success('完成.');
-    }
+
 }

@@ -71,6 +71,43 @@ class Flow extends ApiController
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
+    //-- 获取购物车数据
+    /*------------------------------------------------------ */
+    public function getCartList(){
+        $fg_id = input('fg_id', '0', 'intval');
+        $number = input('number',0,'intval');
+        $sku_val = input('sku_val',0,'trim');
+        $fgInfo = $this->Model->info($fg_id);
+        if (empty($fgInfo)) return $this->error('拼团不存在.');
+        $goods = $fgInfo['goods'];
+        unset($fgInfo['goods']);
+        if ($goods['is_spec'] == 1) {//多规格处理
+            if (empty($sku_val)){
+                return $this->error('传参错误-1.');
+            }
+            if (empty($goods['sub_goods'][$sku_val])){
+                return $this->error('传参错误-2.');
+            }
+            $return['buyGoods'] = $goods['sub_goods'][$sku_val];
+        }else{
+            $return['buyGoods'] = $goods;
+        }
+
+        $return['buyGoods']['goods_name'] = $goods['goods_name'];
+        $return['totalGoodsPrice'] = sprintf("%.2f",$return['buyGoods']['sale_price'] * $number);
+        $return['orderTotal'] = $return['totalGoodsPrice'];
+        if ($goods['is_spec'] == 1){//多规格
+            $skuImgs = (new GoodsModel)->getImgsList($fgInfo['goods_id'], true, true);//获取sku图片
+            $return['goods_img'] = empty($skuImgs[$sku_val]) ? $goods['goods_thumb'] : $skuImgs[$sku_val];
+        }else{
+            $return['goods_img'] = $goods['goods_thumb'];
+        }
+        $cartList['buyGoodsNum'] = $number;
+        $cartList['goodsList'][] = ['goods_id'=>$fgInfo['goods_id']];
+    }
+
+
+    /*------------------------------------------------------ */
     //-- 计算运费
     /*------------------------------------------------------ */
     function evalShippingFee($address_id = 0, &$cartList = [])

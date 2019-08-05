@@ -271,5 +271,103 @@ class Attachment extends AdminController{
 		unlink('.'.str_replace('.','_thumb.',$file));
 		return $this->success('删除图片成功.');
     }
+
+    /**
+     * 添加背景图片
+     */
+    public function goodsUploadl() {
+        if ($_FILES['file']){
+            $thumb['width'] = 350;
+            $thumb['height'] = 300;
+
+            if ($this->supplyer_id > 0){
+                $dir = 'supplyer/'.$this->supplyer_id.'/gimg';
+            }else{
+                $dir = 'gimg/';
+            }
+            $result = $this->_upload($_FILES['file'],$dir,$thumb);
+            if ($result['error']) {
+                $data['code'] = 1;
+                $data['msg'] = $result['info'];
+                return $this->ajaxReturn($data);
+            }
+            $addarr['goods_id'] = input('post.gid',0,'intval');
+            $addarr['sku_val'] = input('post.sku','','trim');
+
+            if ($this->store_id > 0){
+                $where[] = ['store_id','=',$this->store_id ];
+            }elseif ($this->supplyer_id > 0){//供应商相关
+                $addarr['supplyer_id'] = $this->supplyer_id;
+                $addarr['admin_id'] = 0;
+                $where[] = ['supplyer_id','=',$this->supplyer_id];
+            }else{
+
+                $addarr['admin_id'] = AUID;
+
+                $where[] = ['admin_id','=',AUID];
+            }
+
+            $savepath = trim($result['info'][0]['savepath'],'.');
+
+            $addarr['store_id'] = $this->store_id;
+            $addarr['goods_img'] = $file_url = $savepath.$result['info'][0]['savename'];
+            $addarr['goods_thumb'] = str_replace('.','_thumb.',$addarr['goods_img']);
+            $GoodsImgsModel =  new GoodsImgsModel();
+            //如果sku不为空，查询之前是否已上传过,则删除
+            if (empty($addarr['sku_val']) == false){
+                $where[] = ['goods_id','=',$addarr['goods_id']];
+                $where[] = ['sku_val','=',$addarr['sku_val']];
+                $imgObj = $GoodsImgsModel->where($where)->find();
+                if (empty($imgObj) == false){
+                    unlink('.'.$imgObj['goods_thumb'],'.'.$imgObj['goods_img']);
+                    $imgObj->delete();
+                }
+            }
+            // dump($addarr);die;
+            // $GoodsImgsModel->save($addarr);
+            // $img_id = $GoodsImgsModel->img_id;
+            // if ($img_id < 1){
+            //     $this->removeImg($file_url);//删除刚刚上传的
+            //     $data['code'] = 0;
+            //     $data['msg'] = '商品图片写入数据库失败！';
+            //     return $this->ajaxReturn($data);
+            // }
+            $data['code'] = 0;
+            $data['msg'] = "上传成功";
+            $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);
+            $data['savename'] = $result['info'][0]['savename'];
+            $data['src'] = $file_url;
+            return $this->ajaxReturn($data);
+        }
+        $result = $this->_upload($_FILES['imgFile'],'gdimg/');
+        if ($result['error']) {
+            $data['code'] = 1;
+            $data['msg'] = $result['info'];
+            return $this->ajaxReturn($data);
+        }
+        $result['url']= '/'.$result['info'][0]['savepath'].$result['info'][0]['savename'];
+        return $this->ajaxReturn($result);
+    }
+
+    //删除背景图片
+    public function removeImgs($file='') {
+        $img_id = input('post.id',0,'intval');
+        if ($img_id > 0){
+            $GoodsImgsModel = new GoodsImgsModel();
+            $img = $GoodsImgsModel->find($img_id);
+            if (empty($img)){
+                return $this->error('没有找到相关图片.');
+            }
+            $file = $img->goods_img;
+            $res = $img->delete();
+            if ($res < 1){
+                return $this->error('删除图片失败.');
+            }
+        }
+        if (empty($file))  return $this->error('传值错误.');
+        unlink('.'.$file);
+        unlink('.'.str_replace('.','_thumb.',$file));
+        return $this->success('删除图片成功.');
+    }
 }
 ?>

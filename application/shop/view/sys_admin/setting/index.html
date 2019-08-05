@@ -16,8 +16,9 @@
                   <header>
                       <ul class="nav nav-tabs">
                           <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
-                          <li ><a href="#return" data-toggle="tab">退货信息</a></li>
+                          <li><a href="#return" data-toggle="tab">退货信息</a></li>
                           <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
+                          <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
                       </ul>
                   </header>
                 <div class="tab-content">
@@ -60,17 +61,6 @@
                                 </label>
                                 <label class="radio-inline">
                                     <input name="shop_goods_comment" value="1" {$setting['shop_goods_comment']==1?'checked':''} type="radio" >开启
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">开放优惠券：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_used_bonus" value="0" {$setting['shop_used_bonus']<1?'checked':''} type="radio">关闭
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_used_bonus" value="1" {$setting['shop_used_bonus']==1?'checked':''} type="radio" >开启
                                 </label>
                             </div>
                         </div>
@@ -141,6 +131,19 @@
                                 <label class="radio-inline">
                                     <input name="shop_reduce_stock" value="1" {$setting['shop_reduce_stock']==1?'checked':''} type="radio" >支付成功时
                                 </label>
+                            </div>
+                        </div>
+                        <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">取消未发货订单：</label>
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="order_unshipped_cancel" value="1" {$setting['order_unshipped_cancel']>0?'checked':''} type="radio">开启
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="order_unshipped_cancel" value="0" {$setting['order_unshipped_cancel']==0?'checked':''} type="radio" >关闭
+                                </label>
+                                <span class="help-inline">订单已支付，未发货，是否允许取消</span>
                             </div>
                         </div>
 
@@ -226,6 +229,28 @@
                             <label class="col-sm-2 control-label" >详情地址（快递鸟）：</label>
                             <div class="controls">
                                 <input type="text" name="kdn_address" value="{$setting.kdn_address}" style="width: 300px;"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="bonus">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开放优惠券：</label>
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="shop_used_bonus" value="0" {$setting['shop_used_bonus']<1?'checked':''} type="radio">关闭
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="shop_used_bonus" value="1" {$setting['shop_used_bonus']==1?'checked':''} type="radio" >开启
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">注册优惠券背景：</label>
+                            <div class="controls col-sm-6">
+                                <span class="help-inline">建议图片尺寸：320*320像素</span><br>
+                                <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
+                                <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
+                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
                             </div>
                         </div>
                     </div>

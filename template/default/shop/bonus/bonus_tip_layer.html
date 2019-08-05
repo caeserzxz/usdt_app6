@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/coupons.css"/>
+<div class="model coupons_indexBox" style="display: none;">
+    <div class="modelBG" onclick="closeModel()"></div>
+
+    <div class="content">
+        <img src="{$reg_bonus_bg}" alt="" class="contentBG">
+        <div class="couponsList" id="bonusListBox">
+        </div>
+        <a href="javascript:see_do();" class="fs32 fw_b color_r">前往查看</a>
+        <img src="__STATIC__/mobile/default/images/close_wy.png" alt="" class="closeimg" onclick="closeModel()">
+    </div>
+</div>
+<script type="text/html" id="bonusListTpl">
+    {{each data as item index}}
+    <div class="block" data-bonus_id="{{item.bonus_id}}">
+        <div class="left">
+            <div class="fs28 fw_b color_3">{{item.type_name}}</div>
+            <p class="fs22 color_9">有效期{{item._use_end_date}}</p>
+        </div>
+        <div class="right">
+            <div class="fs30 money color_r">
+                <p class="fw_b">￥</p><em class="fs48 num">{{item.type_money}}</em>
+            </div>
+            <span class="fs22 color_9">满{{item.min_amount}}元可用</span>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script>
+    // 隐藏优惠券弹窗
+    function closeModel() {
+        $('.model').hide();
+        updateUntipBonus();
+    }
+    // 前往查看
+    function see_do() {
+        updateUntipBonus();
+        window.location.href = "{:url('shop/bonus/index')}";
+    }
+    // 更改状态为已提示
+    function updateUntipBonus() {
+        var bonus_ids = [];
+        $('#bonusListBox').find('.block').each(function () {
+            var bonus_id = $(this).data('bonus_id');
+            bonus_ids.push(bonus_id);
+        });
+        jq_ajax('{:url("shop/api.bonus/updateUntipBonus")}', {bonus_ids: bonus_ids}, function (res) {
+        });
+    }
+    $(function () {
+        jq_ajax('{:url("shop/api.bonus/getUntipBonus")}', '', function (res) {
+            if (res.code == 1) {
+                $('#bonusListBox').html(template('bonusListTpl', res));
+                $('.model').show();
+            }
+        });
+    })
+</script>

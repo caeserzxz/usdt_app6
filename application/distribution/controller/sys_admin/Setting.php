@@ -31,9 +31,12 @@ class Setting extends AdminController
     public function index()
     {
         $settings = settings();
+
         $Dividend = json_decode($settings['DividendInfo'], true);
         $Dividend['status'] = $settings['DividendSatus'];
         $Dividend['share_by_role'] = $settings['DividendShareByRole'];
+        $GoodsImages = explode(',',$settings['GoodsImages']);
+        $this->assign("GoodsImages", $GoodsImages);
         $this->assign('Dividend', $Dividend);
         $this->assign('share_bg', $settings['share_bg']);
         $this->assign('shop_after_sale_limit', $settings['shop_after_sale_limit']);
@@ -48,11 +51,20 @@ class Setting extends AdminController
     {
         $Dividend = input();
         $arr = input('post.setting');
+
+        //背景图
+        $path = $arr['GoodsImages']["path"];
+        if(is_array($path)){
+            $path = implode(',', $path);
+        }
+        $arr['GoodsImages'] = $path;
+
         $arr['DividendSatus'] = $Dividend['status'];
         $arr['DividendShareByRole'] = $Dividend['share_by_role'] * 1;
         unset($Dividend['setting'], $Dividend['status'], $Dividend['DividendShareByRole'], $Dividend['share_bg']);
         $arr['DividendInfo'] = json_encode($Dividend);
         $arr['share_bg'] = input('share_bg', '', 'trim');
+
         $res = $this->Model->editSave($arr);
         if ($res == false) return $this->error();
         return $this->success('设置成功.');

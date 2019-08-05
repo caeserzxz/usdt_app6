@@ -27,15 +27,17 @@ class UserAddressModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 获取列表
     /*------------------------------------------------------ */
-    public function getRows($uid = 0)
+    public function getRows($uid = 0,$address_id = 0)
     {
         if ($uid < 1){
             $uid = $this->userInfo['user_id'];
             if ($uid < 1) return [];
         }
+        
         $list = Cache::get($this->mkey . $uid);
         if (empty($list) == false) return $list;
-        $rows = $this->where('user_id',$uid)->order('is_default DESC,address_id ASC')->select()->toArray();
+        $rows = $this->field('*, CASE WHEN address_id='.$address_id.' THEN 0 ELSE 1 END FLAG')->where('user_id',$uid)->order('FLAG ASC,is_default DESC,address_id ASC')->select()->toArray();
+
         foreach ($rows as $key=>$row){
             $row['key'] = $key;
             $row['_merger_name'] = str_replace(',',' ',$row['merger_name']);
@@ -44,5 +46,6 @@ class UserAddressModel extends BaseModel
         Cache::set($this->mkey, $list, 300);
         return $list;
     }
+
 
 }

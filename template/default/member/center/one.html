@@ -1,0 +1,101 @@
+<style>
+.typeBox{
+    background-color: #fff
+}
+.htmlBox{
+  display: none;
+  height: 100vh;
+}
+.goodsimg {
+  width: 100vw;
+  height: 7.133333rem;
+}
+
+#one .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.2rem;
+  height: 1.76rem;
+}
+
+.headimgurl {
+  width: 0.666667rem;
+  height: 0.666667rem;
+  border-radius: 50%;
+  margin-right: 0.133333rem;
+}
+
+#one .right {
+  position: absolute;
+  right: 0.333333rem;
+  top: 6.373333rem;
+}
+
+.qcode {
+  width: 1.466667rem;
+  height: 1.466667rem;
+}
+
+.info {
+  position: relative;
+}
+
+#two .left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.2rem;
+  height: 1.76rem;
+}
+
+#two .right {
+  position: absolute;
+  right: 0.333333rem;
+  top: 1.026667rem;
+}
+
+.codeBox{
+  position: relative;
+}
+</style>
+<div class="htmlBox" id='one'>
+  <img src="{:settings('share_bg')}" alt="" class="goodsimg">
+  <div class="info">
+    <div class="left">
+      <img class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+      <div>
+        <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
+        <span class="fs26 color_9">{$userInfo['signature']}</span>
+      </div>
+    </div>
+
+  </div>
+      <div class="right">
+        <img src="" class="qcode" alt="">
+    </div>
+</div>
+
+<div class="htmlBox" id='two'>
+  <div class="info">
+    <div class="left">
+      <img  class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+      <div>
+        <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
+        <span class="fs26 color_9">{$userInfo['signature']}</span>
+      </div>
+    </div>
+  </div>
+  <div class="codeBox">  <img src="{:settings('share_bg')}" alt="" class="goodsimg">
+</div>
+  <div class="right">
+    <img src="" class="qcode" alt="">
+  </div>
+
+</div>

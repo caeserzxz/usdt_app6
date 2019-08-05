@@ -26,7 +26,8 @@ class Address extends ApiController
     /*------------------------------------------------------ */
     public function getList()
     {
-        $list = $this->Model->getRows();
+        $address_id = input('address_id', 0, 'intval');
+        $list = $this->Model->getRows(0,$address_id);
         foreach ($list as $row) {
             $return['list'][] = $row;
         }
@@ -36,9 +37,9 @@ class Address extends ApiController
     /*------------------------------------------------------ */
     //-- 设置默认地址
     /*------------------------------------------------------ */
-    public function editDefault()
+    public function editDefault($address_id = 0)
     {
-        $address_id = input('address_id', 0, 'intval');
+        $address_id = empty($address_id) ? input('address_id', 0, 'intval') : $address_id;
         if ($address_id < 1) return $this->error('传参失败，请重试.');
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
         $where[] = ['address_id', '=', $address_id];
@@ -51,6 +52,9 @@ class Address extends ApiController
             $this->Model->cleanMemcache();
         }
         $return['code'] = 1;
+
+        //传递修改直接返回
+        if($address_id) return $return;
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
@@ -75,11 +79,29 @@ class Address extends ApiController
         $where['address_id'] = $uparr['address_id'];
         $where['user_id'] = $this->userInfo['user_id'];
         unset($uparr['address_id']);
+
+        $is_default = input('is_default', '0', 'intval');
+        $uparr['is_default'] = $is_default;
+
+        //验证数据是否出现变化
+        $dbarr = $this->Model->field(join(',',array_keys($uparr)))->where($where)->find()->toArray();
+        $this->checkUpData($dbarr,$uparr,true);
+        unset($uparr['is_default']);
+
         $res = $this->Model->where($where)->update($uparr);
-        if ($res < 1) return $this->error('修改失败，请重试..');
+
+        //判断是否设置默认地址
+        if($is_default){
+           $default = $this->editDefault($where['address_id']);
+        }
+
+        //修改错误
+        if ($res < 1 && empty($default['code'])) return $this->error('修改失败，请重试..');
         $this->Model->cleanMemcache();
-        return $this->getList();
+        return true;
     }
+
+
 
     /*------------------------------------------------------ */
     //-- 验证修改/添加数据

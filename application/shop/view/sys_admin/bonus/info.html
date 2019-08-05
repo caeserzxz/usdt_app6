@@ -1,97 +1,439 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
 <header class="header  b-b clearfix">
-     <div class="page-breadcrumbs">
-            <ul class="breadcrumb" >
-                <li>
-                    <i class="fa fa-ellipsis-v"></i>
-                    <strong>{$row['type_id']>0?'编缉':'添加'}优惠券</strong>
-                </li>                                  
-            </ul>
-      
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['type_id']>0?'编缉':'添加'}优惠券</strong>
+            </li>
+        </ul>
         <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-     </div>
+    </div>
 </header>
-  
+
 <section class="scrollable wrapper">
 
-	<section class="panel panel-default">
-		<form class="form-horizontal form-validate panel-body" method="post" action="{:url('info')}">
+    <section class="panel panel-default">
+        <form class="form-horizontal form-validate panel-body" method="post" action="{:url('info')}">
             <div class="form-group">
                 <label class="col-sm-2 control-label">优惠券名称：</label>
                 <div class="col-sm-5 must">
-                    <input type="text" class="input-max" data-rule-required="true" name="type_name" value="{$row.type_name}" data-rule-maxlength="25" />
+                    <input type="text" class="input-max" data-rule-required="true" name="type_name" value="{$row.type_name}" data-rule-maxlength="25"/>
                 </div>
             </div>
 
             <div class="line line-dashed line-lg pull-in"></div>
-             <div class="form-group">
+            <div class="form-group">
                 <label class="col-sm-2 control-label">优惠券面额：</label>
                 <div class="col-sm-1 must">
-                    <input type="text" class="input-max" data-rule-required="true" name="type_money" value="{$row.type_money}" data-rule-maxlength="15" />
+                    <input type="text" class="input-max" data-rule-required="true" name="type_money" value="{$row.type_money}" data-rule-maxlength="15"/>
                 </div>
             </div>
-          
+
             <div class="line line-dashed line-lg pull-in"></div>
-             <div class="form-group">
+            <div class="form-group">
                 <label class="col-sm-2 control-label">消费金额：</label>
                 <div class="col-sm-1 must">
-                    <input type="text" class="input-max" data-rule-required="true" name="min_amount" value="{$row.min_amount}" data-rule-maxlength="15" />
+                    <input type="text" class="input-max" data-rule-required="true" name="min_amount" value="{$row.min_amount}" data-rule-maxlength="15"/>
                 </div>
+                <span class="help-inline" id="min_amount_tip">设置为0则不限制消费金额</span>
             </div>
+
             <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">发放类型：</label>
                 <div class="col-sm-10">
-                {if condition="$row.type_id > 0"}
-                	 <label>{$SendType[$row['send_type']]['name']}</label>
-                {else/}
+                    {if condition="$row.type_id > 0"}
+                    <label>{$SendType[$row['send_type']]['name']}</label>
+                    {else/}
                     {volist name="SendType" id="st" }
-                       <label>
-                            <input name="send_type" value="{$st.dict_key}" class="js_inventory" type="radio" {$row['send_type']==$st['dict_key']?'checked':''}> {$st.dict_val}
-                        </label>
-                     {/volist}     
-               	 {/if}                        
+                    <label>
+                        <input name="send_type" value="{$st.dict_key}" class="js_inventory" type="radio" onchange="selectSendType({$st.dict_key})" {$row['send_type']==$st['dict_key']?'checked':''}>
+                        {$st.dict_val}
+                    </label>
+                    {/volist}
+                    {/if}
                 </div>
-               
             </div>
-        <div class="line line-dashed line-lg pull-in"></div>
+
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">指定商品类型：</label>
+                <div class="col-sm-10">
+                    {if condition="$row.type_id > 0"}
+                    <label>{$GoodsType[$row['goods_type']]['name']}</label>
+                    <input type="hidden" name="goods_type" value="{$row['goods_type']}">
+                    {else/}
+                    {volist name="GoodsType" id="st" }
+                    <label>
+                        <input name="goods_type" value="{$st.dict_key}" class="js_inventory" type="radio" onchange="selectGoodsType({$st.dict_key})" {$row['goods_type']==$st['dict_key']?'checked':''}>
+                        {$st.dict_val}
+                    </label>
+                    {/volist}
+                    {/if}
+                </div>
+            </div>
+
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">使用范围：</label>
+                <div class="col-sm-10" id="use_type">
+                    {if condition="$row.type_id > 0"}
+                    <label>{$UseType[$row['use_type']]['name']}</label>
+                    <input type="hidden" name="use_type" value="{$row['use_type']}">
+                    <a href="javascript:;" onclick="selectGoods(2);"  title="确认选择" class="btn btn-default use_type_2"><i class="fa fa-plus m-r-xs">添加商品</i></a>
+                    {else/}
+                    <label>请先选择指定商品类型</label>
+                    {/if}
+                </div>
+            </div>
+            <section class="use_type_1" style="display: none;">
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group use_type_1" style="display: none;">
+                    <label class="col-sm-2 control-label">选择分类：</label>
+                    <div class="col-sm-3">
+                        <select id="goods_cid" style="width:80%;" data-toggle="select2"
+                                data-placeholder="选择分类" onchange="searchGoods()">>
+                            <option value="">选择分类</option>
+                            {$classListOpt|raw}
+                        </select>
+                        <a href="javascript:;" title="增加" class="btn btn-default  fa fa-plus" onclick="selectCategory()"></a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="use_type_1" style="display: none;">
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group" >
+                    <label class="col-sm-2 control-label">商品分类：</label>
+                    <div class="col-sm-9 flex" id="cid_box">
+                    <!--商品分类列表-->
+                        {foreach name="cidList" item="vo"}
+                        <div class="input-group" style="width: 200px;float: left;margin: 5px 10px;" id="cid_item{$vo.id}">
+                            <input type="hidden" class="cid" name="cid[]" value="{$vo.id}" data-children="{$vo.children}" data-text="{$vo.name}">
+                            <input type="text" class="form-control" readonly  value="{$vo.name}">
+                            <span class="input-group-addon" onclick="delSelCategory({$vo.id})"><i class="fa fa-close"></i></span>
+                        </div>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+            <!--商品列表-->
+            <div class="use_type_2" style="display: none;">
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group" id="goodsListTable">
+                    <label class="col-sm-2 control-label">商品列表：</label>
+                    <div class="col-sm-3">
+                        <table class="table table-bordered table-striped " style="width:800px;">
+                            <thead>
+                            <tr>
+                                <th width="150">商品SN</th>
+                                <th>商品名称</th>
+                                <th>商品价格</th>
+                                <th width="70">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="goods_box">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">设定发劵量：</label>
+                <div class="col-sm-1 must">
+                    <input type="text" class="input-max" data-rule-required="true" data-rule-number="true"
+                           name="type_num" value="{$row.type_num|default=0}" data-rule-maxlength="15"/>
+                </div>
+                <span class="help-inline" id="type_num_tip">设置为0则不限制发放数量</span>
+            </div>
+
+            <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">发放起始日期：</label>
                 <div class="col-sm-2">
-                   <div class="input-group"> <input type="text" class="input-max" name="send_start_date" id="send_start_date" value="{$row.send_start_date|dateTpl='',true}" readonly="readonly"   data-before="#send_end_date" data-toggle="datetimepicker"  data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                    <div class="input-group">
+                        <input type="text" class="input-max" name="send_start_date" id="send_start_date" value="{$row.send_start_date|dateTpl='',true}" readonly="readonly" data-before="#send_end_date" data-toggle="datetimepicker" data-position="top-right"/>
+                        <span  class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                 </div>
-               
             </div>
             <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">发放结束日期：</label>
                 <div class="col-sm-2">
-                   <div class="input-group"> <input name="send_end_date" type="text" class="input-max" id="send_end_date" value="{$row.send_end_date|dateTpl='',true}" readonly="readonly"   data-after="#send_start_date" data-toggle="datetimepicker" data-position="top-right"  /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
-                </div> <label>只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以发放</label>
+                    <div class="input-group">
+                        <input name="send_end_date" type="text" class="input-max" id="send_end_date" value="{$row.send_end_date|dateTpl='',true}" readonly="readonly" data-after="#send_start_date" data-toggle="datetimepicker" data-position="top-right"/>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <label>只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以发放</label>
             </div>
-             <div class="line line-dashed line-lg pull-in"></div>
+            <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">使用起始日期：</label>
                 <div class="col-sm-2">
-                   <div class="input-group"> <input type="text" class="input-max" name="use_start_date"  id="use_start_date"  value="{$row.use_start_date|dateTpl='',true}" readonly="readonly"   data-before="#use_end_date"  data-toggle="datetimepicker" data-position="top-right" data-startdate="now"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
+                    <div class="input-group">
+                        <input type="text" class="input-max" name="use_start_date" id="use_start_date" value="{$row.use_start_date|dateTpl='',true}" readonly="readonly" data-before="#use_end_date" data-toggle="datetimepicker" data-position="top-right" data-startdate="now"/>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                 </div>
             </div>
             <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">使用结束日期：</label>
                 <div class="col-sm-2">
-                   <div class="input-group"> <input type="text" class="input-max" name="use_end_date" id="use_end_date" value="{$row.use_end_date|dateTpl='',true}"  readonly="readonly" data-after="#use_start_date"  data-toggle="datetimepicker" data-position="top-right"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div> 
-                </div><label>只有当前时间介于起始日期和截止日期之间时，此类型的优惠券才可以使用</label>
+                    <div class="input-group">
+                        <input type="text" class="input-max" name="use_end_date" id="use_end_date" value="{$row.use_end_date|dateTpl='',true}" readonly="readonly" data-after="#use_start_date" data-toggle="datetimepicker" data-position="top-right"/>
+                        <span class="input-group-addon"><i  class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <label>只有当前时间介于起始日期和截止日期之间时，此类型的优惠券才可以使用</label>
             </div>
+
             <div class="line line-dashed line-lg pull-in"></div>
             <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2 m-t"> <input name="type_id" type="hidden" value="{$row.type_id|intval}">
-                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                <label class="col-sm-2 control-label">发放状态：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input name="send_status" value="1" class="js_inventory" type="radio" {$row['send_status']!=2?'checked':''}>
+                        发放中
+                    </label>
+                    <label>
+                        <input name="send_status" value="2" class="js_inventory" type="radio" {$row['send_status']==2?'checked':''}>
+                        暂停发放
+                    </label>
                 </div>
-        	</div>
-       </form>     
-	</section>
+            </div>
+
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">使用状态：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input name="use_status" value="1" class="js_inventory" type="radio" {$row['use_status']!=2?'checked':''}>
+                        正常
+                    </label>
+                    <label>
+                        <input name="use_status" value="2" class="js_inventory" type="radio" {$row['use_status']==2?'checked':''}>
+                        失效
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <textarea name="type_desc" style="width: 80%; height: 80px;">{$row.type_desc}</textarea>
+                </div>
+            </div>
+
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2 m-t">
+                    <input name="type_id" type="hidden"   value="{$row.type_id|intval}">
+                    <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </form>
+    </section>
 </section>
+<script type="text/html" id="use_type_radio">
+    {literal}
+    {{if goods_type==1}}
+    <label>
+        <input name="use_type" value="0" class="js_inventory" type="radio"  {{if use_type==0}}checked{{/if}} onchange="selectUseType(0)"> 全场通用
+    </label>
+    <label>
+        <input name="use_type" value="1" class="js_inventory" type="radio"  {{if use_type==1}}checked{{/if}} onchange="selectUseType(1)"> 指定分类
+    </label>
+    <label>
+        <input name="use_type" value="2" class="js_inventory" type="radio"  {{if use_type==2}}checked{{/if}} onclick="selectGoods(2)"> 指定商品
+    </label>
+    {{/if}}
+    {{if goods_type==2}}
+    <label>
+        <input name="use_type" value="0" class="js_inventory" type="radio"  {{if use_type==0}}checked{{/if}} onchange="selectUseType(0)"> 全部拼团
+    </label>
+    <label>
+        <input name="use_type" value="1" class="js_inventory" type="radio" {{if use_type==1}}checked{{/if}} onchange="selectUseType(1)"> 指定分类
+    </label>
+    <label>
+        <input name="use_type" value="2" class="js_inventory" type="radio" {{if use_type==2}}checked{{/if}} onclick="selectGoods(2)"> 指定拼团
+    </label>
+    {{/if}}
+    {{if goods_type==3}}
+    <label>
+        <input name="use_type" value="0" class="js_inventory" type="radio"  {{if use_type==0}}checked{{/if}} onchange="selectUseType(0)"> 全部秒杀
+    </label>
+    <label>
+        <input name="use_type" value="1" class="js_inventory" type="radio" {{if use_type==1}}checked{{/if}} onchange="selectUseType(1)"> 指定分类
+    </label>
+    <label>
+        <input name="use_type" value="2" class="js_inventory" type="radio" {{if use_type==2}}checked{{/if}} onclick="selectGoods(2)"> 指定秒杀
+    </label>
+    {{/if}}
+    {/literal}
+</script>
+<script type="text/html" id="goodsListTpl">
+    {literal}
+        {{each list as item index}}
+            <tr id="goods_tr_{{item.id}}">
+                <td><input name="goods_id[]" type="hidden" value="{{item.id}}" />{{item.goods_sn}}</td>
+                <td>{{item.goods_name}}</td>
+                <td>{{item.show_price}}</td>
+                <td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('goods',{{item.id}})" ></a></td>
+            </tr>
+        {{/each}}
+    {/literal}
+</script>
+<script type="text/javascript">
+     var type_id ={$row.type_id|default=0},goods_type={$row.goods_type|default=0},use_type={$row.use_type|default=0};
+    $(function () {
+        selectUseType({$row['use_type']});
+        selectSendType({$row['send_type']});
+        selectGoodsType(goods_type);
+        initGoodsList();
+    })
+    //选择发放类型
+    function selectSendType(type) {
+        if (type == 1) {
+            $('input[name=type_num]').attr('readonly', 'readonly').val(0);
+            $("#type_num_tip").text('指定发放不限制数量');
+        } else {
+            $('input[name=type_num]').removeAttr('readonly').val(0);
+            $("#type_num_tip").text('设置为0则不限制发放数量');
+        }
+    }
+    /**选择指定商品类型**/
+    function selectGoodsType(type) {
+        var data = [];
+        goods_type=type;
+        if(goods_type<1)return false;
+        data.goods_type = type;
+        data.use_type = use_type;
+        $("#use_type").html(template("use_type_radio", data));
+    }
+    /**选择使用范围**/
+    function selectUseType(type) {
+        use_type=type;
+        if(use_type==0){
+            $('.use_type_1').hide();
+            $('.use_type_2').hide();
+        }else if (use_type == 1) {
+            $('.use_type_1').show();
+            $('.use_type_2').hide();
+        }else if(use_type==2){
+            $('.use_type_1').hide();
+            $('.use_type_2').show();
+        }
+    }
+
+     //选择分类
+     function selectCategory()
+     {
+         var selected = $('#goods_cid').find("option:selected");
+         var cid = parseInt(selected.val());
+         console.log(cid)
+         if(isNaN(cid)||cid<1){
+             _alert('请选择分类');return false;
+         }
+         var text = selected.data('text');
+         var children = selected.data('children');
+         var childrenArr =children.toString().split(',').map(Number);
+         //判断是否有同级,父级,子级
+         var isrep = false;
+         var isHasParent = false;
+         var _text="";
+         $('#cid_box').find('.cid').each(function ()
+         {
+             var _cid= parseInt($(this).val());
+             var _children = $(this).data('children');
+             _text = $(this).data('text');
+             //是否有同级存在
+             if(cid==_cid)return isrep = true;
+             //是否存在父级
+             var _childrenArr =_children.toString().split(',').map(Number);
+             if($.inArray(cid,_childrenArr)>-1)return isHasParent = true;
+             //是否存在子级，有则删除
+             if($.inArray(_cid,childrenArr)>-1) {
+                 $("#cid_item" + _cid).remove();
+             }
+         })
+         if (isHasParent == true) return _alert('列表中已存在父级分类['+_text+']');
+         if (isrep == true) return _alert('列表中已存在相关分类');
+         var html='';
+         html+='<div class="input-group" style="width: 200px;float: left;margin: 5px 10px;" id="cid_item'+cid+'">';
+         html+='<input type="hidden" class="cid" name="cid[]" value="'+cid+'" data-children="'+children+'" data-text="'+text+'">';
+         html+='<input type="text" class="form-control" readonly  value="'+text+'">';
+         html+='<span class="input-group-addon" onclick="delSelCategory('+cid+')"><i class="fa fa-close"></i></span>';
+         html+='</div>';
+         $('#cid_box').append(html);
+     }
+     //删除选中分类
+     function delSelCategory(cid)
+     {
+         $('#cid_item'+cid).remove();
+     }
+     //添加商品
+     function selectGoods(use_type)
+     {
+         selectUseType(use_type);
+         var goodsArr=[];
+         $('#goods_box').find('input').each(function () {
+             goodsArr.push($(this).val());
+         })
+         var title='';
+         if(goods_type==1){
+             title='选择商品';
+             var url = "{:url('selectGoods')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+         }else if(goods_type==2){
+             title='选择拼团';
+             var url = "{:url('selectFightGroup')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+         }else if(goods_type==3){
+             var url = "{:url('selectSecond')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+         }
+         layer.open({
+             type: 2,
+             title: title,
+             shadeClose: true,
+             shade: 0.3,
+             area: ['70%', '80%'],
+             content: url,
+         });
+     }
+     function call_back(goodsList)
+     {
+         layer.closeAll('iframe');
+         $.each(goodsList, function (n, value) {
+             var html='';
+             html+='<tr id="goods_tr_'+value.goods_id+'">';
+             html+='<td><input name="goods_id[]" type="hidden" value="'+value.goods_id+'" />'+value.goods_sn+'</td>';
+             html+='<td>'+value.goods_name+'</td>';
+             html+='<td>'+value.shop_price+'</td>';
+             html+='<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods(\'goods\','+value.goods_id+')" ></a></td>';
+             html+='</tr>';
+             $('#goods_box').append(html);
+         });
+     }
+    //删除商品
+    function delLinkGoods(select_type, goods_id) {
+        $('#' + select_type + '_tr_' + goods_id).remove();
+    }
+    //加载已选商品
+    function initGoodsList(){
+        if(type_id<1)return false;
+        var arr = new Object();
+        arr.type_id=type_id;
+        var res = jq_ajax('{:url("shop/sys_admin.bonus/getSelectedGoodsList")}', arr);
+        if(res.code==0){
+            return false;
+        }
+        res.goods_type=goods_type;
+        $('#goods_box').html(template("goodsListTpl", res));
+    }
+</script>
+
 {/block}

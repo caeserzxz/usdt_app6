@@ -1,0 +1,734 @@
+button {
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+}
+
+.loadEnd {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  height: 0.466667rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #666;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.page-ft .btn_a {
+  width: 4.6rem;
+  height: 0.533333rem;
+  margin: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.noCoupons {
+  background-color: #fff;
+  height: 100%;
+  overflow: hidden;
+}
+
+.noCoupons img {
+  width: 100vw;
+  margin: 15vh 0 5vh;
+}
+
+.noCoupons span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.couponsCentre .listBox .block {
+  margin: 0.133333rem 0.2rem 0 0.2rem;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #C5C5C5;
+}
+
+.couponsCentre .listBox .block .left {
+  width: 2.826667rem;
+  background-image: url('../images/ticketBG.png');
+  background-size: 0.12rem 1.333333rem;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 1.333333rem;
+  padding-left: 0.266667rem;
+}
+
+.couponsCentre .listBox .block .left div {
+  margin-top: 0.2rem;
+}
+
+.couponsCentre .listBox .block .left p {
+  margin: 0.026667rem 0 0.133333rem;
+}
+
+.couponsCentre .listBox .block .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 1.906667rem;
+  position: relative;
+}
+
+.couponsCentre .listBox .block .right .money {
+  margin-bottom: 0.066667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.couponsCentre .listBox .block .right button {
+  border: 0.006667rem solid #f65236;
+  color: #f65236;
+  width: 0.733333rem;
+  height: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  line-height: 1.5;
+}
+
+.couponsCentre .listBox .block .right button.noNum {
+  border: 0.006667rem solid #eee;
+  color: #999;
+}
+
+.myCoupons .tab {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  height: 0.666667rem;
+  background-color: #fff;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.myCoupons .tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+}
+
+.myCoupons .page-bd {
+  padding-top: 0.133333rem;
+}
+
+.myCoupons .tabBox,
+.myCoupons .tabBlock {
+  height: 100%;
+}
+
+.myCoupons .box {
+  display: none;
+}
+
+.myCoupons .block {
+  margin: 0 0.2rem 0.133333rem 0.2rem;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #C5C5C5;
+}
+
+.myCoupons .block .left {
+  width: 2.826667rem;
+  background-image: url('../images/ticketBG.png');
+  background-size: 0.12rem 1.333333rem;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 1.333333rem;
+  padding-left: 0.266667rem;
+}
+
+.myCoupons .block .left div {
+  margin-top: 0.2rem;
+}
+
+.myCoupons .block .left p {
+  margin: 0.026667rem 0 0.133333rem;
+}
+
+.myCoupons .block .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 1.906667rem;
+  position: relative;
+}
+
+.myCoupons .block .right .money {
+  margin-bottom: 0.066667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.myCoupons .block .right button {
+  border: 0.006667rem solid #e5e5e5;
+  color: #c5c5c5;
+  width: 0.733333rem;
+  height: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  line-height: 1.5;
+}
+
+.myCoupons .userTicket .left {
+  color: #999;
+}
+
+.myCoupons .userTicket .left div {
+  color: #333;
+}
+
+.myCoupons .userTicket .right div {
+  color: #333;
+}
+
+.myCoupons .userTicket .block .right button {
+  border: 0.006667rem solid #f65236;
+  color: #f65236;
+}
+
+.coupons_indexBox .couponsList {
+  margin-top: -3.466667rem;
+  height: 2.6rem;
+  overflow-y: scroll;
+}
+
+.coupons_indexBox a {
+  width: 3.2rem;
+  height: 0.493333rem;
+  background-color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin: 0.066667rem 0 0.333333rem;
+  line-height: 1.5;
+}
+
+.coupons_indexBox .content {
+  position: relative;
+  z-index: 99;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.coupons_indexBox .content .block {
+  width: 3.2rem;
+  height: 0.8rem;
+  margin-bottom: 0.066667rem;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.coupons_indexBox .content .block .left {
+  width: 2rem;
+  background-image: url('../images/couponsLine01.png');
+  background-size: 0.093333rem 0.8rem;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 0.8rem;
+  padding-left: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.coupons_indexBox .content .block .left p {
+  margin-top: 0.026667rem;
+}
+
+.coupons_indexBox .content .block .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 1.2rem;
+  position: relative;
+}
+
+.coupons_indexBox .content .block .right .money {
+  margin-top: -0.04rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.coupons_indexBox .content .closeimg {
+  width: 0.533333rem;
+  height: 0.533333rem;
+}
+
+.coupons_indexBox .contentBG {
+  width: 4.013333rem;
+  height: 5.88rem;
+  margin: 15vh 0 0.133333rem;
+}
+
+.goCoupons {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.goCoupons .goCouponsBtn {
+  width: 1.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+
+.getCoupons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.getCoupons .modelContent {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  height: auto !important;
+}
+
+.getCoupons .title {
+  padding-left: 0.2rem;
+  height: 0.733333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.getCoupons .list {
+  padding: 0 0.2rem;
+  overflow-y: scroll;
+  height: 4.666667rem;
+  white-space: nowrap;
+}
+
+.getCoupons .list .block {
+  margin-bottom: 0.133333rem;
+  background-color: #f5f5f5;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #C5C5C5;
+}
+
+.getCoupons .list .block .left {
+  width: 2.826667rem;
+  background-image: url('../images/couponsLine02.png');
+  background-size: 0.16rem 1.066667rem;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 1.066667rem;
+  padding-left: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.getCoupons .list .block .left div {
+  color: #333 !important;
+}
+
+.getCoupons .list .block .left p {
+  margin-bottom: 0.04rem;
+}
+
+.getCoupons .list .block .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 1.906667rem;
+  position: relative;
+}
+
+.getCoupons .list .block .right .money {
+  margin: -0.04rem 0 0.04rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  color: #333;
+}
+
+.getCoupons .list .block .right button {
+  border: 0.006667rem solid #e5e5e5;
+  color: #c5c5c5;
+  width: 0.733333rem;
+  height: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  line-height: 1.5;
+}
+
+.getCoupons .list .userTicket {
+  background-color: #fcf4f2;
+}
+
+.getCoupons .list .userTicket .left {
+  color: #b2a4a3;
+  background-image: url('../images/couponsLine03.png');
+}
+
+.getCoupons .list .userTicket .right button {
+  border: 0.006667rem solid #f65236;
+  color: #f65236;
+}
+
+.getCoupons .closeBtn {
+  width: 4.6rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  line-height: 1.5;
+  margin: 0.133333rem 0.2rem;
+}
+
+.coupones_gooddlist {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.coupones_gooddlist .title {
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 0.2rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.coupones_gooddlist .block {
+  width: 4.533333rem;
+  height: 1.133333rem;
+  margin: 0 0.233333rem 0.2rem;
+  background-color: #fcf4f2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.coupones_gooddlist .block .left {
+  width: 2.8rem;
+  background-image: url('../images/couponsLine03.png');
+  background-size: 0.16rem 1.133333rem;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 1.133333rem;
+  padding-left: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.coupones_gooddlist .block .left p {
+  margin-top: 0.026667rem;
+}
+
+.coupones_gooddlist .block .right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 1.733333rem;
+}
+
+.coupones_gooddlist .block .right .money {
+  margin-top: -0.066667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.coupones_noGooddlist {
+  background-image: url('../images/emptyCart.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
+
+.coupones_noGooddlist span {
+  width: 100vw;
+  text-align: center;
+  margin-top: 2.666667rem;
+}
+
+.payment_coupons label {
+  touch-action: auto;
+}
+
+.payment_coupons .selectCoupons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.payment_coupons .selectCoupons img {
+  width: 0.133333rem;
+  height: 0.16rem;
+  margin-left: 0.053333rem;
+}
+
+.payment_coupons .selectCoupons p {
+  padding: 0.013333rem 0.106667rem;
+  height: 0.2rem;
+  background-color: #f65236;
+  line-height: 1.3;
+  font-size: 0.146667rem;
+  color: #fff;
+}
+
+.payment_coupons .useTicket label {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0.106667rem 0;
+}
+
+.payment_coupons .useTicket label .ticketInfo div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  margin-bottom: 0.04rem;
+}
+
+.payment_coupons .useTicket label .ticketInfo div em {
+  margin-right: 0.066667rem;
+}
+
+.payment_coupons .useTicket label .ticketInfo p {
+  font-size: 0.16rem;
+  color: #999;
+}
+
+.payment_coupons .useTicket label .noUse div {
+  color: #999;
+}
+
+.payment_coupons .useTicket .lineBox {
+  padding: 0.026667rem 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  position: relative;
+}
+
+.payment_coupons .useTicket .lineBox p {
+  border: 0.006667rem dashed #eee;
+  height: 0.006667rem;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.payment_coupons .useTicket .lineBox span {
+  background-color: #fff;
+  padding: 0 0.133333rem;
+  position: relative;
+  z-index: 9999999;
+}

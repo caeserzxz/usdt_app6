@@ -9,5 +9,4 @@ class BonusListModel extends BaseModel
 {
 	protected $table = 'shop_bonus_list';
 	public  $pk = 'bonus_id';
-
 }

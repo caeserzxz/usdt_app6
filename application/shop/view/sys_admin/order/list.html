@@ -7,6 +7,7 @@
     <th width="150" align="center">收货人</th>
     <th width="100">支付方式</th>
     <th width="100">状态</th>
+    <th width="100">操作</th>
 </tr>
 </thead>
 <tbody>
@@ -76,12 +77,17 @@
         <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
         <p>
            {$orderLang['ss'][$vo['shipping_status']]|raw}
-           {eq name="vo.ostatus" value="待发货" }
-            <a href="javascript:;" data-remote="{:url('shipping',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" title="发货">
-                <i class="fa fa-truck text-muted"></i>
-            </a>
-            {/eq}
+
         </p>
+
+    </td>
+
+    <td>
+        {eq name="vo.ostatus" value="待发货" }
+        <a href="javascript:;" data-remote="{:url('shipping',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" title="发货">
+            <i class="fa fa-truck text-muted"></i>
+        </a>
+        {/eq}
 
     </td>
 

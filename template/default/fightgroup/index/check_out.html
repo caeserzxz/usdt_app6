@@ -5,7 +5,7 @@
     var orderTotal = 0, shippingFee = 0, bonus_money = 0, totalGoodsPrice = 0, used_bonus_id = 0;
 </script>
 {/block}
-{block name='pageType'}payment{/block}
+{block name='pageType'}payment payment_coupons{/block}
 {block name="main" }
 {assign name="isAddOrder" value="1"}
 <div class="page-bd">
@@ -54,7 +54,7 @@
 
         <!-- 优惠券 -->
         {if condition="$setting.shop_used_bonus == 1 && $fgInfo.is_usd_bonus == 1"}
-        {include file="shop@flow/bonus" /}
+        {include file="fightgroup@index/bonus" /}
         {/if}
         <div class="color_3 cell">
             <span class="fs28">运费</span>
@@ -113,22 +113,6 @@
 {/literal}
 {/block}
 {block name="footer"}
-
-<div class="wrapper bonusListBox">
-    <div class="page">
-        <div class="page-hd">
-            <div class="header bor-1px-b">
-                <div class="header-left">
-                    <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
-                </div>
-                <div class="header-title">优惠券</div>
-                <div class="header-right"></div>
-            </div>
-        </div>
-        {include file="shop@bonus/list" /}
-    </div>
-</div>
-
 
 <script>
     var rec_id = '';

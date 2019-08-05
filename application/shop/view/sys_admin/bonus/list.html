@@ -5,11 +5,17 @@
         	<th>ID</th>
             <th>名称</th>
         	<th>券面额</th>
-        	<th>发送类型</th>
             <th>消费金额</th>
+        	<th>发放类型</th>
+            <th>指定商品类型</th>
+            <th>使用范围</th>
+            <th>发放状态</th>
+            <th>使用状态</th>
+            <th>领取数</th>
           	<th>使用数</th>
-         	<th>添加时间</th>
-            <th>使用结束时间</th>
+            <th>发放时间</th>
+            <th>使用时间</th>
+            <th>创建时间</th>
             <th width="130">操作</th>
         </tr>
     </thead>
@@ -19,18 +25,23 @@
         	<td>{$row.type_id}</td>
         	<td>{$row.type_name}</td>
             <td><span class="money">{$row.type_money}</span></td>
-            <td>{$SendType[$row['send_type']]['name']}</td>
             <td><span class="money">{$row.min_amount}</span></td>
-            <td>{$row.used_num}</td>
+            <td>{$SendType[$row['send_type']]['name']}</td>
+            <td>{$GoodsType[$row['goods_type']]['name']}</td>
+            <td>{$UseType[$row['use_type']]['name']}</td>
+            <td>{$sendStatusList[$row['_send_status']]}</td>
+            <td>{$useStatusList[$row['use_status']]}</td>
+            <td>{$row.send_num}</td>
+            <td>{$row.use_num}</td>
+            <td>{$row.send_start_date|dateTpl} <br>--<br>{$row.send_end_date|dateTpl}</td>
+            <td>{$row.use_start_date|dateTpl} <br>--<br>{$row.use_end_date|dateTpl}</td>
             <td>{$row.add_time|dateTpl}</td>
-            <td>{$row.use_end_date|dateTpl}</td>
             <td>
-            	{eq name="row.send_type" value="3"}<a href="{:url('getExcel',array('type_id'=>$row['type_id']),false)}" class="m-xs" title="报表"><i class="fa fa-download text-muted"></i></a><a href="{:url('send',array('type_id'=>$row['type_id']))}" class="m-xs" title="发放"><i class="fa fa-random text-muted"></i></a>{/eq}
-                 {eq name="row.send_type" value="1"}<a href="{:url('send',array('type_id'=>$row['type_id']))}" class="m-xs" title="发放"><i class="fa fa-random text-muted"></i></a>{/eq}
                 <a href="{:url('info',array('type_id'=>$row['type_id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
-                <a href="{:url('bonusList',array('type_id'=>$row['type_id']))}" class="m-xs" title="查看"><i class="fa fa-search text-muted"></i></a>
-               
-                
+                <a href="{:url('bonusList',array('type_id'=>$row['type_id']))}" class="m-xs" title="查看领取记录"><i class="fa fa-search text-muted"></i></a>
+                <a href="{:url('getExcel',array('type_id'=>$row['type_id']),false)}" class="m-xs" title="导出领取报表"><i class="fa fa-download text-muted"></i></a>
+                {if condition="($row.send_type eq 1||$row.send_type eq 3)&&$row.send_status  eq 1"}<a href="{:url('send',array('type_id'=>$row['type_id']))}" class="m-xs" title="发放"><i class="fa fa-random text-muted"></i></a>{/if}
+
             </td>
         </tr>
 {/volist}

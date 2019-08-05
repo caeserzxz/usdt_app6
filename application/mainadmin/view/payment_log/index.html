@@ -18,8 +18,14 @@
                         <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
                     </a>
               </div>
+			   <select name="pay_id"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选" data-chang="submit">
+                <option value="">所有支付</option>
+                {foreach name="pay_type" item="v"}
+                <option value="{$v.pay_id}">{$v.pay_name}</option>
+                {/foreach}
+            </select>
             <select name="status"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选" data-chang="submit">
-                <option value="">所有分类</option>
+                <option value="">所有状态</option>
                 {foreach name="ss" item="v"}
                 <option value="{$key}">{$v}</option>
                 {/foreach}

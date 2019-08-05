@@ -27,6 +27,10 @@ class Index  extends ClientbaseController{
                 $tipsubscribe = $subscribe == 1 ? 0 : 1;
             }
         }
+        //优惠券提示层背景
+        $reg_bonus_bg=settings('reg_bonus_bg');
+        $this->assign('reg_bonus_bg', $reg_bonus_bg);
+
         $this->assign('tipsubscribe', $tipsubscribe);
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片

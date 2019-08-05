@@ -20,7 +20,7 @@ return [
     // 缓存保存目录
     'path'   => '',
     // 缓存前缀
-    'prefix' => 'tyMain_',
+    'prefix' => 'test01Main_',
     // 缓存有效期 0表示永久缓存
     'expire' => 0,
 ];

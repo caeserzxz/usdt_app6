@@ -4,6 +4,7 @@ namespace app\mainadmin\controller;
 use app\AdminController;
 use think\facade\Cache;
 
+use app\shop\model\OrderModel;
 use app\member\model\UsersModel;
 use app\member\model\AccountModel;
 use app\member\model\RechargeLogModel;

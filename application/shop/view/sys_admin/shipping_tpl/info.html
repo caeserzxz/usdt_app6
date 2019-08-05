@@ -83,9 +83,11 @@ border-bottom: 4px solid #000000;
                             <div class="col-sm-10">
                             {volist name="shippingList" id="shipping"}
                             	{neq name="shipping.is_zt" value="1"}
-                                <label class="checkbox-inline">
-                                    <input  name="delivery[]" type="checkbox" value="{$key}"  data-delivery="{$key}" data-toggle="delivery" data-name="{$shipping.shipping_name}" {$row['sf_info'][$key]?'checked':''}/>{$shipping.shipping_name}
-                                </label>
+                                {eq name="key" value="DEFSP"}
+                                    <label class="checkbox-inline">
+                                        <input  name="delivery[]" type="checkbox" value="{$key}"  data-delivery="{$key}" data-toggle="delivery" data-name="{$shipping.shipping_name}" {$row['sf_info'][$key]?'checked':''}/>{$shipping.shipping_name}
+                                    </label>
+                                {/eq}
                               	{/neq}
                              {/volist}
                             </div>
@@ -342,6 +344,14 @@ border-bottom: 4px solid #000000;
 		$('#'+n_delivery+'_'+n_index+'_region_list').val(sel_region);
 	   return false;
    }
+
+   //模拟点击
+   $(function(){
+       setTimeout (function(){
+           $("input[name='delivery[]']").trigger("click");
+       },500);
+   });
+
 </script>
 
 

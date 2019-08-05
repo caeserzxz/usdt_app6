@@ -103,11 +103,11 @@
                                   data-track-color="#fff" data-scale-color="false" data-size="50" data-line-cap="butt"
                                   data-animate="2000" data-target="#bugs" data-update="3000"></span>
                         </span>
-                <a class="fl" href="{:url('member/sys_admin.users/index')}">
+                <a class="fl" href="{:url('member/sys_admin.users/index',['time_type'=>'reg_time','start_time'=>$today,'end_time'=>$today])}">
                     <span class="h3 block m-t-xs"><strong id="t_day_new_user">{$userStats['today_reg']}</strong></span>
                     <small class="text-muted text-uc">今天新增会员</small>
                 </a>
-                <a class="fr" >
+                <a class="fr" href="{:url('member/sys_admin.users/index',['time_type'=>'reg_time','start_time'=>$yesterday,'end_time'=>$yesterday])}">
                     <span class="h3 block m-t-xs"><strong id="y_day_new_user">{$userStats['yesterday_reg']}</strong></span>
                     <small class="text-muted text-uc">昨天新增会员</small>
                 </a>
@@ -122,7 +122,7 @@
                     <span class="h3 block m-t-xs"><strong id="user_num">{$userStats['all_num']}</strong></span>
                     <small class="text-muted text-uc">会员总数</small>
                 </a>
-                <a class="fr" href="{:url('member/sys_admin.users/index',array('home_jump'=>1))}">
+                <a class="fr" href="{:url('member/sys_admin.users/index',array('rode_id'=>'all_role'))}">
                     <span class="h3 block m-t-xs"><strong id="user_role_num">{$userStats['role_num']}</strong></span>
                     <small class="text-muted text-uc">身份会员总数</small>
                 </a>
@@ -217,14 +217,16 @@
             </div>
         </section>
     </div>
-    <script type="text/javascript">
-        $(function () {
-            $('#container').highcharts({
-                    chart: {type: 'spline'},
-                    title: {text: ''},
-                    subtitle: {text: ''},
-                    xAxis: { categories: {$riqi|raw}},
-                yAxis: {
+
+</section>
+<script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: {$riqi|raw}},
+            yAxis: {
                 title: {text: ''},
                 min: 0
             },
@@ -236,25 +238,25 @@
             series: [{
                 name: '下单数 <span style="color:gray" >(点击隐藏)</span>',
                 data: {$stats.all_add_num|json_encode|raw}
-        },{
+            },{
                 name: '成交数 <span style="color:gray" >(点击隐藏)</span>',
-                    data: {$stats.order_pay_num|json_encode|raw}
+                data: {$stats.order_pay_num|json_encode|raw}
             },{
                 name: '发货数 <span style="color:gray" >(点击隐藏)</span>',
-                    data: {$stats.shipping_order_num|json_encode|raw}
+                data: {$stats.shipping_order_num|json_encode|raw}
             }, {
                 name: '签收数 <span style="color:gray" >(点击隐藏)</span>',
-                    data:  {$stats.sign_order_num|json_encode|raw}
+                data:  {$stats.sign_order_num|json_encode|raw}
             }]
         });
 
 
-            $('#total_money').highcharts({
-                    chart: {type: 'spline'},
-                    title: {text: ''},
-                    subtitle: {text: ''},
-                    xAxis: { categories: {$riqi|raw}},
-                yAxis: {
+        $('#total_money').highcharts({
+            chart: {type: 'spline'},
+            title: {text: ''},
+            subtitle: {text: ''},
+            xAxis: { categories: {$riqi|raw}},
+            yAxis: {
                 title: {text: ''},
                 min: 0
             },
@@ -266,12 +268,12 @@
             series: [{
                 name: '成交',
                 data: {$stats.seven_order_amount|json_encode|raw}
-        },{
+            },{
                 name: '实收',
-                    data: {$stats.seven_real_amount|json_encode|raw}
+                data: {$stats.seven_real_amount|json_encode|raw}
             },{
                 name: '佣金',
-                    data: {$stats.seven_dividend_amount|json_encode|raw}
+                data: {$stats.seven_dividend_amount|json_encode|raw}
             }
             ]
         });

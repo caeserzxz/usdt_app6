@@ -69,9 +69,13 @@ class AfterSale extends ApiController
 
         //计算实际可退金额
         $total_sale_price = $OrderGoodsModel->where('order_id',$goods['order_id'])->SUM('sale_price');//计算订单商品单价汇总
-        $offer_price = $orderInfo['goods_amount'] - ($orderInfo['order_amount'] - $orderInfo['shipping_fee']);//计算订单总优惠金额
+        $offer_price = $orderInfo['goods_amount'] - ($orderInfo['order_amount'] - $orderInfo['shipping_fee'])-$orderInfo['use_bonus'];//计算订单总优惠金额，除去优惠劵
         $return_pre = $goods['sale_price'] / $total_sale_price;//计算当前商品占比
         $return_price = priceFormat($goods['sale_price'] - ($offer_price * $return_pre));
+        if($goods['bonus_after_price']>0){//使用了优惠券
+            $use_bonus = $goods['sale_price']-$goods['bonus_after_price'];//单个商品享受的优惠券金额
+            $return_price = $return_price-$use_bonus;
+        }
         $inArr['return_money'] = $return_price * $inArr['goods_number'];
         //end
 

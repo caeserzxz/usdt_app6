@@ -542,3 +542,18 @@ function getSubstr($string, $start, $length) {
           return $string;
       }
 }
+
+/*------------------------------------------------------ */
+// * 获取数组中的某一列
+// * @param array $arr 数组
+//* *@param string $key_name  列名
+// @return array  返回那一列的数组
+/*------------------------------------------------------ */
+function getArrColumn($arr, $key_name)
+{
+    $arr2 = array();
+    foreach ($arr as $key => $val) {
+        $arr2[] = $val[$key_name];
+    }
+    return $arr2;
+}

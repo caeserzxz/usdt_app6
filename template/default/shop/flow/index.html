@@ -13,6 +13,10 @@
     </div>
     <!-- 购物车 -->
     <div class="goodslist">
+        <a href="javascript:;" class="goCoupons">
+            <p class="fs26 color_3">先领券再下单能享受更多优惠哦!</p>
+            <div class="goCouponsBtn"><span class="fs26 color_r">领券</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+        </a>
         <ul>
 
         </ul>
@@ -119,6 +123,10 @@
 </script>
 {/block}
 {block name="footer"}
+
+<!-- 弹出领取优惠券 -->
+{include file="flow/bonus_layer" /}
+
 <script>
     //购物车统一请求
     function evalCart(action,arr){
@@ -232,5 +240,8 @@
 
         })
     })
+    function closeModel(obj){
+        $(obj).parents('.model').hide()
+    }
 </script>
 {/block}

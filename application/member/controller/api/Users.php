@@ -11,6 +11,7 @@ use app\member\model\AccountLogModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
+use think\Db;
 use lib\Image;
 use app\weixin\model\MiniModel;
 
@@ -328,6 +329,10 @@ class Users extends ApiController
         $upArr['sex'] = $upArr['sex'] == '男' ? 1 : 0;
         $upArr['birthday'] = input('birthday', '', 'trim');
         $upArr['show_mobile'] = input('show_mobile', 0, 'intval');
+        //验证数据是否出现变化
+        $dbarr = $this->Model->field(join(',',array_keys($upArr)))->where('user_id',$this->userInfo['user_id'])->find()->toArray();
+        $this->checkUpData($dbarr,$upArr,true);
+
         $res = $this->Model->upInfo($this->userInfo['user_id'], $upArr);
         if ($res < 1) {
             @unlink($file_name);
@@ -558,4 +563,95 @@ class Users extends ApiController
         }
     }
 
+    /*------------------------------------------------------ */
+    //-- 获取背景图片列表
+    /*------------------------------------------------------ */
+    public function getBkImgList(){
+        $default_img = settings('GoodsImages');
+        $arr = explode(',', $default_img);
+        $return['code'] = 1;
+        $return['data'] = $arr;
+        return $this->ajaxReturn($return);
+    }
+
+    /*------------------------------------------------------ */
+    //-- 获取签到数据
+    /*------------------------------------------------------ */
+    public function getSignData(){
+
+        $year = input('year',date('Y'));
+        $month = input('month',date('n'));
+
+        $data = Db::table('users_sign')->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
+        if(!$data){
+            $data['days'] = '';
+        }
+        $return['code'] = 1;
+        $return['data'] = $data;
+        return $this->ajaxReturn($return);
+    }
+
+    /*------------------------------------------------------ */
+    //-- 今日签到
+    /*------------------------------------------------------ */
+    public function doSign(){
+
+        $year = date('Y');
+        $month = date('n');
+        $day = date('d');
+        $AccountLogModel = new AccountLogModel();
+        $sigin = settings('sign_integral');
+        $user_id = $this->userInfo['user_id'];
+
+        $data = Db::table('users_sign')->where(['user_id'=>$user_id,'year'=>$year,'month'=>$month])->find();
+        if($data&&isset($data['days'])){
+            $tmp_arr = explode(',',$data['days']);
+            if(in_array($day, $tmp_arr)){
+                $this->error('今天已经签到,请勿重复签到！');
+            }
+        }
+
+
+
+        Db::startTrans();
+        if($data){
+            //本月数据已有,直接更新
+            $upData = ['days'=>$data['days'].','.$day,'last_time'=>time(),'score'=>$sigin];
+            $res = Db::table('users_sign')->where(['id'=>$data['id']])->update($upData);
+        }else{
+            //本月数据没有,进行插入
+            $inData = [
+                'user_id' => $user_id,
+                'year'    => $year,
+                'month'   => $month,
+                'days'    => $day,
+                'score'   => $sigin,
+                'last_time'=> time()
+            ];
+            $res = Db::table('users_sign')->insert($inData);
+        }
+
+        if(!$res){
+            Db::rollback();
+            $this->error('签到失败,请联系管理员');
+        }
+
+        //签到成功，加积分
+        $accData['change_desc'] = '签到获得积分';
+        $accData['change_type'] = 10;
+        $accData['by_id'] = 0;
+        $accData['use_integral'] = $sigin;
+        $res = $AccountLogModel->change($accData,$user_id,false);
+
+        if(!$res){
+            Db::rollback();
+            $this->error('签到失败,积分处理异常');
+        }
+
+        Db::commit();
+        $return['code'] = 1;
+        $return['msg'] = '签到成功';
+        $return['score'] = $sigin;
+        return $this->ajaxReturn($return);
+    }
 }

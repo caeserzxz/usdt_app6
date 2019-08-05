@@ -1,0 +1,92 @@
+<style>
+	.list{
+		display: block;
+		width: 100vw;
+		margin-top: .1rem;
+		overflow-y: auto;
+	}
+	.box{
+		display: inline-block;
+		width: 49.5vw;
+		height: 55vw;
+		padding: 4px;
+	}
+	.box img{
+		width: 100%;
+	}
+	.is_choose{
+		border: 2px solid #0003ff;
+	}
+	.foot_box{
+		position: absolute;
+		width: 100vw;
+		bottom: 0;
+		display: table;
+		font-size: .2rem;
+		font-weight: 800;
+		text-align: center;
+		color: #fff;
+		background-color: #333;
+	}
+	.foot_btn{
+		padding: .1753rem;
+		display: table-cell;
+	}
+</style>
+<div class="list">
+
+</div>
+<div style="height: .8rem;"></div>
+<div class="foot_box">
+	<div class="foot_btn choose">选择</div>
+	<div class="foot_btn close_wrapper">取消</div>
+</div>
+
+<script>
+
+var tmp_node = '';
+
+//选中状态初始化
+$(function(){
+	$.post('/member/api.users/getBkImgList',function(res){
+		if(res.code == 1){
+			let html = '';
+			$.each(res.data,function(i,v){
+		        html += '<div class="box">';
+				html += '<img src="'+v+'" alt="">';
+				html += '</div>';
+		    });
+			$(".list").append(html);
+			choose_status(choose_img);
+		}
+	});
+})
+
+function choose_status(str){
+	let arr = $('.list img');
+	if(arr != undefined){
+		$.each(arr, function(i, item){      
+		    if(item.src == str){
+		    	$(this).addClass('is_choose');
+		    	$(this).siblings().removeClass('is_choose');
+		    	tmp_node = $(this);
+		    }
+		});
+	}
+}
+
+//切换背景图片
+$('.list').on('click','.box',function(){
+	let img_node = $(this).children('img');
+	$('.list img').removeClass('is_choose');
+	img_node.addClass('is_choose');
+	tmp_node = img_node;
+})
+
+//确认选择该图片
+$('.foot_box').on('click','.choose',function(){
+	choose_img = tmp_node.attr('src');
+	$('.goodsimg').attr('src',choose_img);
+	$('.close_wrapper').click();
+})
+</script>

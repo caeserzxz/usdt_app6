@@ -1,0 +1,59 @@
+<?PHP header("Cache-Control:private"); ?>
+<!DOCTYPE html>
+<html lang="cn" class="app fadeInUp animated">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
+    <link rel="stylesheet" href="__STATIC__/main/css/app.css"/>    <!--Basic Styles-->
+    <link href="__STATIC__/main/css/stylesheets/bootstrap.min.css" rel="stylesheet" />
+    <link href="__STATIC__/main/css/inside.css" rel="stylesheet">
+    <link href="__STATIC__/awesome/css/font-awesome.min.css" rel="stylesheet" />    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/main/css/stylesheets/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/main/css/stylesheets/style.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="__STATIC__/js/jquery/jquery/1.8.3/jquery.min.js"></script>
+    <script src="__STATIC__/js/inside.js"></script>
+    <link rel="stylesheet" href="__STATIC__/main/css/public.css"/>
+    <link href="__STATIC__/main/css/stylesheets/daterangepicker/daterangepicker-bs3.min.css" rel="stylesheet" />
+	<script type="text/javascript">
+    	var assets_path="__STATIC__",
+		_version = "1.0.0",
+		uploadJ = "{:url('mainAdmin/attachment/editer_upload',array('ckv'=>editerUploadCkv()))}",
+		fileManagerJ = "{:url('mainAdmin/attachment/editer_manager')}",
+		searchUserUrl = "{:url('member/sys_admin.users/pubSearch')}",
+		searchGoodsUrl = "{:url('shop/sys_admin.goods/pubSearch')}",
+		regionUrl  = "{:url('publics/api.region/getList')}",
+		order_by = '<?=empty($data["order_by"])?'':$data["order_by"];?>',
+		sort_by = '<?=empty($data["sort_by"])?'':$data["sort_by"];?>',
+		page_size = '';
+    </script>
+    {block name="head"}{/block}
+</head>
+<body  {block name="body"}{/block}>
+<div class="am-g tpl-g">
+<script src="__STATIC__/js/layer/layer.js"></script>
+<script src="__STATIC__/js/art-template.js"></script>
+<script src="__STATIC__/js/app.js"></script>
+<script src="__STATIC__/assets/sea.js"></script>
+<script src="__STATIC__/assets/seajs_config.js"></script>
+<script type="text/javascript">
+	seajs.use("dist/application/app.js");	
+</script>
+
+<!-- 内容区域 start -->
+<div class="tpl-content-wrapper <?= empty($second) ? 'no-sidebar-second' : '' ?>"  style="margin-left: 0px;">
+    <section class="vbox">
+        {block name="main"}{/block}
+        {include file="mainadmin@layouts/page" /}
+    </section>
+</div>
+<!-- 内容区域 end -->
+
+</div>
+{block name="footer"}{/block}
+</body>
+</html>

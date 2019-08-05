@@ -22,10 +22,14 @@ class Center  extends ClientbaseController{
     //-- 我的分享二维码
     /*------------------------------------------------------ */
     public function myCode(){
-		$DividendShareByRole = settings('DividendShareByRole');
-		if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
-			return $this->error('请升级身份后再操作.');
-		}
+        $DividendShareByRole = settings('DividendShareByRole');
+        if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
+            return $this->error('请升级身份后再操作.');
+        }
+        $default_img = settings('GoodsImages');
+        $arr = explode(',', $default_img);
+        $default_img = $arr[0]?$arr[0]:'';
+        $this->assign('default_img',$default_img);
         $this->assign('title', '我的二维码');
         return $this->fetch('my_code');
     }

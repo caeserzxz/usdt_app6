@@ -1,45 +1,125 @@
-
-<div class="color_3 cell bonusInfo">
-   <span class="fs28">优惠券</span>        
-   <div class="color_3 fs28 ticket">  
-           <em class="fs22 color_w BGcolor_r"><em class="unusedNum">0</em>张可用</em>
-           <span class="color_3 fs28">未使用</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
-       
-   </div>                      
-	<div class="color_3 fs28 num closed money " style="display:none;">   
-    
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/coupons.css"/>
+<div class="color_3 cell">
+    <span class="fs28">优惠券</span>
+    <div class="selectCoupons"><span class="fs28 color_9">请选择优惠券</span>
+        <p style="display: none"></p><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
     </div>
 </div>
-
-
-<script type="text/javascript">
-$(function(){
-    //显示优惠券列表
-    $('.ticket').on('click', function () {
-        $('html').addClass('noscroll');
-        $('.bonusListBox').addClass('move-left');
-    });
-    //关闭优惠券弹出
-    $('.bonusListBox').on('click', '.close_wrapper', function () {
-        $('html').removeClass('noscroll');
-        $('.bonusListBox').removeClass('move-left');
+<div class="color_3 cell" id="couponMoney" style="display: none;">
+    <span class="fs28">优惠券抵扣</span>
+    <div class="color_3 fs28 num money">
+        <p class="fw_b fm_p">-￥</p><em class="fs34">0.00</em>
+    </div>
+</div>
+<div class="model getCoupons" style="display: none;">
+    <div class="modelContent">
+        <div class="title fs36 fw_b color_3">请选择优惠券</div>
+        <div class="list useTicket">
+            <label for="r01">
+                <div class="ticketInfo">
+                    <div class="fs30 fw_b color_3">不使用优惠券</div>
+                </div>
+                <div class="iconBox">
+                    <input type="radio" class="check" name="couponbox" id="r01"  checked value="0"  data-bonus_id="0" data-money="0">
+                    <i class="icon_checked"></i>
+                </div>
+            </label>
+            <div class="lineBox">
+                <p></p>
+                <span class="fs24 color_9">可使用(<em class="ableNum">0</em>)</span>
+            </div>
+            <div id="ableList">
+                <!--可用优惠券-->
+            </div>
+            <div class="lineBox">
+                <p></p>
+                <span class="fs24 color_9">不可使用(<em class="unableNum">0</em>)</span>
+            </div>
+            <div id="unableList">
+                <!--不可用优惠券-->
+            </div>
+        </div>
+        <div class="closeBtn fs32 fw_b color_w BGcolor_r">完成</div>
+    </div>
+</div>
+<script type="text/html" id="ableTpl">
+    {{each able as item index}}
+    <label for="r1{{index}}">
+        <div class="ticketInfo">
+            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}
+            </div>
+            <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
+            <p>满{{item.min_amount}}元可用</p>
+        </div>
+        <div class="iconBox">
+            <input type="radio" class="check" name="couponbox" id="r1{{index}}" value="满{{item.min_amount}}减{{item.type_money}}" data-bonus_id="{{item.bonus_id}}" data-money="{{item.type_money}}">
+            <i class="icon_checked"></i>
+        </div>
+    </label>
+    {{/each}}
+</script>
+<script type="text/html" id="unableTpl">
+    {{each unable as item index}}
+    <label>
+        <div class="ticketInfo noUse">
+            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}</div>
+            <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
+            <p>满{{item.min_amount}}元可用</p>
+        </div>
+    </label>
+    {{/each}}
+</script>
+<script>
+    var bounsData = {};
+    $(function () {
+        getBonusList();//加载优惠券
+        $('.selectCoupons').on('click', function () {
+           if(bounsData['ableNum']<1&&bounsData['unableNum']<1){
+               _alert('您暂时没有可用优惠券');
+               // return false;
+           }
+            $('.getCoupons').show();
+        });
     })
     //点击选择优惠券
-    $('.bonusListBox').on('click', '.usedBonus', function () {
-        used_bonus_id  = $(this).data('bonus_id');
-        var bonus = bounsData.unused[used_bonus_id];
-        bonus_money = bonus.bonus.type_money;
-        $('.bonusInfo .ticket').hide();
-        $('.bonusInfo .money').show().html('<p class=" fm_p ">'+bonus.bonus.type_name+'：</p><p class="fw_b fm_p">-￥</p><em class="fs34 ">'+bonus.bonus.type_money+'</em><img src="__STATIC__/mobile/default/images/closed.png" alt="" class="give_up_bonus">');
-        $('.bonusListBox .close_wrapper').trigger("click");
+    $('.closeBtn').on('click', function () {
+        var val=$('input:radio[name="couponbox"]:checked').val();
+        used_bonus_id  = $('input:radio[name="couponbox"]:checked').data('bonus_id');
+        bonus_money = $('input:radio[name="couponbox"]:checked').data('money');
+        var objDOM_p=$('.selectCoupons p')
+        var objDOM_span=$('.selectCoupons span');
+        if(val!=0){
+            objDOM_span.hide();
+            objDOM_p.show();
+            objDOM_p.text(val);
+            $("#couponMoney").show();
+            $("#couponMoney").find('em').text(parseFloat(bonus_money).toFixed(2));
+        }else{
+            objDOM_span.show().text('不使用优惠券');
+            objDOM_p.hide();
+            $("#couponMoney").hide();
+        }
         evalPrice();//计算支付金额
+        $(this).parents('.model').hide()
     })
-	//放弃使用
-	$('.bonusInfo').on('click','.give_up_bonus',function(){
-		used_bonus_id = bonus_money = 0;
-		$('.bonusInfo .ticket').show();
-		$('.bonusInfo .money').hide();
-		evalPrice();//计算支付金额
-	})
-})
+    //获取优惠券列表
+    function getBonusList() {
+        var arr = new Object();
+        arr.goods_type=1;
+        arr.is_sel=1;
+        if (rec_id != '') {
+            arr.recids=rec_id;
+        }
+        jq_ajax('{:url("shop/api.bonus/getBonusListToCheckout")}', arr, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            bounsData= res.data;
+            $('.ableNum').html(bounsData['ableNum']);
+            $('.unableNum').html(bounsData['unableNum']);
+            $('#ableList').html(template('ableTpl', bounsData));
+            $('#unableList').html(template('unableTpl', bounsData));
+        })
+    }
 </script>

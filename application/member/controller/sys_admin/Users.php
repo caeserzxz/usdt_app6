@@ -35,9 +35,20 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+
+        $this->assign('rode_id',input('rode_id', 0, 'intval'));
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getList(true);
+
+        //首页跳转时间
+        $start_date = input('start_time', '0', 'trim');
+        $end_date = input('end_time', '0', 'trim');
+        if( $start_date || $end_date){
+
+            $this->assign("start_date",str_replace('_', '/', $start_date));
+            $this->assign("end_date",str_replace('_', '/', $end_date));
+        }
         $this->assign("roleOpt", arrToSel($this->roleList, $this->search['roleId']));
         $this->assign("levelOpt", arrToSel($this->levelList, $this->search['levelId']));
         return $this->fetch('sys_admin/users/index');
@@ -49,9 +60,7 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false, $is_ban = -1)
     {
-
-        $home_jump = input('home_jump',0,'intval');//首页跳转,显示所有身份产品
-        $this->search['roleId'] = input('rode_id', 0, 'intval');
+        $this->search['roleId'] = input('rode_id', -1);
         $this->search['levelId'] = input('level_id', 0, 'intval');
         $this->search['keyword'] = input("keyword");
         $this->search['time_type'] = input("time_type");
@@ -66,29 +75,44 @@ class Users extends AdminController
         $this->assign("levelList", $this->levelList);
         $where[] = ' is_ban = ' . $this->is_ban;
 
-        $reportrange = input('reportrange');
-        if (empty($reportrange) == false) {
-            $dtime = explode('-', $reportrange);
-        }
-        switch ($this->search['time_type']) {
-            case 'reg_time':
-                $where[] = ' u.reg_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                break;
-            case 'login_time':
-                $where[] = ' u.login_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                break;
-            case 'buy_time':
-                $where[] = ' u.last_buy_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                break;
-            default:
-                break;
+        $time_type = input('time_type', '', 'trim');
+        if (empty($time_type) == false) {
+            $search['start_time'] = input('start_time', '', 'trim');
+            $search['end_time'] = input('end_time', '', 'trim');
+            $search['start_time'] = str_replace('_', '-', $search['start_time']);
+            $search['end_time'] = str_replace('_', '-', $search['end_time']);
+            $start_time = $search['start_time'] ? strtotime($search['start_time']) : strtotime("-1 months");
+            $end_time = $search['end_time'] ? strtotime($search['end_time']) : time();
+            if ($start_time == $end_time) $end_time += 86399;
+            $where[] =  ' u.'.$time_type.' between ' . ($start_time) . ' AND ' . ($end_time);
+
+        } else {
+            $reportrange = input('reportrange');
+            if (empty($reportrange) == false) {
+                $dtime = explode('-', $reportrange);
+            }
+            switch ($this->search['time_type']) {
+                case 'reg_time':
+                    $where[] = ' u.reg_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                    break;
+                case 'login_time':
+                    $where[] = ' u.login_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                    break;
+                case 'buy_time':
+                    $where[] = ' u.last_buy_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        if ($this->search['roleId'] > 0 && empty($home_jump)) {
-            $where[] = ' u.role_id = ' . $this->search['roleId'];
-        }elseif($home_jump > 0){
-            $where[] = 'u.role_id in (6,7,8)';
-        }
+
+        if ($this->search['roleId'] >= 0) {
+            $where[] = ' u.role_id = ' . $this->search['roleId'] * 1;
+        }elseif ($this->search['roleId'] == 'all_role'){
+			$where[] = ' u.role_id > 0 ';
+		}
+
         if ($this->search['levelId'] > 0) {
             $level = $this->levelList[$this->search['levelId']];
             $where[] = ' uc.total_integral between ' . $level['min'] . ' AND ' . $level['max'];
@@ -100,6 +124,10 @@ class Users extends AdminController
             } else {
                 $where[] = " ( u.user_name like '" . $this->search['keyword'] . "%' or u.nick_name like '" . $this->search['keyword'] . "%' )";
             }
+        }
+        $export = input('export', 0, 'intval');
+        if ($export > 0) {
+            return $this->exportOrder($where);
         }
         $sort_by = input("sort_by", 'DESC', 'trim');
         $order_by = 'u.user_id';
@@ -114,6 +142,72 @@ class Users extends AdminController
             return $this->success('', '', $data);
         }
         return true;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 导出订单
+    /*------------------------------------------------------ */
+    public function exportOrder($where)
+    {
+
+        $count = $this->Model->alias('u')->join("users_account uc", 'u.user_id=uc.user_id', 'left')->where(join(' AND ', $where))->field('u.*,uc.balance_money,uc.use_integral,uc.total_integral')->order('u.user_id DESC')->count('u.user_id');
+
+        if ($count < 1) return $this->error('没有找到可导出的日志资料！');
+        $filename = '会员列表资料_' . date("YmdHis") . '.xls';
+        $export_arr['UID'] = 'user_id';
+        $export_arr['注册手机'] = 'mobile';
+        $export_arr['昵称'] = 'nick_name';
+        $export_arr['推荐人'] = 'pid';
+        $export_arr['等级/身份'] = 'userLevel';
+        $export_arr['帐户余额'] = 'balance_money';
+        $export_arr['最近登陆'] = 'login_time';
+
+        $export_field = $export_arr;
+        $page = 0;
+        $page_size = 500;
+        $page_count = 100;
+
+        $title = join("\t", array_keys($export_arr)) . "\t";
+        unset($export_field['操作用户名']);
+        $field = join(",", $export_field);
+
+        $DividendRoleModel = new DividendRoleModel();
+        $roleList = $DividendRoleModel->getRows();
+        $data = '';
+        do {
+            $rows = $this->Model->alias('u')->join("users_account uc", 'u.user_id=uc.user_id', 'left')->where(join(' AND ', $where))->field('u.*,uc.balance_money,uc.use_integral,uc.total_integral')->order('u.user_id DESC')->limit($page * $page_size, $page_size)->select();
+
+            if (empty($rows))return;
+            foreach ($rows as $row) {
+                foreach ($export_arr as $val) {
+                    if (strstr($val, '_time')) {
+                        $data .= dateTpl($row[$val]) . "\t";
+                    } elseif ($val == 'pid') {
+
+                        if($row[$val] > 0){
+                            $data .= $row[$val] . '-' . userInfo($row[$val])  . "\t";
+                        }else{
+                            $data .= '没有上级' . "\t";
+                        }
+
+                    } elseif($val == 'userLevel'){
+                        $rode_name = $row['role_id'] == 0 ? '粉丝' : $roleList[$row['role_id']]['role_name'];
+                        $data .= userLevel($row['total_integral']) . '/' . $rode_name  . "\t";
+                    } else {
+                        $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
+                    }
+                }
+                $data .= "\n";
+            }
+
+            $page++;
+        } while ($page <= $page_count);
+
+        $filename = iconv('utf-8', 'GBK//IGNORE', $filename);
+        header("Content-type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=$filename");
+        echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
+        exit;
     }
     /*------------------------------------------------------ */
     //-- 重置密码

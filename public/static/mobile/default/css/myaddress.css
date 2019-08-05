@@ -89,7 +89,7 @@ p {
 }
 
 .radioBox {
-  height: 0.666667rem;
+  height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -97,10 +97,9 @@ p {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  margin-top: 0.066667rem;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
 }
 
 .radioBox span {
@@ -117,19 +116,17 @@ p {
 }
 
 .radioBox .edit img {
-  width: 0.213333rem;
-  height: 0.213333rem;
+  width: 0.186667rem;
+  height: 0.186667rem;
   margin-right: 0.066667rem;
 }
 
-.addressesList .goodslist {
-	background:none;
+.goodslist {
   overflow: hidden;
-  padding-bottom: 0.8rem;
 }
 
 .goodslist object {
-  margin-bottom: 0.133333rem;
+  margin-top: 0.133333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -149,7 +146,6 @@ p {
 
 .goodslist .swiped {
   width: 16vw;
-  height: 1.733333rem;
 }
 
 .goodslist .swiped div {
@@ -162,7 +158,7 @@ p {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  height: 1.733333rem;
+  height: 100%;
 }
 
 .goodslist .swiped img {
@@ -170,29 +166,16 @@ p {
   height: 0.266667rem;
 }
 
-.addressesList .page-ft{
- position: fixed;
-  width: 100%;
-  bottom: 0;
-  margin:0px !important
-}
-.addressInfoBox .page-ft  {
-
-  width: 100%;
-  margin:0px !important
-}
-
-.addressesList .page-ft a ,.addressInfoBox .page-ft a{
+.page-ft a {
   height: 0.533333rem;
+  margin: 0.133333rem 0.2rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
-  width:92%;
-  margin: 0.533333rem 0.2rem 0.253333rem ;
+          justify-content: center;
 }

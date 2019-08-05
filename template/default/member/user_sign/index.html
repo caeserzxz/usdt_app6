@@ -1,0 +1,188 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/signIn.css" />
+{/block}
+{block name="pageType"}signIn{/block}
+{block name="main" }
+<!-- <div class="page signIn"> -->
+<div class="page-bd">
+    <div class="top">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <div class="fs32 text-color"  id="signIn">立即<br/>签到</div>
+                <div class="text-color fs32" style="display:none" id="signIning">今日</br>已签</div>
+            </div>
+        </div>
+    </div>
+    <div class="Calendar">
+        <div id="toyear" class="flex flex-pack-center fs38 color_9">
+            <div id="idCalendarPre">&lt;</div>
+            <div class="year-month fs30 fw_b color_3">
+                <span id="idCalendarYear">2018</span>年<span id="idCalendarMonth">6</span>月
+            </div>
+            <div id="idCalendarNext">&gt;</div>
+        </div>
+        <table cellpadding="0" cellspacing="0">
+            <thead>
+                <tr class="tou fs28 fw_b color_3">
+                    <td>日</td>
+                    <td>一</td>
+                    <td>二</td>
+                    <td>三</td>
+                    <td>四</td>
+                    <td>五</td>
+                    <td>六</td>
+                </tr>
+            </thead>
+            <tbody id="idCalendar">
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="model">
+    <div class="modelBg"></div>
+    <div class="canter">
+        <p class="fs32 color_r">签到成功</p>
+        <div class="fs72 num color_r">+8</div>
+        <span class="fs24 color_9">获得积分</span>
+    </div>
+    <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_wy.png" alt=""></div>
+</div>
+<!-- </div> -->
+
+{/block}
+
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/rili.js"></script>
+<script>
+    var isSign = false;
+    var myday = new Array(); //已签到的数组
+    var cale;
+    $(function(){
+
+        $.post('/member/api.users/getSignData',function(res){
+            if(res.code==1){
+                let str = res.data.days;
+                myday = str.split(',');
+
+                cale = new Calendar("idCalendar", {
+                    qdDay: myday,
+                    onToday: function(o) {
+                        o.className = "active";
+                    },
+                    onSignIn: function (){
+                        $('#signIn').hide()
+                        $('#signIning').show()
+                    },
+                    onFinish: function() {
+                        $("#idCalendarYear").html(this.Year);
+                        $("#idCalendarMonth").html(this.Month);
+                    }
+                });
+                painting()
+            }
+        });
+    })
+    // function drawDays(){
+        
+    //     var str = '1,2,5,8,10,11,12,13';
+    //     myday = str.split(',');
+
+    //     var cale = new Calendar("idCalendar", {
+    //         qdDay: myday,
+    //         onToday: function(o) {
+    //             o.className = "active";
+    //         },
+    //         onSignIn: function (){
+    //             $('#signIn').hide()
+    //             $('#signIning').show()
+    //         },
+    //         onFinish: function() {
+    //             $("#idCalendarYear").html(this.Year);
+    //             $("#idCalendarMonth").html(this.Month);
+    //         }
+    //     });
+    //     painting()
+    // }
+    $("#idCalendarPre").on("click",function(){
+        let td = new Date(cale.Year, cale.Month - 2, 1);
+        let puData = {
+            'year':td.getFullYear(),
+            'month':td.getMonth() + 1
+        }
+        change_month(puData,true);
+    })
+    $("#idCalendarNext").on("click",function(){
+        let td = new Date(cale.Year, cale.Month, 1);
+        let puData = {
+            'year':td.getFullYear(),
+            'month':td.getMonth() + 1
+        }
+        change_month(puData,false);
+    })
+
+    function change_month(puData,flag){
+        $.post('/member/api.users/getSignData',puData,function(res){
+            if(res.code == 1){
+                let str = res.data.days;
+                let myday = str.split(',');
+                cale.qdDay = myday;
+                if(flag){
+                    cale.PreMonth();
+                }else{
+                    cale.NextMonth();
+                }
+            }
+        })
+    }
+
+    //添加今天签到
+    $("#signIn").on("click",function(){
+        if(isSign == false) {
+            $.post('/member/api.users/doSign',function(res){
+                if(res.code == 1){
+                    $(".model .num").text('+'+res.score);
+                    cale.SignIn();
+                    $('#signIn').hide()
+                    $('#signIning').show()
+                    painting()
+                    $('.model').show()
+                    isSign = true;
+                }else{
+                    toast(res.msg);
+                }
+            })
+        } else {
+            toast()
+        }
+
+    })
+    $('#signIning').on('click',function(){
+        toast('今天已签到')
+    })
+    // $('.giftBox').on('click',function(){
+    //     if(myday.length>=7){
+
+    //     }else{
+    //         toast('连续签到未满7天')
+    //     }
+
+    // })
+    $('.closeBox').on('click',function(){
+        $('.model').hide();
+    })
+    $('.modelBg').on('click',function(){
+        $('.model').hide();
+    })
+    function toast(text){
+        $('body').append('<span class="Tost fs28 color_w">'+text+'</span>')
+        setTimeout(function(){ $('.Tost').remove(); }, 1500);
+    }
+    function painting(){
+        $('.type img').attr('src','__STATIC__/mobile/default/images/signInYBG'+myday.length+'.png')
+        $('.date span:lt('+myday.length+')').css('color','#FFC7BE')
+        $('#signIning i').text(myday.length)
+    }
+</script>
+
+{/block}

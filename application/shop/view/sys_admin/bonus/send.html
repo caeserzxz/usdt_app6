@@ -20,51 +20,66 @@
         <div class="panel panel-default">
             <input name="type_id" type="hidden" value="{$row.type_id|intval}">
                 <div class="form-group m-t">
+                    <label class="col-sm-2 control-label">发放时间：</label>
+                    <div class="col-sm-10"><label >{$row.send_start_date|dateTpl} -- {$row.send_end_date|dateTpl}</label></div>
+                </div>
+                <div class="form-group m-t">
+                    <label class="col-sm-2 control-label">使用时间：</label>
+                    <div class="col-sm-10"><label >{$row.use_start_date|dateTpl} -- {$row.use_end_date|dateTpl}</label></div>
+                </div>
+                <div class="form-group m-t">
+                    <label class="col-sm-2 control-label">发放类型：</label>
+                    <div class="col-sm-10"><label >{$SendType[$row['send_type']]['name']}</label></div>
+                </div>
+                <div class="form-group m-t">
                     <label class="col-sm-2 control-label">类型金额：</label>
-                    <div class="col-sm-10"><label >{$row.type_name} -- {$row.type_money|priceFormat=true}</label></div>
+                    <div class="col-sm-10"><label >{$row.type_name} -- {$row.type_money|priceFormat=true}({if condition="$row.min_amount eq 0"}不限门槛{else/}满{$row.min_amount}{/if})</label></div>
                 </div>
-                {eq name="row.send_type" value="3"}
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">优惠券数量：</label>
-                    <div class="col-sm-1 " >
-                        <input type="text" class="input-max" data-rule-required="true" name="send_num" value="" data-rule-maxlength="15" />
-                    </div>
-                        <span class="help-inline">提示:优惠券序列号由六位序列号种子加上四位随机数字组成</span>
+            {eq name="row.send_type" value="3"}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">优惠券数量：</label>
+                <div class="col-sm-1 " >
+                    <input type="text" class="input-max" data-rule-required="true" name="send_num" value="" data-rule-maxlength="15" />
                 </div>
-                {else/}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">按级别发放：</label>
-                        <div class="col-sm-6">
-                           	<select id="user_level" name="user_level"  style="width: 180px; " >
-                            	<option value="-1">选择用户级别</option>
-                                <option value="0">所有级别用户</option>
-                                {volist name="levelList" id="ul" }
-                                	<option value="{$ul.level_id}">{$ul.level_name}</option>
-                                {/volist}
-                            </select> <span class="help-inline">提示：选择了级别发放，指定用户将不生效</span>
-                         </div>
+                <span class="help-inline">提示:优惠券序列号由六位序列号种子加上四位随机数字组成</span>
+            </div>
+            {else/}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">按级别发放：</label>
+                <div class="col-sm-6">
+                    <select id="user_level" name="user_level"  style="width: 180px; " >
+                        <option value="-1">选择用户级别</option>
+                        <option value="0">所有级别用户</option>
+                        {volist name="levelList" id="ul" }
+                        <option value="{$ul.level_id}">{$ul.level_name}</option>
+                        {/volist}
+                    </select> <span class="help-inline">提示：选择了级别发放，指定用户将不生效</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">指定用户：</label>
+                <div class="col-sm-6 " >
+                    <input type="text" class="input-small"  id="user_keyword" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchuser('user_keyword','select_user');"><i class="fa fa-search text-muted"></i></a>
+                    <select id="select_user" name="select_user"  style="width: 180px; " >
+                        <option value="">选择用户</option>
+                    </select>
+                    <a href="javascript:;" class="m-xs" title="增加" onclick="adduser();"><i class="fa fa-plus text-muted"></i></a>
+                    <div class="fr">
+                        <div class="upload-file btn btn-sm btn-primary fl  m-t-md m-r" data-uploadpath="{:url('upload')}" data-type='file' data-text='上传execl导入用户信息'> 上传execl导入区域信息</div>
+                        <a href="__STATIC__/main/files/send_bonus_template.xls" class="m-xs fl" title="下载execl模板"><i class="fa fa-download text-muted">下载execl模板</i></a>
                     </div>
-                     <div class="form-group">
-                        <label class="col-sm-2 control-label">指定用户：</label>
-                        <div class="col-sm-6 " >
-                            <input type="text" class="input-small"  id="user_keyword" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchuser('user_keyword','select_user');"><i class="fa fa-search text-muted"></i></a>
-                            <select id="select_user" name="select_user"  style="width: 180px; " >
-                            	<option value="">选择用户</option>
-                            </select>
-                            <a href="javascript:;" class="m-xs" title="增加" onclick="adduser();"><i class="fa fa-plus text-muted"></i></a>
-                        </div>  
-                                                
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"></label>
-                        <div class="col-sm-3"  id="user_box">
-                          
-                        </div>                           	
-                    </div>
-                {/eq}
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-3"  id="user_box">
+                </div>
+            </div>
+            {/eq}
                 <div class="form-group">
                       <div class="col-sm-4 col-sm-offset-2 mt-8"> 
-                          <button type="submit" class="btn btn-primary" data-loading-text="发送中...">确定发送优惠券</button>
+                          <button type="submit" class="btn btn-primary" data-loading-text="发送中...">确定发放优惠券</button>
                           <button type="button" class="btn btn-default" data-toggle="back">返回</button>
                       </div>
                </div>
@@ -72,6 +87,7 @@
     
     </form>
 </section>
+{include file="mainadmin@layouts/web_upload" /}
 <script type="text/javascript">
 function adduser(){
 	var select_user = $("#select_user").val();
@@ -92,5 +108,35 @@ function adduser(){
 	$("#user_box").append('<label><input type="checkbox" name="user_id[]" value="'+ select_user +'" checked > '+  $("#select_user").find("option:selected").text()+'</label><br>');
 	return true;
 }
+WebUploaderDiy('.upload-file');
+$(document).on('click',".upload-file input", function () {
+    pick = $(this).parents('.upload-file');
+    var extdata = pick.data('extdata');
+    if (uploadering == 1) return false;
+    if (typeof(pick.data('uploadpath')) != 'undefined'){
+        uploader.options.server = pick.data('uploadpath');
+    }
+    if (typeof(extdata) == 'object'){
+        uploader.options.formData.extdata = JSON.stringify(extdata);
+    }
+    uploader.on( 'uploadAccept', function( file,data ) {
+        var _this = pick.parent();
+        console.log(data);
+        var userList =data.data;
+        $.each(userList,function(i,val){
+            var is_error = false;
+            $("#user_box").find("input").each(function(){
+                if ($(this).val() == val.user_id){
+                    is_error = true;
+                }
+            });
+            if (is_error == false){
+                $("#user_box").append('<label><input type="checkbox" name="user_id[]" value="'+ val.user_id +'" checked > '+val.user_id+'-'+val.mobile+'-'+val.nick_name+'</label><br>');
+            };
+        });
+        _this.find('.webuploader-pick').text('上传处理完成.');
+    });
+});
+
 </script>
 {/block}

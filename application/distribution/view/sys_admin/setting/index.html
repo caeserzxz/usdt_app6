@@ -1,6 +1,35 @@
 {extend name="mainadmin@layouts/base" /}
 
 {block name="main" }
+<style type="text/css">
+    .imgbox {
+        float: left;
+        display: inline;
+        width: 134px;
+        height: 134px;
+        margin-right: 12px;
+        font-size: 12px;
+        position: relative;
+    }
+    .item_box img {
+        width: 110px;
+        height: 110px;
+        vertical-align: middle;
+        border: 0;
+    }
+    a.item_close {
+        position: absolute;
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-position: -100px -182px;
+        right: -6px;
+        top: -6px;
+        text-indent: -9999px;
+        overflow: hidden;
+        background-image: url(../../../static/main/img/image_upload.png);
+    }
+</style>
 <header>
     <div class="page-breadcrumbs">
         <ul class="breadcrumb">
@@ -23,6 +52,7 @@
                     <li><a href="#bydividend" data-toggle="tab">分佣说明</a></li>
                     <li><a href="#byrole" data-toggle="tab">身份升级说明</a></li>
                     <li><a href="#byrolegoods" data-toggle="tab">购买身份商品协议</a></li>
+                    <li><a href="#background" data-toggle="tab">二维码背景</a></li>
                 </ul>
             </header>
 
@@ -169,6 +199,35 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="tab-pane " id="background">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >二维码背景图片：</label>
+                        <div class="col-sm-10">
+                            <div class="js_upload_container">
+                                <div class="js_file_upload ">
+                                    <button type="button" class="btn btn-default js_new_upload" data-submitname="setting[GoodsImages]" data-count="20" data-uploadpath="{:url('mainAdmin/attachment/goodsUploadl')}" data-delpath="{:url('mainAdmin/attachment/removeImgs')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">二维码背景图片</button>
+                                    <span class="maroon">*</span>
+                                    <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多20张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                                </div>
+                                <div class="uploadify-queue js_file_upload_queue">
+                                </div>
+                                <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                    {volist name="GoodsImages" id="gg"  }
+                                    <li class="imgbox" data-post-id="" data-path="{$gg">
+                                        <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('mainAdmin/attachment/removeImgs')}"  title="删除" data-path="{$gg}" data-post-id=""></a>
+
+                                        <input value="{$gg}" name="setting[GoodsImages][path][]" type="hidden">
+                                        <span class="item_box"><img src="{$gg}"></span>
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
 
             <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
@@ -203,5 +262,11 @@
             });
         });
     })
+</script>
+
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
 </script>
 {/block}

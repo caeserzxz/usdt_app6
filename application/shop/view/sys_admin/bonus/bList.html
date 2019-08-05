@@ -4,21 +4,35 @@
         <tr>
             <th width="80">编号</th>
         	<th width="120">序列号</th>
+            {if condition="$bonus.send_type eq 1||$bonus.send_type eq 3"}<th width="120">发放批号</th>{/if}
         	<th width="150">面额</th>
             <th width="150">所属会员</th>
             <th width="150">订单号</th>
+            <th>状态</th>
           	<th>使用时间</th>
+            <th>创建时间</th>
+            <th width="130">操作</th>
         </tr>
     </thead>
     <tbody>
 {volist name="data.list" id="row" }
         <tr>
-        	<td>{$row.bonus_id}</td>
+        	<td><input type="checkbox" name="bonus_id" value="{$row.bonus_id}" class="m-r"> {$row.bonus_id}</td>
         	<td>{$row.bonus_sn}</td>
+            {if condition="$bonus.send_type eq 1||$bonus.send_type eq 3"}<td>{$row.add_time}</td>{/if}
             <td><span class="money">{$bonus.type_money}</span></td>
              <td>{gt name="row.user_id" value="0"}{$row.user_id}-{$row.user_id|userInfo}{/gt}</td>
             <td>{$row.order_sn}</td>
+            <td>{$statusList[$row[status]]}</td>
             <td>{$row.used_time|dateTpl}</td>
+            <td>{$row.add_time|dateTpl}</td>
+            <td>
+                {if condition="$row.status eq 0"}
+                <a href="javascript:;" onclick="publicHandle('{$row.bonus_id}','invalid')"    class="fa fa-close"  title="设为失效"></a>
+                {elseif condition="$row.status eq 2"/}
+                <a href="javascript:;" onclick="publicHandle('{$row.bonus_id}','valid')"  class="fa fa-check"  title="设为有效"></a>
+                {/if}
+            </td>
         </tr>
 {/volist} 
     </tbody>

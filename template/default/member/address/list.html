@@ -21,7 +21,7 @@
 	
 		</ul>
    </div>
-    <div class="page-ft">
+    <div class="page-ft" style="position: fixed;width: 100vw;bottom: 0;">
         <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
     </div>
 </div>
@@ -34,38 +34,52 @@
 <script src="__STATIC__/js/jquery/jquery-weui.min.js"></script>
 
 <!--地址列表-->
+{literal}
 <script type="text/html" id="addressLiTpl">
     {{each list as item index}}
     <li>
-        <object>
-            <div class="block" data-index="{{index}}">
+
+        {{if index == '0' }}
+            <div class="top" data-index="{{index}}">
                 <div class="address">
                     <div class="info">
-                        <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p></div>
+                        <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}</div>
                         <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
                     <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
                 </div>
-				
-				
-                <div class="radioBox">
-                    <label for="address_{{item.address_id}}">
-                        <div class="iconBox">
-                            <input type="radio" class="check editDefault" name="radiobox" id="address_{{item.address_id}}"
-                                   value="{{item.address_id}}" {{item.is_default==1?'checked':''}}>
-                            <i class="icon_checked"></i>
-                        </div>
-                        <span class="fs26 color_9">设为默认地址</span>
-                    </label>
-                    <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt=""></a>
+            </div>
+        {{else}}
+            <object>
+                <div class="block" data-index="{{index}}">
+                    <div class="address">
+                        <div class="info">
+                            <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}</div>
+                            <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
+                        <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+                    </div>
+
+                    <div class="radioBox">
+                        <!--<label for="address_{{item.address_id}}">-->
+                            <!--<div class="iconBox">-->
+                                <!--<input type="radio" class="check editDefault" name="radiobox" id="address_{{item.address_id}}"-->
+                                       <!--value="{{item.address_id}}" {{item.is_default==1?'checked':''}}>-->
+                                <!--<i class="icon_checked"></i>-->
+                            <!--</div>-->
+                            <!--<span class="fs26 color_9">设为默认地址</span>-->
+                        <!--</label>-->
+                        <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
+                    </div>
                 </div>
-            </div>
-            <div class="swiped BGcolor_3">
-                <div class="delect" data-address_id="{{item.address_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
-            </div>
-        </object>
+                <div class="swiped BGcolor_3">
+                    <div class="delect" data-address_id="{{item.address_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+                </div>
+            </object>
+        {{/if}}
+
     </li>
     {{/each}}
 </script>
+{/literal}
 <!--编缉或添加地址-->
 {literal}
 <script type="text/html" id="addressInfoTpl">
@@ -76,11 +90,11 @@
                 <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
             </div>
             <div class="header-title">{{if address_id }}修改地址{{else}}添加地址{{/if}}</div>
-            <div class="header-right"></div>
+            <div class="header-right" onclick="evalPost();">保存</div>
         </div>
     </div>
 	<form action="" id="formAddress">
-    <div class="page-bd userData">
+    <div class="page-bd ">
         <!-- 页面内容-->
         <div class="cells">
           <div class="cell">
@@ -111,12 +125,27 @@
              <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
             </div>
           </div>
+            <div class="cell">
+                <div class="cell_bd">
+                    <span class="fs28 color_9">是否设置为默认地址</span></div>
+                <div class="cell_ft">
+                    {{if is_default==1}}
+                    <input type="checkbox" name="is_default" id="male" value="1" checked class="chooseBtn" />
+                    {{else}}
+                    <input type="checkbox" name="is_default" id="male" value="1" class="chooseBtn" />
+                    {{/if}}
+                    <label for="male" class="choose-label"></label>
+                </div>
+            </div>
         </div> 
 		<input type="hidden" name="address_id" value="{{address_id}}">
 		
-        <div class="page-ft">
-            <a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>
-          </div>
+        <div class="page-ft userData">
+            <!--<a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>-->
+            {{if address_id }}
+            <a class="fs32 color_w fw_b BGcolor_r delect" data-address_id="{{address_id}}">删除地址</a>
+            {{/if}}
+        </div>
       </div>
     </div>
 	</from>
@@ -132,7 +161,9 @@
 	
     //获取收货地址区列表
     function getAddressList() {
-        jq_ajax('{:url("member/api.address/getList")}', '', function (res) {
+
+	    var address_id = $('#address_id').val();
+        jq_ajax('{:url("member/api.address/getList")}','address_id='+address_id, function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;
@@ -145,8 +176,13 @@
                     $('.addressBox .address').hide();
                     return false;
                 }
-                showAddress(addressList[0]);
-                evalShippingFee();//计算运费
+
+
+                if(address_id == 0){
+                    showAddress(addressList[0]);
+                    evalShippingFee();//计算运费
+                }
+
                 defAddressId = addressList[0]['address_id'];
             }
 
@@ -175,6 +211,20 @@
             addressList = res.list;
             $('.addresslist').html(template('addressLiTpl', res));
             container('.addresslist object');
+        })
+    })
+    //编辑页删除地址
+    $(document).on('click','.userData .delect',function() {
+        jq_ajax('{:url("member/api.address/delete")}','address_id='+$(this).data('address_id'),function(res){
+            if (res.code == 0) {
+                alert(res.msg);
+                return false;
+            }
+            addressList = res.list;
+            $('.addresslist').html(template('addressLiTpl', res));
+            container('.addresslist object');
+            $('html').removeClass('noscroll');
+            $('.addressInfoBox').removeClass('move-left');
         })
     })
     //关闭编缉弹出
@@ -218,6 +268,7 @@
             $('.addresslist').html(template('addressLiTpl', res));
             container('.addresslist object');
             $('.addressInfoBox .close_wrapper').trigger("click");
+            getAddressList();
         })
     }
     //设置为默认地址

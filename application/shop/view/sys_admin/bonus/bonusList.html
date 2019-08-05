@@ -7,12 +7,13 @@
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
                     <strong>{$bonus.type_name}</strong>
-                </li>                                  
+                </li>
             </ul>
-          <select name="usd_type" class="usd_type" style="width: 150px;" data-toggle="select2" >
+          <select name="status" class="usd_type" style="width: 150px;" data-toggle="select2" >
                   <option value="-1">全部优惠券</option>
                   <option value="0">未使用</option>
                   <option value="1">已使用</option>
+                  <option value="2">已失效</option>
            </select>
           <a class="btn btn-default usdtime_reportrange " data-toggle="reportrange" >
               <i class="fa fa-calendar fa-lg"></i>
@@ -23,11 +24,43 @@
           <input type="text" class="form-control input-large" value="" name="keyword" placeholder="会员id/订单号" data-rule-required="true" />
           <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
           <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-         
     </div>
-</form> 
+</form>
 </header>
 <section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+            <table class="table table-striped m-b-none ">
+                <thead>
+                <tr>
+                    <th colspan="6">
+                        优惠券名称：{$bonus[type_name]} &nbsp;&nbsp;&nbsp;&nbsp;
+                        发放时间：{$bonus.send_start_date|dateTpl} -- {$bonus.send_end_date|dateTpl} &nbsp;&nbsp;&nbsp;&nbsp;
+                        使用时间：{$bonus.use_start_date|dateTpl} -- {$bonus.use_end_date|dateTpl}
+                    </th>
+                </tr>
+                </thead>
+                <thead>
+                <tr>
+                    <th width="120">发放张数</th>
+                    <th width="120">领取张数</th>
+                    <th width="120">使用张数</th>
+                    <th width="120">支付订单数</th>
+                    <th width="120">总支付金额</th>
+                    <th width="120">总优惠金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{$bonus.type_num}</td>
+                    <td>{$bonus.send_num}</td>
+                    <td>{$bonus.use_num}</td>
+                    <td>{$bonus.use_num}</td>
+                    <td>1000</td>
+                    <td>{$bonus.use_num*$bonus.type_money}</td>
+                </tr>
+                </tbody>
+            </table>
+    </section>
     <section class="panel panel-default ">
         <div class="table-responsive " id="list_box">
             {include file="sys_admin/bonus/bList" /}
@@ -35,4 +68,46 @@
     </section>
 </section>
 
+<script>
+    function publicHandle(ids,handle_type) {
+        _confirm('确定执行当前操作吗？',function () {
+            var url = "{:url('bonusHandle')}";
+            var res = jq_ajax(url, {ids:ids,type:handle_type});
+            console.log(res);
+            if (res.msg)  _alert(res.msg);
+            setTimeout(function () {
+                window.location.reload();
+            },1500)
+            if (res.code == 0) return false;
+        })
+    }
+    function publicHandleAll(type){
+        console.log(type);
+        var sel_order = [];
+        $('input[name="bonus_id"]').each(function () {
+            if ($(this).is(':checked')) {
+                sel_order.push($(this).val());
+            }
+        });
+        if (sel_order.length < 1) {
+            _alert('请勾选需要操作的优惠券.');
+           return;
+        }
+        var ids = sel_order.join(',');
+        publicHandle(ids,type); //调用删除函数
+    }
+
+</script>
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function state_select(obj){
+            $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="bonus_id"> 全选 </label> ' +
+                '<a href="javascript:;" class="btn btn-sm m-t" onclick="publicHandleAll(\'invalid\')"><i class="fa fa-close"></i>批量失效</a>'+
+                '<a href="javascript:;" class="btn btn-sm m-t" onclick="publicHandleAll(\'valid\')"><i class="fa fa-check"></i>批量生效</a>'
+            );
+    }
+    state_select();
+</script>
 {/block}

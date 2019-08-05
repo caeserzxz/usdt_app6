@@ -4,13 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit89dcf8f45a929b809b9fb6503bbc43d1
+class ComposerStaticInitdafa263ec6519f97b96740b182332345
 {
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
             'think\\composer\\' => 15,
-            'think\\' => 6,
         ),
         'a' => 
         array (
@@ -23,21 +22,28 @@ class ComposerStaticInit89dcf8f45a929b809b9fb6503bbc43d1
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
-        'think\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-image/src',
-        ),
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit89dcf8f45a929b809b9fb6503bbc43d1::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit89dcf8f45a929b809b9fb6503bbc43d1::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitdafa263ec6519f97b96740b182332345::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitdafa263ec6519f97b96740b182332345::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitdafa263ec6519f97b96740b182332345::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

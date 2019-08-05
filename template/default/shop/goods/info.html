@@ -68,8 +68,11 @@
             <div class="color_3 fs20 num money"><p class="fw_b fm_p">{$price.name}：￥</p><em class="fs22">{$price.price}</em></div>
             {/volist}
         {/volist}
-        <div class="tips fs28 color_9  "><span>热销{$goods.sale_count}</span>
-            <p  class="hide">运费10元</p></div>
+        <div class="tips fs28 color_9 goCoupons">
+            <div style="display: flex;"><span>热销{$goods.sale_count}</span>
+                <p class="hide">运费10元</p></div>
+            <div class="goCouponsBtn"><span class="fs28 fw_b color_3">领券</span><img src="__STATIC__/mobile/default//images/rightIcon.png" alt="" class="threeRight"></div>
+        </div>
     </div>
     {eq name="goods.is_spec" value='1'}
     <div class="cell">
@@ -122,6 +125,9 @@
 
 <!-- 弹出规格选择 -->
 {include file="goods/sku" /}
+
+<!-- 弹出领取优惠券 -->
+{include file="goods/bonus_layer" /}
 
 <!-- 底部 -->
 <div class="page-ft">
@@ -234,7 +240,7 @@ $(function () {
 	$('.buyBtn ').on('click', function () {
 		var obj = $(this);
 		if (obj.data('type') == 'show') {
-			$('.model').show();
+			$('.modelSize').show();
 			selsku();
 		} else {
 			addToCart(obj);
@@ -292,6 +298,9 @@ function createSwiper(index) {
 		}
 	});
 	return swiper;
+}
+function closeModel(obj){
+    $(obj).parents('.model').hide()
 }
 </script>
 {/block}

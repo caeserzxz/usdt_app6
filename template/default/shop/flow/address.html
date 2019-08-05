@@ -46,6 +46,7 @@
             }
             showAddress(addressList[obj.data('index')]);
             $('.close_wrapper').trigger("click");
+            getAddressList();
             evalShippingFee();
         }, 100);
     })

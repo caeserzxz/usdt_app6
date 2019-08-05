@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/coupons.css"/>
+<div class="model getCoupons" style="display: none;">
+    <div class="modelContent">
+        <div class="title fs36 fw_b color_3">请领取优惠券</div>
+        <div class="list bonusList">
+        </div>
+        <div class="closeBtn fs32 fw_b color_w BGcolor_r" onclick="closeModel(this)">关闭</div>
+    </div>
+</div>
+<script type="text/html" id="TabTpl">
+    <div class="tabBox">
+        <div class="tabBlock ">
+            <div class="listBox">
+                {literal}
+                {{each list as item index}}
+                <div class="block {{if item.receive_status !=2}}userTicket{{/if}}" data-type_id="{{item.type_id}}">
+                    <div class="left">
+                        <div class="fs34 fw_b">{{item.type_name}}</div>
+                        <p class="fs26">满{{item.min_amount}}元可用</p>
+                        <span class="fs24">{{item._use_start_date}}-{{item._use_end_date}}</span>
+                    </div>
+                    <div class="right">
+                        <div class="fs38 money">
+                            <p class="fw_b">￥</p><em class="fs60 num">{{item.type_money}}</em>
+                        </div>
+                        {{if item.receive_status==0}}<button class="fs24 active receive_do">立即领取</button>{{/if}}
+                        {{if item.receive_status==1}}<button class="fs24 active use_do">去使用</button>{{/if}}
+                        {{if item.receive_status==2}}<button class="fs24 active noNum">已抢光</button>{{/if}}
+                    </div>
+                </div>
+                {{/each}}
+                {/literal}
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    //请求列表数据
+    function getList(page,isagain) {
+        $('.bonusList').append('<div class="get_list_tip">加载数据中...</div>');
+        $.ajax({
+            url:'{:_url("shop/api.bonus/getBonusListReceivable")}',// 跳转到 action
+            data:{goods_type:1,goods_id:0},
+            type:'post',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.code  == 0 ){
+                    _alert(res.msg);
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                $('.get_list_tip').remove();
+                if (res.list){
+                    $('.bonusList').append(template('TabTpl',res));
+                    $('.bonusList').append('<div class="loadEnd">—— 没有更多啦，我是有底线的 ——</div>');
+                }else{
+                    $(".goCoupons").hide();
+                }
+            },error : function() {
+                $('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    getList();//执行加载
+    $(function () {
+        $(".goCouponsBtn").click(function (obj) {
+            $('.getCoupons').show();
+        })
+        /*立即领券*/
+        $(".bonusList").on('click','.receive_do',function () {
+            var _this = $(this);
+            var type_id = _this.parents('.block').data('type_id');
+            var arr = new Object();
+            arr.id=type_id;
+            jq_ajax('{:url("shop/api.bonus/receiveFree")}',arr,function(res){
+                if(res.code  == 0 ){
+                    _alert(res.msg);
+                }else if(res.code==2){
+                    _alert('抱歉，优惠券已抢光！');
+                    _this.text('已抢光');
+                    _this.parents('.block').removeClass('userTicket');
+                }else{
+                    _this.removeClass('receive_do').addClass('use_do').text('去使用');
+                }
+            })
+        });
+        /*前往使用*/
+        $(".bonusList").on('click','.use_do',function () {
+            var _this = $(this);
+            var type_id = _this.parents('.block').data('type_id');
+            window.location.href='{:url("shop/bonus/goodsList")}'+'?type_id='+type_id;
+        });
+    })
+</script>

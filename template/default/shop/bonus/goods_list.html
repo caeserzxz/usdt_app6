@@ -1,0 +1,133 @@
+{extend name="layouts@base" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/goodslist.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/coupons.css"/>
+<div class="page-bd" id="content">
+    <!-- 页面内容-->
+    <div class="scrollBox" style="display: flex;flex-direction: column;height: 100%;">
+        <div class="top">
+            <div class="inputBox"><img src="__STATIC__/mobile/default/images/selech01.png" alt="">
+                <input class="fs28 color_3" name="keyword" type="text" placeholder="请输入关键词"></div>
+                <span class="fs30 color_3 cancel">取消</span>
+        </div>
+        <div class="coupones_gooddlist">
+            <div class="title fs26 color_3">以下商品可以使用如下优惠</div>
+            <div class="block">
+                <div class="left">
+                    <div class="fs34 fw_b color_3">{$bonus.type_name}</div>
+                    <p class="fs24 color_9">{$bonus._use_start_date} - {$bonus._use_end_date}</p>
+                </div>
+                <div class="right">
+                    <div class="fs38 money color_r">
+                        <p class="fw_b">￥</p><em class="fs60 num">{$bonus.type_money}</em>
+                    </div>
+                    <span class="fs26 color_9">满{$bonus.min_amount|default=0}元可用</span>
+                </div>
+            </div>
+        </div>
+        <div class="goodslist" id="goodslist" style="flex: 1;">
+
+        </div>
+    </div>
+</div>
+<!-- 没有优惠券 -->
+<script type="text/html" id="emptyTpl">
+    <div class="noCoupons" style="display: block;">
+        <img src="__STATIC__/mobile/default/images/emptyCart.png" alt="">
+        <span class="fs30 color_9">可用商品已下架</span>
+    </div>
+</script>
+<script type="text/html"  id="TabTpl">
+    {{each list as  item index}}
+        <a href='{:_url("goods/info",["id"=>"[[item.goods_id]]"])}' class="Box">
+        <img src="{{item.goods_thumb}}" alt="">
+        <div class="info">
+            <span class="fs30 color_3">{{item.goods_name}}</span>
+            <div class="color_r fs24 num money"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.now_price}}</em>
+                <p>{{item.decimals}}</p></div>
+            <div class="fs24 color_9 tips"><em>￥{{item.market_price}}</em>
+                <div>已售{{item.sale_count}}</div>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+</script>
+<script>
+    var nowPage = 1,getAgain = false,isLoadend = false;type_id={$bonus['type_id']|default=0};keyword="";
+    //请求列表数据
+    function getList(page,isagain) {
+        if (page == 1){
+            $('.goodslist').html('');
+        }
+        if (isLoadend == true ) return false;
+        if (isagain == true){
+            if (getAgain == false) return false;
+            getAgain = false;
+        }else{
+            $('.goodslist').append('<div class="get_list_tip">加载数据中...</div>');
+        }
+        isLoadend = true;
+        var arr = new Object();
+        arr.type_id=type_id;
+        arr.keyword=keyword;
+        $.ajax({
+            url:'{:_url("shop/api.bonus/getGoodsList",["p"=>"【page】"])}',// 跳转到 action
+            data:arr,
+            type:'post',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                console.log(res);
+                isLoadend = false;
+                if(res.code  == 0 ){
+                    _alert(res.msg);
+                    getAgain = true;
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                nowPage = page;
+                nowPage++;
+                $('.get_list_tip').remove();
+                if (res.list){
+                    $('.goodslist').append(template('TabTpl',res));
+                    if (res.page_count == page) {
+                        $('.goodslist').append('<div class="loadEnd">—— 没有更多啦，我是有底线的 ——</div>');
+                        isLoadend = true;
+                    }
+                }else{
+                    $('.goodslist').append(template('emptyTpl',res));
+                }
+            },error : function() {
+                isLoadend = false;
+                getAgain = true;
+                $('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    getList(nowPage);//执行商品加载
+    var loading = false;  //状态标记
+    $('.page-bd').scroll(function () {
+        if ($(this).children('div').height() - $(this).height() - $(this).scrollTop() < 50 && !loading) {
+            loading = true;
+            getList(nowPage);
+        }
+    })
+    $(function () {
+        $('.inputBox').on('keydown', function () {
+            var e=window.event||arguments.callee.caller.arguments[0];
+            if(e.keyCode==13){
+                $('input[name=keyword]').blur();//输入框失去焦点
+                keyword = $('input[name=keyword]').val();
+                isLoadend = false;
+                getList(1);
+            }
+        })
+        $('.cancel').on('click', function () {
+                 $('input[name=keyword]').val("");
+                 keyword="";
+                isLoadend = false;
+                getList(1);
+        })
+    })
+</script>
+{/block}

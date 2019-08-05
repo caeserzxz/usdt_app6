@@ -3,6 +3,7 @@ namespace app\mainadmin\controller;
 use app\AdminController;
 
 use app\mainadmin\model\PaymentLogModel;
+use app\mainadmin\model\PaymentModel;
 /**
  * 支付流水
  * Class Index
@@ -26,6 +27,9 @@ class PaymentLog extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+
+
+        $this->assign('pay_type',(new PaymentModel())->getRows());
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);		

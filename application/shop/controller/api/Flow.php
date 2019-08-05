@@ -12,6 +12,7 @@ use app\member\model\AccountLogModel;
 use app\shop\model\BonusModel;
 use app\shop\model\OrderModel;
 use app\shop\model\GoodsModel;
+use app\shop\model\CategoryModel;
 use app\shop\model\BonusListModel;
 use app\member\model\UsersModel;
 /*------------------------------------------------------ */
@@ -196,6 +197,11 @@ class Flow extends ApiController
 
         if ($cartList['buyGoodsNum'] < 1) return $this->error('请选择订购商品.');
 
+        if ($used_bonus_id > 0) {//优惠券验证
+            $BonusModel = new BonusModel();
+            $bonus = $BonusModel->binfo($used_bonus_id);
+        }
+
         $GoodsModel = new GoodsModel();
         $supplyer_ids = [];//供应商ID
 
@@ -205,25 +211,55 @@ class Flow extends ApiController
         $rec_ids = [];
         $allGoodsSn = [];
         $allGoodsId = [];
+        $cartList['use_bonus_goods_amount'] = 0;//使用了优惠券的商品总额
         // 验证购物车中的商品能否下单
-        foreach ($cartList['goodsList'] as $grow) {
+        foreach ($cartList['goodsList'] as $key => $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
             // 判断是商品能否购买或修改
             $res = $this->Model->checkGoodsOrder($goods, $grow['goods_number'], $grow['sku_val']);
             if ($res !== true) return $this->error($res);
             $price = $GoodsModel->evalPrice($goods, $grow['goods_number'], $grow['sku_val']);//计算需显示的商品价格
-            if ($this->is_integral == 0 && $grow['sale_price'] != $price['min_price']){
-                return $this->error('商品'.$grow['goods_name'].$grow['sku_name'].'价格发生变化，购物车价格：￥'.$grow['sale_price'].'，当前价格：￥'.$price['min_price']);
+            if ($this->is_integral == 0 && $grow['sale_price'] != $price['min_price']) {
+                return $this->error('商品' . $grow['goods_name'] . $grow['sku_name'] . '价格发生变化，购物车价格：￥' . $grow['sale_price'] . '，当前价格：￥' . $price['min_price']);
             }
             $supplyer_ids[$grow['supplyer_id']] = 1;
-            if ($grow['supplyer_id'] > 0 ){//供应商商品计算供货总价
+            if ($grow['supplyer_id'] > 0) {//供应商商品计算供货总价
                 $inArr['settle_price'] += $grow['settle_price'] * $grow['goods_number'];
             }
-            if ($grow['give_integral'] > 0 ){//赠送积分总计
+            if ($grow['give_integral'] > 0) {//赠送积分总计
                 $inArr['give_integral'] += $grow['give_integral'] * $grow['goods_number'];
             }
-            if ($grow['use_integral'] > 0 ){//扣减积分总计,组合购买时调用
+            if ($grow['use_integral'] > 0) {//扣减积分总计,组合购买时调用
                 $use_integral += $grow['use_integral'] * $grow['goods_number'];
+            }
+
+            //使用了优惠券
+            if ($used_bonus_id > 0) {
+                $goods_amount = $grow['sale_price'] * $grow['goods_number'];//单个商品总金额
+                $cartList['goodsList'][$key]['is_use_bonus'] = 0;
+                if ($bonus['info']['use_type'] == 0) {//全场通用
+                    $cartList['use_bonus_goods_amount'] += $goods_amount;
+                    $cartList['goodsList'][$key]['is_use_bonus'] = 1;
+                } elseif ($bonus['info']['use_type'] == 1) {//指定分类可用
+                    $ClassList = (new CategoryModel)->getRows(); //商品分类列表
+                    $use_by = explode(',', $bonus['info']['use_by']);
+                    $cidInfoArr = [];//分类信息
+                    foreach ($use_by as $cid) {
+                        $cidInfoArr[] = $ClassList[$cid]['children'];
+                    }
+                    $cidInfo = join(',', $cidInfoArr);
+                    $cidInfoArr = explode(',', $cidInfo);//转成数组
+                    if (in_array($grow['cid'], $cidInfoArr)) {
+                        $cartList['use_bonus_goods_amount'] += $goods_amount;
+                        $cartList['goodsList'][$key]['is_use_bonus'] = 1;
+                    }
+                } elseif ($bonus['info']['use_type'] == 2) {//指定商品可用
+                    $use_by = explode(',', $bonus['info']['use_by']);//可用的商品ID
+                    if (in_array($grow['goods_id'], $use_by)) {//符合使用商品
+                        $cartList['use_bonus_goods_amount'] += $goods_amount;
+                        $cartList['goodsList'][$key]['is_use_bonus'] = 1;
+                    }
+                }
             }
             $allGoodsSn[$grow['goods_sn']] = 1;
             $allGoodsId[$grow['goods_id']] = 1;
@@ -241,10 +277,11 @@ class Flow extends ApiController
 
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证
-            $BonusModel = new BonusModel();
-            $bonus = $BonusModel->binfo($used_bonus_id);
             if ($bonus['user_id'] != $this->userInfo['user_id']) {
                 return $this->error('优惠券出错，请核实.');
+            }
+            if ($bonus['status'] == 2) {
+                return $this->error('优惠券无法使用：已失效');
             }
             if ($bonus['info']['stauts'] != 1) {
                 return $this->error('优惠券无法使用：' . $bonus['info']['stauts_info']);
@@ -263,6 +300,11 @@ class Flow extends ApiController
         $shippingFee = $this->Model->evalShippingFee($address, $cartList);
         $shippingFee = reset($shippingFee);//现在只返回默认快递
         $inArr['shipping_fee'] = $shippingFee['shipping_fee'] * 1;
+
+        //优惠金额处理
+        if ($inArr['use_bonus'] > $cartList['use_bonus_goods_amount']) {
+            $inArr['use_bonus'] = $cartList['use_bonus_goods_amount'];
+        }
         $inArr['order_amount'] = $cartList['orderTotal'] + $inArr['shipping_fee'] - $inArr['use_bonus'];
 
         if ($inArr['order_amount'] > 0){
@@ -363,20 +405,23 @@ class Flow extends ApiController
         //end
         //处理优惠券
         if ($used_bonus_id > 0) {
+            $BonusModel = new BonusModel();
+            $BonusListModel = new BonusListModel();
             $upArr = array();
-            $upArr['user_id'] = $this->userInfo['user_id'];
             $upArr['used_time'] = $time;
             $upArr['order_id'] = $order_id;
             $upArr['order_sn'] = $inArr['order_sn'];
-            $BonusListModel = new BonusListModel();
+            $upArr['status'] = 1;
             $res = $BonusListModel->where('bonus_id', $used_bonus_id)->update($upArr);
-            if ($res < 1) {
+            //增加优惠券使用数量
+            $res1 = $BonusModel->where('type_id', $bonus['type_id'])->setInc('use_num', 1);
+            if ($res < 1 || $res1 < 1) {
                 Db::rollback();// 回滚事务
                 return $this->error('未知错误，修改优惠券失败.');
             }
         }
         //end
-        $this->addOrderGoods($order_id,$rec_ids);//写入商品
+        $this->addOrderGoods($order_id, $cartList, $bonus);//写入商品
         Db::commit();// 提交事务
         $return['order_id'] = $order_id;
         $return['code'] = 1;
@@ -386,26 +431,56 @@ class Flow extends ApiController
     //-- 写入订单商品
     //--- 这里可能有bug,如果用户同时执行多次，商品有可能发生错误
     /*------------------------------------------------------ */
-    public function addOrderGoods($order_id,$recids)
+    public function addOrderGoods($order_id, $cartList, $bonus)
     {
-        $add_time = time();
-        $sql = "INSERT INTO shop_order_goods (" .
-            "order_id,brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,add_time,user_id,give_integral,use_integral,is_dividend,buy_again_discount)" .
-            " SELECT '$order_id',brand_id,cid,supplyer_id,goods_id,sku_id,sku_val,sku_name,goods_name,pic,goods_sn,goods_number,market_price,shop_price,sale_price,settle_price,goods_weight,discount,'$add_time',user_id,give_integral,use_integral,is_dividend,buy_again_discount" .
-            " FROM  shop_cart  WHERE ";
-        $sql .= " user_id = '" . $this->userInfo['user_id'] . "' AND is_select = 1 ";
-        $sql .= " AND is_integral =  " . $this->is_integral;
-		$sql .= " AND rec_id IN (".join(',',$recids).") ";
-        $sql .= " order by rec_id asc";
-        $res = Db::execute($sql);
+        $orderGoods = [];
+        $cart_ids = [];
+        foreach ($cartList['goodsList'] as $key => $og) {
+            $cart_ids[] = $og['rec_id'];
+            $bonus_ids = 0;
+            $bonus_after_price = 0;
+            if (empty($bonus) == false) {
+                if ($og['is_use_bonus'] == 1) {
+                    $bonus_ids = $bonus['bonus_id'];
+                    $scale = $og['sale_price'] / $cartList['use_bonus_goods_amount'];//对比总订单商品价格占比
+                    $use_bonus = bcmul($bonus['info']['type_money'], $scale, 2);//精确两位小数，不四舍五入
+                    $bonus_after_price = $og['sale_price'] - $use_bonus;
+                }
+            }
+            $goods = array(
+                'order_id' => $order_id,
+                'brand_id' => $og['brand_id'],
+                'cid' => $og['cid'],
+                'supplyer_id' => $og['supplyer_id'],
+                'goods_id' => $og['goods_id'],
+                'sku_id' => $og['sku_id'],
+                'sku_val' => $og['sku_val'],
+                'sku_name' => $og['sku_name'],
+                'pic' => $og['pic'],
+                'goods_sn' => $og['goods_sn'],
+                'goods_number' => $og['goods_number'],
+                'market_price' => $og['market_price'],
+                'shop_price' => $og['shop_price'],
+                'sale_price' => $og['sale_price'],
+                'settle_price' => $og['settle_price'],
+                'goods_weight' => $og['goods_weight'],
+                'discount' => $og['discount'],
+                'user_id' => $og['user_id'],
+                'give_integral' => $og['give_integral'],
+                'use_integral' => $og['use_integral'],
+                'is_dividend' => $og['is_dividend'],
+                'buy_again_discount' => $og['buy_again_discount'],
+                'bonus_ids' => $bonus_ids,
+                'bonus_after_price' => $bonus_after_price,
+            );
+            $orderGoods[] = $goods;
+        }
+        $res = (new \app\shop\model\OrderGoodsModel)->insertAll($orderGoods);
         if ($res < 1) {
             Db::rollback();// 回滚事务
             return $this->error('未知原因，订单商品写入失败.');
         }
-        $where[] = ['user_id', '=', $this->userInfo['user_id']];
-        $where[] = ['is_select', '=', 1];
-        $where[] = ['is_integral', '=', $this->is_integral];
-		$where[] = ['rec_id', 'in', $recids];
+        $where[] = ['rec_id', 'in', $cart_ids];
         $this->Model->where($where)->delete();// 清理购物车的商品
         $this->Model->cleanMemcache();
         return $res;

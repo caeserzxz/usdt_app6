@@ -4,6 +4,7 @@ use app\ApiController;
 use app\shop\model\CartModel;
 use app\shop\model\GoodsModel;
 use app\weixin\model\MiniModel;
+use app\shop\model\BonusModel;
 
 /*------------------------------------------------------ */
 //-- 商品相关API
@@ -292,8 +293,8 @@ class Goods extends ApiController
         $goods = $this->Model->info($goods_id);
         $list['title'] = $goods['goods_name'];
           
-        $web_path = trim(domain_name(''));  
-        $goods['m_goods_desc'] = preg_replace('/<img src=\"/', '<img style="width:100%;height:auto;" src="' . $web_path, $goods['m_goods_desc']);
+        $web_path = config('config.host_path');
+        $goods['m_goods_desc'] = preg_replace('/<img src=\"/', '<img style="width:100%;height:auto;" src="' .$web_path.$goods['m_goods_desc']);
         $list['goods'] = $goods;
         $list['imgsList'] = $this->Model->getImgsList($goods_id);
         $list['skuImgs'] = $this->Model->getImgsList($goods_id,true,true);

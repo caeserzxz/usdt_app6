@@ -584,7 +584,7 @@ class OrderModel extends BaseModel
         foreach ($order_ids as $order_id) {
             $upData['order_id'] = $order_id;
             $upData['shipping_status'] = $this->config['SS_SIGN'];
-            $upData['sign_time'] =
+            $upData['sign_time'] = $time;
             $res = $this->upInfo($upData);
             if ($res === true) {
                 $this->_log($orderInfo, '自动签收');
