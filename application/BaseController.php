@@ -155,9 +155,13 @@ class BaseController extends Controller
         } elseif ('' !== $url && 'reload' !== $url) {
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : Container::get('url')->build($url);
         }
-
+        $code = 1;
+        if (is_array($msg) == true){
+            $code = $msg[1];
+            $msg = $msg[0];
+        }
         $result = [
-            'code' => 1,
+            'code' => $code,
             'msg'  => $msg,
             'data' => $data,
             'url'  => $url,
@@ -191,7 +195,7 @@ class BaseController extends Controller
      * @param  array     $header 发送的Header信息
      * @return void
      */
-    protected function error($msg = '操作失败,请重试.',$code = 0, $url = null, $data = [], $wait = 3, array $header = [])
+    protected function error($msg = '操作失败,请重试.', $url = null,$data = [],  $wait = 3, array $header = [])
     {
         $type = $this->returnJson == true ? 'json' :$this->getResponseType();
         if (is_null($url)) {
@@ -199,7 +203,11 @@ class BaseController extends Controller
         } elseif ('' !== $url) {
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : $this->app['url']->build($url);
         }
-
+        $code = 0;
+        if (is_array($msg) == true){
+            $code = $msg[1];
+            $msg = $msg[0];
+        }
         $result = [
             'code' => $code,
             'msg'  => $msg,

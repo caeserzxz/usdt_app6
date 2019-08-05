@@ -41,10 +41,10 @@ class ShippingModel extends BaseModel
         $data = Cache::get($mkey);
         if ($data) return $data;
         $data['DEFSP'] = ['shipping_name'=>'默认快递','status'=>1];
-        $rows = self::select()->toArray();
+        /*$rows = self::select()->toArray();
         foreach ($rows as $row){
             $data[$row['shipping_code']] = $row;
-        }
+        }*/
         Cache::set($mkey,$data,600);
         return $data;
     }

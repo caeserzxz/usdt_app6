@@ -25,6 +25,8 @@ class Goods extends AdminController
 {
     public $ext_status = 0;//额外默认指定商品状态
     public $is_supplyer = 0;//是否后台供应商管理
+    public $_field = '';
+    public $_pagesize = 0;
     //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
@@ -96,19 +98,19 @@ class Goods extends AdminController
             $where[] = ['is_promote', '=', $search['is_promote']];
         }
 
-        $this->data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
+        $data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
         $this->assign("is_delete", $is_delete);
-        $this->assign("data", $this->data);
+        $this->assign("data", $data);
         $this->assign("search", $search);
         $this->assign("classListOpt", arrToSel($this->classList, $search['cid']));
         $BrandList = $this->Model->getBrandList();
         $this->assign("brandListOpt", arrToSel($BrandList));
         if ($runJson == 1) {
-            return $this->success('', '', $this->data);
+            return $this->success('', '', $data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('list');
-            unset($this->data['list']);
-            return $this->success('', '', $this->data);
+            $data['content'] = $this->fetch('list');
+            unset($data['list']);
+            return $this->success('', '', $data);
         }
         return true;
     }
@@ -265,6 +267,9 @@ class Goods extends AdminController
         if (empty($row['goods_desc']) && empty($row['m_goods_desc'])) {
             return $this->error('未上传商品详情，请上传后再保存.');
         }
+
+        $row['is_promote'] = empty($row['is_promote']) ? 0 : 1;
+
         if ($row['is_spec'] == 0) {//单规格
             if ($this->is_supplyer == false) {//平台管理供应商时，不判断以下
                 if (empty($row['goods_sn'])) {
@@ -319,7 +324,7 @@ class Goods extends AdminController
                     return $this->error('子商品列表中货号【' . $prow['ProductSn'] . '】重复，系统不允许货号重复.');
                 }
                 $goods_sn[] = $prow['ProductSn'];
-                if ($prow['Store'] > 0) {
+                if (empty($prow['Store']) == false && $prow['Store'] > 0) {
                     $row['goods_number'] += $prow['Store'];
                 }
                 if ($this->supplyer_id > 0) {
@@ -613,11 +618,15 @@ class Goods extends AdminController
             $row['shop_price'] = $row['shop_price'] * 1;
         }
 
-        $row['is_best'] = $row['is_best'] * 1;
-        $row['is_hot'] = $row['is_hot'] * 1;
-        $row['is_new'] = $row['is_new'] * 1;
-        $row['virtual_sale'] += $row['sale_num'];
-        $row['virtual_collect'] += $row['collect_num'];
+        $row['is_best'] = empty($row['is_best']) ? 0 : 1;
+        $row['is_hot'] = empty($row['is_hot']) ? 0 : 1;
+        $row['is_new'] = empty($row['is_new']) ? 0 : 1;
+        if (empty($row['sale_num']) == false){
+            $row['virtual_sale'] += $row['sale_num'];
+        }
+        if (empty($row['collect_num']) == false){
+            $row['virtual_collect'] += $row['collect_num'];
+        }
         $opt = input('opt', 0, 'intval');
         $this->loginfo = '修改商品：' . $row['goods_name'];
         if ($opt > 0) {
@@ -760,16 +769,18 @@ class Goods extends AdminController
         $attr_value_list = input('post.attr_value_list');
         $AttributeValModel = new AttributeValModel();
         $AttributeValModel->where('goods_id', $row['goods_id'])->delete();
-        foreach ($attr_value_list as $key => $attrVal) {
-            $inData = array();
-            $inData['goods_id'] = $row['goods_id'];
-            $inData['model_id'] = $row['type_model'];
-            $inData['attr_id'] = $key;
-            $inData['attr_value'] = is_array($attrVal) ? trim(join(',', $attrVal), ',') : $attrVal;
-            $res = $AttributeValModel::create($inData);
-            if ($res < 1) {
-                Db::rollback();// 回滚事务
-                return $this->error('操作失败:写入商品属性失败，请重试.');
+        if (empty($attr_value_list) == false){
+            foreach ($attr_value_list as $key => $attrVal) {
+                $inData = array();
+                $inData['goods_id'] = $row['goods_id'];
+                $inData['model_id'] = $row['type_model'];
+                $inData['attr_id'] = $key;
+                $inData['attr_value'] = is_array($attrVal) ? trim(join(',', $attrVal), ',') : $attrVal;
+                $res = $AttributeValModel::create($inData);
+                if ($res < 1) {
+                    Db::rollback();// 回滚事务
+                    return $this->error('操作失败:写入商品属性失败，请重试.');
+                }
             }
         }
 
