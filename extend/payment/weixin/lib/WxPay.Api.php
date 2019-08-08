@@ -50,14 +50,14 @@ class WxPayApi
 		
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
-		$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip	  
-		//$inputObj->SetSpbill_create_ip("1.1.1.1");  	    
+		$inputObj->SetSpbill_create_ip(get_client_ip());//终端ip
+		//$inputObj->SetSpbill_create_ip("1.1.1.1");
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
 		
 		//签名
 		$inputObj->SetSign();
 		$xml = $inputObj->ToXml();
-		
+
 		$startTimeStamp = self::getMillisecond();//请求开始时间
 		$response = self::postXmlCurl($xml, $url, false, $timeOut);
 		$result = WxPayResults::Init($response);
@@ -256,7 +256,7 @@ class WxPayApi
 			throw new WxPayException("提交被扫支付API接口中，缺少必填参数auth_code！");
 		}
 		
-		$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip
+		$inputObj->SetSpbill_create_ip(get_client_ip());//终端ip
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
@@ -330,7 +330,7 @@ class WxPayApi
 		}
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
-		$inputObj->SetUser_ip($_SERVER['REMOTE_ADDR']);//终端ip
+		$inputObj->SetUser_ip(get_client_ip());//终端ip
 		$inputObj->SetTime(date("YmdHis"));//商户上报时间	 
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
 		
