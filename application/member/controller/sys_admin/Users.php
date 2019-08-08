@@ -466,6 +466,9 @@ class Users extends AdminController
             if ($select_user_id == $userInfo['pid']){
                 return $this->error('当前选择与当前会员上级一致，请核实.');
             }
+            if ($select_user_id == $userInfo['user_id']){
+                return $this->error('不能选择自己作为自己的上级.');
+            }
             $where[] = ['pid','=',$user_id];
             $where[] = ['user_id','=',$select_user_id];
             $count = (new UsersBindModel)->where($where)->count();
