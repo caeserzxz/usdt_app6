@@ -348,7 +348,7 @@ class GoodsModel extends BaseModel
             $row['sale_price'] = $row['shop_price'];
             $row['exp_price'] = explode('.', $row['sale_price']);
             if ($goods['limit_num'] > 0) {
-                $row['BuyMaxNum'] = $row['BuyMaxNum'] > $goods['limit_num'] ? $goods['quota_amount'] : $row['BuyMaxNum'];
+                $row['BuyMaxNum'] = $row['BuyMaxNum'] > $goods['limit_num'] ? $goods['limit_num'] : $row['BuyMaxNum'];
             }
             if ($row['BuyMaxNum'] > 0) {
                 $sku_val = explode(':', $row['sku_val']);

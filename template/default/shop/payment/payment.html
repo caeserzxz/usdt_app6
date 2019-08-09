@@ -10,24 +10,30 @@
         *{ margin:0; padding:0}
         .wihe-ee{ background:#FFF; padding:25px; color:#666; font-family:song,arial; font-size:14px; margin:0 auto; text-align:center}
         .wihe-ee p{text-align:center}
-        .fail-I-success{margin-top:30px;border-bottom:1px solid #d8d8d8; padding-bottom:30px}
         .co999{color:#999}
         .fo-si-18{font-size:18px}
-        .fail-fasu{ text-align:center; border-bottom:1px solid #d8d8d8; padding-bottom:30px}
-        .success-fasu{margin-top:30px;  text-align:center}
         .fail-fasu a:hover{ background-color:#ee9775}
         .fail-fasu a{padding:8px 24px; background-color:#f8a584; display:table; margin:0 auto; color:#fff; text-decoration:none; margin-top:10px}
         .re-qtzfgg a,.success-fasu a{padding:8px 24px; background-color:#eee; display:table; margin:0 auto; color:#999; text-decoration:none; margin-top:10px}
         .re-qtzfgg a:hover,.success-fasu a:hover{background-color:#ddd;}
-        .pay{
+        .btn{
             width: 95%;
             padding: 10px;
             border-radius: 10px;
             font-size:22px;
             color: #fff;
-            background: #07BF05;
+
             border: 0px;
             text-align: center;
+            margin-bottom: 8px;
+        }
+        .pay{
+            background: #07BF05;
+
+        }
+        .back{
+            background: #f8a584;
+
         }
         a{
             color: #fff;
@@ -45,8 +51,11 @@
         </p>
     </div>
 </div>
-<a class="pay" href="{$deeplink|default=''}"><button class="pay">确认支付</button></a>
 {$code_str|raw}
+<a href="{$deeplink|default=''}"><button class="btn pay" >确认支付</button></a>
+<a href="{:url('flow/done',['order_id'=>$order_id])}"><button class="btn back">返回选择其他支付方式</button></a>
+<a href="{:url('order/info',['order_id'=>$order_id])}"><button class="btn back">返回订单</button></a>
+
     <script>
         function deeplinkCall() {
             var deeplink = "{$deeplink|default=''}";
@@ -57,7 +66,7 @@
         var u = navigator.userAgent;
         var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
         if (!isiOS){
-
+            deeplinkCall()
         }
     </script>
 </body>

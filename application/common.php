@@ -274,6 +274,13 @@ function dateTpl($time = '',$format = '',$return_false = false){
 	if (empty($format)){
 		$format = 'Y-m-d H:i';
 	}
+
+	if (date('Y') == date('Y', $time)){
+
+        $format = str_replace('Y-','',$format);
+    }else{
+        $format = 'Y-m-d';
+    }
     return date($format, $time);
 }
 /*------------------------------------------------------ */

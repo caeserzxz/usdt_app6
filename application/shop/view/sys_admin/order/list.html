@@ -1,88 +1,81 @@
-<table class="table table-striped  m-b-none">
+<table class="table table-striped table-hover  m-b-none ">
 <thead>
 <tr>
+
     <th>商品信息</th>
-    <th>商品信息</th>
+    <th width="100">订单类型</th>
     <th width="150" >实收款</th>
+    <th width="110">支付方式</th>
     <th width="150" align="center">收货人</th>
-    <th width="100">支付方式</th>
-    <th width="100">状态</th>
+    <th width="150" align="center">购买会员</th>
     <th width="100">操作</th>
 </tr>
 </thead>
 <tbody>
 {volist name="data.list" id="vo" }
-<tr>
-    <td colspan="6"><input type="checkbox" name="order_id" value="{$vo.order_id}" class="m-r"> <span class="m-r">订单编号：{$vo.order_sn}</span>
-        <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
-         <span class="m-r">{$vo.merger_name} {$vo.address}</span>
-        <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="btn btn-sm btn-default fr" title="查看详情">
-            <i class="fa fa-search "></i>订单详情</a>
-    </td>
-</tr>
-<tr>
 
-    <td>
-        <ul class="list-group no-borders">
+<tr class="border_top">
+    <td valign="top">
+        <div class="top">
+            <label>
+                <input type="checkbox" name="order_id" value="{$vo.order_id}" class="m-r"> <span class="m-r">订单编号：{$vo.order_sn}</span>
+            </label>
+            <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
+            <span class="m-r">收货地址：{$vo.merger_name} {$vo.address}</span>
+
+            <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="btn btn-sm btn-default fr" title="查看详情">
+                <i class="fa fa-search "></i>订单详情</a>
+        </div>
+        <ul class="list-group no-borders" >
             {volist name="vo.goodsList" id="grow" }
             <li class="list-group-item ">
                 <div class="media">
                     <span class="pull-left thumb-sm">
                         <img src="{$grow.pic}" ></span>
-                    <div class="pull-right">
-                        x {$grow.goods_number}
-                    </div>
+
                     <div class="media-body">
                         <div style="color:#999;">{$grow.goods_name} {$grow.sku_name}</div>
                         <small class="text-muted">单价： {$grow.sale_price|priceFormat}<span class="m-l-xs"></span></small>
+                        x {$grow.goods_number}
                     </div>
                 </div>
             </li>
             {/volist}
         </ul>
     </td>
-    <td>
+    <td valign="top">
         <p class=" m-b-xs">
             {if condition='$vo.order_type == 0'}
-                普通订单
+            普通订单
             {elseif condition='$vo.order_type == 1'}
-                积分兑换订单
+            积分订单
             {elseif condition='$vo.order_type == 2'}
-                拼团订单
+            拼团订单
             {elseif condition='$vo.order_type == 3'}
-                秒杀订单
+            秒杀订单
             {elseif condition='$vo.order_type == 9'}
-                售后订单
+            售后订单
             {/if}
-
         </p>
     </td>
-    <td>
-        <p class=" m-b-xs">
-             {$vo.order_amount|priceFormat}
+    <td valign="top">
+        {$vo.pay_name}
+            {$vo.order_amount|priceFormat}
            {eq name="vo.ostatus" value="待付款" }
             <a href="javascript:;" data-remote="{:url('changePrice',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" >
                 <i class="fa fa-edit text-muted"></i>
             </a>
             {/eq}
-        </p>
+        <br>
         <small class="text-muted">[含运费: {$vo.shipping_fee}]</small>
     </td>
-    <td>
-         {$vo.consignee}<p>会员ID：{$vo.user_id}</p>
-         </td>
-    <td>{$vo.pay_name}</td>
-
-    <td>
-        <p><p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p></p>
-        <p>
-           {$orderLang['ss'][$vo['shipping_status']]|raw}
-
+    <td valign="top"></td>
+    <td valign="top">{$vo.consignee}</td>
+    <td valign="top">{$vo.user_id} - {$vo.user_id|userInfo}</td>
+    <td valign="top">
+       <p> {$orderLang['os'][$vo['order_status']]|raw}</p><p>{$orderLang['ps'][$vo['pay_status']]|raw}</p>
+            {$orderLang['ss'][$vo['shipping_status']]|raw}
         </p>
-
-    </td>
-
-    <td>
         {eq name="vo.ostatus" value="待发货" }
         <a href="javascript:;" data-remote="{:url('shipping',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" title="发货">
             <i class="fa fa-truck text-muted"></i>
