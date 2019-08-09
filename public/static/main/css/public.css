@@ -185,3 +185,6 @@ min-height:90px !important;
 .table .border_top .top{
 	position: absolute; margin-top: -40px; width: 95%;
 }
+.table .border_top .top a{
+	position: absolute; right: 0px;
+}
