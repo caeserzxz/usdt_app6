@@ -557,3 +557,25 @@ function getArrColumn($arr, $key_name)
     }
     return $arr2;
 }
+
+/*------------------------------------------------------ */
+//-- 保存网络图片到本地
+//-- @param string $url 网络图片地址
+//-- @return string $path 保存的路径及文件名 ./public/upload/headimg/s3f21sdf3s1ads.jpg
+/*------------------------------------------------------ */
+function downloadImage($url,$path){
+    $ch=curl_init();
+    $timeout=5;
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+    $img=curl_exec($ch);
+    curl_close($ch);
+
+    $fp2=@fopen($path,'a');
+    fwrite($fp2,$img);
+    fclose($fp2);
+    unset($img,$url);
+
+    return true;
+}

@@ -456,7 +456,9 @@ $(function(){
 			_alert(res.msg);
 			return false;   
 	   }
-	   $('.qcode').attr('src',res.file);
+        var code_url = res.file+'?v='+Math.random();
+            
+        $('.qcode').attr('src', code_url);
 	});
 })
 
