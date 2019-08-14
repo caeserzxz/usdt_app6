@@ -35,7 +35,10 @@ class Flow extends ClientbaseController{
         $OrderModel = new OrderModel();
         $orderInfo = $OrderModel->info($order_id);
         if (empty($orderInfo) || $orderInfo['user_id'] != $this->userInfo['user_id']){
-            $this->error('订单不存在.');
+            return $this->error('订单不存在.');
+        }
+        if ($orderInfo['order_status'] == 2){
+            return $this->error('订单已取消.');
         }
 		$goPay = 0;
         $payment = (new PaymentModel)->where('pay_id', $orderInfo['pay_id'])->find();

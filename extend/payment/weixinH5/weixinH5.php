@@ -47,7 +47,7 @@ class weixinH5
             'h5_info' => [
                 'type' => 'Wap',
                 'wap_url' => SITE_URL,
-                'wap_name' => '商城网站'
+                'wap_name' => '支付'
             ]
         ], JSON_UNESCAPED_UNICODE);
 
@@ -62,7 +62,9 @@ class weixinH5
 
         try {
             $return = \WxPayApi::unifiedOrder($input);
+
         } catch (\Exception $e) {
+
             return ['status' => -1, 'msg' => $e->getMessage()];
         }
 

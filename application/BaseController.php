@@ -259,7 +259,12 @@ class BaseController extends Controller
         $inData['module'] = request()->path();
         $inData['log_ip'] = request()->ip();
         $inData['log_time'] = time();
-        $inData['user_id'] = defined('AUID') ? AUID : SAUID;
+        $inData['user_id'] = 0;
+        if (defined('AUID')){
+            $inData['user_id'] =  AUID;
+        }elseif (defined('SAUID')){
+            $inData['user_id'] = SAUID;
+        }
         $Model = str_replace('/', '\\', "/app/$controller/model/LogSysModel");
         (new $Model)->save($inData);
 		return true;

@@ -50,14 +50,14 @@ class WxPayApi
 		
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
-		$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip	  
-		//$inputObj->SetSpbill_create_ip("1.1.1.1");  	    
+		$inputObj->SetSpbill_create_ip(get_client_ip());//终端ip
+		//$inputObj->SetSpbill_create_ip("1.1.1.1");
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
 		
 		//签名
 		$inputObj->SetSign();
 		$xml = $inputObj->ToXml();
-		
+
 		$startTimeStamp = self::getMillisecond();//请求开始时间
 		$response = self::postXmlCurl($xml, $url, false, $timeOut);
 		$result = WxPayResults::Init($response);
@@ -256,7 +256,7 @@ class WxPayApi
 			throw new WxPayException("提交被扫支付API接口中，缺少必填参数auth_code！");
 		}
 		
-		$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip
+		$inputObj->SetSpbill_create_ip(get_client_ip());//终端ip
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
@@ -330,7 +330,7 @@ class WxPayApi
 		}
 		$inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
 		$inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
-		$inputObj->SetUser_ip($_SERVER['REMOTE_ADDR']);//终端ip
+		$inputObj->SetUser_ip(get_client_ip());//终端ip
 		$inputObj->SetTime(date("YmdHis"));//商户上报时间	 
 		$inputObj->SetNonce_str(self::getNonceStr());//随机字符串
 		
@@ -586,5 +586,169 @@ class WxPayApi
 		$time = $time2[0];
 		return $time;
 	}
+    /**
+     *
+     * 统一下单，WxPayUnifiedOrder中out_trade_no、body、total_fee、trade_type必填
+     * appid、mchid、spbill_create_ip、nonce_str不需要填入
+     * @param WxPayUnifiedOrder $inputObj
+     * @param int $timeOut
+     * @throws Exception
+     * @return 成功时返回，其他抛异常
+     */
+    public static function unifiedOrderApp($inputObj, $timeOut = 6)
+    {
+
+        $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        //检测必填参数
+        if(!$inputObj->IsOut_trade_noSet()) {
+            throw new Exception("缺少统一支付接口必填参数out_trade_no！");
+        }else if(!$inputObj->IsBodySet()){
+            throw new Exception("缺少统一支付接口必填参数body！");
+        }else if(!$inputObj->IsTotal_feeSet()) {
+            throw new Exception("缺少统一支付接口必填参数total_fee！");
+        }else if(!$inputObj->IsTrade_typeSet()) {
+            throw new Exception("缺少统一支付接口必填参数trade_type！");
+        }
+
+        //关联参数
+        if($inputObj->GetTrade_type() == "JSAPI" && !$inputObj->IsOpenidSet()){
+            throw new Exception("统一支付接口中，缺少必填参数openid！trade_type为JSAPI时，openid为必填参数！");
+        }
+        if($inputObj->GetTrade_type() == "NATIVE" && !$inputObj->IsProduct_idSet()){
+            throw new Exception("统一支付接口中，缺少必填参数product_id！trade_type为JSAPI时，product_id为必填参数！");
+        }
+
+        //异步通知url未设置，则使用配置文件中的url
+        if(!$inputObj->IsNotify_urlSet()){
+            $inputObj->SetNotify_url(WxPayConfig::NOTIFY_URL);//异步通知url
+        }
+
+        $inputObj->SetAppid(WxPayConfig::$appid);//公众账号ID
+        $inputObj->SetMch_id(WxPayConfig::$mchid);//商户号
+        $inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip
+        //$inputObj->SetSpbill_create_ip("1.1.1.1");
+        $inputObj->SetNonce_str(self::getNonceStr());//随机字符串
+
+
+        //签名
+        $inputObj->SetSign();
+
+
+        $xml = $inputObj->ToXml();
+
+        $startTimeStamp = self::getMillisecond();//请求开始时间
+        $response = self::postXmlCurl($xml, $url, false, $timeOut);
+        $result = WxPayResults::Init($response);
+        self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
+
+
+        $traceType = $inputObj->GetTrade_type();
+        if ($traceType == 'APP') {
+            $result = self::AppReSign($inputObj, $result);
+            //需要再次通过现在这个结果进行签名
+
+        } else {
+            throw new Exception("交易类型不支持:" + $traceType);
+        }
+        //trace(var_export($result,true),'debug');
+
+        return $result;
+    }
+
+    public static function AppReSign($inputObj, $result)
+    {
+        // 统一下单接口返回正常的prepay_id，再按签名规范重新生成签名后，将数据传输给APP。
+        // 参与签名的字段名为appId，partnerId，prepayId，nonceStr，timeStamp，package。注意：package的值格式为Sign=WXPay
+
+        /*****
+        Array
+        (
+        [appid] => wxe60de18d2b51ea4b
+        [mch_id] => 1255431001
+        [nonce_str] => e6pt2euRawZmAaoH
+        [prepay_id] => wx2015073115154392e30247180128688652
+        [result_code] => SUCCESS
+        [return_code] => SUCCESS
+        [return_msg] => OK
+        [sign] => 04451BF2E2004C3C532C78F1D3933FB0
+        [trade_type] => APP
+        )
+         *****/
+
+        //print_r($result);
+        //exit();
+        $time_stamp = time();
+        $pack	= 'Sign=WXPay';
+        //$pack	= 'io.dcloud.h50a170fe';
+        //输出参数列表
+        $prePayParams =array();
+        $prePayParams['appid']		=$result['appid'];
+        $prePayParams['partnerid']	=$result['mch_id'];
+        $prePayParams['prepayid']	=$result['prepay_id'];
+        $prePayParams['noncestr']	=$result['nonce_str'];
+        $prePayParams['package']	=$pack;
+
+        $prePayParams['timestamp']	=$time_stamp;
+
+        //$prePayParams['return_code']	="";
+        $prePayParams['result_code']	=$result['result_code'];
+        $prePayParams['return_code']	=$result['return_code'];
+        $prePayParams['user_ip']	=   $inputObj->GetSpbill_create_ip();
+        unset($prePayParams['user_ip']);
+        unset($prePayParams['return_code']);
+        unset($prePayParams['result_code']);
+        /****               Array
+        (
+        [appid] => wxe60de18d2b51ea4b
+        [partnerid] => 1255431001
+        [prepayid] => wx20150731171527defd39db240466898359
+        [noncestr] => jcwkHR9el4qkI8Wo
+        [package] => Sign=WXPay
+        [timestamp] => 1438334130
+        )
+
+         **************/
+
+
+
+
+        //print_r($prePayParams);
+        //exit();
+        //echo json_encode($prePayParams);
+        $result = WxPayResults::InitFromArray($prePayParams,true)->GetValues();
+
+
+        //签名步骤一：按字典序排序参数
+        ksort($result);
+        $string = self::ToUrlParams($result);
+        //签名步骤二：在string后加入KEY
+        $string = $string . "&key=".WxPayConfig::$key;
+
+        //签名步骤三：MD5加密
+        $string = md5($string);
+        //签名步骤四：所有字符转为大写
+        $sign = strtoupper($string);
+
+        $result['sign'] = $sign;
+        return $result;
+        //self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
+        //print_r($result);
+        //exit();
+        //return $result;
+    }
+
+    public static function ToUrlParams($value)
+    {
+        $buff = "";
+        foreach ($value as $k => $v)
+        {
+            if($k != "sign" && $v != "" && !is_array($v)){
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+
+        $buff = trim($buff, "&");
+        return $buff;
+    }
 }
 

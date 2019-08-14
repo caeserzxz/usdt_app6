@@ -1,29 +1,29 @@
 
-<table class="table table-striped m-b-none ">
+<table class="table  table-hover m-b-none ">
     <thead>
         <tr>
-        	<th>ID</th>
+
             <th>名称</th>
-        	<th>券面额</th>
-            <th>消费金额</th>
-        	<th>发放类型</th>
-            <th>指定商品类型</th>
-            <th>使用范围</th>
-            <th>发放状态</th>
-            <th>使用状态</th>
-            <th>领取数</th>
-          	<th>使用数</th>
-            <th>发放时间</th>
-            <th>使用时间</th>
-            <th>创建时间</th>
-            <th width="130">操作</th>
+        	<th width="80">券面额</th>
+            <th width="80">消费额</th>
+        	<th width="100">发放类型</th>
+            <th width="100">指定类型</th>
+            <th width="100">使用范围</th>
+            <th width="100">发放状态</th>
+            <th width="100">使用状态</th>
+            <th width="60">领取</th>
+          	<th width="60">使用</th>
+            <th width="140">操作</th>
         </tr>
     </thead>
-    <tbody>
 {volist name="data.list" id="row" }
-        <tr>
-        	<td>{$row.type_id}</td>
-        	<td>{$row.type_name}</td>
+        <tr class="border_top">
+        	<td>
+                <div class="top">
+                    创建时间：{$row.add_time|dateTpl} 发放时间：{$row.send_start_date|dateTpl} ~ {$row.send_end_date|dateTpl} 使用时间：{$row.use_start_date|dateTpl} ~ {$row.use_end_date|dateTpl}
+                </div>
+                {$row.type_name}
+            </td>
             <td><span class="money">{$row.type_money}</span></td>
             <td><span class="money">{$row.min_amount}</span></td>
             <td>{$SendType[$row['send_type']]['name']}</td>
@@ -33,9 +33,7 @@
             <td>{$useStatusList[$row['use_status']]}</td>
             <td>{$row.send_num}</td>
             <td>{$row.use_num}</td>
-            <td>{$row.send_start_date|dateTpl} <br>--<br>{$row.send_end_date|dateTpl}</td>
-            <td>{$row.use_start_date|dateTpl} <br>--<br>{$row.use_end_date|dateTpl}</td>
-            <td>{$row.add_time|dateTpl}</td>
+
             <td>
                 <a href="{:url('info',array('type_id'=>$row['type_id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
                 <a href="{:url('bonusList',array('type_id'=>$row['type_id']))}" class="m-xs" title="查看领取记录"><i class="fa fa-search text-muted"></i></a>
@@ -44,6 +42,7 @@
 
             </td>
         </tr>
+
 {/volist}
     </tbody>
 </table>

@@ -274,6 +274,13 @@ function dateTpl($time = '',$format = '',$return_false = false){
 	if (empty($format)){
 		$format = 'Y-m-d H:i';
 	}
+
+	if (date('Y') == date('Y', $time)){
+
+        $format = str_replace('Y-','',$format);
+    }else{
+        $format = 'Y-m-d';
+    }
     return date($format, $time);
 }
 /*------------------------------------------------------ */
@@ -578,4 +585,31 @@ function downloadImage($url,$path){
     unset($img,$url);
 
     return true;
+}
+
+/**
+* 获取用户真实IP
+*/
+function get_client_ip($type = 0) {
+    $type       =  $type ? 1 : 0;
+    $ip         =   'unknown';
+    if ($ip !== 'unknown') return $ip[$type];
+    if($_SERVER['HTTP_X_REAL_IP']){//nginx 代理模式下，获取客户端真实 IP
+        $ip=$_SERVER['HTTP_X_REAL_IP'];
+    }elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {//客户端的 ip
+        $ip     =   $_SERVER['HTTP_CLIENT_IP'];
+    }elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {//浏览当前页面的用户计算机的网关
+        $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $pos    =   array_search('unknown',$arr);
+        if(false !== $pos) unset($arr[$pos]);
+        $ip     =   trim($arr[0]);
+    }elseif (isset($_SERVER['REMOTE_ADDR'])) {
+        $ip     =   $_SERVER['REMOTE_ADDR'];//浏览当前页面的用户计算机的 ip 地址
+    }else{
+        $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    // IP 地址合法验证
+    $long = sprintf("%u",ip2long($ip));
+    $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
+    return $ip[$type];
 }
