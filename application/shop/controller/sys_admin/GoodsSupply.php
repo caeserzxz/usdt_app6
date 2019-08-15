@@ -60,7 +60,7 @@ class GoodsSupply extends AdminController
 	/*------------------------------------------------------ */
 	public function del(){
 		$id = input('id',0,'intval');
-		if ($map['id'] < 1) return $this->error('传递参数失败！');	
+		if ($id < 1) return $this->error('传递参数失败！');	
 		$res = $this->Model->where('id',$id)->delete();
 		if ($res < 1)  return $this->error(); 
 		$this->Model->cleanMemcache();
