@@ -180,3 +180,14 @@ $(document).on('click','.checkboxAll',function(){
         });
 	}
 })
+//列表展示表格展示下级TR
+$(document).on('click','.list_tr_open',function(){
+	if ($(this).hasClass('fa-plus-square-o')){
+        $(this).parents('tr').next().removeClass('hide');
+        $(this).addClass('fa-minus-square-o').removeClass('fa-plus-square-o');
+	}else{
+        $(this).parents('tr').next().addClass('hide');
+        $(this).addClass('fa-plus-square-o').removeClass('fa-minus-square-o');
+	}
+
+})

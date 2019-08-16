@@ -908,6 +908,16 @@ function(a) {
                     forceParse: false,
                     language: 'zh-CN'
                 };
+            }else if(l == 'time'){
+                json = {
+                    format: 'hh:ii',
+                    weekStart: 1,
+                    autoclose: true,
+                    startView: 1,
+                    minView: 0,
+                    forceParse: true,
+                    language: 'zh-CN'
+                };
             }
             a.datetimepicker(json).on("show",
             function() {
