@@ -76,9 +76,9 @@ class Brand extends AdminController
 		$catinfo = $list[$map['id']];
 		if (empty($catinfo))  return $this->error('分类不存在！');
 		$map_b['cid'] = array('in',$catinfo['children']);
-		$ArticleModel = new ArticleModel();
-		$tcount = $ArticleModel->where($map_b)->count('id');
-		if ($tcount > 0 ) return $this->error('分类下存在文章不允许删除！'); 
+		// $ArticleModel = new ArticleModel();
+		// $tcount = $ArticleModel->where($map_b)->count('id');
+		// if ($tcount > 0 ) return $this->error('分类下存在文章不允许删除！'); 
 		$map['id'] = array('in',$catinfo['children']);
 		$res = $this->Model->where($map)->delete();
 		if ($res < 1)  return $this->error(); 
