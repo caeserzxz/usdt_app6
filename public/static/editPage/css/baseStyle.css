@@ -19,7 +19,7 @@
 #exttypesets-list li .exttypeset-name,#exttypesets-list li .exttypeset-nameb,#exttypesets-list li .exttypeset-link{width:180px;padding-left:10px;float:left;}
 
 
-.component-exttypeset {border-top:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;margin:0em 0.2em; margin-bottom: 0.1em;}
+.component-exttypeset {border-top:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;padding-left:0.5em;padding-right:0.5em;margin-bottom: 0.1em;}
 
 .component-exttypeset .exttypeset{width:100%;display:none; position:relative;  background:#ccc;}
 .component-exttypeset .ext_key{ position:absolute; bottom:0px; right:10px;}
@@ -27,46 +27,38 @@
 
 
 .component-exttypeset.tpl_1 .exttypeset_1 {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_1 .exttypeset_2 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
-.component-exttypeset.tpl_1 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
-.component-exttypeset.tpl_1 .exttypeset_4 {float:right;display: block !important;width:5.75em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_1 .exttypeset_2 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_1 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.5em;  overflow:hidden; }
+.component-exttypeset.tpl_1 .exttypeset_4 {float:right;display: block !important;width:5.4em;  height:4.375em; overflow:hidden; }
 
 
 .component-exttypeset.tpl_2 .exttypeset_1 {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_2 .exttypeset_2 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
-.component-exttypeset.tpl_2 .exttypeset_3 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;}
+.component-exttypeset.tpl_2 .exttypeset_2 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_2 .exttypeset_3 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;}
 
 .component-exttypeset.tpl_3 .exttypeset_1  {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_3 .exttypeset_2 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
-.component-exttypeset.tpl_3 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
-.component-exttypeset.tpl_3 .exttypeset_4 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
-.component-exttypeset.tpl_3 .exttypeset_5 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
+.component-exttypeset.tpl_3 .exttypeset_2 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_3 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_3 .exttypeset_4 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
+.component-exttypeset.tpl_3 .exttypeset_5 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
 
-.component-exttypeset.tpl_4 .exttypeset {float:left; clear:left;display: block !important;width:9.6em; min-height: 5em; max-height:10em; overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_4 .exttypeset {float:left; clear:left;display: block !important;width:9.3em; min-height: 5em; max-height:10em; overflow:hidden; margin-bottom:0.3em;}
 .component-exttypeset.tpl_4 .exttypeset:nth-child(2n) {float:right; clear: right;}
 
 
-.component-exttypeset.tpl_5 .exttypeset {float:left;display: block !important;width:6.33em; margin-right:0.3em;  min-height: 5em; max-height:10em;overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_5 .exttypeset {float:left;display: block !important;width:6.1em; margin-right:0.25em;  min-height: 5em; max-height:10em;overflow:hidden;margin-bottom:0.3em;}
 .component-exttypeset.tpl_5 .exttypeset:nth-child(3n) { margin-right:0px; }
 
-
-
-
-.component-exttypeset.tpl_6 .exttypeset_1 {float:left;display: block !important;width:11.8em;  height:4.375em;overflow:hidden;margin-bottom:0.3em;  }
+.component-exttypeset.tpl_6 .exttypeset_1 {float:left;display: block !important;width:11em;  height:4.375em;overflow:hidden;margin-bottom:0.3em;  }
 .component-exttypeset.tpl_6 .exttypeset_2 {float:right;display: block !important;width:7.500em; height:9.063em;overflow:hidden;}
-.component-exttypeset.tpl_6 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em;margin-right:0.3em;overflow:hidden; }
-.component-exttypeset.tpl_6 .exttypeset_4 {float:left;display: block !important;width:5.75em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_6 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em;margin-right:0.2em;overflow:hidden; }
+.component-exttypeset.tpl_6 .exttypeset_4 {float:left;display: block !important;width:5.4em;  height:4.375em; overflow:hidden; }
 
-.component-exttypeset.tpl_7 .exttypeset_1 {float:left;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:5px;   }
+.component-exttypeset.tpl_7 .exttypeset_1 {float:left;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:5px;   }
 .component-exttypeset.tpl_7 .exttypeset_2 {float:right;display: block !important;width:7.500em; height:9.063em;overflow:hidden;margin-bottom:5px;   }
-.component-exttypeset.tpl_7 .exttypeset_3 {float:left;display:  block !important;width:11.8em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_7 .exttypeset_3 {float:left;display:  block !important;width:11em;  height:4.375em; overflow:hidden; }
 
 .exttypeset-link{ float:right;}
-
-
-
-
-
 
 
 .component-extmenu .component-title.title-theme-2{border-left:0.2em solid #46939c;padding-left:0.2em;}.cute-01 .component-extmenu.has-border{border-color:#fadfea;}.fresh-01 .component-extmenu .component-title{color:#00954d;}.fresh-01 .component-extmenu .component-title.title-theme-2{border-color:#00954d;}.fresh-02 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-02 .component-extmenu .component-title{color:#fb939a;}.fresh-02 .component-extmenu .component-title.title-theme-2{border-color:#fb939a;}.fresh-03 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-03 .component-extmenu .component-title.title-theme-2{border-color:#19989f;}.fresh-04 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-04 .component-extmenu .component-title{color:#97c8d6;}.fresh-04 .component-extmenu .component-title.title-theme-2{border-color:#97c8d6;}.fresh-05 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-05 .component-extmenu .component-title{color:#afbdc6;}.fresh-05 .component-extmenu .component-title.title-theme-2{border-color:#91a4b4;}.fresh-06 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-06 .component-extmenu .component-title{color:#a7a5b6;}.fresh-06 .component-extmenu .component-title.title-theme-2{border-color:#a7a5b6;}.fresh-07 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-07 .component-extmenu .component-title{color:#a5140f;}.fresh-07 .component-extmenu .component-title.title-theme-2{border-color:#949494;}.fresh-08 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-08 .component-extmenu .component-title{color:#fa9090;}.fresh-08 .component-extmenu .component-title.title-theme-2{border-color:#fa9090;}.fresh-09 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-09 .component-extmenu .component-title{color:#888888;}.fresh-09 .component-extmenu .component-title.title-theme-2{border-color:#b0b0b0;}.fresh-10 .component-extmenu.has-border{border-color:#e8e8e8;}.fresh-10 .component-extmenu .component-title{color:#ff915a;}.fresh-10 .component-extmenu .component-title.title-theme-2{border-color:#ff915a;}

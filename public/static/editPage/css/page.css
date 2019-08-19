@@ -31,44 +31,43 @@ html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:1
 .component-product.tpl_3 .product{ width:94% !important; }
 .component-search_0{ position: fixed;  top:0px; z-index:9999; width:100%;}
 
-.component-exttypeset {border-top:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;margin:0em 0.2em;margin-bottom: 0.1em;}
+.component-exttypeset {border-top:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;padding-left:0.5em;padding-right:0.5em;margin-bottom: 0.1em;}
 .component-exttypeset .exttypeset{width:100%;display:none; position:relative;}
 .component-exttypeset .ext_key{ position:absolute; bottom:0px; right:10px;}
 .component-exttypeset img{width:100%;}
 
-
 .component-exttypeset.tpl_1 .exttypeset_1 {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_1 .exttypeset_2 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
-.component-exttypeset.tpl_1 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
-.component-exttypeset.tpl_1 .exttypeset_4 {float:right;display: block !important;width:5.75em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_1 .exttypeset_2 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_1 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.5em;  overflow:hidden; }
+.component-exttypeset.tpl_1 .exttypeset_4 {float:right;display: block !important;width:5.4em;  height:4.375em; overflow:hidden; }
 
 
 .component-exttypeset.tpl_2 .exttypeset_1 {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_2 .exttypeset_2 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
-.component-exttypeset.tpl_2 .exttypeset_3 {float:right;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;}
+.component-exttypeset.tpl_2 .exttypeset_2 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_2 .exttypeset_3 {float:right;display: block !important;width:11em;  height:4.375em; overflow:hidden;}
 
 .component-exttypeset.tpl_3 .exttypeset_1  {float:left;display: block !important;width:7.500em; height:9.063em; overflow:hidden;}
-.component-exttypeset.tpl_3 .exttypeset_2 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
-.component-exttypeset.tpl_3 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
-.component-exttypeset.tpl_3 .exttypeset_4 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
-.component-exttypeset.tpl_3 .exttypeset_5 {float:left;display: block !important;width:5.75em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
+.component-exttypeset.tpl_3 .exttypeset_2 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_3 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_3 .exttypeset_4 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
+.component-exttypeset.tpl_3 .exttypeset_5 {float:left;display: block !important;width:5.4em; height:4.375em; margin-left:0.3em;  overflow:hidden; }
 
-.component-exttypeset.tpl_4 .exttypeset {float:left; clear:left;display: block !important;width:9.6em; min-height: 5em; max-height:10em; overflow:hidden; margin-bottom:0.3em;}
+.component-exttypeset.tpl_4 .exttypeset {float:left; clear:left;display: block !important;width:9.3em; min-height: 5em; max-height:10em; overflow:hidden; margin-bottom:0.3em;}
 .component-exttypeset.tpl_4 .exttypeset:nth-child(2n) {float:right; clear: right;}
 
 
-.component-exttypeset.tpl_5 .exttypeset {float:left;display: block !important;width:6.27em; margin-right:0.3em;  min-height: 5em; max-height:10em;overflow:hidden;margin-bottom:0.3em;}
+.component-exttypeset.tpl_5 .exttypeset {float:left;display: block !important;width:6.1em; margin-right:0.25em;  min-height: 5em; max-height:10em;overflow:hidden;margin-bottom:0.3em;}
 .component-exttypeset.tpl_5 .exttypeset:nth-child(3n+1) { margin-right:0px; }
 
-
-.component-exttypeset.tpl_6 .exttypeset_1 {float:left;display: block !important;width:11.8em;  height:4.375em;overflow:hidden;margin-bottom:0.3em;  }
+.component-exttypeset.tpl_6 .exttypeset_1 {float:left;display: block !important;width:11em;  height:4.375em;overflow:hidden;margin-bottom:0.3em;  }
 .component-exttypeset.tpl_6 .exttypeset_2 {float:right;display: block !important;width:7.500em; height:9.063em;overflow:hidden;}
-.component-exttypeset.tpl_6 .exttypeset_3 {float:left;display: block !important;width:5.75em; height:4.375em;margin-right:0.3em;overflow:hidden; }
-.component-exttypeset.tpl_6 .exttypeset_4 {float:left;display: block !important;width:5.75em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_6 .exttypeset_3 {float:left;display: block !important;width:5.4em; height:4.375em;margin-right:0.2em;overflow:hidden; }
+.component-exttypeset.tpl_6 .exttypeset_4 {float:left;display: block !important;width:5.4em;  height:4.375em; overflow:hidden; }
 
-.component-exttypeset.tpl_7 .exttypeset_1 {float:left;display: block !important;width:11.8em;  height:4.375em; overflow:hidden;margin-bottom:5px;   }
+.component-exttypeset.tpl_7 .exttypeset_1 {float:left;display: block !important;width:11em;  height:4.375em; overflow:hidden;margin-bottom:5px;   }
 .component-exttypeset.tpl_7 .exttypeset_2 {float:right;display: block !important;width:7.500em; height:9.063em;overflow:hidden;margin-bottom:5px;   }
-.component-exttypeset.tpl_7 .exttypeset_3 {float:left;display:  block !important;width:11.8em;  height:4.375em; overflow:hidden; }
+.component-exttypeset.tpl_7 .exttypeset_3 {float:left;display:  block !important;width:11em;  height:4.375em; overflow:hidden; }
+
 .exttypeset-link{ float:right;}
 .fr{ float:right;}
 .slide-img{max-height: 15em;overflow: hidden;}
