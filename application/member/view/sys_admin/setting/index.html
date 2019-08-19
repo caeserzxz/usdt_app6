@@ -48,20 +48,49 @@
                           <label class="col-sm-2 control-label">是否开放签到：</label>
                           <div class="controls">
                             <label class="radio-inline">
-                              <input name="sign_in" value="1" {$setting['sign_in']==1?'checked':''} type="radio">开放
+                              <input name="sign_in" value="1"  class="js_radio_undertake" data-class="sign_in_box" {$setting['sign_in']==1?'checked':''} type="radio">开放
                             </label>
                             <label class="radio-inline">
-                              <input name="sign_in" value="0" {$setting['sign_in']==0?'checked':''} type="radio" >关闭
+                              <input name="sign_in" value="0" class="js_radio_undertake" {$setting['sign_in']==0?'checked':''} type="radio" >关闭
                             </label>
                           </div>
                      </div>
-                     <div class="form-group ">
-                          <label class="col-sm-2 control-label">签到赠送积分：</label>
-                          <div class="controls">
-                           <input type="text" value="{$setting['sign_integral']}" min=0  size="10" data-rule-required="true" data-rule-integer="true" name="sign_integral">
-                            <span class="help-line"> 签到赠送积分的积分数量</span>
-                          </div>
-                     </div>
+                    <div class="radio_undertake_sign_in sign_in_box {$setting['sign_in']==1?'':'hide'}">
+                         <div class="form-group ">
+                              <label class="col-sm-2 control-label">签到赠送积分：</label>
+                              <div class="controls">
+                               <input type="text" value="{$setting['sign_integral']}" class="input-ssmall" min=0  data-rule-required="true" data-rule-integer="true" name="sign_integral">
+                                <span class="help-line"> 签到赠送的积分</span>
+                              </div>
+                         </div>
+                        <div class="form-group ">
+                            <label class="col-sm-2 control-label">连续签到额外赠送：</label>
+                            <div class="controls">
+                                <a href="javascript:;" title="增加" class="btn btn-default add_sign_constant"><i class="fa fa-plus"></i> 添加连续签到设置</a>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="controls constant_list">
+                                <ul>
+                                    {volist name="$setting.sign_constant" id="constant" }
+                                    <li>
+                                    连续签收：
+                                        <span class="input_relative">
+                                            <input type="text" name="sign_constant[{$i}][day]" value="{$constant.day}" class="input-ssmall" min=1 max=31 data-rule-required="true" data-rule-integer="true" name="sign_integral">
+                                        </span>
+                                            天，额外赠送：
+                                    <span class="input_relative">
+                                    <input type="text" name="sign_constant[{$i}][integral]" value="{$constant.integral}" class="input-ssmall" min=1 max=1000 data-rule-required="true" data-rule-integer="true" name="sign_integral">
+                                    </span>
+                                        积分
+                                        <a href="javascript:;" title="增加" class="btn btn-default fa fa-times del_sign_consgant"></a>
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane " id="withdraw">
                     <div class="form-group">
@@ -135,4 +164,32 @@
       </section>
 </form>
 </section>
+{literal}
+<script type="text/html" id="constant_list_li">
+    <li>
+        连续签收：
+        <span class="input_relative">
+            <input type="text" name="sign_constant[{{i}}][day]" value="" class="input-ssmall" min=1 max=31 data-rule-required="true" data-rule-integer="true" name="sign_integral">
+        </span>
+        天，额外赠送：
+        <span class="input_relative">
+             <input type="text" name="sign_constant[{{i}}][integral]" value="" class="input-ssmall" min=1 max=1000 data-rule-required="true" data-rule-integer="true" name="sign_integral">
+        </span>
+        积分
+        <a href="javascript:;" title="增加" class="btn btn-default fa fa-times del_sign_consgant"></a>
+    </li>
+</script>
+{/literal}
+<script type="text/javascript">
+    var sign_constant_length = $('.constant_list li').length;
+    $('.add_sign_constant').click(function () {
+        var arr = new Object();
+        sign_constant_length++;
+        arr.i = sign_constant_length;
+        $('.constant_list ul').append(template('constant_list_li',arr));
+    })
+    $(document).on('click','.del_sign_consgant',function () {
+        $(this).parent('li').remove();
+    })
+</script>
 {/block}

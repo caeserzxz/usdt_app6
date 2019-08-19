@@ -546,7 +546,7 @@ class UsersModel extends BaseModel
         $redis_name = "sing_".$user_id."_".date('Ymd');
         $info = Cache::get($redis_name);
         if(empty($info)){
-            $info = Db::name('sign')->where(['user_id'=>$user_id])->field('time')->select();
+            $info = (new UsersSignModel)->where(['user_id'=>$user_id])->field('time')->select();
             Cache::set($redis_name,$info,86400);
         }
         foreach ($info as $key => $value) {
@@ -568,7 +568,7 @@ class UsersModel extends BaseModel
         $redis_name = "signTime_".$user_id."_".date('Ymd');
         $info = Cache::get($redis_name);
         if(empty($info)){
-            $info = Db::name('sign')->where(['user_id'=>$user_id])->field('time')->limit(7)->order('time desc')->select();
+            $info = (new UsersSignModel)->where(['user_id'=>$user_id])->field('time')->limit(7)->order('time desc')->select();
             Cache::set($redis_name,$info,86400);
         }
         foreach ($info as $key => $value) {
@@ -593,11 +593,11 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 是否签到 1签到0还没签到
     /*------------------------------------------------------ */
-    public function is_sign($user_id = 0)
+    public function isSign($user_id = 0)
     {
         $data[0] = strtotime(date('Y-m-d', time()) . '00:00:00');
         $data[1] = strtotime(date('Y-m-d', time()) . '23:59:59');
-        $res = Db::name('sign')->where(['user_id'=>$user_id])->whereTime('time', 'between', [$data[0], $data[1]])->find();
+        $res = (new UsersSignModel)->where(['user_id'=>$user_id])->whereTime('time', 'between', [$data[0], $data[1]])->find();
         $ress = $res?1:0;
         return $ress;
     }
@@ -610,7 +610,7 @@ class UsersModel extends BaseModel
         $where[] = ['time','>=',$date[0]];
         $where[] = ['time','<=',$date[1]];
         $p = ($page-1)*$limit;
-        $info = Db::name('sign')->where($where)->order('time desc')->limit($p, $limit)->select();
+        $info = (new UsersSignModel)->where($where)->order('time desc')->limit($p, $limit)->select();
         foreach ($info as $key => $value) {
             $info[$key]['timeData'] = date('Y-m-d', $value['time']);
         }
@@ -627,7 +627,7 @@ class UsersModel extends BaseModel
         $redis_name = "singInfo_".$user_id."_".date('Ymd');
         $info = Cache::get($redis_name);
         if(empty($info)){
-            $info = Db::name('sign')->where($where)->order('time desc')->select();
+            $info = (new UsersSignModel)->where($where)->order('time desc')->select();
             Cache::set($redis_name,$info,86400);
         }
         foreach ($info as $key => $value) {
@@ -642,7 +642,7 @@ class UsersModel extends BaseModel
     {
         $begin = strtotime(date('Y-m-d', time()) . '00:00:00');
         $end = strtotime(date('Y-m-d', time()) . '23:59:59');
-        $res = Db::name('sign')->where(['user_id'=>$user_id])->whereTime('time', 'between', [$begin, $end])->find();
+        $res = (new UsersSignModel)->where(['user_id'=>$user_id])->whereTime('time', 'between', [$begin, $end])->find();
         if($res){ return false; }
 
         $inArr['use_integral'] = settings('sign_integral');

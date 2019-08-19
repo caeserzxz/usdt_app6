@@ -62,7 +62,7 @@
 
         $.post('/member/api.users/getSignData',function(res){
             if(res.code==1){
-                let str = res.data.days;
+                var str = res.data.days;
                 myday = str.split(',');
 
                 cale = new Calendar("idCalendar", {
@@ -105,16 +105,16 @@
     //     painting()
     // }
     $("#idCalendarPre").on("click",function(){
-        let td = new Date(cale.Year, cale.Month - 2, 1);
-        let puData = {
+        var td = new Date(cale.Year, cale.Month - 2, 1);
+        var puData = {
             'year':td.getFullYear(),
             'month':td.getMonth() + 1
         }
         change_month(puData,true);
     })
     $("#idCalendarNext").on("click",function(){
-        let td = new Date(cale.Year, cale.Month, 1);
-        let puData = {
+        var td = new Date(cale.Year, cale.Month, 1);
+        var puData = {
             'year':td.getFullYear(),
             'month':td.getMonth() + 1
         }
@@ -124,8 +124,8 @@
     function change_month(puData,flag){
         $.post('/member/api.users/getSignData',puData,function(res){
             if(res.code == 1){
-                let str = res.data.days;
-                let myday = str.split(',');
+                var str = res.data.days;
+                var myday = str.split(',');
                 cale.qdDay = myday;
                 if(flag){
                     cale.PreMonth();
@@ -141,7 +141,7 @@
         if(isSign == false) {
             $.post('/member/api.users/doSign',function(res){
                 if(res.code == 1){
-                    $(".model .num").text('+'+res.score);
+                    $(".model .num").text('+'+res.integral);
                     cale.SignIn();
                     $('#signIn').hide()
                     $('#signIning').show()

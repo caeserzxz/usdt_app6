@@ -33,7 +33,7 @@ class Center extends ApiController
         $return['code'] = 1;
     	$return['timeData'] = time();
     	$return['use_integral'] = $UsersModel->signIntegral();
-        $return['is_sign']  = $UsersModel->is_sign($user['user_id']);
+        $return['is_sign']  = $UsersModel->isSign($user['user_id']);
         $return['signTime'] = $UsersModel->signTime($user['user_id'],1);
         $return['signData'] = $UsersModel->signIndex($user['user_id'],1);
 		return $this->ajaxReturn($return);

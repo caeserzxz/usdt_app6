@@ -15,81 +15,61 @@ class Links extends AdminController
     /*------------------------------------------------------ */
     public function index(){
         $result['status']= 0;
-        $result['data'] =Array(
-            0 =>array
-            (
+        $result['data'] = [
+           [
                 'id' => 1,
                 'name' => '首页',
                 'url' => config('config.host_path')
-            ),
-            1 =>array
-            (
+            ],[
                 'id' => 2,
                 'name' => '用户中心',
                 'url' => '/member/center/index'
-            ),
-            2 =>array
-            (
+            ],[
                 'id' => 3,
                 'name' => '所有商品',
                 'url' =>'/shop/goods/index'
-            ),
-            3 =>array
-            (
+            ],[
                 'id' => 4,
                 'name' => '购物车',
                 'url' =>'/shop/flow/cart'
-            ),
-            4 =>array
-            (
+            ],[
                 'id' => 5,
                 'name' => '商品分类',
                 'url' =>'/shop/index/allsort'
-            ),
-            5 =>array
-            (
+            ],[
                 'id' => 6,
                 'name' => '我的订单',
                 'url' =>'/shop/order/index'
-            ),
-            7 =>array
-            (
+            ],[
                 'id' => 8,
                 'name' => '地址管理',
                 'url' =>'/member/center/address'
-            ),
-            8 =>array
-            (
+            ],[
                 'id' => 9,
                 'name' => '我的信息',
                 'url' =>'/member/center/userinfo'
-            ),
-            9 =>array
-            (
+            ],[
                 'id' => 10,
                 'name' => '我的粉丝',
                 'url' =>'/member/my_team/index'
-            ),
-            10 =>array
-            (
+            ],[
                 'id' => 11,
                 'name' => '我的钱包',
                 'url' =>'/member/wallet/index'
-            ),
-            11 =>array
-            (
-                'id' => 11,
+            ],[
+                'id' => 12,
                 'name' => '积分商品',
                 'url' =>'/integral/goods/index'
-            ),
-            12 =>array
-            (
-                'id' => 12,
+            ],[
+                'id' => 13,
                 'name' => '身份商品',
                 'url' =>'/distribution/role_goods/index'
-            )
-
-        );
+            ],[
+                'id' => 14,
+                'name' => '每日签到',
+                'url' =>'/member/user_sign/index'
+            ]
+        ];
 
         //判断拼团模块是否存在
         if (class_exists('app\fightgroup\model\FightGroupModel')) {

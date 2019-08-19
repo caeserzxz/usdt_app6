@@ -3,17 +3,16 @@
 namespace app\member\controller\api;
 
 use app\ApiController;
-use think\facade\Lang;
-use think\facade\Env;
 use app\member\model\UsersModel;
+use app\member\model\UsersSignModel;
 use app\member\model\WithdrawModel;
 use app\member\model\AccountLogModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
 use think\Db;
-use lib\Image;
 use app\weixin\model\MiniModel;
+
 
 /*------------------------------------------------------ */
 //-- 会员相关API
@@ -436,6 +435,7 @@ class Users extends ApiController
         $return['list'] = $rows;
         return $this->ajaxReturn($return);
     }
+
     public function wechat_qrcode()
     {
         $user = $this->userInfo;
@@ -579,10 +579,10 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function getSignData(){
 
-        $year = input('year',date('Y'));
-        $month = input('month',date('n'));
+        $year = input('year',date('Y')) * 1;
+        $month = input('month',date('n')) * 1;
 
-        $data = Db::table('users_sign')->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
+        $data = (new UsersSignModel)->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
         if(!$data){
             $data['days'] = '';
         }
@@ -599,59 +599,76 @@ class Users extends ApiController
         $year = date('Y');
         $month = date('n');
         $day = date('d');
-        $AccountLogModel = new AccountLogModel();
-        $sigin = settings('sign_integral');
-        $user_id = $this->userInfo['user_id'];
-
-        $data = Db::table('users_sign')->where(['user_id'=>$user_id,'year'=>$year,'month'=>$month])->find();
-        if($data&&isset($data['days'])){
-            $tmp_arr = explode(',',$data['days']);
-            if(in_array($day, $tmp_arr)){
-                $this->error('今天已经签到,请勿重复签到！');
-            }
+        $sign_in = settings('sign_in');
+        if ($sign_in == 0){
+            return $this->error('签到功能未开启.');
         }
-
-
+        $sign_integral = settings('sign_integral');
+        $sign_constant = settings('sign_constant');
+        $user_id = $this->userInfo['user_id'];
+        $UsersSignModel = new UsersSignModel();
+        $data = $UsersSignModel->where(['user_id'=>$user_id,'year'=>$year,'month'=>$month])->find();
 
         Db::startTrans();
-        if($data){
+        if(empty($data) == false){
+            $dates = explode(',',$data['days']);
+            if(in_array($day, $dates)){
+                return $this->error('今天已经签到,请勿重复签到.');
+            }
+            $logs = $data['logs'].','.$sign_integral.'|';
+            //判断是否连接签到
+            if (end($dates) == $day - 1){
+                $constant_num = $data['constant_num'] + 1;//连续签到天数+1
+                if (isset($sign_constant[$constant_num])){
+                    $sign_integral += $sign_constant[$constant_num]['integral'];
+                    $logs .= $sign_constant[$constant_num]['integral'];
+                }else{
+                    $logs .= '0';
+                }
+            }else{
+                $constant_num = 1;//断续后，重新计算
+                $logs .= '0';
+            }
+            $dates[] = $day;
             //本月数据已有,直接更新
-            $upData = ['days'=>$data['days'].','.$day,'last_time'=>time(),'score'=>$sigin];
-            $res = Db::table('users_sign')->where(['id'=>$data['id']])->update($upData);
+            $upData = ['days'=>join(',',$dates),'constant_num'=>$constant_num,'last_time'=>time(),'integral'=>$sign_integral,'logs'=>$logs];
+            $res = $UsersSignModel->where(['sign_id'=>$data['sign_id']])->update($upData);
         }else{
             //本月数据没有,进行插入
             $inData = [
                 'user_id' => $user_id,
+                'constant_num' => 1,
                 'year'    => $year,
                 'month'   => $month,
                 'days'    => $day,
-                'score'   => $sigin,
-                'last_time'=> time()
+                'log'   => $sign_integral.'|0',
+                'integral'   => $sign_integral,
+                'last_time' => time()
             ];
-            $res = Db::table('users_sign')->insert($inData);
+            $res = $UsersSignModel->save($inData);
         }
 
-        if(!$res){
+        if($res < 1){
             Db::rollback();
-            $this->error('签到失败,请联系管理员');
+            return $this->error('签到失败,请重试.');
         }
 
         //签到成功，加积分
         $accData['change_desc'] = '签到获得积分';
         $accData['change_type'] = 10;
         $accData['by_id'] = 0;
-        $accData['use_integral'] = $sigin;
-        $res = $AccountLogModel->change($accData,$user_id,false);
+        $accData['use_integral'] = $sign_integral;
+        $res = (new AccountLogModel)->change($accData,$user_id,false);
 
         if(!$res){
             Db::rollback();
-            $this->error('签到失败,积分处理异常');
+            return $this->error('签到失败,积分处理异常');
         }
 
         Db::commit();
         $return['code'] = 1;
         $return['msg'] = '签到成功';
-        $return['score'] = $sigin;
+        $return['integral'] = $sign_integral;
         return $this->ajaxReturn($return);
     }
 }

@@ -6,6 +6,7 @@ use think\facade\Cache;
 
 use app\shop\model\OrderModel;
 use app\member\model\UsersModel;
+use app\member\model\UsersSignModel;
 use app\member\model\AccountModel;
 use app\member\model\RechargeLogModel;
 use app\member\model\WithdrawModel;
@@ -67,9 +68,13 @@ class Index extends AdminController
         strtotime(date("Y-m-d"));
         $userWhere[] = ['reg_time','>',$today];
         $userStats['today_reg'] =  $UsersModel->where($userWhere)->count('user_id');
-        unset($userWhere);
+        /* unset($userWhere);
         $userWhere[] = ['reg_time','between',$yesterday.','.$today-1];
         $userStats['yesterday_reg'] =  $UsersModel->where($userWhere)->count('user_id');
+       */
+        unset($userWhere);
+        $userWhere[] = ['last_time','>',$today];
+        $userStats['today_sign'] = (new UsersSignModel)->where($userWhere)->count('sign_id');
         $this->assign('userStats',$userStats);
         //end
 
