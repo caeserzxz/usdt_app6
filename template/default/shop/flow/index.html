@@ -60,7 +60,7 @@
     </div>
 </div>
 {include file="layouts@bottom" /}
-{literal}
+
 <script type="text/html" id="goodsLi">
     {{each goodsList as item index}}
     <li>
@@ -107,7 +107,6 @@
     </li>
     {{/each}}
 </script>
-{/literal}
 <script type="text/html" id="loseGoodsLi">
     {{each invalidList as item index}}
     <a href='{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}' >
