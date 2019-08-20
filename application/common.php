@@ -174,6 +174,11 @@ function priceFormat($price,$show_yuan = false,$type=0){
     if($show_yuan == false) return sprintf("%s", $price);
 	else return sprintf("￥%s元", $price);
 }
+//价格拆分显示
+function priceShow($price){
+    $price = explode('.',$price);
+    return '<span>￥</span><small>'.$price[0].'</small>.<span>'.$price[1].'</span>';
+}
 /**
  * 写入日志
  * @param string|array $values
@@ -274,9 +279,10 @@ function dateTpl($time = '',$format = '',$return_false = false){
 	if (empty($format)){
 		$format = 'Y-m-d H:i';
 	}
-
+    if ($return_false == true){
+        return date($format, $time);
+    }
 	if (date('Y') == date('Y', $time)){
-
         $format = str_replace('Y-','',$format);
     }else{
         $format = 'Y-m-d';

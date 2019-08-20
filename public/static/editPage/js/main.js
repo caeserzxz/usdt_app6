@@ -18297,15 +18297,15 @@ function() {
 }),
 define("text!components/products/templates/tpl_1.html", [],
 function() {
-	return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n    <div class="prod-name"><span><%= name %></span></div>\n    <% if (vip_price > 0) { %><div class="prod-parprice"><span>￥<%= sale_price %></span></div>\n<div class="prod-saleprice" ><span>VIP￥<%= vip_price %></span></div>\n <% }else{ %><div class="prod-parprice"><s><span>￥<%=par_price %></span></s></div><div class="prod-saleprice"><span>￥<%= sale_price %></span></div>\n<% } %>     <% if (showSaleNum ==\'yes\'){%><div class="prod-sale"><span>已售<%= sale_count %>件</span></div>\n  <% } %></div>\n'
+	return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n    <div class="prod-name"><span><%= name %></span></div>\n    <div class="prod-saleprice"><%= sale_price %><s>￥<%= par_price %></s> </div>    <% if (showSaleNum ==\'yes\'){%><div class="prod-sale"><span>已售<%= sale_count %>件</span></div>\n  <% } %></div>\n'
 }),
 define("text!components/products/templates/tpl_2.html", [],
 function() {
-    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n    <div class="prod-name"><span><%= name %></span></div>\n    <div class="prod-parprice"><span>￥<%= par_price %></span> <% if (showSaleNum ==\'yes\'){%><span class="fr">已售<%= sale_count %>件</span>\n  <% } %></div>\n    <div class="prod-saleprice"><span>￥<%= sale_price %></span><% if (vip_price > 0) { %><span class="fr">VIP￥<%= vip_price %></span>\n<% } %></div>\n</div>\n'
+    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n     <div class="prod-name"><span><%= name %></span></div> <div class="prod-description"><%= description %></div> <div class="prod-saleprice"> <%= sale_price %> <s>￥<%= par_price %></s> </div> <% if (showSaleNum ==\'yes\'){%> <div class="prod-sale" ><span>已售<%= sale_count %>件</span></div>\n  <% } %>\n</div>\n'
 }),
 define("text!components/products/templates/tpl_3.html", [],
 function() {
-    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n\n    <div class="prod-name"><span><%= name %></span></div>\n    <% if (vip_price > 0) { %><div class="prod-saleprice"><span>VIP￥<%=  vip_price  %></span></div>\n <% } %>   <div class="prod-saleprice"><span>￥<%= sale_price  %></span></div>\n  <div class="prod-parprice"><span>￥<%=   par_price %></span></div>\n <% if (showSaleNum ==\'yes\'){%><div class="prod-sale"><span>已售<%= sale_count %>件</span></div>\n<% } %></div>\n'
+    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n\n    <div class="prod-name"><span><%= name %></span></div>\n  <div class="prod-saleprice"> <%= sale_price %> <s>￥<%= par_price %></s> </div> \n <% if (showSaleNum ==\'yes\'){%><div class="prod-sale"><span>已售<%= sale_count %>件</span></div>\n<% } %></div>\n'
 }),
 define("text!components/products/templates/tpl_4.html", [],
 function() {

@@ -12,6 +12,25 @@
     <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
 </head>
 <body class="{$theme.theme_type}-{$theme.select_theme}">
+{eq name="$tipsubscribe" value="1"}
+<div class="topTips">
+    <div class="flexBox">
+        <div class="cell_bd"><img src="__STATIC__/mobile/default/images//APPLOGO.png" alt=""><span class="fs28 color_w">您当前还未关注微信公众号</span></div>
+        <div class="cell_ft"><p class="fs28 fw_b color_r">立即关注</p><img src="__STATIC__/mobile/default/images/close_w.png" alt=""></div>
+    </div>
+</div>
+<!-- 扫码关注 -->
+<div class="topTipSmodel">
+    <div class="modelBG closeModel" ></div>
+    <div class="medelCanten">
+        <div class="codeBox">
+            <img src="{$setting.weixin_qrcode}" alt="">
+            <span class="fs30 color_3 fw_b">长按二维码识别关注</span>
+        </div>
+        <img src="__STATIC__/mobile/default/images/close_wy.png" alt="" class="closeimg closeModel" >
+    </div>
+</div>
+{/eq}
 <div class="phone-wrapper-inner">
     <div id="preview-region" class="wap">
         <div class="region-warp ui-sortable">
@@ -20,10 +39,23 @@
     </div>
 </div>
 
-<div id="scnhtm5" ></div>
+<div  style="height: 0.653333rem; clear:both;"></div>
 <script src="__STATIC__/editPage/js/web/vendor.js"></script>
 <script src="__STATIC__/editPage/js/web/carousel2.js"></script>
 <script src="__STATIC__/editPage/js/web/component.js"></script>
 {include file="layouts@bottom" /}
+<script type="text/javascript">
+    $(function() {
+        $('.topTips .cell_ft p').on('click',function(){
+            $('.topTipSmodel').show()
+        })
+        $('.topTips .cell_ft img').on('click',function(){
+            $('.topTips').hide()
+        })
+        $('.closeModel').on('click',function() {
+            $('.topTipSmodel').hide()
+        })
+    });
+</script>
 </body>
 </html>
