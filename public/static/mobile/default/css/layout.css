@@ -406,7 +406,7 @@ input {
   background: none;
   border: 0;
   vertical-align: middle;
-  height: 0.28rem;
+  min-height: 0.28rem;
   line-height: 0.28rem;
   font-family: inherit;
   touch-action: none;
