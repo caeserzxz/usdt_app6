@@ -18309,7 +18309,7 @@ function() {
 }),
 define("text!components/products/templates/tpl_4.html", [],
 function() {
-    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n\n    <div class="prod-name"><span><%= name %></span></div>\n    <div class="prod-saleprice"><span><%= vip_price > 0 ?"VIP￥"+ vip_price : "￥"+sale_price %></span></div>\n</div>\n'
+    return '<div class="product clearfix">\n    <img class="prod-img" src="<%= thumb ? thumb.url : \'\' %>"/>\n\n       <div class="prod-saleprice"><%= sale_price %></div>\n</div>\n'
 }),
 define("components/products/assets", ["require", "text!components/products/templates/config.html", "text!components/products/templates/preview.html", "text!components/products/templates/tpl_1.html", "text!components/products/templates/tpl_2.html", "text!components/products/templates/tpl_3.html", "text!components/products/templates/tpl_4.html"],
 function(t) {

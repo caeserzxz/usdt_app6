@@ -55,9 +55,8 @@
                                             {/if}
                                       {elseif condition="$theme_row['templateId'] eq 'tpl_4' "/}    
                                        	<img src="{$prow.thumb.url}" class="prod-img" alt="{$prow.name}">
-                                            <div class="prod-name"><span>{$prow.name}</span></div>   
                                             <div class="prod-saleprice">
-                                            	<span>{$prow['vip_price']>0?'VIP￥'.$prow['vip_price']:'￥'.$prow['sale_price']}</span>
+                                                {$prow.sale_price|priceShow|raw}
                                             </div>
                                             
                                       {/if}  
