@@ -89,6 +89,13 @@ $(function() {
 		container();
 	});
 
+	//获取最大可提现金额
+	jq_ajax('{:url("member/api.withdraw/WithdrawNum")}','',function(res){
+		if (res.code == 1){
+			$('.balance_money').html(res.max_money);
+		}
+	});
+
 	//验证提现
 	function evalFee(){
 		var amount = $('#amount').val();

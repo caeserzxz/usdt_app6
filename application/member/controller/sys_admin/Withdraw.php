@@ -27,6 +27,8 @@ class Withdraw extends AdminController
 		$this->assign("end_date",date('Y/m/d'));
 		$this->getList(true);
 		$this->assign("userWithdrawTypeOpt", arrToSel($this->userWithdrawType,0));
+		$fee_types = config('config.fee_types');
+        $this->assign('fee_types', $fee_types);
 		return $this->fetch();
 	}
    /*------------------------------------------------------ */
@@ -68,6 +70,8 @@ class Withdraw extends AdminController
 		$this->assign("userWithdrawType", $this->userWithdrawType);
 		$this->assign("search", $search);		
 		$this->assign("data", $data);
+		$fee_types = config('config.fee_types');
+        $this->assign('fee_types', $fee_types);
 		if ($runData == false){
 			$data['content']= $this->fetch('list');
 			unset($data['list']);
@@ -130,7 +134,7 @@ class Withdraw extends AdminController
 			$changedata['change_desc'] = '提现失败退回';
 			$changedata['change_type'] = 5;
 			$changedata['by_id'] = $info['log_id'];
-			$changedata['balance_money'] = ($info['amount'] + $info['withdraw_fee']);
+			$changedata['balance_money'] = $info['fee_type']==0?($info['amount'] + $info['withdraw_fee']):$info['amount'];
 			$res = $AccountLogModel->change($changedata, $info['user_id'], false);
 			if ($res !== true) {
 				Db::rollback();// 回滚事务

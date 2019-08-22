@@ -10,6 +10,7 @@ use app\shop\model\OrderLogModel;
 use app\shop\model\ShippingModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
+use app\shop\model\PrintTemplateModel;
 
 use app\distribution\model\DividendRoleModel;
 
@@ -314,10 +315,22 @@ class Order extends AdminController
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
             $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
             if ($kd_type == 3) {
+                $ptModel = new PrintTemplateModel();
                 $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $kdeorder_goods_name, $orderInfo);
                 if (is_array($res) == false) return $this->error($res);
                 $data['shipping_id'] = $res[0];
                 $data['invoice_no'] = $res[1];
+                if($res[2]){
+                    $Arr['temp_html'] = $res[2];
+                    $pt_row = $ptModel->where(['order_id'=>$order_id])->find();
+                    if($pt_row){
+                        $ptModel->where(['order_id'=>$order_id])->update($Arr);
+                    }else{
+                        $Arr['order_id'] = $order_id;
+                        $Arr['order_sn'] = $orderInfo['order_sn'];
+                        $ptModel->insert($Arr);
+                    }
+                }
             } elseif ($kd_type == 1) {
                 $shipping_id = input('post.shipping_id', 0, 'intval');
                 $invoice_no = input('post.invoice_no', '', 'trim');
@@ -342,6 +355,45 @@ class Order extends AdminController
         $this->assign('orderInfo', $orderInfo);
         return response($this->fetch('shop@sys_admin/order/shipping'));
     }
+
+    public function print_order(){
+        $order_id = input('id');
+        if(!$order_id){
+            $this->error('订单号异常');
+        }
+        $id_arr = explode(',',$order_id);
+        $by_one = count($id_arr)>1?false:true;
+        $orderModel = new OrderModel();
+        $PrintModel = new PrintTemplateModel();
+        $html = '';
+        foreach ($id_arr as $k => $v) {
+            $order_devc = $PrintModel->where('order_id',$v)->find();
+            if(!$order_devc){
+                if($by_one){
+                    $this->error('该订单未在快递鸟下单!');
+                }
+                continue;
+            }
+            $html .= $order_devc['temp_html'];
+            $orderModel->where(['order_id'=>$v])->update(['print_state'=>1]);
+        }
+
+        $header = <<<EOF
+        <head><title>快递鸟批量打单</title></head>
+EOF;
+        
+        $script = <<<EOF
+        <script src="/static/js/jquery/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+        $(".yd").css("margin-top","5px");
+        $(function(){
+            window.print();
+        })
+        </script>
+EOF;
+        return $header.$html.$script;
+    }
+
     /*------------------------------------------------------ */
     //-- 批量发货管理
     /*------------------------------------------------------ */

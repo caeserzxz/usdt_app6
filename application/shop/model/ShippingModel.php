@@ -93,6 +93,7 @@ class ShippingModel extends BaseModel
         $eorder["CustomerPwd"] = $shipping['customer_pwd'];
         $eorder["PayType"] = 1;
         $eorder["ExpType"] = 1;
+        $eorder["IsReturnPrintTemplate"] = 1;
 
         //寄件人
         $sender = [];
@@ -144,8 +145,9 @@ class ShippingModel extends BaseModel
             $origincode = $kdorder['OriginCode'];//物流状态码
             $destinatiocode = $kdorder['DestinatioCode'];
             $kdnordercode = $kdorder['KDNOrderCode'];
+            $PrintTemplate = $returndata['PrintTemplate'];  //返回电子面单模板
         }
 
-        return [$shipping['shipping_id'],$logisticcode];
+        return [$shipping['shipping_id'],$logisticcode,$PrintTemplate];
     }
 }

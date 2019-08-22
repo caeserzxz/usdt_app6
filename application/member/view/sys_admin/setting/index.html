@@ -125,6 +125,18 @@
                             <span class="help-line"> %（注：如填1就是 代表每笔提现，收取提现金额1%的手续费）</span>
                           </div>
                      </div>
+                     <div class="form-group">
+                          <label class="col-sm-2 control-label">手续费扣除方式：</label>
+                          <div class="controls">
+                            <label class="radio-inline">
+                              <input name="fee_type" value="1" {$setting['fee_type']==1?'checked':''} type="radio">内扣
+                            </label>
+                            <label class="radio-inline">
+                              <input name="fee_type" value="0" {$setting['fee_type']==0?'checked':''} type="radio" >外扣
+                            </label>
+                            <span class="help-line"> %（注：例如手续费8%,外扣:提100扣108余额到账100,内扣提100扣100余额到账92）</span>
+                          </div>
+                     </div>
                      <div class="form-group ">
                           <label class="col-sm-2 control-label">最低手续费：</label>
                           <div class="controls">

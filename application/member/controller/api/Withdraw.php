@@ -166,7 +166,12 @@ class Withdraw extends ApiController
 		}elseif ($settings['withdraw_fee_max'] > 0 && $withdraw_fee > $settings['withdraw_fee_max']){
 			$withdraw_fee = $settings['withdraw_fee_max'];
 		}
-		if ($this->userInfo['account']['balance_money'] < $amount + $withdraw_fee){
+		
+		//外扣
+		if ($settings['fee_type'] == 0 && ($this->userInfo['account']['balance_money'] < $amount + $withdraw_fee)){
+			return $this->error('帐户余额不足.');
+		}else if($this->userInfo['account']['balance_money'] < $amount){
+			//内扣
 			return $this->error('帐户余额不足.');
 		}
 		if ($isreturn == true) return $withdraw_fee;
@@ -175,10 +180,62 @@ class Withdraw extends ApiController
         return $this->ajaxReturn($return);
 	}
 	/*------------------------------------------------------ */
+    //-- 返回最大可提现金额及提现说明
+    /*------------------------------------------------------ */
+    public function WithdrawNum()
+    {
+		$settings = settings();
+		$max_money = $money_fee = 0;
+		$balance = $this->userInfo['account']['balance_money'];
+		//账户余额大于每次最高可提现金额，则用最高可提现金额。
+		$max_money = $balance>$settings['withdraw_max_money']?$settings['withdraw_max_money']:$balance;
+
+		//账户余额小于每次最低可提现金额，则用0。
+		$max_money = $max_money<$settings['withdraw_min_money']?0:$max_money;
+
+		//外扣情况下，账户余额小于每次最低可提现金额+最低手续费，则用0。
+		if($settings['fee_type'] == 0 &&($balance<($settings['withdraw_min_money']+$settings['withdraw_min_money']*$settings['withdraw_fee_min']))){
+			$max_money = 0;
+		}
+
+		if($max_money == 0) $money_fee = 0;
+
+		//外扣
+		if($settings['fee_type'] == 0 && $max_money != 0){
+			$tmp_money = bcdiv($max_money,(100+$settings['withdraw_fee'])/100,2);
+			$money_fee = bcmul($max_money, $settings['withdraw_fee']/100,2);
+			//若临时手续费高于最大手续费，则手续费为最大手续费
+			if($money_fee >$settings['withdraw_fee_max']){
+				$money_fee = $settings['withdraw_fee_max'];
+				//最大可提现金额为总额减去最大手续费
+				$tmp_money = $max_money - $money_fee;
+			}
+
+			//若临时手续费低于最小手续费，则手续费为最小手续费
+			if($money_fee <$settings['withdraw_fee_min']){
+				$money_fee = $settings['withdraw_fee_min'];
+				//最大可提现金额为总额减去最小手续费
+				$tmp_money = $max_money - $money_fee;
+			}
+		}else{
+			//内扣
+			$tmp_money = $max_money;
+		}
+
+		$max_money = $tmp_money;
+
+		$max_money = floor($max_money);
+
+		$return['max_money'] = $max_money;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+	}
+	/*------------------------------------------------------ */
     //-- 提交提现
     /*------------------------------------------------------ */
     public function postWithdraw()
     {
+    	$settings = settings();
 		$withdraw_status = settings('withdraw_status');
 		if ($withdraw_status < 1){
 			return $this->error('暂不开放提现.');
@@ -209,11 +266,20 @@ class Withdraw extends ApiController
 				return $this->error('每天最多只能提现'.$withdraw_num.'次.');
 			}
 		}
-        $withdraw_money =  $inArr['amount'] + $inArr['withdraw_fee'];
-		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
-            return $this->error('余额不足，请核实提现金现.');
-        }
 
+		if($settings['fee_type'] == 0){
+			//外扣
+			$withdraw_money =  $inArr['amount'] + $inArr['withdraw_fee'];
+		}else{
+			//内扣
+			$withdraw_money =  $inArr['amount'];
+		}
+        
+		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
+            return $this->error('余额不足，请核实提现金额.');
+        }
+        $inArr['fee_type'] = $settings['fee_type'];
+        $inArr['arrival_money'] = $settings['fee_type']==0?$inArr['amount']:$inArr['amount']-$inArr['withdraw_fee'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
 		Db::startTrans();//启动事务

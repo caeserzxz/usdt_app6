@@ -70,6 +70,9 @@
         if (val == 3){
             $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
                 '<a href="javascript:;" class="btn btn-sm m-t" data-remote="{:url('batchShipping')}" data-toggle="ajaxModal"><i class="fa fa-truck "></i> 勾选订单批量发货</a>');
+        }else if(val == 4){
+            $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
+                '<a href="javascript:;" class="btn btn-sm m-t" onclick="PrintOrder()"><i class="fa fa-truck"></i> 勾选订单批量打单</a>');
         }else{
             $('.footer_other').html('');
         }
@@ -79,6 +82,29 @@
         $('input[name="export"]').val('1');
         $('#forms').submit();
         $('input[name="export"]').val('0');
+    }
+
+    //批量打单
+    function PrintOrder(){
+        var ids = '';
+        $('input[name="order_id"][type="checkbox"]:checked').each(function(){ 
+            ids==''?ids+=$(this).val():ids+=','+$(this).val();
+        }); 
+        var params = {
+            id: ids
+        };
+        console.log(params);
+        var win = window.open();   // 放在外面是因为浏览器可能会阻止新打开窗口，放在异步请求外面就ok ！！！
+        $.ajax({
+            url: '/shop/sys_admin.order/print_order',
+            type: 'post',
+            data: params,
+            asyn: false
+        }).done(function(data) {
+            var doc = win.document;
+            doc.write(data);    // !!! 关键，接收后端的数据并进行新窗口写入
+            doc.close();
+        });
     }
 </script>
 {/block}

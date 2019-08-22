@@ -3,7 +3,10 @@
 <tr>
     <th>会员名称</th>
     <th>申请日期</th>
-    <th>金额</th>
+    <th>提现金额</th>
+    <th>手续费</th>
+    <th>到账金额</th>
+    <th>手续费扣除</th>
     <th>提现方式</th>
     <th>处理状态</th>
     <th>更新时间</th>
@@ -16,6 +19,9 @@
 <td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
 <td>{$vo.add_time|dateTpl}</td>
 <td>{$vo.amount|priceFormat}</td>
+<td>{$vo.withdraw_fee|priceFormat}</td>
+<td>{$vo.arrival_money|priceFormat}</td>
+<td>{$fee_types[$vo.fee_type]}</td>
 <td>
 {if condition="$vo['type']=='bank'"}
 {$vo.bank_name}<br>{$vo.bank_cardholder} - {$vo.bank_card_number} - {$vo.bank_location_outlet} - {$vo.bank_branch_name}
