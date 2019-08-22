@@ -70,7 +70,7 @@ class Index  extends ClientbaseController{
 		$mkey = 'shopIndex_web';
 		$theme = Db::table('shop_page_theme')->find();
 		if (empty($theme)) return $this->index(true);
-	    $body = Cache::get($mkey);
+	    //$body = Cache::get($mkey);
 		if (empty($body)){
 			$ShopPageTheme = new \app\shop\model\ShopPageTheme();
 			$d_products = $ShopPageTheme->defPproducts();			
@@ -100,6 +100,7 @@ class Index  extends ClientbaseController{
 									  }
 									  $rowc['thumb']['url'] = $grow['goods_thumb'];
 									  $rowc['name'] = $grow['goods_name'];
+                                      $rowc['description'] = $grow['description'];
 									  $rowc['par_price'] = $grow['market_price'];
 									  $rowc['sale_price'] = $grow['shop_price'];
 									  $rowc['vip_price'] = 0;
@@ -108,7 +109,7 @@ class Index  extends ClientbaseController{
 								  }
 							  }
 						 }else{
-							unset($where,$rowb['products']);
+                             unset($where,$rowb['products']);
 							$where[] = ['is_alone_sale','=',1];							
 							if ($rowb['goodsDataType'] == 'recommend'){
 								$where[] = ['is_best','=',1];
@@ -118,12 +119,13 @@ class Index  extends ClientbaseController{
 								$where[] = ['is_hot','=',1];
 							}
 							$time = time();
-							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();
-												
+							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale,description')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();
+									echo 111;
 							foreach ($grows as $grow){
 								$rowc['id'] = $grow['goods_id'];
 								$rowc['thumb']['url'] = $grow['goods_thumb'];
 								$rowc['name'] = $grow['goods_name'];
+                                $rowc['description'] = $grow['description'];
 								$rowc['par_price'] = $grow['market_price'];
 								$rowc['sale_price'] = $grow['shop_price'];
 								$rowc['vip_price'] = 0;
@@ -136,7 +138,6 @@ class Index  extends ClientbaseController{
 					 
 				}
 				
-				$this->assign('_key', $_key);
 				$this->assign('theme_row', $row);
 				$_body = $this->fetch('page/'.$row['componentType']);
 				$body .= $_body;

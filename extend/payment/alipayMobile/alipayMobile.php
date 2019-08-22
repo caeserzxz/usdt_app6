@@ -81,7 +81,7 @@ class alipayMobile
             "subject" => $store_name, //订单名称，必填
             "total_fee" => $order['order_amount'], //付款金额
             "show_url" => config('config.host_path'), //收银台页面上，商品展示的超链接，必填
-
+            "app_pay" => 'Y'
         );
         //  如果是支付宝网银支付
         if (!empty($config_value['bank_code'])) {

@@ -240,8 +240,8 @@ class EditPage extends AdminController
 		}	
 		$where = join(' and ',$where);
 		$count = $GoodsModel->where($where)->count('goods_id');
-		
-		$Page  = new \lib\AjaxPage($count,5);   
+
+		$Page  = new \lib\AjaxPage($count,5);
 		$show = $Page->show();
 		$goodsList = $GoodsModel->where($where)->order('goods_id DESC')->limit($Page->firstRow.','.$Page->listRows)->select()->toArray();
 		foreach ($goodsList as $key=>$goods){
@@ -266,6 +266,7 @@ class EditPage extends AdminController
         $parameter  =  empty($_REQUEST) ? array() : $_REQUEST;
 		$varPage = 'p' ;
         $parameter[$varPage]  =   '__PAGE__';
+        unset($parameter['PHPSESSID']);
         $url            =   str_replace('+','%20',url($url,$parameter));
         //上下翻页字符串
         $upRow          =   $nowPage-1;

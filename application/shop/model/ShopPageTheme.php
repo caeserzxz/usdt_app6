@@ -26,7 +26,7 @@ class ShopPageTheme extends Model {
     public function info()
 	{	
 		$info = Cache::get($this->mkey);
-		if ($info) 	return $info;
+		//if ($info) 	return $info;
 		$info = $this->find();
 		if ($info) $info = $this->evalInfo($info);
 		Cache::set($this->mkey,$info,600);
@@ -87,10 +87,11 @@ class ShopPageTheme extends Model {
 				foreach ($row['data'] as $keyb=>$rowb){
 					foreach ($rowb['products'] as $keyc=>$rowc){						
 						if (is_numeric($rowc['id'])){
-							$goods = $Goods->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale')->where('goods_id',$rowc['id'])->find();
+							$goods = $Goods->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale,description')->where('goods_id',$rowc['id'])->find();
 							$rowc['name'] = $goods['goods_name'];
+                            $rowc['description'] = $goods['description'];
 							$rowc['par_price'] = $goods['market_price'];
-							$rowc['sale_price'] = $goods['shop_price'];
+							$rowc['sale_price'] = priceShow($goods['shop_price']);
 							$rowc['sale_count'] = $goods['sale_num'] + $goods['virtual_sale'];
 							$rowc['vip_price'] = 0;
 							$rowc['thumb']['url'] = $goods['goods_thumb'];
