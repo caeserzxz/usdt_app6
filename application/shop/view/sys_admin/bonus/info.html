@@ -12,10 +12,10 @@
     </div>
 </header>
 
-<section class="scrollable wrapper">
+<section class="scrollable wrapper w-f">
+    <form class="form-horizontal form-validate " method="post" action="{:url('info')}">
 
-    <section class="panel panel-default">
-        <form class="form-horizontal form-validate panel-body" method="post" action="{:url('info')}">
+    <section class="panel panel-default p-t">
             <div class="form-group">
                 <label class="col-sm-2 control-label">优惠券名称：</label>
                 <div class="col-sm-5 must">
@@ -94,7 +94,7 @@
                     <label class="col-sm-2 control-label">选择分类：</label>
                     <div class="col-sm-3">
                         <select id="goods_cid" style="width:80%;" data-toggle="select2"
-                                data-placeholder="选择分类" onchange="searchGoods()">>
+                                data-placeholder="选择分类" onchange="searchGoods()">
                             <option value="">选择分类</option>
                             {$classListOpt|raw}
                         </select>
@@ -229,17 +229,19 @@
                 </div>
             </div>
 
-            <div class="line line-dashed line-lg pull-in"></div>
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2 m-t">
-                    <input name="type_id" type="hidden"   value="{$row.type_id|intval}">
-                    <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                </div>
-            </div>
-        </form>
     </section>
 </section>
+
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group" style="width:90%;">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="type_id" type="hidden"   value="{$row.type_id|intval}">
+            <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 <script type="text/html" id="use_type_radio">
     {literal}
     {{if goods_type==1}}

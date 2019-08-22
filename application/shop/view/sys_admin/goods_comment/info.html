@@ -18,8 +18,9 @@
     </div>
 </header>
 
-<section class="scrollable wrapper">
+<section class="scrollable wrapper w-f">
     <form class="form-horizontal form-validate" method="post" action="">
+        <section class="panel panel-default p-t">
         {if condition="$row.id > 0"}
          <div class="form-group">
             <label class="col-sm-2 control-label">评论商品/分类：</label>
@@ -87,25 +88,25 @@
 		<div class="form-group">
             <label class="col-sm-2 control-label">评论图片：</label>
             <div class="col-sm-10">
-        <div class="js_upload_container">
-            <div class="js_file_upload ">
-                <button type="button" class="btn btn-default js_new_upload" data-submitname="GoodsImages" data-count="20" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" data-data="{ 'comment_id':'{$row.id|intval}' }" style="position: relative; z-index: 1;">上传图片</button>
-                <span class="maroon">*</span>
-                <span class="help-inline">(<small>建议尺寸：640*640或800*800)默认显示第1张图片，最多3张 (可拖拽图片调整显示顺序) </small>)</span>
+                <div class="js_upload_container">
+                    <div class="js_file_upload ">
+                        <button type="button" class="btn btn-default js_new_upload" data-submitname="GoodsImages" data-count="20" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" data-data="{ 'comment_id':'{$row.id|intval}' }" style="position: relative; z-index: 1;">上传图片</button>
+                        <span class="maroon">*</span>
+                        <span class="help-inline">(<small>建议尺寸：640*640或800*800)默认显示第1张图片，最多3张 (可拖拽图片调整显示顺序) </small>)</span>
+                    </div>
+                    <div class="uploadify-queue js_file_upload_queue">
+                </div>
+                 <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                    {volist name="imgs" id="gg"  }
+                        <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                            <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除"  data-post-id="{$gg.id}"></a>
+                            <input value="{$gg.id}" name="GoodsImages[id][]" type="hidden">
+                            <span class="item_box"><img src="{$gg.thumbnail}"></span>
+                        </li>
+                    {/volist}
+                 </ul>
             </div>
-            <div class="uploadify-queue js_file_upload_queue">
-            </div>
-             <ul class="ipost-list ui-sortable js_fileList" data-required="true">
-{volist name="imgs" id="gg"  }
-<li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
-<a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除"  data-post-id="{$gg.id}"></a>  
-<input value="{$gg.id}" name="GoodsImages[id][]" type="hidden"> 
-<span class="item_box"><img src="{$gg.thumbnail}"></span>
-</li>
-{/volist}                                           
-             </ul>
         </div>
-    </div>
      
         </div>
         <div class="form-group">
@@ -115,18 +116,19 @@
                <label><input name="status" type="radio"  value="2" {$row['status']=='2'?'checked':''}/> 显示</label>
                <label><input name="status" type="radio"  value="3" {$row['status']=='3'?'checked':''}/> 隐藏（前台不显示）</label>
             </div>
-        </div> 
-        <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
-        <div class="form-group" style="width:90%;">
-            <div class="col-sm-4 col-sm-offset-2"><input name="id" type="hidden" value="{$row['id']}" />
-                <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
-                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-            </div>
         </div>
-
-    </form>
+    </section>
 </section>
-
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group" >
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="id" type="hidden" value="{$row['id']}" />
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {/block}
 
 {block name="footer" }

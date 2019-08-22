@@ -12,7 +12,7 @@
          <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
         </div>
 </header>
-<section class="scrollable  wrapper">
+<section class="scrollable  wrapper w-f">
  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
         <section class="panel panel-default">
           
@@ -113,22 +113,23 @@
                     </div>
                 </div>
 
-                <div class="line line-dashed line-lg pull-in"></div>
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                    </div>
-                </div>
             </div>
 
         </section>
 
-        <input name="supplyer_id" type="hidden" value="{$row.supplyer_id|intval}">
+
 
     </form>
 </section>
-
-   
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="supplyer_id" type="hidden" value="{$row.supplyer_id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {/block}
 

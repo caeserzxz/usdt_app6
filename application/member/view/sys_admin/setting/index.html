@@ -10,7 +10,7 @@
             </ul>
       </div>
 </header>
-<section class="scrollable  wrapper">
+<section class="scrollable  wrapper w-f">
 <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
       <section class="panel panel-default">
             <header >
@@ -161,21 +161,19 @@
                 </div>
                 <div class="tab-pane " id="register">
                     <textarea rows="13" class="hd" data-toggle="kindeditor"  data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[1,50000]" data-rule-required="true" data-msg-required="注册协议不能为空"  name="register_agreement" style="visibility:hidden;">{$setting['register_agreement']|raw}</textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
-
-
                 </div>
            </div>
-            <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-             <div class="form-group">
-                   <label class="control-label"></label>
-                    <div class="controls">
-                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                    </div>
-             </div>
       </section>
-</form>
 </section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {literal}
 <script type="text/html" id="constant_list_li">
     <li>

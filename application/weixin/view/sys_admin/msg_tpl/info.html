@@ -1,28 +1,29 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="head" }
-<link href="__STATIC__/js/colorpicker/bootstrap-colorpicker.css" rel="stylesheet" />
+<link href="__STATIC__/js/colorpicker/bootstrap-colorpicker.css" rel="stylesheet"/>
 <script type="text/javascript" src="__STATIC__/js/colorpicker/bootstrap-colorpicker.js"></script>
 <script type="text/javascript" src="__STATIC__/js/clipboard.min.js"></script>
 {/block}
 {block name="main" }
 <header class="header  b-b clearfix">
-     
-     <div class="page-breadcrumbs">
-            <ul class="breadcrumb" >
-                <li>
-                    <i class="fa fa-ellipsis-v"></i>
-                    <strong>编缉模板</strong>
-                </li>                                  
-            </ul>
-         <a class="text-muted pull-right m-t-md m-r pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-      </div>
-   
+
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>编缉模板</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right m-t-md m-r pointer" data-toggle="back" title="返回"><i
+                class="fa fa-reply"></i></a>
+    </div>
+
 </header>
 <section class="scrollable wrapper w-f ">
-    <section class="panel panel-default ">
-<form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
-<div class="widget-body">
-                    <div class="collapse in">
+    <form class="form-horizontal form-validate form-modal" method="post" action="{:url('info')}">
+        <section class="panel panel-default ">
+            <div class="widget-body">
+                <div class="collapse in">
                     <div class="form-group">
                         <label class="control-label">模板名称</label>
                         <div class="col-sm-6 m-t-md">
@@ -32,102 +33,117 @@
                     <div class="form-group">
                         <label class="control-label">模板code</label>
                         <div class="col-sm-6 ">
-                            <input type="text" class="input-xxlarge"  name="tpl_code" value="{$row.tpl_code}" data-rule-required="true" >
+                            <input type="text" class="input-xxlarge" name="tpl_code" value="{$row.tpl_code}"
+                                   data-rule-required="true">
                         </div>
                     </div>
-                 <div class="form-group">
-                                <label class="control-label">是否开启</label>
-                                <div class="col-sm-7">
-                                    <label class="m-t-md">
-                                          <input class="checkbox-slider colored-blue" name="status" type="checkbox" value="1" {$row['status']|tplckval=1,'checked'}>
-                                          <span class="text"></span>
-                                   </label>
-                                </div>
-                   </div>
+                    <div class="form-group">
+                        <label class="control-label">是否开启</label>
+                        <div class="col-sm-7">
+                            <label class="m-t-md">
+                                <input class="checkbox-slider colored-blue" name="status" type="checkbox" value="1"
+                                       {$row['status']|tplckval=1,'checked'}>
+                                <span class="text"></span>
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label">标题颜色</label>
                         <div class="col-sm-6">
-                           <input id="sel_color" name="topcolor"  class="sel-color" type="text" style="background-color:{$row.topcolor|default='#FF0000'};" value="{$row.topcolor|default='#FF0000'}" readonly/>
+                            <input id="sel_color" name="topcolor" class="sel-color" type="text"
+                                   style="background-color:{$row.topcolor|default='#FF0000'};"
+                                   value="{$row.topcolor|default='#FF0000'}" readonly/>
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label">替换值</label>
                         <div class="col-sm-8 m-t-md">
 
-                        <p><span class="m-r">{$msgTplReplace['name']}:</span>
-                            {volist name="msgTplReplace['list']" id="str" }
+                            <p><span class="m-r">{$msgTplReplace['name']}:</span>
+                                {volist name="msgTplReplace['list']" id="str" }
                                 <a href="javascript:;" class="copy_str m-r">{$str}</a>
-                            {/volist}
-                         </p>
+                                {/volist}
+                            </p>
 
-                         <span class="help-inline">点击以上内容即可复制</span>
+                            <span class="help-inline">点击以上内容即可复制</span>
                         </div>
-                    </div> 
-                     <div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label class="control-label">标题</label>
                         <div class="col-sm-8">
-                           <input type="text" class="input-max"  name="first" value="{$row.first}" data-rule-required="true">
+                            <input type="text" class="input-max" name="first" value="{$row.first}"
+                                   data-rule-required="true">
                         </div>
-                    </div> 
-                    
+                    </div>
+
                     {volist name="row.tpl_keys" id="vo" }
                     <div class="form-group tpl_keys">
                         <label class="control-label">第{$key}行内容</label>
                         <div class="col-sm-8">
-                           <input type="text" class="input-xxlarge"  name="tpl_keys[{$key}]" value="{$vo}" data-rule-required="true">
-                           {eq name="key" value="1"}
-                           		<a href="javascript:;" id="add_key" title="添加" class="btn btn-default "><i class="fa fa-plus m-r-xs"></i></a>
+                            <input type="text" class="input-xxlarge" name="tpl_keys[{$key}]" value="{$vo}"
+                                   data-rule-required="true">
+                            {eq name="key" value="1"}
+                            <a href="javascript:;" id="add_key" title="添加" class="btn btn-default "><i
+                                    class="fa fa-plus m-r-xs"></i></a>
                             {else/}
-                            	<a href="javascript:;" title="删除" class="btn btn-default del_key"><i class="fa fa-times m-r-xs"></i></a>
+                            <a href="javascript:;" title="删除" class="btn btn-default del_key"><i
+                                    class="fa fa-times m-r-xs"></i></a>
                             {/eq}
                         </div>
-                    </div> 
-                     {/volist}
-                     {empty name="row.tpl_keys"}
-                     <div class="form-group tpl_keys">
+                    </div>
+                    {/volist}
+                    {empty name="row.tpl_keys"}
+                    <div class="form-group tpl_keys">
                         <label class="control-label">第1行内容</label>
                         <div class="col-sm-8">
-                           <input type="text" class="input-xxlarge"  name="tpl_keys[1]" value="" data-rule-required="true">
-                           <a href="javascript:;" id="add_key" title="添加" class="btn btn-default m-b-md" ><i class="fa fa-plus m-r-xs"></i></a>
+                            <input type="text" class="input-xxlarge" name="tpl_keys[1]" value=""
+                                   data-rule-required="true">
+                            <a href="javascript:;" id="add_key" title="添加" class="btn btn-default m-b-md"><i
+                                    class="fa fa-plus m-r-xs"></i></a>
                         </div>
-                    </div> 
-                     {/empty}
-                     <div id="new_key_list"></div>
-                     <div class="form-group">
+                    </div>
+                    {/empty}
+                    <div id="new_key_list"></div>
+                    <div class="form-group">
                         <label class="control-label">备注</label>
                         <div class="col-sm-8">
-                           <input type="text" class="input-max"  name="remark" value="{$row.remark}" data-rule-required="true">
+                            <input type="text" class="input-max" name="remark" value="{$row.remark}"
+                                   data-rule-required="true">
                         </div>
                     </div>
-                        <div class="form-group">
-                            <label class="control-label">跳转URL</label>
-                            <div class="col-sm-8 ">
-                                {:config('config.host_path')}<input type="text" class="input-xxlarge" id="url_text" name="url" value="{$row.url}">
-                                <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="type_bding_btn btn btn-sm btn-default " >绑定URL</a>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label">跳转URL</label>
+                        <div class="col-sm-8 ">
+                            {:config('config.host_path')}<input type="text" class="input-xxlarge" id="url_text"
+                                                                name="url" value="{$row.url}">
+                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}"
+                               data-toggle="iframeModal" class="type_bding_btn btn btn-sm btn-default ">绑定URL</a>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label class="control-label">短信样板</label>
                         <div class="col-sm-8 ">
-                        <textarea name="tpl_content" style="width:100%; height:120px;">{$row.tpl_content}</textarea>
-                           
+                            <textarea name="tpl_content" style="width:100%; height:120px;">{$row.tpl_content}</textarea>
+
                         </div>
-                    </div> 
-            </div>
-            <input  type="hidden" name="tpl_id" value="{$row.tpl_id|intval}"/>
-             <div class="form-group">
-                   <label class="control-label"></label>
-                    <div class="controls"> 
-                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
                     </div>
-             </div>
+                </div>
+
+
+            </div>
+        </section>
+</section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input type="hidden" name="tpl_id" value="{$row.tpl_id|intval}"/>
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
     </div>
-</div> 
+</footer>
 </form>
-    </section>
- </section>
 <script>
     var McMore = {
         selectUrlCallback: function (url) {
@@ -144,31 +160,31 @@
             $(this).css('background-color', event.color.toString()).val('');
             $(this).text(event.color.toString());
         });
-		$('.copy_str').click(function(){
-			var s = $(this).html();
-			var clipboard = new Clipboard('.copy_str', {
+        $('.copy_str').click(function () {
+            var s = $(this).html();
+            var clipboard = new Clipboard('.copy_str', {
                 //.btn为点击复制的按钮
-                    text: function() {						
-                        return s;
-                    }
-                });
-                clipboard.on('success', function(e) {
-                    //_alert("复制成功",true);
-                });
+                text: function () {
+                    return s;
+                }
+            });
+            clipboard.on('success', function (e) {
+                //_alert("复制成功",true);
+            });
 
-                clipboard.on('error', function(e) {
-                   _alert("复制失败")
-                });
-		})
-		//添加key
-		$('#add_key').click(function(){
-			var i = $('.tpl_keys').length + 1;
-			$('#new_key_list').append('<div class="form-group tpl_keys"><label class="control-label">第'+i+'行内容</label><div class="col-sm-8"><input type="text" class="input-xxlarge"  name="tpl_keys['+i+']" value="" data-rule-required="true"> <a href="javascript:;" title="删除" class="btn btn-default m-b-md del_key" ><i class="fa fa-times m-r-xs"></i></a></div></div>');
-		})
-		//删除
-		$(document).on('click','.del_key',function(){
-			$(this).parents('.tpl_keys').remove();
-		})
+            clipboard.on('error', function (e) {
+                _alert("复制失败")
+            });
+        })
+        //添加key
+        $('#add_key').click(function () {
+            var i = $('.tpl_keys').length + 1;
+            $('#new_key_list').append('<div class="form-group tpl_keys"><label class="control-label">第' + i + '行内容</label><div class="col-sm-8"><input type="text" class="input-xxlarge"  name="tpl_keys[' + i + ']" value="" data-rule-required="true"> <a href="javascript:;" title="删除" class="btn btn-default m-b-md del_key" ><i class="fa fa-times m-r-xs"></i></a></div></div>');
+        })
+        //删除
+        $(document).on('click', '.del_key', function () {
+            $(this).parents('.tpl_keys').remove();
+        })
 
     });
 </script>

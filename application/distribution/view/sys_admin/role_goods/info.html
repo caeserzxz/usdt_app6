@@ -1,111 +1,114 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
-<header >
-         <div class="page-breadcrumbs">
-                    <ul class="breadcrumb" >
-                        <li>
-                            <i class="fa fa-ellipsis-v"></i>
-                            <strong>{$row['id']>0?"编辑身份商品":"添加身份商品"}</strong>
-                        </li>                                  
-                    </ul>
-          
-            <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['id']>0?"编辑身份商品":"添加身份商品"}</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+
+        <section class="panel panel-default">
+
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品图片</label>
+                    <div class="col-sm-8 must">
+                        <div id="image_upload" class="">
+                            <img class="thumb_img" name="imagefile" src="{$row.goods_img}" style="max-height: 100px;">
+                            <input class="hide" name="goods_img" value="{$row.goods_img}" type="text">
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <span>选择上传商品图片（建议尺寸：640 * 640）</span></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品名称：</label>
+                    <div class="col-sm-7 must">
+                        <input type="text" class="input-max" data-rule-maxlength="80" data-rule-required="true"
+                               data-msg-required="商品名称不能为空" name="goods_name" value="{$row.goods_name}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">销售价：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="input-mini" name="sale_price" min="0.01" data-rule-ismoney="true"
+                               data-rule-required="true" data-msg-required="销售价不能为空" value="{$row.sale_price}">
+                        元<span style="color:#f30;"> *</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">升级身份：</label>
+                    <div class="col-sm-2">
+                        <select name="role_id" style="width:100%;" data-toggle="select2" data-placeholder="选择身份">
+                            <option value="0">选择身份</option>
+                            {volist name="role_list" id="role"}
+                            {if condition="$role.upleve_value.is_auto == 1"}
+                            <option value="{$role.role_id}" {$row[
+                            'role_id']==$role['role_id']?'selected':''}>{$role.role_name}</option>
+                            {/if}
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">简介：</label>
+                    <div class="col-sm-8">
+                        <textarea style="width: 100%; height: 120px;" name="info">{$row.info}</textarea>
+                    </div>
+                </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否启用</label>
+                    <div class="col-sm-3 ">
+                        <label class=" inline">
+                            <input type="radio" name="status" value="1" {$row['status']|tplckval=1,'checked',true} />
+                            是
+                        </label>
+                        <label class=" inline">
+                            <input type="radio" name="status" value="2" {$row['status']|tplckval=0,'checked'}/>
+                            否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">排序</label>
+                    <div class="col-sm-3 must">
+                        <input type="text" name="sort_order" id="sort_order" value="{$row.sort_order|intval}"
+                               data-rule-required="true" data-rule-maxlength="30" class="input-mini">
+                        <span style="color:red;">（数字越大越靠前）</span>
+                    </div>
+                </div>
+
             </div>
-        </header>
+        </section>
 
-<section class="scrollable  wrapper">
-  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
 
-      <section class="panel panel-default">
-         
-          <div class="panel-body">
-              
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">商品图片</label>
-                  <div class="col-sm-8 must" >
-                      <div id="image_upload" class="">
-                      <img class="thumb_img" name="imagefile" src="{$row.goods_img}" style="max-height: 100px;">
-                      <input class="hide" name="goods_img" value="{$row.goods_img}" type="text">
-                      <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                      <span>选择上传商品图片（建议尺寸：640 * 640）</span></div>
-                  </div>
-              </div>
-
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">商品名称：</label>
-                  <div class="col-sm-7 must" >
-                      <input type="text" class="input-max" data-rule-maxlength="80" data-rule-required="true" data-msg-required="商品名称不能为空" name="goods_name" value="{$row.goods_name}" >
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">销售价：</label>
-                  <div class="col-sm-4">
-                      <input type="text" class="input-mini" name="sale_price" min="0.01" data-rule-ismoney="true" data-rule-required="true" data-msg-required="销售价不能为空" value="{$row.sale_price}">
-                      元<span  style="color:#f30;"> *</span>
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">升级身份：</label>
-                  <div class="col-sm-2">
-                      <select name="role_id" style="width:100%;"   data-toggle="select2" data-placeholder="选择身份" >
-                          <option value="0" >选择身份</option>
-                       {volist name="role_list" id="role"}
-                          {if condition="$role.upleve_value.is_auto == 1"}
-                            <option value="{$role.role_id}" {$row['role_id']==$role['role_id']?'selected':''}>{$role.role_name}</option>
-                          {/if}
-                          {/volist}
-                      </select>
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">简介：</label>
-                  <div class="col-sm-8">
-                     <textarea style="width: 100%; height: 120px;" name="info">{$row.info}</textarea>
-                  </div>
-              </div>
-              <div class="line line-dashed line-lg pull-in" ></div>
-              
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">是否启用</label>
-                  <div class="col-sm-3 " >
-                      <label class=" inline">
-                        <input type="radio" name="status" value="1" {$row['status']|tplckval=1,'checked',true} />
-                          是
-                      </label>
-                      <label class=" inline">
-                          <input type="radio" name="status" value="2" {$row['status']|tplckval=0,'checked'}/>
-                          否
-                      </label>
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">排序</label>
-                  <div class="col-sm-3 must" >
-                      <input type="text" name="sort_order" id="sort_order" value="{$row.sort_order|intval}" data-rule-required="true" data-rule-maxlength="30" class="input-mini"  >
-                      <span style="color:red;">（数字越大越靠前）</span>
-                  </div>
-              </div>
-              <div class="line line-dashed line-lg pull-in" ></div>
-              
-              <div class="control-group">
-                  <div class="controls col-sm-offset-2">
-                      <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
-                      <input class="btn" name="button" id="button" data-toggle="back" value="取消" type="button">
-                  </div>
-              </div>
-              
-          </div> 
-      </section>
-      
-      <input type="hidden" name="rg_id" value="{$row.rg_id}" >
-  </form>
-      
 </section>
-
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input type="hidden" name="rg_id" value="{$row.rg_id}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {/block}
 {block name="footer" }
 <script type="text/javascript">
-seajs.use("dist/plupload/init.js")
+    seajs.use("dist/plupload/init.js")
 
 </script>
 {/block}

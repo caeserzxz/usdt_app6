@@ -6,47 +6,51 @@
 {/block}
 {block name="main" }
 <header>
-	<div class="page-breadcrumbs">
-    	<ul class="breadcrumb">
-                <li>
-                    <i class="fa fa-edit"></i>
-                    <strong>图文管理</strong>
-                </li>                                  
-         </ul>
-    	<a class="text-muted pull-right m-t-md m-r pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-edit"></i>
+                <strong>图文管理</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right m-t-md m-r pointer" data-toggle="back" title="返回"><i
+                class="fa fa-reply"></i></a>
     </div>
 </header>
-<section class="scrollable  wrapper">
-   <section class="panel panel-default" >
-          <div class="widget-body">
-          <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
-        <div class="form-group">
-            <label for="keyword" class="control-label">关键词：</label>
-            <div class="controls">
-                <input type="text" name="keyword" id="keyword" value="{$row.keyword}" data-rule-required="true" data-rule-maxlength="30" class="input-xlarge" >
-                <span class="maroon">*</span>
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+        <section class="panel panel-default">
+            <div class="widget-body">
+                <div class="form-group">
+                    <label for="keyword" class="control-label">关键词：</label>
+                    <div class="controls">
+                        <input type="text" name="keyword" id="keyword" value="{$row.keyword}" data-rule-required="true"
+                               data-rule-maxlength="30" class="input-xlarge">
+                        <span class="maroon">*</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">是否启用：</label>
+                    <div class="controls">
+                        <label>
+                            <input class="checkbox-slider colored-blue" name="status" type="checkbox" value="1" {$row['status']|tplckval=1,'checked'}>
+                            <span class="text"></span>
+                        </label>
+                    </div>
+                </div>
+                {include file="sys_admin/reply_news/news_box" /}
+                <div class="clearfix"></div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label">是否启用：</label>
-            <div class="controls">
-                            <label>
-                                  <input class="checkbox-slider colored-blue" name="status" type="checkbox" value="1" {$row['status']|tplckval=1,'checked'}>
-                                  <span class="text"></span>
-                           </label>
-                        </div>
-        </div>
-        {include file="sys_admin/reply_news/news_box" /}
-         <div class="clearfix"></div>           
-        <input name="id" type="hidden" value="{$row.id}">
-             <div class="form-group">
-            <div class="controls">
-                <label class="control-label"></label><button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                <input class="btn" name="button" id="button" onclick="add_appmsg_item();" value="增加小图标图文内容" type="button">
-            </div>
-        </div>
-        </form>
-         </div>
         </section>
 </section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="id" type="hidden" value="{$row.id}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <input class="btn" name="button" id="button" onclick="add_appmsg_item();" value="增加小图标图文内容" type="button">
+        </div>
+    </div>
+</footer>
+</form>
 {/block}

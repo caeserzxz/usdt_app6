@@ -1,41 +1,16 @@
 {extend name="mainadmin@layouts/base" /}
-
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
 {block name="main" }
-<style type="text/css">
-    .imgbox {
-        float: left;
-        display: inline;
-        width: 134px;
-        height: 134px;
-        margin-right: 12px;
-        font-size: 12px;
-        position: relative;
-    }
-    .item_box img {
-        width: 110px;
-        height: 110px;
-        vertical-align: middle;
-        border: 0;
-    }
-    a.item_close {
-        position: absolute;
-        display: block;
-        width: 14px;
-        height: 14px;
-        background-position: -100px -182px;
-        right: -6px;
-        top: -6px;
-        text-indent: -9999px;
-        overflow: hidden;
-        background-image: url(../../../static/main/img/image_upload.png);
-    }
-</style>
+
 <header>
     <div class="page-breadcrumbs">
         <ul class="breadcrumb">
             <li>
                 <i class="fa fa-ellipsis-v"></i>
-                <strong>提成设置</strong>
+                <strong>分销设置</strong>
             </li>
         </ul>
         <div style="float:right; padding-right:10px;">
@@ -43,20 +18,20 @@
         </div>
     </div>
 </header>
-<section class="scrollable  wrapper">
+<section class="scrollable  wrapper w-f">
     <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
-        <section class="panel panel-default">
+        <section class="panel panel-default ">
             <header>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
                     <li><a href="#bydividend" data-toggle="tab">分佣说明</a></li>
                     <li><a href="#byrole" data-toggle="tab">身份升级说明</a></li>
                     <li><a href="#byrolegoods" data-toggle="tab">购买身份商品协议</a></li>
-                    <li><a href="#background" data-toggle="tab">二维码背景</a></li>
+                    <li><a href="#background" data-toggle="tab">分享海报</a></li>
                 </ul>
             </header>
 
-            <div class="tab-content">
+            <div class="tab-content ">
                 <div class="tab-pane active" id="basic">
                     <div class="form-group m-t">
                         <label class=" control-label">身份升级机制：</label>
@@ -119,16 +94,7 @@
 
                         </div>
                     </div>
-                    <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
-                    <div class="form-group">
-                        <label class=" control-label">分享海报：</label>
-                        <div class="controls col-sm-6">
-                            <img class="thumb_img" src="{$share_bg}" style="max-height: 100px;"/><br>
-                            <input class="hide" type="text" name="share_bg" value="{$share_bg}"/>
-                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择分享背景图</button>
-                            <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="tab-pane " id="bydividend">
                     <div class="form-group">
@@ -202,46 +168,98 @@
 
                 <div class="tab-pane " id="background">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" >二维码背景图片：</label>
+                        <label class="col-sm-2 control-label">海报背景图片：</label>
                         <div class="col-sm-10">
                             <div class="js_upload_container">
                                 <div class="js_file_upload ">
-                                    <button type="button" class="btn btn-default js_new_upload" data-submitname="setting[GoodsImages]" data-count="20" data-uploadpath="{:url('mainAdmin/attachment/goodsUploadl')}" data-delpath="{:url('mainAdmin/attachment/removeImgs')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">二维码背景图片</button>
+                                    <button type="button" class="btn btn-default js_new_upload" data-count="5" data-submitname="ShareBg" data-uploadpath="{:url('uploadShareBg')}"  data-delpath="{:url('removeImg')}"  style="position: relative; z-index: 1;">上传图片</button>
                                     <span class="maroon">*</span>
-                                    <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多20张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                                    <span class="help-inline"><small>建议尺寸：300*540,默认显示第1张图片，最多5张 (可拖拽图片调整显示顺序) </small></span>
                                 </div>
                                 <div class="uploadify-queue js_file_upload_queue">
                                 </div>
                                 <ul class="ipost-list ui-sortable js_fileList" data-required="true">
-                                    {volist name="GoodsImages" id="gg"  }
-                                    <li class="imgbox" data-post-id="" data-path="{$gg">
-                                        <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('mainAdmin/attachment/removeImgs')}"  title="删除" data-path="{$gg}" data-post-id=""></a>
-
-                                        <input value="{$gg}" name="setting[GoodsImages][path][]" type="hidden">
-                                        <span class="item_box"><img src="{$gg}"></span>
+                                    {volist name="share_bg" id="shbg"  }
+                                    <li class="imgbox"  data-path="{$shbg}">
+                                        <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除" ></a>
+                                        <span class="item_box"><img src="{$shbg}"></span>
                                     </li>
                                     {/volist}
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像位置：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_avatar_xy]"  class="input-small" value="{$setting.share_avatar_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像宽度：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_avatar_width]" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_avatar_width}" > <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像形状：</label>
+                        <div class="controls">
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="setting[share_avatar_shape]" value="0" {$setting['share_avatar_shape']<=0?'checked':''} type="radio">圆形
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="setting[share_avatar_shape]" value="1" {$setting['share_avatar_shape']==1?'checked':''} type="radio" >方形
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称位置：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_nick_name_xy]"  class="input-small" value="{$setting.share_nick_name_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
 
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称颜色：</label>
+                        <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                            <input type="text" name="setting[share_nick_name_color]" class="form-control colorpicker minicolors-input" data-control="hue" value="{$setting.share_nick_name_color}" size="7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称字体大小：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_nick_name_size]" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_nick_name_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">二维码位置：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_qrcode_xy]"  class="input-small" value="{$setting.share_qrcode_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">二维码宽度：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[share_qrcode_width]" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_qrcode_width}" > <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-            <div class="form-group">
-                <label class=" control-label"></label>
-                <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
-
-            </div>
-
         </section>
-    </form>
-</section>
-
-</section>
+    </section>
+    <footer class="footer bg-white b-t p-t">
+        <div class="form-group">
+            <div class="controls  col-sm-offset-1">
+            <button type="submit" class="btn btn-blue" data-loading-text="保存中...">保存</button>
+            </div>
+        </div>
+    </footer>
+</form>
 
 <script type="text/javascript">
     var arrival_code = Math.ceil(Math.random() * 1000) + 1000;
@@ -266,7 +284,28 @@
 
 {/block}
 {block name="footer" }
+<script src="__STATIC__/js/colorpicker/jquery.minicolors.js"></script>
 <script type="text/javascript">
+    //--jQuery MiniColors--
+    $('.colorpicker').each(function () {
+        $(this).minicolors({
+            control: $(this).attr('data-control') || 'hue',
+            defaultValue: $(this).attr('data-defaultValue') || '',
+            inline: $(this).attr('data-inline') === 'true',
+            letterCase: $(this).attr('data-letterCase') || 'lowercase',
+            opacity: $(this).attr('data-opacity'),
+            position: $(this).attr('data-position') || 'bottom left',
+            change: function (hex, opacity) {
+                if (!hex) return;
+                if (opacity) hex += ', ' + opacity;
+                try {
+                    console.log(hex);
+                } catch (e) { }
+            },
+            theme: 'bootstrap'
+        });
+
+    });
     seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
 </script>
 {/block}

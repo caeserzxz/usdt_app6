@@ -171,12 +171,12 @@ class UsersModel extends BaseModel
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
             Db::startTrans();
         }
-        $res = $this->save($inArr);
+        $res = $this->create($inArr);
         if ($res < 1) {
             Db::rollback();
             return '未知错误-1，请尝试重新提交.';
         }
-        $user_id = $this->user_id;
+        $user_id = $res->user_id;
         if ($user_id < 29889) {
             $this->where('user_id',$user_id)->delete();
             $inArr['user_id'] = 29889;

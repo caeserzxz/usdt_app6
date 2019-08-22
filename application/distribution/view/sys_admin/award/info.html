@@ -12,7 +12,7 @@
            <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
         </div>
 </header>
-<section class="scrollable  wrapper">
+<section class="scrollable  wrapper w-f">
  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
         <section class="panel panel-default">
                 <div class="panel-body">            			
@@ -88,7 +88,7 @@
                 <div class="form-group radio_undertake_award_type award_setting {$row['award_type']<=2?'':'hide'}">
                      <label class="control-label">奖项设置：</label>
                       <div class="col-sm-8">
-                       <table class="table  table-hover m-b-none specificationstable">
+                       <table class="table table-hover  table-bordered">
                             <thead>
                                 <tr>
                                    <th class="txt_center">级别</th>
@@ -109,7 +109,7 @@
                     <div class="form-group radio_undertake_award_type role_award_setting {$row['award_type']== 4?'':'hide'}">
                         <label class="control-label">奖项设置：</label>
                         <div class="col-sm-8">
-                            <table class="table  table-hover m-b-none specificationstable">
+                            <table class="table table-hover  table-bordered ">
                                 <thead>
                                 <tr>
                                     <th class="txt_center">级别</th>
@@ -130,7 +130,7 @@
                         <div class="form-group radio_undertake_award_type award_manage_setting {$row['award_type']==3?'':'hide'}">
                      <label class="control-label">管理奖项：</label>
                       <div class="col-sm-7">
-                       <table class="table  table-hover m-b-none" >
+                       <table class="table table-hover  table-bordered" >
                             <thead>
                                 <tr>
                                    <th  class="txt_center">分销身份</th>
@@ -145,21 +145,19 @@
                         </table>                          
                       </div>   
             	</div>
-            
-          
-            <div class="line line-dashed line-lg pull-in"></div>
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                </div>
-            </div>
         </div>
     </section>
-        <input name="award_id" type="hidden" value="{$row.award_id|intval}">
-    </form>
 </section>
-
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="award_id" type="hidden" value="{$row.award_id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {include file="shop@/sys_admin/goods/sel_goods" /}
 {literal}
 <script type="text/html" id="d_level_tr">

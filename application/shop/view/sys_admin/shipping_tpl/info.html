@@ -45,11 +45,11 @@ border-bottom: 4px solid #000000;
 </header>
 
 
-        <section class="scrollable  wrapper">
-                <section class="panel panel-default">
-                 <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
-                    <div class="panel-body">
+        <section class="scrollable  wrapper w-f">
+            <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
 
+            <section class="panel panel-default">
+                    <div class="panel-body">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">模版名称：</label>
                             <div class="col-sm-3 must">
@@ -152,18 +152,23 @@ border-bottom: 4px solid #000000;
                             </div>
 
                         </div>
-                        <div class="line line-dashed line-lg pull-in "></div>
-						<div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
-                                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                            </div>
-                        </div>
+
                     </div>
-                    <input name="sf_id" type="hidden" value="{$row.sf_id|intval}">
-                    </form>
                 </section>
     </section>
+
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="sf_id" type="hidden" value="{$row.sf_id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
+
 {/block}
 {block name="footer"}
 {literal}

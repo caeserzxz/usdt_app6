@@ -15,7 +15,7 @@
         </div>
 </header>
 
-<section class="scrollable  wrapper">
+<section class="scrollable  wrapper w-f">
     <section class="panel panel-default">
         <header class="panel-heading">
             <a href="javascript:;" data-remote="{:url('info')}" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加分类</a>
@@ -114,12 +114,15 @@
 
 
         </div>
-        <footer class="panel-footer">
-            <button type="submit" class="btn btn-primary" data-loading-text="保存中..." data-remote="{:url('saveSort')}" id="save_class">保存</button>
-            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-        </footer>
+
     </section>
 </section>
+<footer class="panel-footer bg-white b-t p-t">
+    <div class="col-sm-4 col-sm-offset-1">
+        <button type="submit" class="btn btn-primary" data-loading-text="保存中..." data-remote="{:url('saveSort')}" id="save_class">保存</button>
+        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+    </div>
+</footer>
 {/block}
 {block name="footer"}
 <script type="text/javascript">

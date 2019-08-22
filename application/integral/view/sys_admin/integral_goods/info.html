@@ -18,7 +18,7 @@
     </div>
 </header>
 
-<section class="scrollable wrapper">
+<section class="scrollable wrapper w-f">
     <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
         <input type="hidden" id="goods_id" name="goods_id" value="{$row.goods_id}">
         <section class="panel panel-default">
@@ -120,23 +120,18 @@
                     <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" name="end_date" value="{$row.end_date|dateTpl='Y-m-d H:i',true}" id="end_date"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
                 </div>
             </div>
-
-
-
-            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
-            <div class="form-group" style="width:90%;">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
-                    </button>
-                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                </div>
-            </div>
         </section>
-
-        <input name="ig_id" id="ig_id" type="hidden" value="{$row.ig_id|intval}">
-    </form>
 </section>
-
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group" >
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="ig_id" id="ig_id" type="hidden" value="{$row.ig_id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {/block}
 
 

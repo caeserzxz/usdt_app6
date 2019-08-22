@@ -18,7 +18,7 @@
     </div>
 </header>
 
-<section class="scrollable wrapper">
+<section class="scrollable wrapper w-f">
     <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
 
         <section class="panel panel-default">
@@ -159,22 +159,26 @@
                 </div>
                 {/if}
 
-                <div class="form-group" style="width:90%;">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
-                        </button>
-                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                    </div>
-                </div>
+
             </div>
 
 
         </section>
 
-        <input name="goods_id" id="goods_id" type="hidden" value="{$row.goods_id|intval}">
-    </form>
-</section>
 
+</section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group" >
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="goods_id" id="goods_id" type="hidden" value="{$row.goods_id|intval}">
+
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
 {/block}
 
 

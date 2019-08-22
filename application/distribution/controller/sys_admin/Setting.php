@@ -38,7 +38,7 @@ class Setting extends AdminController
         $GoodsImages = explode(',',$settings['GoodsImages']);
         $this->assign("GoodsImages", $GoodsImages);
         $this->assign('Dividend', $Dividend);
-        $this->assign('share_bg', $settings['share_bg']);
+        $this->assign('share_bg', explode(',',$settings['share_bg']));
         $this->assign('shop_after_sale_limit', $settings['shop_after_sale_limit']);
         $this->assign('setting', $settings);
         return $this->fetch();
@@ -53,18 +53,17 @@ class Setting extends AdminController
         $arr = input('post.setting');
 
         //背景图
-        $path = $arr['GoodsImages']["path"];
-        if(is_array($path)){
-            $path = implode(',', $path);
+        $ShareBg = input('ShareBg');
+        $share_bg = '';
+        if(is_array($ShareBg['path'])){
+            $share_bg = implode(',', $ShareBg['path']);
         }
-        $arr['GoodsImages'] = $path;
+        $arr['share_bg'] = $share_bg;
 
         $arr['DividendSatus'] = $Dividend['status'];
         $arr['DividendShareByRole'] = $Dividend['share_by_role'] * 1;
-        unset($Dividend['setting'], $Dividend['status'], $Dividend['DividendShareByRole'], $Dividend['share_bg']);
+        unset($Dividend['setting'], $Dividend['status'], $Dividend['DividendShareByRole']);
         $arr['DividendInfo'] = json_encode($Dividend);
-        $arr['share_bg'] = input('share_bg', '', 'trim');
-
         $res = $this->Model->editSave($arr);
         if ($res == false) return $this->error();
         return $this->success('设置成功.');
@@ -106,5 +105,29 @@ class Setting extends AdminController
         Db::commit();//事务提交
         return $this->success('操作成功.');
     }
+
+    /*------------------------------------------------------ */
+    //-- 上传分享海报背景图片
+    /*------------------------------------------------------ */
+    public function uploadShareBg(){
+        $result = $this->_upload($_FILES['file'],'share_bg/');
+        if ($result['error']) {
+            return $this->error('上传失败，请重试.');
+        }
+        $file_url = str_replace('./','/',$result['info'][0]['savepath'].$result['info'][0]['savename']);
+        $data['code'] = 1;
+        $data['msg'] = "上传成功";
+        $data['image'] = array('thumbnail'=>$file_url,'path'=>$file_url);
+        return $this->ajaxReturn($data);
+    }
+    /**
+     * 删除图片
+     */
+    public function removeImg() {
+        $file = input('post.url','','trim');
+        unlink('.'.$file);
+        return $this->success('删除成功.');
+    }
+
 
 }
