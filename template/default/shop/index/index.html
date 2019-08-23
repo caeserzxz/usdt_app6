@@ -52,12 +52,30 @@
                 <div><img src="{$nav.imgurl}" alt="" /></div>
                 <span class="fs26 color_3">{$nav.title}</span>
               </a>
-
              {/volist}
             </div>
           </div>
         </div>
         {/notempty}
+
+    <!-- banner位 -->
+    <div class="bannerBox">
+        {notempty name="headline"}
+        <!--头条-->
+        <div class="bannerSwiper">
+            <img src="__STATIC__/mobile/default/images/index_icon09.png" alt="">
+            <span class="fs32 fw_b color_3">新闻头条</span>
+            <div class="swiper-container swiper2" id="swiper02">
+                <div class="swiper-wrapper">
+                    {volist name="headline" id="hl" }
+                    <a href="{:url('shop/article/headline')}" class="swiper-slide">{$hl.title}</a>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+        {/notempty}
+    </div>
+
         <!-- 秒杀
         <div class="seckill" style="display:none;">
             <div class="title">
@@ -170,8 +188,8 @@
 <script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
 <script>
       $(function() {
-        swiper1 = createSwiper(1);
-        swiper2 = createSwiper(2);
+          var swiper1 = createSwiper(1,'horizontal',4000);
+          var swiper2 = createSwiper(2,'vertical',5000);
           $('.topTips .cell_ft p').on('click',function(){
               $('.topTipSmodel').show()
           })
@@ -183,26 +201,27 @@
           })
       });
 
-      function createSwiper(index) {
-        var swiper = new Swiper(".swiper" + index, {
-          pagination: {
-            el: ".pagination" + index
-          },
-          paginationClickable: true,
-          observer: true,
-          observeParents: true,
-          loop: true,
-		  lazy: {loadPrevNext: true},
-          autoplay: {
-            delay: 3000,
-            stopOnLastSlide: false,
-            disableOnInteraction: false
-          },
-          onSlideChangeEnd: function(swiper) {
-            swiper.update(); //swiper更新
-          }
-        });
-        return swiper;
+      function createSwiper(index,_direction,time) {
+          var swiper = new Swiper(".swiper" + index, {
+              pagination: {
+                  el: ".pagination" + index
+              },
+              lazy: {
+                  loadPrevNext: true,
+              },
+              direction:_direction,
+              preloadImages: false,
+              paginationClickable: true,
+              loop: true,
+              autoplay: {
+                  delay: time,
+                  disableOnInteraction: false
+              },
+              onSlideChangeEnd: function (swiper) {
+                  swiper.update(); //swiper更新
+              }
+          });
+          return swiper;
       }
 </script>
 {/block}
