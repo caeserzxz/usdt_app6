@@ -26,7 +26,7 @@ class ShopPageTheme extends Model {
     public function info()
 	{	
 		$info = Cache::get($this->mkey);
-		//if ($info) 	return $info;
+		if ($info) 	return $info;
 		$info = $this->find();
 		if ($info) $info = $this->evalInfo($info);
 		Cache::set($this->mkey,$info,600);

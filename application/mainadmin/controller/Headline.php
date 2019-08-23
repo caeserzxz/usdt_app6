@@ -3,15 +3,15 @@
 namespace app\mainadmin\controller;
 
 use app\AdminController;
+use app\mainadmin\model\HeadlineModel;
 use app\mainadmin\model\ArticleModel;
-use app\mainadmin\model\ArticleCategoryModel;
 
 /**
- * 文章管理
+ * 头条管理
  * Class Index
  * @package app\store\controller
  */
-class Article extends AdminController
+class Headline extends AdminController
 {
     public $_field = '';
     public $_pagesize = '';
@@ -22,17 +22,15 @@ class Article extends AdminController
     public function initialize()
     {
         parent::initialize();
-        $this->Model = new ArticleModel();
+        $this->Model = new HeadlineModel();
     }
     /*------------------------------------------------------ */
     //--首页
     /*------------------------------------------------------ */
     public function index()
     {
-        $cid = input('id', 0, 'intval');
         $this->getList(true);
-        $this->assign("cgOpt", arrToSel($this->cg_list, $cid));
-        return $this->fetch('mainadmin@article/index');
+        return $this->fetch('mainadmin@headline/index');
     }
     /*------------------------------------------------------ */
     //-- 获取列表
@@ -41,20 +39,20 @@ class Article extends AdminController
     public function getList($runData = false)
     {
         $runJson = input('runJson', 0, 'intval');
-        $ArticleCategoryModel = new ArticleCategoryModel();
         $where = [];
-        $this->cg_list = $ArticleCategoryModel->getRows();
         $search['cid'] = input('cid', 0, 'intval');
+        $search['keyword'] = input('keyword', '', 'trim');
+        $search['type'] = input('type', '');
         if ($search['cid'] > 0) {
             $where[] = ['cid', 'in', $this->cg_list[$search['cid']]['children']];
         }
         $search['keyword'] = input('keyword', '', 'trim');
-        if (empty($search['keyword']) == false) $where[] = ['title', 'like', '%' . $search['keyword'] . '%'];
+        if (empty($search['keyword']) == false) $where[] = ['title', 'like', "%" . $search['keyword'] . "%"];
+        if ($search['type'] != '') $where[] =['type','=',$search['type']];
 
         $this->data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
         $this->assign("data", $this->data);
         $this->assign("search", $search);
-        $this->assign("cg_list", $this->cg_list);
         if ($runJson == 1) {
             return $this->success('', '', $this->data);
         } elseif ($runData == false) {
@@ -71,14 +69,6 @@ class Article extends AdminController
     /*------------------------------------------------------ */
     public function asInfo($data)
     {
-        $ArticleCategoryModel = new ArticleCategoryModel();
-        $catList = $ArticleCategoryModel->getRows();
-        $WeixinReplyType = $this->getDict('WeixinReplyType');
-        $this->assign("catList", $catList);
-        $this->assign("catOpt", arrToSel($catList, $data['cid']));
-        $this->assign("WeixinReplyType", arrToSel($WeixinReplyType, $data['link_type']));
-
-        if (empty($data['add_time'])) $data['add_time'] = time();
         return $data;
     }
     /*------------------------------------------------------ */
@@ -86,13 +76,6 @@ class Article extends AdminController
     /*------------------------------------------------------ */
     public function beforeAdd($row)
     {
-        if (empty($row['link_type']) == false) {
-            if (empty($row['link_data'])) return $this->error('链接类型绑定关联未填写！');
-            if ($row['link_type'] == 'article' || $row['link_type'] == 'product') {
-                // 文章、商品、活动
-                if (empty($row['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
-            }
-        }
         $row['add_time'] = $row['add_time'] ? strtotime($row['add_time']) : time();
         $row['update_time'] = time();
         return $row;
@@ -101,6 +84,7 @@ class Article extends AdminController
     /*------------------------------------------------------ */
     public function afterAdd($row)
     {
+        $this->Model->cleanMemcache();
         return $this->success('添加成功.', url('index'));
     }
     /*------------------------------------------------------ */
@@ -115,11 +99,11 @@ class Article extends AdminController
     /*------------------------------------------------------ */
     public function afterEdit($row)
     {
-        $this->Model->cleanMemcache('class');
+        $this->Model->cleanMemcache();
         return $this->success('修改成功.');
     }
     /*------------------------------------------------------ */
-    //-- 删除文章
+    //-- 删除头条
     /*------------------------------------------------------ */
     public function del()
     {
@@ -129,20 +113,5 @@ class Article extends AdminController
         if ($res < 1) return $this->error();
         $this->Model->cleanMemcache();
         return $this->success('删除成功.');
-    }
-    /*------------------------------------------------------ */
-    //-- 搜索文章
-    /*------------------------------------------------------ */
-    public function searchBox()
-    {
-        $this->_pagesize = 10;
-        $this->_field = 'id,title';
-        $this->getList(true);
-        $result['data'] = $this->data;
-        if ($this->request->isPost()) return $this->ajaxReturn($result);
-        $this->assign("cgOpt", arrToSel($this->cg_list, input('cid', 0, 'intval')));
-        $this->assign("_menu_index", input('_menu_index', '', 'trim'));
-        $this->assign("searchType", input('searchType', '', 'trim'));
-        return response($this->fetch());
     }
 }

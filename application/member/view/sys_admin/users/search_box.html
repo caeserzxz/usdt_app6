@@ -1,0 +1,85 @@
+{extend name="mainadmin@layouts/simple_base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getSearchList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$is_ban==1?'封禁':''}会员列表</strong>
+                </li>
+            </ul>
+            <select name="time_type"  style="width: 130px;" data-toggle="select2">
+                <option value="">选择时间类型</option>
+                <option value="reg_time">注册时间</option>
+                <option value="login_time">登陆时间</option>
+                <option value="buy_time">购买时间</option>
+            </select>
+            <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
+                <i class="fa fa-calendar fa-lg"></i>
+                <span></span> <b class="caret"></b>
+                <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+            </a>
+            <select name="rode_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                <option value="-1">所有会员</option>
+                <option value="all_role">身份会员</option>
+                <option value="0">普通粉丝</option>
+                {$roleOpt|raw}
+            </select>
+            <select name="level_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                <option value="">所有等级</option>
+                {$levelOpt|raw}
+            </select>
+            <input type="hidden" value="0" name="export">
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID/帐号/手机号码" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/users/search_list" /}
+        </div>
+    </section>
+</section>
+
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function state_select(obj){
+        $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="user_id"> 全选 </label> ' +
+            '<a href="javascript:;" class="btn btn-sm m-t" onclick="sureSelect()"><i class="fa fa-plus"></i>确认选择</a>'
+        );
+    }
+    state_select();
+    //商品对象
+    function userItem(user_id, mobile,nick_name) {
+        this.user_id = user_id;
+        this.mobile = mobile;
+        this.nick_name = nick_name;
+    }
+    function sureSelect()
+    {
+        var inputs = $("input[name='user_id']:checked");
+        if (inputs.length == 0) {
+            _alert('请选择会员.');
+            return false;
+        }
+        var userArr = new Array();
+        inputs.each(function(i,o){
+            var user_id = $(o).val();
+            var users = new userItem(user_id, $(o).data('mobile'), $(o).data('nick_name'));
+            userArr.push(users);
+        })
+        if(userArr.length == 0){
+            _alert('请至少选择一个会员.');
+            return false;
+        }
+        window.parent.call_back(userArr);
+    }
+</script>
+{/block}

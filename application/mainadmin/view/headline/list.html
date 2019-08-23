@@ -1,0 +1,36 @@
+<table class="table table-bordered table-striped ">
+<thead >
+ <thead>
+        <tr>
+           <th width="50" class="th-sortable" data-sort-name="id">ID</th>
+            <th>头条标题</th>
+            <th>关联文章</th>
+            <th width="100" style="text-align:center;">首页推荐</th>
+            <th width="100" style="text-align:center;">头条状态</th>
+            <th class="col-sm-1 mn70">操作</th>
+        </tr>
+    </thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+ <tr>
+     <td>{$vo.id}</td>
+     <td>{$vo.title}</td>
+     <td>{$vo.ext_data}</td>
+     <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'is_best'))}" class="{$vo.is_best|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">是</i><i class="fa fa-times text-danger text">否</i></a></td>
+     <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'status'))}" class="{$vo.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">显示</i><i class="fa fa-times text-danger text">隐藏</i></a></td>
+     <td>
+         <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
+         <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}？" class="m-xs" title="删除"><i class="fa fa-trash text-muted"></i></a>
+     </td>
+ </tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

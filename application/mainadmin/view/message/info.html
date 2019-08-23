@@ -1,0 +1,238 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+   <div class="page-breadcrumbs">
+          <ul class="breadcrumb">
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>编辑站内信</strong>
+              </li>
+          </ul>
+       <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+      </div>
+</header>
+
+<section class="scrollable  wrapper">
+<form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+      <section class="panel panel-default">
+          <header class="panel-heading bg-light">
+              基本信息
+          </header>
+          <div class="panel-body">
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">站内信标题：</label>
+                  <div class="controls" >
+                      <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">绑定关联：</label>
+                  <div class="controls" >
+                      <input name="ext_data" id="type_val_0"  class="input-xlarge"  style="width:50%;" type="text" readonly value="{$row.ext_data}">
+                      <input name="ext_id" id="type_val_key_0" type="hidden" value="{$row.ext_id}">
+                      <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default" id="article_btn_0" >绑定文章</a>
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">发送起始日期：</label>
+                  <div class="col-sm-2">
+                      <div class="input-group">
+                          <input type="text" class="input-max" name="send_start_date" id="send_start_date" value="{$row.send_start_date|dateTpl='',true}" readonly="readonly" data-before="#send_end_date" data-toggle="datetimepicker" data-position="top-right"/>
+                          <span  class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      </div>
+                  </div>
+              </div>
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">发送结束日期：</label>
+                  <div class="col-sm-2">
+                      <div class="input-group">
+                          <input name="send_end_date" type="text" class="input-max" id="send_end_date" value="{$row.send_end_date|dateTpl='',true}" readonly="readonly" data-after="#send_start_date" data-toggle="datetimepicker" data-position="top-right"/>
+                          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      </div>
+                  </div>
+                  <label>只有当前时间介于起始日期和截止日期之间时</label>
+              </div>
+
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">显示过期时间：</label>
+                  <div class="col-sm-2">
+                      <div class="input-group">
+                          <input name="show_end_date" type="text" class="input-max" id="show_end_date" value="{$row.show_end_date|dateTpl='',true}" readonly="readonly" data-after="#send_start_date" data-toggle="datetimepicker" data-position="top-right"/>
+                          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      </div>
+                  </div>
+                  <label>超出此时间后，站内信将会从用户站内信列表消失。该时间最大可设置为发送结束日期三个月后</label>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">通知发送类型：</label>
+                  <div class="col-sm-10">
+                      {if condition="$row.message_id > 0"}
+                      <label>{$MessageType[$row['type']]['name']}</label>
+                      <input type="hidden" name="type" value="{$row['type']}">
+                      {else/}
+                      {volist name="MessageType" id="st" }
+                      <label>
+                          <input name="type" value="{$st.dict_key}" class="js_inventory" type="radio" onchange="selectType({$st.dict_key})" {$row['goods_type']==$st['dict_key']?'checked':''}>
+                          {$st.dict_val}
+                      </label>
+                      {/volist}
+                      {/if}
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">通知状态：</label>
+                  <div class="col-sm-10">
+                      <label>
+                          <input name="status" value="0" class="js_inventory" type="radio" {$row['status']!=1?'checked':''}>
+                          正常
+                      </label>
+                      <label>
+                          <input name="status" value="1" class="js_inventory" type="radio" {$row['status']==1?'checked':''}>
+                          失效
+                      </label>
+                  </div>
+              </div>
+
+              <span class="type-show type-1" style="display: none;">
+                  <div class="line line-dashed line-lg pull-in"></div>
+                  <div class="form-group">
+                      <label class="control-label">指定会员等级：</label>
+                      <div class="col-sm-10">
+                          <select class="input-xlarge" name="level_id" >
+                              {volist name="levelList" id="arr" }
+                              <option value="{$arr.level_id}" >{$arr.level_name}</option>
+                              {/volist}
+                          </select>
+                      </div>
+                  </div>
+              </span>
+              <span class="type-show type-2" style="display: none;">
+                  <div class="line line-dashed line-lg pull-in"></div>
+                  <div class="form-group">
+                      <label class="control-label">指定分销身份：</label>
+                      <div class="col-sm-10">
+                          <select class="input-xlarge" name="role_id">
+                              <option value="0" {$row['role_id']==0?'selected':''} >粉丝</option>
+                              {volist name="roleList" id="arr" }
+                              <option value="{$arr.role_id}" {$arr['role_id']==$row['role_id']?'selected':''} >{$arr.role_name}</option>
+                              {/volist}
+                          </select>
+                      </div>
+                  </div>
+               </span>
+              <span class="type-show type-3" style="display: none;">
+                  <div class="line line-dashed line-lg pull-in"></div>
+                  <div class="form-group" id="goodsListTable">
+                      <label class="control-label">会员列表：</label>
+                      <div class="col-sm-3">
+                          <table class="table table-bordered table-striped " style="width:800px;">
+                              <thead>
+                              <tr>
+                                  <th width="100">会员ID</th>
+                                  <th>会员昵称</th>
+                                  <th>手机号码</th>
+                                  <th width="170">操作
+                                      <a href="javascript:selectUsers();"  title="选择会员" class="btn btn-default"><i class="fa fa-plus m-r-xs">选择会员</i></a>
+                                  </th>
+                              </tr>
+                              </thead>
+                              <tbody id="user_box">
+                              {foreach name="$userList" item="vo"}
+                                <tr>
+                                    <td>{$vo.user_id}</td>
+                                    <td>{$vo.mobile}</td>
+                                    <td>{$vo.nick_name}</td>
+                                    <td> <a href="javascript:;" class="btn" >已发送</a> </td>
+                                </tr>
+                              {/foreach}
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </span>
+              <input name="message_id" type="hidden" value="{$row.message_id}">
+              <div class="form-group">
+                  <div class="col-sm-4 col-sm-offset-2">
+                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                  </div>
+              </div>
+           </div>
+      </section>
+
+	<input name="id" type="hidden" value="{$row.id|intval}">
+</form>
+</section>
+<script>
+    var type ={$row['type']|default=0};
+    $(function () {
+        selectType(type);
+    })
+    //选择类型
+    function selectType(type) {
+        $('.type-show').hide();
+        $('.type-'+type).show();
+    }
+    //选择文章
+    function assigBack(type,type_id,id,title,tid){
+        $("#type_val_key_"+type_id).val(id);
+        $("#ext_activity_"+type_id).val(tid);
+        $("#type_val_"+type_id).val(title);
+        $(".modal-dialog .close").trigger("click");
+    }
+
+    //删除会员
+    function delLinkUser(select_type, key_val) {
+        $('#' + select_type + '_tr_' + key_val).remove();
+    }
+    //选择会员
+    function selectUsers(use_type)
+    {
+        var usersArr=[];
+        $('#user_box').find('input').each(function () {
+            usersArr.push($(this).val());
+        })
+        var url = "{:url('member/sys_admin.users/searchBox')}"+'?usersArr='+usersArr+'&'+Math.random();
+        layer.open({
+            type: 2,
+            title: '选择会员',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['70%', '80%'],
+            content: url,
+        });
+    }
+    function call_back(Arr)
+    {
+        layer.closeAll('iframe');
+        $.each(Arr, function (n, value) {
+            console.log(Arr)
+            var html='';
+            html+='<tr id="user_tr_'+value.user_id+'">';
+            html+='<td><input name="user_id[]" type="hidden" value="'+value.user_id+'" />'+value.user_id+'</td>';
+            html+='<td>'+value.mobile+'</td>';
+            html+='<td>'+value.nick_name+'</td>';
+            html+='<td><a href="javascript:;" title="删除" class="fa btn fa-remove m-xs" onclick="delLinkUser(\'user\','+value.user_id+')" >删除</a></td>';
+            html+='</tr>';
+            $('#user_box').append(html);
+        });
+    }
+
+</script>
+
+
+{/block}

@@ -1,0 +1,96 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+   <div class="page-breadcrumbs">
+          <ul class="breadcrumb">
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>{$row['id']==true?'编辑头条':'添加头条'}</strong>
+              </li>
+          </ul>
+       <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+      </div>
+</header>
+
+<section class="scrollable  wrapper">
+<form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+      <section class="panel panel-default">
+          <header class="panel-heading bg-light">
+              基本信息
+          </header>
+          <div class="panel-body">
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">头条标题：</label>
+                  <div class="controls" >
+                      <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">绑定关联：</label>
+                  <div class="controls" >
+                      <input name="ext_data" id="type_val_0"  class="input-xlarge"  style="width:50%;" type="text" readonly value="{$row.ext_data}">
+                      <input name="ext_id" id="type_val_key_0" type="hidden" value="{$row.ext_id}">
+                      <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default" id="article_btn_0" >绑定文章</a>
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">首页推荐：</label>
+                  <div class="col-sm-10">
+                      <label>
+                          <input name="is_best" value="1" class="js_inventory" type="radio" {$row['is_best']==1?'checked':''}>
+                          是
+                      </label>
+                      <label>
+                          <input name="is_best" value="0" class="js_inventory" type="radio" {$row['is_best']==0?'checked':''}>
+                          否
+                      </label>
+                  </div>
+              </div>
+
+              <div class="line line-dashed line-lg pull-in"></div>
+              <div class="form-group">
+                  <label class="control-label">头条状态：</label>
+                  <div class="col-sm-10">
+                      <label>
+                          <input name="status" value="1" class="js_inventory" type="radio" {$row['status']==1?'checked':''}>
+                          显示
+                      </label>
+                      <label>
+                          <input name="status" value="0" class="js_inventory" type="radio" {$row['status']==0?'checked':''}>
+                          隐藏
+                      </label>
+                  </div>
+              </div>
+
+
+              <input name="id" type="hidden" value="{$row.id}">
+              <div class="form-group">
+                  <div class="col-sm-4 col-sm-offset-2">
+                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                  </div>
+              </div>
+           </div>
+      </section>
+
+	<input name="id" type="hidden" value="{$row.id|intval}">
+</form>
+</section>
+<script>
+    //选择文章
+    function assigBack(type,type_id,id,title,tid){
+        $("#type_val_key_"+type_id).val(id);
+        $("#ext_activity_"+type_id).val(tid);
+        $("#type_val_"+type_id).val(title);
+        $(".modal-dialog .close").trigger("click");
+    }
+</script>
+
+{/block}

@@ -13,17 +13,19 @@ class Article extends ClientbaseController{
 	//-- 文章详情页
 	/*------------------------------------------------------ */
 	public function info(){
+	    $ArticleModel = new ArticleModel();
 	    $id = input('id',0,'intval');
 	    if ($id < 1){
 	        return $this->error('传参失败.');
         }
-        $info = (new ArticleModel)->find($id);
+        $info = $ArticleModel->info($id);
 	    if (empty($info)){
             return $this->error('文章不存在..');
         }
-        $info['content'] = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/",'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', $info['content']);
-
-        $this->assign('title','文章');
+        $upData['click']=['inc',1];
+        $where[]=['id','=',$id];
+        $ArticleModel->upInfo($upData,$where);
+        $this->assign('title','文章详情');
         $this->assign('info', $info);
 		return $this->fetch('info');
 	}
@@ -76,4 +78,50 @@ class Article extends ClientbaseController{
         $this->assign('content', $content);
         return $this->fetch('other');
     }
+    /*------------------------------------------------------ */
+    //-- 头条列表
+    /*------------------------------------------------------ */
+    public function headline(){
+        $ArticleCategoryModel = new \app\mainadmin\model\ArticleCategoryModel();
+        $HeadlineModel= new \app\mainadmin\model\HeadlineModel();
+        $catList = $ArticleCategoryModel->getRows();
+        foreach ($catList as $key=>$cat){
+            if($cat['pid']>0){
+                unset($catList[$key]);
+                continue;
+            }
+            $where[]=['cid','in',$cat['children']];
+            $has =$HeadlineModel->alias('hl')
+                ->join('main_article a','hl.ext_id=a.id')
+                ->where($where)
+                ->count('hl.id');
+            if(empty($has)){
+                unset($catList[$key]);
+                continue;
+            }
+        }
+        $this->assign('title','新闻头条');
+        $this->assign('catList', $catList);
+        return $this->fetch('headline');
+    }
+    /*------------------------------------------------------ */
+    //-- 头条详情
+    /*------------------------------------------------------ */
+    public function headlineInfo(){
+        $id = input('id',0,'intval');
+        $HeadlineModel= new \app\mainadmin\model\HeadlineModel();
+        $info = $HeadlineModel->info($id);
+        if ($id < 1){
+            return $this->error('传参失败.');
+        }
+        if (empty($info)){
+            return $this->error('文章已被删除..');
+        }
+        $this->assign('title','头条详情');
+        $this->assign('info', $info['article']);
+        return $this->fetch('info');
+    }
+
+
+
 }?>

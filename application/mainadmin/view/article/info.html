@@ -51,8 +51,26 @@
                       <div style="color:red;margin-top:0.5rem">(请上传500*500的图片)</div>
                   </div>
               </div>
-            
-             
+
+              <div class="form-group">
+                  <label class="control-label">链接类型</label>
+                  <div class="col-sm-2 must" >
+                      <select id="link_type" name="link_type" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                          <option value="">不需要绑定</option>
+                          {$WeixinReplyType|raw}
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">绑定链接关联</label>
+                  <div class="col-sm-4 must" >
+                      <input name="link_data" id="link_data" class="input-xlarge"  type="text" value="{$row.link_data}">
+                      <input name="link_ext_id" id="link_ext_id" type="hidden" value="{$row.link_ext_id}">
+                      <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default {$row['bind_type']=='article'?'':'hide'}" id="article_btn" >绑定文章</a>
+                      <a href="javascript:;" data-remote="{:url("shop/sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default {$row['bind_type']=='goods'?'':'hide'}" id="goods_btn" >绑定商品</a>
+                      <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" id="link_btn"  >绑定URL</a>
+                  </div>
+              </div>
           
 
 
@@ -106,6 +124,33 @@
 	<input name="id" type="hidden" value="{$row.id|intval}">
 </form>
 </section>
+{/block}
 
-   
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use("dist/plupload/init.js")
+
+    function showUrlType(sel,input_id){
+        $(".type_bding_btn").addClass('hide');
+        $("#link_data").val('');
+        $("#link_ext_id").val(0);
+        if (sel.value == 'article') $("#article_btn").removeClass('hide');
+        else if (sel.value == 'link'){
+            $("#link_data").val('http://');
+            $("#link_btn").removeClass('hide');
+        }
+        else if (sel.value == 'goods') $("#goods_btn").removeClass('hide');
+        else if (sel.value == 'activity') $("#activity_btn").removeClass('hide');
+    }
+    function assigBack(type,type_id,id,title,tid){
+        $("#link_ext_id").val(id);
+        $("#link_data").val(title);
+    }
+    var McMore = {
+        selectUrlCallback: function (url,type,type_id) {
+            $("#link_data").val(url);
+            $(".modal-dialog .close").trigger("click");
+        }
+    }
+</script>
 {/block}

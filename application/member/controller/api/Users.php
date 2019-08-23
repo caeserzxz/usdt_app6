@@ -7,12 +7,13 @@ use app\member\model\UsersModel;
 use app\member\model\UsersSignModel;
 use app\member\model\WithdrawModel;
 use app\member\model\AccountLogModel;
+use app\mainadmin\model\MessageModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
 use think\Db;
+use lib\Image;
 use app\weixin\model\MiniModel;
-
 
 /*------------------------------------------------------ */
 //-- 会员相关API
@@ -92,6 +93,9 @@ class Users extends ApiController
         $BonusModel = new BonusModel();
         $bonus = $BonusModel->getListByUser();
         $return['unusedNum'] = $bonus['unusedNum'];
+        $BonusModel = new MessageModel();
+        $unSeeMessageNum = $BonusModel->userMessageStats($this->userInfo['user_id']);//未读消息数量
+        $return['unSeeNum'] = $unSeeMessageNum;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
@@ -435,7 +439,6 @@ class Users extends ApiController
         $return['list'] = $rows;
         return $this->ajaxReturn($return);
     }
-
     public function wechat_qrcode()
     {
         $user = $this->userInfo;

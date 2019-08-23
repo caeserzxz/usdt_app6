@@ -121,6 +121,7 @@ class Users extends AdminController
         if (empty($this->search['keyword']) == false) {
             if (is_numeric($this->search['keyword'])) {
                 $where[] = "  u.user_id = '" . ($this->search['keyword']) . "' or mobile like '" . $this->search['keyword'] . "%'";
+                dump($where);
             } else {
                 $where[] = " ( u.user_name like '" . $this->search['keyword'] . "%' or u.nick_name like '" . $this->search['keyword'] . "%' )";
             }
@@ -520,6 +521,37 @@ class Users extends AdminController
         }
         return true;
     }
-}
-{
+
+    /*------------------------------------------------------ */
+    //-- 搜索会员
+    /*------------------------------------------------------ */
+    public function searchBox(){
+        $this->assign('rode_id',input('rode_id', 0, 'intval'));
+        $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
+        $this->assign("end_date", date('Y/m/d'));
+        $this->getList(true);
+
+        //首页跳转时间
+        $start_date = input('start_time', '0', 'trim');
+        $end_date = input('end_time', '0', 'trim');
+        if( $start_date || $end_date){
+
+            $this->assign("start_date",str_replace('_', '/', $start_date));
+            $this->assign("end_date",str_replace('_', '/', $end_date));
+        }
+        $this->assign("roleOpt", arrToSel($this->roleList, $this->search['roleId']));
+        $this->assign("levelOpt", arrToSel($this->levelList, $this->search['levelId']));
+        return $this->fetch('sys_admin/users/search_box');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 搜索会员
+    /*------------------------------------------------------ */
+    public function getSearchList(){
+        $this->getList(true);
+        $this->data['content'] = $this->fetch('sys_admin/users/search_list');
+        return $this->success('', '', $this->data);
+    }
+
+
 }

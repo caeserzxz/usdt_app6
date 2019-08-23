@@ -1,0 +1,33 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+    
+<header class="header  b-b clearfix">
+ <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>通知列表</strong>
+                </li>                                  
+            </ul>
+             <select name="type"  style="width: 200px;"  data-placeholder="按自定义分类筛选" data-chang="submit">
+                 <option value="">全部通知类型</option>
+                 {foreach name='MessageType' item='vo'}
+                 <option value="{$vo.dict_key}">{$vo.name}</option>
+                 {/foreach}
+             </select>
+             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="通知标题" data-rule-required="true" />
+             <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+             <a href="{:url('info')}" class="btn btn-sm btn-default fr m-r-tm m-t-md"><i class="fa fa-plus"></i>添加通知</a>
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="message/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

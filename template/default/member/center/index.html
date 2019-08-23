@@ -2,6 +2,7 @@
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
 {/block}
+
 {block name="main" }
 <div class="page-bd my">
     <!-- 页面内容-->
@@ -17,6 +18,7 @@
             </a>
         </div>
         <div class="right">
+            <a href="{:url('member/message/index')}"  class="newsicon un_see_num"><img src="__STATIC__/mobile/default/images/myIcon01.png" alt=""></a>
             <a href="{:url('setting')}"><img src="__STATIC__/mobile/default/images/myIcon02.png" alt=""></a>
         </div>
     </div>
@@ -208,6 +210,10 @@
             if (res.orderStats.wait_sign_num > 0) {
                 $('.wait_sign_num').append('<em>' + res.orderStats.wait_sign_num + '</em>');
             }
+            if (res.unSeeNum > 0) {
+                $('.un_see_num').append('<em></em>');
+            }
+
 
         })
     })

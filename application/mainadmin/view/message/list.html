@@ -1,0 +1,46 @@
+<table class="table table-bordered table-striped ">
+<thead >
+ <thead>
+        <tr>
+           <th class="th-sortable" data-sort-name="id">ID</th>
+            <th class="col-sm-2 ">通知标题</th>
+            <th class="col-sm-2 ">通知类型</th>
+            <th class="col-sm-2 ">关联文章</th>
+            <th>发放时间</th>
+            <th>显示结束时间</th>
+            <th>修改时间</th>
+            <th>通知状态</th>
+            <th class="col-sm-1 mn70">操作</th>
+        </tr>
+    </thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+ <tr>
+     <td>{$vo.message_id}</td>
+     <td>{$vo.title}</td>
+     <td>{$MessageType[$vo['type']]['name']}</td>
+     <td>{$vo.ext_data}</td>
+     <td>
+          {$vo.send_start_date|dateTpl}
+          <br>--<br>
+          {$vo.send_start_date|dateTpl}
+     </td>
+     <td>{$vo.show_end_date|dateTpl}</td>
+     <td>{$vo.update_time|dateTpl}</td>
+     <td align="center">{$statusList[$vo.status]}</td>
+     <td>
+         <a href="{:url('info',array('message_id'=>$vo['message_id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
+         <!--<a href="{:url('del',array('message_id'=>$vo['message_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}？" class="m-xs" title="删除"><i class="fa fa-trash text-muted"></i></a>-->
+     </td>
+ </tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

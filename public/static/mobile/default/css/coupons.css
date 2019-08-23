@@ -384,6 +384,7 @@ button {
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  padding: 0.2rem;
 }
 
 .goCoupons .goCouponsBtn {
@@ -551,7 +552,7 @@ button {
 
 .coupones_gooddlist {
   background-color: #fff;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .coupones_gooddlist .title {

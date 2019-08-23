@@ -466,6 +466,7 @@ class Flow extends ApiController
                 'settle_price' => $og['settle_price'],
                 'goods_weight' => $og['goods_weight'],
                 'discount' => $og['discount'],
+                'add_time'=>$add_time,
                 'user_id' => $og['user_id'],
                 'give_integral' => $og['give_integral'],
                 'use_integral' => $og['use_integral'],

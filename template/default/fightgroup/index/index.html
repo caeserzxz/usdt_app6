@@ -50,6 +50,8 @@
             var content_h=$('.scrollBox').height()
             var scroll_h=$(this).scrollTop();
             if(content_h-box_h-scroll_h<20){
+                getAgain = false;
+                isLoadend = false;
                 getList(nowPage);
             }
         })

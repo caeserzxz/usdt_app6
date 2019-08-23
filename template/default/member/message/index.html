@@ -1,0 +1,127 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
+{/block}
+{block name='pageType'}news{/block}
+{block name="main" }
+
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="blocklist listbox">
+    </div>
+</div>
+<!-- 没有消息 -->
+<script type="text/html" id="emptyTpl">
+    <div class="noCoupons" style="display: block;">
+        <img src="__STATIC__/mobile/default/images/noCoupons.png" alt="">
+        <span class="fs30 color_9">暂无任何消息</span>
+    </div>
+</script>
+<script type="text/html" id="TabTpl">
+    {literal}
+    {{each list as item index}}
+    {{set message_type=item.message_type}}
+    {{if message_type=='0'}}
+    <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}" class="block">
+        <div class="top fs28"><span class="fw_b color_3">{{item.message_title}}</span><span class="color_9">{{item._add_time}}</span>
+        </div>
+        <div class="imgBox fs28 color_9">
+            <img src="{{item.imgUrl}}" alt="">
+            <div class="content fs26 color_3">{{item.message_content}}</div>
+        </div>
+        {{if item.is_see==0}}
+        <i class="unread"></i>
+        {{/if}}
+    </a>
+        {{else}}
+        <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}"
+           class="block">
+            <div class="title fs28 fw_b color_3">{{item.message_title}}</div>
+            <div class="fs28 color_9">{{item.message_content}}</div>
+            <div class="fs28 color_9 time">{{item._add_time}}</div>
+            {{if item.is_see==0}}
+            <i class="unread"></i>
+            {{/if}}
+        </a>
+        {{/if}}
+        {{/each}}
+        {/literal}
+</script>
+<script>
+    var nowPage = 1, getAgain = false, isLoadend = false;
+    $(function () {
+        //点击跳转
+        $('.listbox').on('click','.block',function (e) {
+            var rec_id =$(this).data('rec_id');
+            var is_see =$(this).data('is_see');
+            var url =$(this).data('url');
+            if(is_see<1){
+                jq_ajax('{:url("member/api.message/setIsSee")}', 'rec_id=' + rec_id,function (res){
+                })
+            }
+            window.location.href=url;
+        })
+
+        var loading = false;  //状态标记
+        $('.page-bd').scroll(function () {
+            if ($(this).children('div').height() - $(this).height() - $(this).scrollTop() < 50 && !loading) {
+                loading = true;
+                getList(nowPage);
+            }
+        })
+    })
+
+    //请求列表数据
+    function getList(page, isagain) {
+        if (page == 1) {
+            $('.listbox').html('');
+        }
+        if (isLoadend == true) return false;
+        if (isagain == true) {
+            if (getAgain == false) return false;
+            getAgain = false;
+        } else {
+            $('.listbox').append('<div class="get_list_tip">加载数据中...</div>');
+        }
+        isLoadend = true;
+        $.ajax({
+            url: '{:_url("member/api.message/getList",["p"=>"【page】"])}',// 跳转到 action
+            data: {},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (res) {
+                isLoadend = false;
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    getAgain = true;
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                nowPage = page;
+                nowPage++;
+                $('.get_list_tip').remove();
+                if (res.list) {
+                    $('.listbox').append(template('TabTpl', res));
+                    if (res.page_count == page) {
+                        $('.listbox').append('<div class="loadEnd">—— 没有更多啦，我是有底线的 ——</div>');
+                        isLoadend = true;
+                    }
+                } else {
+                    $('.blocklist').append(template('emptyTpl', res));
+                }
+
+            }, error: function () {
+                isLoadend = false;
+                getAgain = true;
+                $('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    //重新请求数据
+    $(document).on('click', '.get_list_tip', function () {
+        getList(nowPage, true);
+    })
+    getList(nowPage);//执行列表加载
+</script>
+{/block}

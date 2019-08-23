@@ -31,6 +31,10 @@ class Index  extends ClientbaseController{
         $reg_bonus_bg=settings('reg_bonus_bg');
         $this->assign('reg_bonus_bg', $reg_bonus_bg);
 
+        //首页头条
+        $headline = (new \app\mainadmin\model\HeadlineModel)->getBestList();
+        $this->assign('headline', $headline);
+        
         $this->assign('tipsubscribe', $tipsubscribe);
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
@@ -70,7 +74,7 @@ class Index  extends ClientbaseController{
 		$mkey = 'shopIndex_web';
 		$theme = Db::table('shop_page_theme')->find();
 		if (empty($theme)) return $this->index(true);
-	    //$body = Cache::get($mkey);
+	    $body = Cache::get($mkey);
 		if (empty($body)){
 			$ShopPageTheme = new \app\shop\model\ShopPageTheme();
 			$d_products = $ShopPageTheme->defPproducts();			
@@ -109,7 +113,7 @@ class Index  extends ClientbaseController{
 								  }
 							  }
 						 }else{
-                             unset($where,$rowb['products']);
+							unset($where,$rowb['products']);
 							$where[] = ['is_alone_sale','=',1];							
 							if ($rowb['goodsDataType'] == 'recommend'){
 								$where[] = ['is_best','=',1];
@@ -120,7 +124,7 @@ class Index  extends ClientbaseController{
 							}
 							$time = time();
 							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale,description')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();
-									echo 111;
+												
 							foreach ($grows as $grow){
 								$rowc['id'] = $grow['goods_id'];
 								$rowc['thumb']['url'] = $grow['goods_thumb'];

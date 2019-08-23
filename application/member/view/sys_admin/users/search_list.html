@@ -1,0 +1,45 @@
+<table class="table table-striped  m-b-none">
+<thead>
+<tr>
+	<th width="90" class="th-sortable" data-sort-name="u.user_id">UID</th>
+    <th width="120">注册手机</th>
+    <th width="100">昵称</th>
+    <th width="120">推荐人</th>
+    <th width="150">等级/身份</th> 
+    <th width="100">帐户余额</th> 
+    <th width="130">最近登陆</th>    
+    <th width="160">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+<td><input type="checkbox" class="m-r checkItems" name="user_id" value="{$vo.user_id}" data-mobile="{$vo.mobile}" data-nick_name="{$vo.nick_name}"> {$vo.user_id}</td>
+<td>{$vo.mobile}</td>
+<td>{$vo.nick_name}</td>
+<td>{if condition = "$vo.pid > 0" }{$vo.pid} - {$vo.pid|userInfo}{else/}没有上级{/if}</td>
+<td>{$vo.total_integral|userLevel} / 
+{eq name="vo.role_id" value="0"}
+粉丝
+{else/}
+{$roleList[$vo['role_id']]['role_name']}
+{/eq}
+</td>
+
+<td>{$vo.balance_money}</td>
+<td>{$vo.login_time|dateTpl}</td>
+
+<td>
+
+</td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

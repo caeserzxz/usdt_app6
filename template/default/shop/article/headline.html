@@ -1,0 +1,117 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
+{/block}
+{block name='pageType'}hotspotNews{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="navBox">
+        <div class="nav navActive fs32 color_9" data-children="">精选</div>
+        {foreach name='catList' item='vo'}
+        <div class="nav fs32 color_9" data-children="{$vo.children}">{$vo.name}</div>
+        {/foreach}
+    </div>
+    <div class="content">
+        <div class="blockList listbox" style="display: block">
+
+        </div>
+    </div>
+</div>
+<!-- 没有消息 -->
+<script type="text/html" id="emptyTpl">
+    <div class="noCoupons" style="display: block;">
+        <img src="__STATIC__/mobile/default/images/noCoupons.png" alt="">
+        <span class="fs30 color_9">暂无任何消息</span>
+    </div>
+</script>
+<script type="text/html" id="TabTpl">
+    {{each list as item index}}
+    <a href="{:_url('info',['id'=>'[[item.ext_id]]'])}" class="block">
+        <img src="{{item.img_url}}" alt="" >
+        <div class="info">
+            <p class="fs28 fw_b color_3">{{item.title}}</p>
+            <span class="fs24 color_9">阅读{{item.click}}</span>
+        </div>
+    </a>
+    {{/each}}
+</script>
+<script>
+    var nowPage = 1, getAgain = false, isLoadend = false;
+    $(function () {
+        //切换列表
+        $('.navBox .nav').on('click', function () {
+            var _index = $(this).index()
+            $(this).siblings().removeClass('navActive')
+            $(this).addClass('navActive')
+            console.log(_index);
+            isLoadend = false;
+            getList(1);
+        })
+
+        var loading = false;  //状态标记
+        $('.page-bd').scroll(function () {
+            if ($(this).children('div').height() - $(this).height() - $(this).scrollTop() < 50 && !loading) {
+                loading = true;
+                getList(nowPage);
+            }
+        })
+    })
+
+    //请求列表数据
+    function getList(page, isagain) {
+        if (page == 1) {
+            $('.listbox').html('');
+        }
+        if (isLoadend == true) return false;
+        if (isagain == true) {
+            if (getAgain == false) return false;
+            getAgain = false;
+        } else {
+            $('.listbox').append('<div class="get_list_tip">加载数据中...</div>');
+        }
+        isLoadend = true;
+        var children = $('.navBox .navActive').data('children');
+        console.log(children);
+        $.ajax({
+            url: '{:_url("shop/api.article/getHeadlineList",["p"=>"【page】"])}',// 跳转到 action
+            data: {children:children},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (res) {
+                isLoadend = false;
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    getAgain = true;
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                nowPage = page;
+                nowPage++;
+                $('.get_list_tip').remove();
+                if (res.list) {
+                    $('.listbox').append(template('TabTpl', res));
+                    if (res.page_count == page) {
+                        $('.listbox').append('<div class="get_list_tip">—— 没有更多啦，我是有底线的 ——</div>');
+                        isLoadend = true;
+                    }
+                } else {
+                    $('.blocklist').append(template('emptyTpl', res));
+                }
+
+            }, error: function () {
+                isLoadend = false;
+                getAgain = true;
+                $('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    //重新请求数据
+    $(document).on('click', '.get_list_tip', function () {
+        getList(nowPage, true);
+    })
+    getList(nowPage);//执行列表加载
+</script>
+{/block}
+

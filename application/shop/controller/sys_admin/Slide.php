@@ -56,7 +56,7 @@ class Slide extends AdminController
 		if(empty($data['imgurl'])) return $this->error('幻灯片图片未选择！');
 		if(empty($data['bind_type'])) return $this->error('链接类型未选择！');
 		if(empty($data['data'])) return $this->error('链接类型绑定关联未填写！');
-		if($data['bind_type'] == 'article' || $ud['bind_type'] == 'product' ){
+		if($data['bind_type'] == 'article' || $data['bind_type'] == 'product' ){
 			// 文章、商品、活动
 			if(empty($data['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
 		

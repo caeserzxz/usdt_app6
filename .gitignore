@@ -7,3 +7,6 @@ runtime
 /public/upload
 /config/database.php
 /public/test.php
+/extend/payment/alipayApp
+/extend/payment/miniAppPay
+/public/a
