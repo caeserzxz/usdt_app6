@@ -93,8 +93,8 @@ class Users extends ApiController
         $BonusModel = new BonusModel();
         $bonus = $BonusModel->getListByUser();
         $return['unusedNum'] = $bonus['unusedNum'];
-        $BonusModel = new MessageModel();
-        $unSeeMessageNum = $BonusModel->userMessageStats($this->userInfo['user_id']);//未读消息数量
+        $MessageModel = new MessageModel();
+        $unSeeMessageNum = $MessageModel->userMessageStats($this->userInfo['user_id']);//未读消息数量
         $return['unSeeNum'] = $unSeeMessageNum;
         $return['code'] = 1;
         return $this->ajaxReturn($return);

@@ -22,7 +22,7 @@
 <script type="text/html" id="emptyTpl">
     <div class="noCoupons" style="display: block;">
         <img src="__STATIC__/mobile/default/images/noCoupons.png" alt="">
-        <span class="fs30 color_9">暂无任何消息</span>
+        <span class="fs30 color_9">暂无任何数据</span>
     </div>
 </script>
 <script type="text/html" id="TabTpl">
@@ -97,7 +97,7 @@
                         isLoadend = true;
                     }
                 } else {
-                    $('.blocklist').append(template('emptyTpl', res));
+                    $('.listbox').append(template('emptyTpl', res));
                 }
 
             }, error: function () {

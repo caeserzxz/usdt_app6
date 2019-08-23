@@ -44,6 +44,7 @@ class Message extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false)
     {
+        $time = time();
         $runJson = input('runJson', 0, 'intval');
         $where = [];
         $search['cid'] = input('cid', 0, 'intval');
@@ -56,21 +57,29 @@ class Message extends AdminController
         if (empty($search['keyword']) == false) $where[] = ['title', 'like', "%" . $search['keyword'] . "%"];
         if ($search['type'] != '') $where[] = ['type', '=', $search['type']];
 
-        $this->data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
-        $this->assign("data", $this->data);
-        $this->assign("search", $search);
+        $data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
+        foreach ($data['list'] as $key => $row) {
+            if($row['start_send_date']>$time){
+                $data['list'][$key]['_status']='暂未发送';
+            }elseif($row['end_send_date']<$time){
+                $data['list'][$key]['_status']='发送结束';
+            }elseif ($row['show_end_date']<$time){
+                $data['list'][$key]['_status']='已过时';
+            }elseif ($row['status']==0){
+                $data['list'][$key]['_status']='发送中';
+            }elseif ($row['status']==0){
+                $data['list'][$key]['_status']='暂定发送';
+            }
+        }
         $this->assign("MessageType", $this->getDict('MessageType'));//发送类型
-        $statusList = array(
-            '0' => '正常',
-            '1' => '失效',
-        );
-        $this->assign("statusList", $statusList);
+        $this->assign("data", $data);
+        $this->assign("search", $search);
         if ($runJson == 1) {
-            return $this->success('', '', $this->data);
+            return $this->success('', '', $data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('list');
-            unset($this->data['list']);
-            return $this->success('', '', $this->data);
+            $data['content'] = $this->fetch('list');
+            unset($data['list']);
+            return $this->success('', '', $data);
         }
         return true;
     }

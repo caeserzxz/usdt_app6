@@ -39,7 +39,7 @@ class Message extends ApiController
                 $row['imgUrl'] =$message['article']['img_url'];
                 $row['url'] = url('member/message/info',array('id'=>$row['rec_id']));
             }
-            $row['_add_time'] = date("Y-m-d H:i",$row['add_time']);
+            $row['_add_time'] = date("Y.m.d",$row['add_time']);
             $return['list'][] = $row;
         }
         $return['page_count'] = $data['page_count'];

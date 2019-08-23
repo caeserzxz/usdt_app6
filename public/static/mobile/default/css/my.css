@@ -590,6 +590,10 @@
   -webkit-justify-content: space-between;
   justify-content: space-between;
 }
+.news .blocklist .block .top  p{
+  margin-right: 0.1rem;
+}
+
 
 .news .blocklist .block .imgBox {
   display: -webkit-box;

@@ -4,7 +4,6 @@
 {/block}
 {block name='pageType'}news{/block}
 {block name="main" }
-
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="blocklist listbox">
@@ -23,7 +22,7 @@
     {{set message_type=item.message_type}}
     {{if message_type=='0'}}
     <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}" class="block">
-        <div class="top fs28"><span class="fw_b color_3">{{item.message_title}}</span><span class="color_9">{{item._add_time}}</span>
+        <div class="top fs28"><p class="fw_b color_3">{{item.message_title}}</p><span class="color_9">{{item._add_time}}</span>
         </div>
         <div class="imgBox fs28 color_9">
             <img src="{{item.imgUrl}}" alt="">

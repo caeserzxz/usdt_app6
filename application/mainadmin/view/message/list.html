@@ -29,7 +29,7 @@
      </td>
      <td>{$vo.show_end_date|dateTpl}</td>
      <td>{$vo.update_time|dateTpl}</td>
-     <td align="center">{$statusList[$vo.status]}</td>
+     <td align="center">{$vo._status}</td>
      <td>
          <a href="{:url('info',array('message_id'=>$vo['message_id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
          <!--<a href="{:url('del',array('message_id'=>$vo['message_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}？" class="m-xs" title="删除"><i class="fa fa-trash text-muted"></i></a>-->

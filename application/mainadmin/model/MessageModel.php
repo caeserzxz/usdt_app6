@@ -19,7 +19,7 @@ class MessageModel extends BaseModel
     /*------------------------------------------------------ */
     //--  清除memcache
     /*------------------------------------------------------ */
-    public function cleanMemcache($message_id)
+    public function cleanMemcache($message_id=0)
     {
         Cache::rm($this->mkey . $message_id);
         if ($this->userInfo['user_id'] > 0) {
@@ -142,7 +142,8 @@ class MessageModel extends BaseModel
         $whereUnReceive[] = ['message_id', 'not in', $message_ids];
         $whereUnReceive[] = ['send_start_date', '<', $time];
         $whereUnReceive[] = ['send_end_date', '>', $time];
-        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" . $user['level']['level_id'] . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
+        $user_level_id = isset($user['level']['level_id'])?$user['level']['level_id']:0;//防止无等级报错
+        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" . $user_level_id . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
         $unReceiveNum = $this->where($whereUnReceive)->where($whereUnReceiveOr)->count('message_id');
         $unSeeNum += $unReceiveNum;
         Cache::set($mkey, $unSeeNum, 300);
@@ -186,7 +187,8 @@ class MessageModel extends BaseModel
         $whereUnReceive[] = ['message_id', 'not in', $message_ids];
         $whereUnReceive[] = ['send_start_date', '<', $time];
         $whereUnReceive[] = ['send_end_date', '>', $time];
-        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" . $user['level']['level_id'] . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
+        $user_level_id = isset($user['level']['level_id'])?$user['level']['level_id']:0;//防止无等级报错
+        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" .$user_level_id . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
         $rows = $this->where($whereUnReceive)->where($whereUnReceiveOr)->field('message_id,title,show_end_date')->select()->toArray();
         foreach ($rows as $row) {
             $this->sendMessage($user['user_id'], 0, $row['message_id'], $row['title'], '', $row['show_end_date']);//写入数据

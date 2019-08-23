@@ -56,19 +56,17 @@ class Bonus extends AdminController
         $time = time();
         switch ($search['status']) {
             case 1://发放中
-                $where[] = ['status', '=', 1];
+                $where[] = ['send_status', '=', 1];
                 $where[] = ['send_start_date', '<', $time];
                 $where[] = ['send_end_date', '>', $time];
                 break;
             case 2://发放结束
-                $where[] = ['status', '=', 1];
                 $where[] = ['send_end_date', '<', $time];
                 break;
             case 3://禁用
-                $where[] = ['status', '=', 2];
+                $where[] = ['use_status', '=', 2];
                 break;
             case 4://未发放
-                $where[] = ['status', '=', 1];
                 $where[] = ['send_start_date', '>', $time];
                 break;
         }
@@ -89,7 +87,7 @@ class Bonus extends AdminController
             $where[] = ['send_end_date', '<=', strtotime("+1 years")];
         }
         $use_time = input('use_time', '', 'trim');
-        if (empty($send_time) == false) {
+        if (empty($use_time) == false) {
             $use_time = str_replace('_', '/', $use_time);
             $dtime = explode('-', $use_time);
             $where[] = ['use_start_date', '>=', strtotime($dtime[0])];
@@ -100,7 +98,7 @@ class Bonus extends AdminController
         }
         $search['keyword'] = input('keyword', '', 'trim');
         if (empty($search['keyword']) == false) {
-            $where[] = ['type_name', 'like', '%' . $search['keyword'] . '%'];
+            $where[] = ['type_name', 'like', "%" . $search['keyword'] . "%"];
         }
 
         $data = $this->getPageList($this->Model, $where);
