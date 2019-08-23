@@ -259,7 +259,9 @@ class Payment extends ClientbaseController
                 return $this->fetch('recharge_error');
         }
         $this->assign('title','支付结果');
-
+        $OrderModel = new OrderModel();
+        $orderInfo = $OrderModel->where("order_sn", $result['order_sn'])->find();
+        $this->assign('orderInfo', $orderInfo);
         if ($result['status'] == 1)
             return $this->fetch('success');
         else

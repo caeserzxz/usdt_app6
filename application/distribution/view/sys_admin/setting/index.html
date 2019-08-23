@@ -19,7 +19,7 @@
     </div>
 </header>
 <section class="scrollable  wrapper w-f">
-    <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+    <form class="form-horizontal form-validate" id="_form" method="post" action="{:url('save')}">
         <section class="panel panel-default ">
             <header>
                 <ul class="nav nav-tabs">
@@ -183,6 +183,7 @@
                                     <li class="imgbox"  data-path="{$shbg}">
                                         <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除" ></a>
                                         <span class="item_box"><img src="{$shbg}"></span>
+                                        <input type="hidden" name="ShareBg[path][]" value="{$shbg}">
                                     </li>
                                     {/volist}
                                 </ul>
@@ -225,7 +226,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">呢称颜色：</label>
                         <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
-                            <input type="text" name="setting[share_nick_name_color]" class="form-control colorpicker minicolors-input" data-control="hue" value="{$setting.share_nick_name_color}" size="7">
+                            <input type="text" name="setting[share_nick_name_color]" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_nick_name_color}" size="7">
                         </div>
                     </div>
                     <div class="form-group">
@@ -246,6 +247,16 @@
                         <div class="controls">
                             <input type="text" name="setting[share_qrcode_width]" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_qrcode_width}" > <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <div class="controls col-sm-offset-1">
+
+                        </div>
+                    </div>
+                    <div style="width:30%; max-width: 500px; position: absolute; top:50px; right: 5%;">
+                        <button type="button" class="btn btn-blue" id="show_share_img" >点击预览效果</button>
+                        <a href="/upload/share_bg/test_share.jpg" target="_blank"><img id="shareimg" src="/upload/share_bg/test_share.jpg" style="width: 100%;"></a>
                     </div>
                 </div>
             </div>
@@ -279,6 +290,15 @@
                 _alert(res.msg, true);
             });
         });
+    })
+    $('#show_share_img').click(function () {
+        var obj = this;
+        $(obj).html('预览图生成中..');
+        var data = $('#_form').toJson();
+        jq_ajax('{:url("mergeShareImg")}',data,function(){
+            $(obj).html('点击预览效果');
+            $('#shareimg').attr('src','/upload/share_bg/test_share.jpg?'+ Math.random());
+        })
     })
 </script>
 

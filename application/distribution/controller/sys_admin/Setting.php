@@ -120,14 +120,60 @@ class Setting extends AdminController
         $data['image'] = array('thumbnail'=>$file_url,'path'=>$file_url);
         return $this->ajaxReturn($data);
     }
-    /**
-     * 删除图片
-     */
+    /*------------------------------------------------------ */
+    //-- 删除图片
+    /*------------------------------------------------------ */
     public function removeImg() {
         $file = input('post.url','','trim');
         unlink('.'.$file);
         return $this->success('删除成功.');
     }
+    /*------------------------------------------------------ */
+    //-- 海报合成处理
+    /*------------------------------------------------------ */
+    public function mergeShareImg(){
 
+        $MergeImg = new \lib\MergeImg();
+
+        $post = input('post.');
+        $share_bg = $post['ShareBg']['path'][0];
+        $share_bg = explode(',',$share_bg);
+        $data['share_bg'] = $share_bg[0];
+        if (empty($data['share_bg'])){
+            return false;
+        }
+
+        $data['share_avatar'] = './static/share/avatar.jpg';
+        $data['share_nick_name'] = '测试';
+        $data['share_qrcode'] = './static/share/qrcode.png';
+
+        $data['share_avatar_xy'] = $post['setting']['share_avatar_xy'];
+        $data['share_avatar_width'] = $post['setting']['share_avatar_width'];
+        $data['share_avatar_shape'] = $post['setting']['share_avatar_shape'];
+        $data['share_nick_name_xy'] = $post['setting']['share_nick_name_xy'];
+        $data['share_nick_name_color'] = $post['setting']['share_nick_name_color'];
+        $data['share_nick_name_size'] = $post['setting']['share_nick_name_size'];
+        $data['share_qrcode_xy'] = $post['setting']['share_qrcode_xy'];
+        $data['share_qrcode_width'] = $post['setting']['share_qrcode_width'];
+
+
+        /*$data['share_bg'] = settings('share_bg');
+        $data['share_bg'] = explode(',',$data['share_bg']);
+        $data['share_bg'] = $data['share_bg'][0];
+
+        $data['share_avatar'] = './20180926162125_vjbwi.jpg';
+        $data['share_avatar_xy'] = settings('share_avatar_xy');
+        $data['share_avatar_width'] = settings('share_avatar_width');
+        $data['share_avatar_shape'] = settings('share_avatar_shape');
+        $data['share_nick_name'] = '测试';
+        $data['share_nick_name_xy'] = settings('share_nick_name_xy');
+        $data['share_nick_name_color'] = settings('share_nick_name_color');
+        $data['share_nick_name_size'] = settings('share_nick_name_size');
+        $data['share_qrcode'] = './upload/qrcode/8/GucDzMiZwgd7GYRs.png';
+        $data['share_qrcode_xy'] = settings('share_qrcode_xy');
+        $data['share_qrcode_width'] = settings('share_qrcode_width');*/
+        $MergeImg->shareImg($data,'./upload/share_bg/test_share.jpg');
+        return $this->success('请求成功.');
+    }
 
 }
