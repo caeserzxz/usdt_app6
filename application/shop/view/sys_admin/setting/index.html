@@ -53,6 +53,19 @@
                                 <input type="text" name="hot_search"  class="input-xxlarge" value="{$setting.hot_search}"> <span class="help-line">每个搜索词中间用空格隔开</span>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >首页头条数量：</label>
+                            <div class="controls">
+                                <select name="headline_max_num"  >
+                                    {for start="1" end="31" name="num" }
+                                    <option value="{$num}" {$setting['headline_max_num']==$num?'selected':''}>{$num} 条</option>
+                                    {/for}
+                                </select> <span class="help-line">首页头条最多可显示的数量</span>
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label">开放商品评论：</label>
                             <div class="controls">
@@ -75,6 +88,7 @@
                                 </label>
                             </div>
                         </div>
+
                         <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label" >超时取消：</label>
@@ -232,6 +246,66 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane" id="cnset">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >电商ID（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_appid" value="{$setting.cn_appid}" style="width: 300px;"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >电商加密私钥（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_apikey" value="{$setting.cn_apikey}" style="width: 300px;"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >邮政编码：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_postcode" value="{$setting.cn_postcode}" style="width: 300px;"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >接口地址（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_apiurl" value="{$setting.cn_apiurl}" style="width: 300px;">
+                                <span class="help-line"></span>
+                                <select onchange="$('input[name=cn_apiurl]').val($(this).val());">
+                                    <option value="">请选择接口地址</option>
+                                    <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
+                                    <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >寄件人名称（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_name" value="{$setting.cn_name}"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >联系电话（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_phone" value="{$setting.cn_phone}"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >地区（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_province" class="input-mini" style="text-align: center" value="{$setting.cn_province}"> <span class="help-line">省</span>
+                                <input type="text" name="cn_city" class="input-mini" style="text-align: center" value="{$setting.cn_city}"> <span class="help-line">市</span>
+                                <input type="text" name="cn_area" class="input-mini" style="text-align: center" value="{$setting.cn_area}"> <span class="help-line">区</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >详情地址（菜鸟）：</label>
+                            <div class="controls">
+                                <input type="text" name="cn_address" value="{$setting.cn_address}" style="width: 300px;"> <span class="help-line"></span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tab-pane " id="bonus">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">开放优惠券：</label>
