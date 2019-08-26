@@ -106,12 +106,11 @@ class Users extends AdminController
             }
         }
 
-
-        if ($this->search['roleId'] >= 0) {
+        if ($this->search['roleId'] == 'all_role'){
+            $where[] = ' u.role_id > 0 ';
+        }elseif ($this->search['roleId'] >= 0) {
             $where[] = ' u.role_id = ' . $this->search['roleId'] * 1;
-        }elseif ($this->search['roleId'] == 'all_role'){
-			$where[] = ' u.role_id > 0 ';
-		}
+        }
 
         if ($this->search['levelId'] > 0) {
             $level = $this->levelList[$this->search['levelId']];
@@ -138,6 +137,7 @@ class Users extends AdminController
         $data['order_by'] = $order_by;
         $data['sort_by'] = $sort_by;
         $this->assign("data", $data);
+        $this->assign("search",$this->search);
         if ($runData == false) {
             $data['content'] = $this->fetch('sys_admin/users/list');
             return $this->success('', '', $data);

@@ -124,7 +124,10 @@
 	  $(document).on('click',"i.add",function() {
 		  var $pid = $(this).attr("rel");
 		  var count = $("#Submenu_"+$pid).find('tr').length;
-          if(count >5)return;
+          if(count >5){
+              _alert('最多只允许添加5个子菜单');
+              return;
+          }
 		  _menu_index++;
 		  var _menuPtrtmp = '<tr>'
 						  + '<td><input name="new[sort][' + _menu_index + ']" size="3" type="text" value="0" class="input-ssmall"   /></td>'
@@ -153,7 +156,7 @@
 
 	  });
 
-	  $("#listTable .del").on("click", (function () {
+	  $("#listTable").on("click",'.del', (function () {
 		  $(this).parents("tr").remove();
 	  }));
 

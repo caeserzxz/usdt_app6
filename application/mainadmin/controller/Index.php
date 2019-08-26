@@ -52,7 +52,11 @@ class Index extends AdminController
         //充值&提现审核
         $rchargeLogNum = (new RechargeLogModel)->where('status',0)->count('order_id');
         $this->assign('rchargeLogNum',$rchargeLogNum);
-        $withdrawLogNum = (new WithdrawModel)->where('status',0)->count('log_id');
+
+        $where[] = ['status','=',0];
+        $where[] = ['add_time','between',[strtotime("-1 months"),time()]];
+        $withdrawLogNum = (new WithdrawModel)->where($where)->count('log_id');
+        unset($where);
         $this->assign('withdrawLogNum',$withdrawLogNum);
         //end
         $AccountModel = new AccountModel();
