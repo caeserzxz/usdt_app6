@@ -356,7 +356,10 @@ class Order extends AdminController
         return response($this->fetch('shop@sys_admin/order/shipping'));
     }
 
-    public function print_order(){
+    /*------------------------------------------------------ */
+    //-- 快递鸟批量打单
+    /*------------------------------------------------------ */
+    public function printOrder(){
         $order_id = input('id');
         if(!$order_id){
             $this->error('订单号异常');
