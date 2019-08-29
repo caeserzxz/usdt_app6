@@ -532,11 +532,11 @@ class OrderModel extends BaseModel
                     $operating['changePrice'] = true;//改价
                     $operating['editGoods'] = true; //修改商品
                 } elseif ($ps == $this->config['PS_PAYED']) {//已支付
-                    $operating['shipping'] = true;
                     if ($order['is_pay'] == 2) {
                         $operating['setUnPay'] = true;//设为未付款
                     }
                 }
+                $operating['shipping'] = true;
                 $operating['editConsignee'] = true; //修改收货信息
             } elseif ($ss == $this->config['SS_SHIPPED']) {//已发货
                 $operating['sign'] = true;

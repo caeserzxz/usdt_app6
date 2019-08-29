@@ -99,24 +99,8 @@ class Users extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
-    /*------------------------------------------------------ */
-    //-- 获取分享二维码
-    /*------------------------------------------------------ */
-    public function myCode()
-    {
-        $file_path = config('config._upload_') . 'qrcode/' . substr($this->userInfo['user_id'], -1) . '/';
-        $file = $file_path . $this->userInfo['token'] . '.png';
-        if (file_exists($file) == false) {
-            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
-            $QRcode = new \phpqrcode\QRcode();
-            $value = config('config.host_path') . '/?share_token=' . $this->userInfo['token'];
-            makeDir($file_path);
-            $png = $QRcode::png($value, $file, "L", 10, 1, 2, true);
-        }
-        $return['file'] = config('config.host_path') . '/' . trim($file, '.');
-        $return['code'] = 1;
-        return $this->ajaxReturn($return);
-    }
+
+
     /*------------------------------------------------------ */
     //-- 获取分享商品二维码
     /*------------------------------------------------------ */
@@ -346,7 +330,7 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     //-- 获取远程会员头像到本地
     /*------------------------------------------------------ */
-    public function getHeadImg()
+    public function getHeadImg($return = false)
     {
         $headimgurl = $this->userInfo['headimgurl'];
         if (empty($headimgurl) == false){
@@ -358,8 +342,10 @@ class Users extends ApiController
                 downloadImage($headimgurl,$file_name);
                 $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
                 (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
+
             }
         }
+        if ($return == true) return '.'.$headimgurl;
         $return['headimgurl'] = $headimgurl;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
@@ -673,5 +659,51 @@ class Users extends ApiController
         $return['msg'] = '签到成功';
         $return['integral'] = $sign_integral;
         return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取分享二维码
+    /*------------------------------------------------------ */
+    public function getMyCode()
+    {
+        $file_path = config('config._upload_') . 'qrcode/' . substr($this->userInfo['user_id'], -1) . '/';
+        $file = $file_path . $this->userInfo['token'] . '.png';
+        if (file_exists($file) == false) {
+            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
+            $QRcode = new \phpqrcode\QRcode();
+            $value = config('config.host_path') . '/?share_token=' . $this->userInfo['token'];
+            makeDir($file_path);
+            $png = $QRcode::png($value, $file, "L", 10, 1, 2, true);
+        }
+        return $file;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 分享海报二维码
+    /*------------------------------------------------------ */
+    function getShareImg(){
+        $MergeImg = new \lib\MergeImg();
+        $mun = input('num',0,'intval');
+        $data['share_avatar'] = $this->getHeadImg(true);
+        $data['share_nick_name'] = $this->userInfo['nick_name'];
+        $data['share_qrcode'] = $this->getMyCode();
+
+        $data['share_bg'] = settings('share_bg');
+        $data['share_bg'] = explode(',',$data['share_bg']);
+        $allnum = count($data['share_bg']);
+        while ($mun >= $allnum) {
+             $mun -= $allnum;
+        }
+        $data['share_bg'] = $data['share_bg'][$mun];
+
+        $data['share_avatar_xy'] = settings('share_avatar_xy');
+        $data['share_avatar_width'] = settings('share_avatar_width');
+        $data['share_avatar_shape'] = settings('share_avatar_shape');
+        $data['share_nick_name_xy'] = settings('share_nick_name_xy');
+        $data['share_nick_name_color'] = settings('share_nick_name_color');
+        $data['share_nick_name_size'] = settings('share_nick_name_size');
+        $data['share_qrcode_xy'] = settings('share_qrcode_xy');
+        $data['share_qrcode_width'] = settings('share_qrcode_width');
+        $res['img'] = $MergeImg->shareImg($data,-1);
+        return $this->success('请求成功.','',$res);
     }
 }

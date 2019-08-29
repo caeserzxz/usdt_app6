@@ -1,175 +1,17 @@
 {extend name="layouts@base" /}
 {block name="head"}
-
 <style>
     .myCode .block{
-        padding:0.23rem 0.466667rem 0;
+        padding:0.23rem;
     }
-    .myCode .one {
-
+    .myCode .imgBoxZ {
+        text-align: center;
+       line-height: 5rem;
         box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
         background-color: #fff;
         position: relative;
         height: 7.2rem;
     }
-
-    .myCode .one .goodsimg{
-        width: 100%;
-        height: 5.6rem;
-    }
-
-    .myCode .one .info {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -webkit-justify-content: space-between;
-        justify-content: space-between;
-        padding: 0 0.2rem;
-        height: 1.6rem;
-    }
-
-    .myCode .one .info .left {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
-
-    .myCode .one .info .left img {
-        width: 0.7rem;
-        height: 0.7rem;
-        margin-right: 0.1rem;
-        border-radius: 50%;
-    }
-
-    .myCode .one .info .left div p {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-    }
-
-    .myCode .one .info .left div span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        width: 1.84rem;
-    }
-
-    .myCode .one .right {
-        position: absolute;
-        top: 5rem;
-        right:0.2rem;
-    }
-
-    .myCode .one .right img {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-    .myCode .two {
-
-        box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
-        background-color: #fff;
-        position: relative;
-        height: 7.2rem;
-    }
-
-    .myCode .two .goodsimg {
-        width: 100%;
-        height: 5.6rem;
-    }
-
-    .myCode .two .info {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -webkit-justify-content: space-between;
-        justify-content: space-between;
-        padding: 0 0.2rem;
-        height: 1.6rem;
-    }
-
-    .myCode .two .info .left {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
-
-    .myCode .two .info .left img {
-        width: 0.7rem;
-        height: 0.7rem;
-        margin-right: 0.1rem;
-        border-radius: 50%;
-    }
-
-    .myCode .two .info .left div p {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-    }
-
-    .myCode .two .info .left div span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        width: 1.84rem;
-    }
-
-    .myCode .two .right {
-        position: absolute;
-        top: 1rem;
-        right:0.2rem;
-    }
-
-    .myCode .two .right img {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-
-    .myCode .tabBox .box {
-        display: none;
-    }
-
-    .myCode .tab {
-        margin: 0 0.466667rem 0.2rem;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: justify;
-        -webkit-justify-content: space-between;
-        justify-content: space-between;
-    }
-
-    .myCode .tab .tablist {
-        box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.1);
-    }
-
-    .myCode .tab .tablist img {
-        width: 1.066667rem;
-    }
-
-    .myCode .tab .boxOpacity {
-        opacity: 0.5;
-    }
-
     .myCode .page-ft {
         width: 100%;
         z-index: 9;
@@ -177,7 +19,6 @@
         display: -webkit-flex;
         display: flex;
     }
-
     .myCode .page-ft div {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
@@ -193,91 +34,11 @@
         -webkit-justify-content: center;
         justify-content: center;
     }
-
     .myCode .page-ft div img {
         width: 0.186667rem;
         height: 0.186667rem;
         margin-right: 0.04rem;
     }
-
-    .myCode .model,.goodsCode .model {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 100vw;
-        z-index: 99;
-        display: none;
-    }
-
-    .myCode .model .modelBg,.goodsCode .model .modelBg{
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.5);
-        top: 0;
-        bottom: 0;
-        width: 100vw;
-        z-index: 99;
-    }
-
-    .myCode .model .modelContent,.goodsCode .model .modelContent{
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        height: 100vh;
-        width: 100vw;
-    }
-
-    .myCode .model .modelContent .imgBox,.goodsCode .model .modelContent .imgBox {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        flex-direction: column;
-        z-index: 100;
-        position: relative;
-    }
-
-    .myCode .model .modelContent img,.goodsCode .model .modelContent img {
-        width: 76vw;
-    }
-
-    .myCode .model .modelContent span,.goodsCode .model .modelContent span {
-        margin-top: 0.133333rem;
-    }
-
-
-.block{ display:none;}
-.show{ display:block;}
-.myCode .model .modelContent img, .goodsCode .model .modelContent img{
-  width: 96vw;
-
-  height: auto;
-}
-.modelContent span{
-  position: absolute;
-  bottom: 5vh;
-  width: 100%;
-  text-align: center;
-  opacity: 1;
-  z-index: 9999;
-      color: #333;
-}
-.myCode .model, .goodsCode .model{
-  z-index: 9999
-}
 </style>
 <script>
 var choose_img = "{$default_img}";
@@ -288,181 +49,35 @@ var choose_img = "{$default_img}";
 <div class="page-bd ">
     <!-- 页面内容-->
         <div class="tabBox" >
-          <div class="block show oneBox" data-type="one">        
-            <div class="one capture">
-              <img src="{:settings('share_bg')}" alt="" class="goodsimg">
-              <div class="info">
-                <div class="left">
-                  <img class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
-                  <div>
-                    <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
-                    <span class="fs26 color_9">{$userInfo['signature']}</span>
-                  </div>
-                </div>
-
+          <div class="block " >
+              <div class="imgBox ">
+                  <img id="qrcode" src="" width="100%">
+                  <div style="text-align: center; line-height: 30px;">长按图片下载</div>
               </div>
-                              <div class="right">
-                    <img src="" class="qcode" alt="">
-                </div>
-            </div>
-          </div>
-          <div class="block twoBox" data-type="two">
-              <div class="two capture">
-                <div class="info">
-                    <div class="left">
-                      <img  class="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
-                      <div>
-                        <p class="fs34 color_0 fw_b">{$userInfo['nick_name']}</p>
-                        <span class="fs26 color_9">{$userInfo['signature']}</span>
-                      </div>
-                    </div>
-                </div>
-                <img src="{:settings('share_bg')}" alt="" class="goodsimg">
-                <div class="right">
-                    <img src="" class="qcode" alt="">
-                </div>
-              </div>
-
           </div>
         </div>
 
     </div>
     <div class="page-ft">
-      <div class="BGcolor_3 saveImg"><img src="__STATIC__/mobile/default/images/goodsIcon04.png" alt=""><span class="fs28 fw_b color_w">保存图片</span></div>
-            <div class="BGcolor_3 tabBrn"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">切换模式</span></div>
       <div class="BGcolor_3 showbk"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">更换背景</span></div>
+    </div>
 
-    </div>
-    <div class="model">
-      <div class="modelBg" ></div>
-      <div class="modelContent">
-        <div class="imgBox">
-
-        
-      </div>
-      <span class="fs28 color_w">长按图片保存</span>
-      </div>
-    </div>
-    <div class="wrapper bkListBox">
-      <div class="page">
-        <div class="page-hd">
-          <div class="header bor-1px-b">
-            <div class="header-left">
-              <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
-            </div>
-            <div class="header-title">背景图片</div>
-            <div class="header-right"></div>
-          </div>
-        </div>
-        {include file="center/bk_list" /}
-      </div>   
-    </div>
-    <div class="wrapper typeBox">
-      <div class="page">
-        {include file="center/one" /}
-      </div>   
-    </div>
 </div>
 {/block}
 
 {block name="footer"}
-<script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-<script src="__STATIC__/js/clipboard.min.js"></script>
-<script>
-
-function getHeadImg(){
-    jq_ajax('{:url("member/api.users/getHeadImg")}','',function(res){
-        $('.headimgurl').attr('src',res.headimgurl);
+<script type="text/javascript">
+    var num = 0;
+    function getCodeImg(){
+        num++;
+        jq_ajax('{:_url("/member/api.users/getShareImg","num=【num】")}','',function (res) {
+            $('#qrcode').attr('src','data:image/jpg;base64,'+res.data.img);
+        });
+    }
+    getCodeImg();
+    $('.showbk').click(function () {
+        getCodeImg()
     })
-}  
-//切换模式
-$('.tabBrn').on('click', function () {
-    var that=$('.show')
-    that.removeClass('show');
-    that.siblings().addClass('show')
-});
-//显示背景选择框
-$('.showbk').on('click', function () {
-    $('html').addClass('noscroll');
-    $('.bkListBox').addClass('move-left');
-});
-
-//关闭背景选择框
-$('.bkListBox').on('click', '.close_wrapper', function () {
-    $('html').removeClass('noscroll');
-    $('.bkListBox').removeClass('move-left');
-})
-$('.imgBox').on('click','img',function(){
-  $('.model').hide();
-  $(".typeBox").css('left','100%');
-})
-{:strstr($userInfo['headimgurl'],'http')?'getHeadImg();':''}
-$(function(){
-   $('.goodsimg').attr('src',choose_img);
-   //保存图片
-  $(".saveImg").on("click", function (event) {
-      $('.htmlBox').hide()
-      var flag = $('.show').data('type');  
-      $(".typeBox").animate({left:'0'},500);
-      $('#'+flag).show()
-      setTimeout(function(){
-        build_img()
-      },1000)  
-           
-  });
-
-  function build_img(){
-    var width=document.body.clientWidth;
-    var height=$('.page').height();
-    var canvas=document.createElement("canvas");
-    canvas.width=width*2;
-    canvas.height=height*2;
-    canvas.style.width=width+"px";
-    canvas.style.height=height+"px";
-    var context=canvas.getContext("2d");
-    //然后将画布缩放，将图像放大两倍画到画布上
-      context.scale(2,2);
-    html2canvas($('.typeBox'), {
-      width:width,
-        height:height,
-        canvas:canvas,
-        onrendered: function (canvas) {
-          console.log(width+','+height);
-          var url = canvas.toDataURL();
-            var newImg=document.createElement("img");
-              newImg.src=url;
-              newImg.width=width;
-              newImg.height=height;
-            $('.imgBox').empty();
-            $('.imgBox').append(newImg);
-            $('.model').show()
-            
-        }
-    });
-  }
-	
-	//复制
-  var clipboard = new Clipboard('.copy');
-  clipboard.on('success', function(e) {
-	  _alert('复制成功.');
-	  e.clearSelection();
-  });
-  clipboard.on('error', function(e) {
-	  _alert('复制失败.');
-  });
-   //获取二维码
-   jq_ajax('{:url("member/api.users/myCode")}','',function(res){
-	   if (res.code == 0){
-			_alert(res.msg);
-			return false;   
-	   }
-        var code_url = res.file+'?v='+Math.random();
-            
-        $('.qcode').attr('src', code_url);
-	});
-})
-
-
 </script>
 
 {/block}

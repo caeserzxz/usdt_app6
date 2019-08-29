@@ -75,6 +75,13 @@ class MergeImg{
             imagedestroy($im);
             exit;
         }
+        if ($fileName == -1){
+            ob_start();
+            imagejpeg($im);
+            $img = ob_get_contents();
+            ob_end_clean();
+            return base64_encode($img);
+        }
         imagejpeg($im,$fileName,100);
         return true;
 	}
