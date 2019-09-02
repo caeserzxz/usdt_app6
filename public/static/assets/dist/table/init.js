@@ -290,7 +290,21 @@ function(a) {
                 });
                 return d.isCurrent() && e.addClass("active"),
                 e
-            }
+            },
+            jump: function(b, c) {
+                var otp;
+                for (var i = 1;i <= c.totalPages;i++){
+                    if (i == c.currentPage){
+                        otp += '<option value="'+i+'" selected>'+i+'</option>';
+                    }else{
+                        otp += '<option value="'+i+'">'+i+'</option>';
+                    }
+                }
+                return a("<span>").append(a('<select id="jump_page">').html(otp).bind("change",
+                    function() {
+                        return b.page($(this).val())
+                    }));
+            },
         },
         d = function(b, c) {
             this.$element = a(b),
@@ -311,7 +325,7 @@ function(a) {
             gap: "..",
             truncate: !1,
             page: function() {
-                return ! 0
+                return ! 1
             }
         },
         d.prototype.render = function() {
@@ -327,6 +341,7 @@ function(a) {
                 h.isLeftOuter() || h.isRightOuter() || h.isInsideWindow() ? (this.$ul.append(c.page(this, a, h)), e = !1) : !e && a.outerWindow > 0 && (this.$ul.append(c.gap(this, a)), e = !0)
             }
             d.isLast() && a.truncate || (a.next && this.$ul.append(c.nextPage(this, a, d)), a.last && this.$ul.append(c.lastPage(this, a, d)))
+            this.$ul.append(c.jump(this, a, h))
         },
         d.prototype.page = function(a, b) {
             var c = this.options;

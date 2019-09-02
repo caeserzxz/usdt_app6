@@ -190,3 +190,5 @@ min-height:90px !important;
 .table .border_top .top a{
 	position: absolute; right: 0px;
 }
+
+#jump_page{ margin-left:10px;height: 29px; width: 40px;}
