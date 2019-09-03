@@ -185,47 +185,40 @@ class Withdraw extends ApiController
     public function WithdrawNum()
     {
 		$settings = settings();
-		$max_money = $money_fee = 0;
 		$balance = $this->userInfo['account']['balance_money'];
 		//账户余额大于每次最高可提现金额，则用最高可提现金额。
-		$max_money = $balance>$settings['withdraw_max_money']?$settings['withdraw_max_money']:$balance;
+		$max_money = $balance > $settings['withdraw_max_money'] ? $settings['withdraw_max_money'] : $balance;
 
 		//账户余额小于每次最低可提现金额，则用0。
-		$max_money = $max_money<$settings['withdraw_min_money']?0:$max_money;
-
-		//外扣情况下，账户余额小于每次最低可提现金额+最低手续费，则用0。
-		if($settings['fee_type'] == 0 &&($balance<($settings['withdraw_min_money']+$settings['withdraw_min_money']*$settings['withdraw_fee_min']))){
-			$max_money = 0;
-		}
-
-		if($max_money == 0) $money_fee = 0;
-
+		$max_money = $max_money < $settings['withdraw_min_money'] ? 0 : $max_money;
+        $tmp_money = $max_money;//内扣
 		//外扣
-		if($settings['fee_type'] == 0 && $max_money != 0){
-			$tmp_money = bcdiv($max_money,(100+$settings['withdraw_fee'])/100,2);
-			$money_fee = bcmul($max_money, $settings['withdraw_fee']/100,2);
-			//若临时手续费高于最大手续费，则手续费为最大手续费
-			if($money_fee >$settings['withdraw_fee_max']){
-				$money_fee = $settings['withdraw_fee_max'];
-				//最大可提现金额为总额减去最大手续费
-				$tmp_money = $max_money - $money_fee;
-			}
+		if($settings['fee_type'] == 0){
+            $min_fee = $settings['withdraw_min_money'] * ($settings['withdraw_fee'] / 100);
+            $min_fee = $min_fee < $settings['withdraw_fee_min'] ? $settings['withdraw_fee_min'] : $min_fee;
+            if($balance < $settings['withdraw_min_money'] + $min_fee ){
+                $tmp_money = 0;
+            }else{
+                $tmp_money = bcdiv($max_money,(100+$settings['withdraw_fee'])/100,2);
+                $money_fee = bcmul($max_money, $settings['withdraw_fee']/100,2);
+                //若临时手续费高于最大手续费，则手续费为最大手续费
+                if($money_fee >$settings['withdraw_fee_max']){
+                    $money_fee = $settings['withdraw_fee_max'];
+                    //最大可提现金额为总额减去最大手续费
+                    $tmp_money = $max_money - $money_fee;
+                }
 
-			//若临时手续费低于最小手续费，则手续费为最小手续费
-			if($money_fee <$settings['withdraw_fee_min']){
-				$money_fee = $settings['withdraw_fee_min'];
-				//最大可提现金额为总额减去最小手续费
-				$tmp_money = $max_money - $money_fee;
-			}
-		}else{
-			//内扣
-			$tmp_money = $max_money;
-		}
+                //若临时手续费低于最小手续费，则手续费为最小手续费
+                if($money_fee <$settings['withdraw_fee_min']){
+                    $money_fee = $settings['withdraw_fee_min'];
+                    //最大可提现金额为总额减去最小手续费
+                    $tmp_money = $max_money - $money_fee;
+                }
+            }
+        }
 
 		$max_money = $tmp_money;
-
 		$max_money = floor($max_money);
-
 		$return['max_money'] = $max_money;
         $return['code'] = 1;
         return $this->ajaxReturn($return);

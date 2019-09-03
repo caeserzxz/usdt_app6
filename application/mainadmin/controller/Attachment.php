@@ -10,18 +10,18 @@ use app\shop\model\GoodsImgsModel;
 
 class Attachment extends AdminController{
 
-  protected $_root_;
+    protected $_root_;
     public $supplyer_id = 0;
 //*------------------------------------------------------ */
-	//-- 初始化
-	/*------------------------------------------------------ */
-   public function initialize(){
+    //-- 初始化
+    /*------------------------------------------------------ */
+    public function initialize(){
 
-       parent::initialize();
-		$this->_root_ = Request::root();
+        parent::initialize();
+        $this->_root_ = Request::root();
     }
-	
-    
+
+
     /**
      * 编辑器上传
      */
@@ -40,16 +40,16 @@ class Attachment extends AdminController{
         }
         exit;
     }
-    
+
     /**
-     * 编辑器图片空间 
+     * 编辑器图片空间
      */
     public function editer_manager() {
 
 
         $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
-        
+
         if (!in_array($dir_name, array('', 'image', 'flash', 'media', 'file'))) {
             echo "Invalid Directory name.";
             exit;
@@ -66,10 +66,10 @@ class Attachment extends AdminController{
             $root_path .= $dir_name . "/";
             $root_url .= $dir_name . "/";
             if (!file_exists($root_path)) {
-				mkdir($root_path);
+                mkdir($root_path);
             }
         }
-        
+
         //根据path参数，设置各路径和URL
         if (empty($_GET['path'])) {
             $current_path = $root_path . '/';
@@ -82,7 +82,7 @@ class Attachment extends AdminController{
             $current_dir_path = $_GET['path'];
             $moveup_dir_path = preg_replace('/(.*?)[^\/]+\/$/', '$1', $current_dir_path);
         }
-		
+
         //排序形式，name or size or type
         $this->_order = empty($_GET['order']) ? 'name' : strtolower($_GET['order']);
 
@@ -140,7 +140,7 @@ class Attachment extends AdminController{
         $result['current_dir_path'] = $current_dir_path;
         //当前目录的URL
         $result['current_url'] = str_replace('.','',$current_url);
-		
+
         //文件数
         $result['total_count'] = count($file_list);
         //文件列表数组
@@ -151,7 +151,7 @@ class Attachment extends AdminController{
         echo json_encode($result);
         exit;
     }
-    
+
     //排序
     private function _cmp_func($a, $b) {
         if ($a['is_dir'] && !$b['is_dir']) {
@@ -172,110 +172,12 @@ class Attachment extends AdminController{
             } else {
                 return strcmp($a['filename'], $b['filename']);
             }
-		}
+        }
     }
-	/**
-     * 商品上传
-    */
-    public function goodsUpload() {
-		if ($_FILES['file']){
-			$thumb['width'] = 350;
-			$thumb['height'] = 300;
-
-            if ($this->supplyer_id > 0){
-                $dir = 'supplyer/'.$this->supplyer_id.'/gimg';
-            }else{
-                $dir = 'gimg/';
-            }
-			$result = $this->_upload($_FILES['file'],$dir,$thumb);
-			if ($result['error']) {
-				$data['code'] = 1;
-				$data['msg'] = $result['info'];
-				return $this->ajaxReturn($data);
-			}
-			$addarr['goods_id'] = input('post.gid',0,'intval');
-			$addarr['sku_val'] = input('post.sku','','trim');
-
-			if ($this->store_id > 0){
-				$where[] = ['store_id','=',$this->store_id ];
-			}elseif ($this->supplyer_id > 0){//供应商相关
-                $addarr['supplyer_id'] = $this->supplyer_id;
-                $addarr['admin_id'] = 0;
-                $where[] = ['supplyer_id','=',$this->supplyer_id];
-            }else{
-                $addarr['admin_id'] = AUID;
-                $where[] = ['admin_id','=',AUID];
-            }
-			$savepath = trim($result['info'][0]['savepath'],'.');
-	
-			$addarr['store_id'] = $this->store_id;
-			$addarr['goods_img'] = $file_url = $savepath.$result['info'][0]['savename'];
-			$addarr['goods_thumb'] = str_replace('.','_thumb.',$addarr['goods_img']);
-			$GoodsImgsModel =  new GoodsImgsModel();
-			//如果sku不为空，查询之前是否已上传过,则删除
-			if (empty($addarr['sku_val']) == false){
-				$where[] = ['goods_id','=',$addarr['goods_id']];
-				$where[] = ['sku_val','=',$addarr['sku_val']];
-				$imgObj = $GoodsImgsModel->where($where)->find();
-				if (empty($imgObj) == false){
-					unlink('.'.$imgObj['goods_thumb'],'.'.$imgObj['goods_img']);
-					$imgObj->delete();
-				}
-			}
-			$GoodsImgsModel->save($addarr);	
-			$img_id = $GoodsImgsModel->img_id;
-			if ($img_id < 1){
-				$this->removeImg($file_url);//删除刚刚上传的
-				$data['code'] = 0;
-				$data['msg'] = '商品图片写入数据库失败！';
-				return $this->ajaxReturn($data);
-			}
-			$data['code'] = 0;
-            $data['msg'] = "上传成功";
-            $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);
-			$data['savename'] = $result['info'][0]['savename'];
-			$data['src'] = $file_url;
-			return $this->ajaxReturn($data);
-		}
-		$result = $this->_upload($_FILES['imgFile'],'gdimg/');
-        if ($result['error']) {
-			$data['code'] = 1;
-			$data['msg'] = $result['info'];
-			return $this->ajaxReturn($data);
-		}
-		$result['url']= '/'.$result['info'][0]['savepath'].$result['info'][0]['savename'];
-        return $this->ajaxReturn($result);
-    }
-
-    
-
-	/**
-     * 删除商品图片
-     */
-    public function removeImg($file='') {
-		$img_id = input('post.id',0,'intval');
-		if ($img_id > 0){
-			$GoodsImgsModel = new GoodsImgsModel();
-			$img = $GoodsImgsModel->find($img_id);
-			if (empty($img)){
-				return $this->error('没有找到相关图片.');
-			}
-			$file = $img->goods_img;
-			$res = $img->delete();
-			if ($res < 1){
-				return $this->error('删除图片失败.');
-			}
-		}
-		if (empty($file))  return $this->error('传值错误.');		
-		unlink('.'.$file);
-		unlink('.'.str_replace('.','_thumb.',$file));
-		return $this->success('删除图片成功.');
-    }
-
     /**
-     * 添加背景图片
+     * 商品上传
      */
-    public function goodsUploadl() {
+    public function goodsUpload() {
         if ($_FILES['file']){
             $thumb['width'] = 350;
             $thumb['height'] = 300;
@@ -301,12 +203,9 @@ class Attachment extends AdminController{
                 $addarr['admin_id'] = 0;
                 $where[] = ['supplyer_id','=',$this->supplyer_id];
             }else{
-
                 $addarr['admin_id'] = AUID;
-
                 $where[] = ['admin_id','=',AUID];
             }
-
             $savepath = trim($result['info'][0]['savepath'],'.');
 
             $addarr['store_id'] = $this->store_id;
@@ -323,15 +222,14 @@ class Attachment extends AdminController{
                     $imgObj->delete();
                 }
             }
-            // dump($addarr);die;
-            // $GoodsImgsModel->save($addarr);
-            // $img_id = $GoodsImgsModel->img_id;
-            // if ($img_id < 1){
-            //     $this->removeImg($file_url);//删除刚刚上传的
-            //     $data['code'] = 0;
-            //     $data['msg'] = '商品图片写入数据库失败！';
-            //     return $this->ajaxReturn($data);
-            // }
+            $GoodsImgsModel->save($addarr);
+            $img_id = $GoodsImgsModel->img_id;
+            if ($img_id < 1){
+                $this->removeImg($file_url);//删除刚刚上传的
+                $data['code'] = 0;
+                $data['msg'] = '商品图片写入数据库失败！';
+                return $this->ajaxReturn($data);
+            }
             $data['code'] = 0;
             $data['msg'] = "上传成功";
             $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);
@@ -349,8 +247,12 @@ class Attachment extends AdminController{
         return $this->ajaxReturn($result);
     }
 
-    //删除背景图片
-    public function removeImgs($file='') {
+
+
+    /**
+     * 删除商品图片
+     */
+    public function removeImg($file='') {
         $img_id = input('post.id',0,'intval');
         if ($img_id > 0){
             $GoodsImgsModel = new GoodsImgsModel();
@@ -368,6 +270,118 @@ class Attachment extends AdminController{
         unlink('.'.$file);
         unlink('.'.str_replace('.','_thumb.',$file));
         return $this->success('删除图片成功.');
+    }
+
+
+    /*------------------------------------------------------ */
+    //--webuploader组件by装修上传调用
+    /*------------------------------------------------------ */
+    public function webUploadByEdit()
+    {
+        $type = input('get.type', '', 'trim');
+        if (in_array($type, array('image',)) == false) {
+            $result['error'] = 1;
+            $result['message'] = '不支持上传类型.';
+            return $this->ajaxReturn($result);
+        }
+        if($_FILES['imgFile']['size'] > 2000000){
+            $result['error'] = 1;
+            $result['message'] = '上传文件过大.';
+            return $this->ajaxReturn($result);
+        }
+        if ($type == 'image'){
+            if (strstr( $_FILES["file"]['type'],'image') == false) {
+                $result['error'] = 1;
+                $result['message'] = '未能识别图片，请核实.';
+                return $this->ajaxReturn($result);
+            }
+            $result['is_image'] = 1;
+            $res = $this->_upload($_FILES["file"],'edit_page/');
+            if ($res['error']) {
+                $data['error'] = 1;
+                $data['message'] = $res['info'];
+                return $this->ajaxReturn($data);
+            }
+            $result['name'] = $res['info'][0]['name'];
+            $result['ext'] = $res['info'][0]['extension'];
+            $result['filesize'] = $res['info'][0]['size'];
+            $newfile =  $res['info'][0]['savepath'].$res['info'][0]['savename'];
+            $result['filename'] = trim($newfile,'.');
+            $result['attachment'] = $result['filename'];
+            $result['url'] = $result['filename'];
+            list( $result['width'],  $result['height']) = getimagesize($newfile);
+        }
+
+        return $this->ajaxReturn($result);
+    }
+    /*------------------------------------------------------ */
+    //--获取网络图片
+    /*------------------------------------------------------ */
+    public function fetchWebImg()
+    {
+        $url = input('url','','trim');
+        if (empty($url)){
+            $data['error'] = 1;
+            $data['message'] = '请求填写网络图片地址.';
+            return $this->ajaxReturn($data);
+        }
+        $file_path = config('config._upload_').'edit_page/'.date('Y').'/'.date('m') .'/';
+        makeDir($file_path);
+        $extension = end(explode('.',$url));
+        $file_name = $file_path.random_str(15).'.'.$extension;
+        downloadImage($url,$file_name);
+        $result['name'] = end(explode('/',$url));
+        $result['ext'] = $extension;
+        $result['filename'] = trim($file_name,'.');
+        $result['attachment'] = $result['filename'];
+        $result['url'] = $result['filename'];
+        return $this->ajaxReturn($result);
+    }
+    /**
+     * 编辑器图片空间
+     */
+    public function webUploadByManager() {
+        $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
+
+        $year = input('year',date('Y'),'intval');
+        $month = input('month',date('m'),'intval');
+        $root_path = config('config._upload_').'edit_page/';
+        $month = str_pad($month,1,"0",STR_PAD_LEFT);
+        $current_path = $root_path.$year.'/'.$month;
+        //目录不存在或不是目录
+        if (!file_exists($current_path) || !is_dir($current_path)) {
+            echo 'Directory does not exist.';
+            exit;
+        }
+
+        //遍历目录取得文件信息
+        $file_list = array();
+        if ($handle = opendir($current_path)) {
+            $i = 0;
+            while (false !== ($filename = readdir($handle))) {
+                if ($filename{0} == '.') continue;
+                $file = $current_path .'/'. $filename;
+                $file_list[$i]['file'] = $file;
+                $file_list[$i]['filesize'] = filesize($file);
+                $file_list[$i]['dir_path'] = '';
+                $file_arr = explode('.', trim($file));
+                $file_arr = array_pop($file_arr);
+                $file_ext = strtolower($file_arr);
+                $file_list[$i]['is_photo'] = in_array($file_ext, $ext_arr);
+                $file_list[$i]['filetype'] = $file_ext;
+                $file_list[$i]['filename'] = $filename; //文件名，包含扩展名
+                $i++;
+            }
+            closedir($handle);
+        }
+
+        //文件列表数组
+        $result['file_list'] = $file_list;
+
+        //输出JSON字符串
+        header('Content-type: application/json; charset=UTF-8');
+        echo json_encode($result);
+        exit;
     }
 }
 ?>

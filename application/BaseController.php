@@ -317,7 +317,7 @@ class BaseController extends Controller
         $upload->saveRule = 'uniqid';
         $upload->autoSub = true;
         $upload->subType = 'date';
-        $upload->dateFormat = 'Ymd/';
+        $upload->dateFormat = 'Y/m/';
         return $upload;
     }
 }

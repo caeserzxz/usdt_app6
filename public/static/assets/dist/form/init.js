@@ -196,16 +196,17 @@ function(a, b) {
                     }
                 }), b) {
                     var d = c("button[type='submit']", a);
-                    d.button("loading"),
+                    var e = c("button[type='button']", a);
+                    d.button("loading"),d.button("loading"),
                     c(a).ajaxSubmit({
                         dataType: "json",
                         success: function(a) {
-                            d.button("reset"),
-                            //g && g.modal("hide"),
-                            f.run(a)
+                            g && g.modal("hide"),
+                            f.run(a);
+                            d.button("reset"),e.button("reset")
                         },
                         error: function(a) {
-                            d.button("reset"),
+                            d.button("reset"),e.button("reset"),
                             g && g.modal("hide"),
                              G.ui.tips.info(a.responseText)
                         }
