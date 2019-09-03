@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="__STATIC__/customize/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__STATIC__/customize/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__STATIC__/customize/css/animate.css" rel="stylesheet">
+    <link href="__STATIC__/customize/css/v3.css?v=4.1.0" rel="stylesheet">
+    <link href="__STATIC__/customize/css/common_v3.css?v=2.0.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/fonts/v3/iconfont.css?v=2016070717">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/fonts/iconfont.css?v=2016070717">
+
+
+    <script src="__STATIC__/customize/js/jquery/jquery-1.11.1.min.js"></script>
+    <script src="__STATIC__/customize/js/jquery/jquery.gcjs.js"></script>
+    <script src="__STATIC__/customize/js/util.js"></script>
+
+
+    <script type="text/javascript">
+        var webuploaderEJ = "{:url('mainAdmin/attachment/webUploadByEdit')}",
+            fetchByEditJ =  "{:url('mainAdmin/attachment/fetchWebImg','',false)}",
+            webUploadByManagerJ = "{:url('mainAdmin/attachment/webUploadByManager','',false)}";
+        window.sysinfo = {
+            'uniacid': '1',
+            'acid': '1',
+            'uid': '2',
+            'isfounder': 0,
+            'siteroot': 'http://rrd.winmobi.cn/',
+            'siteurl': 'http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.page.sys.edit&id=30',
+            'attachurl': 'http://rrd.winmobi.cn/attachment/',
+            'attachurl_local': 'http://rrd.winmobi.cn/attachment/',
+            'attachurl_remote': '',
+            'module' : {'url' : 'http://rrd.winmobi.cn/addons/ewei_shopv2/', 'name' : 'ewei_shopv2'},
+            'cookie' : {'pre': 'b31d_'},
+            'account' : {"acid":"1","uniacid":"1","token":"bgvs11wamc1efrrrxdncpkmozsh23m14","encodingaeskey":"hUu8ZISKYVUcf5hfHBsGXT2C271YYy8Ui7XeiTyXK0Y","level":"4","name":"\u9632\u4f2a\u7cfb\u7edf315","account":"gh_821e2e6f9cd6","original":"gh_821e2e6f9cd6","signature":"","country":"","province":"","city":"","username":"","password":"","lastupdate":"0","key":"wxfdd401da4cabfb79","secret":"7383f519c8f1fa992c976771bb79e5b8","styleid":"1","subscribeurl":"","auth_refresh_token":"","type":"1","isconnect":"1","isdeleted":"0","uid":"2","starttime":"1526376828","endtime":"0","groups":{"1":{"groupid":"1","uniacid":"1","title":"\u9ed8\u8ba4\u4f1a\u5458\u7ec4","credit":"0","isdefault":"1"}},"grouplevel":"0","logo":"http:\/\/rrd.winmobi.cn\/attachment\/headimg_1.jpg?time=1566884846","qrcode":"http:\/\/rrd.winmobi.cn\/attachment\/qrcode_1.jpg?time=1566884846"},
+        };
+    </script>
+
+
+    <!-- 兼容微擎1.5.3 -->
+
+
+    <script src="__STATIC__/customize/js/require.js"></script>
+
+    <script src="__STATIC__/customize/js/config1.0.js"></script>
+
+    <script>
+        require.config({
+            waitSeconds: 0
+        });
+    </script>
+    <script src="__STATIC__/customize/js/myconfig.js"></script>
+
+    <script type="text/javascript">
+        if (navigator.appName == 'Microsoft Internet Explorer') {
+            if (navigator.userAgent.indexOf("MSIE 5.0") > 0 || navigator.userAgent.indexOf("MSIE 6.0") > 0 || navigator.userAgent.indexOf("MSIE 7.0") > 0) {
+                alert('您使用的 IE 浏览器版本过低, 推荐使用 Chrome 浏览器或 IE8 及以上版本浏览器.');
+            }
+        }
+        myrequire.path = "/static/js/";
+
+        function preview_html(txt)
+        {
+            var win = window.open("", "win", "width=300,height=600"); // a window object
+            win.document.open("text/html", "replace");
+            win.document.write($(txt).val());
+            win.document.close();
+        }
+    </script>
+</head>
+
+<body>
+
+
+<div class="wb-container right-panel">
+
+    <link href="__STATIC__/customize/diypage/css/web.css?v=201609291000" rel="stylesheet" type="text/css"/>
+    <link href="__STATIC__/customize/diypage/css/diy.min.css?v=201609291000" rel="stylesheet" type="text/css"/>
+    <link href="__STATIC__/customize/diypage/css/foxui.diy.css?v=201612141111" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
+    <div class="page-content">
+        <div class="row relative w840">
+            <div class="diy-phone" data-merch="0">
+                <div class="phone-head"></div>
+                <div class="phone-body">
+                    <div class="phone-title" id="page">loading...</div>
+                    <div class="phone-main" id="phone">
+                        <p style="text-align: center; line-height: 400px">您还没有添加任何元素</p>
+                    </div>
+                </div>
+                <div class="phone-foot"></div>
+            </div>
+
+            <div class="diy-editor form-horizontal" id="diy-editor">
+                <div class="editor-arrow"></div>
+                <div class="inner"></div>
+            </div>
+
+
+            <div class="diy-menu">
+                <div class="navs" id="navs"></div>
+                <div class="action">
+                    <nav class="btn btn-default btn-sm" style="float: left; display: none" id="gotop"><i class="icon icon-top" style="font-size: 12px"></i> 返回顶部</nav>
+                    <nav class="btn btn-warning btn-sm btn-save" data-type="savetemp">另存为模板</nav>
+                    <nav class="btn btn-primary btn-sm btn-save" data-type="save">保存页面</nav>
+                    <nav class="btn btn-success btn-sm btn-save" data-type="preview">保存并预览</nav>
+                </div>
+            </div>
+        </div>
+
+        {include file="shop@sys_admin/edit_pageb/plugin" /}
+    </div>
+
+    <script type="text/javascript" src="__STATIC__/customize/js/components/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="__STATIC__/customize/js/components/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/customize/js/components/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script language="javascript">
+        var path = '../diypage/js/diy.min';
+        myrequire([path,'tpl','web/biz'],function(modal,tpl){
+            modal.init({
+                tpl: tpl,
+                attachurl: "http://rrd.winmobi.cn/attachment/",
+                id: '30',
+                type: 2,
+                data: {"page":{"type":"2","title":"\u8bf7\u8f93\u5165\u9875\u9762\u6807\u9898","name":"\u672a\u547d\u540d\u9875\u9762","desc":"","icon":"","keyword":"","background":"#f3f3f3","diymenu":"-1","diylayer":"1","diygotop":"1","followbar":"1","visit":"0","visitlevel":{"member":"","commission":""},"novisit":{"title":"","link":""}}},
+                diymenu: [{"id":"8","name":"\u5546\u57ce"}],
+                diyadvs: [],
+                levels: null,
+                merch: 0,
+                plugins: {"creditshop":1,"merch":1,"seckill":0,"exchange":1},
+                shopset: {"style":"diypage","name":"11\u6b63\u54c1\u5546\u57ce","logo":"images\/1\/2018\/05\/jQnL7VR55NmMR7N72cXLLzvLnnXsPL.jpg","description":"\u6b63\u54c1\u5546\u57ce","img":"images\/1\/2018\/07\/Yj4DD441e494C44CJjsFEP6psFfzKS.jpg","signimg":"images\/1\/2018\/07\/HBLYN93UyYLQTTBYWY9tY3rM49Yqu3.jpg","getinfo":"1","saleout":"images\/1\/2018\/07\/ShHXvr6R2iHH2yH6y9he5hh52H66zz.jpg","loading":"images\/1\/2018\/07\/R2M55665qgM23mu4h9309e1b40zmVB.png","diycode":"","funbar":"1","catlevel":"2","catshow":"0","catadvimg":"","catadvurl":"","indexsort":{"search":{"text":"\u641c\u7d22\u680f","visible":1},"adv":{"text":"\u5e7b\u706f\u7247","visible":1},"nav":{"text":"\u5bfc\u822a\u680f","visible":1},"notice":{"text":"\u516c\u544a\u680f","visible":1},"seckill":{"text":"\u79d2\u6740\u680f","visible":1},"cube":{"text":"\u9b54\u65b9\u680f","visible":1},"banner":{"text":"\u5e7f\u544a\u680f","visible":1},"goods":{"text":"\u63a8\u8350\u680f","visible":1}},"goodstotal":"3","cubes":[{"img":"images\/1\/2018\/07\/W6LcGY7yfYCtU4OccY6uyC2cgTY2ob.jpeg","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=shop.category"},{"img":"http:\/\/rrd.winmobi.cn\/addons\/ewei_shopv2\/plugin\/diypage\/static\/template\/default1\/picturew_1.jpg","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=goods"},{"img":"http:\/\/rrd.winmobi.cn\/attachment\/images\/1\/2018\/07\/Y1t0zj66siZ6YM8j10zIiT7J1YJUZ4.png","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=member"}],"qq":"","address":"\u8f66\u9642\u8def","phone":"15521323823","ordercolumns":[{"field":"ordersn","title":"\u8ba2\u5355\u7f16\u53f7","subtitle":"","width":"24"},{"field":"mrealname","title":"\u4f1a\u5458\u59d3\u540d","subtitle":"","width":"12"},{"field":"mmobile","title":"\u4f1a\u5458\u624b\u673a\u53f7","subtitle":"","width":"12"},{"field":"openid","title":"openid","subtitle":"","width":"24"},{"field":"realname","title":"\u6536\u8d27\u59d3\u540d(\u6216\u81ea\u63d0\u4eba)","subtitle":"","width":"12"},{"field":"mobile","title":"\u8054\u7cfb\u7535\u8bdd","subtitle":"","width":"12"},{"field":"address","title":"\u6536\u8d27\u5730\u5740","subtitle":"\u6536\u8d27\u5730\u5740(\u7701\u5e02\u533a\u5408\u5e76)","width":"24"},{"field":"address_province","title":"\u6536\u8d27\u5730\u5740","subtitle":"\u6536\u8d27\u5730\u5740(\u7701\u5e02\u533a\u5206\u79bb)","width":"12"},{"field":"goods_str","title":"\u5546\u54c1\u4fe1\u606f","subtitle":"\u5546\u54c1\u4fe1\u606f(\u4fe1\u606f\u5408\u5e76)","width":"36"},{"field":"goods_title","title":"\u5546\u54c1\u4fe1\u606f","subtitle":"\u5546\u54c1\u4fe1\u606f(\u4fe1\u606f\u5206\u79bb)","width":"24"},{"field":"paytype","title":"\u652f\u4ed8\u65b9\u5f0f","subtitle":"","width":"12"},{"field":"dispatchname","title":"\u914d\u9001\u65b9\u5f0f","subtitle":"","width":"12"},{"field":"goodsprice","title":"\u5546\u54c1\u5c0f\u8ba1","subtitle":"","width":"12"},{"field":"dispatchprice","title":"\u8fd0\u8d39","subtitle":"","width":"12"},{"field":"deductprice","title":"\u79ef\u5206\u62b5\u6263","subtitle":"","width":"12"},{"field":"deductcredit2","title":"\u4f59\u989d\u62b5\u6263","subtitle":"","width":"12"},{"field":"deductenough","title":"\u6ee1\u989d\u7acb\u51cf","subtitle":"","width":"12"},{"field":"couponprice","title":"\u4f18\u60e0\u5238\u4f18\u60e0","subtitle":"","width":"12"},{"field":"changeprice","title":"\u8ba2\u5355\u6539\u4ef7","subtitle":"","width":"12"},{"field":"changedispatchprice","title":"\u8fd0\u8d39\u6539\u4ef7","subtitle":"","width":"12"},{"field":"price","title":"\u5e94\u6536\u6b3e","subtitle":"","width":"12"},{"field":"status","title":"\u72b6\u6001","subtitle":"","width":"12"},{"field":"createtime","title":"\u4e0b\u5355\u65f6\u95f4","subtitle":"","width":"24"},{"field":"paytime","title":"\u4ed8\u6b3e\u65f6\u95f4","subtitle":"","width":"24"},{"field":"sendtime","title":"\u53d1\u8d27\u65f6\u95f4","subtitle":"","width":"24"},{"field":"finishtime","title":"\u5b8c\u6210\u65f6\u95f4","subtitle":"","width":"24"},{"field":"expresscom","title":"\u5feb\u9012\u516c\u53f8","subtitle":"","width":"24"},{"field":"expresssn","title":"\u5feb\u9012\u5355\u53f7","subtitle":"","width":"24"},{"field":"remark","title":"\u8ba2\u5355\u5907\u6ce8","subtitle":"","width":"36"},{"field":"salerinfo","title":"\u6838\u9500\u5458","subtitle":"","width":"24"},{"field":"storeinfo","title":"\u6838\u9500\u95e8\u5e97","subtitle":"","width":"36"},{"field":"order_diyformdata","title":"\u8ba2\u5355\u81ea\u5b9a\u4e49\u4fe1\u606f","subtitle":"","width":"36"},{"field":"goods_diyformdata","title":"\u5546\u54c1\u81ea\u5b9a\u4e49\u4fe1\u606f","subtitle":"","width":"36"},{"field":"commission","title":"\u4f63\u91d1\u603b\u989d","subtitle":"","width":"12"},{"field":"commission1","title":"\u4e00\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission2","title":"\u4e8c\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission3","title":"\u4e09\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission4","title":"\u6263\u9664\u4f63\u91d1\u540e\u5229\u6da6","subtitle":"","width":"12"},{"field":"profit","title":"\u6263\u9664\u4f63\u91d1\u53ca\u8fd0\u8d39\u540e\u5229\u6da6","subtitle":"","width":"12"},{"field":"group","title":"\u4f1a\u5458\u5206\u7ec4","subtitle":"","width":"12"},{"field":"nickname","title":"\u7c89\u4e1d\u6635\u79f0","subtitle":"","width":"12"}],"goodsstyle":0,"bannerswipe":1,"indexrecommands":["220","215","213","212","211","210","209","208","207","203"]}        });
+        });
+        function selectUrlCallback(href){
+            var ue =  UE.getEditor('rich');
+            if(href){
+                ue.execCommand('link', {href: href, 'data-nocache': 'true'});
+            }
+        }
+        function callbackGoods(data) {
+            myrequire([path],function(modal) {
+                modal.callbackGoods(data);
+            });
+        }
+        function callbackCategory (data) {
+            myrequire([path],function(modal) {
+                modal.callbackCategory(data);
+            });
+        }
+        function callbackGroup (data) {
+            myrequire([path],function(modal) {
+                modal.callbackGroup(data);
+            });
+        }
+        function callbackMerch (data) {
+            myrequire([path],function(modal) {
+                modal.callbackMerch(data);
+            });
+        }
+        function callbackMerchCategory (data) {
+            myrequire([path],function(modal) {
+                modal.callbackMerchCategory(data);
+            });
+        }
+        function callbackMerchGroup (data) {
+            myrequire([path],function(modal) {
+                modal.callbackMerchGroup(data);
+            });
+        }
+        function callbackSeckill (data) {
+            myrequire([path],function(modal) {
+                modal.callbackSeckill(data);
+            });
+        }
+        function callbackCoupon (data) {
+            myrequire([path],function(modal) {
+                modal.callbackCoupon(data);
+            });
+        }
+    </script>
+
+    <div id="page-loading">
+        <div class="page-loading-inner">
+            <div class="sk-three-bounce">
+                <div class="sk-child sk-bounce1"></div>
+                <div class="sk-child sk-bounce2"></div>
+                <div class="sk-child sk-bounce3"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+<script language='javascript'>
+    require(['bootstrap'], function ($) {
+        $('[data-toggle="tooltip"]').tooltip("destroy").tooltip({
+            container: $(document.body)
+        });
+        $('[data-toggle="popover"]').popover("destroy").popover({
+            container: $(document.body)
+        });
+    });
+
+
+
+    $(function () {
+        //$('.page-content').show();
+        $('.img-thumbnail').each(function () {
+            if ($(this).attr('src').indexOf('nopic.jpg') != -1) {
+                $(this).attr('src', "__STATIC__/customize/images/nopic.jpg");
+            }
+        })
+    });
+</script>
+<script language="javascript">
+    myrequire(['web/init']);
+    if( $('form.form-validate').length<=0){
+        window.formInited = true;
+    }
+    window.formInitTimer = setInterval(function () {
+        if (typeof(window.formInited ) !== 'undefined') {
+            $('#page-loading').remove();
+            clearInterval(window.formInitTimer);
+        }else{
+            //$('#page-loading').show();
+        }
+    }, 1);
+</script>
+
+
+</body>
+</html>

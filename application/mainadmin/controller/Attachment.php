@@ -341,47 +341,47 @@ class Attachment extends AdminController{
      * 编辑器图片空间
      */
     public function webUploadByManager() {
-        $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
-
         $year = input('year',date('Y'),'intval');
         $month = input('month',date('m'),'intval');
         $root_path = config('config._upload_').'edit_page/';
-        $month = str_pad($month,1,"0",STR_PAD_LEFT);
-        $current_path = $root_path.$year.'/'.$month;
-        //目录不存在或不是目录
-        if (!file_exists($current_path) || !is_dir($current_path)) {
-            echo 'Directory does not exist.';
-            exit;
+        if ($month < 10 ){
+            $current_path = $root_path.$year.'/0'.$month*1;
+        }else{
+            $current_path = $root_path.$year.'/'.$month;
         }
-
         //遍历目录取得文件信息
-        $file_list = array();
-        if ($handle = opendir($current_path)) {
-            $i = 0;
-            while (false !== ($filename = readdir($handle))) {
-                if ($filename{0} == '.') continue;
-                $file = $current_path .'/'. $filename;
-                $file_list[$i]['file'] = $file;
-                $file_list[$i]['filesize'] = filesize($file);
-                $file_list[$i]['dir_path'] = '';
-                $file_arr = explode('.', trim($file));
-                $file_arr = array_pop($file_arr);
-                $file_ext = strtolower($file_arr);
-                $file_list[$i]['is_photo'] = in_array($file_ext, $ext_arr);
-                $file_list[$i]['filetype'] = $file_ext;
-                $file_list[$i]['filename'] = $filename; //文件名，包含扩展名
-                $i++;
+        $data = array();
+        //目录不存在或不是目录
+        if (file_exists($current_path) && is_dir($current_path)) {
+            if ($handle = opendir($current_path)) {
+                $i = 0;
+                while (false !== ($filename = readdir($handle))) {
+                    if ($filename{0} == '.') continue;
+                    $file = trim($current_path ,'.').'/'. $filename;
+                    $data[$i]['id'] = $i;
+                    $data[$i]['filename'] = $filename;
+                    $data[$i]['attachment'] = $file;
+                    $data[$i]['type'] = 1;
+                    $data[$i]['url'] = $file;
+                    $i++;
+                }
+                closedir($handle);
             }
-            closedir($handle);
         }
+       /* // 页数参数，默认第一页
+        $page = input('page',1,'intval');
+        // 每页数目
+        $step = 20;
+        // 每次获取起始位置
+        $start = ($page-1)*$step;
+        // 获取数组中当前页的数据
+        $page_data = array_slice($data,$start,$step);*/
 
-        //文件列表数组
-        $result['file_list'] = $file_list;
+        $result['message']['errno'] = 0;
+        $result['message']['message']['page']='';
+        $result['message']['message']['items'] = $data;
+        return $this->ajaxReturn($result);
 
-        //输出JSON字符串
-        header('Content-type: application/json; charset=UTF-8');
-        echo json_encode($result);
-        exit;
     }
 }
 ?>
