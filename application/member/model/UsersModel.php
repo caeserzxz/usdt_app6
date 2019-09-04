@@ -311,7 +311,7 @@ class UsersModel extends BaseModel
         }
         $upArr['mobile'] = $data['mobile'];
         $upArr['password'] = f_hash($data['password']);
-        $upArr['pay_password'] = f_hash($data['pay_password'].$this->userInfo['user_id']);
+        $upArr['pay_password'] = f_hash($data['pay_password']);
         $res = $this->where('user_id', $this->userInfo['user_id'])->update($upArr);
         if ($res < 1) return '未知错误，绑定手机失败.';
         $obj->_log($this->userInfo['user_id'], '用户绑定手机号码.', 'member');

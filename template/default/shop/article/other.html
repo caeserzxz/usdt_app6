@@ -6,10 +6,8 @@
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="detailsBox"  style="padding: 20px;">
-
         <div class="content">
-
-            {$content|raw}
+            {$content|raw|html_entity_decode}
         </div>
     </div>{include file="layouts@bottom" /}
 </div>

@@ -44,29 +44,33 @@ class Withdraw extends AdminController
 		$where = [];
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);
-			$where[] = ['w.add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+			$where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
 		}else{
-			$where[] = ['w.add_time','between',[strtotime("-1 months"),time()]];
+			$where[] = ['add_time','between',[strtotime("-1 months"),time()]];
 		}
 		if ($search['status'] >= 0){
-			$where[] = ['w.status','=',$search['status']];
+			$where[] = ['status','=',$search['status']];
 		}	
 		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
 			 $uids = $UsersModel->where(" mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR mobile LIKE '%".$search['keyword']."%'")->column('user_id');
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
-			 $where[] = ['w.user_id','in',$uids];
+			 $where[] = ['user_id','in',$uids];
 		}
 		if (empty($search['type']) == false){
-			$where[] = ['uwa.type','=',$search['type']];
+			$where[] = ['type','=',$search['type']];
 		}
         $is_export =  input('is_export',0,'intval');
         if ($is_export > 0) {
             return $this->export($where);
         }
-		$viewObj = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where);
+		$viewObj = $this->Model->where($where);
 
         $data = $this->getPageList($this->Model,$viewObj);
+        foreach ($data['list'] as $key=>$row){
+            $row['account_info'] = json_decode($row['account_info'],true);
+            $data['list'][$key] = $row;
+        }
 		$this->assign("userWithdrawType", $this->userWithdrawType);
 		$this->assign("search", $search);		
 		$this->assign("data", $data);
@@ -85,10 +89,7 @@ class Withdraw extends AdminController
 	//-- $data array 自动读取对应的数据
 	/*------------------------------------------------------ */
 	public function asInfo($data){
-		$data['account'] = (new WithdrawAccountModel)->find($data['account_id']);
-		if (empty($data['account']) == false){
-			$data['account'] = $data['account']->toArray();	
-		}
+        $data['account'] = json_decode($data['account_info'],true);
 		$userWithdrawType = $this->getDict('UserWithdrawType');
 		$data['status_name'] = $userWithdrawType[$data['status']]['name'];
 		return $data;

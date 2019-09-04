@@ -21,7 +21,7 @@ class PubDictModel extends BaseModel
 	//-- 列表
 	/*------------------------------------------------------ */
 	public static function getRows($dict_group = '',$is_top = false,$is_del = false){
-		//$data = Cache::get(self::$mkey.$dict_group);
+		$data = Cache::get(self::$mkey.$dict_group);
 		if (empty($data)){
 			$rows = self::field('*,dict_val AS name,dict_key AS ext_val')->where('dict_group',$dict_group)->order('sort_order,id ASC')->select()->toArray();
 			$data = returnRows($rows);

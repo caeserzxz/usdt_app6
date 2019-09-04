@@ -11,7 +11,7 @@
         <div class="title fs34 fw_b color_3">{$info['title']}</div>
         <span class="fs28 color_9">{$info['add_time']|date='Y-m-d'}</span>
         <div class="content">
-            {$info['content']|raw}
+            {$info['content']|raw|html_entity_decode}
         </div>
     </div>
 </div>

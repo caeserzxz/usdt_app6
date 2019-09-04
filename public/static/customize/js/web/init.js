@@ -383,7 +383,7 @@ define(['jquery', 'bootstrap'],
                 if (_platform) {
                     url = url + "&platform=" + _platform
                 }
-                url = '/link.html';
+                url = linksJ;
                 $.ajax(url, {
                     type: "get",
                     dataType: "html",

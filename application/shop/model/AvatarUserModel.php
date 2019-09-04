@@ -33,7 +33,7 @@ class AvatarUserModel extends BaseModel
 	//-- 获取会员
 	/*------------------------------------------------------ */
     public static function info($id){
-		$rows = $this->getRows();
+		$rows = self::getRows();
 		return $rows[$id];
 	}
 }

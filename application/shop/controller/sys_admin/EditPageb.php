@@ -3,10 +3,8 @@ namespace app\shop\controller\sys_admin;
 use app\AdminController;
 use think\Db;
 use think\facade\Cache;
+use app\publics\model\LinksModel;
 
-
-use app\shop\model\ShopPageTheme;
-use app\shop\model\GoodsModel;
 
 /*------------------------------------------------------ */
 //-- 商城装修
@@ -165,114 +163,43 @@ class EditPageb extends AdminController
         $result['url'] = '/'.$file_name;
         return $this->ajaxReturn($result);
     }
-    /*------------------------------------------------------ */
-    //-- 选择商品
-    /*------------------------------------------------------ */
-    public function selProducts(){
-        $search['pIds'] = input('pIds','','trim');
-        $where[] = ' store_id = 0 '; // 搜索条件
-        $search['cid'] = input('cid',0,'intval');
-        // 关键词搜索
-        $search['key_word'] = input('keyword') ? trim(input('keyword')) : '';
-        if(empty($search['key_word']) == false){
-            $where[] = " (goods_name like '%".$search['key_word']."%' or goods_sn like '%".$search['key_word']."%')" ;
-        }
-        $GoodsModel = new GoodsModel();
-        $classList = $GoodsModel->getClassList();
-        if($search['cid'] > 0){
-            $where[] = ' cid in ('.$classList[$search['cid']]['children'].') ';
-        }
-        $where = join(' and ',$where);
-        $count = $GoodsModel->where($where)->count('goods_id');
 
-        $Page  = new \lib\AjaxPage($count,5);
-        $show = $Page->show();
-        $goodsList = $GoodsModel->where($where)->order('goods_id DESC')->limit($Page->firstRow.','.$Page->listRows)->select()->toArray();
-        foreach ($goodsList as $key=>$goods){
-            $goods['url'] = url('shop/goods/info',['id'=>$goods['goods_id']]);
-            $goodsList[$key] = $goods;
-        }
-        $pages = $this->pshow($Page->totalRows,$Page->totalPages,'selproducts',input('p') * 1);
-        $this->assign('pages',$pages);
-        $this->assign('goodsList',$goodsList);
-        $this->assign("classListOpt", arrToSel($classList,$search['cid']));
-        $this->assign('search',$search);
-        return $this->fetch();
+    /*------------------------------------------------------ */
+    //-- 选定链接
+    /*------------------------------------------------------ */
+    public function links(){
+        $this->assign('links', (new LinksModel)->links());
+        $CategoryModel = new \app\shop\model\CategoryModel();
+        $this->assign('CategoryList', $CategoryModel->getRows());
+        return response($this->fetch());
     }
-    /**
-     * 分页显示输出
-     * @access public
-     */
-    public function pshow($totalRows,$totalPages,$url,$nowPage=1,$rollPage=5) {
-        if(0 == $totalRows) return '';
-        $middle         =   ceil($rollPage/2); //中间位置
-        // 分析分页参数        
-        $parameter  =  empty($_REQUEST) ? array() : $_REQUEST;
-        $varPage = 'p' ;
-        $parameter[$varPage]  =   '__PAGE__';
-        unset($parameter['PHPSESSID']);
-        $url            =   str_replace('+','%20',url($url,$parameter));
-        //上下翻页字符串
-        $upRow          =   $nowPage-1;
-        $downRow        =   $nowPage+1;
-        if ($upRow>0){
-            $upPage     =   '<li><a href="'.str_replace('__PAGE__',$upRow,$url).'">«</a></li>';
-        }else{
-            $upPage     =   '<li class="disabled"><span>«</span></li>';
+
+    /*------------------------------------------------------ */
+    //-- 搜索
+    /*------------------------------------------------------ */
+    public function search()
+    {
+        $type = input('type','','trim');
+        $kw = input('kw','','trim');
+        if (in_array($type,['good','article']) == false){
+            return $this->error('请求错误.');
         }
-        if ($downRow <= $totalPages){
-            $downPage   =   '<li><a href="'.str_replace('__PAGE__',$downRow,$url).'">»</a></li>';
-        }else{
-            $downPage   =   '<li class="disabled"><span>»</span></li>';
-        }
-        // 1 2 3 4 5
-        $linkPage = "";
-        if ($totalPages != 1) {
-            if ($nowPage < $middle) { //刚开始
-                $start = 1;
-                $end = $rollPage;
-            } elseif ($totalPages < $nowPage + $middle - 1) {
-                $start = $totalPages - $rollPage + 1;
-                $end = $totalPages;
-            } else {
-                $start = $nowPage - $middle + 1;
-                $end = $nowPage + $middle - 1;
+        if ($type == 'good'){
+            $GoodsModel = new \app\shop\model\GoodsModel();
+            $where[] = ['goods_name','like','%'.$kw.'%'];
+            $ids = $GoodsModel->where($where)->limit(20)->column('goods_id');
+            foreach ($ids as $id){
+                $list[] = $GoodsModel->info($id);
             }
-            $start < 1 && $start = 1;
-            $end > $totalPages && $end = $totalPages;
-            for ($page = $start; $page <= $end; $page++) {
-                if ($page != $nowPage) {
-                    $linkPage .= " <li><a href='".str_replace('__PAGE__',$page,$url)."'>".$page."</a></li>";
-                } else {
-                    $linkPage .= "<li class='active'><span>".$page."</span></li>";
-                }
-            }
-        }else{
-            $linkPage .= "<li class='active'><span>1</span></li>";
+        }elseif($type == 'article'){
+            $ArticleModel = new \app\mainadmin\model\ArticleModel();
+            $where[] = ['title','like','%'.$kw.'%'];
+            $list = $ArticleModel->where($where)->limit(20)->select()->toArray();
         }
-        $pageStr     =   str_replace(
-            array('%nowPage%','%totalRow%','%totalPage%','%upPage%','%downPage%','%linkPage%','%end%'),
-            array($nowPage,$totalRows,$totalPages,$upPage,$downPage,$linkPage,$theEnd),'<ul class="pagination">%upPage%%linkPage%%downPage%</ul>');
-        return $pageStr;
+        $this->assign('list',$list);
+        $this->assign('kw',$kw);
+        return response($this->fetch($type));
     }
-    /*------------------------------------------------------ */
-    //-- 选定商品
-    /*------------------------------------------------------ */
-    public function productsAdd(){
-        $pIds = input('pIds');
-        if (empty($pIds)) return $this->error('请选择商品！');
-        $GoodsModel = new GoodsModel();
-        $where[] = ['goods_id','in',explode(',',$pIds)];
-        $goods_list = $GoodsModel->where($where)->select()->toArray();
-        $this->assign('goods_list',$goods_list);
-        $result['html']= $this->fetch('products_add_list');
-        $result['state'] = 1;
-        return $this->ajaxReturn($result);
-    }
-
-
-
-
 
 
 

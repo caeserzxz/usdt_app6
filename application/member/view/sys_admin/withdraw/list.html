@@ -23,10 +23,10 @@
 <td>{$vo.arrival_money|priceFormat}</td>
 <td>{$fee_types[$vo.fee_type]}</td>
 <td>
-{if condition="$vo['type']=='bank'"}
-{$vo.bank_name}<br>{$vo.bank_cardholder} - {$vo.bank_card_number} - {$vo.bank_location_outlet} - {$vo.bank_branch_name}
+{if condition="$vo['account_type']=='bank'"}
+{$vo.account_info.bank_name}<br>{$vo.account_infobank_cardholder} - {$vo.account_info.bank_card_number} - {$vo.account_info.bank_location_outlet} - {$vo.account_info.bank_branch_name}
 {else/}
-支付宝<br>{$vo.alipay_user_name} - {$vo.alipay_account}
+支付宝<br>{$vo.account_info.alipay_user_name} - {$vo.account_info.alipay_account}
 {/if}
 </td>
 <td>{$userWithdrawType[$vo['status']]['name']}</td>

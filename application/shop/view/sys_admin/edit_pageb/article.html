@@ -1,0 +1,13 @@
+{volist name="list" id="vo" }
+<div class="line good">
+    <div class="image"><img src="{$vo.img_url}"/></div>
+    <nav title="选择" class="btn btn-default btn-sm" data-href="/shop/article/info/id/{$vo.id}">选择</nav>
+    <div class="text">
+        <p class="name">{$vo.title}</p>
+        <p class="price">{$vo.description}</p>
+    </div>
+</div>
+{/volist}
+{empty name="list"}
+<div class="tip">抱歉！未查询到与“{$kw}”相关的商品，请更换关键字后重试。</div>
+{/empty}

@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">提现方式：</label>
                         <div class="col-sm-8 m-t-mc">
-                            {if condition="$row['account']['type']=='bank'"}
+                            {if condition="$row['account_type']=='bank'"}
                             	{$row.account.bank_name}：{$row.account.bank_location_outlet} - {$row.account.bank_branch_name}<br>{$row.account.bank_cardholder} - {$row.account.bank_card_number} - {$row.account.bank_cardholder_phone}
                             {else/}
                             	支付宝：{$row.account.alipay_user_name} - {$row.account.alipay_account}

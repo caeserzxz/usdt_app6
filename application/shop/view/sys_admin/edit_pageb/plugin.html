@@ -27,7 +27,7 @@
             <p>你可以对文字进行<strong>加粗</strong>、<em>斜体</em>、<span style="text-decoration: underline;">下划线</span>、<span style="text-decoration: line-through;">删除线</span>、文字<span style="color: rgb(0, 176, 240);">颜色</span>、<span style="background-color: rgb(255, 192, 0); color: rgb(255, 255, 255);">背景色</span>、以及字号<span style="font-size: 20px;">大</span><span style="font-size: 14px;">小</span>等简单排版操作。
             </p>
             <p>也可在这里插入图片</p>
-            <p><img src="/static/customize/images/images/default/sale-by.png"></p>
+            <p><img src="/static/customize/images/default/sale-by.png"></p>
             <p style="text-align: left;"><span style="text-align: left;">还可给文字加上<a href="http://www.baidu.com">超级链接</a>，方便用户点击。</span></p>
             <%/if%>
         </div>
@@ -220,7 +220,7 @@
                     <%if params.iconposition=='right bottom'%> style="bottom: <%style.iconpaddingtop%>px; right: <%style.iconpaddingleft%>px; text-align: right;"<%/if%>
                     >
                     <%if params.showicon=='1'%>
-                    <img src="/static/customize/images/images/default/goodsicon-<%style.goodsicon%>.png" style="width: <%style.iconzoom||'100'%>%;" />
+                    <img src="/static/customize/images/default/goodsicon-<%style.goodsicon%>.png" style="width: <%style.iconzoom||'100'%>%;" />
                     <%/if%>
 
                     <%if params.showicon=='2' && params.goodsiconsrc%>
@@ -299,8 +299,8 @@
             </div>
 
             <%if params.saleout>-1%>
-            <%if params.saleout==0%><div class="salez" style="background-image: url('http://rrd.winmobi.cn/attachment/images/1/2018/07/ShHXvr6R2iHH2yH6y9he5hh52H66zz.jpg'); "></div><%/if%>
-            <%if params.saleout==1%><div class="salez diy" style="background-image: url('/static/customize/images/images/default/saleout-<%style.saleoutstyle%>.png'); "></div><%/if%>
+            <%if params.saleout==0%><div class="salez" style="background-image: url('/static/customize/images/default/defico.jpg'); "></div><%/if%>
+            <%if params.saleout==1%><div class="salez diy" style="background-image: url('/static/customize/images/default/saleout-<%style.saleoutstyle%>.png'); "></div><%/if%>
             <%/if%>
         </div>
         <%/each%>
@@ -308,7 +308,7 @@
         <%if params.goodsdata>0%>
         <%each data=["c","d"] as item%>
         <div class="fui-goods-item">
-            <div class="image <%if params.showicon=='1'%><%style.iconstyle%><%/if%>" style="background-image: url('/static/customize/images/images/default/goods-1.jpg');"
+            <div class="image <%if params.showicon=='1'%><%style.iconstyle%><%/if%>" style="background-image: url('/static/customize/images/default/goods-1.jpg');"
                  data-text="
                                 <%if params.showicon=='1'%>
                                         <%if style.goodsicon=='recommand'%>推荐<%/if%>
@@ -327,7 +327,7 @@
                 <%if params.iconposition=='right bottom'%> style="bottom: <%style.iconpaddingtop%>px; right: <%style.iconpaddingleft%>px; text-align: right;"<%/if%>
                 >
                 <%if params.showicon=='1'%>
-                <img src="/static/customize/images/images/default/goodsicon-<%style.goodsicon%>.png" style="width: <%style.iconzoom||'100'%>%;" />
+                <img src="/static/customize/images/default/goodsicon-<%style.goodsicon%>.png" style="width: <%style.iconzoom||'100'%>%;" />
                 <%/if%>
 
                 <%if params.showicon=='2' && params.goodsiconsrc%>
@@ -397,8 +397,8 @@
         </div>
 
         <%if params.saleout>-1%>
-        <%if params.saleout==0%><div class="salez" style="background-image: url('http://rrd.winmobi.cn/attachment/images/1/2018/07/ShHXvr6R2iHH2yH6y9he5hh52H66zz.jpg'); "></div><%/if%>
-        <%if params.saleout==1%><div class="salez diy" style="background-image: url('/static/customize/images/images/default/saleout-<%style.saleoutstyle%>.png'); "></div><%/if%>
+        <%if params.saleout==0%><div class="salez" style="background-image: url('/static/customize/images/default/defico.jpg'); "></div><%/if%>
+        <%if params.saleout==1%><div class="salez diy" style="background-image: url('/static/customize/images/default/saleout-<%style.saleoutstyle%>.png'); "></div><%/if%>
         <%/if%>
     </div>
     <%/each%>
@@ -1053,7 +1053,7 @@
             <%each data as item%>
             <div class="fui-list">
                 <div class="fui-list-media">
-                    <img src="<%item.thumb||'/static/customize/images/images/default/logo.jpg'%>" class="round">
+                    <img src="<%item.thumb||'/static/customize/images/default/logo.jpg'%>" class="round">
                 </div>
                 <div class="fui-list-inner">
                     <div class="title" style="color: <%style.titlecolor%>;"><%item.name%></div>
@@ -1111,7 +1111,7 @@
             <div class="seckill-goods">
                 <div class="item">
                     <div class="thumb">
-                        <img src="/static/customize/images/images/default/iphone6.jpg" />
+                        <img src="/static/customize/images/default/iphone6.jpg" />
                         <!--<div class="tag">热卖</div>-->
                     </div>
                     <div class="marketprice" style="color: <%style.marketpricecolor%>;">￥199</div>
@@ -1119,7 +1119,7 @@
                 </div>
                 <div class="item">
                     <div class="thumb">
-                        <img src="/static/customize/images/images/default/iphone6.jpg" />
+                        <img src="/static/customize/images/default/iphone6.jpg" />
                         <!--<div class="tag orange">热卖</div>-->
                     </div>
                     <div class="marketprice" style="color: <%style.marketpricecolor%>;">￥199</div>
@@ -1127,7 +1127,7 @@
                 </div>
                 <div class="item">
                     <div class="thumb">
-                        <img src="/static/customize/images/images/default/iphone6.jpg" />
+                        <img src="/static/customize/images/default/iphone6.jpg" />
                         <!--<div class="tag purple">热卖</div>-->
                     </div>
                     <div class="marketprice" style="color: <%style.marketpricecolor%>;">￥199</div>
@@ -1135,7 +1135,7 @@
                 </div>
                 <div class="item">
                     <div class="thumb">
-                        <img src="/static/customize/images/images/default/iphone6.jpg" />
+                        <img src="/static/customize/images/default/iphone6.jpg" />
                         <!--<div class="tag green">热卖</div>-->
                     </div>
                     <div class="marketprice" style="color: <%style.marketpricecolor%>;">￥199</div>
@@ -1258,13 +1258,13 @@
             <div class="swiper-container adv-container" style="">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide adv-slide" style="background:<%style.bgcolor%>">
-                        <a ><img src="/static/customize/images/images/default/banner-1.jpg"/></a>
+                        <a ><img src="/static/customize/images/default/banner-1.jpg"/></a>
                     </div>
                     <div class="swiper-slide adv-slide"  style="background:<%style.bgcolor%>">
-                        <a ><img src="/static/customize/images/images/default/banner-2.jpg"/></a>
+                        <a ><img src="/static/customize/images/default/banner-2.jpg"/></a>
                     </div>
                     <div class="swiper-slide adv-slide"  style="background:<%style.bgcolor%>">
-                        <a ><img src="/static/customize/images/images/default/banner-1.jpg"/></a>
+                        <a ><img src="/static/customize/images/default/banner-1.jpg"/></a>
                     </div>
                 </div>
             </div>
@@ -1292,7 +1292,7 @@
                             </div>
                             <div class='fui-list align-start' style="background:<%style.bgcolor%>">
                                 <div class='fui-list-media'>
-                                    <img src="/static/customize/images/images/default/goods-1.jpg" />
+                                    <img src="/static/customize/images/default/goods-1.jpg" />
                                 </div>
                                 <div class='fui-list-inner'>
                                     <div class='text' style="color:<%style.titlecolor%>">秒杀商品的名称秒杀商品的名称秒杀商品的名称秒杀</div>
@@ -1315,7 +1315,7 @@
                             </div>
                             <div class='fui-list align-start' style="background:<%style.bgcolor%>">
                                 <div class='fui-list-media'>
-                                    <img src="/static/customize/images/images/default/goods-2.jpg" />
+                                    <img src="/static/customize/images/default/goods-2.jpg" />
                                 </div>
                                 <div class='fui-list-inner'>
                                     <div class='text'  style="color:<%style.titlecolor%>">秒杀商品的名称秒杀商品的名称秒杀商品</div>
@@ -1332,7 +1332,7 @@
                             </div>
                             <div class='fui-list align-start' style="background:<%style.bgcolor%>">
                                 <div class='fui-list-media'>
-                                    <img src="/static/customize/images/images/default/goods-3.jpg" />
+                                    <img src="/static/customize/images/default/goods-3.jpg" />
                                 </div>
                                 <div class='fui-list-inner'>
                                     <div class='text'  style="color:<%style.titlecolor%>">秒杀商品的名称秒杀商品的名称秒杀名称秒杀商品的名称</div>
@@ -1415,7 +1415,7 @@
     <div class="drag" data-itemid="<%itemid%>">
         <div class="diy-banner">
             <%if params.datatype!='1'%>
-            <img src="/static/customize/images/images/default/banner-1.jpg" />
+            <img src="/static/customize/images/default/banner-1.jpg" />
             <div class="dots <%style.dotalign||'left'%> <%style.dotstyle||'rectangle'%>" style="padding: 0 <%style.leftright||'10'%>px; bottom: <%style.bottom||'10'%>px; opacity: <%style.opacity||'0.8'%>;">
                 <span style="background: <%style.background||'#000000'%>;"></span>
                 <span style="background: <%style.background||'#000000'%>;"></span>
@@ -1456,7 +1456,7 @@
             <%if params.preview==1%>
             <div class="list">
                 <div class="item">
-                    <div class="ico money" style="background-image: url(<%imgsrc params.moneyicon||'/static/customize/images/images/default/icon_money.png'%>)"></div>
+                    <div class="ico money" style="background-image: url(<%imgsrc params.moneyicon||'/static/customize/images/default/icon_money.png'%>)"></div>
                     <div class="info">
                         <p class="t1" style="color: <%style.goodstitle%>;">余额兑换</p>
                         <p class="t2" style="color: <%style.goodsprice%>;">面值：1000元</p>
@@ -1464,7 +1464,7 @@
                     <div class="btn-exc btn btn-danger btn-sm" style="color: <%style.exbtncolor%>; background: <%style.exbtnbackground%>"><%params.exbtntext||'兑换'%></div>
                 </div>
                 <div class="item">
-                    <div class="ico credit" style="background-image: url(<%imgsrc params.crediticon||'/static/customize/images/images/default/icon_credit.png'%>)"></div>
+                    <div class="ico credit" style="background-image: url(<%imgsrc params.crediticon||'/static/customize/images/default/icon_credit.png'%>)"></div>
                     <div class="info">
                         <p class="t1" style="color: <%style.goodstitle%>;">积分兑换</p>
                         <p class="t2" style="color: <%style.goodsprice%>;">面值：1000元</p>
@@ -1472,7 +1472,7 @@
                     <div class="btn-exc btn btn-danger btn-sm" style="color: <%style.exbtncolor%>; background: <%style.exbtnbackground%>"><%params.exbtntext||'兑换'%></div>
                 </div>
                 <div class="item">
-                    <div class="ico coupon" style="background-image: url(<%imgsrc params.couponicon||'/static/customize/images/images/default/icon_coupon.png'%>)"></div>
+                    <div class="ico coupon" style="background-image: url(<%imgsrc params.couponicon||'/static/customize/images/default/icon_coupon.png'%>)"></div>
                     <div class="info">
                         <p class="t1" style="color: <%style.goodstitle%>;">优惠券兑换</p>
                         <p class="t2" style="color: <%style.goodsprice%>;">面值：1000元</p>
@@ -1480,7 +1480,7 @@
                     <div class="btn-exc btn btn-danger btn-sm" style="color: <%style.exbtncolor%>; background: <%style.exbtnbackground%>"><%params.exbtntext||'兑换'%></div>
                 </div>
                 <div class="item">
-                    <div class="ico redbag" style="background-image: url(<%imgsrc params.redbagicon||'/static/customize/images/images/default/icon_redbag.png'%>)"></div>
+                    <div class="ico redbag" style="background-image: url(<%imgsrc params.redbagicon||'/static/customize/images/default/icon_redbag.png'%>)"></div>
                     <div class="info">
                         <p class="t1" style="color: <%style.goodstitle%>;">红包兑换</p>
                         <p class="t2" style="color: <%style.goodsprice%>;">面值：1000元</p>
@@ -1488,7 +1488,7 @@
                     <div class="btn-exc btn btn-danger btn-sm" style="color: <%style.exbtncolor%>; background: <%style.exbtnbackground%>"><%params.exbtntext||'兑换'%></div>
                 </div>
                 <div class="item">
-                    <div class="ico redbag" style="background-image: url(<%imgsrc params.goodsicon||'/static/customize/images/images/default/icon_goods.png'%>)"></div>
+                    <div class="ico redbag" style="background-image: url(<%imgsrc params.goodsicon||'/static/customize/images/default/icon_goods.png'%>)"></div>
                     <div class="info">
                         <p class="t1" style="color: <%style.goodstitle%>;">商品兑换</p>
                         <p class="t2" style="color: <%style.goodsprice%>;">面值：1000元</p>
@@ -1562,13 +1562,13 @@
                 <li class="">
                     <a>
                         <div></div><span>待使用</span>
-                        <img src="/static/customize/images/images/default/goods-1.jpg" alt=""><p>测试核销商品</p>
+                        <img src="/static/customize/images/default/goods-1.jpg" alt=""><p>测试核销商品</p>
                     </a>
                 </li>
                 <li class="banner-li-blue">
                     <a>
                         <div></div><span>待使用</span>
-                        <img src="/static/customize/images/images/default/goods-2.jpg" alt=""><p>测试核销商品</p>
+                        <img src="/static/customize/images/default/goods-2.jpg" alt=""><p>测试核销商品</p>
                     </a>
                 </li>
             </ul>
@@ -1577,13 +1577,13 @@
                 <li class="">
                     <a>
                         <div></div><span>待使用</span>
-                        <img src="/static/customize/images/images/default/goods-1.jpg" alt=""><p>测试核销商品</p>
+                        <img src="/static/customize/images/default/goods-1.jpg" alt=""><p>测试核销商品</p>
                     </a>
                 </li>
                 <li class="banner-li-blue">
                     <a>
                         <div></div><span>待使用</span>
-                        <img src="/static/customize/images/images/default/goods-2.jpg" alt=""><p>测试核销商品</p>
+                        <img src="/static/customize/images/default/goods-2.jpg" alt=""><p>测试核销商品</p>
                     </a>
                 </li>
             </ul>
@@ -5984,7 +5984,7 @@
                     </span>
                 <input class="form-control diy-bind" value="<%params.moneyicon||'已兑换'%>" data-bind-child="params" data-bind="moneyicon" placeholder="请选择图标或恢复默认" id="moneyicon" data-bind-init="true" />
                 <span class="input-group-addon btn" style="border-left: 0;" data-toggle="selectImg" data-input="#moneyicon" data-img="#showmoneyicon">选择图片</span>
-                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#moneyicon').val('/static/customize/images/images/default/icon_money.png').trigger('change');">恢复默认</span>
+                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#moneyicon').val('/static/customize/images/default/icon_money.png').trigger('change');">恢复默认</span>
             </div>
         </div>
     </div>
@@ -5997,7 +5997,7 @@
                     </span>
                 <input class="form-control diy-bind" value="<%params.crediticon%>" data-bind-child="params" data-bind="crediticon" placeholder="请选择图标或恢复默认" id="crediticon" data-bind-init="true" />
                 <span class="input-group-addon btn" style="border-left: 0;" data-toggle="selectImg" data-input="#crediticon" data-img="#showcrediticon">选择图片</span>
-                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#crediticon').val('/static/customize/images/images/default/icon_credit.png').trigger('change')">恢复默认</span>
+                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#crediticon').val('/static/customize/images/default/icon_credit.png').trigger('change')">恢复默认</span>
             </div>
         </div>
     </div>
@@ -6010,7 +6010,7 @@
                     </span>
                 <input class="form-control diy-bind" value="<%params.couponicon%>" data-bind-child="params" data-bind="couponicon" placeholder="请选择图标或恢复默认" id="couponicon" data-bind-init="true" />
                 <span class="input-group-addon btn" style="border-left: 0;" data-toggle="selectImg" data-input="#couponicon" data-img="#showcouponicon">选择图片</span>
-                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#couponicon').val('/static/customize/images/images/default/icon_coupon.png').trigger('change')">恢复默认</span>
+                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#couponicon').val('/static/customize/images/default/icon_coupon.png').trigger('change')">恢复默认</span>
             </div>
         </div>
     </div>
@@ -6023,7 +6023,7 @@
                     </span>
                 <input class="form-control diy-bind" value="<%params.redbagicon%>" data-bind-child="params" data-bind="redbagicon" placeholder="请选择图标或恢复默认" id="redbagicon" data-bind-init="true" />
                 <span class="input-group-addon btn" style="border-left: 0;" data-toggle="selectImg" data-input="#redbagicon" data-img="#showredbagicon">选择图片</span>
-                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#redbagicon').val('/static/customize/images/images/default/icon_redbag.png').trigger('change')">恢复默认</span>
+                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#redbagicon').val('/static/customize/images/default/icon_redbag.png').trigger('change')">恢复默认</span>
             </div>
         </div>
     </div>
@@ -6036,7 +6036,7 @@
                     </span>
                 <input class="form-control diy-bind" value="<%params.goodsicon%>" data-bind-child="params" data-bind="goodsicon" placeholder="请选择图标或恢复默认" id="goodsicon" data-bind-init="true" />
                 <span class="input-group-addon btn" style="border-left: 0;" data-toggle="selectImg" data-input="#goodsicon" data-img="#showgoodsicon">选择图片</span>
-                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#goodsicon').val('/static/customize/images/images/default/icon_goods.png').trigger('change')">恢复默认</span>
+                <span class="input-group-addon btn" style="border-left: 0;" onclick="$('#goodsicon').val('/static/customize/images/default/icon_goods.png').trigger('change')">恢复默认</span>
             </div>
             <div class="help-block">提示：图标尺寸为正方形，建议80*80</div>
         </div>

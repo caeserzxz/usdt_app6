@@ -241,7 +241,7 @@ class Users extends AdminController
             return $this->error('获取用户ID传值失败！');
         }
         $pay_password = rand(100000,999999);
-        $data['pay_password'] = f_hash($pay_password.$user_id);
+        $data['pay_password'] = f_hash($pay_password);
         $res = $this->Model->where('user_id', $user_id)->update($data);
         if ($res < 1) {
             return $this->error('未知错误，处理失败.');

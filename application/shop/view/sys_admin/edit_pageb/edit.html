@@ -23,31 +23,16 @@
     <script type="text/javascript">
         var webuploaderEJ = "{:url('mainAdmin/attachment/webUploadByEdit')}",
             fetchByEditJ =  "{:url('mainAdmin/attachment/fetchWebImg','',false)}",
-            webUploadByManagerJ = "{:url('mainAdmin/attachment/webUploadByManager','',false)}";
+            webUploadByManagerJ = "{:url('mainAdmin/attachment/webUploadByManager','',false)}",
+            linksJ =  "{:url('links','',false)}";
         window.sysinfo = {
-            'uniacid': '1',
-            'acid': '1',
-            'uid': '2',
-            'isfounder': 0,
-            'siteroot': 'http://rrd.winmobi.cn/',
-            'siteurl': 'http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.page.sys.edit&id=30',
-            'attachurl': 'http://rrd.winmobi.cn/attachment/',
-            'attachurl_local': 'http://rrd.winmobi.cn/attachment/',
-            'attachurl_remote': '',
-            'module' : {'url' : 'http://rrd.winmobi.cn/addons/ewei_shopv2/', 'name' : 'ewei_shopv2'},
-            'cookie' : {'pre': 'b31d_'},
-            'account' : {"acid":"1","uniacid":"1","token":"bgvs11wamc1efrrrxdncpkmozsh23m14","encodingaeskey":"hUu8ZISKYVUcf5hfHBsGXT2C271YYy8Ui7XeiTyXK0Y","level":"4","name":"\u9632\u4f2a\u7cfb\u7edf315","account":"gh_821e2e6f9cd6","original":"gh_821e2e6f9cd6","signature":"","country":"","province":"","city":"","username":"","password":"","lastupdate":"0","key":"wxfdd401da4cabfb79","secret":"7383f519c8f1fa992c976771bb79e5b8","styleid":"1","subscribeurl":"","auth_refresh_token":"","type":"1","isconnect":"1","isdeleted":"0","uid":"2","starttime":"1526376828","endtime":"0","groups":{"1":{"groupid":"1","uniacid":"1","title":"\u9ed8\u8ba4\u4f1a\u5458\u7ec4","credit":"0","isdefault":"1"}},"grouplevel":"0","logo":"http:\/\/rrd.winmobi.cn\/attachment\/headimg_1.jpg?time=1566884846","qrcode":"http:\/\/rrd.winmobi.cn\/attachment\/qrcode_1.jpg?time=1566884846"},
+            'siteroot': '/',
+            'siteurl': '{:url("save")}',
         };
     </script>
 
-
-    <!-- 兼容微擎1.5.3 -->
-
-
     <script src="__STATIC__/customize/js/require.js"></script>
-
     <script src="__STATIC__/customize/js/config1.0.js"></script>
-
     <script>
         require.config({
             waitSeconds: 0
@@ -124,7 +109,7 @@
         myrequire([path,'tpl','web/biz'],function(modal,tpl){
             modal.init({
                 tpl: tpl,
-                attachurl: "http://rrd.winmobi.cn/attachment/",
+                attachurl: "/",
                 id: '30',
                 type: 2,
                 data: {"page":{"type":"2","title":"\u8bf7\u8f93\u5165\u9875\u9762\u6807\u9898","name":"\u672a\u547d\u540d\u9875\u9762","desc":"","icon":"","keyword":"","background":"#f3f3f3","diymenu":"-1","diylayer":"1","diygotop":"1","followbar":"1","visit":"0","visitlevel":{"member":"","commission":""},"novisit":{"title":"","link":""}}},
@@ -133,7 +118,7 @@
                 levels: null,
                 merch: 0,
                 plugins: {"creditshop":1,"merch":1,"seckill":0,"exchange":1},
-                shopset: {"style":"diypage","name":"11\u6b63\u54c1\u5546\u57ce","logo":"images\/1\/2018\/05\/jQnL7VR55NmMR7N72cXLLzvLnnXsPL.jpg","description":"\u6b63\u54c1\u5546\u57ce","img":"images\/1\/2018\/07\/Yj4DD441e494C44CJjsFEP6psFfzKS.jpg","signimg":"images\/1\/2018\/07\/HBLYN93UyYLQTTBYWY9tY3rM49Yqu3.jpg","getinfo":"1","saleout":"images\/1\/2018\/07\/ShHXvr6R2iHH2yH6y9he5hh52H66zz.jpg","loading":"images\/1\/2018\/07\/R2M55665qgM23mu4h9309e1b40zmVB.png","diycode":"","funbar":"1","catlevel":"2","catshow":"0","catadvimg":"","catadvurl":"","indexsort":{"search":{"text":"\u641c\u7d22\u680f","visible":1},"adv":{"text":"\u5e7b\u706f\u7247","visible":1},"nav":{"text":"\u5bfc\u822a\u680f","visible":1},"notice":{"text":"\u516c\u544a\u680f","visible":1},"seckill":{"text":"\u79d2\u6740\u680f","visible":1},"cube":{"text":"\u9b54\u65b9\u680f","visible":1},"banner":{"text":"\u5e7f\u544a\u680f","visible":1},"goods":{"text":"\u63a8\u8350\u680f","visible":1}},"goodstotal":"3","cubes":[{"img":"images\/1\/2018\/07\/W6LcGY7yfYCtU4OccY6uyC2cgTY2ob.jpeg","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=shop.category"},{"img":"http:\/\/rrd.winmobi.cn\/addons\/ewei_shopv2\/plugin\/diypage\/static\/template\/default1\/picturew_1.jpg","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=goods"},{"img":"http:\/\/rrd.winmobi.cn\/attachment\/images\/1\/2018\/07\/Y1t0zj66siZ6YM8j10zIiT7J1YJUZ4.png","url":".\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=member"}],"qq":"","address":"\u8f66\u9642\u8def","phone":"15521323823","ordercolumns":[{"field":"ordersn","title":"\u8ba2\u5355\u7f16\u53f7","subtitle":"","width":"24"},{"field":"mrealname","title":"\u4f1a\u5458\u59d3\u540d","subtitle":"","width":"12"},{"field":"mmobile","title":"\u4f1a\u5458\u624b\u673a\u53f7","subtitle":"","width":"12"},{"field":"openid","title":"openid","subtitle":"","width":"24"},{"field":"realname","title":"\u6536\u8d27\u59d3\u540d(\u6216\u81ea\u63d0\u4eba)","subtitle":"","width":"12"},{"field":"mobile","title":"\u8054\u7cfb\u7535\u8bdd","subtitle":"","width":"12"},{"field":"address","title":"\u6536\u8d27\u5730\u5740","subtitle":"\u6536\u8d27\u5730\u5740(\u7701\u5e02\u533a\u5408\u5e76)","width":"24"},{"field":"address_province","title":"\u6536\u8d27\u5730\u5740","subtitle":"\u6536\u8d27\u5730\u5740(\u7701\u5e02\u533a\u5206\u79bb)","width":"12"},{"field":"goods_str","title":"\u5546\u54c1\u4fe1\u606f","subtitle":"\u5546\u54c1\u4fe1\u606f(\u4fe1\u606f\u5408\u5e76)","width":"36"},{"field":"goods_title","title":"\u5546\u54c1\u4fe1\u606f","subtitle":"\u5546\u54c1\u4fe1\u606f(\u4fe1\u606f\u5206\u79bb)","width":"24"},{"field":"paytype","title":"\u652f\u4ed8\u65b9\u5f0f","subtitle":"","width":"12"},{"field":"dispatchname","title":"\u914d\u9001\u65b9\u5f0f","subtitle":"","width":"12"},{"field":"goodsprice","title":"\u5546\u54c1\u5c0f\u8ba1","subtitle":"","width":"12"},{"field":"dispatchprice","title":"\u8fd0\u8d39","subtitle":"","width":"12"},{"field":"deductprice","title":"\u79ef\u5206\u62b5\u6263","subtitle":"","width":"12"},{"field":"deductcredit2","title":"\u4f59\u989d\u62b5\u6263","subtitle":"","width":"12"},{"field":"deductenough","title":"\u6ee1\u989d\u7acb\u51cf","subtitle":"","width":"12"},{"field":"couponprice","title":"\u4f18\u60e0\u5238\u4f18\u60e0","subtitle":"","width":"12"},{"field":"changeprice","title":"\u8ba2\u5355\u6539\u4ef7","subtitle":"","width":"12"},{"field":"changedispatchprice","title":"\u8fd0\u8d39\u6539\u4ef7","subtitle":"","width":"12"},{"field":"price","title":"\u5e94\u6536\u6b3e","subtitle":"","width":"12"},{"field":"status","title":"\u72b6\u6001","subtitle":"","width":"12"},{"field":"createtime","title":"\u4e0b\u5355\u65f6\u95f4","subtitle":"","width":"24"},{"field":"paytime","title":"\u4ed8\u6b3e\u65f6\u95f4","subtitle":"","width":"24"},{"field":"sendtime","title":"\u53d1\u8d27\u65f6\u95f4","subtitle":"","width":"24"},{"field":"finishtime","title":"\u5b8c\u6210\u65f6\u95f4","subtitle":"","width":"24"},{"field":"expresscom","title":"\u5feb\u9012\u516c\u53f8","subtitle":"","width":"24"},{"field":"expresssn","title":"\u5feb\u9012\u5355\u53f7","subtitle":"","width":"24"},{"field":"remark","title":"\u8ba2\u5355\u5907\u6ce8","subtitle":"","width":"36"},{"field":"salerinfo","title":"\u6838\u9500\u5458","subtitle":"","width":"24"},{"field":"storeinfo","title":"\u6838\u9500\u95e8\u5e97","subtitle":"","width":"36"},{"field":"order_diyformdata","title":"\u8ba2\u5355\u81ea\u5b9a\u4e49\u4fe1\u606f","subtitle":"","width":"36"},{"field":"goods_diyformdata","title":"\u5546\u54c1\u81ea\u5b9a\u4e49\u4fe1\u606f","subtitle":"","width":"36"},{"field":"commission","title":"\u4f63\u91d1\u603b\u989d","subtitle":"","width":"12"},{"field":"commission1","title":"\u4e00\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission2","title":"\u4e8c\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission3","title":"\u4e09\u7ea7\u4f63\u91d1","subtitle":"","width":"12"},{"field":"commission4","title":"\u6263\u9664\u4f63\u91d1\u540e\u5229\u6da6","subtitle":"","width":"12"},{"field":"profit","title":"\u6263\u9664\u4f63\u91d1\u53ca\u8fd0\u8d39\u540e\u5229\u6da6","subtitle":"","width":"12"},{"field":"group","title":"\u4f1a\u5458\u5206\u7ec4","subtitle":"","width":"12"},{"field":"nickname","title":"\u7c89\u4e1d\u6635\u79f0","subtitle":"","width":"12"}],"goodsstyle":0,"bannerswipe":1,"indexrecommands":["220","215","213","212","211","210","209","208","207","203"]}        });
+                shopset: {}    });
         });
         function selectUrlCallback(href){
             var ue =  UE.getEditor('rich');

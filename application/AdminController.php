@@ -127,7 +127,7 @@ class AdminController extends BaseController
         } elseif (in_array($action, array('download', 'export'))) {
             $isTrue = array_intersect(['download', 'export'], $role_action);
         }else{
-            $isTrue = true;
+            //$isTrue = true;
         }
         if (empty($isTrue) == false) return true;
         if ($isReturn == true) return false;
@@ -146,7 +146,7 @@ class AdminController extends BaseController
     private function getPrivList()
     {
         $mkey = 'main_menu_priv_list_' . AUID;
-        //$data = Cache::get($mkey);
+        $data = Cache::get($mkey);
         if (empty($data) == false) {
             return $data;
         }

@@ -39,7 +39,7 @@ require.config({
     },
     shim: {
         ueditor: {
-            deps: ["./resource/components/ueditor/third-party/zeroclipboard/ZeroClipboard.min.js", "./resource/components/ueditor/ueditor.config.js"],
+            deps: ["/static/customize/js/components/ueditor/third-party/zeroclipboard/ZeroClipboard.min.js", "/static/customize/js/components/ueditor/ueditor.config.js"],
             exports: "UE",
             init: function (a) {
                 window.ZeroClipboard = a

@@ -237,11 +237,14 @@ class Withdraw extends ApiController
 		if ($inArr['amount'] <= 0){
             return $this->error('请输入提现金额.');
         }
-        // $pay_password = input('pay_password') * 1;
-        // $pay_password = f_hash($pay_password.$this->userInfo['user_id']);
-        // if ($pay_password != $this->userInfo['pay_password']){
-        //     return $this->error('支付密码错误，请核实.');
-        // }
+        if (empty($this->userInfo['pay_password'])){
+            return $this->error('还没有设置支付密码，请先设置.');
+        }
+        $pay_password = input('pay_password');
+        $pay_password = f_hash($pay_password);
+        if ($pay_password != $this->userInfo['pay_password']){
+             return $this->error('支付密码错误，请核实.');
+        }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
 		$inArr['account_id'] = input('account_id') * 1;
 		if ($inArr['account_id'] < 1){
@@ -271,10 +274,14 @@ class Withdraw extends ApiController
 		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
             return $this->error('余额不足，请核实提现金额.');
         }
+
         $inArr['fee_type'] = $settings['fee_type'];
         $inArr['arrival_money'] = $settings['fee_type']==0?$inArr['amount']:$inArr['amount']-$inArr['withdraw_fee'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
+        $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
+        $inArr['account_type'] = $account_info['account_type'];
+        $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
 		Db::startTrans();//启动事务
 
 		$res = $WithdrawModel->save($inArr);

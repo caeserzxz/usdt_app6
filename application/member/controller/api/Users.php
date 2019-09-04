@@ -54,14 +54,14 @@ class Users extends ApiController
         return $this->success('密码已重置，请用新密码登陆.');
     }
     /*------------------------------------------------------ */
-    //-- 修改用户密码
+    //-- 修改用户支付密码
     /*------------------------------------------------------ */
     public function editPayPwd()
     {
         $pay_password = input('password','','trim');
         if (empty($pay_password))  return $this->error('请输入新的支付密码.');
         $this->checkCode('edit_pay_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
-        $data['pay_password'] = f_hash($pay_password.$this->userInfo['user_id']);
+        $data['pay_password'] = f_hash($pay_password);
         if ($data['pay_password'] == $this->userInfo['pay_password']){
             return $this->error('新密码与旧密码一致，无需修改.');
         }

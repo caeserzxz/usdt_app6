@@ -9,7 +9,7 @@
 
         <div class="content">
 
-            {$content|raw}
+            {$content|raw|html_entity_decode}
         </div>
     </div>{include file="layouts@bottom" /}
 </div>

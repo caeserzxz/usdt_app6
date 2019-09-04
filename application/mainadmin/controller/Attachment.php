@@ -351,10 +351,11 @@ class Attachment extends AdminController{
         }
         //遍历目录取得文件信息
         $data = array();
+        $i = 0;
         //目录不存在或不是目录
         if (file_exists($current_path) && is_dir($current_path)) {
             if ($handle = opendir($current_path)) {
-                $i = 0;
+
                 while (false !== ($filename = readdir($handle))) {
                     if ($filename{0} == '.') continue;
                     $file = trim($current_path ,'.').'/'. $filename;
@@ -368,20 +369,77 @@ class Attachment extends AdminController{
                 closedir($handle);
             }
         }
-       /* // 页数参数，默认第一页
-        $page = input('page',1,'intval');
-        // 每页数目
-        $step = 20;
-        // 每次获取起始位置
-        $start = ($page-1)*$step;
-        // 获取数组中当前页的数据
-        $page_data = array_slice($data,$start,$step);*/
+        $pshow = '';
+        if ($i > 0){
+            $count = count($data);
+            // 页数参数，默认第一页
+            $page = input('page',1,'intval');
+            // 每页数目
+            $step = 2;
+            // 每次获取起始位置
+            $start = ($page-1)*$step;
+            // 获取数组中当前页的数据
+            $data = array_slice($data,$start,$step);
+            $totalPages = ($count + $step - 1) / $step;
+            $pshow = $this->pshow($totalPages,$page);
+        }
+
 
         $result['message']['errno'] = 0;
-        $result['message']['message']['page']='';
+        $result['message']['message']['page'] = $pshow;
         $result['message']['message']['items'] = $data;
         return $this->ajaxReturn($result);
 
+    }
+    /**
+     * 分页显示输出
+     * @access public
+     */
+    public function pshow($totalPages,$nowPage=1,$rollPage=5) {
+        if(1 == $totalPages) return '';
+        $middle         =   ceil($rollPage/2); //中间位置
+        //上下翻页字符串
+        $upRow          =   $nowPage-1;
+        $downRow        =   $nowPage+1;
+        if ($upRow>0){
+            $upPage     =   '<li><a href="javascript:;" page="'.$upRow.'" class="pager-nav">&laquo;上一页</a></li>';
+        }else{
+            $upPage     =   '';
+        }
+        if ($downRow <= $totalPages){
+            $downPage   =   '<li ><a href="javascript:;" page="'.$downRow.'"  class="pager-nav">下一页&raquo;</a></li>';
+        }else{
+            $downPage   =   '';
+        }
+        // 1 2 3 4 5
+        $linkPage = "";
+        if ($totalPages != 1) {
+            if ($nowPage < $middle) { //刚开始
+                $start = 1;
+                $end = $rollPage;
+            } elseif ($totalPages < $nowPage + $middle - 1) {
+                $start = $totalPages - $rollPage + 1;
+                $end = $totalPages;
+            } else {
+                $start = $nowPage - $middle + 1;
+                $end = $nowPage + $middle - 1;
+            }
+            $start < 1 && $start = 1;
+            $end > $totalPages && $end = $totalPages;
+            for ($page = $start; $page <= $end; $page++) {
+                if ($page != $nowPage) {
+                    $linkPage .= " <li><a href='javascript:;' page='".$page."' >".$page."</a></li>";
+                } else {
+                    $linkPage .= "<li class='active'><a href='javascript:;'>".$page."</a></li>";
+                }
+            }
+        }else{
+            $linkPage .= "<li class='active'><a href='javascript:;'>1</a></li>";
+        }
+        $pageStr = str_replace(
+            array('%nowPage%','%totalPage%','%upPage%','%downPage%','%linkPage%','%end%'),
+            array($nowPage,$totalPages,$upPage,$downPage,$linkPage),'<div><ul class="pagination pagination-centered">%upPage%%linkPage%%downPage%</ul></div>');
+        return $pageStr;
     }
 }
 ?>
