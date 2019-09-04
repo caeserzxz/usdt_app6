@@ -132,8 +132,9 @@ class UsersModel extends BaseModel
     }
     /*------------------------------------------------------ */
     //-- 会员注册
+    //-- $is_admin 是否是后台添加的用户
     /*------------------------------------------------------ */
-    public function register($inArr = array(), $wxuid = 0)
+    public function register($inArr = array(), $wxuid = 0, $is_admin = false,&$obj = '')
     {
         if ($wxuid == 0) {
             if (empty($inArr)) {
@@ -233,6 +234,11 @@ class UsersModel extends BaseModel
         if (class_exists('app\shop\model\BonusModel')) {
             //注册送红包
             (new \app\shop\model\BonusModel)->sendByReg($user_id);
+        }
+
+        //后台添加的用户，加日志
+        if($is_admin&&!empty($obj)){
+            $obj->_log($user_id, '后台手动新增会员-用户id:'.$user_id, 'member');
         }
         return true;
     }

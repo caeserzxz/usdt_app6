@@ -553,5 +553,28 @@ class Users extends AdminController
         return $this->success('', '', $this->data);
     }
 
+    /*------------------------------------------------------ */
+    //-- 新增会员
+    /*------------------------------------------------------ */
+    public function addUser(){
+        if ($this->request->isPost()) {
+            $inArr = input('post.');
+            if(!$inArr['password'] || !$inArr['password_again']){
+                return $this->error('请输入密码');
+            }
+            if($inArr['password'] != $inArr['password_again']){
+                return $this->error('两次密码不一致，请重新输入');
+            }
+            unset($inArr['password_again']);
+            session('share_token','');
+            $res = $this->Model->register($inArr,0,true,$this);
+            if($res === true){
+                return $this->success('添加成功.');
+            }
+            return $this->error($res);
+        }
+        return response($this->fetch());
+    }
+
 
 }
