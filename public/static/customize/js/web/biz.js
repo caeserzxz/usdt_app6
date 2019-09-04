@@ -3,9 +3,9 @@ define(['jquery'],
         var biz = {};
         biz.url = function(routes, params, merch) {
             if (merch) {
-                var url = './merchant.php?c=site&a=entry&m=ewei_shopv2&do=web&r=' + routes.replace(/\//ig, '.')
+                var url = '/' + routes.replace(/\//ig, '.')
             } else {
-                var url = './index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=' + routes.replace(/\//ig, '.')
+                var url = '/' + routes.replace(/\//ig, '.')
             }
             if (params) {
                 if (typeof(params) == 'object') {
@@ -30,9 +30,9 @@ define(['jquery'],
                     modal += '<div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button><h3>数据选择器</h3></div>';
                     modal += '<div class="modal-body" >';
                     modal += '<div class="row">';
-                    modal += '<div class="input-group">';
+                    modal += '<div class="input-group '+(params.auto==true?'hide':'')+'">';
                     modal += '<input type="text" class="form-control" name="keyword" id="' + name + '_input" placeholder="' + (params.placeholder === undefined ? '': params.placeholder) + '" />';
-                    modal += '<span class="input-group-btn"><button type="button" class="btn btn-default" onclick="biz.selector.search(this, \'' + name + '\');">搜索</button></span>';
+                    modal += '<span class="input-group-btn"><button type="button" id="query-btn" class="btn btn-default" onclick="biz.selector.search(this, \'' + name + '\');">搜索</button></span>';
                     modal += '</div>';
                     modal += '</div>';
                     modal += '<div class="content" style="padding-top:5px;" data-name="' + name + '"></div>';
@@ -54,7 +54,14 @@ define(['jquery'],
                             }
                         })
                 };
-                modalObj.modal('show')
+                modalObj.modal('show');
+                if (params.auto==true){
+                    var selector = $("#" + name + '_selector');
+                    $.get(selector.data('url'), {},
+                        function(dat) {
+                            $('.content', modalObj).html(dat)
+                        })
+                }
             },
             search: function(searchbtn, name) {
                 var input = $(searchbtn).closest('.modal').find('#' + name + '_input');
@@ -136,7 +143,7 @@ define(['jquery'],
                 var html = "";
                 if (type == 'image') {
                     html += '<div class="multi-item" data-' + key + '="' + data[key] + '" data-name="' + name + '">';
-                    html += '<img class="img-responsive img-thumbnail" src="' + data[thumb] + '" onerror="this.src=\'../addons/ewei_shopv2/static/images/nopic.png\'">';
+                    html += '<img class="img-responsive img-thumbnail" src="' + data[thumb] + '" onerror="this.src=\'/static/customize/images/nopic.png\'">';
                     html += '<div class="img-nickname">' + data[text] + '</div>';
                     html += '<input type="hidden" value="' + data[key] + '" name="' + id + '">';
                     html += '<em onclick="biz.selector.remove(this,\'' + name + '\')"  class="close">×</em>';
@@ -345,7 +352,8 @@ define(['jquery'],
                     html += '</div>'
                 } else if (type == 'product') {
                     var optionurl = optionurl == '' ? 'sale.package.hasoption': optionurl;
-                    var url = "index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    var url = "index.php?c=site&a=entry&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    url = '/product';
                     html += '<tr class="multi-product-item" data-' + key + '="' + data[key] + '" data-name="' + name + '">';
                     html += "<input type='hidden' name='" + id + "' value='" + data[key] + "'> ";
                     html += "<input type='hidden' class='form-control img-textname' value='" + data[text] + "'>";
@@ -356,7 +364,8 @@ define(['jquery'],
                     html += '<i class="fa fa-times"></i></a></td></tr>'
                 } else if (type == 'fullback') {
                     var optionurl = optionurl == '' ? 'sale.fullback.hasoption': optionurl;
-                    var url = "index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    var url = "index.php?c=site&a=entry&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    var url = '/fullback';
                     html += '<tr class="multi-product-item" data-' + key + '="' + data[key] + '" data-name="' + name + '">';
                     html += "<input type='hidden' name='" + id + "' value='" + data[key] + "'> ";
                     html += "<input type='hidden' class='form-control img-textname' value='" + data[text] + "'>";
@@ -367,7 +376,8 @@ define(['jquery'],
                     html += '<i class="fa fa-times"></i></a></td></tr>'
                 } else if (type == 'live') {
                     var optionurl = optionurl == '' ? 'live.room.hasoption': optionurl;
-                    var url = "index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    var url = "index.php?c=site&a=entry&do=web&r=" + optionurl + "&goodsid=" + data[key] + "&selectorid=" + selectorid;
+                    var url = '/live';
                     html += '<tr class="multi-product-item" data-' + key + '="' + data[key] + '" data-name="' + name + '">';
                     html += "<input type='hidden' name='" + id + "' value='" + data[key] + "'> ";
                     html += "<input type='hidden' class='form-control img-textname' value='" + data[text] + "'>";

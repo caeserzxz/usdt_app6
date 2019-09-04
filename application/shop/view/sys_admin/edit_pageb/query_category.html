@@ -1,0 +1,35 @@
+{empty name="list"}
+<div class="tip">抱歉！未查询到与“{$kw}”相关的商品，请更换关键字后重试。</div>
+{else/}
+<style>
+    .selectUrl .line {border-bottom: 1px dashed #ddd; color: #999; height: 36px; line-height: 36px;}
+    .selectUrl .line .icon {height: 35px; width: 30px; position: relative; float: left;}
+    .selectUrl .line .icon.icon-1:before {content: ""; width: 10px; height: 10px; border: 1px dashed #ccc; position: absolute; top: 12px; left: 10px;}
+    .selectUrl .line .icon.icon-2 {width: 50px;}
+    .selectUrl .line .icon.icon-2:before {content: ""; width: 10px; height: 10px; border-left: 1px dashed #ccc; border-bottom: 1px dashed #ccc; position: absolute; top: 12px; left: 20px;}
+    .selectUrl .line .icon.icon-3 {width: 60px;}
+    .selectUrl .line .icon.icon-3:before {content: ""; width: 10px; height: 10px; border-left: 1px dashed #ccc; border-bottom: 1px dashed #ccc; position: absolute; top: 12px; left: 30px;}
+    .selectUrl .line .btn-sm {float: right; margin-top: 5px; margin-right: 5px; height: 24px; line-height: 24px; padding: 0 10px;}
+    .selectUrl .line .text {display: block;}
+    .selectUrl .line .label-sm {padding: 2px 5px;}
+    .selectUrl .line.good {height: 60px; padding: 4px 0;}
+    .selectUrl .line.good .image {height: 50px; width: 50px; border: 1px solid #ccc; float: left;}
+    .selectUrl .line.good .image img {height: 100%; width: 100%;}
+    .selectUrl .line.good .text {padding-left: 60px; height: 52px;}
+    .selectUrl .line.good .text p {padding: 0; margin: 0;}
+    .selectUrl .line.good .text .name {font-size: 15px; line-height: 32px; height: 28px;}
+    .selectUrl .line.good .text .price {font-size: 12px; line-height: 18px; height: 18px;}
+    .selectUrl .line.good .btn-sm {height: 32px; padding: 5px 10px; line-height: 22px; margin-top: 9px;}
+    .selectUrl .tip {line-height: 250px; text-align: center;}
+    .selectUrl .nav-tabs > li > a {padding: 8px 20px;}ding: 8px 20px;}
+</style>
+<div class="selectUrl">
+{volist name="list" id="vo" }
+    <div class="line">
+        <div class="icon icon-{$vo.level}"></div>
+        <a href="javascript:;" class="btn btn-default btn-sm" onclick='biz.selector.set(this, {:json_encode($vo)})'>选择</a>
+        <div class="text"><img src="{$vo.thumb}" style="width:25px; height:18px;" />{$vo.name}</div>
+    </div>
+{/volist}
+</div>
+{/empty}

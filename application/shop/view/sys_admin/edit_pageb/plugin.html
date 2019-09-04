@@ -1693,7 +1693,6 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="diylayer" value="1" class="diy-bind" data-bind="diylayer" <%if page.diylayer=='1'%>checked="checked"<%/if%>> 显示</label>
             <label class="radio-inline"><input type="radio" name="diylayer" value="0" class="diy-bind" data-bind="diylayer" <%if page.diylayer=='0' || !page.diylayer%>checked="checked"<%/if%> > 不显示</label>
-            <div class="help-block">提示：按钮样式请至 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.shop.layer" target="_blank">浮动按钮</a> 中设置 未设置则不显示</div>
         </div>
     </div>
 
@@ -1702,7 +1701,6 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="diygotop" value="1" class="diy-bind" data-bind="diygotop" <%if page.diygotop=='1'%>checked="checked"<%/if%>> 显示</label>
             <label class="radio-inline"><input type="radio" name="diygotop" value="0" class="diy-bind" data-bind="diygotop" <%if page.diygotop=='0' || !page.diygotop%>checked="checked"<%/if%> > 不显示</label>
-            <div class="help-block">提示：样式请至 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.shop.gotop" target="_blank">返回顶部</a> 中设置 未设置则不显示</div>
         </div>
     </div>
 
@@ -1711,7 +1709,6 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="followbar" value="1" class="diy-bind" data-bind="followbar" <%if page.followbar=='1'%>checked="checked"<%/if%>> 显示</label>
             <label class="radio-inline"><input type="radio" name="followbar" value="0" class="diy-bind" data-bind="followbar" <%if page.followbar=='0' || !page.followbar%>checked="checked"<%/if%> > 不显示</label>
-            <div class="help-block">提示：关注条样式请至 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.shop.followbar" target="_blank">自定义关注条</a> 中设置 未设置则不显示</div>
         </div>
     </div>
 
@@ -1734,7 +1731,6 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="danmu" value="1" class="diy-bind" data-bind="danmu" <%if page.danmu=='1'%>checked="checked"<%/if%>> 显示</label>
             <label class="radio-inline"><input type="radio" name="danmu" value="0" class="diy-bind" data-bind="danmu" <%if page.danmu=='0' || !page.danmu%>checked="checked"<%/if%> > 不显示</label>
-            <div class="help-block">提示：设置请至 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.shop.danmu" target="_blank">下单提醒</a> 中设置 未设置则不显示</div>
         </div>
     </div>
 
@@ -2515,7 +2511,7 @@
             <label class="radio-inline"><input type="radio" name="row" value="4" class="diy-bind" data-bind-child="params" data-bind="row" data-bind-init="true" <%if params.row=='4'%>checked="checked"<%/if%> > 堆积四列</label>
 
             <%if params.row==1%>
-            <div class="help-block">橱窗样式布局请参考 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=shop.cube" target="_blank">首页魔方</a>，单组最多显示四个，超出隐藏</div>
+            <div class="help-block">单组最多显示四个，超出隐藏</div>
             <%/if%>
             <%if params.row>1%>
             <div class="help-block">图片大小不限制，但请确保所有图片的尺寸/比例相同。</div>
@@ -2926,7 +2922,7 @@
             <label class="radio-inline"><input type="radio" name="goodsdata" value="0" class="diy-bind" data-bind-child="params" data-bind="goodsdata" data-bind-init="true" <%if params.goodsdata=='0'%>checked="checked"<%/if%>> 手动选择</label>
             <label class="radio-inline"><input type="radio" name="goodsdata" value="1" class="diy-bind" data-bind-child="params" data-bind="goodsdata" data-bind-init="true" <%if params.goodsdata=='1'%>checked="checked"<%/if%> > 选择分类</label>
             <%if !params.goodstype||params.goodstype==0%>
-            <label class="radio-inline"><input type="radio" name="goodsdata" value="2" class="diy-bind" data-bind-child="params" data-bind="goodsdata" data-bind-init="true" <%if params.goodsdata=='2'%>checked="checked"<%/if%> > 选择分组</label>
+            <label class="radio-inline hide"><input type="radio" name="goodsdata" value="2" class="diy-bind" data-bind-child="params" data-bind="goodsdata" data-bind-init="true" <%if params.goodsdata=='2'%>checked="checked"<%/if%> > 选择分组</label>
             <%/if%>
         </div>
     </div>
@@ -2994,7 +2990,7 @@
         <div class="col-sm-10">
             <div class="input-group">
                 <input type="text" class="form-control input-sm" placeholder="请点击选择分类" value="<%params.catename%>" readonly="readonly"/>
-                <span class="input-group-addon btn btn-default category-selector" data-goodstype="<%params.goodstype%>">选择分类</span>
+                <span class="input-group-addon btn btn-default category-selector" data-nokeywords="1" data-goodstype="<%params.goodstype%>">选择分类</span>
             </div>
         </div>
     </div>
@@ -3036,15 +3032,6 @@
 
 </script>
 
-<script type="text/html" id="tpl_edit_diymod">
-    <div class="form-group">
-        <div class="col-sm-2 control-label">模块名称</div>
-        <div class="col-sm-10">
-            <input class="form-control input-sm" value="<%params.modname%>" readonly="readonly" />
-            <div class="help-block">注意：公用模块请 <a href="http://rrd.winmobi.cn/web/index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=diypage.page.mod.edit&id=<%params.modid%>" target="_blank">点击此处进行修改</a></div>
-        </div>
-    </div>
-</script>
 
 
 <script type="text/html" id="tpl_edit_listmenu">

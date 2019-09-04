@@ -530,7 +530,7 @@ define(['jquery', 'bootstrap'],
                 $('.wb-search-box').focus();
                 var keyword = $.trim($(".wb-search-box").val());
                 if (keyword != '') {
-                    location.href = './index.php?c=site&a=entry&m=ewei_shopv2&do=web&r=search&keyword=' + keyword;
+                    location.href = './index.php?c=site&a=entry&do=web&r=search&keyword=' + keyword;
                     return
                 }
             } else {}

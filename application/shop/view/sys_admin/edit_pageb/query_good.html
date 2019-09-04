@@ -1,0 +1,16 @@
+{empty name="list"}
+<div class="tip">抱歉！未查询到与“{$kw}”相关的商品，请更换关键字后重试。</div>
+{else/}
+<div style='max-height:500px;overflow:auto;min-width:850px;'>
+    <table class="table table-hover" style="min-width:850px;">
+        <tbody>
+        {volist name="list" id="vo" }
+        <tr>
+            <td><img src='{$vo.thumb}' style='width:30px;height:30px;padding1px;border:1px solid #ccc' /> {$vo.title}</td>
+            <td style="width: 80px"><a class="text-primary" href="javascript:;" onclick='biz.selector.set(this, {:json_encode($vo)})'>选择</a></td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+{/empty}
