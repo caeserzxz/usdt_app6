@@ -92,7 +92,7 @@ class EditPageb extends AdminController
             $tmpData['add_time'] = time();
             $tmpData['update_time'] = time();
             $res = $this->Model->save($tmpData);
-            $id = $res;
+            $id = $this->Model->id;
         }else{
             $tmpData['update_time'] = time();
             $res = $this->Model->where('st_id',$id)->update($tmpData);
