@@ -61,11 +61,14 @@ class MenuListModel extends BaseModel
     {
         $data = Cache::get('main_menu_list_no_priv');
         if (empty($data) == false) return $data;
-        $rows = self::where('right', '')->select()->toArray();
+        $where[] = ['right','=',''];
+        $rows = self::where($where)->select()->toArray();
         foreach ($rows as $row) {
-            $data[] = $row['group'] . '|' . $row['controller'];
+            if (empty($row['controller']) == false){
+                $data[] = $row['group'] . '|' . $row['controller'];
+            }
         }
-        Cache::set('main_menu_list_no_priv', $data, 60);
+        Cache::set('main_menu_list_no_priv', $data, 120);
         return $data;
     }
 
