@@ -95,6 +95,7 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     protected function _priv($now = '', $action = '', $isAll = true, $isReturn = false)
     {
+        static $MenuListModel;
         if ($this->isCheckPriv == false) return true;
         $role_action = $this->admin['info']['role_action'];
         if ($role_action == 'all') {
@@ -105,15 +106,22 @@ class AdminController extends BaseController
         if (empty($now)) {
             $now = $this->module . '|' . $this->controller;
         }
-        $role_action = $role_action[$now];
-        if (empty($role_action)) {
-            $MenuListModel = new \app\mainadmin\model\MenuListModel();
-            $noPrivList = $MenuListModel->getNoPriv();
+        $role_action = $role_action[$now];//获取角色权限
+        if (empty($role_action)) {//没有权限
+            if (isset($MenuListModel) == false){
+                $MenuListModel = new \app\mainadmin\model\MenuListModel();
+            }
+            $noPrivList = $MenuListModel->getNoPriv();//获取未定义权限的菜单
             if (in_array($now, $noPrivList)) {
                 return true;
             }
+            if ($isReturn == true) return false;
+            $this->error('你无操作权限.');
         }
-        $action = empty($action) ? $this->action : $action;
+        if (empty($action) == true){
+            $action = $this->action;
+        }
+
         if ($action == 'info') {
             if ($this->request->isPost() == true) {
                 $isTrue = array_intersect(['manage', 'edit'], $role_action);
@@ -127,7 +135,7 @@ class AdminController extends BaseController
         } elseif (in_array($action, array('download', 'export'))) {
             $isTrue = array_intersect(['download', 'export'], $role_action);
         }else{
-            //$isTrue = true;
+            $isTrue = true;
         }
         if (empty($isTrue) == false) return true;
         if ($isReturn == true) return false;
@@ -153,16 +161,24 @@ class AdminController extends BaseController
         $rows = (new \app\mainadmin\model\MenuListModel)->where('status', 1)->order('pid DESC,sort_order DESC')->select()->toArray();
         //权限过滤
         foreach ($rows as $row) {
-            if (empty($row['right']) == false && $this->_privIf($row['group'] . '|' . $row['controller'], $row['action']) == false) {
-                continue;
+            if (empty($row['controller']) == false){
+                if ($this->_privIf($row['group'].'|'.$row['controller'], $row['action'] ) == false){
+                    continue;
+                }
             }
             $menus[] = $row;
         }
+
         $data = [];
         $_data = [];
         foreach ($menus as $row) {
             $key = $row['pid'] < 1 ? $row['group'] : $row['id'];
             if ($row['pid'] > 0) {
+                if (empty($row['controller']) == true){
+                    if ($this->_privIf($row['group'].'|'.$row['controller'], $row['action'] ) == false){
+                        continue;
+                    }
+                }
                 if (empty($_data[$row['id']]) == false) {
                     $row['submenu'] = $_data[$row['id']];
                     unset($_data[$row['id']]);
@@ -189,20 +205,37 @@ class AdminController extends BaseController
         $menus = $this->getPrivList();//获取有权限的菜单
         $this->top_menus = array();
         foreach ($menus as $group => $menu) {
-            if (empty($menu['list']) == true)  continue;
-            if (empty($this->top_menus[$group]) == false)  continue;
-            foreach ($menu['list'] as $menub){
-                if (empty($this->top_menus[$group]) == false) continue;
-                if (empty($menub['submenu']) == false) {
-                    $menuc = reset($menub['submenu']);
-                    $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menuc['group'], 'controller' => $menuc['controller'], 'action' => $menuc['action']];
+            if (empty($menu['list']) == true){
+                if (empty($menu['controller'])){
+                    unset($menus[$group]);
                     continue;
-                } elseif (empty($menub) == false) {
+                }
+                if (empty($this->top_menus[$group])){
+                    $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menu['group'], 'controller' => $menu['controller'], 'action' => $menu['action']];
+                }
+                continue;
+            }
+            foreach ($menu['list'] as $groupb=>$menub){
+                if (empty($menub['submenu']) == true) {
                     if (empty($menub['controller'])){
+                        unset($menus[$group]['list'][$groupb]);
                         continue;
                     }
-                    $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menub['group'], 'controller' => $menub['controller'], 'action' => $menub['action']];
+                    if (empty($this->top_menus[$group])) {
+                        $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menub['group'], 'controller' => $menub['controller'], 'action' => $menub['action']];
+                    }
                     continue;
+                }
+                foreach ($menub['submenu'] as $groupc=>$menuc){
+                    if (empty($menuc['submenu']) == true) {
+                        if (empty($menuc['controller'])){
+                            unset($menus[$group]['list'][$groupb]['submenu'][$groupc]);
+                            continue;
+                        }
+                    }
+                    if (empty($this->top_menus[$group])){
+                        $this->top_menus[$group] = ['name' => $menu['name'], 'icon' => $menu['icon'], 'key' => $menu['group'], 'controller' => $menuc['controller'], 'action' => $menuc['action']];
+                    }
                 }
             }
         }
