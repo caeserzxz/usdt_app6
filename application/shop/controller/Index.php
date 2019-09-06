@@ -70,8 +70,31 @@ class Index  extends ClientbaseController{
     //-- 自定义首页 -- 新
     /*------------------------------------------------------ */
     public function diypage(){
-
-        return $this->fetch('../../customize/index');
+        $pageid = input('pageid',2,'intval');
+        $ShopPageTheme = new \app\shop\model\ShopPageTheme();
+        $theme = $ShopPageTheme->find($pageid);
+        if (empty($theme)){
+            return $this->error('页面不存在.');
+        }
+        $mkey = 'shopIndex_web_'.$pageid;
+        //$body = Cache::get($mkey);
+        $page = json_decode($theme['page'],true);
+        $tmpPath = '../../customize/';
+        $body = '';
+        $topfixed = '';
+        foreach ($page['items'] as $key=>$row) {
+            $this->assign('diyInfo', $row);
+            if ($row['id'] == 'fixedsearch'){
+                $topfixed .= $this->fetch($tmpPath.$row['id']);
+                continue;
+            }
+            $body .= $this->fetch($tmpPath.$row['id']);
+        }
+        print_r($page);
+        $this->assign('topfixed', $topfixed);
+        $this->assign('body', $body);
+        $this->assign('page', $page['page']);
+        return $this->fetch($tmpPath.'index');
     }
 	/*------------------------------------------------------ */
 	//-- 自定义首页 -- 旧
@@ -79,12 +102,12 @@ class Index  extends ClientbaseController{
 	protected function shopIndex(){
 		
 		$mkey = 'shopIndex_web';
-		$theme = Db::table('shop_page_theme')->find();
+        $ShopPageTheme = new \app\shop\model\ShopPageTheme();
+		$theme = $ShopPageTheme->find(1);
 		if (empty($theme)) return $this->index(true);
 	    $body = Cache::get($mkey);
 		if (empty($body)){
-			$ShopPageTheme = new \app\shop\model\ShopPageTheme();
-			$d_products = $ShopPageTheme->defPproducts();			
+			$d_products = $ShopPageTheme->defPproducts();
 			$page = json_decode($theme['page'],true);
 			$GoodsModel = new GoodsModel();
 			foreach ($page['pageElement'] as $key=>$row){

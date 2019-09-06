@@ -1,0 +1,27 @@
+<div class="diy-fixedsearch fixed" style="">
+    <div class="background" style="background: {$diyInfo.style.background}; opacity: {$diyInfo.style.opacityinput};"></div>
+    <form action="{:url('shop/goods/index')}" method="post" class="inner" id="fixedsearch">
+        {if condition="$diyInfo.params.leftnav == 1"}
+            <a class="leftnav" href="javascript:;" data-nocache="true">
+                <i class="icon {$diyInfo.params.leftnavicon}"style="color:{$diyInfo.style.leftnavcolor};"></i>
+            </a>
+        {elseif condition="$diyInfo.params.leftnav == 2"}
+            <a class="leftnav" href="javascript:;" data-nocache="true">
+                <img src="{$diyInfo.params.leftnavimg}" />
+            </a>
+        {/if}
+        <div class="center {$diyInfo.params.searchstyle}">
+            <input type="search" value="" placeholder="{$diyInfo.params.placeholder}" style="color: {$diyInfo.style.searchtextcolor}; opacity: {$diyInfo.style.opacityinput}; background: {$diyInfo.style.searchbackground};" name="keyword" />
+        </div>
+        {if condition="$diyInfo.params.rightnav == 1"}
+        <a class="rightnav"  href="javascript:;"  data-nocache="true">
+            <i class="icon {$diyInfo.params.rightnavicon}"style="color: {$diyInfo.style.rightnavcolor};"></i>
+        </a>
+        {elseif condition="$diyInfo.params.rightnav == 2"}
+            <a class="rightnav" href="javascript:;" data-nocache="true">
+                <img src="{$diyInfo.params.rightnavimg}" />
+            </a>
+        {/if}
+        <script>function fixedsearch() {$('#fixedsearch').submit();}</script>
+    </form>
+</div>

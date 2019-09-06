@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <meta name="format-detection" content="telephone=no" />
-    <title>正品商城</title>/Users/iqgmy/Desktop/D/PHP/zp/my/mainObj/public/static/customize/web/css
-    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/web/foxui/css/foxui.min.css?v=0.2">
-    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/web/css/style.css?v=2.0.9">
+    <title>正品商城</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/js/dist/foxui/css/foxui.min.css?v=0.2">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/mobile/css/style.css?v=2.0.9">
 
     <link rel="stylesheet" type="text/css" href="__STATIC__/customize/fonts/iconfont.css?v=2017070719">
     <script src="__STATIC__/customize/js/jquery/jquery-1.11.1.min.js"></script>
     <script src="__STATIC__/customize/js/require.js"></script>
-    <script src="__STATIC__/customize/web/js/myconfig-app.js"></script>
+    <script src="__STATIC__/customize/mobile/js/myconfig-app.js"></script>
     <script language="javascript">require(['core'],function(modal){modal.init({siteUrl: "{$Think.config.config.host_path}",baseUrl: "./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=ROUTES&mid=2189"})});</script>
 
 
@@ -49,51 +49,32 @@
 
 <div class='fui-page-group '>
 
-    <script>document.title = "请输入页面标题"; </script>
-    <link rel="stylesheet" href="../addons/ewei_shopv2/static/js/dist/swiper/swiper.min.css">
-    <link href="../addons/ewei_shopv2/plugin/diypage/static/css/foxui.diy.css?v=201705261600"rel="stylesheet"type="text/css"/>
+    <script>document.title = "{$page.title}"; </script>
+    <link rel="stylesheet" href="__STATIC__/customize/js/dist/swiper/swiper.min.css">
+    <link href="__STATIC__/customize/mobile/css/foxui.diy.css?v=201705261600" rel="stylesheet"type="text/css"/>
     <style type="text/css">
     </style>
-    <div class='fui-page  fui-page-current ' style="top: 0; background-color: #f3f3f3; ">
+    <div class='fui-page  fui-page-current ' style="top: 0; background-color: {$page.background}; ">
         <div class="fui-header">
             <div class="fui-header-left">
             </div>
-            <div class="title">请输入页面标题</div>
+            <div class="title">{$page.title}</div>
             <div class="fui-header-right"></div>
         </div>
-
-
-        <div class="fui-content " id="container" style="background-color: #f3f3f3; ">
-            <div class="fui-searchbar bar" style="z-index: 0;">
-                <div class="searchbar" style="background: #f1f1f2; padding: 10px 10px;">
-                    <form action="./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=goods&merchid=0&mid=2189" method="post" style="position: relative;left:0;top:0;">
-                        <input type="submit" class="searchbar-cancel searchbtn" value="搜索" style="top: 0; right: 0" />
-                        <div class="search-input " style="background: #ffffff;">
-                            <i class="icon icon-search" style="color: #b4b4b4;"></i>
-                            <input type="search" placeholder="请输入关键字进行搜索" class="search" name="keywords"
-                                   style="text-align: left; color: #999999; background: none;" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
+        {$topfixed|raw}
+        <div class="fui-content " id="container" style="background-color: {$page.background}; ">
+            {$body|raw}
 
         <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZQiFErjQB7inrGpx27M1GR5w3TxZ64k7&s=1"></script>
         <script language="javascript">
-            require(['../addons/ewei_shopv2/plugin/diypage/static/js/mobile.js'], function(modal){
+            require(['__STATIC__/customize/mobile/js/mobile.js'], function(modal){
                 modal.init();
             });
         </script>
 
+         </div>
     </div>
 
-    <script language='javascript'>
-        $(function(){
-            $.getJSON("./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=util.task&mid=2189");
-        })
-    </script>
 
     <script language="javascript">
         require(['init']);
@@ -146,7 +127,7 @@
 
 
     <div class="wap-qrcode-container">
-        <p class="example1">正品商城</p>
+        <p class="example1">{$page.title}</p>
         <div class="wap-qrcode-image" id="wap-qrcode"></div>
         <p class="example1">微信“扫一扫”浏览</p>
     </div>
