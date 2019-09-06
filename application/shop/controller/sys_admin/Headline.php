@@ -13,8 +13,6 @@ use app\mainadmin\model\ArticleModel;
  */
 class Headline extends AdminController
 {
-    public $_field = '';
-    public $_pagesize = '';
 
     /*------------------------------------------------------ */
     //-- 优先执行
@@ -50,7 +48,7 @@ class Headline extends AdminController
         if (empty($search['keyword']) == false) $where[] = ['title', 'like', "%" . $search['keyword'] . "%"];
         if ($search['type'] != '') $where[] =['type','=',$search['type']];
 
-        $this->data = $this->getPageList($this->Model, $where, $this->_field, $this->_pagesize);
+        $this->data = $this->getPageList($this->Model, $where);
         $this->assign("data", $this->data);
         $this->assign("search", $search);
         if ($runJson == 1) {

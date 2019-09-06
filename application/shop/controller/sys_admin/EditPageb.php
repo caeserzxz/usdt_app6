@@ -1,29 +1,74 @@
 <?php
 namespace app\shop\controller\sys_admin;
 use app\AdminController;
-use think\Db;
-use think\facade\Cache;
+
 use app\publics\model\LinksModel;
 
-
+use app\shop\model\ShopPageTheme;
 /*------------------------------------------------------ */
 //-- 商城装修
 /*------------------------------------------------------ */
 class EditPageb extends AdminController
 {
     /*------------------------------------------------------ */
+    //-- 优先执行
+    /*------------------------------------------------------ */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Model = new ShopPageTheme();
+    }
+    /*------------------------------------------------------ */
     //-- 主页编辑
     /*------------------------------------------------------ */
     public function index()
     {
         $this->assign('title', '魔幻装修');
+        $this->getList(true);
         return $this->fetch();
     }
     /*------------------------------------------------------ */
-    //-- 主页编辑
+    //-- 获取列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getList($runData = false)
+    {
+        $data = $this->getPageList($this->Model);
+        $this->assign("data", $data);
+        if ($runData == false) {
+            $data['content'] = $this->fetch('list');
+            unset($data['list']);
+            return $this->success('', '', $data);
+        }
+        return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 添加/修改页面
+    /*------------------------------------------------------ */
+    public function info()
+    {
+        $this->assign('title', '添加魔幻装修');
+        $id = input('id',0,'intval');
+        $this->assign('id', $id);
+        return $this->fetch('info');
+    }
+    /*------------------------------------------------------ */
+    //-- 编辑
     /*------------------------------------------------------ */
     public function edit()
     {
+        $id = input('id',0,'intval');
+        if ($id > 0){
+            $info = $this->Model->find($id);
+            $data = empty($info['page'])?'null':$info['page'];
+            $name = $info['theme_name'];
+        }else{
+            $data = 'null';
+            $name = '商城';
+        }
+        $this->assign('id', $id);
+        $this->assign('name', $name);
+        $this->assign('data', $data);
         $this->assign('title', '魔幻装修');
         return $this->fetch();
     }
@@ -32,10 +77,45 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function save()
     {
+        $id = input('id',0,'intval');
+        $data = input('data');
+        if (empty($data['items'])){
+            $result['status'] = 0;
+            $result['result']['message'] = '请设置排版内容后再操作.';
+            return $this->ajaxReturn($result);
+        }
+        $tmpData['is_new'] = 1;
+        $tmpData['theme_name'] = $data['page']['name'];
+        $tmpData['theme_type'] = 'index';
+        $tmpData['page'] = json_encode($data,JSON_UNESCAPED_UNICODE);
+        if ($id < 1){
+            $tmpData['add_time'] = time();
+            $tmpData['update_time'] = time();
+            $res = $this->Model->save($tmpData);
+            $id = $res;
+        }else{
+            $tmpData['update_time'] = time();
+            $res = $this->Model->where('st_id',$id)->update($tmpData);
+        }
+        if ($res < 1){
+            $result['status'] = 0;
+            $result['result']['message'] = '操作失败，请重试.';
+            return $this->ajaxReturn($result);
+        }
         $result['status'] = 1;
-        $result['result']['id'] = 1;
-        $result['result']['jump'] = url('edit',['id'=>1]);
+        $result['result']['id'] = $id;
+        $result['result']['jump'] = url('edit',['id'=>$id]);
         return $this->ajaxReturn($result);
+    }
+
+    /*------------------------------------------------------ */
+    //-- 预览
+    /*------------------------------------------------------ */
+    public function preview()
+    {
+        $id = input('id',0,'intval');
+        $this->assign('id', $id);
+        return $this->fetch();
     }
     /*------------------------------------------------------ */
     //-- 选定链接

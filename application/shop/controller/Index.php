@@ -66,8 +66,15 @@ class Index  extends ClientbaseController{
         $this->assign('searchKeys', $GoodsModel->searchKeys());
 		return $this->fetch('search');
 	}
+    /*------------------------------------------------------ */
+    //-- 自定义首页 -- 新
+    /*------------------------------------------------------ */
+    public function diypage(){
+
+        return $this->fetch('../../customize/index');
+    }
 	/*------------------------------------------------------ */
-	//-- 自定义首页
+	//-- 自定义首页 -- 旧
 	/*------------------------------------------------------ */
 	protected function shopIndex(){
 		

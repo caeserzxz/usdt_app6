@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <title>正品商城</title>/Users/iqgmy/Desktop/D/PHP/zp/my/mainObj/public/static/customize/web/css
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/web/foxui/css/foxui.min.css?v=0.2">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/web/css/style.css?v=2.0.9">
+
+    <link rel="stylesheet" type="text/css" href="__STATIC__/customize/fonts/iconfont.css?v=2017070719">
+    <script src="__STATIC__/customize/js/jquery/jquery-1.11.1.min.js"></script>
+    <script src="__STATIC__/customize/js/require.js"></script>
+    <script src="__STATIC__/customize/web/js/myconfig-app.js"></script>
+    <script language="javascript">require(['core'],function(modal){modal.init({siteUrl: "{$Think.config.config.host_path}",baseUrl: "./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=ROUTES&mid=2189"})});</script>
+
+
+    <style>.fui-goods-group.block .fui-goods-item .image {background-image: url("http://rrd.winmobi.cn/attachment/images/1/2018/07/R2M55665qgM23mu4h9309e1b40zmVB.png");}</style>
+
+    <style type="text/css">
+        body {
+            position: absolute;;
+            max-width: 750px;  margin:auto;
+        }
+        .fui-navbar {
+            max-width:750px;
+        }
+        .fui-navbar,.fui-footer  {
+            max-width:750px;
+        }
+        .fui-page.fui-page-from-center-to-left,
+        .fui-page-group.fui-page-from-center-to-left,
+        .fui-page.fui-page-from-center-to-right,
+        .fui-page-group.fui-page-from-center-to-right,
+        .fui-page.fui-page-from-right-to-center,
+        .fui-page-group.fui-page-from-right-to-center,
+        .fui-page.fui-page-from-left-to-center,
+        .fui-page-group.fui-page-from-left-to-center {
+            -webkit-animation: pageFromCenterToRight 0ms forwards;
+            animation: pageFromCenterToRight 0ms forwards;
+        }
+    </style>
+
+
+    <style>.danmu {display: none;opacity: 0;}</style>
+</head>
+
+<body ontouchstart>
+
+<div class='fui-page-group '>
+
+    <script>document.title = "请输入页面标题"; </script>
+    <link rel="stylesheet" href="../addons/ewei_shopv2/static/js/dist/swiper/swiper.min.css">
+    <link href="../addons/ewei_shopv2/plugin/diypage/static/css/foxui.diy.css?v=201705261600"rel="stylesheet"type="text/css"/>
+    <style type="text/css">
+    </style>
+    <div class='fui-page  fui-page-current ' style="top: 0; background-color: #f3f3f3; ">
+        <div class="fui-header">
+            <div class="fui-header-left">
+            </div>
+            <div class="title">请输入页面标题</div>
+            <div class="fui-header-right"></div>
+        </div>
+
+
+        <div class="fui-content " id="container" style="background-color: #f3f3f3; ">
+            <div class="fui-searchbar bar" style="z-index: 0;">
+                <div class="searchbar" style="background: #f1f1f2; padding: 10px 10px;">
+                    <form action="./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=goods&merchid=0&mid=2189" method="post" style="position: relative;left:0;top:0;">
+                        <input type="submit" class="searchbar-cancel searchbtn" value="搜索" style="top: 0; right: 0" />
+                        <div class="search-input " style="background: #ffffff;">
+                            <i class="icon icon-search" style="color: #b4b4b4;"></i>
+                            <input type="search" placeholder="请输入关键字进行搜索" class="search" name="keywords"
+                                   style="text-align: left; color: #999999; background: none;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZQiFErjQB7inrGpx27M1GR5w3TxZ64k7&s=1"></script>
+        <script language="javascript">
+            require(['../addons/ewei_shopv2/plugin/diypage/static/js/mobile.js'], function(modal){
+                modal.init();
+            });
+        </script>
+
+    </div>
+
+    <script language='javascript'>
+        $(function(){
+            $.getJSON("./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=util.task&mid=2189");
+        })
+    </script>
+
+    <script language="javascript">
+        require(['init']);
+
+        setTimeout(function () {
+            if($(".danmu").length>0){
+                $(".danmu").remove();
+            }
+        }, 500);
+    </script>
+
+
+
+
+    <script language="javascript">
+        clearTimeout(window.interval);
+        window.interval = setTimeout(function () {
+            window.shareData = {"title":"\u8bf7\u8f93\u5165\u9875\u9762\u6807\u9898","imgUrl":"","desc":"","link":"http:\/\/rrd.winmobi.cn\/app\/index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=diypage&id=32&mid=2189"};
+            jssdkconfig = null || { jsApiList:[] };
+            jssdkconfig.debug = false;
+            jssdkconfig.jsApiList = ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','showOptionMenu', 'hideMenuItems', 'onMenuShareQZone', 'scanQRCode','openLocation'];
+            wx.config(jssdkconfig);
+            wx.ready(function () {
+                wx.showOptionMenu();
+
+
+                window.shareData.success = "";
+                if(window.shareData.success){
+                    var success = window.shareData.success;
+                    window.shareData.success = function(){
+                        eval(success)
+                    };
+                }
+
+
+                wx.onMenuShareAppMessage(window.shareData);
+                wx.onMenuShareTimeline(window.shareData);
+                wx.onMenuShareQQ(window.shareData);
+                wx.onMenuShareWeibo(window.shareData);
+                wx.onMenuShareQZone(window.shareData);
+            });
+        },500);
+
+
+
+    </script>
+
+
+
+
+
+    <div class="wap-qrcode-container">
+        <p class="example1">正品商城</p>
+        <div class="wap-qrcode-image" id="wap-qrcode"></div>
+        <p class="example1">微信“扫一扫”浏览</p>
+    </div>
+    <script language="javascript">
+        $(function(){
+            setTimeout(function(){
+                require(['jquery.qrcode'],function(q){
+                    $('#wap-qrcode').html('');
+                    $('#wap-qrcode').qrcode("{$Think.config.config.host_path}");
+                });
+            },500);
+
+        })
+    </script>
+
+    <span style="display:none"></span>
+</body>
+</html>
+

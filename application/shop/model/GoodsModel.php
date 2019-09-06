@@ -273,13 +273,33 @@ class GoodsModel extends BaseModel
 
         $goods['is_on_sale'] = 0;
         if ($goods['is_delete']) return $goods;
-        $goods['sale_price'] = $goods['shop_price'];
+
         $time = time();
 
-        if ($goods['promote_start_date'] >= $time || $goods['promote_end_date'] <= $time) {//判断促销是否在时间范围内
-            $goods['is_promote'] = 0;
+        $goods['is_on_sale'] = 0;
+        if ($goods['isputaway'] == 1){
+            $goods['is_on_sale'] = 1;
+        }elseif ($goods['isputaway'] == 2){
+            //自动上下架判断
+            if ($goods['added_time'] <= $time && $goods['shelf_time'] >= $time) {
+                $goods['is_on_sale'] = 1;
+            } elseif ($goods['shelf_time'] < $time) {
+                $update['isputaway'] = 0;
+                $goods['isputaway'] = 0;
+            }
         }
 
+        if (empty($update) == false) {
+            $where['goods_id'] = $goods_id;
+            $this->upInfo($update, $where);
+        }
+
+        $goods['sale_price'] = $goods['shop_price'];
+        //判断促销是否在时间范围内
+        if ($goods['promote_start_date'] >= $time || $goods['promote_end_date'] <= $time) {
+            $goods['is_promote'] = 0;
+        }
+        //促销中处理
         if ($goods['is_promote'] == 1) {
             if ($goods['is_spec'] == 1) {
                 $prices = [];
@@ -299,33 +319,17 @@ class GoodsModel extends BaseModel
                 $goods['sale_price'] = $goods['promote_price'];
             }
         }
-
-        if ($goods['is_spec'] == 1) {
-            $goods['exp_min_price'] = explode('.', $goods['min_price']);
-            $goods['exp_max_price'] = explode('.', $goods['max_price']);
+        //单规格商品最小与最大价格都为销售价
+        if ($goods['is_spec'] == 0) {
+            $goods['min_price'] = $goods['max_price'] = $goods['sale_price'];
         }
+
+        $goods['exp_min_price'] = explode('.', $goods['min_price']);
+        $goods['exp_max_price'] = explode('.', $goods['max_price']);
         $goods['exp_price'] = explode('.', $goods['sale_price']);
         $goods['sale_count'] = $goods['virtual_sale'] + $goods['sale_num'];
         $goods['collect_count'] = $goods['virtual_collect'] + $goods['collect_num'];
 
-        switch ($goods['isputaway']) {
-            case 1 :
-                /**上架**/
-                $goods['is_on_sale'] = 1;
-                break;
-            case 2 :
-                /**自动上下架**/
-                if ($goods['added_time'] <= $time && $goods['shelf_time'] >= $time) {
-                    $goods['is_on_sale'] = 1;
-                } elseif ($goods['shelf_time'] < $time) {
-                    $update['isputaway'] = 0;
-                }
-                break;
-        }
-        if (empty($update)) {
-            $where['goods_id'] = $goods_id;
-            $this->upInfo($update, $where);
-        }
         return $goods;
     }
     /*------------------------------------------------------ */
@@ -334,7 +338,6 @@ class GoodsModel extends BaseModel
     /*------------------------------------------------------ */
     public function getGoodsSku(&$goods)
     {
-
         if ($goods['is_spec'] == 0) return $goods;
         $lstSKUVal = $products = array();
         $GoodsSkuModel = new GoodsSkuModel();
@@ -358,7 +361,6 @@ class GoodsModel extends BaseModel
                     $skuarr[$sval] = 1;
                 }
             }
-
             $goods['sub_goods'][$row['sku_val']] = $row;
         }
         unset($row);

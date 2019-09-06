@@ -4,15 +4,15 @@
 //-- Author: iqgmy
 /*------------------------------------------------------ */
 namespace app\shop\model;
-use think\Model;
+use app\BaseModel;
 use think\Db;
 use think\facade\Cache;
 use think\facade\Config;
 
-class ShopPageTheme extends Model {
+class ShopPageTheme extends BaseModel {
     protected $mkey = 'ShopPageTheme_';
 	protected $table = 'shop_page_theme';
-	
+    protected $pk = 'st_id';
     /*------------------------------------------------------ */
     //--  清除memcache
     /*------------------------------------------------------ */

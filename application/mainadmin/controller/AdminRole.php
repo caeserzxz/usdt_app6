@@ -74,7 +74,7 @@ class AdminRole extends AdminController
 	/*------------------------------------------------------ */
     public function beforeEdit($data){	
 		$map['role_id'] = $data['role_id'];
-		if (empty($data['role_action']) ) return $this->_error('请设置角色权限！');		
+		//if (empty($data['role_action']) ) return $this->error('请设置角色权限！');
 		if (empty($data['role_name']) ) return $this->error('角色名称不能为空！');
 		$data['role_action'] = join(',',$data['role_action']);
 		//验证数据是否出现变化
