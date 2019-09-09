@@ -1,0 +1,7 @@
+<div class="fui-picture" style="padding-bottom: {$diyInfo.style.paddingtop}px; background: {$diyInfo.style.background};">
+    {volist name="$diyInfo.data" id="vo"}
+    <a href="{$vo.linkurl|default='javascript:;'}" style="display: block; padding: {$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px;" data-nocache="true">
+        <img data-lazy="{$vo.imgurl}" />
+    </a>
+    {/volist}
+</div>

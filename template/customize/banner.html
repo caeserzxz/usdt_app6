@@ -1,0 +1,12 @@
+<div class='fui-swipe'>
+    <div class='fui-swipe-wrapper'>
+        {volist name="$diyInfo.data" id="vo"}
+        <a class='fui-swipe-item' href="{$vo.linkurl|default='javascript:;'}" data-nocache="true"><img src="{$vo.imgurl}" style="display: block; width: 100%; height: auto;"/></a>
+        {/volist}
+    </div>
+    <style>
+        .fui-swipe-page .fui-swipe-bullet {background: {$diyInfo.style.background}; opacity: {$diyInfo.style.opacity};}
+        .fui-swipe-page .fui-swipe-bullet.active {opacity: 1;}
+    </style>
+    <div class="fui-swipe-page {$diyInfo.style.dotalign} {$diyInfo.style.dotstyle}" style="padding: 0 {$diyInfo.style.leftright}px; bottom: {$diyInfo.style.bottom}px; "></div>
+</div>

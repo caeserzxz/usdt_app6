@@ -8,7 +8,7 @@
     <script type="text/javascript" src="__STATIC__/js/jquery/jquery.qrcode.min.js"></script>
     <script>
         $(function () {
-            $('#qrcode').qrcode("{$Think.config.config.host_path}");
+            $('#qrcode').qrcode("{:_url('/shop/index/diypage',['pageid'=>$id],false,true)}");
         });
     </script>
 </head>

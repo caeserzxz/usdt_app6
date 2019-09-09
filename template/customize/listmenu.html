@@ -1,0 +1,9 @@
+<div class="fui-cell-group fui-cell-click" style="margin-top: {$diyInfo.style.margintop}px; background-color: {$diyInfo.style.background};">
+    {volist name="$diyInfo.data" id="vo"}
+    <a class="fui-cell" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true">
+        <div class="fui-cell-icon" style="color: {$diyInfo.style.iconcolor};"><i class="icon {$vo.iconclass}"></i></div>
+        <div class="fui-cell-text" style="color: {$diyInfo.style.textcolor};">{$vo.text}</div>
+        <div class="fui-cell-remark" style="color: {$diyInfo.style.remarkcolor};">{$vo.remark}</div>
+    </a>
+    {/volist}
+</div>

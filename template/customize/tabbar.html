@@ -1,0 +1,25 @@
+{if condition="count($diyInfo['data']) > $diyInfo.style.scrollnum"}
+    <div class="swiper swiper-{$diyInfo._key}" data-element=".swiper-{$diyInfo._key}" data-view="{$diyInfo.style.scrollnum}" data-slideto="">
+        <div class="fui-tab fui-tab-success swiper-container">
+            <div class="swiper-wrapper">
+                {volist name="$diyInfo.data" id="vo"}
+                    {if condition="$vo.linkurl == $Think.SERVER.REQUEST_URI"}
+                        <a class="swiper-slide item external " href="{$vo.linkurl|default='javascript:;'}" style="background:{$diyInfo.style.activebackground}; color:{$diyInfo.style.activecolor};border-color:{$diyInfo.style.activecolor};">{$vo.text}</a>
+                    {else/}
+                        <a class="swiper-slide item external " href="{$vo.linkurl|default='javascript:;'}" style="background:{$diyInfo.style.background}; color:{$diyInfo.style.color};">{$vo.text}</a>
+                    {/if}
+                {/volist}
+            </div>
+        </div>
+    </div>
+{else/}
+    <div class="fui-tab fui-tab-success">
+        {volist name="$diyInfo.data" id="vo"}
+        {if condition="$vo.linkurl == $Think.SERVER.REQUEST_URI"}
+            <a class="external " href="{$vo.linkurl|default='javascript:;'}" style="background:{$diyInfo.style.activebackground}; color:{$diyInfo.style.activecolor};border-color:{$diyInfo.style.activecolor};">{$vo.text}</a>
+        {else/}
+            <a class="external " href="{$vo.linkurl|default='javascript:;'}" style="background:{$diyInfo.style.background}; color:{$diyInfo.style.color};">{$vo.text}</a>
+        {/if}
+        {/volist}
+    </div>
+{/if}

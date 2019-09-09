@@ -83,14 +83,24 @@ class Index  extends ClientbaseController{
         $body = '';
         $topfixed = '';
         foreach ($page['items'] as $key=>$row) {
+            $row['_key'] = $row;
             $this->assign('diyInfo', $row);
-            if ($row['id'] == 'fixedsearch'){
+            if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
                 $topfixed .= $this->fetch($tmpPath.$row['id']);
                 continue;
             }
+            if ($row['id'] == 'notice'){//公告处理
+                if ($row['params']['noticedata'] == 0){
+                    $ArticleModel = new \app\mainadmin\model\ArticleModel();
+                    $noticeList = $ArticleModel->limit($row['noticenum'])->select()->toArray();
+                }else{
+                    $noticeList = $row['data'];
+                }
+                $this->assign('noticeList', $noticeList);
+            }
             $body .= $this->fetch($tmpPath.$row['id']);
         }
-        print_r($page);
+        //print_r($page);
         $this->assign('topfixed', $topfixed);
         $this->assign('body', $body);
         $this->assign('page', $page['page']);

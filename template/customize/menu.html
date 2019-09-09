@@ -1,0 +1,31 @@
+{if condition="$diyInfo.style.showtype == 0"}
+<div class="fui-icon-group noborder col-{$diyInfo.style.rownum} {$diyInfo.style.navstyle}" style="background: {$diyInfo.style.background}">
+    {volist name="$diyInfo.data" id="vo"}
+    <a class="fui-icon-col external" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true">
+        <div class="icon"><img src="{$vo.imgurl}"></div>
+        <div class="text" style="color: {$vo.color};">{$vo.text}</div>
+    </a>
+    {/volist}
+</div>
+{else/}
+<div class="swiper swiper-{$diyInfo._key}" data-element=".swiper-{$diyInfo._key}" data-view="1">
+    <div class="swiper-container  fui-icon-group noborder col-{$diyInfo.style.rownum} {$diyInfo.style.navstyle}" style="background: {$diyInfo.style.background}">
+        <div class="swiper-wrapper" style="background: none;">
+            <div class="swiper-slide">
+                {volist name="$diyInfo.data" id="vo" mod="$diyInfo['style']['pagenum']"}
+                    {eq name="mod" value="0"}
+                        {gt name="i" value="1"}</div><div class="swiper-slide">{/gt}
+                    {/eq}
+                    <a class="fui-icon-col external" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true" >
+                        <div class="icon"><img src="{$vo.imgurl}"></div>
+                        <div class="text" style="color: {$vo.color};">{$vo.text}</div>
+                    </a>
+                {/volist}
+            </div>
+        </div>
+        {eq name="$diyInfo.style.showdot" value="1"}
+        <div class="swiper-pagination"></div>
+        {/eq}
+    </div>
+</div>
+{/if}

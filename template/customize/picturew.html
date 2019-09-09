@@ -1,0 +1,30 @@
+{if condition="$diyInfo.style.showtype == 0"}
+<div class="fui-cube" style="background: ; ">
+    <div class="fui-cube-left" style="padding: 0px 0px; padding-right: 0;">
+        <a href="" data-nocache="true"><img data-lazy="http://rrd.winmobi.cn/addons/ewei_shopv2/plugin/diypage/static/images/default/cube-1.jpg" /></a>
+    </div>
+    <div class="fui-cube-right" >
+        <div class="fui-cube-right1" style="padding: 0px 0px; padding-bottom: 0;">
+            <a href="" data-nocache="true"><img data-lazy="http://rrd.winmobi.cn/addons/ewei_shopv2/plugin/diypage/static/images/default/cube-2.jpg" /></a>
+        </div>
+        <div class="fui-cube-right2" >
+            <div class="left" style="padding: 0px 0px; padding-right: 0;">
+                <a href="" data-nocache="true"><img data-lazy="http://rrd.winmobi.cn/addons/ewei_shopv2/plugin/diypage/static/images/default/cube-3.jpg" /></a>
+            </div>
+            <div class="right" style="padding: 0px 0px;">
+                <a href="" data-nocache="true"><img data-lazy="http://rrd.winmobi.cn/addons/ewei_shopv2/plugin/diypage/static/images/default/cube-4.jpg" /></a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{else/}
+<div class="fui-picturew row-{$diyInfo.params.row}" style="padding: 0px 0px; background:{$diyInfo.style.background} ;">
+    {volist name="$diyInfo.data" id="vo"}
+    <div class="item" style="padding: 0px 0px;">
+        <a href="{$vo.linkurl|default='javascript:;'}" data-nocache="true"><img data-lazy="{$vo.imgurl}"></a>
+    </div>
+   {/volist}
+</div>
+
+{/if}

@@ -1,0 +1,19 @@
+{notempty name="noticeList"}
+<div class="fui-notice" style="background: {$diyInfo.style.background}; border-color: {$diyInfo.style.bordercolor};" data-speed="{$diyInfo.params.speed}">
+    <div class="image"><img src="{$diyInfo.params.iconurl}" onerror="this.src='__STATIC__/customize/images/default/hotdot.png'"></div>
+    <div class="icon"><i class="icon icon-notification1" style="font-size: 0.7rem; color: {$diyInfo.style.iconcolor};"></i></div>
+    <div class="text" style="color: {$diyInfo.style.color};">
+        <ul>
+            {if condition="$diyInfo.params.noticedata == 1"}
+                {volist name="noticeList" id="vo"}
+                    <li><a href="{$vo.linkurl|default='javascript:;'}" style="color: {$diyInfo.style.color};" data-nocache="true">{$vo.title}</a></li>
+                {/volist}
+            {else/}
+                {volist name="noticeList" id="vo"}
+                    <li><a href="{:url('shop/article/info',['id'=>$vo['id']])}" style="color: {$diyInfo.style.color};" data-nocache="true">{$vo.title}</a></li>
+                {/volist}
+            {/if}
+        </ul>
+    </div>
+</div>
+{/notempty}

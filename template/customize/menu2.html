@@ -1,0 +1,7 @@
+<div class="fui-menu-group" style="margin-top: {$diyInfo.style.margintop}px;">
+    {volist name="$diyInfo.data" id="vo"}
+        <a class="fui-menu-item" style="background:{$diyInfo.style.background}; color: {$vo.textcolor};" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true">
+           {notempty name="$vo.iconclass"}<i class="icon {$vo.iconclass}" style="color: {$vo.iconcolor};"></i>{/notempty} {$vo.text}
+        </a>
+    {/volist}
+</div>

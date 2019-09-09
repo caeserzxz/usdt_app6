@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="__STATIC__/customize/fonts/iconfont.css?v=2017070719">
     <script src="__STATIC__/customize/js/jquery/jquery-1.11.1.min.js"></script>
+    <script src='//res.wx.qq.com/open/js/jweixin-1.1.0.js'></script>
     <script src="__STATIC__/customize/js/require.js"></script>
     <script src="__STATIC__/customize/mobile/js/myconfig-app.js"></script>
     <script language="javascript">require(['core'],function(modal){modal.init({siteUrl: "{$Think.config.config.host_path}",baseUrl: "./index.php?i=1&c=entry&m=ewei_shopv2&do=mobile&r=ROUTES&mid=2189"})});</script>
@@ -62,9 +63,8 @@
             <div class="fui-header-right"></div>
         </div>
         {$topfixed|raw}
-        <div class="fui-content " id="container" style="background-color: {$page.background}; ">
+        <div class="fui-content " id="container" style="background-color: {$page.background};margin-top:{$topfixed?'1rem;;':'0px;'};">
             {$body|raw}
-
         <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZQiFErjQB7inrGpx27M1GR5w3TxZ64k7&s=1"></script>
         <script language="javascript">
             require(['__STATIC__/customize/mobile/js/mobile.js'], function(modal){
@@ -86,9 +86,6 @@
         }, 500);
     </script>
 
-
-
-
     <script language="javascript">
         clearTimeout(window.interval);
         window.interval = setTimeout(function () {
@@ -99,8 +96,6 @@
             wx.config(jssdkconfig);
             wx.ready(function () {
                 wx.showOptionMenu();
-
-
                 window.shareData.success = "";
                 if(window.shareData.success){
                     var success = window.shareData.success;
@@ -108,8 +103,6 @@
                         eval(success)
                     };
                 }
-
-
                 wx.onMenuShareAppMessage(window.shareData);
                 wx.onMenuShareTimeline(window.shareData);
                 wx.onMenuShareQQ(window.shareData);
@@ -117,14 +110,7 @@
                 wx.onMenuShareQZone(window.shareData);
             });
         },500);
-
-
-
     </script>
-
-
-
-
 
     <div class="wap-qrcode-container">
         <p class="example1">{$page.title}</p>
