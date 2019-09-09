@@ -383,7 +383,7 @@ define(['jquery', 'bootstrap'],
                 if (_platform) {
                     url = url + "&platform=" + _platform
                 }
-                url = linksJ;
+                url = diyUrlJ+'/_type/links';
                 $.ajax(url, {
                     type: "get",
                     dataType: "html",
@@ -437,8 +437,9 @@ define(['jquery', 'bootstrap'],
                     return
                 }
                 var merch = $(".diy-phone").data("merch");
-                var url = biz.url('util/selecticon', null, merch);
-                $.ajax(url, {
+                //var url = biz.url('util/selecticon', null, merch);
+
+                $.ajax(diyUrlJ+'/_type/selecticon', {
                     type: "get",
                     dataType: "html",
                     cache: false

@@ -28,6 +28,15 @@ class EditPageb extends AdminController
         return $this->fetch();
     }
     /*------------------------------------------------------ */
+    //-- 自定义错误提示
+    /*------------------------------------------------------ */
+    public function _error($message = '')
+    {
+        $result['status'] = 0;
+        $result['result']['message'] = $message;
+        return $this->ajaxReturn($result);
+    }
+    /*------------------------------------------------------ */
     //-- 获取列表
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
@@ -47,7 +56,7 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function info()
     {
-        $this->assign('title', '添加魔幻装修');
+        $this->assign('title', '魔幻装修');
         $id = input('id',0,'intval');
         $this->assign('id', $id);
         return $this->fetch('info');
@@ -80,9 +89,7 @@ class EditPageb extends AdminController
         $id = input('id',0,'intval');
         $data = input('data');
         if (empty($data['items'])){
-            $result['status'] = 0;
-            $result['result']['message'] = '请设置排版内容后再操作.';
-            return $this->ajaxReturn($result);
+           return $this->_error('请设置排版内容后再操作.');
         }
         $tmpData['is_new'] = 1;
         $tmpData['theme_name'] = $data['page']['name'];
@@ -98,9 +105,7 @@ class EditPageb extends AdminController
             $res = $this->Model->where('st_id',$id)->update($tmpData);
         }
         if ($res < 1){
-            $result['status'] = 0;
-            $result['result']['message'] = '操作失败，请重试.';
-            return $this->ajaxReturn($result);
+            return $this->_error('操作失败，请重试.');
         }
         $result['status'] = 1;
         $result['result']['id'] = $id;
@@ -117,6 +122,18 @@ class EditPageb extends AdminController
         $this->assign('id', $id);
         return $this->fetch();
     }
+
+    /*------------------------------------------------------ */
+    //-- 自定义请求相关方法
+    /*------------------------------------------------------ */
+    public function diyFun()
+    {
+        $_type = input('_type','','trim');
+        if(method_exists($this,$_type)){
+            return $this->$_type();
+        }
+        return $this->_error('请求错误.');
+    }
     /*------------------------------------------------------ */
     //-- 选定链接
     /*------------------------------------------------------ */
@@ -124,7 +141,7 @@ class EditPageb extends AdminController
         $this->assign('links', (new LinksModel)->links());
         $CategoryModel = new \app\shop\model\CategoryModel();
         $this->assign('CategoryList', $CategoryModel->getRows());
-        return response($this->fetch());
+        return response($this->fetch('links'));
     }
 
     /*------------------------------------------------------ */
@@ -217,6 +234,13 @@ class EditPageb extends AdminController
         $this->assign('list',$list);
         $this->assign('keyword',$keyword);
         return response($this->fetch('query_'.$type));
+    }
+    /*------------------------------------------------------ */
+    //-- 选择图标
+    /*------------------------------------------------------ */
+    public function selecticon()
+    {
+        return response($this->fetch('selecticon'));
     }
 
 }
