@@ -1,0 +1,71 @@
+{if condition="$diyInfo.params.playerstyle == 0"}
+<div class="fui-audio play-audio " style="background: {$diyInfo.style.background}; margin: {$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px; border-color: {$diyInfo.style.bordercolor};"
+     data-autoplay="{$diyInfo.params.autoplay}" data-pausestop="{$diyInfo.params.pausestop}">
+    <div class="horn"></div>
+    <div class="center">
+        <p style="color:  {$diyInfo.style.textcolor};">{$diyInfo.params.title}</p>
+        <p style="color:  {$diyInfo.style.subtitlecolor}; font-size: 0.65rem;">{$diyInfo.params.subtitle}</p>
+    </div>
+    <div class="time" style="color: {$diyInfo.style.timecolor}; display: none;">0'0''</div>
+    <div class="speed"></div>
+    <audio preload="auto">
+        <source src="{$diyInfo.params.audiourl}" type="audio/mpeg" />
+    </audio>
+</div>
+{elseif condition="$diyInfo.params.playerstyle == 1"}
+<div class="fui-chat-item left play-audio" data-autoplay="{$diyInfo.params.autoplay}" data-pausestop="{$diyInfo.params.pausestop}">
+    <div class="face">
+        <img src="{$diyInfo.params.headurl}" />
+    </div>
+    <div class="msg" style="width: 80px;">
+        <div class="horn"></div>
+    </div>
+    <audio  >
+        <source src="{$diyInfo.params.audiourl}" type="audio/mpeg" />
+    </audio>
+</div>
+{else/}
+<div class="fui-audio play-audio "  style="background:none; border:none;position: fixed;z-index: 9999;{$diyInfo.params.headalign}:0; margin: {$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px;"
+    data-playerstyle="{$diyInfo.params.playerstyle}" data-autoplay="{$diyInfo.params.autoplay}" data-pausestop="{$diyInfo.params.pausestop}">
+    <img src="{$diyInfo.params.headurl}" style=" width: 2rem;height: 2rem;" class="loader"/>
+    <audio preload="auto">
+        <source src="{$diyInfo.params.audiourl}" type="audio/mpeg" />
+    </audio>
+</div>
+
+
+<style>
+    .loader {
+
+        display: block;
+        position: relative;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+    @-webkit-keyframes spin {
+        0%   {
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    @keyframes spin {
+        0%   {
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+{/if}

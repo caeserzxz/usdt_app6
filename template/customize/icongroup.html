@@ -1,0 +1,18 @@
+<div class="fui-icon-group noborder col-{$diyInfo.params.rownum} selecter" style="background-color: {$diyInfo.style.background};
+        border-top: {$diyInfo.params.bordertop}px solid {$diyInfo.style.bordercolor};
+        border-bottom: {$diyInfo.params.borderbottom}px solid {$diyInfo.style.bordercolor};
+        {eq name="$diyInfo.params.border" value="1"}
+            border-left: 1px solid {$diyInfo.style.bordercolor};
+            border-right: 1px solid {$diyInfo.style.bordercolor};
+        {/eq}
+">
+    {volist name="$diyInfo.data" id="vo"}
+        <a class="fui-icon-col" style="border-left: none;" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true">
+            {gt name="$vo.dotnum" value="0"}
+                <div class="badge" style="background-color: {$diyInfo.style.dotcolor};">{$vo.dotnum}</div>
+            {/gt}
+            <div class="icon icon-green radius"><i class="icon {$vo.iconclass}" style="color: {$diyInfo.style.iconcolor};"></i></div>
+            <div class="text" style="color: {$diyInfo.style.textcolor};">{$vo.text}</div>
+        </a>
+    {/volist}
+</div>

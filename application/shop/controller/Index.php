@@ -83,7 +83,7 @@ class Index  extends ClientbaseController{
         $body = '';
         $topfixed = '';
         foreach ($page['items'] as $key=>$row) {
-            $row['_key'] = $row;
+            $row['_key'] = $key;
             $this->assign('diyInfo', $row);
             if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
                 $topfixed .= $this->fetch($tmpPath.$row['id']);
@@ -97,6 +97,8 @@ class Index  extends ClientbaseController{
                     $noticeList = $row['data'];
                 }
                 $this->assign('noticeList', $noticeList);
+            }elseif ($row['id'] == 'icongroup'){//图标组处理，针对特定名词，查询相应的订单数量
+
             }
             $body .= $this->fetch($tmpPath.$row['id']);
         }

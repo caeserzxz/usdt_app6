@@ -1,0 +1,30 @@
+{if condition="$diyInfo.params.showtype == 0"}
+<div class="fui-picturew row-{$diyInfo.params.rownum}" style="padding: {$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px; background: {$diyInfo.style.background};">
+    {volist name="$diyInfo.data" id="vo"}
+    <a class="item" style="padding:{$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px;" href="{$vo.linkurl|default='javascript:;'}">
+        <div class="image">
+            <img src="{$vo.imgurl}">
+            <div class="title" style="color: {$diyInfo.style.titlecolor}; text-align: {$diyInfo.sysle.titlealign};">{$vo.title}</div>
+        </div>
+        <div class="text center" style="color: {$diyInfo.style.textcolor}; text-align: {$diyInfo.sysle.textalign};">{$vo.text}</div>
+    </a>
+    {/volist}
+</div>
+{else/}
+<div class="swiper swiper-{$diyInfo._key}" data-element=".swiper-{$diyInfo._key}" data-view="{$diyInfo.params.rownum}" data-btn="true">
+    <div class="swiper-container fui-picturew row-{$diyInfo.params.rownum}" style="padding:{$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px; background: {$diyInfo.style.background};">
+        <div class="swiper-wrapper">
+            {volist name="$diyInfo.data" id="vo"}
+                <a class="swiper-slide item" style="padding:{$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px;" href="{$vo.linkurl|default='javascript:;'}">
+                    <div class="image">
+                        <img src="{$vo.imgurl}">
+                        <div class="title" style="color: {$diyInfo.style.titlecolor}; text-align: {$diyInfo.style.titlealign};">{$vo.title}</div>
+                    </div>
+                    <div class="text center" style="color: {$diyInfo.style.textcolor}; text-align: {$diyInfo.style.textalign};">{$vo.text}</div>
+                </a>
+            {/volist}
+        </div>
+    </div>
+</div>
+
+{/if}

@@ -36,7 +36,7 @@ class Attachment extends AdminController{
         if ($result['error']) {
             echo json_encode(array('error'=>1, 'message'=>$result['info']));
         } else {
-            echo json_encode(array('error'=>0, 'url'=> '/'.$result['info'][0]['savepath']. $result['info'][0]['savename']));
+            echo json_encode(array('error'=>0, 'url'=> trim($result['info'][0]['savepath']. $result['info'][0]['savename'],'.')));
         }
         exit;
     }
@@ -279,17 +279,18 @@ class Attachment extends AdminController{
     public function webUploadByEdit()
     {
         $type = input('get.type', '', 'trim');
-        if (in_array($type, array('image',)) == false) {
+        if (in_array($type, array('image','audio')) == false) {
             $result['error'] = 1;
             $result['message'] = '不支持上传类型.';
             return $this->ajaxReturn($result);
         }
-        if($_FILES['imgFile']['size'] > 2000000){
-            $result['error'] = 1;
-            $result['message'] = '上传文件过大.';
-            return $this->ajaxReturn($result);
-        }
+
         if ($type == 'image'){
+            if($_FILES['imgFile']['size'] > 2000000){
+                $result['error'] = 1;
+                $result['message'] = '上传文件过大.';
+                return $this->ajaxReturn($result);
+            }
             if (strstr( $_FILES["file"]['type'],'image') == false) {
                 $result['error'] = 1;
                 $result['message'] = '未能识别图片，请核实.';
@@ -310,6 +311,31 @@ class Attachment extends AdminController{
             $result['attachment'] = $result['filename'];
             $result['url'] = $result['filename'];
             list( $result['width'],  $result['height']) = getimagesize($newfile);
+        }elseif($type == 'audio'){
+            if($_FILES['file']['size'] > 6000000){
+                $result['error'] = 1;
+                $result['message'] = '最大支持 6.00M MB 以内的语音.';
+                return $this->ajaxReturn($result);
+            }
+            if (strstr( $_FILES["file"]['type'],'audio') == false) {
+                $result['error'] = 1;
+                $result['message'] = '未能识别音频文件，请核实.';
+                return $this->ajaxReturn($result);
+            }
+            $file_type = end(explode('.',$_FILES['file']['name']));
+            if (in_array($file_type,['mp3','wma','wav','amr']) == false){
+                $result['error'] = 1;
+                $result['message'] = '格式不对，只支持 (mp3,wma,wav,amr 格式)，请核实.';
+                return $this->ajaxReturn($result);
+            }
+            $dir = config('config._upload_').'audio/';
+            makeDir($dir);
+            $file_name = random_str(32).'.'.$file_type;
+            move_uploaded_file($_FILES['file']['tmp_name'],$dir.$file_name);
+
+            $result['filename'] = trim($dir.$file_name,'.');
+            $result['attachment'] = $result['filename'];
+            $result['url'] = $result['filename'];
         }
 
         return $this->ajaxReturn($result);
@@ -343,12 +369,18 @@ class Attachment extends AdminController{
     public function webUploadByManager() {
         $year = input('year',date('Y'),'intval');
         $month = input('month',date('m'),'intval');
-        $root_path = config('config._upload_').'edit_page/';
-        if ($month < 10 ){
-            $current_path = $root_path.$year.'/0'.$month*1;
+        $type = input('type','','trim');
+        if ($type == 'audio'){
+            $root_path = $current_path =  config('config._upload_').'audio/';
         }else{
-            $current_path = $root_path.$year.'/'.$month;
+            $root_path = config('config._upload_').'edit_page/';
+            if ($month < 10 ){
+                $current_path = $root_path.$year.'/0'.$month*1;
+            }else{
+                $current_path = $root_path.$year.'/'.$month;
+            }
         }
+
         //遍历目录取得文件信息
         $data = array();
         $i = 0;

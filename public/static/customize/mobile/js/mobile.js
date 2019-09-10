@@ -145,15 +145,24 @@ define(['core', 'tpl'], function (core, tpl) {
                 var autoplay = _this.data('autoplay');
                 var audio = _this.find("audio")[0];
                 var duration = audio.duration;
+                var playerstyle = _this.data('playerstyle');
                 if(!isNaN(duration)){
                     var time = modal.formatSeconds(duration);
                     _this.find(".time").text(time).show();
                 }
 
                 if (autoplay) {
-                    //modal.playAudio(_this)
+                    modal.playAudio(_this)
                 }
                 $(_this).click(function () {
+                    if (playerstyle == 2){
+                        if ($(_this).find('img').hasClass('loader')) {
+                            $(_this).find('img').removeClass('loader');
+                        }else {
+                            $(_this).find('img').addClass('loader');
+                        }
+                    }
+
                     if (!audio.paused) {
                         modal.stopAudio(_this)
                     } else {

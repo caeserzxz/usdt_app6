@@ -2609,8 +2609,14 @@ html {
     -webkit-transition: width .3s;
     transition: width .3s;
 }
-
-
+.fui-audio-bg{
+    position: relative;
+    height: 3rem;
+}
+.fui-audio-bg img{
+    width: 2rem;
+    height: 2rem;
+}
 .fui-chat-item {
     height: 2.2rem;
     margin: 0.8rem;

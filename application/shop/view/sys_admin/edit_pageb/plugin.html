@@ -1202,6 +1202,13 @@
             <%/if%>
         </div>
         <%/if%>
+        <%if params.playerstyle=='2'%>
+        <div class="fui-audio-bg">
+            <div class="image" style="position: absolute; <%params.headalign%>:0px;margin: <%style.paddingtop%>px <%style.paddingleft%>px;">
+                <img src="<%params.headurl&&params.headtype!=1 ? imgsrc(params.headurl) : imgsrc(shoplogo)%>" />
+            </div>
+        </div>
+        <%/if%>
     </div>
 </script>
 
@@ -5054,6 +5061,7 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="playerstyle" value="0" class="diy-bind" data-bind-child="params" data-bind="playerstyle" data-bind-init="true" <%if params.playerstyle=='0'||!params.playerstyle%>checked="checked"<%/if%>> 音乐播放模式</label>
             <label class="radio-inline"><input type="radio" name="playerstyle" value="1" class="diy-bind" data-bind-child="params" data-bind="playerstyle" data-bind-init="true" <%if params.playerstyle=='1'%>checked="checked"<%/if%>> 语音消息模式</label>
+            <label class="radio-inline"><input type="radio" name="playerstyle" value="2" class="diy-bind" data-bind-child="params" data-bind="playerstyle" data-bind-init="true" <%if params.playerstyle=='2'%>checked="checked"<%/if%>> 背景音乐模式</label>
         </div>
     </div>
 
@@ -5071,7 +5079,7 @@
         </div>
     </div>
     <%/if%>
-    <%if params.playerstyle==1%>
+    <%if params.playerstyle>=1%>
     <div class="form-group">
         <div class="col-sm-2 control-label">头像设置</div>
         <div class="col-sm-10">
@@ -5183,7 +5191,7 @@
 
     <div class="line"></div>
 
-    <div class="form-group" style="display: none;">
+    <div class="form-group" >
         <div class="col-sm-2 control-label">自动播放</div>
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="autoplay" value="0" class="diy-bind" data-bind-child="params" data-bind="autoplay" <%if params.autoplay=='0'||!params.autoplay%>checked="checked"<%/if%>> 关闭</label>
