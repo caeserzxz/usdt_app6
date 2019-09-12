@@ -115,9 +115,32 @@ class Index  extends ClientbaseController{
                     $row['style']['view'] = 3;
                 }
                 $GoodsModel = new \app\shop\model\GoodsModel();
-                foreach ($row['data'] as $key=>$good){
-                    if ($good['gid'] > 0 ){
-                        $good = $GoodsModel->info($good['gid']);
+                if ($row['params']['goodsdata'] > 0){
+                    $classList = $GoodsModel->getClassList();
+                    $where[] = ['is_delete','=',0];
+                    $where[] = ['is_alone_sale','=',1];
+                    $where[] = ['isputaway','=',1];
+                    $where[] = ['is_promote','=',0];
+                    if ($row['params']['goodsdata'] == 1 && $row['params']['cateid'] > 0){
+                        $where[] = ['cid','in',$classList[$row['params']['cateid']]['children']];
+                    }
+                    switch ($row['params']['goodssort']){
+                        case 1://按销量
+                            $sqlOrder = "sale_num DESC";
+                            break;
+                        case 2://价格降序
+                            $sqlOrder = "shop_price DESC";
+                            break;
+                        case 3://价格降序
+                            $sqlOrder = "shop_price ASC";
+                            break;
+                        default://综合
+                            $sqlOrder = "virtual_sale DESC,virtual_collect DESC,is_best DESC";
+                            break;
+                    }
+                    $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
+                    foreach ($goodIds as $key=>$gid){
+                        $good = $GoodsModel->info($gid);
                         $ginfo['thumb'] = $good['goods_thumb'];
                         $ginfo['title'] = $good['goods_name'];
                         $ginfo['subtitle'] = $good['short_name'];
@@ -134,7 +157,29 @@ class Index  extends ClientbaseController{
                         $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
                         $row['data'][$key] = $ginfo;
                     }
+                }else{
+                    foreach ($row['data'] as $key=>$good){
+                        if ($good['gid'] > 0 ){
+                            $good = $GoodsModel->info($good['gid']);
+                            $ginfo['thumb'] = $good['goods_thumb'];
+                            $ginfo['title'] = $good['goods_name'];
+                            $ginfo['subtitle'] = $good['short_name'];
+                            $ginfo['price'] = $good['shop_price'];
+                            $ginfo['gid'] = $good['goods_id'];
+                            $ginfo['total'] = $good['goods_number'];
+                            $ginfo['price'] = $good['shop_price'];
+                            $ginfo['productprice'] = $good['market_price'];
+                            $ginfo['sales'] = $good['sale_num'];
+                            $ginfo['bargain'] = 0;
+                            $ginfo['credit'] = null;
+                            $ginfo['ctype'] = null;
+                            $ginfo['gtype'] = null;
+                            $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                            $row['data'][$key] = $ginfo;
+                        }
+                    }
                 }
+
             }
             //print_r($row);
             $this->assign('diyInfo', $row);

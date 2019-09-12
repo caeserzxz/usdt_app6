@@ -9,7 +9,7 @@
             <div class="name" style="color: {$diyInfo.style.titlecolor};">{$vo.title}</div>
             {if condition="$diyInfo.params.showproductprice == 1 || $diyInfo.params.showsales == 1"}
                 <p class="productprice ">
-                    {if condition="$diyInfo.params.showproductprice == 1"}
+                    {if condition="$diyInfo.params.showproductprice == 1 && $vo.productprice > 0"}
                         <span style="color: {$diyInfo.style.productpricecolor};">{$diyInfo.params.productpricetext}<span style="{$diyInfo[params][productpriceline]==1?'text-decoration: line-through;':''}">&yen;{$vo.productprice}</span></span>
                     {/if}
                     {if condition="$diyInfo.params.showsales == 1"}
@@ -58,7 +58,7 @@
                     <div class="name" style="color: {$diyInfo.style.titlecolor};">{$vo.title}</div>
                     {if condition="$diyInfo.params.showproductprice == 1 || $diyInfo.params.showsales == 1"}
                     <p class="productprice ">
-                        {if condition="$diyInfo.params.showproductprice == 1"}
+                        {if condition="$diyInfo.params.showproductprice == 1 && $vo.productprice > 0"}
                         <span style="color: {$diyInfo.style.productpricecolor};">{$diyInfo.params.productpricetext}<span style="{$diyInfo[params][productpriceline]==1?'text-decoration: line-through;':''}">&yen;{$vo.productprice}</span></span>
                         {/if}
                         {if condition="$diyInfo.params.showsales == 1"}
@@ -88,8 +88,12 @@
                         </span>
                     </div>
                 </div>
-                {if condition="$diyInfo.params.saleout == 1 && $vo.total < 1"}
-                <div class="salez" style="background-image: url('__STATIC__/customize/images/default/defico.jpg'); "></div>
+                {if condition="$vo.total < 1"}
+                    {if condition="$diyInfo.params.saleout == 0"}
+                        <div class="salez" style="background-image: url('__STATIC__/customize/images/default/defico.jpg'); "></div>
+                    {elseif condition="$diyInfo.params.saleout == 1"}
+                        <div class="salez diy" style="background-image: url('__STATIC__/customize/images/default/saleout-{$diyInfo.style.saleoutstyle}.png'); "></div>
+                    {/if}
                 {/if}
             </a>
             {/volist}

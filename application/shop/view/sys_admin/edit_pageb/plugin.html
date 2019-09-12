@@ -1721,7 +1721,7 @@
 
     <div class="line"></div>
 
-    <div class="form-group">
+    <div class="form-group hide">
         <div class="col-sm-2 control-label">启动广告</div>
         <div class="col-sm-10">
             <select class="form-control input-sm diy-bind" data-bind="diyadv">
@@ -2907,7 +2907,7 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="saleout" value="-1" class="diy-bind" data-bind-child="params" data-bind="saleout" data-bind-init="true" <%if params.saleout=='-1'%>checked="checked"<%/if%>> 不显示</label>
             <label class="radio-inline"><input type="radio" name="saleout" value="1" class="diy-bind" data-bind-child="params" data-bind="saleout" data-bind-init="true" <%if params.saleout=='1'%>checked="checked"<%/if%> > 内置图标</label>
-            <label class="radio-inline"><input type="radio" name="saleout" value="0" class="diy-bind" data-bind-child="params" data-bind="saleout" data-bind-init="true" <%if params.saleout=='0'||!params.saleout%>checked="checked"<%/if%> > 读取系统设置</label>
+            <label class="radio-inline hide"><input type="radio" name="saleout" value="0" class="diy-bind" data-bind-child="params" data-bind="saleout" data-bind-init="true" <%if params.saleout=='0'||!params.saleout%>checked="checked"<%/if%> > 读取系统设置</label>
         </div>
     </div>
     <%if params.saleout==1%>

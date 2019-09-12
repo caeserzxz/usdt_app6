@@ -24,7 +24,7 @@ class Goods extends ApiController
     public function getList(){
         $where[] = ['is_delete','=',0];
         $where[] = ['is_alone_sale','=',1];
-        $where[] = ['isputaway','>',0];
+        $where[] = ['isputaway','=',1];
         $where[] = ['is_promote','=',0];
 
         $search['keyword'] =  input('keyword','','trim');

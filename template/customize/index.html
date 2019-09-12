@@ -74,8 +74,189 @@
 
          </div>
     </div>
+    {if condition="$page.diylayer == 1"}
+        <a class="diy-layer external" style="width: 30px; position: fixed; display: block; overflow: hidden; z-index: 999; top: 200px; right: 8px; text-align: left;" href=""><img src="__STATIC__/customize/images/chat.png" style="height: auto; width: 100%; display: block;"></a>
+    {/if}
+    {if condition="$page.diygotop == 1"}
+    <a class="diy-gotop external" style="position: fixed; overflow: hidden; z-index: 999; bottom: 60px; right: 10px; text-align: left;" id="gotop">
+        <div style="background: #000000; opacity: 0.5; line-height: 32px; text-align: center; border-radius: 30px; height: 30px; width: 30px;">
+            <i class="icon icon-top1" style="color: #ffffff; font-size: 20px;"></i>
+        </div>
+    </a>
+    {/if}
+    {if condition="$page.followbar == 1 && $tipsubscribe == 0 "}
+    <div class="topTips">
+        <div class="flexBox">
+            <div class="cell_bd"><img src="__STATIC__/mobile/default/images/APPLOGO.png" alt=""><span class="fs28 color_w">您当前还未关注微信公众号</span></div>
+            <div class="cell_ft"><p class="fs28 fw_b color_r">立即关注</p><img src="__STATIC__/mobile/default/images/close_w.png" alt=""></div>
+        </div>
+    </div>
+    <!-- 扫码关注 -->
+    <div class="topTipSmodel">
+        <div class="modelBG closeModel" ></div>
+        <div class="medelCanten">
+            <div class="codeBox">
+                <img src="{$setting.weixin_qrcode}" alt="">
+                <span class="fs30 color_3 fw_b">长按二维码识别关注</span>
+            </div>
+            <img src="__STATIC__/mobile/default/images/close_wy.png" alt="" class="closeimg closeModel" >
+        </div>
+    </div>
+    <style>
+        .topTips {
+            width: 100%;
+            background: #212121;
+            z-index: 99999;
+            position: fixed;
+        }
+        .topTips .flexBox {
+            height: 2.2rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 0.75rem;
+        }
+        .topTips .flexBox .cell_bd {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .topTips .flexBox .cell_bd img {
+            width: 1.6rem;
+            height: 1.6rem;
+            margin-right: 0.5rem;
+            border-radius: 50%;
+        }
+        .topTips .flexBox .cell_bd span{
+            font-size: 0.65rem;
+            color: #FFF;
+        }
+        .topTips .flexBox .cell_ft {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .topTips .flexBox .cell_ft p {
+            width: 3rem;
+            height: 1.2rem;
+            background: #ffffff;
+            border-radius: 0.3rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: #ff5555;
+        }
+        .topTips .flexBox .cell_ft img {
+            width: 14PX;
+            height: 14PX;
+            margin-left: 10PX;
+        }
+        .topTipSmodel {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 99999;
+            display: none;
+        }
+        .topTipSmodel .modelBG {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .topTipSmodel .medelCanten {
+            position: relative;
+            margin: 25vh 1rem 0 1rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            z-index: 99999;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+        .topTipSmodel .medelCanten .codeBox {
+            padding: 0.75rem;
+            background: #ffffff;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+        .topTipSmodel .medelCanten .codeBox img {
+            width: 10rem;
+            height: 10rem;
+        }
+        .topTipSmodel .medelCanten .codeBox span {
+            margin-top: 0.5rem;
+        }
+        .topTipSmodel .medelCanten .closeimg {
+            width: 1.3rem;
+            height: 1.3rem;
+            margin-top: 0.75rem;
+        }
 
-
+    </style>
+    {/if}
+    <script>
+        $(function () {
+            $(".fui-content").bind('scroll resize', function () {
+                var scrolltop = $(".fui-content").scrollTop();
+                if (scrolltop > "300") {
+                    $("#gotop").fadeIn(100)
+                } else {
+                    $("#gotop").fadeOut(100)
+                }
+            });
+            $("#gotop").unbind('click').click(function () {
+                $(".fui-content").animate({scrollTop: "0px"}, 1000)
+            });
+            $('.topTips .cell_ft p').on('click',function(){
+                $('.topTipSmodel').show()
+            })
+            $('.topTips .cell_ft img').on('click',function(){
+                $('.topTips').hide()
+            })
+            $('.closeModel').on('click',function() {
+                $('.topTipSmodel').hide()
+            })
+        });
+    </script>
     <script language="javascript">
         require(['init']);
 
