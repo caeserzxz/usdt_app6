@@ -107,6 +107,13 @@ class Index  extends ClientbaseController{
                 }
                 $this->assign('_data', $_data);
             }elseif($row['id'] == 'goods'){
+                if ($row['style']['liststyle'] == 'block one'){
+                    $row['style']['view'] = 1;
+                }elseif ($row['style']['liststyle'] == 'block'){
+                    $row['style']['view'] = 2;
+                }else{
+                    $row['style']['view'] = 3;
+                }
                 $GoodsModel = new \app\shop\model\GoodsModel();
                 foreach ($row['data'] as $key=>$good){
                     if ($good['gid'] > 0 ){

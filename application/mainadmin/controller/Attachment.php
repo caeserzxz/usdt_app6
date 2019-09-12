@@ -407,12 +407,12 @@ class Attachment extends AdminController{
             // 页数参数，默认第一页
             $page = input('page',1,'intval');
             // 每页数目
-            $step = 2;
+            $step = 27;
             // 每次获取起始位置
             $start = ($page-1)*$step;
             // 获取数组中当前页的数据
             $data = array_slice($data,$start,$step);
-            $totalPages = ($count + $step - 1) / $step;
+            $totalPages = intval(($count + $step - 1) / $step);
             $pshow = $this->pshow($totalPages,$page);
         }
 
@@ -458,6 +458,7 @@ class Attachment extends AdminController{
             }
             $start < 1 && $start = 1;
             $end > $totalPages && $end = $totalPages;
+
             for ($page = $start; $page <= $end; $page++) {
                 if ($page != $nowPage) {
                     $linkPage .= " <li><a href='javascript:;' page='".$page."' >".$page."</a></li>";
@@ -471,6 +472,7 @@ class Attachment extends AdminController{
         $pageStr = str_replace(
             array('%nowPage%','%totalPage%','%upPage%','%downPage%','%linkPage%','%end%'),
             array($nowPage,$totalPages,$upPage,$downPage,$linkPage),'<div><ul class="pagination pagination-centered">%upPage%%linkPage%%downPage%</ul></div>');
+
         return $pageStr;
     }
 }
