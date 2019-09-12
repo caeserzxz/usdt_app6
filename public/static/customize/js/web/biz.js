@@ -30,7 +30,7 @@ define(['jquery'],
                     modal += '<div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button><h3>数据选择器</h3></div>';
                     modal += '<div class="modal-body" >';
                     modal += '<div class="row">';
-                    modal += '<div class="input-group '+(params.auto==true?'hide':'')+'">';
+                    modal += '<div class="input-group '+(params.iq_auto==true?'hide':'')+'">';
                     modal += '<input type="text" class="form-control" name="keyword" id="' + name + '_input" placeholder="' + (params.placeholder === undefined ? '': params.placeholder) + '" />';
                     modal += '<span class="input-group-btn"><button type="button" id="query-btn" class="btn btn-default" onclick="biz.selector.search(this, \'' + name + '\');">搜索</button></span>';
                     modal += '</div>';
@@ -55,7 +55,7 @@ define(['jquery'],
                         })
                 };
                 modalObj.modal('show');
-                if (params.auto==true){
+                if (params.iq_auto==true){
                     var selector = $("#" + name + '_selector');
                     $.get(selector.data('url'), {},
                         function(dat) {

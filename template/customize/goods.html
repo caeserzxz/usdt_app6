@@ -1,0 +1,46 @@
+<div class="fui-goods-group {$diyInfo.style.liststyle}" style="background: {$diyInfo.style.background};">
+    {volist name="$diyInfo.data" id="vo"}
+    <a class="fui-goods-item" data-goodsid="{$vo.gid}" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true" style="position: relative;">
+        <div class="image auto  {$diyInfo.style.iconstyle}" data-text="{$goodsicon[$diyInfo['style']['goodsicon']]}" style="background:none; min-height: 50px;">
+            <img class="exclude" src="__STATIC__/customize/images/loading.png" data-lazy="{$vo.thumb}" />
+        </div>
+        <div class="detail">
+            <div class="name" style="color: {$diyInfo.style.titlecolor};">{$vo.title}</div>
+            {if condition="$diyInfo.params.showproductprice == 1 || $diyInfo.params.showsales == 1"}
+                <p class="productprice ">
+                    {if condition="$diyInfo.params.showproductprice == 1"}
+                        <span style="color: {$diyInfo.style.productpricecolor};">{$diyInfo.params.productpricetext}<span style="{$diyInfo[params][productpriceline]==1?'text-decoration: line-through;':''}">&yen;{$vo.productprice}</span></span>
+                    {/if}
+                    {if condition="$diyInfo.params.showsales == 1"}
+                        <span style="color: {$diyInfo.style.salescolor};">{$diyInfo.params.salestext}: {$vo.sales}</span>
+                    {/if}
+                </p>
+            {else/}
+                <p class="productprice noheight"></p>
+            {/if}
+            <div class="price"><span class="text" style="color: {$diyInfo.style.pricecolor};"><p class="minprice">&yen;{$vo.price}</p></span>
+                <span class="buy {$diyInfo.style.buystyle}" style="border-color: {$diyInfo.style.buybtncolor};
+                      {if condition="$diyInfo.style.buystyle == 'buybtn-6'"}
+                        background-color:{$diyInfo.style.buybtncolor};
+                      {/if}
+                ">
+                     {if condition="$diyInfo.style.buystyle == 'buybtn-3'"}
+                        <i class="icon icon-cartfill" style="color: {$diyInfo.style.buybtncolor};"></i>
+                     {elseif condition="$diyInfo.style.buystyle == 'buybtn-4'"}
+                        <i class="icon icon-cart" style="color: {$diyInfo.style.buybtncolor};"></i>
+                     {elseif condition="$diyInfo.style.buystyle == 'buybtn-5'"}
+                        <i class="icon icon-add" style="color: {$diyInfo.style.buybtncolor};"></i>
+                    {elseif condition="$diyInfo.style.buystyle == 'buybtn-6'"}
+                        <i class="icon icon-add"></i>
+                     {else/}
+                        购买
+                     {/if}
+                </span>
+            </div>
+        </div>
+        {if condition="$diyInfo.params.saleout == 1 && $vo.total < 1"}
+        <div class="salez" style="background-image: url('__STATIC__/customize/images/default/defico.jpg'); "></div>
+        {/if}
+    </a>
+    {/volist}
+</div>

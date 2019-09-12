@@ -245,7 +245,18 @@ class BonusModel extends BaseModel
         return $newList;
     }
 
-
+    /*------------------------------------------------------ */
+    //-- 获取可领取优惠券to自定义修改
+    /*------------------------------------------------------ */
+    public function getListDiy()
+    {
+        $time = time();
+        $where[] = ['send_type', '=', 2];
+        $where[] = ['send_status', '=', 1];
+        $where[] = ['send_start_date', '<', $time];
+        $where[] = ['use_end_date', '>', $time];
+        return $this->where($where)->order('type_money DESC,use_end_date ASC')->select()->toArray();
+    }
     /*------------------------------------------------------ */
     //-- 获取结算页可用优惠券
     //-- $user_id 用户ID

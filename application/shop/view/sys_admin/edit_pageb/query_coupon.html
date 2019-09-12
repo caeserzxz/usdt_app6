@@ -1,0 +1,31 @@
+{empty name="list"}
+<div class="tip">抱歉！未查询到与“{$keyword}”相关的优惠券，请更换关键字后重试。</div>
+{else/}
+<div style='max-height:500px;overflow:auto;min-width:850px;'>
+    <table class="table table-hover" style="min-width:850px;">
+        <thead>
+        <th style='width:40px;'></th>
+        <th>优惠券</th>
+        <th>使用条件</th>
+        <th>优惠</th>
+        <th style="width:120px;">领券中心领取</th>
+        <th style="width: 60px;">选择</th>
+        </thead>
+        <tbody>
+        {volist name="list" id="vo" }
+        <tr>
+            <td><img src="" style="width:30px;height:30px;padding:1px solid #ccc" onerror="this.src='__STATIC__/customize/images/nopic.png'"/></td>
+            <td>
+                <label class='label label-success'>购物</label>
+                <label class='label label-primary'></label>
+                [{$vo.id}] {$vo.couponname}</td>
+            <td>消费满{$vo.enough}元</td>
+            <td>立减 {$vo.deduct} 元</td>
+            <td>可以</td>
+            <td style="width:80px;"><a href="javascript:;" onclick='biz.selector.set(this,  {:json_encode($vo)})'>选择</a></td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+{/empty}

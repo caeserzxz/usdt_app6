@@ -542,16 +542,23 @@ class CartModel extends BaseModel
                 if ($shipping['status'] == 0 || empty($_sf_info[$code])) continue;
                 foreach ($_sf_info[$code] as $rowb) {
                     $region_id = empty($rowb['region_id']) ? array() : explode(',', $rowb['region_id']);
-                    if ((empty($rowb['area']) == false && $rowb['area'] == 'all') || in_array($userAddress['city'], $region_id)) {
-                        if (empty($sf_info[$code]) == false) {//如果已存在相关快递的模板
-                            if ($sf_info[$code]['postage'] > $rowb['postage']) {
-                                continue;
-                            }
+                    if (empty($rowb['area']) && empty($rowb['region_id'])) continue;//区域定义为空跳出
+
+                    if (empty($rowb['area']) == false) {//如果是全国
+                        if (empty($sf_info[$code]) == false){//已有区域定义，跳出
+                            continue;
                         }
-                        $rowb['sf_id'] = $key;
-                        $rowb['consume'] = $_consume;
-                        $sf_info[$code] = $rowb;
+                    }elseif (in_array($userAddress['city'], $region_id) == false) {
+                        //如果不存在区域，跳出
+                        continue;
+                    }elseif (empty($sf_info[$code]) == true) {//如果已存在相关快递的模板,并且不是全国
+                        if ($sf_info[$code]['postage'] > $rowb['postage']) {
+                            continue;
+                        }
                     }
+                    $rowb['sf_id'] = $key;
+                    $rowb['consume'] = $_consume;
+                    $sf_info[$code] = $rowb;
                 }
             }
         }

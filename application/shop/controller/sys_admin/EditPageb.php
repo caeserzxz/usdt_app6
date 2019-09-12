@@ -128,9 +128,9 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function diyFun()
     {
-        $_type = input('_type','','trim');
-        if(method_exists($this,$_type)){
-            return $this->$_type();
+        $_fun = input('_fun','','trim');
+        if(method_exists($this,$_fun)){
+            return $this->$_fun();
         }
         return $this->_error('请求错误.');
     }
@@ -178,7 +178,7 @@ class EditPageb extends AdminController
     {
         $type = input('type','','trim');
         $keyword = input('keyword','','trim');
-        if (in_array($type,['good','category']) == false){
+        if (in_array($type,['good','category','coupon']) == false){
             return $this->error('请求错误.');
         }
         if ($type == 'good'){
@@ -186,22 +186,20 @@ class EditPageb extends AdminController
             $where[] = ['goods_name','like','%'.$keyword.'%'];
             $ids = $GoodsModel->where($where)->limit(20)->column('goods_id');
             foreach ($ids as $id){
-                $info = $GoodsModel->info($id);
-                $_info['id'] = $info['goods_id'];
-                $_info['title'] = $info['goods_name'];
-                $_info['thumb'] = config('config.host_path').$info['goods_thumb'];
-                $_info['marketprice'] = $info['market_price'];
-                $_info['productprice'] = $info['shop_price'];
-                $_info['share_title'] = $info['goods_name'];
-                $_info['share_icon'] = $info['goods_thumb'];
-                $_info['description'] = $info['description'];
-                $_info['minprice'] = $info['min_price'];
-                $_info['costprice'] = $info['shop_price'];
-                $_info['total'] = $info['goods_number'];
-                $_info['sales'] = $info['sale_num'];
-                $_info['islive'] = "0";
-                $_info['liveprice'] = "0.00";
-                $list[] = $_info;
+                $good = $GoodsModel->info($id);
+                $ginfo['thumb'] = $good['goods_thumb'];
+                $ginfo['title'] = $good['goods_name'];
+                $ginfo['subtitle'] = $good['short_name'];
+                $ginfo['price'] = $good['shop_price'];
+                $ginfo['gid'] = $good['goods_id'];
+                $ginfo['total'] = $good['goods_number'];
+                $ginfo['productprice'] = $good['market_price'];
+                $ginfo['sales'] = $good['sale_num'];
+                $ginfo['bargain'] = 0;
+                $ginfo['credit'] = null;
+                $ginfo['ctype'] = null;
+                $ginfo['gtype'] = null;
+                $list[] = $ginfo;
             }
         }elseif($type == 'category'){
             $CategoryModel = new \app\shop\model\CategoryModel();
@@ -221,13 +219,25 @@ class EditPageb extends AdminController
                 if (empty($row['pic'])){
                     $_info['thumb'] = config('config.host_path').'/static/main/img/def_img.jpg';
                 }else{
-                    $_info['thumb'] = config('config.host_path').$row['pic'];
+                    $_info['thumb'] = $row['pic'];
                 }
                 if (empty($row['cover'])){
                     $_info['advimg'] = '';
                 }else{
                     $_info['advimg'] = config('config.host_path').$row['cover'];
                 }
+                $list[] = $_info;
+            }
+        }elseif($type == 'coupon'){
+            $BonusModel = new \app\shop\model\BonusModel();
+            $rows = $BonusModel->getListDiy();
+            foreach ($rows as $row){
+                $_info['id'] = $row['type_id'];
+                $_info['couponname'] = $row['type_name'];
+                $_info['enough'] = $row['min_amount'];
+                $_info['deduct'] = $row['type_money'];
+                $_info['values'] = $row['type_money'];
+                $_info['uselimit'] = '满'.$row['min_amount'].'元可用';
                 $list[] = $_info;
             }
         }

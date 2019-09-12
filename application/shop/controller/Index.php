@@ -82,10 +82,12 @@ class Index  extends ClientbaseController{
         $tmpPath = '../../customize/';
         $body = '';
         $topfixed = '';
+        $this->assign('goodsicon', ['recommand'=>'推荐','hotsale'=>'热销','isnew'=>'新品','sendfree'=>'包邮','istime'=>'限时卖','bigsale'=>'促销']);
         foreach ($page['items'] as $key=>$row) {
             $row['_key'] = $key;
-            $this->assign('diyInfo', $row);
+
             if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
+                $this->assign('diyInfo', $row);
                 $topfixed .= $this->fetch($tmpPath.$row['id']);
                 continue;
             }
@@ -99,10 +101,39 @@ class Index  extends ClientbaseController{
                 $this->assign('noticeList', $noticeList);
             }elseif ($row['id'] == 'icongroup'){//图标组处理，针对特定名词，查询相应的订单数量
 
+            }elseif ($row['id'] == 'picturew'){//图片橱窗
+                foreach ($row['data'] as $arr){
+                    $_data[] = $arr;
+                }
+                $this->assign('_data', $_data);
+            }elseif($row['id'] == 'goods'){
+                $GoodsModel = new \app\shop\model\GoodsModel();
+                foreach ($row['data'] as $key=>$good){
+                    if ($good['gid'] > 0 ){
+                        $good = $GoodsModel->info($good['gid']);
+                        $ginfo['thumb'] = $good['goods_thumb'];
+                        $ginfo['title'] = $good['goods_name'];
+                        $ginfo['subtitle'] = $good['short_name'];
+                        $ginfo['price'] = $good['shop_price'];
+                        $ginfo['gid'] = $good['goods_id'];
+                        $ginfo['total'] = $good['goods_number'];
+                        $ginfo['price'] = $good['shop_price'];
+                        $ginfo['productprice'] = $good['market_price'];
+                        $ginfo['sales'] = $good['sale_num'];
+                        $ginfo['bargain'] = 0;
+                        $ginfo['credit'] = null;
+                        $ginfo['ctype'] = null;
+                        $ginfo['gtype'] = null;
+                        $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                        $row['data'][$key] = $ginfo;
+                    }
+                }
             }
+            //print_r($row);
+            $this->assign('diyInfo', $row);
             $body .= $this->fetch($tmpPath.$row['id']);
         }
-        //print_r($page);
+
         $this->assign('topfixed', $topfixed);
         $this->assign('body', $body);
         $this->assign('page', $page['page']);

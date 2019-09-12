@@ -2597,7 +2597,7 @@
         <div class="col-sm-10">
             <label class="radio-inline"><input type="radio" name="goodstype" value="0" class="diy-bind" data-bind-child="params" data-bind="goodstype" data-bind-init="true" <%if params.goodstype=='0'||!params.goodstype%>checked="checked"<%/if%>> 商城商品</label>
             <%if (merch==0||!merch)&&plugins.creditshop==1%>
-            <label class="radio-inline"><input type="radio" name="goodstype" value="1" class="diy-bind" data-bind-child="params" data-bind="goodstype" data-bind-init="true" <%if params.goodstype=='1'%>checked="checked"<%/if%> > 积分商城商品</label>
+            <label class="radio-inline hide"><input type="radio" name="goodstype" value="1" class="diy-bind" data-bind-child="params" data-bind="goodstype" data-bind-init="true" <%if params.goodstype=='1'%>checked="checked"<%/if%> > 积分商城商品</label>
             <%/if%>
             <div class="help-block text-danger">注意：选择好商品类型后尽量不要更改</div>
         </div>
