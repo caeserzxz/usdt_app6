@@ -377,6 +377,9 @@ class Order extends AdminController
                 }
                 continue;
             }
+            if($k>0){
+                $html .= '<div style="page-break-after: always;"></div>';
+            }
             $html .= $order_devc['temp_html'];
             $orderModel->where(['order_id'=>$v])->update(['print_state'=>1]);
         }
