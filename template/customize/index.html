@@ -63,7 +63,7 @@
             <div class="fui-header-right"></div>
         </div>
         {$topfixed|raw}
-        <div class="fui-content " id="container" style="background-color: {$page.background};margin-top:{$topfixed?'1rem;;':'0px;'};">
+        <div class="fui-content " id="container" style="background-color: {$page.background};margin-top:{$topfixed?'1.1rem;;':'0px;'};">
             {$body|raw}
         <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZQiFErjQB7inrGpx27M1GR5w3TxZ64k7&s=1"></script>
         <script language="javascript">
@@ -71,7 +71,7 @@
                 modal.init();
             });
         </script>
-
+            <div id="fotter_bottom"></div>
          </div>
     </div>
     {if condition="$page.diylayer == 1"}
@@ -235,7 +235,7 @@
     {/if}
     {if condition="$page.diymenu == 1  "}
         <style type="text/css">
-            .fui-page-current{padding-bottom:0.15rem;}
+            #fotter_bottom{padding-bottom:3rem;}
             .bottom-tabbar-wrapper {
                 height: 2.5rem;
             }
@@ -303,14 +303,14 @@
             }
 
             .bottom-tabbar a .label {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
                 color: #666666;
                 line-height: 1.4em;
             }
 
             .bottom-tabbar a .icon {
-                width: 1.2rem;
-                height: 1.2rem;
+                width: 1rem;
+                height: 1rem;
                 display: inline-block;
                 margin-bottom: 0;
             }
