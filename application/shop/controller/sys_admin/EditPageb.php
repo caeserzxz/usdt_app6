@@ -265,7 +265,7 @@ class EditPageb extends AdminController
     //-- 快速修改
     /*------------------------------------------------------ */
     public function afterAjax($st_id,$data){
-        if (is_set($data['is_index'])){
+        if (isset($data['is_index'])){
             $log = '快速自定义首页';
             if ($data['is_index'] == 1){
                 $upwhere[] = ['st_id','<>',$st_id];
