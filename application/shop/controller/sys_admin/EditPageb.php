@@ -137,7 +137,7 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function diyFun()
     {
-        $_fun = input('_type','','trim');
+        $_fun = input('_fun','','trim');
         if(method_exists($this,$_fun)){
             return $this->$_fun();
         }
