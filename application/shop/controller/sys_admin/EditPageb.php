@@ -104,13 +104,17 @@ class EditPageb extends AdminController
             $tmpData['add_time'] = time();
             $tmpData['update_time'] = time();
             $res = $this->Model->save($tmpData);
-            $id = $this->Model->id;
+            $id = $this->Model->st_id;
         }else{
             $tmpData['update_time'] = time();
             $res = $this->Model->where('st_id',$id)->update($tmpData);
         }
         if ($res < 1){
             return $this->_error('操作失败，请重试.');
+        }
+        if ($tmpData['is_index'] == 1){
+            $upwhere[] = ['st_id','<>',$id];
+            $this->Model->where($upwhere)->update(['is_index'=>0]);
         }
         $result['status'] = 1;
         $result['result']['id'] = $id;
@@ -257,5 +261,18 @@ class EditPageb extends AdminController
     {
         return response($this->fetch('selecticon'));
     }
-
+    /*------------------------------------------------------ */
+    //-- 快速修改
+    /*------------------------------------------------------ */
+    public function afterAjax($st_id,$data){
+        if (is_set($data['is_index'])){
+            $log = '快速自定义首页';
+            if ($data['is_index'] == 1){
+                $upwhere[] = ['st_id','<>',$st_id];
+                $this->Model->where($upwhere)->update(['is_index'=>0]);
+            }
+            $this->_log($st_id, $log);
+        }
+        return $this->success('修改成功');
+    }
 }
