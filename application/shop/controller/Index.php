@@ -80,6 +80,9 @@ class Index  extends ClientbaseController{
         if (empty($theme)){
             return $this->error('页面不存在.');
         }
+        if ($theme['is_new'] == 0){
+            return $this->shopIndex();
+        }
         $mkey = 'shopIndex_web_'.$pageid;
         //$body = Cache::get($mkey);
         $page = json_decode($theme['page'],true);

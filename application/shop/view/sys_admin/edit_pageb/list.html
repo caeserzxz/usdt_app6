@@ -2,6 +2,7 @@
 <tr>
     <th>页面名称</th>
     <th width="150" >类型</th>
+    <th width="150" style="text-align: center;">首页显示</th>
     <th width="150" >创建时间</th>
     <th width="150" >更新时间</th>
     <th width="100">操作</th>
@@ -10,6 +11,7 @@
 <tr>
     <td>{$vo.theme_name}</td>
     <td>{$vo.theme_type}</td>
+    <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('st_id'=>$vo['st_id'],'field'=>'is_index'))}" class="{$vo.is_index|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
     <td>{$vo.add_time|dateTpl}</td>
     <td>{$vo.update_time|dateTpl}</td>
     {if condition="$vo.is_new == 1"}
