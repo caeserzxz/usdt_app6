@@ -70,6 +70,9 @@ class EditPageb extends AdminController
         if ($id > 0){
             $info = $this->Model->find($id);
             $data = empty($info['page'])?'null':$info['page'];
+            $data = json_decode($data,true);
+            $data['page']['isindex'] = $info['is_index'];
+            $data = json_encode($data);
             $name = $info['theme_name'];
         }else{
             $data = 'null';
@@ -91,10 +94,12 @@ class EditPageb extends AdminController
         if (empty($data['items'])){
            return $this->_error('请设置排版内容后再操作.');
         }
-        $tmpData['is_new'] = 1;
+        $tmpData['is_new'] = 1;//默认设置为新版
         $tmpData['theme_name'] = $data['page']['name'];
+        $tmpData['is_index'] = $data['page']['isindex'] * 1;
         $tmpData['theme_type'] = 'index';
         $tmpData['page'] = json_encode($data,JSON_UNESCAPED_UNICODE);
+        unset($data);
         if ($id < 1){
             $tmpData['add_time'] = time();
             $tmpData['update_time'] = time();
@@ -128,7 +133,7 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function diyFun()
     {
-        $_fun = input('_fun','','trim');
+        $_fun = input('_type','','trim');
         if(method_exists($this,$_fun)){
             return $this->$_fun();
         }

@@ -17,7 +17,7 @@ class Index  extends ClientbaseController{
 	public function index($isIndex = false){
 		//调用自定义首页
 		if ($isIndex == false && settings('shop_index_tpl') == 1){
-			return $this->shopIndex();
+			return $this->diypage();
 		}
 		$tipsubscribe = 0;//是否显示提示关注
         //微信网页访问执行
@@ -70,9 +70,13 @@ class Index  extends ClientbaseController{
     //-- 自定义首页 -- 新
     /*------------------------------------------------------ */
     public function diypage(){
-        $pageid = input('pageid',2,'intval');
+        $pageid = input('pageid',0,'intval');
         $ShopPageTheme = new \app\shop\model\ShopPageTheme();
-        $theme = $ShopPageTheme->find($pageid);
+        if ($pageid > 0){
+            $theme = $ShopPageTheme->find($pageid);
+        }else{
+            $theme = $ShopPageTheme->where('is_index',1)->find();
+        }
         if (empty($theme)){
             return $this->error('页面不存在.');
         }
@@ -114,6 +118,7 @@ class Index  extends ClientbaseController{
                 }else{
                     $row['style']['view'] = 3;
                 }
+                $row['data'] = [];
                 $GoodsModel = new \app\shop\model\GoodsModel();
                 if ($row['params']['goodsdata'] > 0){
                     $classList = $GoodsModel->getClassList();
@@ -124,6 +129,7 @@ class Index  extends ClientbaseController{
                     if ($row['params']['goodsdata'] == 1 && $row['params']['cateid'] > 0){
                         $where[] = ['cid','in',$classList[$row['params']['cateid']]['children']];
                     }
+
                     switch ($row['params']['goodssort']){
                         case 1://按销量
                             $sqlOrder = "sale_num DESC";
@@ -179,7 +185,6 @@ class Index  extends ClientbaseController{
                         }
                     }
                 }
-
             }
             //print_r($row);
             $this->assign('diyInfo', $row);
