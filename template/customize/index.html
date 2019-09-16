@@ -55,7 +55,7 @@
     <link href="__STATIC__/customize/mobile/css/foxui.diy.css?v=201705261600" rel="stylesheet"type="text/css"/>
     <style type="text/css">
     </style>
-    <div class='fui-page  fui-page-current ' style="top: 0; background-color: {$page.background}; ">
+    <div class='fui-page  fui-page-current ' style="top: 0; background-color: {$page.background};">
         <div class="fui-header">
             <div class="fui-header-left">
             </div>
@@ -233,6 +233,101 @@
 
     </style>
     {/if}
+    {if condition="$page.diymenu == 1  "}
+        <style type="text/css">
+            .fui-page-current{padding-bottom:0.15rem;}
+            .bottom-tabbar-wrapper {
+                height: 1.5rem;
+            }
+            .bottom-tabbar {
+                background-color: #fff;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                height: 1.5rem;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                -webkit-justify-content: space-around;
+                justify-content: space-around;
+                line-height: 1em;
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                box-shadow: 0 -0.02rem 0.08rem 0 rgba(0, 0, 0, 0.1);
+                z-index: 9;
+            }
+
+            .bottom-tabbar::after {
+                display: none;
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                border-top: solid #e9e9e9 1px;
+            }
+
+            .bottom-tabbar a {
+                text-align: center;
+                width: 1.5rem;
+                height: 1.5rem;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -webkit-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                font-weight: 400;
+            }
+
+            .bottom-tabbar a.active .label {
+                color: #313131;
+                font-weight: bold;
+            }
+
+            .bottom-tabbar a.active .icon img {
+                display: none;
+            }
+
+            .bottom-tabbar a.active .icon .lhimg {
+                display: block;
+            }
+
+            .bottom-tabbar a .label {
+                font-size: 0.5rem;
+                color: #666666;
+                line-height: 1.4em;
+            }
+
+            .bottom-tabbar a .icon {
+                width: 0.6rem;
+                height: 0.6rem;
+                display: inline-block;
+                margin-bottom: 0;
+            }
+
+            .bottom-tabbar a .icon img {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .bottom-tabbar a .icon .lhimg {
+                display: none;
+            }
+        </style>
+        {include file="layouts@bottom" /}
+    {/if}
+
     <script>
         $(function () {
             $(".fui-content").bind('scroll resize', function () {
