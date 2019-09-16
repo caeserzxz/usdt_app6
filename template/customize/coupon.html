@@ -2,7 +2,7 @@
 <div class="diy-coupon col-{$diyInfo.params.couponstyle} " style="margin: {$diyInfo.style.margintop}px 0; background: {$diyInfo.style.background};">
     {volist name="$diyInfo.data" id="vo"}
     <a class="diy-coupon-item" href="#" data-nocache="true">
-        <div class="inner" style="border: 0; background: {$vo.background}; margin: {$diyInfo.style.margintop}px {$diyInfo.style.marginleft}px">
+        <div class="inner" style="border: 0; background: {$vo.couponcolor}; margin: {$diyInfo.style.margintop}px {$diyInfo.style.marginleft}px">
             <div class="name">￥{$vo.price}</div>
             <div class="receive" style="border: 1px solid {$vo.textcolor};">立即领取</div>
             <i style="left: -0.35rem;background: #ffffff;"></i>
