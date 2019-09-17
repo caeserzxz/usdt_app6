@@ -1,9 +1,8 @@
 <?php
 namespace app\shop\controller\sys_admin;
 use app\AdminController;
-
+use think\facade\Cache;
 use app\publics\model\LinksModel;
-
 use app\shop\model\ShopPageTheme;
 /*------------------------------------------------------ */
 //-- 商城装修
@@ -116,6 +115,8 @@ class EditPageb extends AdminController
             $upwhere[] = ['st_id','<>',$id];
             $this->Model->where($upwhere)->update(['is_index'=>0]);
         }
+        Cache::rm('shopIndex_diy_'.$id);
+        Cache::rm('shopIndex_diy_'.$id.'topfixed');
         $result['status'] = 1;
         $result['result']['id'] = $id;
         $result['result']['jump'] = url('edit',['id'=>$id]);

@@ -5,7 +5,6 @@
 /*------------------------------------------------------ */
 namespace app\shop\controller;
 use app\ClientbaseController;
-use think\Db;
 use think\facade\Cache;
 use app\shop\model\SlideModel;
 use app\shop\model\GoodsModel;
@@ -83,93 +82,74 @@ class Index  extends ClientbaseController{
         if ($theme['is_new'] == 0){
             return $this->shopIndex();
         }
-        $mkey = 'shopIndex_web_'.$pageid;
-        //$body = Cache::get($mkey);
         $page = json_decode($theme['page'],true);
+        $mkey = 'shopIndex_diy_'.$pageid;
         $tmpPath = '../../customize/';
-        $body = '';
-        $topfixed = '';
-        $this->assign('goodsicon', ['recommand'=>'推荐','hotsale'=>'热销','isnew'=>'新品','sendfree'=>'包邮','istime'=>'限时卖','bigsale'=>'促销']);
-        foreach ($page['items'] as $key=>$row) {
-            $row['_key'] = $key;
+        $body = Cache::get($mkey);
+        if (empty($body)){
+            $body = '';
+            $topfixed = '';
+            $this->assign('goodsicon', ['recommand'=>'推荐','hotsale'=>'热销','isnew'=>'新品','sendfree'=>'包邮','istime'=>'限时卖','bigsale'=>'促销']);
+            foreach ($page['items'] as $key=>$row) {
+                $row['_key'] = $key;
 
-            if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
-                $this->assign('diyInfo', $row);
-                $topfixed .= $this->fetch($tmpPath.$row['id']);
-                continue;
-            }
-            if ($row['id'] == 'notice'){//公告处理
-                if ($row['params']['noticedata'] == 0){
-                    $ArticleModel = new \app\mainadmin\model\ArticleModel();
-                    $noticeList = $ArticleModel->limit($row['noticenum'])->select()->toArray();
-                }else{
-                    $noticeList = $row['data'];
+                if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
+                    $this->assign('diyInfo', $row);
+                    $topfixed .= $this->fetch($tmpPath.$row['id']);
+                    continue;
                 }
-                $this->assign('noticeList', $noticeList);
-            }elseif ($row['id'] == 'icongroup'){//图标组处理，针对特定名词，查询相应的订单数量
+                if ($row['id'] == 'notice'){//公告处理
+                    if ($row['params']['noticedata'] == 0){
+                        $ArticleModel = new \app\mainadmin\model\ArticleModel();
+                        $noticeList = $ArticleModel->limit($row['noticenum'])->select()->toArray();
+                    }else{
+                        $noticeList = $row['data'];
+                    }
+                    $this->assign('noticeList', $noticeList);
+                }elseif ($row['id'] == 'icongroup'){//图标组处理，针对特定名词，查询相应的订单数量
 
-            }elseif ($row['id'] == 'picturew'){//图片橱窗
-                foreach ($row['data'] as $arr){
-                    $_data[] = $arr;
-                }
-                $this->assign('_data', $_data);
-            }elseif($row['id'] == 'goods'){
-                if ($row['style']['liststyle'] == 'block one'){
-                    $row['style']['view'] = 1;
-                }elseif ($row['style']['liststyle'] == 'block'){
-                    $row['style']['view'] = 2;
-                }else{
-                    $row['style']['view'] = 3;
-                }
-                $row['data'] = [];
-                $GoodsModel = new \app\shop\model\GoodsModel();
-                if ($row['params']['goodsdata'] > 0){
-                    $classList = $GoodsModel->getClassList();
-                    $where[] = ['is_delete','=',0];
-                    $where[] = ['is_alone_sale','=',1];
-                    $where[] = ['isputaway','=',1];
-                    $where[] = ['is_promote','=',0];
-                    if ($row['params']['goodsdata'] == 1 && $row['params']['cateid'] > 0){
-                        $where[] = ['cid','in',$classList[$row['params']['cateid']]['children']];
+                }elseif ($row['id'] == 'picturew'){//图片橱窗
+                    foreach ($row['data'] as $arr){
+                        $_data[] = $arr;
                     }
+                    $this->assign('_data', $_data);
+                }elseif($row['id'] == 'goods'){
+                    if ($row['style']['liststyle'] == 'block one'){
+                        $row['style']['view'] = 1;
+                    }elseif ($row['style']['liststyle'] == 'block'){
+                        $row['style']['view'] = 2;
+                    }else{
+                        $row['style']['view'] = 3;
+                    }
+                    $row['data'] = [];
+                    $GoodsModel = new \app\shop\model\GoodsModel();
+                    if ($row['params']['goodsdata'] > 0){
+                        $classList = $GoodsModel->getClassList();
+                        $where[] = ['is_delete','=',0];
+                        $where[] = ['is_alone_sale','=',1];
+                        $where[] = ['isputaway','=',1];
+                        $where[] = ['is_promote','=',0];
+                        if ($row['params']['goodsdata'] == 1 && $row['params']['cateid'] > 0){
+                            $where[] = ['cid','in',$classList[$row['params']['cateid']]['children']];
+                        }
 
-                    switch ($row['params']['goodssort']){
-                        case 1://按销量
-                            $sqlOrder = "sale_num DESC";
-                            break;
-                        case 2://价格降序
-                            $sqlOrder = "shop_price DESC";
-                            break;
-                        case 3://价格降序
-                            $sqlOrder = "shop_price ASC";
-                            break;
-                        default://综合
-                            $sqlOrder = "virtual_sale DESC,virtual_collect DESC,is_best DESC";
-                            break;
-                    }
-                    $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
-                    foreach ($goodIds as $key=>$gid){
-                        $good = $GoodsModel->info($gid);
-                        $ginfo['thumb'] = $good['goods_thumb'];
-                        $ginfo['title'] = $good['goods_name'];
-                        $ginfo['subtitle'] = $good['short_name'];
-                        $ginfo['price'] = $good['shop_price'];
-                        $ginfo['gid'] = $good['goods_id'];
-                        $ginfo['total'] = $good['goods_number'];
-                        $ginfo['price'] = $good['shop_price'];
-                        $ginfo['productprice'] = $good['market_price'];
-                        $ginfo['sales'] = $good['sale_num'];
-                        $ginfo['bargain'] = 0;
-                        $ginfo['credit'] = null;
-                        $ginfo['ctype'] = null;
-                        $ginfo['gtype'] = null;
-                        $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
-                        $row['data'][$key] = $ginfo;
-                    }
-                }else{
-                    foreach ($row['data'] as $key=>$good){
-                        if ($good['gid'] > 0 ){
-                            $good = $GoodsModel->info($good['gid']);
+                        switch ($row['params']['goodssort']){
+                            case 1://按销量
+                                $sqlOrder = "sale_num DESC";
+                                break;
+                            case 2://价格降序
+                                $sqlOrder = "shop_price DESC";
+                                break;
+                            case 3://价格降序
+                                $sqlOrder = "shop_price ASC";
+                                break;
+                            default://综合
+                                $sqlOrder = "virtual_sale DESC,virtual_collect DESC,is_best DESC";
+                                break;
+                        }
+                        $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
+                        foreach ($goodIds as $key=>$gid){
+                            $good = $GoodsModel->info($gid);
                             $ginfo['thumb'] = $good['goods_thumb'];
                             $ginfo['title'] = $good['goods_name'];
                             $ginfo['subtitle'] = $good['short_name'];
@@ -186,14 +166,37 @@ class Index  extends ClientbaseController{
                             $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
                             $row['data'][$key] = $ginfo;
                         }
+                    }else{
+                        foreach ($row['data'] as $key=>$good){
+                            if ($good['gid'] > 0 ){
+                                $good = $GoodsModel->info($good['gid']);
+                                $ginfo['thumb'] = $good['goods_thumb'];
+                                $ginfo['title'] = $good['goods_name'];
+                                $ginfo['subtitle'] = $good['short_name'];
+                                $ginfo['price'] = $good['shop_price'];
+                                $ginfo['gid'] = $good['goods_id'];
+                                $ginfo['total'] = $good['goods_number'];
+                                $ginfo['price'] = $good['shop_price'];
+                                $ginfo['productprice'] = $good['market_price'];
+                                $ginfo['sales'] = $good['sale_num'];
+                                $ginfo['bargain'] = 0;
+                                $ginfo['credit'] = null;
+                                $ginfo['ctype'] = null;
+                                $ginfo['gtype'] = null;
+                                $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                                $row['data'][$key] = $ginfo;
+                            }
+                        }
                     }
                 }
+                $this->assign('diyInfo', $row);
+                $body .= $this->fetch($tmpPath.$row['id']);
             }
-            //print_r($row);
-            $this->assign('diyInfo', $row);
-            $body .= $this->fetch($tmpPath.$row['id']);
+            Cache::set($mkey.'topfixed',$topfixed,60);
+            Cache::set($mkey,$body,60);
+        }else{
+            $topfixed = Cache::get($mkey.'topfixed');
         }
-
         $this->assign('topfixed', $topfixed);
         $this->assign('body', $body);
         $this->assign('page', $page['page']);
