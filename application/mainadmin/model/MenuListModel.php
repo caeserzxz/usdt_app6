@@ -28,7 +28,7 @@ class MenuListModel extends BaseModel
     /*------------------------------------------------------ */
     public function getList()
     {
-       // $data = Cache::get($this->mkey);
+        $data = Cache::get($this->mkey);
         if (empty($data) == false) {
             return $data;
         }
