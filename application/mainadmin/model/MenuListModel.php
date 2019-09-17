@@ -28,7 +28,7 @@ class MenuListModel extends BaseModel
     /*------------------------------------------------------ */
     public function getList()
     {
-        $data = Cache::get($this->mkey);
+       // $data = Cache::get($this->mkey);
         if (empty($data) == false) {
             return $data;
         }
@@ -37,7 +37,7 @@ class MenuListModel extends BaseModel
         $rows = self::where('status', 1)->order('pid DESC sort_order ASC')->select()->toArray();
         foreach ($rows as $row) {
             $key = $row['pid'] < 1 ? $row['group'] : $row['id'];
-            $row['_right'] = explode(',', $row['right']);
+            $row['_right'] = empty($row['right'])?[]:explode(',', $row['right']);
             if ($row['pid'] > 0) {
                 if (empty($_data[$row['id']]) == false) {
                     $row['submenu'] = $_data[$row['id']];
