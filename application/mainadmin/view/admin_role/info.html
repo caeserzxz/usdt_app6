@@ -1,5 +1,5 @@
 <form class="form-horizontal form-validate form-modal" method="post" id="_post_form" action="{:url('info')}">
- <div class="modal-dialog">
+ <div class="modal-dialog" style="width:880px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -24,11 +24,11 @@
   </tr>
  </table>
 <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" >
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered " >
   {volist name="menuList" id="va"}
      <tbody class="purview_box">
            <tr>
-              <td  width="50"><strong>{$va.name}</strong></td>
+              <td  width="60"><strong>{$va.name}</strong></td>
                 <td valign="top" colspan="2">
                     {volist name="va.list" id="vb"}
                         {if condition="$vb['right'] == 'manage'" }
@@ -40,7 +40,7 @@
             {volist name="va.list" id="vb"}
                 {if condition="empty($vb['submenu']) == false && empty($vb['right']) == true" }
                       <tr>
-                          <td valign="top" width="20"></td>
+                          <td valign="top" width="30"></td>
                           <td valign="top" width="30"> <label>{$vb.name}：</label></td>
                           <td valign="top">
                             {volist name="vb.submenu" id="vc"}
