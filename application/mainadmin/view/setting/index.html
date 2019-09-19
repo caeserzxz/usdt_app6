@@ -17,6 +17,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
                     <li><a href="#about_us" data-toggle="tab">关于我们</a></li>
+                    <li><a href="#app" data-toggle="tab">APP设置</a></li>
                 </ul>
             </header>
 
@@ -42,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">版权：</label>
-                        <div class="controls">
+                        <div class="controls col-sm-6">
                             <input type="text" data-rule-maxlength="25" class="input-max" name="setting[copyright]"
                                    value="{$setting.copyright}"/>
                         </div>
@@ -118,6 +119,53 @@
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane " id="app">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">app名称：</label>
+                        <div class="controls col-sm-4">
+                            <input type="text" data-rule-maxlength="25" class="input-max" name="setting[app_name]" value="{$setting.app_name}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">app图标：</label>
+                        <div class="controls col-sm-6">
+                            <span class="help-inline">建议图片尺寸：100*100像素</span><br>
+                            <img class="thumb_img" src="{$setting.app_logo}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="setting[app_logo]" value="{$setting.app_logo}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择logo</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">背景图片：</label>
+                        <div class="controls col-sm-6">
+                            <span class="help-inline">建议图片尺寸：380*800像素</span><br>
+                            <img class="thumb_img" src="{$setting.app_bg}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="setting[app_bg]" value="{$setting.app_bg}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择背景</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ios链接：</label>
+                        <div class="controls col-sm-4">
+                            <input type="text" data-rule-maxlength="25" class="input-max" name="setting[app_ios_path]" value="{$setting.app_ios_path}"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">安卓链接：</label>
+                        <div class="controls col-sm-4">
+                            <div class="js_upload_container">
+                                <input  type="text" name="setting[app_apk_path]" class="input-max" value="{$setting.app_apk_path}"/>
+                                <button type="button" class="btn btn-default js_file_upload"   data-uploadpath="{:url('uploadApp')}"  style="position: relative; z-index: 1;">点击上传app</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">下载页面：</label>
+                        <div class="controls col-sm-4 help-inline">
+                            <a href="{:_url('publics/download/app',false,true,true)}" target="_blank">{:_url('publics/download/app',false,true,true)}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </section>
@@ -131,4 +179,9 @@
     </div>
 </footer>
 </form>
+{/block}
+{block name="footer"}
+<script type="text/javascript">
+    seajs.use("dist/plupload/file.js")
+</script>
 {/block}

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>
+    APP下载
+</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0" />
+</head>
+<body>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        background-color: #f1f4f6;
+        font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei";
+        font-size: 0.6rem;
+    }
+    .swiper-container {
+        width: 100%;
+        -webkit-perspective: 1200px;
+        -moz-perspective: 1200px;
+        -ms-perspective: 1200px;
+        perspective: 1200px
+    }
+
+    .page-ft {
+        box-sizing: border-box;
+        background-size: 100%;
+        background-position: center bottom;
+        background-repeat: no-repeat;
+    }
+    .card-container{
+        padding: 40px 0;
+        width: 95%;
+        margin: 0 auto;
+    }
+    .card-container .swiper-slide{
+        width: 60%;
+        -webkit-transform-origin: 50% 400%;
+        transform-origin: 50% 400%;
+    }
+
+    .swiper-slide  img{
+        width: 100%;
+        display: block;
+    }
+
+    .avatar-box {
+        width: 3rem;
+        height: 3rem;
+        margin: 0 auto;
+        position: relative;
+    }
+    .avatar-box::after{
+        content: "";
+        position: absolute;
+        width: 4rem;
+        height: 24px;
+        bottom: 0;
+        margin-bottom: -13px;
+        left: 50%;
+        margin-left:  -2rem;
+        z-index: 0;
+        background-size:  100% 100%;
+    }
+    .avatar-box  img{
+        box-sizing: border-box;
+        border: 2px solid #f1f1f1;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        position: relative;
+        z-index: 2;
+    }
+    .bodybg-alert {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        background: #000000;
+        filter: alpha(opacity:50);
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        -khtml-opacity: 0.5;
+    }
+
+    .bodybg-alert-content {
+        position: fixed;
+        height: 40px;
+        line-height: 40px;
+        top: 0;
+        width: 100%;
+        z-index: 99999;
+        text-align: center;
+    }
+
+    .bodybg-alert-content span {
+        background: #FFFFFF;
+        padding: 0 20px;
+        height: 40px;
+        line-height: 40px;
+        display: inline-block;
+        min-width: 120px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .btnbox {
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+    .btnbox  img {
+        width: 9.7rem;
+        vertical-align: middle;
+    }
+
+    .mainbox{
+        text-align: center;
+        background-position: center 1.2rem;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        padding-bottom: 1.5rem;
+    }
+    .rwmbox {
+        width: 5.5rem;
+        height: 5.5rem;
+        border-radius: 10px;
+        padding: 0.5rem;
+        background-color: #fff;
+        border: 1px solid #e8e7e7;
+        margin: 0 auto;
+    }
+    .rwmbox  canvas{
+        width: 100%;
+        height: 100%;
+    }
+    .app-name {
+        font-size: 0.65rem;
+        margin: 0.5rem 0;
+    }
+    .app-name  span{
+        padding-left: 1.1rem;
+        vertical-align: middle;
+    }
+    .app-name i{
+        font-style: inherit;
+        background-color: #fdf0f7;
+        border: 1px solid #f4d1cd;
+        font-size: 0.5rem;
+        color: #e6a8a3;
+        margin-left: 5px;
+        vertical-align: middle;
+        padding: 1px 4px;
+    }
+    body{
+        height: 100%;
+        background: #fff;
+    }
+    .page{
+        height: 100%;
+    }
+    .page-hd {
+        background-size: 100%;
+        background-position: center top;
+        background-repeat: no-repeat;
+        padding-top: 1.7rem;
+        {if condition="empty(settings('app_ios_path')) == false"}
+             background-image: url('{:settings('app_bg')}');
+        {else/}
+             background-image: url('__STATIC__/mobile/default/images/appbg.jpg');
+        {/if}
+        background-color:#FFF;
+        height;100%;
+    }
+    .downloadurl{
+        display: block;
+        margin: 0px auto;
+        width: 9.7rem;
+        height: 1.8rem;
+        line-height: 1.9rem;
+        color: #ffffff;
+        text-decoration:none;
+        background-size: 100%;
+        background-image: url('__STATIC__/mobile/default/images/btn.png');
+    }
+</style>
+<div class="page">
+    <div class="page-hd">
+        <div class="mainbox">
+            <div class="avatar-box">
+                <img src='{:settings('app_logo')}' />
+            </div>
+            <div class="app-name">
+                    <span>{:settings('app_name')}</span><i>官方</i>
+            </div>
+            <div class="rwmbox" id="qrcode">
+            </div>
+            <div class="btnbox">
+                <a href='javascript:void(0)' data-url="{$Think.config.config.host_path}{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
+            </div>
+            {if condition="empty(settings('app_ios_path')) == false"}
+            <div class="btnbox">
+                <a href='javascript:void(0)' data-url="{:settings('app_ios_path')}" class="downloadurl" onclick="tishi()">下载苹果APP</a>
+            </div>
+            {/if}
+        </div>
+    </div>
+    <div class="zhiyin" style="display: none">
+        <div class="bodybg-alert"></div>
+        <div class="bodybg-alert-content"><img src="__STATIC__/mobile/default/images/zhiyin.png" class="tsimg" width="100%" alt=""></div>
+    </div>
+</div>
+<script src="__STATIC__/js/jquery/jquery/2.1.4/jquery.min.js"></script>
+<script src="__STATIC__/js/jquery/jquery.qrcode.min.js"></script>
+<script>
+    $(function () {
+        $('#qrcode').qrcode("{:_url('publics/download/app',false,true,true)}");
+    });
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (clientWidth > 640) {
+                    clientWidth = 640;
+                }
+                if (!clientWidth) return;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+
+
+
+    
+    //判断是否是微信浏览器的函数
+    function isWeiXin(){
+        //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+        var ua = window.navigator.userAgent.toLowerCase();
+        //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function tishi(){
+        if(isWeiXin()){
+            // 是微信浏览器，执行操作
+            $('.zhiyin').css("display","block");
+        }else{
+            var url = $('.downloadurl').attr('data-url')
+            window.location.href = url
+        }
+    }
+
+    $('.tsimg').click(function(){
+        $('.zhiyin').css("display","none");
+    })
+
+
+</script>
+</body>
+</html>

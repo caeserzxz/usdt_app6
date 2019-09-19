@@ -22,6 +22,7 @@ class ClientbaseController extends BaseController{
         'shop/payment',//支付相关
         'fightgroup',//拼团相关
         'second',//秒杀相关
+        'publics/download',//app下载
     ];
 
     /* @var array $notLayoutAction 无需全局layout */

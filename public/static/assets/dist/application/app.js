@@ -1051,7 +1051,7 @@ function(a) {
                         d.defaults.max_file_size = "10mb",
                         d.defaults.mime_types = [{
                             title: "自定义文件",
-                            extensions: "txt,xml,pdf,zip,doc,ppt,xls,docx,pptx,xlsx"
+                            extensions: "txt,xml,pdf,zip,doc,ppt,xls,docx,pptx,xlsx,apk"
                         }],
                         plupload.addI18n({
                             "File extension error.": "文件格式必须为以下格式：txt, xml, pdf, zip, doc, ppt, xls, docx, pptx, xlsx"
