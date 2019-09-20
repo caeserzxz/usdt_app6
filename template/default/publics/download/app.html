@@ -195,9 +195,15 @@
             </div>
             <div class="rwmbox" id="qrcode">
             </div>
+            {if condition="strstr(settings('app_apk_path'),'http') == false"}
             <div class="btnbox">
                 <a href='javascript:void(0)' data-url="{$Think.config.config.host_path}{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
             </div>
+            {else/}
+            <div class="btnbox">
+                <a href='javascript:void(0)' data-url="{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
+            </div>
+            {/if}
             {if condition="empty(settings('app_ios_path')) == false"}
             <div class="btnbox">
                 <a href='javascript:void(0)' data-url="{:settings('app_ios_path')}" class="downloadurl" onclick="tishi()">下载苹果APP</a>
@@ -235,7 +241,7 @@
 
 
 
-    
+
     //判断是否是微信浏览器的函数
     function isWeiXin(){
         //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
