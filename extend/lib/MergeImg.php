@@ -13,7 +13,7 @@ class MergeImg{
 	    if (empty($data)){
 	        return false;
         }
-        $fontfile = "./static/share/msyhbd.ttc";
+        $fontfile = PATH_SEPARATOR == ';' ? app()->getRootPath().'public/static/share/msyhbd.ttc' : './static/share/msyhbd.ttc';
         $imagecreate = $this->isjpg($data['share_bg']);
         $im_bg = $imagecreate('.'.$data['share_bg']);
         $imagesx = imagesx($im_bg);
