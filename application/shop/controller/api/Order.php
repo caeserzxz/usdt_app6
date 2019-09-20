@@ -76,6 +76,14 @@ class Order extends ApiController
     /*------------------------------------------------------ */
     public function action(){
         $order_id = input('order_id',0,'intval');
+        $mkey = 'OrderIng_'.$order_id;
+        $status = Cache::get($mkey);
+        if (empty($status) == false){
+            $return['msg'] = '请求失败';
+            $return['code'] = 0;
+            return $this->ajaxReturn($return);
+        }
+        Cache::set($mkey,1);
         $type = input('type','','trim');
         $config = config('config.');
         $upData['order_id'] = $order_id;
@@ -99,6 +107,7 @@ class Order extends ApiController
                 break;
         }
         $res = $this->Model->upInfo($upData);
+        Cache::rm($mkey);
         if ($res !== true) return $this->error($res);
         $orderInfo = $this->Model->info($order_id);
         $this->Model->_log($orderInfo,$_log);
