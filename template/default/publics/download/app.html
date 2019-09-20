@@ -195,18 +195,20 @@
             </div>
             <div class="rwmbox" id="qrcode">
             </div>
-            {if condition="strstr(settings('app_apk_path'),'http') == false"}
-            <div class="btnbox">
-                <a href='javascript:void(0)' data-url="{$Think.config.config.host_path}{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
-            </div>
-            {else/}
-            <div class="btnbox">
-                <a href='javascript:void(0)' data-url="{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
-            </div>
+            {if condition="empty(settings('app_apk_path')) == false"}
+                {if condition="strstr(settings('app_apk_path'),'http') == false"}
+                <div class="btnbox">
+                    <a href='javascript:void(0)' data-url="{$Think.config.config.host_path}{:settings('app_apk_path')}" class="downloadurl" onclick="tishi()">下载安卓APP</a>
+                </div>
+                {else/}
+                <div class="btnbox">
+                    <a href='javascript:void(0)' data-url="{:settings('app_apk_path')}" class="downloadurl">下载安卓APP</a>
+                </div>
+                {/if}
             {/if}
             {if condition="empty(settings('app_ios_path')) == false"}
             <div class="btnbox">
-                <a href='javascript:void(0)' data-url="{:settings('app_ios_path')}" class="downloadurl" onclick="tishi()">下载苹果APP</a>
+                <a href='javascript:void(0)' data-url="{:settings('app_ios_path')}" class="downloadurl">下载苹果APP</a>
             </div>
             {/if}
         </div>
@@ -253,16 +255,15 @@
             return false;
         }
     }
-
-    function tishi(){
+    $('.downloadurl').click(function () {
         if(isWeiXin()){
             // 是微信浏览器，执行操作
             $('.zhiyin').css("display","block");
-        }else{
-            var url = $('.downloadurl').attr('data-url')
-            window.location.href = url
+            return false;
         }
-    }
+        window.location.href = $(this).data('url');
+    })
+
 
     $('.tsimg').click(function(){
         $('.zhiyin').css("display","none");
