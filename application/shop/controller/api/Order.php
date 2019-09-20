@@ -1,6 +1,7 @@
 <?php
 namespace app\shop\controller\api;
 use app\ApiController;
+use think\facade\Cache;
 
 use app\shop\model\OrderModel;
 use app\shop\model\SaleafterGoodsModel;

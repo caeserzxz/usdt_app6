@@ -14,6 +14,7 @@ use app\shop\model\BonusModel;
 use think\Db;
 use lib\Image;
 use app\weixin\model\MiniModel;
+use think\facade\Cache;
 
 /*------------------------------------------------------ */
 //-- 会员相关API
