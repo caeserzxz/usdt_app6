@@ -58,7 +58,7 @@ class GoodsModel extends BaseModel
             $gwhere[] = ['isputaway', '=', 1];
             $gwhere[] = ['is_delete', '=', 0];
             $gwhere[] = ['store_id', '=', 0];
-            $gooodsList = $this->where($gwhere)->order('is_hot desc,sort_order asc,goods_id desc')->limit(3)->column('goods_id');
+            $gooodsList = $this->where($gwhere)->order('is_hot desc,sort_order DESC,goods_id desc')->limit(3)->column('goods_id');
             foreach ($gooodsList as $_key => $goods_id) {
                 $gooodsList[$_key] = $this->info($goods_id);
             }
@@ -78,7 +78,7 @@ class GoodsModel extends BaseModel
         $gwhere[] = ['isputaway', '=', 1];
         $gwhere[] = ['is_delete', '=', 0];
         $gwhere[] = ['store_id', '=', 0];
-        $gooodsList = $this->where($gwhere)->order('is_best desc,sort_order asc,goods_id desc')->limit(10)->column('goods_id');
+        $gooodsList = $this->where($gwhere)->order('is_best desc,sort_order DESC,goods_id desc')->limit(10)->column('goods_id');
         foreach ($gooodsList as $key => $goods_id) {
             $gooodsList[$key] = $this->info($goods_id);
         }

@@ -258,4 +258,55 @@ class FgGoods extends AdminController
         $row['is_usd_bonus'] = $row['is_usd_bonus'] * 1;
         return $row;
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取拼团列表信息-供选择使用
+    /*------------------------------------------------------ */
+    public function selectFightGroup()
+    {
+        $this->getselectFightGroupList(true);
+        return $this->fetch('select_fight_group');
+    }
+    /*------------------------------------------------------ */
+    //-- 获取拼团列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getselectFightGroupList($runData = false)
+    {
+        $FightGroupModel = new FightGroupModel();
+        $where = [];
+        $status = input('status', 0, 'intval');
+        $time = time();
+        switch ($status) {
+            case 1:
+                $where[] = ['fg.start_date', '>', $time];
+                break;
+            case 2:
+                $where[] = ['fg.start_date', '<', $time];
+                $where[] = ['fg.end_date', '>', $time];
+                break;
+            case 3:
+                $where[] = ['fg.end_date', '<', $time];
+                break;
+            default:
+                break;
+        }
+        $search['goodsArr'] = input('goodsArr', 0, 'trim');
+        if (empty($search['goodsArr']) == false) {
+            $where[] = ['fg.fg_id', 'not in', $search['goodsArr']];
+        }
+
+        $viewObj = $FightGroupModel->alias('fg')->join("shop_goods g", 'fg.goods_id=g.goods_id', 'left');
+        $viewObj->where($where)->field('fg.*,g.goods_name,g.goods_sn,g.is_spec')->order('fg_id DESC');
+        $this->data = $this->getPageList($FightGroupModel, $viewObj);
+        $this->assign("data", $this->data);
+        $this->assign("time", $time);
+        if ($runData == false) {
+            $this->data['content'] = $this->fetch('fight_group_list');
+            unset($this->data['list']);
+            return $this->success('', '', $this->data);
+        }
+        return true;
+    }
+
 }

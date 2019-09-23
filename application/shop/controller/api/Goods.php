@@ -50,6 +50,10 @@ class Goods extends ApiController
         if ($search['max_price'] > 0){
             $where[] = ['shop_price','<',$search['max_price']];
         }
+        $search['ids'] = input('ids','','trim');
+        if (empty($search['ids']) == false){
+            $where[] = ['goods_id','in',$search['ids']];
+        }
         
         $sqlOrder = input('order','','trim');
          if (empty($sqlOrder)){

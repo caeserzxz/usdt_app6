@@ -503,7 +503,7 @@ class Bonus extends AdminController
     }
 
     /*------------------------------------------------------ */
-    //-- 选择商品
+    //-- 弹窗选择商品
     /*------------------------------------------------------ */
     public function selectGoods()
     {
@@ -567,7 +567,6 @@ class Bonus extends AdminController
             $where[] = ['goods_id', 'not in', $search['goodsArr']];
         }
 
-
         $this->data = $this->getPageList($GoodsModel, $where, $this->_field, $this->_pagesize);
         $this->assign("data", $this->data);
         $this->assign("search", $search);
@@ -583,6 +582,9 @@ class Bonus extends AdminController
         }
         return true;
     }
+
+
+
     /*------------------------------------------------------ */
     //-- 选择拼团
     /*------------------------------------------------------ */

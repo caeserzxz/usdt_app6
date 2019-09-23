@@ -38,14 +38,19 @@
 <script type="text/html" id="addressLiTpl">
     {{each list as item index}}
     <li>
-
         {{if index == '0' }}
             <div class="top" data-index="{{index}}">
                 <div class="address">
                     <div class="info">
-                        <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}</div>
+                        <div>
+                            <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
+                            <div class="radioBox">
+
+                                <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt=""><em>编辑</em></a>
+                            </div>
+                        </div>
                         <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
-                    <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+
                 </div>
             </div>
         {{else}}
@@ -53,22 +58,18 @@
                 <div class="block" data-index="{{index}}">
                     <div class="address">
                         <div class="info">
-                            <div><p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}</div>
+                            <div>
+                                <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
+                                <div class="radioBox">
+
+                                    <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
+                                </div>
+                            </div>
                             <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
-                        <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+
                     </div>
 
-                    <div class="radioBox">
-                        <!--<label for="address_{{item.address_id}}">-->
-                            <!--<div class="iconBox">-->
-                                <!--<input type="radio" class="check editDefault" name="radiobox" id="address_{{item.address_id}}"-->
-                                       <!--value="{{item.address_id}}" {{item.is_default==1?'checked':''}}>-->
-                                <!--<i class="icon_checked"></i>-->
-                            <!--</div>-->
-                            <!--<span class="fs26 color_9">设为默认地址</span>-->
-                        <!--</label>-->
-                        <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
-                    </div>
+
                 </div>
                 <div class="swiped BGcolor_3">
                     <div class="delect" data-address_id="{{item.address_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>

@@ -2,95 +2,308 @@
 {block name="main" }
 
 <header class="header  b-b clearfix">
-   <div class="page-breadcrumbs">
-          <ul class="breadcrumb">
-              <li>
-                  <i class="fa fa-ellipsis-v"></i>
-                  <strong>{$row['id']==true?'编辑头条':'添加头条'}</strong>
-              </li>
-          </ul>
-       <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
-      </div>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['id']>0?"编辑头条":"添加头条"}</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
 </header>
 
 <section class="scrollable  wrapper">
-<form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
-      <section class="panel panel-default">
-          <header class="panel-heading bg-light">
-              基本信息
-          </header>
-          <div class="panel-body">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <header class="panel-heading bg-light">
+                基本信息
+            </header>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">文章分组</label>
+                    <div class="controls w250 must">
+                        <select class="wb80 " name="cid" data-maxcount="3" data-msg-required="请选择文章分组" data-toggle="select2" data-placeholder="请选择文章分组" data-width="999px">
+                            <option value=""></option>
+                            {$catOpt|raw}
+                        </select>
+                    </div>
+                </div>
 
-              <div class="line line-dashed line-lg pull-in"></div>
-              <div class="form-group">
-                  <label class="control-label">头条标题：</label>
-                  <div class="controls" >
-                      <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
-                  </div>
-              </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="control-label">文章标题</label>
+                    <div class="controls" >
+                        <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
+                    </div>
+                </div>
 
-              <div class="line line-dashed line-lg pull-in"></div>
-              <div class="form-group">
-                  <label class="control-label">绑定关联：</label>
-                  <div class="controls" >
-                      <input name="ext_data" id="type_val_0"  class="input-xlarge"  style="width:50%;" type="text" readonly value="{$row.ext_data}">
-                      <input name="ext_id" id="type_val_key_0" type="hidden" value="{$row.ext_id}">
-                      <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default" id="article_btn_0" >绑定文章</a>
-                  </div>
-              </div>
+                <div class="form-group">
+                    <label class="control-label">标题图片</label>
+                    <div class="col-sm-8 must" >
+                        <img class="thumb_img" name="imagefile" src="{$row.img_url}" style="max-height: 100px;" />
+                        <input class="hide" type="text" name="img_url" value="{$row.img_url}" />
+                        <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                        <div style="color:red;margin-top:0.5rem">(请上传500*500的图片)</div>
+                    </div>
+                </div>
 
-              <div class="line line-dashed line-lg pull-in"></div>
-              <div class="form-group">
-                  <label class="control-label">首页推荐：</label>
-                  <div class="col-sm-10">
-                      <label>
-                          <input name="is_best" value="1" class="js_inventory" type="radio" {$row['is_best']==1?'checked':''}>
-                          是
-                      </label>
-                      <label>
-                          <input name="is_best" value="0" class="js_inventory" type="radio" {$row['is_best']==0?'checked':''}>
-                          否
-                      </label>
-                  </div>
-              </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="control-label">文章内容</label>
+                    <div class="controls wb80">
+                        <textarea rows="13" class="hd" data-toggle="kindeditor"  data-tongji="remain" data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[1,50000]" data-rule-required="true" data-msg-required="文章内容不能为空"  name="content" style="visibility:hidden;">{$row.content}</textarea>   <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
 
-              <div class="line line-dashed line-lg pull-in"></div>
-              <div class="form-group">
-                  <label class="control-label">头条状态：</label>
-                  <div class="col-sm-10">
-                      <label>
-                          <input name="status" value="1" class="js_inventory" type="radio" {$row['status']==1?'checked':''}>
-                          显示
-                      </label>
-                      <label>
-                          <input name="status" value="0" class="js_inventory" type="radio" {$row['status']==0?'checked':''}>
-                          隐藏
-                      </label>
-                  </div>
-              </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section class="panel panel-default">
+            <header class="panel-heading bg-light">
+                其他信息
+            </header>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="controls" >
+                    <label class="control-label">关键字</label>
+                    <input type="text" class="input-xlarge"  name="keywords" value="{$row.keywords}" >
+                    <span class="help-inline">填写用空格分开</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">文章简介</label>
+                <div class="controls" >
+                    <textarea name="description"  class="input-xxlarge" >{$row.description}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">发布时间</label>
+                <div class="input-group w150" > <input type="text" class="input-medium" name="add_time" value="{$row.add_time|dateTpl}" id="solddate" data-after="#groundingdate" data-offsetday="0" readonly="readonly" data-toggle="datetimepicker" data-position="top-right"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
 
-              <input name="id" type="hidden" value="{$row.id}">
-              <div class="form-group">
-                  <div class="col-sm-4 col-sm-offset-2">
-                      <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
-                      <button type="button" class="btn btn-default" data-toggle="back">取消</button>
-                  </div>
-              </div>
-           </div>
-      </section>
+            </div>
+            <div class="form-group">
+                <label class="control-label">首页推荐：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input name="is_best" value="1" class="js_inventory" type="radio" {$row['is_best']==1?'checked':''}>
+                        是
+                    </label>
+                    <label>
+                        <input name="is_best" value="0" class="js_inventory" type="radio" {$row['is_best']==0?'checked':''}>
+                        否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">显示状态：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input name="is_show" value="1" class="js_inventory" type="radio" {$row['is_show']==1?'checked':''}>
+                        显示
+                    </label>
+                    <label>
+                        <input name="is_show" value="0" class="js_inventory" type="radio" {$row['is_show']==0?'checked':''}>
+                        隐藏
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">排序：</label>
+                <div class="controls" >
+                    <input type="text" class="input-mini" name="sort_order"  data-rule-min="0"  data-rule-number="true" value="{$row['sort_order']}">
+                </div>
+            </div>
 
-	<input name="id" type="hidden" value="{$row.id|intval}">
-</form>
+            <div class="form-group">
+                <label class="control-label">相关绑定类型</label>
+                <div class="col-sm-2" >
+                    <select id="link_type" name="link_type" onChange="showBindType(this.value,'');" class="input-medium" style="width:200px;">
+                        <option value="">不需要绑定</option>
+                        {$ArticleBindType|raw}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group bind-box tel_box hide">
+                <label class="control-label">填写绑定号码</label>
+                <div class="col-sm-4" >
+                    <input name="tel" id="tel" class="input-xlarge"  type="text" value='{if condition="$row.link_type eq 'tel' "}{$row.link_data}{/if}'>
+                </div>
+            </div>
+            <div class="form-group bind-box link_box hide">
+                <label class="control-label">选择绑定链接</label>
+                <div class="col-sm-4" >
+                    <input name="link" id="link" class="input-xlarge"  type="text" value='{if condition="$row.link_type eq 'link' "}{$row.link_data}{/if}'>
+                    <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="btn btn-sm btn-default">绑定URL</a>
+                </div>
+            </div>
+            <!--商品列表-->
+            <div class="form-group bind-box goods_box hide">
+                <label class="control-label">指定商品类型</label>
+                <div class="col-sm-4" >
+                    {volist name="GoodsType" id="st"}
+                    <label>
+                        <input name="goods_type" value="{$st.dict_key}" class="js_inventory" type="radio" onchange="selectGoodsType({$st.dict_key})" {$row['link_data']['goods_type']==$st['dict_key']?'checked':''}>
+                        {$st.dict_val}
+                    </label>
+                    {/volist}
+                </div>
+            </div>
+            <div class="form-group bind-box goods_box hide">
+                <label class="control-label">商品列表</label>
+                <div class="col-sm-4" >
+                    <table class="table table-bordered table-striped " style="width:800px;">
+                        <thead>
+                        <tr>
+                            <th width="150">商品SN</th>
+                            <th>商品名称</th>
+                            <th>商品价格</th>
+                            <th width="70">   <a href="javascript:selectGoods();" class="btn btn-sm btn-default  m-t-md"><i class="fa fa-plus m-r-xs"></i>添加商品</a></th>
+                        </tr>
+                        </thead>
+                        <tbody id="goods_box">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group  bind-box goods_cate_box hide">
+                <label class="control-label">选择商品分类</label>
+                <div class="col-sm-4" >
+                    <select id="goods_cid" name="goods_cid" style="width:80%;" data-toggle="select2" data-placeholder="选择商品分类" >
+                        <option value="">选择商品分类</option>
+                        {$classListOpt|raw}
+                    </select>
+                </div>
+            </div>
+            <div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="id" type="hidden" value="{$row.id|intval}">
+    </form>
 </section>
-<script>
-    //选择文章
-    function assigBack(type,type_id,id,title,tid){
-        $("#type_val_key_"+type_id).val(id);
-        $("#ext_activity_"+type_id).val(tid);
-        $("#type_val_"+type_id).val(title);
-        $(".modal-dialog .close").trigger("click");
-    }
-</script>
+{/block}
 
+{block name="footer" }
+<script type="text/html" id="goodsListTpl">
+    {literal}
+    {{each list as item index}}
+    <tr id="goods_tr_{{item.id}}">
+        <td><input name="goods_id[]" type="hidden" value="{{item.id}}" />{{if item.is_spec==0}}{{item.goods_sn}}{{else}}多规格{{/if}}</td>
+        <td>{{item.goods_name}}</td>
+        <td>{{if item.is_spec==1&&goods_type==1}}{{item.min_price}}~{{item.max_price}}{{else}}{{item.show_price}}{{/if}}</td>
+        <td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('goods',{{item.id}})" >删除</a></td>
+    </tr>
+    {{/each}}
+    {/literal}
+</script>
+<script type="text/javascript">
+    seajs.use("dist/plupload/init.js");
+    //选择绑定类型
+    function showBindType(link_type,bind_data){
+        $(".bind-box").addClass('hide');
+        if (link_type== 'link'){
+            $("#link_data").val('http://');
+            $(".link_box").removeClass('hide');
+        }
+        else if (link_type == 'tel'){
+            $(".tel_box").removeClass('hide');
+        }
+        else if (link_type == 'goods'){
+            $(".goods_box").removeClass('hide');
+        }
+        else if (link_type== 'goods_cate'){
+            $(".goods_cate_box").removeClass('hide');
+        }
+    }
+    /**选择指定商品类型**/
+    function selectGoodsType(type) {
+        $('#goods_box').html('');
+    }
+    /**选择商品**/
+    function selectGoods()
+    {
+        var goods_type = $('input[name=goods_type]:checked').val();
+        if(goods_type==undefined||goods_type==""){
+            return _alert('请选定指定商品类型');
+        }
+        var goodsArr=[];
+        $('#goods_box').find('input').each(function () {
+            goodsArr.push($(this).val());
+        })
+        var title='';
+        if(goods_type==1){
+            title='选择商品';
+            var url = "{:url('shop/sys_admin.goods/selectGoods')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+        }else if(goods_type==2){
+            title='选择拼团';
+            var url = "{:url('fightgroup/sys_admin.fgGoods/selectFightGroup')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+        }else if(goods_type==3){
+            var url = "{:url('second/sys_admin.secondGoods/selectSecond')}"+"?goods_type="+goods_type+'&goodsArr='+goodsArr+'&'+Math.random();
+        }
+        layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.3,
+            area: ['70%', '80%'],
+            content: url,
+        });
+    }
+    /**选择商品回调**/
+    function call_back(goodsList)
+    {
+        layer.closeAll('iframe');
+        $.each(goodsList, function (n, value) {
+            var html='';
+            html+='<tr id="goods_tr_'+value.goods_id+'">';
+            html+='<td><input name="goods_id[]" type="hidden" value="'+value.goods_id+'" />'+value.goods_sn+'</td>';
+            html+='<td>'+value.goods_name+'</td>';
+            html+='<td>'+value.shop_price+'</td>';
+            html+='<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods(\'goods\','+value.goods_id+')" >删除</a></td>';
+            html+='</tr>';
+            $('#goods_box').append(html);
+        });
+    }
+    /**删除商品**/
+    function delLinkGoods(select_type, goods_id) {
+        $('#' + select_type + '_tr_' + goods_id).remove();
+    }
+    function assigBack(type,type_id,id,title,tid){
+        $("#link").val(title);
+    }
+
+    function initGoodsList(id,goods_type){
+        if(id<1)return false;
+        var arr = new Object();
+        arr.id=id;
+        var res = jq_ajax('{:url("getSelectedGoodsList")}', arr);
+        if(res.code==0){
+            return false;
+        }
+        res.goods_type=goods_type;
+        console.log(res)
+        $('#goods_box').html(template("goodsListTpl", res));
+    }
+
+    //初始化数据
+    $(function () {
+        var link_type ="{$row['link_type']}";
+        showBindType(link_type);
+        //加载已选商品
+        if(link_type=='goods'){
+            var id = "{$row['id']}";
+            var goods_type = "{$row['link_data']['goods_type']}";
+            initGoodsList(id,goods_type);
+        }
+    })
+
+
+</script>
 {/block}

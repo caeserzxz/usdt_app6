@@ -622,12 +622,10 @@
   width: 3.2rem;
 }
 
-.newsDetails .page-bd {
-  background-color: #fff;
-}
 
 .newsDetails .detailsBox {
   padding: 0.333333rem 0.266667rem;
+  background-color: #FFF;
 }
 
 .newsDetails .detailsBox span {

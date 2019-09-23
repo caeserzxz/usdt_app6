@@ -114,7 +114,6 @@ class BonusModel extends BaseModel
         $BonusListModel = new BonusListModel();
         $bonus = $BonusListModel->find($bonus_id)->toArray();
         $bonus['info'] = $this->info($bonus['type_id']);
-
         if ($bonus['order_id'] > 0) {//已使用
             $bonus['info']['stauts'] = 2;
             $bonus['info']['stauts_info'] = '已使用';
@@ -239,24 +238,13 @@ class BonusModel extends BaseModel
             }
             $newList[] = $_t;
         }
-        //排序
+        //重新排序-按状态小到大
         $receive_status = array_column($newList, 'receive_status');
         array_multisort($receive_status, SORT_ASC, $newList);
         return $newList;
     }
 
-    /*------------------------------------------------------ */
-    //-- 获取可领取优惠券to自定义修改
-    /*------------------------------------------------------ */
-    public function getListDiy()
-    {
-        $time = time();
-        $where[] = ['send_type', '=', 2];
-        $where[] = ['send_status', '=', 1];
-        $where[] = ['send_start_date', '<', $time];
-        $where[] = ['use_end_date', '>', $time];
-        return $this->where($where)->order('type_money DESC,use_end_date ASC')->select()->toArray();
-    }
+
     /*------------------------------------------------------ */
     //-- 获取结算页可用优惠券
     //-- $user_id 用户ID

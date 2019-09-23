@@ -163,7 +163,7 @@ class Bonus extends ApiController
         if ($bonus['goods_type'] == 1) {//普通商品
             $where[] = ['is_delete', '=', 0];
             $where[] = ['is_alone_sale', '=', 1];
-            $where[] = ['isputaway', '>', 0];
+            $where[] = ['isputaway', '=', 1];
             $where[] = ['is_promote', '=', 0];
             $data = $this->getPageList($goodsModel, $where, 'goods_id', 10);
         } elseif ($bonus['goods_type'] == 2) {//拼团商品

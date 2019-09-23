@@ -8,14 +8,15 @@
     <!-- 页面内容-->
     <div class="top">
         <div class="left">
-            <img id="headimgurl"
-                 src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+            <a href="{:url('userInfo')}" class="userInfo">
+            <img id="headimgurl"  src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+            </a>
             <a href="{:url('userInfo')}" class="userInfo">
                 <span class="fs26 color_9 user_id"></span>
                 <div><p class="fs34 color_3 fw_b nick_name"></p><em class="fs22 color_w fw_b BGcolor_r level_name"></em>
                 </div>
                 <span class="fs26 color_9 signature"></span>
-            </a>
+
         </div>
         <div class="right">
             <a href="{:url('member/message/index')}"  class="newsicon un_see_num"><img src="__STATIC__/mobile/default/images/myIcon01.png" alt=""></a>

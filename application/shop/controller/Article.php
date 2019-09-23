@@ -8,27 +8,34 @@ namespace app\shop\controller;
 
 use app\ClientbaseController;
 use app\mainadmin\model\ArticleModel;
+use app\mainadmin\model\ArticleCategoryModel;
 
 
 class Article extends ClientbaseController
 {
     /*------------------------------------------------------ */
+    //-- 优先执行
+    /*------------------------------------------------------ */
+    public function initialize(){
+        parent::initialize();
+        $this->Model = new ArticleModel();
+    }
+    /*------------------------------------------------------ */
     //-- 文章详情页
     /*------------------------------------------------------ */
     public function info()
     {
-        $ArticleModel = new ArticleModel();
         $id = input('id', 0, 'intval');
         if ($id < 1) {
             return $this->error('传参失败.');
         }
-        $info = $ArticleModel->info($id);
+        $info = $this->Model->info($id);
         if (empty($info)) {
             return $this->error('文章不存在..');
         }
         $upData['click'] = ['inc', 1];
         $where[] = ['id', '=', $id];
-        $ArticleModel->upInfo($upData, $where);
+        $this->Model->upInfo($upData, $where);
         $this->assign('title', '文章详情');
         $this->assign('info', $info);
         return $this->fetch('info');
@@ -92,9 +99,7 @@ class Article extends ClientbaseController
     /*------------------------------------------------------ */
     public function headline()
     {
-        $ArticleCategoryModel = new \app\mainadmin\model\ArticleCategoryModel();
-        $HeadlineModel = new \app\shop\model\HeadlineModel();
-        $catList = $ArticleCategoryModel->getRows();
+        $catList = (new ArticleCategoryModel)->getRows();
         foreach ($catList as $key => $cat) {
             $where = [];
             if ($cat['pid'] > 0) {
@@ -102,13 +107,11 @@ class Article extends ClientbaseController
                 continue;
             }
             $children = explode(',', $cat['children']);
-            $where[] = ['a.cid', 'in', $children];
-            $where[] = ['hl.status', '=', 1];
-            $has = $HeadlineModel->alias('hl')
-                ->join('main_article a', 'hl.ext_id=a.id')
-                ->where($where)
-                ->count('hl.id');
-            if (empty($has)) {
+            $where[] = ['cid', 'in', $children];
+            $where[]=['type','=',1];//类型-头条
+            $where[] = ['is_show', '=', 1];
+            $has = $this->Model->where($where)->count('id');
+            if (empty($has)) {//没有该分类下的头条
                 unset($catList[$key]);
                 continue;
             }

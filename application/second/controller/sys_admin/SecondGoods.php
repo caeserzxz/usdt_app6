@@ -247,4 +247,54 @@ class SecondGoods extends AdminController
 
         return $row;
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取秒杀列表-供选择使用
+    /*------------------------------------------------------ */
+    public function selectSecond()
+    {
+        $this->getselectSecondList(true);
+        return $this->fetch('select_second');
+    }
+    /*------------------------------------------------------ */
+    //-- 获取秒杀列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getselectSecondList($runData = false)
+    {
+        $SecondModel = new SecondModel();
+        $where = [];
+        $status = input('status', 0, 'intval');
+        $time = time();
+        switch ($status) {
+            case 1:
+                $where[] = ['fg.start_date', '>', $time];
+                break;
+            case 2:
+                $where[] = ['fg.start_date', '<', $time];
+                $where[] = ['fg.end_date', '>', $time];
+                break;
+            case 3:
+                $where[] = ['fg.end_date', '<', $time];
+                break;
+            default:
+                break;
+        }
+        $search['goodsArr'] = input('goodsArr', 0, 'trim');
+        if (empty($search['goodsArr']) == false) {
+            $where[] = ['sg.sg_id', 'not in', $search['goodsArr']];
+        }
+
+        $viewObj = $SecondModel->alias('sg')->join("shop_goods g", 'sg.goods_id=g.goods_id', 'left');
+        $viewObj->where($where)->field('sg.*,g.goods_name,g.goods_sn,g.is_spec')->order('sg_id DESC');
+        $this->data = $this->getPageList($SecondModel, $viewObj);
+        $this->assign("data", $this->data);
+        $this->assign("time", $time);
+        if ($runData == false) {
+            $this->data['content'] = $this->fetch('second_list');
+            unset($this->data['list']);
+            return $this->success('', '', $this->data);
+        }
+        return true;
+    }
 }

@@ -1,0 +1,44 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<tr>
+    <th width="120">商品ID</th>
+    <th width="120">商品编号</th>
+    <th>商品名</th>
+    <th width="150">价格</th>
+    <th width="60">上架</th>
+    <th width="60">促销</th>
+    <th width="60">推荐</th>
+    <th width="60">新品</th>
+    <th width="60">热销</th>
+    <th width="80">库存</th>
+    <th width="60">排序</th>
+    <th width="80">操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+    <tr id="goods_tr{$vo.goods_id}">
+        <td><label for="goods_{$vo.goods_id}"><input type="checkbox" class="m-r checkGoods" id="goods_{$vo.goods_id}" name="goods_id" value="{$vo.goods_id}" data-goods_name="{$vo.goods_name}" data-goods_sn="{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}" data-shop_price="{$vo['is_spec']==0?$vo['shop_price']:$vo['min_price'].'~'.$vo['max_price']}"> {$vo.goods_id}</label></td>
+      	<td>{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}</td>
+        <td>{$vo.goods_name}</td>
+        <td>{$vo['is_spec']==0?$vo['shop_price']:$vo['min_price'].'~'.$vo['max_price']}</td>
+        <td align="center"><a href="javascript:;" class="{$vo.isputaway|tplckval='=1','active'}" ><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+		<td align="center"><a href="javascript:;" class="{$vo.is_promote|tplckval='=1','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+        <td align="center"><a href="javascript:;" class="{$vo.is_best|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+        <td align="center"><a href="javascript:;" class="{$vo.is_new|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+        <td align="center"><a href="javascript:;" class="{$vo.is_hot|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+        <td align="center">
+       {$vo.goods_number}
+        </td>
+        <td align="center"><span data-url="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id']))}" data-field="sort_order" data-toggle="ajaxEditInput">{$vo.sort_order}</span></td>
+        <td align="center">
+        </td>
+    </tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

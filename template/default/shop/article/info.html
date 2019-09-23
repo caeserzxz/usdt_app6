@@ -1,9 +1,117 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
+<style>
+    .showgoodsList {
+        margin-top: 0.066667rem;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .newsGoods {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        padding: 0.16rem;
+        background-color: #fff;
+        width: 100%;
+        margin-bottom: 0.06667rem;
+    }
+
+    .newsGoods img {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-right: 0.133333rem;
+    }
+
+    .newsGoods .info {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        height: 1.2rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+    }
+
+    .newsGoods .info .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size: 0.186667rem;
+    }
+
+    .newsGoods .info .price {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: baseline;
+        -webkit-align-items: baseline;
+        align-items: baseline;
+    }
+
+    .newsGoods .info .price div {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: baseline;
+        -webkit-align-items: baseline;
+        align-items: baseline;
+        margin-right: 0.093333rem;
+    }
+
+    .newsGoods .info .price span {
+        text-decoration: line-through;
+    }
+
+    .rowBlock {
+        width: 49.5%;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        margin-bottom: 0.053333rem;
+        background-color: #fff;
+    }
+
+    .rowBlock img {
+        width: 100%;
+        height: auto;
+        margin-right: 0;
+    }
+
+    .rowBlock .info {
+        -webkit-box-pack: start;
+        -webkit-justify-content: start;
+        justify-content: start;
+        height: auto;
+    }
+
+    .rowBlock .info .name {
+        margin-top: 0.066667rem;
+    }
+
+    .rowBlock .info .price {
+        margin-top: 0.04rem;
+    }
+</style>
 {/block}
 {block name='pageType'}newsDetails{/block}
-
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
@@ -11,14 +119,93 @@
         <div class="title fs34 fw_b color_3">{$info['title']}</div>
         <span class="fs28 color_9">{$info['add_time']|date='Y-m-d'}</span>
         <div class="content">
-            {$info['content']|raw|html_entity_decode}
+            {$info['content']|raw}
         </div>
     </div>
-</div>
-<div class="newsDetails_ft">
-    {if condition="$info['url']"}
-    <a href="{$info['url']}" class="fs32 fw_b color_w BGcolor_r add_address">前往查看</a>
-    {/if}
+
+
+    <div class="showgoodsList tabList">
+    </div>
 </div>
 
+{if condition="$info['url']"}
+<div class="newsDetails_ft">
+    <a href="{$info['url']}" class="fs32 fw_b color_w BGcolor_r add_address">前往查看</a>
+</div>
+{/if}
+{if condition="$info['tel']"}
+<div class="newsDetails_ft">
+    <a href="tel:{$info['link_data']}" class="fs32 fw_b color_w BGcolor_r add_address">拨打电话</a>
+</div>
+{/if}
+
+{/block}
+{block name="footer"}
+<script type="text/html" id="TabTpl">
+    {literal}
+    {{each list as item index}}
+    <a href="javascript:jump_url({{item.id}},{{goods_type}});" class="newsGoods {{if goods_count>3}}rowBlock{{/if}}">
+        <img src="{{item.goods_thumb}}" alt="">
+        <div class="info">
+            <div class="name">{{item.goods_name}}</div>
+            <div class="price">
+                <div class="color_r fs24 num">
+                    <p class="fw_b fm_p">￥</p><em class="fs42">{{item.show_price}}</em>
+                </div>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+    {/literal}
+</script>
+<script>
+    var article_id = "{$info.id}",link_type ="{$info.link_type|default=''}" ;
+    $(function(){
+        //请求列表数据
+        function getList() {
+            $('.tabList').append('<div class="get_list_tip">加载数据中...</div>');
+            $.ajax({
+                url:'{:_url("shop/api.article/getGoodsList")}',// 跳转到 action
+                data:{article_id:article_id},
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    console.log(res);
+                    if(res.code  == 0 ){
+                        $('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    $('.get_list_tip').remove();
+                    if (res.list.length>0){
+                        res.goods_type=res.goods_type;
+                        res.goods_count=res.list.length;
+                        $(".goCouponsBtn").show();
+                        $('.tabList').append(template('TabTpl',res));
+                        $('.tabList').append('<div class="get_list_tip">—— 没有更多啦，我是有底线的 ——</div>');
+                    }else{
+                    }
+                },error : function() {
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+        //重新请求数据
+        $(document).on('click','.get_list_tip',function () {
+            getList();
+        })
+        if(link_type=='goods'){
+            getList();//执行商品加载
+        }
+    })
+    //页面跳转
+    function jump_url(id,goods_type) {
+        if(goods_type==1){
+            window.location.href="{:url('shop/goods/info')}"+"?id="+id;
+        }
+        if(goods_type==2){
+            window.location.href="{:url('fightgroup/index/info')}"+"?fg_id="+id;
+        }
+    }
+</script>
 {/block}

@@ -927,4 +927,86 @@ class Goods extends AdminController
         $result['code'] = 1;
         return $this->ajaxReturn($result);
     }
+
+    /*------------------------------------------------------ */
+    //-- 弹窗选择商品
+    /*------------------------------------------------------ */
+    public function selectGoods()
+    {
+        $this->getSelectGoodsList(true);
+        return $this->fetch('select_goods');
+    }
+    /*------------------------------------------------------ */
+    //-- 获取列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getSelectGoodsList($runData = false)
+    {
+        $GoodsModel = new GoodsModel();
+        $this->assign('listType', $this->action);
+        $runJson = input('runJson', 0, 'intval');
+        $goodsArr = input('goodsArr', 0, 'trim');
+        if ($this->store_id > 0) {
+            $where[] = ['store_id', '=', $this->store_id];
+        } elseif ($this->supplyer_id > 0) {
+            $where[] = ['supplyer_id', '=', $this->supplyer_id];
+        } elseif ($this->is_supplyer == true) {
+            $where[] = ['supplyer_id', '>', 0];
+        } else {
+            $where[] = ['store_id', '=', 0];
+            $where[] = ['supplyer_id', '=', 0];
+        }
+        if (empty($this->ext_status) == false) {
+            $search['status'] = explode(',', $this->ext_status);
+        } else {
+            $search['status'] = input('status', -1, 'intval');
+        }
+
+        if ($search['status'] == 1) {
+            $where[] = ['isputaway', '=', 1];
+        } elseif ($search['status'] == 2) {
+            $where[] = ['isputaway', '=', 0];
+        } elseif ($search['status'] != -1) {
+            $where[] = ['isputaway', 'in', $search['status']];
+        }
+
+        $search['keyword'] = input('keyword', '', 'trim');
+        if (empty($search['keyword']) == false) {
+            $where['and'][] = "( goods_name like '%" . $search['keyword'] . "%')  OR ( goods_sn like '%" . $search['keyword'] . "%')";
+        }
+
+        $this->classList = $GoodsModel->getClassList();
+        $search['cid'] = input('cid', 0, 'intval');
+        if ($search['cid'] > 0) {
+            $where[] = ['cid', 'in', $this->classList[$search['cid']]['children']];
+        }
+        $search['brand_id'] = input('brand_id', 0, 'intval');
+        if ($search['brand_id'] > 0) {
+            $where[] = ['brand_id', '=', $search['brand_id']];
+        }
+        $search['is_promote'] = input('is_promote', -1, 'intval');
+        if ($search['is_promote'] >= 0) {
+            $where[] = ['is_promote', '=', $search['is_promote']];
+        }
+        $search['goodsArr'] = input('goodsArr', 0, 'trim');
+        if (empty($search['goodsArr']) == false) {
+            $where[] = ['goods_id', 'not in', $search['goodsArr']];
+        }
+
+        $this->data = $this->getPageList($GoodsModel, $where, $this->_field, $this->_pagesize);
+        $this->assign("data", $this->data);
+        $this->assign("search", $search);
+        $this->assign("classListOpt", arrToSel($this->classList, $search['cid']));
+        $BrandList = $GoodsModel->getBrandList();
+        $this->assign("brandListOpt", arrToSel($BrandList));
+        if ($runJson == 1) {
+            return $this->success('', '', $this->data);
+        } elseif ($runData == false) {
+            $this->data['content'] = $this->fetch('select_goods_list');
+            unset($this->data['list']);
+            return $this->success('', '', $this->data);
+        }
+        return true;
+    }
+
 }
