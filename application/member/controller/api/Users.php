@@ -14,6 +14,7 @@ use app\shop\model\BonusModel;
 use think\Db;
 use lib\Image;
 use app\weixin\model\MiniModel;
+use think\facade\Cache;
 
 /*------------------------------------------------------ */
 //-- 会员相关API
@@ -595,6 +596,11 @@ class Users extends ApiController
         $sign_integral = settings('sign_integral');
         $sign_constant = settings('sign_constant');
         $user_id = $this->userInfo['user_id'];
+        $mkey = 'SignIng_'.$user_id;
+        $status = Cache::get($mkey);
+        if (empty($status) == false){
+            return $this->error('签到正在处理中...');
+        }
         $UsersSignModel = new UsersSignModel();
         $data = $UsersSignModel->where(['user_id'=>$user_id,'year'=>$year,'month'=>$month])->find();
 
@@ -602,6 +608,8 @@ class Users extends ApiController
         if(empty($data) == false){
             $dates = explode(',',$data['days']);
             if(in_array($day, $dates)){
+                Db::rollback();
+                Cache::rm($mkey);
                 return $this->error('今天已经签到,请勿重复签到.');
             }
             $logs = $data['logs'].','.$sign_integral.'|';
@@ -639,6 +647,7 @@ class Users extends ApiController
 
         if($res < 1){
             Db::rollback();
+            Cache::rm($mkey);
             return $this->error('签到失败,请重试.');
         }
 
@@ -651,10 +660,12 @@ class Users extends ApiController
 
         if(!$res){
             Db::rollback();
+            Cache::rm($mkey);
             return $this->error('签到失败,积分处理异常');
         }
 
         Db::commit();
+        Cache::rm($mkey);
         $return['code'] = 1;
         $return['msg'] = '签到成功';
         $return['integral'] = $sign_integral;
