@@ -54,7 +54,7 @@
 
               <div class="form-group">
                   <label class="control-label">链接类型</label>
-                  <div class="col-sm-2 must" >
+                  <div class="col-sm-2" >
                       <select id="link_type" name="link_type" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
                           <option value="">不需要绑定</option>
                           {$WeixinReplyType|raw}
@@ -63,7 +63,7 @@
               </div>
               <div class="form-group">
                   <label class="control-label">绑定链接关联</label>
-                  <div class="col-sm-4 must" >
+                  <div class="col-sm-4" >
                       <input name="link_data" id="link_data" class="input-xlarge"  type="text" value="{$row.link_data}">
                       <input name="link_ext_id" id="link_ext_id" type="hidden" value="{$row.link_ext_id}">
                       <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default {$row['bind_type']=='article'?'':'hide'}" id="article_btn" >绑定文章</a>

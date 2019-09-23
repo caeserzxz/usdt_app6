@@ -395,7 +395,7 @@ function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 
 			
 		}
 		$select .= (in_array($selval,$selected)) ? "selected='selected'" : '';
-		$select .= ' data-text="'.$text.'" label="'.$text.'" >';		
+		$select .= ' data-text="'.$text.'"   data-children="' . $val['children'] . '"   label="'.$text.'" >';
 		if (isset($val['icon'])) $select .= $val['icon'];
 		$select .= $text;
 		$select .= '</option>';

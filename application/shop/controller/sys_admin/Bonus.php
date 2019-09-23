@@ -276,7 +276,11 @@ class Bonus extends AdminController
                 if ($user_level >= 0) {
                     $level = $levelList[$user_level];
                     $AccountModel = new AccountModel();
-                    $where[] = ['total_integral', 'between', [$level['min'], $level['max']]];
+                    if($user_level>0){
+                        $where[] = ['total_integral', 'between', [$level['min'], $level['max']]];
+                    }else{
+                        $where[] = ['total_integral', 'egt', 0];
+                    }
                     $userIds = $AccountModel->where($where)->column('user_id');
                 }
                 if (empty($userIds)) return $this->error('没有找到相关可分配的会员.');

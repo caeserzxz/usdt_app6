@@ -33,8 +33,8 @@ class ArticleModel extends BaseModel
         if (empty($article) == true) return array();
         $article = $article->toArray();
         //绑定链接处理
-        if($article['link_type'] == 'article') $article['url'] = url('article/info',array('id'=>$article['ext_id']));
-        else if($article['link_type'] == 'goods') $article['url'] = url('goods/info',array('id'=>$article['ext_id']));
+        if($article['link_type'] == 'article') $article['url'] = url('article/info',array('id'=>$article['link_ext_id']));
+        else if($article['link_type'] == 'goods') $article['url'] = url('goods/info',array('id'=>$article['link_ext_id']));
         else $article['url'] = $article['link_data'];
 
         $article['content'] = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', $article['content']);

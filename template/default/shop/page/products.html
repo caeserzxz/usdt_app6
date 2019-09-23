@@ -24,39 +24,53 @@
                                        {if condition="$theme_row['templateId'] eq 'tpl_1' "}
                                             <img src="{$prow.thumb.url}" class="prod-img" alt="{$prow.name}">
                                             <div class="prod-name"><span>{$prow.name}</span></div>
-                                            <div class="prod-saleprice">
-                                                {$prow.sale_price|priceShow|raw}
-                                                <s>￥{$prow.par_price}</s>
-                                            </div>
+                                            {if condition="$prow['vip_price'] gt 0"}
+                                            	<div class="prod-parprice"><span>￥{$prow.sale_price}</span></div>
+                                                <div class="prod-saleprice"><span>VIP￥{$prow.vip_price}</span></div>
+                                            {else/}
+                                            	<div class="prod-parprice"><span>￥{$prow.par_price}</span></div>
+                                                <div class="prod-saleprice"><span>￥{$prow.sale_price}</span></div>
+                                            {/if}
+                                            
                                             {if condition="$theme_row['showSaleNum']=='yes' "}
                                                 <div class="prod-sale" ><span>已售{$prow.sale_count}件</span></div>
                                             {/if}
                                       {elseif condition="$theme_row['templateId'] eq 'tpl_2' "/}   
                                         	<img src="{$prow.thumb.url}" class="prod-img" alt="{$prow.name}">
                                             <div class="prod-name"><span>{$prow.name}</span></div>
-                                            <div class="prod-description">{$prow.description}</div>
-                                            <div class="prod-saleprice">
-                                            	{$prow.sale_price|priceShow|raw}
-                                                <s>￥{$prow.par_price}</s>
+                                            
+                                            <div class="prod-parprice">
+                                            	<span>￥{$prow.par_price}</span>
+                                            	 {if condition="$theme_row['showSaleNum']=='yes' "}
+                                                    <span class="fr">已售{$prow.sale_count}件</span>
+                                                {/if}
                                             </div>
-                                            {if condition="$theme_row['showSaleNum']=='yes' "}
-                                                <div class="prod-sale" ><span>已售{$prow.sale_count}件</span></div>
-                                            {/if}
+                                            <div class="prod-saleprice">
+                                            	<span>￥{$prow.sale_price}</span>
+                                           		{if condition="$prow['vip_price'] gt 0"}
+                                                 <span class="fr">VIP￥{$prow['vip_price']}</span>
+                                                {/if}
+                                            </div>
                                       {elseif condition="$theme_row['templateId'] eq 'tpl_3' "/}    
                                            <img src="{$prow.thumb.url}" class="prod-img" alt="{$prow.name}">
                                             <div class="prod-name"><span>{$prow.name}</span></div>                                            
                                             <div class="prod-parprice">
-                                                {$prow.sale_price|priceShow|raw}
-                                                <s>￥{$prow.par_price}</s>
+                                            	<span>￥{$prow.par_price}</span>                                            	
                                             </div>
-
+                                            {if condition="$prow['vip_price'] gt 0"}
+                                                <div class="prod-saleprice"><span class="fr">VIP￥{$prow['vip_price']}</span></div>
+                                            {/if}
+                                            <div class="prod-saleprice">
+                                            	<span>￥{$prow.sale_price}</span>                                           		
+                                            </div>
                                             {if condition="$theme_row['showSaleNum']=='yes' "}
                                                 <div class="prod-sale" ><span>已售{$prow.sale_count}件</span></div>
                                             {/if}
                                       {elseif condition="$theme_row['templateId'] eq 'tpl_4' "/}    
                                        	<img src="{$prow.thumb.url}" class="prod-img" alt="{$prow.name}">
+                                            <div class="prod-name"><span>{$prow.name}</span></div>   
                                             <div class="prod-saleprice">
-                                                {$prow.sale_price|priceShow|raw}
+                                            	<span>{$prow['vip_price']>0?'VIP￥'.$prow['vip_price']:'￥'.$prow['sale_price']}</span>
                                             </div>
                                             
                                       {/if}  

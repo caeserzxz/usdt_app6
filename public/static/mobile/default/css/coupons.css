@@ -373,33 +373,6 @@ button {
   height: 5.88rem;
   margin: 15vh 0 0.133333rem;
 }
-
-.goCoupons {
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  padding: 0.2rem;
-}
-
-.goCoupons .goCouponsBtn {
-  width: 1.2rem;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-          justify-content: flex-end;
-}
-
 .getCoupons {
   position: fixed;
   top: 0;

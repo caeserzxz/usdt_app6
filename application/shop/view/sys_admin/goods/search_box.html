@@ -9,7 +9,7 @@
         <div class="modal-body" style="padding-bottom:0px;">
            <form class="form-horizontal form-validate form-modal" method="post" id="search_form" >
             <div class="row-fluid">
-               <select name="cid"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选">
+               <select name="cat_id"  style="width: 200px;" data-toggle="select2" data-placeholder="按自定义分类筛选">
                           <option value="">所有分类</option>
                           {$classListOpt|raw}
                   </select>
@@ -25,7 +25,7 @@
                 <button type="button" id="n_page" class="btn btn-sm" onclick="evalList('next')"><strong>下一页</strong></button>
 
             </div>
-                <table class="table table-bordered  ">
+                <table class="table table-bordered table-striped ">
                       <thead >
                        <thead>
                               <tr>

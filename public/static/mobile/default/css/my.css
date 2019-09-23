@@ -636,8 +636,9 @@
 }
 
 .newsDetails .detailsBox img {
-  width: 100%;
+  width: 100% !important;
   margin: 0.2rem 0 0.266667rem;
+  height: auto !important;
 }
 
 .newsDetails .detailsBox p {

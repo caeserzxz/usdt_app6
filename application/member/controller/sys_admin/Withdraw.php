@@ -99,7 +99,6 @@ class Withdraw extends AdminController
 	//-- 修改前处理
 	/*------------------------------------------------------ */
     public function beforeEdit($data){
-        sleep(10);
 		$operating = input('operating','note','trim');
 		if ($operating == 'note'){
 			if (empty($data['admin_note'])){

@@ -90,7 +90,7 @@ class Article extends AdminController
             if (empty($row['link_data'])) return $this->error('链接类型绑定关联未填写！');
             if ($row['link_type'] == 'article' || $row['link_type'] == 'product') {
                 // 文章、商品、活动
-                if (empty($row['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
+                if (empty($row['link_ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
             }
         }
         $row['add_time'] = $row['add_time'] ? strtotime($row['add_time']) : time();

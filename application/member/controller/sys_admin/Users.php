@@ -120,7 +120,6 @@ class Users extends AdminController
         if (empty($this->search['keyword']) == false) {
             if (is_numeric($this->search['keyword'])) {
                 $where[] = "  u.user_id = '" . ($this->search['keyword']) . "' or mobile like '" . $this->search['keyword'] . "%'";
-                dump($where);
             } else {
                 $where[] = " ( u.user_name like '" . $this->search['keyword'] . "%' or u.nick_name like '" . $this->search['keyword'] . "%' )";
             }
@@ -575,6 +574,5 @@ class Users extends AdminController
         }
         return response($this->fetch());
     }
-
 
 }

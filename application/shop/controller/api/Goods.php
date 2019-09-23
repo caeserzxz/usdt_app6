@@ -80,7 +80,7 @@ class Goods extends ApiController
                     $this->sqlOrder = "shop_price $sort_by";
                     break;
                 default:
-                    $this->sqlOrder = "virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
+                    $this->sqlOrder = "sort_order $sort_by,virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
                     break;
             }           
         }
