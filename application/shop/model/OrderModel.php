@@ -263,7 +263,12 @@ class OrderModel extends BaseModel
         $orderInfo = $this->where('order_id', $order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
         $orderInfo = $orderInfo->toArray();
+
+        $lockWhere = [];    //乐观锁
+        $is_admin = true;   //后台管理操作
+
         if ($extType != 'sys' && defined('AUID') == false) {
+            $is_admin = false;
             if ($this->userInfo['user_id'] != $orderInfo['user_id']) {
                 return '无权操作';
             }
@@ -306,10 +311,15 @@ class OrderModel extends BaseModel
                         return '支付失败，扣减余额失败.';
                     }
                 }
-
+                //未支付状态的订单才进行支付成功的操作,否则失败回滚
+                $lockWhere['pay_status'] = $this->config['PS_UNPAYED'];
             }
             $upData['confirm_time'] = $time;
         } elseif ($upData['order_status'] == $this->config['OS_CANCELED']) {//取消订单
+            //非后台操作的订单，只有未取消过的才能取消
+            if(!$is_admin){
+                $lockWhere[] = ['cancel_time','eq',0];
+            }
             $res = $this->distribution($orderInfo, 'cancel');//提成处理
             if ($res != true) {
                 Db::rollback();// 回滚事务
@@ -402,6 +412,8 @@ class OrderModel extends BaseModel
             }
 
         } elseif ($upData['shipping_status'] == $this->config['SS_SIGN']) {//签收
+            //已发货状态下才能进行签收，二次签收会回滚
+            $lockWhere[] = ['shipping_status','eq',$this->config['SS_SHIPPED']];
             //积分赠送
             $inData['total_integral'] = $orderInfo['give_integral'];
             $inData['use_integral'] = $inData['total_integral'];
@@ -480,7 +492,11 @@ class OrderModel extends BaseModel
             }
         }
         $upData['update_time'] = $time;
-        $res = $this->where('order_id', $order_id)->update($upData);
+        if(!empty($lockWhere)){
+            $res = $this->where('order_id', $order_id)->where($lockWhere)->update($upData);
+        }else{
+            $res = $this->where('order_id', $order_id)->update($upData);
+        }
         if ($res < 1) {
             Db::rollback();
             return '订单更新失败.';

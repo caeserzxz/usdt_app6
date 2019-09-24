@@ -4,6 +4,7 @@ use think\Db;
 use app\ApiController;
 use app\member\model\WithdrawAccountModel;
 use app\member\model\AccountLogModel;
+use app\member\model\AccountModel;
 use app\member\model\WithdrawModel;
 /*------------------------------------------------------ */
 //-- 提现相关API
@@ -282,8 +283,18 @@ class Withdraw extends ApiController
         $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
         $inArr['account_type'] = $account_info['account_type'];
         $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
+
+        $AccountModel = new AccountModel();
+
+
 		Db::startTrans();//启动事务
 
+		//加锁查询 select for update
+		$tmpUser = $AccountModel->lock(true)->where(['user_id'=>$this->userInfo['user_id']])->find();
+		if($tmpUser && $tmpUser['balance_money'] < $withdraw_money){
+			Db::rollback();// 回滚事务释放锁
+			return $this->error('余额不足.');
+		}
 		$res = $WithdrawModel->save($inArr);
 		if ($res < 1){
 			Db::rollback();// 回滚事务
