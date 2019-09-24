@@ -121,9 +121,9 @@ class Index  extends ClientbaseController{
                     }else{
                         $row['style']['view'] = 3;
                     }
-                    $row['data'] = [];
                     $GoodsModel = new \app\shop\model\GoodsModel();
                     if ($row['params']['goodsdata'] > 0){
+                        $row['data'] = [];
                         $classList = $GoodsModel->getClassList();
                         $where[] = ['is_delete','=',0];
                         $where[] = ['is_alone_sale','=',1];
