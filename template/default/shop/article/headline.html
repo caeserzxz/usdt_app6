@@ -9,7 +9,7 @@
     <div class="navBox">
         <div class="nav navActive fs32 color_9" data-children="">精选</div>
         {foreach name='catList' item='vo'}
-        <div class="nav fs32 color_9" data-children="{$vo.children}">{$vo.name}</div>
+        <div class="nav fs32 color_9" data-id="{$vo.id}" data-children="{$vo.children}">{$vo.name}</div>
         {/foreach}
     </div>
     <div class="content">
@@ -27,7 +27,7 @@
 </script>
 <script type="text/html" id="TabTpl">
     {{each list as item index}}
-    <a href="{:_url('info',['id'=>'[[item.ext_id]]'])}" class="block">
+    <a href="{:_url('info',['id'=>'[[item.id]]'])}" class="block">
         <img src="{{item.img_url}}" alt="" >
         <div class="info">
             <p class="fs28 fw_b color_3">{{item.title}}</p>

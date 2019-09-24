@@ -218,6 +218,7 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+          margin:  .2rem auto;
 }
 
 .userData input[disabled] {

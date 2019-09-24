@@ -53,7 +53,8 @@
                     return false;
                 }
                 $('.get_list_tip').remove();
-                if (res.list){
+                if (res.list.length>0){
+                    $(".goCouponsBtn").show();
                     $('.bonusList').append(template('TabTpl',res));
                     $('.bonusList').append('<div class="loadEnd">—— 没有更多啦，我是有底线的 ——</div>');
                 }else{

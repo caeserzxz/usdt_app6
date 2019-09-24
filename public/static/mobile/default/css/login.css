@@ -156,7 +156,7 @@ label .check {
 
 label .iconBox {
   position: relative;
-  margin: 0 0.066667rem 0 0.006667rem;
+  margin: 0 .026667rem 0 0;
 }
 
 label .check[type=checkbox] + i {
@@ -171,7 +171,7 @@ label .check[type=checkbox] + i {
 label .check + i:after {
   content: "\EA01";
   color: #c9c9c9;
-  font-size: 0.293333rem;
+  font-size: .24rem;
   display: block;
   margin: 0 1px;
 }

@@ -31,7 +31,7 @@ class Index  extends ClientbaseController{
         $this->assign('reg_bonus_bg', $reg_bonus_bg);
 
         //首页头条
-        $headline = (new \app\shop\model\HeadlineModel)->getBestList();
+        $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
         $this->assign('headline', $headline);
         
         $this->assign('tipsubscribe', $tipsubscribe);

@@ -276,7 +276,11 @@ class Bonus extends AdminController
                 if ($user_level >= 0) {
                     $level = $levelList[$user_level];
                     $AccountModel = new AccountModel();
-                    $where[] = ['total_integral', 'between', [$level['min'], $level['max']]];
+                    if($user_level>0){
+                        $where[] = ['total_integral', 'between', [$level['min'], $level['max']]];
+                    }else{
+                        $where[] = ['total_integral', 'egt', 0];
+                    }
                     $userIds = $AccountModel->where($where)->column('user_id');
                 }
                 if (empty($userIds)) return $this->error('没有找到相关可分配的会员.');
@@ -499,7 +503,7 @@ class Bonus extends AdminController
     }
 
     /*------------------------------------------------------ */
-    //-- 选择商品
+    //-- 弹窗选择商品
     /*------------------------------------------------------ */
     public function selectGoods()
     {
@@ -563,7 +567,6 @@ class Bonus extends AdminController
             $where[] = ['goods_id', 'not in', $search['goodsArr']];
         }
 
-
         $this->data = $this->getPageList($GoodsModel, $where, $this->_field, $this->_pagesize);
         $this->assign("data", $this->data);
         $this->assign("search", $search);
@@ -579,6 +582,9 @@ class Bonus extends AdminController
         }
         return true;
     }
+
+
+
     /*------------------------------------------------------ */
     //-- 选择拼团
     /*------------------------------------------------------ */

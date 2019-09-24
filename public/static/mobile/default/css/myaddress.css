@@ -15,7 +15,7 @@
 
 .block {
   background-color: #fff;
-  padding-top: 0.2rem;
+  padding: 0.2rem 0;
 }
 
 p {
@@ -47,6 +47,7 @@ p {
   -webkit-justify-content: space-around;
           justify-content: space-around;
   height: 0.8rem;
+  width: 100%;
 }
 
 .address .info div {
@@ -74,7 +75,6 @@ p {
 }
 
 .address a {
-  height: 0.666667rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -89,31 +89,22 @@ p {
 }
 
 .radioBox {
-  height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  padding: 0 0.266667rem;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
           justify-content: flex-end;
+  margin-left: auto;
 }
 
 .radioBox span {
   margin-left: 0.093333rem;
 }
 
-.radioBox .edit {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
 
 .radioBox .edit img {
   width: 0.186667rem;

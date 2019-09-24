@@ -20,12 +20,12 @@
             
             <div class="row-fluid m-b m-t">
                 共有 <span class="red" id="_count_num">0</span> 条
-                <button type="button" id="p_page" class="btn btn-sm" onclick="eval_list('prev')"><strong>上一页</strong></button>
+                <button type="button" id="p_page" class="btn btn-sm" onclick="evalList('prev')"><strong>上一页</strong></button>
                 <span id="p_page_str">第<span id="_nowPage">1</span>页/共<span id="_totalPages">1</span>页</span>
-                <button type="button" id="n_page" class="btn btn-sm" onclick="eval_list('next')"><strong>下一页</strong></button>
+                <button type="button" id="n_page" class="btn btn-sm" onclick="evalList('next')"><strong>下一页</strong></button>
                
             </div>    
-                <table class="table table-bordered  ">
+                <table class="table table-bordered table-striped ">
                       <thead >
                        <thead>
                               <tr>
@@ -69,7 +69,7 @@
 	  $('#_count_num').html(res.total_count);
 	  $('#_nowPage').html(res.page);
 	  $('#_totalPages').html(res.page_count);
-	  $.each(res.list,function(key,val){ key
+	  $.each(res.list,function(key,val){
 		   $('#data_list').append('<tr onclick="selTr(this,'+val.id+',\''+val.title+'\')" ><td>'+val.id+'</td><td>'+val.title+'</td></tr>');
 	  })	
 	}
@@ -78,6 +78,7 @@
 		$(obj).addClass('trselect');
 	 	assigBack('{$searchType}','{$_menu_index}',id,title);
 	}
-	showlist({$data|json_encode|raw});
-    evalList();
+    setTimeout(function(){
+        showlist({$data|json_encode|raw});
+    },200);
 </script>

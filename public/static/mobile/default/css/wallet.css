@@ -21,8 +21,11 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
+.myWallet .top .money div{
+  flex: 1;
+}
 
-.myWallet .top .money a {
+.myWallet .top .tips a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -44,10 +47,14 @@
 
 .myWallet .top .tips {
   margin-top: 0.253333rem;
-  opacity: 0.5;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .myWallet .top .tips div {
+  opacity: 0.5;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -486,7 +493,10 @@
   margin-top: 0.4rem;
   display: none;
 }
-
+.chongzhi .inputpwd div{
+  margin: .266667rem 0;
+  width: 1.066667rem;
+}
 .chongzhi .money {
   display: -webkit-box;
   display: -webkit-flex;

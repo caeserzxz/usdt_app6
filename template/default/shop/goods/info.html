@@ -35,6 +35,7 @@
     </div>
     <!-- 商品信息 -->
     <div class="moneyBox">
+        <div class="money_shou">
         <div class="top">
             <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p>
                 {eq name="goods.is_spec" value="0"}
@@ -56,6 +57,12 @@
             </div>
            <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}">活动价</span>
         </div>
+          <!-- 浮按钮 -->
+        <div class="floatBtn">
+            <a href="{:url('myCode',['goods_id'=>$goods['goods_id']])}" class="share "><img src="__STATIC__/mobile/default/images/goodsIcon01_2.png" alt=""></a>
+            <div class="attention "><img src="__STATIC__/mobile/default/images/goodsIcon01_3{$isCollect==1?'_lh':''}.png" data-no="{$isCollect}" alt=""></div>
+        </div>
+        </div>
         {gt name="goods.use_integral" value="0"}
         <div class="color_3 fs20 num money"><p class="fw_b fm_p"> + 积分：</p><em class="fs32 color_r">{$goods.use_integral}</em>分（组合购买，须额外支付积分）</div>
         {/gt}
@@ -71,7 +78,7 @@
         <div class="tips fs28 color_9 goCoupons">
             <div style="display: flex;"><span>热销{$goods.sale_count}</span>
                 <p class="hide">运费10元</p></div>
-            <div class="goCouponsBtn"><span class="fs28 fw_b color_3">领券</span><img src="__STATIC__/mobile/default//images/rightIcon.png" alt="" class="threeRight"></div>
+            <div class="goCouponsBtn" style="display: none;"><span class="fs28 fw_b color_3">领券</span><img src="__STATIC__/mobile/default//images/rightIcon.png" alt="" class="threeRight"></div>
         </div>
     </div>
     {eq name="goods.is_spec" value='1'}
@@ -113,14 +120,7 @@
           <div class="title fw_b fs32 color_3">商品详情</div>
           {$goods.m_goods_desc|raw}
         </div>
-    <!-- 浮按钮 -->
-    <div class="button">
-        <a href="{:url('myCode',['goods_id'=>$goods['goods_id']])}" class="share BGcolor_3"><img src="__STATIC__/mobile/default/images/goodsIcon01.png" alt=""></a>
-        <i></i>
-        <div class="attention BGcolor_3"><img
-                src="__STATIC__/mobile/default/images/goodsIcon03{$isCollect==1?'_lh':''}.png" data-no="{$isCollect}"
-                alt=""></div>
-    </div>
+
 </div>
 
 <!-- 弹出规格选择 -->
@@ -162,10 +162,10 @@ $(function () {
 				return false;
 			}
 			if (status == 0) {
-				imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03_lh.png')
+				imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon01_3_lh.png')
 				imgObj.data('no', '1')
 			} else {
-				imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon03.png')
+				imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon01_3.png')
 				imgObj.data('no', '0')
 			}
 		});

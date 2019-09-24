@@ -1,0 +1,77 @@
+{extend name="mainadmin@layouts/simple_base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>拼团商品列表</strong>
+                </li>
+            </ul>
+
+            <select name="status" style="width: 100px;" data-toggle="select2"  data-chang="submit">
+                <option value="0">状态</option>
+                <option value="1">未开始</option>
+                <option value="2">进行中</option>
+                <option value="3">已结束</option>
+            </select>
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商品名称/SN" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+
+            {if condition="$is_delete == 0 && $is_supplyer == false" }
+            <a href="{:url('info')}"  title="添加拼团商品" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加拼团商品</a>
+            {/if}
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="fightgroup@sys_admin/fg_goods/fight_group_list" /}
+        </div>
+    </section>
+</section>
+
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function state_select(obj){
+        $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="goods_id"> 全选 </label> ' +
+            '<a href="javascript:;" class="btn btn-sm m-t" onclick="sureSelect()"><i class="fa fa-plus"></i>确认选择</a>'
+        );
+    }
+    state_select();
+    //商品对象
+    function GoodsItem(goods_id, goods_sn,goods_name, shop_price) {
+        this.goods_id = goods_id;
+        this.goods_sn = goods_sn;
+        this.goods_name = goods_name;
+        this.shop_price = shop_price;
+    }
+    function sureSelect()
+    {
+        var inputs = $("input[name='goods_id']:checked");
+        if (inputs.length == 0) {
+            _alert('请选择商品.');
+            return false;
+        }
+        var goodsArr = new Array();
+        inputs.each(function(i,o){
+            var goods_id = $(o).val();
+            var goods = new GoodsItem(goods_id, $(o).data('goods_sn'), $(o).data('goods_name'),$(o).data('shop_price'));
+            goodsArr.push(goods);
+        })
+        console.log(goodsArr)
+        if(goodsArr.length == 0){
+            _alert('请至少选择一个商品.');
+            return false;
+        }
+        window.parent.call_back(goodsArr);
+    }
+
+</script>
+{/block}

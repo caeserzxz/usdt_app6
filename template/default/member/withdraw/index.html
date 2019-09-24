@@ -2,13 +2,13 @@
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css"/>
 {/block}
-{block name='pageType'}chongzhi{/block}
+{block name='pageType'}chongzhi takeOut{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="inputBlock">
-        <div class="tips fs60 fw_b color_9">提现金额(元)</div>
-        <input type="text" class="fs60 num textBox" id="amount">
+        <div class="tips fs24 color_9">提现金额(元)</div>
+        <input type="text" class="fs60 num textBox" id="amount" value="0">
         
     </div>
 
@@ -17,9 +17,12 @@
         <span class="fs24 fw_b color_3">手续费<em class="withdraw_fee">0</em>元</span>
         <p class="fs24 tag_active">全部提现</p>
     </div>
-    <div class="inputBlock">
-        <div class="tips fs60 fw_b color_9">支付密码</div>
-        <input type="text" class="fs60 num textBox" id="pay_password">
+    <div class="cells">
+		<div class="cell inputpwd">
+				<div class="tips fs28 fw_b color_3">支付密码</div>
+				<input type="password" class="fs28 textBox" id="pay_password" placeholder="请输入支付密码">
+		</div>
+
     </div>
     <div class="paytype">
         <div class="title fs34 color_3 fw_b">请选择提现银行</div>
@@ -27,14 +30,42 @@
         	<div class="banklist">
 
            </div>
-            <a href="{:url('bankAdd')}" class="cell">
+            <a href="javascript:;" data-url="{:url('bankAdd')}" class="cell">
                 <div class="cell_hd"><img src="__STATIC__/mobile/default/images/add.png" alt=""></div>
-               <div class="cell_bd"><span class="fs30 color_3 fw_b">添加银行卡</span></div>
+               <div class="cell_bd"><span class="fs30 color_3 fw_b add_type">添加提现方式</span></div>
             </a>
         </div>
     </div>
     <div class="button fs32 fw_b color_w BGcolor_r postBtn">确认提现</div>
 
+    <!-- 支付方式 -->
+    <div class="model">
+        <div class="modelBg"></div>
+        <div class="modelContent">
+            <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
+            <div class="title fs36 color_3 fw_b">请选择账号类型</div>
+            <div class="cantre">
+                <label for="s12">
+                    <div class="block">
+                        <div class="payType"><img src="__STATIC__/mobile/default/images/offlinePay.png" alt=""><div><span class="fs30 color_3">银行卡账号</span></div></div>
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="s12">
+                            <i class="icon_checked"></i>
+                        </div>
+                    </div>
+                </label>
+                <label for="s13">
+                    <div class="block">
+                        <div class="payType"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""><div><span class="fs30 color_3">支付宝账号</span></div></div>
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="s13" >
+                            <i class="icon_checked"></i>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
 </div>
 {literal}
 <script type="text/html" id="liTpl">
@@ -68,17 +99,21 @@
 {block name="footer"}
 <script>
 $(function() {
-	
-	$('.textBox').on('click',function(){
-		$(this).siblings("div").animate({'fontSize':'0.173333rem','top':'0.2666666rem'})
-		$(this).siblings("span").show()
+    $('.add_type').on('click',function(){
+        $('.model').show();
     })
-    $('.inputBlock input').blur(function(){
-		if($(this).val()==''){
-		  $(this).siblings("div").animate({'fontSize':'0.4rem','top':'0.386667rem'})
-		  $(this).siblings("span").hide()
-		}
-	})	
+    $('.closeBox').on('click',function(){
+        $('.model').hide();
+    })
+    $('.model label').on('click',function(){
+        var index=$(this).index();
+        if(index==0){
+            window.location.href='{:url("bankAdd")}'
+        }else{
+            window.location.href='{:url("alipayAdd")}'
+        }
+    })
+
 	//加载列表
 	jq_ajax('{:url("member/api.withdraw/getList")}','',function(res){
 		if (res.code == 0){
@@ -87,13 +122,6 @@ $(function() {
 		}
 		$('.banklist').html(template('liTpl', res));
 		container();
-	});
-
-	//获取最大可提现金额
-	jq_ajax('{:url("member/api.withdraw/WithdrawNum")}','',function(res){
-		if (res.code == 1){
-			$('.balance_money').html(res.max_money);
-		}
 	});
 
 	//验证提现

@@ -51,14 +51,14 @@ class GoodsModel extends BaseModel
         $catRows = $CategoryModel->getRows();
         $where[] = ['is_index', '=', 1];
         $where[] = ['status', '=', 1];
-        $catList = $CategoryModel->where($where)->select()->toArray();
+        $catList = $CategoryModel->where($where)->order('sort_order,pid ASC')->select()->toArray();
         foreach ($catList as $key => $cat) {
             $gwhere = [];
             $gwhere[] = ['cid', 'in', $catRows[$cat['id']]['children']];
             $gwhere[] = ['isputaway', '=', 1];
             $gwhere[] = ['is_delete', '=', 0];
             $gwhere[] = ['store_id', '=', 0];
-            $gooodsList = $this->where($gwhere)->order('is_hot desc,goods_id desc')->limit(3)->column('goods_id');
+            $gooodsList = $this->where($gwhere)->order('is_hot desc,sort_order DESC,goods_id desc')->limit(3)->column('goods_id');
             foreach ($gooodsList as $_key => $goods_id) {
                 $gooodsList[$_key] = $this->info($goods_id);
             }
@@ -78,7 +78,7 @@ class GoodsModel extends BaseModel
         $gwhere[] = ['isputaway', '=', 1];
         $gwhere[] = ['is_delete', '=', 0];
         $gwhere[] = ['store_id', '=', 0];
-        $gooodsList = $this->where($gwhere)->order('is_best desc,goods_id desc')->limit(10)->column('goods_id');
+        $gooodsList = $this->where($gwhere)->order('is_best desc,sort_order DESC,goods_id desc')->limit(10)->column('goods_id');
         foreach ($gooodsList as $key => $goods_id) {
             $gooodsList[$key] = $this->info($goods_id);
         }
@@ -338,6 +338,7 @@ class GoodsModel extends BaseModel
     /*------------------------------------------------------ */
     public function getGoodsSku(&$goods)
     {
+
         if ($goods['is_spec'] == 0) return $goods;
         $lstSKUVal = $products = array();
         $GoodsSkuModel = new GoodsSkuModel();
@@ -361,6 +362,7 @@ class GoodsModel extends BaseModel
                     $skuarr[$sval] = 1;
                 }
             }
+
             $goods['sub_goods'][$row['sku_val']] = $row;
         }
         unset($row);

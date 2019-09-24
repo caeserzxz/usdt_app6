@@ -50,6 +50,10 @@ class Goods extends ApiController
         if ($search['max_price'] > 0){
             $where[] = ['shop_price','<',$search['max_price']];
         }
+        $search['ids'] = input('ids','','trim');
+        if (empty($search['ids']) == false){
+            $where[] = ['goods_id','in',$search['ids']];
+        }
         
         $sqlOrder = input('order','','trim');
          if (empty($sqlOrder)){
@@ -80,7 +84,7 @@ class Goods extends ApiController
                     $this->sqlOrder = "shop_price $sort_by";
                     break;
                 default:
-                    $this->sqlOrder = "virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
+                    $this->sqlOrder = "sort_order $sort_by,virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
                     break;
             }           
         }

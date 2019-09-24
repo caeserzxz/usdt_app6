@@ -8,31 +8,30 @@
             <th>点击量</th>
             <th>发布时间</th>
             <th>修改时间</th>
-            <th class="col-sm-1 mn70"></th>
+            <th style="text-align:center;">显示状态</th>
+            <th>排序</th>
+            <th class="col-sm-1 mn70">操作</th>
         </tr>
     </thead>
 <tbody>
 
 {volist name="data.list" id="vo" }
-
  <tr>
-        	<td>{$vo.id}</td>
-            <td>{$vo.title}</td>
-            <td><span data-toggle="dropdown">{$cg_list[$vo['cid']]['name']}</span></td>
-            <th>{$vo.click}</th>
-            <td>{$vo.add_time|dateTpl}</td>
-            <td>{$vo.update_time|dateTpl}</td>
-           
-            <td>
-                <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑">
-                    <i class="fa fa-edit text-muted"></i>
-                </a>
-                <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}？" class="m-xs" title="删除">
-                    <i class="fa fa-trash text-muted"></i>
-                </a>
-            </td>
-        </tr>
-
+       <td>{$vo.id}</td>
+       <td>{$vo.title}</td>
+       <td><span data-toggle="dropdown">{$cg_list[$vo['cid']]['name']}</span></td>
+       <td>{$vo.click}</td>
+       <td>{$vo.add_time|dateTpl}</td>
+       <td>{$vo.update_time|dateTpl}</td>
+       <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'is_show'))}" class="{$vo.is_show|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">显示</i><i class="fa fa-times text-danger text">隐藏</i></a></td>
+       <td>{$vo.sort_order}</td>
+       <td>
+           <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
+           <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.title}？" class="m-xs" title="删除">
+                <i class="fa fa-trash text-muted"></i>
+           </a>
+       </td>
+</tr>
 {/volist} 
 </tbody>
 </table>

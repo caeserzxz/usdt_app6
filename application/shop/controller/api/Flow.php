@@ -435,6 +435,7 @@ class Flow extends ApiController
     {
         $orderGoods = [];
         $cart_ids = [];
+        $add_time = time();
         foreach ($cartList['goodsList'] as $key => $og) {
             $cart_ids[] = $og['rec_id'];
             $bonus_ids = 0;
@@ -453,7 +454,7 @@ class Flow extends ApiController
                 'cid' => $og['cid'],
                 'supplyer_id' => $og['supplyer_id'],
                 'goods_id' => $og['goods_id'],
-                'goods_name' => $og['goods_name'],
+                'goods_name'=>$og['goods_name'],
                 'sku_id' => $og['sku_id'],
                 'sku_val' => $og['sku_val'],
                 'sku_name' => $og['sku_name'],

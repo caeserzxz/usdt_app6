@@ -489,6 +489,7 @@
 .payResult .cellBox {
   padding: 0.2rem 0.266667rem 0.2rem;
   background-color: #fff;
+  margin-top: 0;
 }
 
 .payResult .cellBox .cell {
@@ -521,7 +522,7 @@
 }
 
 .payResult .button {
-  margin: 0.333333rem 0;
+  margin: .2rem 0;
   padding: 0 0.2rem;
   display: -webkit-box;
   display: -webkit-flex;
