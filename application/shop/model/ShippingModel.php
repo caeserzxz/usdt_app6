@@ -5,6 +5,7 @@ use app\BaseModel;
 use app\mainadmin\model\RegionModel;
 use think\facade\Cache;
 use kuaidi\Kdapieorder;
+use app\shop\model\OrderGoodsModel;
 //*------------------------------------------------------ */
 //-- 物流管理
 /*------------------------------------------------------ */
@@ -51,10 +52,10 @@ class ShippingModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 快递鸟发货
     /*------------------------------------------------------ */
-    public function kdnShipping(&$shipping,$kdeorder_goods_name= '',&$orderInfo = []){
+    public function kdnShipping(&$shipping,&$orderInfo = []){
+        $OrderGoodsModel = new OrderGoodsModel();
         static $kdapiorder;
         if (empty($shipping)) return "请选择快递公司";
-        if (empty($kdeorder_goods_name)) return "请输入货物名称";
         $kdn_appid = settings('kdn_appid');
         $kdn_apikey = settings('kdn_apikey');
         $kdn_apiurl = settings('kdn_apiurl');
@@ -94,6 +95,12 @@ class ShippingModel extends BaseModel
         $eorder["PayType"] = 1;
         $eorder["ExpType"] = 1;
         $eorder["IsReturnPrintTemplate"] = 1;
+        //月结号或秘钥串
+        $shipping['month_code']?$eorder["MonthCode"] = $shipping['month_code']:false;
+        //所属网点
+        $shipping['send_site']?$eorder["SendSite"] = $shipping['send_site']:false;
+        //模板ID
+        $shipping['template_size']?$eorder["TemplateSize"] = $shipping['template_size']:false;
 
         //寄件人
         $sender = [];
@@ -116,21 +123,24 @@ class ShippingModel extends BaseModel
         $receiver["Address"] = $orderInfo['address'];
         $receiver["PostCode"] = $district['zip_code'];
 
-        $commodityOne = [];
-        $commodityOne["GoodsName"] = $kdeorder_goods_name; //商品名称【必填写】
-        $commodityOne["GoodsCode"] = ""; //商品编码【可填写】
-        $commodityOne["Goodsquantity"] = ""; //商品数量【可填写】
-        $commodityOne["GoodsPrice"] = ""; //商品价格【可填写】
-        $commodityOne["GoodsWeight"] = ""; //商品重量kg【可填写】
-        $commodityOne["GoodsDesc"] = ""; //商品描述【可填写】
-        $commodityOne["GoodsVol"] = ""; //商品体积m3【可填写】
+        $orderGoods = $OrderGoodsModel->where(['order_id'=>$orderInfo['order_id']])->select()->toArray();
         $commodity = [];
-        $commodity[] = $commodityOne;
+        //快递鸟不支持的符号过滤
+        $unsetWord = ["'","#","&","+","%","\\","<",">"];
+        foreach($orderGoods as $key => $val){
+            $commodityOne["GoodsName"] = str_replace($unsetWord,' ', $val['goods_name']);  //商品名称【必填写】
+            $commodityOne["GoodsCode"] = $val['goods_sn']; //商品编码【可填写】goods_sn
+            $commodityOne["Goodsquantity"] = $val['goods_number']; //商品数量【可填写】
+            $commodityOne["GoodsPrice"] =  $val['shop_price']; //商品价格【可填写】
+            $commodityOne["GoodsWeight"] = $val['goods_weight']; //商品重量kg【可填写】 goods_weight
+            $commodityOne["GoodsDesc"] = ""; //商品描述【可填写】
+            $commodityOne["GoodsVol"] = ""; //商品体积m3【可填写】
+            $commodity[] = $commodityOne;
+        }
         $eorder["Sender"] = $sender;
         $eorder["Receiver"] = $receiver;
         $eorder["Commodity"] = $commodity;
         //调用电子面单
-
         $returndata = $kdapiorder->submitEOrder($eorder);
         $returndata = json_decode($returndata, true);
         //$returndata = json_decode('{ "EBusinessID": "1350174","Success": true,"Order": {"OrderCode": "1552293275", "ShipperCode": "SF", "LogisticCode": "444071155508", "OriginCode": "755", "DestinatioCode": "755", "KDNOrderCode": "KDN1903111600000041"},"Reason": "成功","ResultCode": "100"}', true);

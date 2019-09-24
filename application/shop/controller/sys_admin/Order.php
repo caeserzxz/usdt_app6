@@ -313,10 +313,9 @@ class Order extends AdminController
             $data['order_id'] = $order_id;
             $kd_type = input('post.kd_type', '1', 'intval');
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
-            $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
             if ($kd_type == 3) {
                 $ptModel = new PrintTemplateModel();
-                $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $kdeorder_goods_name, $orderInfo);
+                $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $orderInfo);
                 if (is_array($res) == false) return $this->error($res);
                 $data['shipping_id'] = $res[0];
                 $data['invoice_no'] = $res[1];
@@ -413,7 +412,6 @@ EOF;
             $order_ids = explode(',', $order_ids);
             $kd_type = input('post.kd_type', '3', 'intval');
             $kdn_shipping_id = input('post.kdn_shipping_id', '', 'intval');
-            $kdeorder_goods_name = input('post.kdeorder_goods_name', '', 'trim');
             $ShippingModel = new ShippingModel();
             $config = config('config.');
             $error = [];
@@ -433,13 +431,25 @@ EOF;
                     continue;
                 }
                 if ($kd_type == 3) {
-                    $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $kdeorder_goods_name, $orderInfo);
+                    $ptModel = new PrintTemplateModel();
+                    $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $orderInfo);
                     if (is_array($res) == false) {
                         $error[] = '订单' . $orderInfo['order_sn'] . ':' . $res;
                         continue;
                     }
                     $upData['shipping_id'] = $res[0];
                     $upData['invoice_no'] = $res[1];
+                    if($res[2]){
+                        $Arr['temp_html'] = $res[2];
+                        $pt_row = $ptModel->where(['order_id'=>$order_id])->find();
+                        if($pt_row){
+                            $ptModel->where(['order_id'=>$order_id])->update($Arr);
+                        }else{
+                            $Arr['order_id'] = $order_id;
+                            $Arr['order_sn'] = $orderInfo['order_sn'];
+                            $ptModel->insert($Arr);
+                        }
+                    }
                 }
                 $upData['order_id'] = $order_id;
                 $upData['shipping_status'] = $config['SS_SHIPPED'];
