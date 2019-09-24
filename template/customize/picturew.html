@@ -31,7 +31,7 @@
             <div class="swiper-container fui-picturew row-{$diyInfo.params.row}" style="padding:{$diyInfo.style.paddingtop}px {$diyInfo.style.paddingleft}px; background: {$diyInfo.style.background};">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        {volist name="$diyInfo.data" id="vo" mod="$diyInfo['style']['pagenum']"}
+                        {volist name="$diyInfo.data" id="vo" mod="$diyInfo.style.pagenum"}
                             {eq name="mod" value="0"}
                                 {gt name="i" value="1"}</div><div class="swiper-slide">{/gt}
                             {/eq}
