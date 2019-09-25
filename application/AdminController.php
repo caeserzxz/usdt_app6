@@ -44,7 +44,7 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
-    protected function initialize()
+    protected function initialize($check_priv = true)
     {
         parent::initialize();
         include_once dirname(__DIR__) . '/application/commonAdmin.php';
@@ -59,8 +59,10 @@ class AdminController extends BaseController
         define('AUID', $this->admin['info']['user_id']);
         // 验证登录
         $this->checkLogin();
-        //自动验证权限
-        $this->_priv();
+        if ($check_priv == true){
+            //自动验证权限
+            $this->_priv();
+        }
         // 全局layout
         $this->layout();
     }

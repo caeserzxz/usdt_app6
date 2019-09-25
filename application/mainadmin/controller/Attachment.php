@@ -17,7 +17,7 @@ class Attachment extends AdminController{
     /*------------------------------------------------------ */
     public function initialize(){
 
-        parent::initialize();
+        parent::initialize(false);
         $this->_root_ = Request::root();
     }
 
