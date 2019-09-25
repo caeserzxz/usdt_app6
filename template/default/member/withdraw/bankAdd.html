@@ -10,9 +10,9 @@
     <!-- 页面内容-->
     <div class="cells">
       <div class="cell bankType">
-        <div class="cell_hd"><span class="fs28 color_3 fw_b">银行类型</span></div>
+        <div class="cell_hd"><span class="fs28 color_3 fw_b">开卡银行</span></div>
         <div class="cell_bd">
-          <input type="text" class="fs28  color_3 bankBox" name="bank_name" placeholder="请选择银行类型" value="">
+          <input type="text" class="fs28  color_3 bankBox" name="bank_name" placeholder="请输入开卡银行" value="">
         </div>
         <div class="cell_ft">
         </div>
@@ -53,99 +53,14 @@
       <span class="fs32 color_w fw_b BGcolor_r postBtn">确认添加</span>
     </div>
   </div>
-  <!-- 支付方式 -->
-  <!-- <div class="model">
-    <div class="modelBg"></div>
-    <div class="modelContent">
-      <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
-      <div class="title fs36 color_3 fw_b">请选择银行</div>
-      <div class="cantre">
-        <div class="block">
-          <label for="s11">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/ZGBank.png" alt=""><span
-                class="fs30 color_3">中国银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="ZG" id="s11" checked>
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-        <div class="block">
-          <label for="s12">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/JSBank.png" alt=""><span
-                class="fs30 color_3">中国建设银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="JS" id="s12">
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-        <div class="block">
-          <label for="s13">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/GSBank.png" alt=""><span
-                class="fs30 color_3">中国工商银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="GS" id="s13">
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-        <div class="block">
-          <label for="s14">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/NYBank.png" alt=""><span
-                class="fs30 color_3">中国农业银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="NY" id="s14">
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-        <div class="block">
-          <label for="s15">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/ZSBank.png" alt=""><span
-                class="fs30 color_3">招商银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="ZS" id="s15">
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-        <div class="block">
-          <label for="s16">
-            <div class="payType"><img src="__STATIC__/mobile/default/images/JTBank.png" alt=""><span
-                class="fs30 color_3">交通银行</span></div>
-            <div class="iconBox">
-              <input type="radio" class="check" name="bank_code" value="JT" id="s16">
-              <i class="icon_checked"></i>
-            </div>
-          </label>
-        </div>
-      </div>
-    </div>
 
-  </div> -->
 </form>
 {/block}
 
 {block name="footer"}
 <script>
   $(function () {
-    // $('.bankType').on('click',function(){
-    //   $('.model').show();
-    // })
-    // $('.block label').on('click',function(){
-    //   if($(this).find('input').is(':checked')){
-    // 	   var nameVal= $(this).find('span').text();
-    // 	   $('.bankBox').val(nameVal)
-    // 	   $('.model').hide();
-    //   }
-    // })
-    // $('.closeBox').on('click', function () {
-    //   $('.model').hide();
-    // })
-    // $('.modelBg').on('click', function () {
-    //   $('.model').hide();
-    // })
+
 
     $('.postBtn').click(function () {
       var arr = $('#bakn_from').toJson();
