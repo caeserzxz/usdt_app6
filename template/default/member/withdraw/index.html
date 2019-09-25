@@ -148,8 +148,12 @@ $(function() {
 		evalFee();
 	})
 	//end
+    var isPost = false;
 	//提交提现申请
 	$('.postBtn').click(function(){
+	    if (isPost == true){
+	        return false;
+        }
 		var arr = new Object();
 		arr.account_id = $('input[name="account_id"]:checked').val();
 		arr.amount = $('#amount').val();
@@ -166,9 +170,11 @@ $(function() {
 			_alert('请选择提现方式.');
 			return false;	
 		}
+        isPost = true;
 		jq_ajax('{:url("member/api.withdraw/postWithdraw")}',arr,function(res){
+            isPost = false;
+            _alert(res.msg);
 			if (res.code == 0){
-				_alert(res.msg);
 				return false;
 			}
 			_alert(res.msg,'{:url("member/wallet/index")}')
