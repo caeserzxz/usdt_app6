@@ -127,5 +127,16 @@ class ClientbaseController extends BaseController{
         return true;
     }
 
-    
+    /*------------------------------------------------------ */
+    //-- 退出
+    /*------------------------------------------------------ */
+    public function logout()
+    {
+        session('userId', null);
+        session('wxInfo', null);
+        if ($this->request->isAjax()){
+            return $this->success('退出成功.');
+        }
+        return $this->fetch('member@center/logout');
+    }
 }

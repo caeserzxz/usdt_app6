@@ -37,15 +37,7 @@ class BaseController extends Controller
 	public function getDict($key = ''){
 		return \app\mainadmin\model\PubDictModel::getRows($key);
 	}
-    /*------------------------------------------------------ */
-    //-- 退出
-    /*------------------------------------------------------ */
-    public function logout()
-    {
-        session('userId', null);
-        session('wxInfo', null);
-        return $this->success('退出成功.');
-    }
+
     //*------------------------------------------------------ */
     //-- 获取前端登陆会员ID
     /*------------------------------------------------------ */

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="__STATIC__/mobile/default/css/layout.css"/>
+    <script src="__STATIC__/mobile/default/js/page.js"></script>
+
+    <title>退出登录</title>
+</head>
+
+<body>
+<div class="page error">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">退出登录</div>
+            <div class="header-right">
+                <a href=''></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <img src="__STATIC__/mobile/default/images/exit.png" alt="">
+        <span class="fs30 color_3 fw_b">成功退出登录！</span>
+        <p class="fs26 color_9" style="margin-top: 5px">页面在<span class="second">5</span>s后将自动跳转</p>
+    </div>
+
+</div>
+
+<script src="__STATIC__/js/jquery/jquery/2.1.4/jquery.min.js"></script>
+<script src="__STATIC__/js/art-template.js"></script>
+<script src="__STATIC__/mobile/default/js/lib/fastclick.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    var t = 5;
+    var _time = document.getElementsByClassName("second")[0];
+    var inter = setInterval('time()', 1000);
+    function time() {
+        t-=1;
+        _time.innerHTML = t;
+
+        if (t <= 0) {
+            location.href = '{:url("member/passport/login")}';
+            clearInterval(inter);
+        }
+    }
+
+</script>
+</body>
+
+</html>
