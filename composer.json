@@ -18,7 +18,8 @@
     "require": {
         "php": ">=5.6.0",
         "topthink/framework": "5.1.*",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+	"topthink/think-worker":"v2.0.9"
     },
     "autoload": {
         "psr-4": {

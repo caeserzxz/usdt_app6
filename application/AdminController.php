@@ -330,6 +330,7 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     public function info()
     {
+
         $pk = $this->Model->pk;
         if ($this->request->isPost()) {
             if (false === $data = $_POST) {
@@ -366,14 +367,17 @@ class AdminController extends BaseController
             }
             return $this->error('操作失败.');
         }
+
         $id = input($pk, 0, 'intval');
         $row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);
+
         if ($id > 0 && empty($row) == false) {
             $row = $row->toArray();
         }
         if (method_exists($this, 'asInfo')) {
             $row = $this->asInfo($row);
         }
+
         $this->assign("row", $row);
         $ishtml = input('ishtml', 0, 'intval');
         if ($this->request->isAjax() && $ishtml == 0) {
@@ -381,7 +385,8 @@ class AdminController extends BaseController
             $result['data'] = $this->fetch('info');
             return $this->ajaxReturn($result);
         }
-        return response($this->fetch('info'));
+
+        return $this->fetch('info');
 
     }
 
