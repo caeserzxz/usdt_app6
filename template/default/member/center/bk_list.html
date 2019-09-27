@@ -50,7 +50,7 @@ var tmp_node = '';
 $(function(){
 	$.post('/member/api.users/getBkImgList',function(res){
 		if(res.code == 1){
-			let html = '';
+			var html = '';
 			$.each(res.data,function(i,v){
 		        html += '<div class="box">';
 				html += '<img src="'+v+'" alt="">';
@@ -63,7 +63,7 @@ $(function(){
 })
 
 function choose_status(str){
-	let arr = $('.list img');
+	var arr = $('.list img');
 	if(arr != undefined){
 		$.each(arr, function(i, item){      
 		    if(item.src == str){
@@ -77,7 +77,7 @@ function choose_status(str){
 
 //切换背景图片
 $('.list').on('click','.box',function(){
-	let img_node = $(this).children('img');
+	var img_node = $(this).children('img');
 	$('.list img').removeClass('is_choose');
 	img_node.addClass('is_choose');
 	tmp_node = img_node;

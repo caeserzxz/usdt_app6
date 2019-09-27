@@ -629,7 +629,7 @@ class Users extends ApiController
             $dates[] = $day;
             //本月数据已有,直接更新
             $upData = ['days'=>join(',',$dates),'constant_num'=>$constant_num,'last_time'=>time(),'integral'=>$sign_integral,'logs'=>$logs];
-            $res = $UsersSignModel->where(['sign_id'=>$data['sign_id']])->update($upData);
+            $res = $UsersSignModel->where(['sign_id'=>$data['sign_id'],'last_time'=>$data['last_time']])->update($upData);
         }else{
             //本月数据没有,进行插入
             $inData = [
@@ -642,7 +642,8 @@ class Users extends ApiController
                 'integral'   => $sign_integral,
                 'last_time' => time()
             ];
-            $res = $UsersSignModel->save($inData);
+            //插入的,用户id,年月存在唯一索引所以不会重复插入
+            $res = $UsersSignModel->insert($inData);
         }
 
         if($res < 1){
