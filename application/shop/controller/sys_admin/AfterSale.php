@@ -166,7 +166,7 @@ class AfterSale extends AdminController
         $this->assign("as_type", $this->Model->type);
         $this->assign("as_status", $this->Model->status);
         if ($runData == false) {
-            $data['content'] = $this->fetch('list');
+            $data['content'] = $this->fetch('list')->getContent();
             unset($data['list']);
             return $this->success('', '', $data);
         }

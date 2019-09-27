@@ -77,7 +77,7 @@ class Message extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $data);
         } elseif ($runData == false) {
-            $data['content'] = $this->fetch('list');
+            $data['content'] = $this->fetch('list')->getContent();
             unset($data['list']);
             return $this->success('', '', $data);
         }

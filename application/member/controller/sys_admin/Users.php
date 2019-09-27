@@ -138,7 +138,7 @@ class Users extends AdminController
         $this->assign("data", $data);
         $this->assign("search",$this->search);
         if ($runData == false) {
-            $data['content'] = $this->fetch('sys_admin/users/list');
+            $data['content'] = $this->fetch('sys_admin/users/list')->getContent();
             return $this->success('', '', $data);
         }
         return true;

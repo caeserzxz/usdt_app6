@@ -108,7 +108,7 @@ class Goods extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $data);
         } elseif ($runData == false) {
-            $data['content'] = $this->fetch('list');
+            $data['content'] = $this->fetch('list')->getContent();
             unset($data['list']);
             return $this->success('', '', $data);
         }
@@ -225,7 +225,7 @@ class Goods extends AdminController
         $model_list = $this->Model->getModelList();
         $this->assign('model', $model_list[$model_id]);
         if (empty($goods) == false) return false;
-        $data['content'] = $this->fetch('attribute');
+        $data['content'] = $this->fetch('attribute')->getContent();
         return $this->success('', '', $data);
     }
 

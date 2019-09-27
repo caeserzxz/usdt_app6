@@ -137,7 +137,7 @@ class Bonus extends AdminController
         $this->assign("GoodsType", $this->getDict('BonusGoodsType'));//指定商品类型
         $this->assign("UseType", $this->getDict('BonusUseType'));
         if ($runData == false) {
-            $data['content'] = $this->fetch('list');
+            $data['content'] = $this->fetch('list')->getContent();
             unset($data['list']);
             return $this->success('', '', $data);
         }
@@ -387,7 +387,7 @@ class Bonus extends AdminController
         );
         $this->assign("statusList", $statusList);
         if ($runData == false) {
-            $data['content'] = $this->fetch('bList');
+            $data['content'] = $this->fetch('bList')->getContent();
             unset($data['list']);
             return $this->success('', '', $data);
         }

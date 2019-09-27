@@ -21,10 +21,10 @@
       	<td>{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}</td>
         <td>{$vo.goods_name}</td>
         <td>{$vo['is_spec']==0?$vo['shop_price']:$vo['min_price'].'~'.$vo['max_price']}</td>
-        <td align="center"><a href="javascript:;" class="{$vo.isputaway|tplckval='=1','active'}" ><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>   
-        <td align="center"><a href="javascript:;" class="{$vo.is_dividend|tplckval='=1','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>    
+        <td align="center"><a href="javascript:;" class="{$vo.isputaway|tplckval='=1','active'}" ><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+        <td align="center"><a href="javascript:;" class="{$vo.is_dividend|tplckval='=1','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
 		<td align="center"><a href="javascript:;" class="{$vo.is_promote|tplckval='=1','active'}"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
-        
+
         <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id'],'field'=>'is_best'))}" class="{$vo.is_best|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
         <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id'],'field'=>'is_new'))}" class="{$vo.is_new|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
         <td align="center"><a href="#" data-remote="{:url('ajaxEdit',array('goods_id'=>$vo['goods_id'],'field'=>'is_hot'))}" class="{$vo.is_hot|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
@@ -50,4 +50,4 @@
 <table width="100%" >
  	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
 </table>
-{/empty}  
+{/empty}
