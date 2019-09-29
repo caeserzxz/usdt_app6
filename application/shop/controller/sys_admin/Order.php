@@ -352,7 +352,7 @@ class Order extends AdminController
         $kdnpingopt = $ShippingModel->getRows('kdn_code');
         $this->assign('kdnpingopt', arrToSel($kdnpingopt, $orderInfo['shipping_id']));
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('shop@sys_admin/order/shipping'));
+        return $this->fetch('shop@sys_admin/order/shipping');
     }
 
     /*------------------------------------------------------ */
