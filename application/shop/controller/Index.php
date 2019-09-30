@@ -190,7 +190,7 @@ class Index  extends ClientbaseController{
                     }
                 }
                 $this->assign('diyInfo', $row);
-                $body .= $this->fetch($tmpPath.$row['id']);
+                $body .= $this->fetch($tmpPath.$row['id'])->getContent();
             }
             Cache::set($mkey.'topfixed',$topfixed,60);
             Cache::set($mkey,$body,60);
