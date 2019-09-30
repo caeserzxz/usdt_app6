@@ -469,7 +469,7 @@ EOF;
         $ShippingModel = new ShippingModel();
         $kdnpingopt = $ShippingModel->getRows('kdn_code');
         $this->assign('kdnpingopt', arrToSel($kdnpingopt));
-        return response($this->fetch('shop@sys_admin/order/batch_shipping'));
+        return $this->fetch('shop@sys_admin/order/batch_shipping');
     }
     /*------------------------------------------------------ */
     //-- 改价
