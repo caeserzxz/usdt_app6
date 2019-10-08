@@ -83,11 +83,13 @@
                             <div class="color_3 fs24 num">
                                 <p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><i>.{{item.exp_price[1]}} </i> 元
                             </div>
+                            {literal}
                             {{if item.use_integral > 0}}
                             <p class="fw_b fm_p"> + </p><em class="fs36">{{item.use_integral}}</em>积分
                            {{else}}
                             <span class="fs24 color_9">￥{{item.market_price}}</span>
                             {{/if}}
+                            {/literal}
                         </div>
 
                         <div class="number">
