@@ -129,6 +129,6 @@ class AccountLog extends AdminController
 		}
         $account = model(UsersModel)->getAccount($user_id,false);
 		$this->assign("account", $account);
-		return response($this->fetch());
+		return $this->fetch();
 	}
 }
