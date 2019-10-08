@@ -310,6 +310,23 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
                     }
+                }elseif($upData['pay_code'] == 'balance') {//使用余额支付扣减用户余额
+                    $upData['money_paid'] = $orderInfo['order_amount'];
+                    $upData['pay_time'] = time();
+                    $changedata['change_desc'] = '订单余额支付';
+                    $changedata['change_type'] = 3;
+                    $changedata['by_id'] = $order_id;
+                    $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
+                    $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
+                    if ($res !== true) {
+                        Db::rollback();// 回滚事务
+                        return '支付失败，扣减余额失败.';
+                    }
+                    $balance_money = (new AccountModel)->where('user_id',$orderInfo['user_id'])->value('balance_money');
+                    if ($balance_money < 0){
+                        Db::rollback();// 回滚事务
+                        return '支付失败，扣减余额失败.';
+                    }
                 }
                 //未支付状态的订单才进行支付成功的操作,否则失败回滚
                 $lockWhere['pay_status'] = $this->config['PS_UNPAYED'];
