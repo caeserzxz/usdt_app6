@@ -45,5 +45,10 @@
         </div>
     </section>
 </section>
-
+<script type="text/javascript">
+    $(document).on('click','.operatbtn',function(){
+        $('#operating').val($(this).data('type'));
+        $('.postBtn').click();
+    })
+</script>
 {/block}

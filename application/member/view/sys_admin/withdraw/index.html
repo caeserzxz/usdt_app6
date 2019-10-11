@@ -48,5 +48,10 @@
          $('.talbe-search').append('<input type="hidden" name="is_export" id="is_export" value="1">').submit();
          $('#is_export').remove();
     })
+
+    $(document).on('click','.operatbtn',function(){
+        $('#operating').val($(this).data('type'));
+        $('.postBtn').click();
+    })
 </script>
 {/block}
