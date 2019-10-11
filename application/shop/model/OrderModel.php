@@ -605,12 +605,6 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function autoSign($uid = 0)
     {
-        $mkey = 'autoSignOrderIng';
-        $status = Cache::get($mkey);
-        if (empty($status) == false){
-            return true;
-        }
-        Cache::set($mkey,1);
         $where = [];
         $sign_limit = settings('shop_auto_sign_limit');
         $where[] = ['shipping_status', '=', $this->config['SS_SHIPPED']];
@@ -629,7 +623,6 @@ class OrderModel extends BaseModel
                 $this->_log($orderInfo, '自动签收');
             }
         }
-        Cache::rm($mkey);
         return true;
     }
     /*------------------------------------------------------ */
