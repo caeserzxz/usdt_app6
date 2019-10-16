@@ -22,7 +22,7 @@ return [
     // 驱动方式 支持redis memcache memcached
     'type'           => 'Redis',
 	'session_name' => 'mse_', // sessionkey前缀
-	'password'=>'eb2018',
+
     // 是否自动开启 SESSION
     'auto_start'     => true,
 ];
