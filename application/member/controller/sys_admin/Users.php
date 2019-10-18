@@ -297,7 +297,7 @@ class Users extends AdminController
         $this->assign("roleList", $roleList);
         $this->assign("row", $row);
 
-        return response($this->fetch('sys_admin/users/edit_role'));
+        return $this->fetch('sys_admin/users/edit_role')->getContent();
     }
     /*------------------------------------------------------ */
     //-- 封禁会员
@@ -499,7 +499,7 @@ class Users extends AdminController
             $userInfo['puser'] = $this->Model->info($userInfo['pid']);
         }
         $this->assign("row", $userInfo);
-        return response($this->fetch('sys_admin/users/edit_superior'));
+        return $this->fetch('sys_admin/users/edit_superior')->getContent();
     }
 
     /*------------------------------------------------------ */
@@ -572,7 +572,7 @@ class Users extends AdminController
             }
             return $this->error($res);
         }
-        return response($this->fetch());
+        return $this->fetch()->getContent();
     }
 
 }

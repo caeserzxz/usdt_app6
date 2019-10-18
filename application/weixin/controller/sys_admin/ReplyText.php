@@ -142,6 +142,6 @@ class ReplyText extends AdminController
 		$this->assign("cgOpt", arrToSel($this->cg_list,input('cid',0,'intval')));
 		$this->assign("_menu_index", input('_menu_index','','trim'));
 		$this->assign("searchType", input('searchType','','trim'));
-		return response($this->fetch());
+		return $this->fetch()->getContent();
 	}
 }

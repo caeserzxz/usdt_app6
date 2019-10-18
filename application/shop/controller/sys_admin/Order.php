@@ -497,7 +497,7 @@ EOF;
             return $this->success('修改价格成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('shop@sys_admin/order/change_price'));
+        return $this->fetch('shop@sys_admin/order/change_price')->getContent();;
     }
     /*------------------------------------------------------ */
     //-- 修改收货信息
@@ -539,7 +539,7 @@ EOF;
             return $this->success('修改收货信息成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('shop@sys_admin/order/edit_consignee'));
+        return $this->fetch('shop@sys_admin/order/edit_consignee')->getContent();
     }
 
     /*------------------------------------------------------ */
@@ -573,7 +573,7 @@ EOF;
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return response($this->fetch('shop@sys_admin/order/cfm_cod_pay'));
+        return $this->fetch('shop@sys_admin/order/cfm_cod_pay')->getContent();
     }
 
     /*------------------------------------------------------ */

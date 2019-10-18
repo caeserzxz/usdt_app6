@@ -49,7 +49,7 @@ class SkuCustom extends AdminController
 			return $this->ajaxReturn($result);
 		}
 		$this->assign('action',url('addSkuCategory'));
-		return response($this->fetch('sku_category'));
+		return $this->fetch('sku_category')->getContent();
 	}
 	
 	
