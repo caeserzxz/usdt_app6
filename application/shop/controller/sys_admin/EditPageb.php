@@ -151,7 +151,7 @@ class EditPageb extends AdminController
         $this->assign('links', (new LinksModel)->links());
         $CategoryModel = new \app\shop\model\CategoryModel();
         $this->assign('CategoryList', $CategoryModel->getRows());
-        return $this->fetch('links')->getContent();
+        return $this->fetch('links');
     }
 
     /*------------------------------------------------------ */
@@ -178,7 +178,7 @@ class EditPageb extends AdminController
         }
         $this->assign('list',$list);
         $this->assign('kw',$kw);
-        return $this->fetch('search_'.$type)->getContent();
+        return $this->fetch('search_'.$type);
     }
 
     /*------------------------------------------------------ */
@@ -253,14 +253,14 @@ class EditPageb extends AdminController
         }
         $this->assign('list',$list);
         $this->assign('keyword',$keyword);
-        return $this->fetch('query_'.$type)->getContent();
+        return $this->fetch('query_'.$type);
     }
     /*------------------------------------------------------ */
     //-- 选择图标
     /*------------------------------------------------------ */
     public function selecticon()
     {
-        return $this->fetch('selecticon')->getContent();
+        return $this->fetch('selecticon');
     }
     /*------------------------------------------------------ */
     //-- 快速修改
