@@ -7,6 +7,7 @@ namespace app\mainadmin\controller;
 use app\AdminController;
 use think\Backup;
 use think\Db;
+use think\facade\Cache;
 class BackupDb  extends AdminController{
 	/*------------------------------------------------------ */
 	//-- 首页
@@ -28,6 +29,7 @@ class BackupDb  extends AdminController{
 	//-- 执行备份
 	/*------------------------------------------------------ */
 	public function export($tables = null, $id = null, $start = null){
+        $mkey = 'backup_db_lock';
 		//防止备份数据过程超时
 		function_exists('set_time_limit') && set_time_limit(0);
 		if($this->request->isPost() && !empty($tables) && is_array($tables)){ //初始化
@@ -43,12 +45,11 @@ class BackupDb  extends AdminController{
 					'level'    => config('config.DATA_BACKUP_COMPRESS_LEVEL'),
 			);
 			//检查是否有正在执行的任务
-			$lock = $path."backup.lock";
-			if(is_file($lock)){
+            $lock = Cache::get($mkey);
+			if(empty($lock) == false){
                 $this->error('检测到有一个备份任务正在执行，请稍后再试！');
 			} else {
-				//创建锁文件
-				file_put_contents($lock, time());
+                Cache::set($mkey,time(),3600);
 			}
 
 			//检查备份目录是否可写
@@ -59,7 +60,7 @@ class BackupDb  extends AdminController{
 
 			//生成备份文件信息
 			$file = array(
-					'name' => date('Ymd-His', $_SERVER['REQUEST_TIME']),
+					'name' => date('Ymd-His', $_SERVER['REQUEST_TIME']).time(),
 					'part' => 1,
 			);
 			session('backup_file', $file);
@@ -85,7 +86,7 @@ class BackupDb  extends AdminController{
 					$tab = array('id' => $id, 'start' => 0);
 					return $this->success('备份完成！','',array('tab' => $tab));
 				} else { //备份完成，清空缓存
-					unlink(session('backup_config.path') . 'backup.lock');
+                    Cache::rm($mkey);
 					session('backup_tables', null);
 					session('backup_file', null);
 					session('backup_config', null);
