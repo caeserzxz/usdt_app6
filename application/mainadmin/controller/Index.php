@@ -81,7 +81,12 @@ class Index extends AdminController
         $userStats['today_sign'] = (new UsersSignModel)->where($userWhere)->count('sign_id');
         $this->assign('userStats',$userStats);
         //end
-
+        //清理数据提示
+        $isClearSetTip = false;
+        if ($this->admin['info']['role_action'] == 'all' && file_exists(DATA_PATH.$_SERVER['SERVER_NAME']) == false){
+            $isClearSetTip = true;
+        }
+        $this->assign('isClearSetTip',$isClearSetTip);
 
         //判断订单模块是否存在
         if(class_exists('app\shop\model\OrderModel')) {
@@ -138,6 +143,7 @@ class Index extends AdminController
                 $dt_start = strtotime('+1 day', $dt_start);
                 $i++;
             }
+
             //订单统计相关end
             $this->assign('stats', $stats);
             $this->assign('riqi', json_encode($riqi));
