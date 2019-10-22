@@ -149,7 +149,7 @@
     width: 3.39rem;
     height:2.4rem;
     background: #ff5555;
-    z-index: 10;
+    z-index: 9;
     transform-origin: left bottom;
     transform:rotate(-45deg);
     -ms-transform:rotate(-45deg);
