@@ -32,7 +32,7 @@ class Settlement extends Controller
         $this->assign("status", $this->Model->status);
         $this->assign("data", $this->data);
         if ($runData == false){
-            $this->data['content'] = $this->fetch('list');
+            $this->data['content'] = $this->fetch('list')->getContent();
             unset($this->data['list']);
             return $this->success('','', $this->data);
         }

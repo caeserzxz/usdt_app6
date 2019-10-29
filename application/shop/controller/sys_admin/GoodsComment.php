@@ -62,7 +62,7 @@ class GoodsComment extends AdminController {
 		$this->assign("search", $search);	
 		$this->assign('statusListHtml', arrToSel($this->Model->statusList,$search['status']));	
 		if ($runData == false){
-            $this->data['content'] = $this->fetch('list');
+            $this->data['content'] = $this->fetch('list')->getContent();
 			unset($this->data['list']);
 			return $this->success('','',$this->data);
 		}

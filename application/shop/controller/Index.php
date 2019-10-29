@@ -95,7 +95,7 @@ class Index  extends ClientbaseController{
 
                 if ($row['id'] == 'fixedsearch'){//固定顶部搜索额外处理
                     $this->assign('diyInfo', $row);
-                    $topfixed .= $this->fetch($tmpPath.$row['id']);
+                    $topfixed .= $this->fetch($tmpPath.$row['id'])->getContent();
                     continue;
                 }
                 if ($row['id'] == 'notice'){//公告处理
@@ -282,7 +282,7 @@ class Index  extends ClientbaseController{
 				}
 				
 				$this->assign('theme_row', $row);
-				$_body = $this->fetch('page/'.$row['componentType']);
+				$_body = $this->fetch('page/'.$row['componentType'])->getContent();
 				$body .= $_body;
 			}
 			Cache::set($mkey,$body,60);

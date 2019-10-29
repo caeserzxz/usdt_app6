@@ -576,7 +576,7 @@ class Bonus extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $this->data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('goods_list');
+            $this->data['content'] = $this->fetch('goods_list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }
@@ -628,7 +628,7 @@ class Bonus extends AdminController
         $this->assign("data", $this->data);
         $this->assign("time", $time);
         if ($runData == false) {
-            $this->data['content'] = $this->fetch('fight_group_list');
+            $this->data['content'] = $this->fetch('fight_group_list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }
@@ -677,7 +677,7 @@ class Bonus extends AdminController
         $this->assign("data", $this->data);
         $this->assign("time", $time);
         if ($runData == false) {
-            $this->data['content'] = $this->fetch('second_list');
+            $this->data['content'] = $this->fetch('second_list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }

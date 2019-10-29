@@ -46,7 +46,7 @@ class Users extends AdminController
 		$this->assign("data", $data);
 		$this->assign("search", $search);
 		if ($runData == false){
-			$data['content']= $this->fetch('list');
+			$data['content']= $this->fetch('list')->getContent();
 			unset($data['list']);
 			return $this->success('','',$data);
 		}

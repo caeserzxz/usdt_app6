@@ -94,7 +94,7 @@ class Settlement extends AdminController
         $this->assign("status", $this->Model->status);
         $this->assign("data", $data);
         if ($runData == false){
-            $this->data['content'] = $this->fetch('list');
+            $this->data['content'] = $this->fetch('list')->getContent();
             unset($data['list']);
             return $this->success('','', $this->data);
         }

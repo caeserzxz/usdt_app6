@@ -53,7 +53,7 @@ class Login extends AdminController
         $data = $this->getPageList($this->Model,$where);			
 		$this->assign("data", $data);
 		if ($runData == false){
-			$data['content']= $this->fetch('list');
+			$data['content']= $this->fetch('list')->getContent();
 			unset($data['list']);
 			return $this->success('','',$data);
 		}

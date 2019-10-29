@@ -45,7 +45,7 @@ class SecondGoods extends AdminController
 
         $this->assign("data", $this->data);
         if ($runData == false){
-            $this->data['content'] = $this->fetch('list');
+            $this->data['content'] = $this->fetch('list')->getContent();
             unset($this->data['list']);
             return $this->success('','',$this->data);
         }
@@ -291,7 +291,7 @@ class SecondGoods extends AdminController
         $this->assign("data", $this->data);
         $this->assign("time", $time);
         if ($runData == false) {
-            $this->data['content'] = $this->fetch('second_list');
+            $this->data['content'] = $this->fetch('second_list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }

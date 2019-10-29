@@ -62,7 +62,7 @@ class Article extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $this->data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('list');
+            $this->data['content'] = $this->fetch('list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }

@@ -548,7 +548,7 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function getSearchList(){
         $this->getList(true);
-        $this->data['content'] = $this->fetch('sys_admin/users/search_list');
+        $this->data['content'] = $this->fetch('sys_admin/users/search_list')->getContent();
         return $this->success('', '', $this->data);
     }
 

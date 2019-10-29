@@ -77,7 +77,7 @@ class Withdraw extends AdminController
 		$fee_types = config('config.fee_types');
         $this->assign('fee_types', $fee_types);
 		if ($runData == false){
-			$data['content']= $this->fetch('list');
+			$data['content']= $this->fetch('list')->getContent();
 			unset($data['list']);
 			return $this->success('','',$data);
 		}

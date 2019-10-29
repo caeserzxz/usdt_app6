@@ -1002,7 +1002,7 @@ class Goods extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $this->data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('select_goods_list');
+            $this->data['content'] = $this->fetch('select_goods_list')->getContent();
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }

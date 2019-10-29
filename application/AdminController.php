@@ -382,7 +382,7 @@ class AdminController extends BaseController
         $ishtml = input('ishtml', 0, 'intval');
         if ($this->request->isAjax() && $ishtml == 0) {
             $result['code'] = 1;
-            $result['data'] = $this->fetch('info');
+            $result['data'] = $this->fetch('info')->getContent();
             return $this->ajaxReturn($result);
         }
 

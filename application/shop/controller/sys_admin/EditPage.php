@@ -321,7 +321,7 @@ class EditPage extends AdminController
 		$where[] = ['goods_id','in',explode(',',$pIds)];
 		$goods_list = $GoodsModel->where($where)->select()->toArray();
 		$this->assign('goods_list',$goods_list);
-		$result['html']= $this->fetch('products_add_list');			
+		$result['html']= $this->fetch('products_add_list')->getContent();
 		$result['state'] = 1;	
 		return $this->ajaxReturn($result);
 	}

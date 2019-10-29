@@ -40,7 +40,7 @@ class ReplyText extends AdminController
 		$this->assign("data", $this->data);
 		$this->assign("search", $search);
 		if ($runData == false){
-			$data['content']= $this->fetch('list');
+			$data['content']= $this->fetch('list')->getContent();
 			unset($data['list']);
 			return $this->success('','',$data);
 		}
