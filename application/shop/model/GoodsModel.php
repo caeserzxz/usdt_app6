@@ -388,7 +388,7 @@ class GoodsModel extends BaseModel
             }
         }
         foreach ($lstSKUVal as $row) {
-            $row['is_show'] = empty($row['lstVal'][1]) ? 0 : 1;
+            $row['is_show'] = empty($row['lstVal'][0]) ? 0 : 1;
             $row['new_name'] = $row['name'];
             $lstSKUArr[] = $row;
         }
