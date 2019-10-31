@@ -83,7 +83,7 @@ class SkuCustom extends AdminController
             $inarr['supplyer_id'] = $supplyer_id;
             $keyb = $this->Model::create($inarr);
 			$row['val'] = $val;
-			$row['key'] = $keyb;
+			$row['key'] = $keyb->id;
 			$result['data']['spevalList'][] = $row;
 		}
 		$this->Model->cleanMemcache($skuModelId);
