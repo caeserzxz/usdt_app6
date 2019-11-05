@@ -1,0 +1,68 @@
+<form class="form-horizontal form-validate form-modal" method="post" id="_post_form" action="{:url('info')}">
+    <div class="modal-dialog" style="width:880px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{$row['id'] > 0?'编缉权限':'添加权限'}</h4>
+            </div>
+            <div class="modal-body tableinfo">
+
+                <div class="form-group">
+                    <label class="control-label">权限名称：</label>
+                    <div class="col-sm-3 must">
+                        <input name="name" class="input-max" type="text" value="{$row.name}" data-msg-required="权限名称不能为空"
+                                data-rule-required="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">所属分组：</label>
+                    <div class="col-sm-3 must">
+                        <select class="input-max" data-rule-required="true" id="group-select" name="group">
+                            <option value="0">所属分组</option>
+                            {volist name="menuList" id="vo" }
+                                <option value="{$vo.group}" {$vo['group']==$row['group']?'selected':''}>{$vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">添加权限码：</label>
+                    <div class="col-sm-6 ">
+                        <select class="input-medium" data-rule-required="true" id="controller" name="controller">
+                            <option value="0">选择控制器</option>
+                            {volist name="planList" id="vo"}
+                                <option class="option-{$vo.key} {$vo['key']==$row['group']?'':'hide'}"  value="{$vo.key}:{$vo.val}" >{$vo.val}</option>
+                            {/volist}
+                        </select>
+                        <select class="input-medium" data-rule-required="true" id="fun_list" name="fun_list">
+                            <option value="0">选择方法</option>
+                        </select>
+                        <a href="javascript:;"  class="btn btn-sm btnbtn-default fr  m-t-md m-r" onclick="add_right();"><i class="fa fa-plus m-r-xs"></i>添加权限</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">权限码：</label>
+                    <div class="col-sm-5 ">
+                        <table>
+                            <tbody><tr><th style="width:80%">权限码</th><th style="width: 50px;text-align: center;">操作</th></tr>
+                            </tbody>
+                            <tbody id="rightList">
+                            {volist name="row.right" id="val"}
+                                <tr><td><input type="text" name="right[]" value="{$val}" class="form-control" style="width:300px;"></td><td style="text-align: center;"><a href="javascript:;" class="ncap-btn" onclick="$(this).parent().parent().remove();">删除</a></td></tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <input type="hidden" pkid name="id" value="{$row.id|intval}">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..."><i class="fa fa-edit"></i>保存
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+
+        </div>
+    </div>
+</form>

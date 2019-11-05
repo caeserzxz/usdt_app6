@@ -1,0 +1,36 @@
+<table class="table table-bordered  table-hover ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+    <th width="50">ID</th>
+    <th width="120">所属分组</th>
+    <th width="150">权限名称</th>
+    <th >权限码</th>
+    <th width="80">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$vo.group}</td>
+    <td>{$vo.name}</td>
+    <td>{$vo.right}</td>
+	<td>
+        <a href="{:url('info',['id'=>$vo['id']])}" data-toggle="ajaxModal" title="编辑" class="fa fa-edit text-muted m-xs" ></a>
+        <a href="{:url('delete',['id'=>$vo['id']])}" data-toggle="ajaxRemove" data-msg="确定删除 " class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a>
+    </td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  
