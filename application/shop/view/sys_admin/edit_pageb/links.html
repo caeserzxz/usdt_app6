@@ -37,9 +37,9 @@
                 <li class="active"><a href="#sut_shop">商城</a></li>
                 <li class=""><a href="#sut_good">商品</a></li>
                 <li class=""><a href="#sut_cate">商品分类</a></li>
-                <li class=""><a href="#sut_article">文章营销</a></li>
+                <li class=""><a href="#sut_article">文章</a></li>
                 <li class="hide"><a href="#sut_coupon">超级券</a></li>
-                <li class="hide"><a href="#sut_diypage">店铺装修</a></li>
+                <li ><a href="#sut_diypage">装修</a></li>
 
             </ul>
             <div class="tab-content ">
@@ -84,13 +84,12 @@
                     </div>
                     <div id="select-coupon-list"></div>
                 </div>
-
                 <div class="tab-pane" id="sut_diypage">
-                    <div class="line hide">
-                        <nav title="选择" class="btn btn-default btn-sm" data-href="">选择</nav>
-                        <div class="text"><span class="label label-success label-sm">兑换中心</span> 兑换中心模板</div>
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入装修名称进行搜索" id="select-diypage-kw" value="" class="form-control">
+                        <span class="input-group-addon btn btn-default select-btn" data-type="diypage">搜索</span>
                     </div>
-
+                    <div id="select-diypage-list"></div>
                 </div>
             </div>
         </div>
@@ -100,8 +99,10 @@
         <script>
             $(function(){
                 $("#selectUrl").find('#selectUrlTab a').click(function(e) {
-                    $('#tab').val($(this).attr('href'));
+                    var _href = $(this).attr('href');
+                    $('#tab').val(_href);
                     e.preventDefault();
+
                     $(this).tab('show');
                 });
                 $(".select-btn").click(function(){

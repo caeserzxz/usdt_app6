@@ -17,7 +17,7 @@
     {if condition="$vo.is_new == 1"}
         <td>
             <a href="{:url('info',['id'=>$vo['st_id']])}"  title="编辑" class="fa fa-edit m-xs" ></a>
-            <a href="{:url('preview',['id'=>$vo['st_id']])}"  title="编辑" class="fa fa-search m-xs" ></a>
+            <a href="{:url('preview',['id'=>$vo['st_id']])}" target="_blank"  title="查看" class="fa fa-search m-xs" ></a>
         </td>
     {else/}
         <td><a href="{:url('sys_admin.editPage/index')}"  title="编辑" class="fa fa-edit m-xs" ></a></td>

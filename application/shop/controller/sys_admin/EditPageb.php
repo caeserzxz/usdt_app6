@@ -161,7 +161,7 @@ class EditPageb extends AdminController
     {
         $type = input('type','','trim');
         $kw = input('kw','','trim');
-        if (in_array($type,['good','article']) == false){
+        if (in_array($type,['good','article','diypage']) == false){
             return $this->error('请求错误.');
         }
         if ($type == 'good'){
@@ -175,6 +175,10 @@ class EditPageb extends AdminController
             $ArticleModel = new \app\mainadmin\model\ArticleModel();
             $where[] = ['title','like','%'.$kw.'%'];
             $list = $ArticleModel->where($where)->limit(20)->select()->toArray();
+        }elseif($type == 'diypage'){
+            $where[] = ['theme_type','=','index'];
+            $where[] = ['theme_name','like','%'.$kw.'%'];
+            $list = $this->Model->where($where)->limit(20)->select()->toArray();
         }
         $this->assign('list',$list);
         $this->assign('kw',$kw);

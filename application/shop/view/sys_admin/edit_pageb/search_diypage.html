@@ -1,0 +1,11 @@
+{volist name="list" id="vo" }
+<div class="line ">
+    <nav title="选择" class="btn btn-default btn-sm" data-href="/shop/index/diypage/pageid/{$vo.st_id}">选择</nav>
+    <div class="text">
+        {$vo.theme_name}
+    </div>
+</div>
+{/volist}
+{empty name="list"}
+<div class="tip">抱歉！未查询到与“{$kw}”相关的装修，请更换关键字后重试。</div>
+{/empty}

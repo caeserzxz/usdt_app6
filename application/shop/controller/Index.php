@@ -75,6 +75,7 @@ class Index  extends ClientbaseController{
             $theme = $ShopPageTheme->find($pageid);
         }else{
             $theme = $ShopPageTheme->where('is_index',1)->find();
+            $pageid = $theme['st_id'];
         }
         if (empty($theme)){
             return $this->error('页面不存在.');
