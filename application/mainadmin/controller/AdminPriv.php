@@ -75,7 +75,6 @@ class AdminPriv extends AdminController
         }else{
             $data['right'] = [];
         }
-        print_r($data);
 		return $data;
 	}
     /*------------------------------------------------------ */
