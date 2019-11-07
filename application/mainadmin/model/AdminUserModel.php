@@ -44,13 +44,7 @@ class AdminUserModel extends BaseModel
 	   $roleInfo = $AdminRoleModel->find($user['role_id']);
 	   $actionArr = 'all';
 	   if ($roleInfo['role_action'] != 'all'){
-		   $actionArr = [];
-		   $role_action = explode(',',$roleInfo['role_action']);
-		   foreach ($role_action as $action){
-			   $action = explode('|',$action);
-			   $key = $action[0].'|'.$action[1];
-			   $actionArr[$key][] = $action[2];
-		   }
+           $actionArr = explode(',',$roleInfo['role_action']);
 	   }
 	    Cache::rm('main_menu_priv_list_'.$user['user_id']);//清理菜单缓存
         // 保存登录状态

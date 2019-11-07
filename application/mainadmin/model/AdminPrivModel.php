@@ -30,7 +30,8 @@ class AdminPrivModel extends BaseModel
 		}
 		$rows = $this->select()->toArray();
 		foreach ($rows as $row){
-			$data[$row['id']] = $row;
+            $row['right'] = explode(',',strtolower($row['right']));
+			$data[$row['group']][] = $row;
 		}
 		Cache::set(self::$mkey,$data,600);
 		return $data;

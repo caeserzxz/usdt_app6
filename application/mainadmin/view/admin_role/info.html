@@ -25,47 +25,16 @@
  </table>
 <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered " >
-  {volist name="menuList" id="va"}
+  {volist name="menuList" id="menu"}
      <tbody class="purview_box">
            <tr>
-              <td  width="60"><strong>{$va.name}</strong></td>
-                <td valign="top" colspan="2">
-                    {volist name="va.list" id="vb"}
-                        {if condition="$vb['right'] == 'manage'" }
-                            <label><input name="role_action[]" type="checkbox" {:in_array($vb.group.'|'.$vb.controller.'|'.$vb.right,$row['role_action'])?'checked':''} value="{$vb.group}|{$vb.controller}|{$vb.right}" /> {$vb.name}</label>
-                        {/if}
+               <td  width="60"><label><input type="checkbox" class="all_check" data-type="{$menu.group}"> {$menu.name}</label></td>
+                <td valign="top" colspan="2" >
+                    {volist name="allPriv[$menu['group']]" id="priv"}
+                            <label><input class="{$menu.group}" name="role_action[]" type="checkbox" {:in_array($priv['id'],$row['role_action'])?'checked':''} value="{$priv.id}" /> {$priv.name}</label>
                     {/volist}
                 </td>
            </tr>
-            {volist name="va.list" id="vb"}
-                {if condition="empty($vb['submenu']) == false && empty($vb['right']) == true" }
-                      <tr>
-                          <td valign="top" width="30"></td>
-                          <td valign="top" width="30"> <label>{$vb.name}：</label></td>
-                          <td valign="top">
-                            {volist name="vb.submenu" id="vc"}
-                                 {if condition="$vc['right'] == 'manage' || $vc['right'] == 'download'" }
-                            		 <label><input name="role_action[]" type="checkbox" {:in_array($vc.group.'|'.$vc.controller.'|'.$vc.right,$row['role_action'])?'checked':''} value="{$vc.group}|{$vc.controller}|{$vc.right}" /> {$vc.name}</label>
-                                 {elseif condition="empty($vc['_right'])==false" }
-                                     <div><label>{$vc.name}：</label>
-                                         {if condition="empty($vc['submenu'])"}
-                                             {volist name="vc._right" id="right"}
-                                                <label><input name="role_action[]" type="checkbox" {:in_array($vc.group.'|'.$vc.controller.'|'.$right,$row['role_action'])?'checked':''} value="{$vc.group}|{$vc.controller}|{$right}" /> {$purviewArr[$right]}</label>
-                                             {/volist}
-                                         {else/}
-                                            {volist name="vc.submenu" id="vd"}
-                                                 {volist name="vd._right" id="dright"}
-                                                    <label><input name="role_action[]" type="checkbox" {:in_array($vd.group.'|'.$vd.controller.'|'.$dright,$row['role_action'])?'checked':''} value="{$vd.group}|{$vd.controller}|{$dright}" /> {$vd.name}</label>
-                                                 {/volist}
-                                            {/volist}
-                                         {/if}
-                                     </div>
-                                 {/if}
-                            {/volist}
-                        	</td>
-          			  </tr>
-                 {/if}
-             {/volist}
       </tbody>
     {/volist}
 </table>

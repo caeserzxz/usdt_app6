@@ -17,7 +17,7 @@
     <td>{$vo.id}</td>
     <td>{$vo.group}</td>
     <td>{$vo.name}</td>
-    <td>{$vo.right}</td>
+    <td><div style="width:500px;overflow-x: auto;">{$vo.right}</div></td>
 	<td>
         <a href="{:url('info',['id'=>$vo['id']])}" data-toggle="ajaxModal" title="编辑" class="fa fa-edit text-muted m-xs" ></a>
         <a href="{:url('delete',['id'=>$vo['id']])}" data-toggle="ajaxRemove" data-msg="确定删除 " class="m-xs" title="删除">

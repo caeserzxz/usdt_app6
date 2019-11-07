@@ -48,7 +48,7 @@ class Operate extends AdminController
 		}
         $export = input('export', 0, 'intval');
         if ($export > 0) {
-            return $this->exportOrder($where);
+            return $this->export($where);
         }
         $data = $this->getPageList($this->Model,$where);
 		$this->assign("data", $data);
@@ -61,9 +61,9 @@ class Operate extends AdminController
     }
 
     /*------------------------------------------------------ */
-    //-- 导出订单
+    //-- 导出
     /*------------------------------------------------------ */
-    public function exportOrder($where)
+    private function export($where)
     {
 
         $count = $this->Model->where($where)->count('log_id');

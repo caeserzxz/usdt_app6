@@ -44,11 +44,13 @@ class AdminRole extends AdminController
     //-- 调用详细页
     /*------------------------------------------------------ */
     public function asInfo($data) {
-		$menuList = model(MenuListModel)->getList();
-		//print_r($menuList);
-		$this->assign("menuList", $menuList);
-		$data['role_action'] = explode(',',$data['role_action']);
-		$this->assign("purviewArr", ['manage'=>'管理权限','download'=>'下载权限','export'=>'导出','view'=>'查看权限','edit'=>'添加/修改','del'=>'删除权限']);
+        $where[] = ['pid', '=', 0];
+        $where[] = ['status', '=', 1];
+        $menuList = (new MenuListModel)->where($where)->select()->toArray();
+        $this->assign("menuList", $menuList);
+        $allPriv = (new \app\mainadmin\model\AdminPrivModel)->getRows();
+        $this->assign("allPriv", $allPriv);
+        $data['role_action'] = explode(',',$data['role_action']);
 		return $data;
 	}
 	/*------------------------------------------------------ */

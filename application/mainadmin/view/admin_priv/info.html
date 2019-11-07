@@ -31,11 +31,11 @@
                         <select class="input-medium" id="controller" >
                             <option value="">选择控制器</option>
                             {volist name="planList" id="vo"}
-                                <option class="option-{$vo.key} {$vo['key']==$row['group']?'':'hide'}"  value="{$vo.key}:{$vo.val}" >{$vo.val}</option>
+                                <option class="option-{$vo.module} {$vo['key']==$row['group']?'':'hide'}"  value="{$vo.key}:{$vo.val}" >{$vo.val}</option>
                             {/volist}
                         </select>
                         <select class="input-medium"  id="fun_list">
-                            <option value="">选择方法</option>
+                            <option value="allPriv">选择方法</option>
                         </select>
                         <a href="javascript:;"  class="btn btn-sm btnbtn-default fr  m-t-md m-r" onclick="add_right();"><i class="fa fa-plus m-r-xs"></i>添加权限</a>
                     </div>

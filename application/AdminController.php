@@ -61,7 +61,7 @@ class AdminController extends BaseController
         $this->checkLogin();
         if ($check_priv == true){
             //自动验证权限
-            $this->_priv();
+            $this->_priv($this->module,$this->controller,$this->action);
         }
         // 全局layout
         $this->layout();
@@ -72,12 +72,11 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     private function layout()
     {
-
         // 验证当前请求是否在白名单,ajax调用也不执行
         if ($this->request->isAjax() == false || !in_array($this->routeUri, $this->notLayoutAction)) {
             if ($this->action == 'info' && $this->request->isPost() == true) return false;//如果是info页提交也不执行
 
-            if (in_array($this->module, ['fightgroup','integral', 'second'])) {
+            if (in_array($this->module, config('config.shop_modules'))) {
                 $this->module = 'shop';
             }
             // 输出到view
@@ -95,50 +94,35 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     //-- 权限验证
     /*------------------------------------------------------ */
-    protected function _priv($now = '', $action = '', $isAll = true, $isReturn = false)
+    protected function _priv($module = '', $controller = '', $action = '', $isAll = true, $isReturn = false)
     {
-        static $MenuListModel;
+        static $allPriv;
         if ($this->isCheckPriv == false) return true;
         $role_action = $this->admin['info']['role_action'];
-        if ($role_action == 'all') {
+        if ($role_action == 'all' || $action == 'welcome') {
             if ($isAll == true) return true;
             if ($isReturn == true) return false;
             $this->error('你无操作权限.');
         }
-        if (empty($now)) {
-            $now = $this->module . '|' . $this->controller;
-        }
-        $role_action = $role_action[$now];//获取角色权限
-        if (empty($role_action)) {//没有权限
-            if (isset($MenuListModel) == false){
-                $MenuListModel = new \app\mainadmin\model\MenuListModel();
-            }
-            $noPrivList = $MenuListModel->getNoPriv();//获取未定义权限的菜单
-            if (in_array($now, $noPrivList)) {
-                return true;
-            }
-            if ($isReturn == true) return false;
-            $this->error('你无操作权限.');
-        }
-        if (empty($action) == true){
-            $action = $this->action;
+        if (isset($allPriv) == false) {
+            $allPriv = (new \app\mainadmin\model\AdminPrivModel)->getRows();
         }
 
-        if ($action == 'info') {
-            if ($this->request->isPost() == true) {
-                $isTrue = array_intersect(['manage', 'edit'], $role_action);
-            } else {
-                $isTrue = array_intersect(['view', 'manage'], $role_action);
-            }
-        } elseif ($action == 'ajaxEdit') {
-            $isTrue = array_intersect(['manage', 'edit'], $role_action);
-        } elseif (in_array($action, array('index', 'getList', 'trashList', 'search'))) {
-            $isTrue = array_intersect(['manage', 'view'], $role_action);
-        } elseif (in_array($action, array('download', 'export'))) {
-            $isTrue = array_intersect(['download', 'export'], $role_action);
+        if (in_array($module, config('config.shop_modules'))) {
+            $privRows = $allPriv['shop'];
         }else{
-            $isTrue = true;
+            $privRows = $allPriv[$module];
         }
+        $privIds = [];
+        $module_controller = str_replace(['_','sysadmin.'],'',$module.':'.$controller.':');
+        foreach ($privRows as $row){
+            foreach ($row['right'] as $right){
+                if (in_array($right,[$module_controller.$action,$module_controller.'allpriv'])){
+                    $privIds[] = $row['id'];
+                }
+            }
+        }
+        $isTrue = empty($privIds) ? true : array_intersect($role_action,$privIds);
         if (empty($isTrue) == false) return true;
         if ($isReturn == true) return false;
         $this->error('你无操作权限.');
@@ -146,9 +130,9 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     //-- 权限验证，用于判断返回真假
     /*------------------------------------------------------ */
-    public function _privIf($now = '', $action = '', $isAll = true)
+    public function _privIf($module = '',$controller = '', $action = '', $isAll = true)
     {
-        return $this->_priv($now, $action, $isAll, true);
+        return $this->_priv($module, $controller, $action, $isAll, true);
     }
     /*------------------------------------------------------ */
     //-- 获取有权限的菜单
@@ -164,7 +148,7 @@ class AdminController extends BaseController
         //权限过滤
         foreach ($rows as $row) {
             if (empty($row['controller']) == false){
-                if ($this->_privIf($row['group'].'|'.$row['controller'], $row['action'] ) == false){
+                if ($this->_privIf($row['group'],$row['controller'], $row['action'] ) == false){
                     continue;
                 }
             }
@@ -177,7 +161,7 @@ class AdminController extends BaseController
             $key = $row['pid'] < 1 ? $row['group'] : $row['id'];
             if ($row['pid'] > 0) {
                 if (empty($row['controller']) == true){
-                    if ($this->_privIf($row['group'].'|'.$row['controller'], $row['action'] ) == false){
+                    if ($this->_privIf($row['group'],$row['controller'], $row['action'] ) == false){
                         continue;
                     }
                 }
@@ -330,13 +314,13 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     public function info()
     {
-
         $pk = $this->Model->pk;
         if ($this->request->isPost()) {
             if (false === $data = $_POST) {
                 $this->error($this->Model->getError());
             }
             if (empty($data[$pk])) {
+                $this->_priv($this->module,$this->controller,'add');
                 if (method_exists($this, 'beforeAdd')) {
                     $data = $this->beforeAdd($data);
                 }
@@ -352,6 +336,7 @@ class AdminController extends BaseController
                     return $this->success('添加成功.', url('index'));
                 }
             } else {
+                $this->_priv($this->module,$this->controller,'edit');
                 if (method_exists($this, 'beforeEdit')) {
                     $data = $this->beforeEdit($data);
                 }
