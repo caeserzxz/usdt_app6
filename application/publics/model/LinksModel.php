@@ -4,7 +4,7 @@ namespace app\publics\model;
 use app\BaseModel;
 
 //*------------------------------------------------------ */
-//-- 字典调用
+//-- 商城link调用
 /*------------------------------------------------------ */
 class LinksModel extends BaseModel
 {
@@ -52,6 +52,9 @@ class LinksModel extends BaseModel
             ],[
                 'name' => '每日签到',
                 'url' =>'/member/user_sign/index'
+            ],[
+                'name' => '领券中心',
+                'url' =>'/shop/bonus/bonuscenter'
             ]
         ];
         //判断拼团模块是否存在
