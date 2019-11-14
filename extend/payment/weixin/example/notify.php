@@ -83,7 +83,7 @@ class PayNotifyCallBack extends WxPayNotify
             }
             //Log::DEBUG("充值验证:" . $order_sn);
             $RechargeLogModel = new RechargeLogModel();
-            $orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('log_id,order_amount,user_id,status')->find();
+            $orderInfo = $RechargeLogModel->where('order_sn',"$order_sn")->field('order_id,order_amount,user_id,status')->find();
             if (empty($orderInfo)) return false;
             $orderInfo = $orderInfo->toArray();
             if ($orderInfo['status'] == 9) return true;
