@@ -78,14 +78,17 @@ class DividendModel extends BaseModel
         $OrderModel = new OrderModel();
         $shop_after_sale_limit = settings('shop_after_sale_limit');//售后时间
         if ($order_id > 0) {
-            $where[] = ['order_id', '=', $order_id];
-            $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
             if ($order_type == 'role_order'){
+                $where[] = ['order_id', '=', $order_id];
+                $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
                 $where[] = ['order_type', '=', $order_type];
+                $rows = $this->where($where)->select()->toArray();
             }else{
-                $where[] = ['order_type', 'in', ['order','up_back']];
+                $where[] = ['d.order_id', '=', $order_id];
+                $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
+                $where[] = ['d.order_type', 'in', ['order','up_back']];
+                $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
             }
-            $rows = $this->where($where)->select()->toArray();
         } else {
             if ($order_type == 'role_order'){
                 $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
@@ -111,16 +114,15 @@ class DividendModel extends BaseModel
         $AccountLogModel = new AccountLogModel();
         $log_id = [];
         foreach ($rows as $row) {
-            if ($shop_after_sale_limit > 0 ){
-                if (isset($row['is_after_sale']) && $row['is_after_sale'] == 1){
-                    continue;//有售后，暂不能分佣
-                }
-            }
-
             if ($row['order_type'] == 'role_order'){
                 $changedata['change_desc'] = '身份单佣金到帐';
                 $changedata['change_type'] = 10;
             }else{
+                if ($shop_after_sale_limit > 0 ){
+                    if (isset($row['is_after_sale']) && $row['is_after_sale'] == 1){
+                        continue;//有售后，暂不能分佣
+                    }
+                }
                 $changedata['change_desc'] = '订单佣金到帐';
                 $changedata['change_type'] = 4;
             }
