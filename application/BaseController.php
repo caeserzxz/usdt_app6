@@ -304,7 +304,9 @@ class BaseController extends Controller
         
 		if (empty($ext_arr[$file_type]) == false){
         	$upload->allowExts = $ext_arr[$file_type];  //文件类型限制
-		}
+		}else{
+            $upload->allowExts = $ext_arr['image'];
+        }
         $upload->savePath =  config('config._upload_'). $file_type . '/';
         $upload->saveRule = 'uniqid';
         $upload->autoSub = true;
