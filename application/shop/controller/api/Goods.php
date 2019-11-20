@@ -22,6 +22,7 @@ class Goods extends ApiController
     //-- 获取商品列表
     /*------------------------------------------------------ */
     public function getList(){
+        $this->Model->autoSale();//自动上下架处理
         $where[] = ['is_delete','=',0];
         $where[] = ['is_alone_sale','=',1];
         $where[] = ['isputaway','=',1];

@@ -634,4 +634,37 @@ class GoodsModel extends BaseModel
         Cache::set($mkey, $gooodsList, 60);
         return $gooodsList;
     }
+    /*------------------------------------------------------ */
+    //-- 自动上下架商品
+    /*------------------------------------------------------ */
+    public function autoSale()
+    {
+        $cache = Cache::init();
+        $_redis = $cache->handler();
+        $mkey = 'auto_sale';
+        $lock_time = $_redis->setnx($mkey,time()+5);
+        if ($lock_time == false){
+            $lock_time = $_redis->get($mkey);
+            if(time()>$lock_time){
+                $_redis->del($mkey);
+                $lock_time = $_redis->setnx($mkey,time()+5);
+                if ($lock_time == false) return false;
+            }else{
+                return false;
+            }
+        }
+
+        //自动上架处理
+        $where[] = ['isputaway','=',2];
+        $where[] = ['added_time','<',time()];
+        $where[] = ['shelf_time','>',time()];
+        $this->where($where)->update(['isputaway'=>1]);
+        //自动下架处理
+        $where = [];
+        $where[] = ['isputaway','=',1];
+        $where[] = ['shelf_time','>',0];
+        $where[] = ['shelf_time','<',time()];
+        $this->where($where)->update(['isputaway'=>2]);
+        return true;
+    }
 }

@@ -42,6 +42,7 @@ class Goods extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+        $this->Model->autoSale();//自动上下架处理
         $this->getList(true);
         return $this->fetch('index');
     }
@@ -202,6 +203,10 @@ class Goods extends AdminController
         $this->assign('specifications', json_encode($specifications));
         $this->assign('products', json_encode($products));
         $this->assign('goods_status', config('config.goods_status'));
+        //自动上下架判断重置
+        if ($data['shelf_time'] > time()){
+            $data['isputaway'] = 2;
+        }
         return $data;
     }
     /*------------------------------------------------------ */
@@ -377,7 +382,8 @@ class Goods extends AdminController
             $row['store_id'] = $this->store_id;//门店ID
         } else {
             $row['is_alone_sale'] = isset($row['is_alone_sale']) ? 1 : 0;
-            //上架处理
+
+            //自动上下架处理
             if ($row['isputaway'] == 2) {
                 if (empty($row['added_time']) || empty($row['shelf_time'])) return $this->error('操作失败:请选择上下架的时间.');
                 if (!checkDateIsValid($row['added_time'])) return $this->error('操作失败:上下架的开始时间格式不合法.');
@@ -385,6 +391,9 @@ class Goods extends AdminController
                 $row['added_time'] = strtotime($row['added_time']);
                 $row['shelf_time'] = strtotime($row['shelf_time']);
                 if ($row['added_time'] >= $row['shelf_time']) return $this->error('操作失败:下架时间必须大于上架时间.');
+            }else{
+                $row['added_time'] = 0;
+                $row['shelf_time'] = 0;
             }
             //促销处理
             if ($row['is_promote'] == 1) {

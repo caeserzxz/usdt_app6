@@ -14,10 +14,6 @@ class Index  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index($isIndex = false){
-		//调用自定义首页
-		if ($isIndex == false && settings('shop_index_tpl') == 1){
-			return $this->diypage();
-		}
 		$tipsubscribe = 0;//是否显示提示关注
         //微信网页访问执行
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
@@ -25,6 +21,11 @@ class Index  extends ClientbaseController{
                 $subscribe = (new \app\weixin\model\WeiXinUsersModel)->where('user_id',$this->userInfo['user_id'])->value('subscribe');
                 $tipsubscribe = $subscribe == 1 ? 0 : 1;
             }
+        }
+        $this->assign('tipsubscribe', $tipsubscribe);
+        //调用自定义首页
+        if ($isIndex == false && settings('shop_index_tpl') == 1){
+            return $this->diypage();
         }
         //优惠券提示层背景
         $reg_bonus_bg=settings('reg_bonus_bg');
@@ -34,11 +35,11 @@ class Index  extends ClientbaseController{
         $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
         $this->assign('headline', $headline);
         
-        $this->assign('tipsubscribe', $tipsubscribe);
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
 		$this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单
 		$GoodsModel = new GoodsModel();
+        $GoodsModel->autoSale();//自动上下架处理
 		$this->assign('classGoods',$GoodsModel->getIndexClass());//获取首页分类
 		$this->assign('bestGoods',$GoodsModel->getIndexBestGoods());//获取首页分类
 		return $this->fetch('index');
