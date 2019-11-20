@@ -51,6 +51,10 @@ class MiniUsersModel extends BaseModel
 				return $this->do_login($wx_info['user_id'],$data['source']);
 	    	}
 		}
+
+		//过滤微信名里面的表情特殊符号
+		$data['nickName'] = filterEmoji($data['nickName']);
+
 		$sex_arr = ['未知','男','女'];
 		//没有数据，执行注册会员
 		$inarr['user_id'] = 0;
