@@ -619,3 +619,20 @@ function get_client_ip($type = 0) {
     $ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
     return $ip[$type];
 }
+
+/**
+* 过滤微信名里面的表情特殊符号
+*/
+function filterEmoji($str){
+	$str = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $str);
+	$str = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $str);
+	$str = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $str);
+	$str = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $str);
+	$str = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $str);
+	$str = str_replace(array('"','\''), '', $str);
+	$str = preg_replace_callback( '/./u',function (array $match) {
+      		return strlen($match[0]) >= 4 ? '' : $match[0];
+    	},$str);
+	$str  = addslashes(trim($str));
+ 	return $str;
+}
