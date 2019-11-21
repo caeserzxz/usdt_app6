@@ -550,9 +550,11 @@ class GoodsModel extends BaseModel
                 if ($type == 'cancel') {
                     $sub_data['goods_number'] = ['INC', $grow['goods_number']];
                     $data['sale_num'] = ['DEC', $grow['goods_number']];
+                    $data['goods_number'] = ['INC', $grow['goods_number']];
                 } else {
                     $sub_data['goods_number'] = ['DEC', $grow['goods_number']];
                     $data['sale_num'] = ['INC', $grow['goods_number']];
+                    $data['goods_number'] = ['DEC', $grow['goods_number']];
                 }
                 $sub_map['goods_id'] = $grow['goods_id'];
                 $sub_map['sku_val'] = $grow['sku_val'];

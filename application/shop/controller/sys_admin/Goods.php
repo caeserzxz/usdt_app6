@@ -321,16 +321,16 @@ class Goods extends AdminController
         } else {//多规格处理
             $Products = input('post.Products');
             $goods_sn = [];
-            $row['goods_number'] = 0;
             $prices = $market_price = [];
             $PromotePrice = 0;
+            $goods_number = 0;
             foreach ($Products as $prow) {
                 if (in_array($prow['ProductSn'], $goods_sn)) {
                     return $this->error('子商品列表中货号【' . $prow['ProductSn'] . '】重复，系统不允许货号重复.');
                 }
                 $goods_sn[] = $prow['ProductSn'];
-                if (empty($prow['Store']) == false && $prow['Store'] > 0) {
-                    $row['goods_number'] += $prow['Store'];
+                if (empty($prow['Store']) == false && $prow['Store'] != 0) {
+                    $goods_number += $prow['Store'];
                 }
                 if ($this->supplyer_id > 0) {
                     $prices[] = $prow['SettlePrice'];
@@ -346,6 +346,7 @@ class Goods extends AdminController
                     $PromotePrice += $prow['PromotePrice'];
                 }
             }
+            $row['goods_number'] =  ['INC', $goods_number] ;
             if (empty($goods_sn)) return $this->error('未知错误，未能获取子商品数据.');
             if ($row['is_promote'] == 1 && $PromotePrice <= 0) {
                 return $this->error('操作失败，开启促销至少有一个sku促销价大于0.');
@@ -704,6 +705,7 @@ class Goods extends AdminController
             $Products = input('post.Products');
             $time = time();
             foreach ($Products as $prow) {
+                $upData = [];
                 if ($this->is_supplyer == true) {//平台管理供应商处理
                     $upData['shop_price'] = $prow['Price'];
                     $upData['promote_price'] = $prow['PromotePrice'];
@@ -730,8 +732,9 @@ class Goods extends AdminController
                         return $this->error('操作失败:获取商品SKU值失败，请重试.');
                     }
                     $upData['update_time'] = $time;
+
                     if ($prow['SkuId'] > 0) {
-                        if ($prow['Store'] > 0) {
+                        if ($prow['Store'] != 0) {
                             $upData['goods_number'] = ['INC', $prow['Store'] * 1];
                         }
                         $res = $GoodsSkuModel->where('sku_id', $prow['SkuId'])->update($upData);
