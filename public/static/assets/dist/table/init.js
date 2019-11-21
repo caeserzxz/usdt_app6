@@ -1,11 +1,11 @@
-function diy_Paginator(b,pagesTotal,pageCurrent,totalCount)
+function diy_Paginator(b,pagesTotal,pageCurrent,totalCount,otherTotal)
 {	
 	var e = b("ul.pagination");
 	e.html('');
 	if (pagesTotal > -1)$('.footer .text-muted').html('');
 	if (pagesTotal > 0)
 	{		
-		$('.footer .text-muted').html('总共'+totalCount+'条,共'+pagesTotal+'页');		
+		$('.footer .text-muted').html('总共'+totalCount+'条,共'+pagesTotal+'页'+otherTotal);
 	}	
 	e.length > 0 && e.Paginator({
 			totalPages: pagesTotal==-1?e.data("pagesTotal"):pagesTotal,
@@ -59,7 +59,7 @@ function _search_list(obj,p,b){
 	iq_totalPages = res.data.page_count;
 	diy_sortable(obj,b);
 	//if (p >= 1) return false;	
-	diy_Paginator(b,res.data.page_count,p,res.data.total_count);
+	diy_Paginator(b,res.data.page_count,p,res.data.total_count,res.data.otherTotal);
 	return false;
 }
 define(assets_path + "/assets/dist/table/init", ["$", "dist/application/app", "./paginator", "./talbe-search"],
