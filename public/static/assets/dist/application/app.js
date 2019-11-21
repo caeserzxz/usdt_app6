@@ -554,7 +554,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             if (_val == val) return false;
                             $.post(u,'field='+f+'&value='+_val,function(res){
                                 if (res.code != 0){
-                                    d.html(val);
+                                    d.html(_val);
                                     return false;
                                 }else{
                                     G.ui.tips.suc(res.msg);
