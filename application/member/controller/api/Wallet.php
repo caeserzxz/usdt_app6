@@ -39,7 +39,7 @@ class Wallet extends ApiController
 		if (empty($payList[$inArr['pay_code']])){
             return $this->error('支付方式不存在.');
         }
-		if ($inArr['pay_type'] == 'offline'){
+		if ($inArr['pay_code'] == 'offline'){
 			//处理图片
 			$imgfile = input('imgfile');
 			if (empty($imgfile)){

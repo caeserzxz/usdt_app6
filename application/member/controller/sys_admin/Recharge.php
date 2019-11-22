@@ -79,7 +79,7 @@ class Recharge extends AdminController
 		$userRechargeType = $this->getDict('UserRechargeType');
 		$data['status_name'] = $userRechargeType[$data['status']]['name'];
 		$this->assign("payList", (new PaymentModel)->getRows(false,'pay_code'));
-		if ($data['pay_type'] == 'offline'){
+		if ($data['pay_code'] == 'offline'){
 			$data['imgs'] = explode(',',$data['imgs']);
 		}	
 		return $data;

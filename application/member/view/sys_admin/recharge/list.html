@@ -15,7 +15,7 @@
 <tr>
 <td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
 <td>{$vo.add_time|dateTpl}</td>
-<td>{$payment[$vo['pay_type']]['pay_name']}</td>
+<td>{$payment[$vo['pay_code']]['pay_name']}</td>
 <td>{$vo.order_amount|priceFormat}</td>
 <td>{$userRechargeType[$vo['status']]['dict_val']}</td>
 <td>{$vo.update_time|dateTpl}</td>
