@@ -1,7 +1,6 @@
 <?php
 
 namespace app\shop\controller\sys_admin;
-use think\Db;
 
 use app\AdminController;
 use app\shop\model\OrderModel;
@@ -754,17 +753,7 @@ EOF;
         $config = config('config.');
         if ($orderInfo['order_status'] != $config['OS_CANCELED']) return $this->error('非取消订单不能恢复.');
         $data['is_stock'] = 1;//恢复订单优先扣减库存
-        $orderGoods= $this->Model->orderGoods($orderInfo['order_id']);
-        Db::startTrans();//启动事务
-        if ($orderInfo['order_type'] == 1) {//积分订单
-            $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($orderGoods['goodsList']);
-        } else {
-            $res = (new GoodsModel)->evalGoodsStore($orderGoods['goodsList']);
-        }
-        if ($res !== true) {//扣库存失败，终止
-            Db::rollback();// 回滚事务
-            return $this->error('扣库存失败.');
-        }
+
         $data['order_id'] = $order_id;
         if ($orderInfo['pay_status'] == $config['PS_PAYED']) {
             $data['order_status'] = $config['OS_CONFIRMED'];
@@ -772,7 +761,7 @@ EOF;
             $data['order_status'] = $config['OS_UNCONFIRMED'];
         }
 
-        $res = $this->Model->upInfo($data);
+        $res = $this->Model->upInfo($data,'recover');
         if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];
         $this->Model->_log($orderInfo, '恢复取消订单');

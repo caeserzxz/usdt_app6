@@ -510,6 +510,20 @@ class OrderModel extends BaseModel
                 Db::rollback();// 回滚事务
                 return '佣金处理失败.';
             }
+        }elseif ($extType == 'recover') {//恢复订单
+            $orderGoods = $this->orderGoods($orderInfo['order_id']);
+            if ($orderInfo['order_type'] == 1) {//积分订单
+                $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($orderGoods['goodsList']);
+            } elseif ($orderInfo['order_type'] == 2) {//拼团订单
+                $goods = $orderGoods['goodsList'][0];
+                $res = (new \app\fightgroup\model\FightGoodsModel)->evalGoodsStore($orderInfo['by_id'], $goods['goods_id'], $goods['sku_id'], $goods['goods_number']);
+            } else {
+                $res = (new GoodsModel)->evalGoodsStore($orderGoods['goodsList']);
+            }
+            if ($res !== true) {//扣库存失败，终止
+                Db::rollback();// 回滚事务
+                return '恢复订单，扣库存失败.';
+            }
         }
         $upData['update_time'] = $time;
         if(!empty($lockWhere)){
