@@ -18,7 +18,7 @@ return [
 			$config['OS_CONFIRMED']=>'已确认',
 			$config['OS_CANCELED']=>'<font color="red">取消</font>',
 			$config['OS_RETURNED']=>'<font color="red">退货</font>',
-			$config['OS_MISSING']=>'<font color="red">快递丢失</font'
+			$config['OS_MISSING']=>'<font color="red">快递丢失</font>'
 		],
 		'ps'=>[
 			$config['PS_UNPAYED']=>'未付款',
