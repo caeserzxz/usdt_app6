@@ -360,7 +360,7 @@ class Flow extends ApiController
         $inArr['is_success'] = 1;//普通订单默认有效，如果拼团默认为0，须拼团成功才会为1
         //执行商品库存和销量处理，后台设置下单减库存或余额支付时执行
         $shop_reduce_stock = settings('shop_reduce_stock');
-        $inArr['is_stock'] = $shop_reduce_stock;
+        $inArr['is_stock'] = $shop_reduce_stock == 0 ? 1 : 0;
         Db::startTrans();//启动事务
         $OrderModel = new OrderModel();
         $inArr['order_sn'] = $OrderModel->getOrderSn();

@@ -1,9 +1,9 @@
 <?php
 
 namespace app\shop\controller\sys_admin;
+use think\Db;
 
 use app\AdminController;
-
 use app\shop\model\OrderModel;
 use app\shop\model\OrderGoodsModel;
 use app\shop\model\OrderLogModel;
@@ -11,7 +11,6 @@ use app\shop\model\ShippingModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\PrintTemplateModel;
-
 use app\distribution\model\DividendRoleModel;
 
 /**
@@ -753,15 +752,26 @@ EOF;
         $order_id = input('id', 0, 'intval');
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
-        if ($orderInfo['order_status'] != $config['OS_CANCELED']) return $this->error('非取消订单不能恢复！');
+        if ($orderInfo['order_status'] != $config['OS_CANCELED']) return $this->error('非取消订单不能恢复.');
+        $data['is_stock'] = 1;//恢复订单优先扣减库存
+        $orderGoods= $this->Model->orderGoods($orderInfo['order_id']);
+        Db::startTrans();//启动事务
+        if ($orderInfo['order_type'] == 1) {//积分订单
+            $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($orderGoods['goodsList']);
+        } else {
+            $res = (new GoodsModel)->evalGoodsStore($orderGoods['goodsList']);
+        }
+        if ($res !== true) {//扣库存失败，终止
+            Db::rollback();// 回滚事务
+            return $this->error('扣库存失败.');
+        }
         $data['order_id'] = $order_id;
         if ($orderInfo['pay_status'] == $config['PS_PAYED']) {
             $data['order_status'] = $config['OS_CONFIRMED'];
         }else{
             $data['order_status'] = $config['OS_UNCONFIRMED'];
         }
-        $shop_reduce_stock = settings('shop_reduce_stock');
-        $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
+
         $res = $this->Model->upInfo($data);
         if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];
