@@ -130,7 +130,10 @@ class OrderModel extends BaseModel
             } catch (Exception $e) {
             }
 
-            list($info['goodsList'], $info['allNum'], $info['isReview']) = $this->orderGoods($order_id);
+            $orderGoods = $this->orderGoods($order_id);
+            $info['goodsList'] = $orderGoods['goodsList'];
+            $info['allNum'] = $orderGoods['allNum'];
+            $info['isReview'] = $orderGoods['isReview'];
             //end
             Cache::set($this->mkey . $order_id, $info, 30);
         }
@@ -243,7 +246,7 @@ class OrderModel extends BaseModel
                 $isReview = 1;
             }
         }
-        return [$goodsList, $allNum, $isReview];
+        return ['goodsList'=>$goodsList, 'allNum'=>$allNum, 'isReview'=>$isReview];
     }
 
     /*------------------------------------------------------ */
@@ -355,15 +358,15 @@ class OrderModel extends BaseModel
                 }
             }//end
             if ($orderInfo['is_stock'] == 1) {//执行商品库存和销量处理
-                $goodsList = $this->orderGoods($order_id);
+                $orderGoods = $this->orderGoods($order_id);
                 if ($orderInfo['order_type'] == 1) {//积分订单
-                    $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList'], 'cancel');
+                    $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($orderGoods['goodsList'], 'cancel');
                     if ($res != true) {
                         Db::rollback();//回滚
                         return '取消积分订单退库存失败.';
                     }
                 } elseif ($orderInfo['order_type'] == 2) {//拼团订单
-                    $goods = $goodsList[0][0];
+                    $goods = $orderGoods['goodsList'][0];
                     $res = (new \app\fightgroup\model\FightGoodsModel)->evalGoodsStore($orderInfo['by_id'], $goods['goods_id'], $goods['sku_id'], $goods['goods_number'], 'cancel');
                     if ($res != true) {
                         Db::rollback();//回滚
@@ -377,7 +380,7 @@ class OrderModel extends BaseModel
                         }
                     }
                 } else {
-                    $res = $GoodsModel->evalGoodsStore($goodsList['goodsList'], 'cancel');
+                    $res = $GoodsModel->evalGoodsStore($orderGoods['goodsList'], 'cancel');
                     if ($res != true) {
                         Db::rollback();//回滚
                         return '取消订单退库存失败.';
@@ -762,12 +765,12 @@ class OrderModel extends BaseModel
         //执行库存扣除，下单时未扣库存，则支付成功后扣除
         //先扣库存才能拆分订单，拆分订单时不扣库存
         if ($orderInfo['is_stock'] == 0) {
-            $goodsList = $this->orderGoods($orderInfo['order_id']);
+            $orderGoods= $this->orderGoods($orderInfo['order_id']);
             Db::startTrans();//启动事务
             if ($orderInfo['order_type'] == 1) {//积分订单
-                $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($goodsList['goodsList']);
+                $res = (new \app\integral\model\IntegralGoodsListModel)->evalGoodsStore($orderGoods['goodsList']);
             } else {
-                $res = (new GoodsModel)->evalGoodsStore($goodsList['goodsList']);
+                $res = (new GoodsModel)->evalGoodsStore($orderGoods['goodsList']);
             }
             if ($res !== true) {//扣库存失败，终止
                 Db::rollback();// 回滚事务
