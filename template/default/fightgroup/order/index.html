@@ -70,10 +70,8 @@
 <script>
     var nowPage = [], getAgain = [], isLoadend = [];
     var _type = '{$type}';
+    $('.left-arrow').attr('href','{:url("member/center/index")}')
     $(function () {
-        $('.left-arrow').on('click', function () {
-            window.location.href = '{:url("member/center/index")}';
-        })
         $('.page-bd').scroll(function () {
             var box_h = $(this).height()
             var content_h = $('.scrollBox').height()

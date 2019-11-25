@@ -145,10 +145,8 @@
 {/block}
 {block name="footer"}
 <script type="text/javascript">
+$('.left-arrow').attr('href','{:url("order/index")}')
 $(function(){
-    $('.left-arrow').on('click',function(){
-        window.location.href = '{:url("order/index")}';
-    })
     //订单操作
     $('.button').on('click','span',function(res){
         var _this = $(this);
