@@ -62,7 +62,7 @@ class AccountLog extends AdminController
 			$dtime = explode('-',$reportrange);
 			$where[] = ['change_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
 		}else{
-			$where[] = ['change_time','between',[strtotime("-1 months"),time()]];
+			$where[] = ['change_time','between',[strtotime(date('Y/m/01',strtotime("-1 months"))),time()]];
 		}
 		if (0 < $this->search['user_id'] ){
 			$where[] = ['user_id','=',$this->search['user_id'] ];
