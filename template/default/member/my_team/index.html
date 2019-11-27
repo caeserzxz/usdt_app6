@@ -56,10 +56,7 @@
 var nowPage = [],getAgain = [],isLoadend = [];
 var _type = 'all';
 var is_stat = 1;
-
-$('.left-arrow').on('click',function(){
-	window.location.href = '{:url("member/center/index")}';
-})
+$('.left-arrow').attr('href','{:url("member/center/index")}')
 $('.page-bd').scroll(function(){
 	var box_h=$(this).height()
 	var content_h=$('.scrollBox').height()

@@ -83,10 +83,8 @@
 
 {block name="footer"}
 <script>
+$('.left-arrow').attr('href','{:url("member/center/index")}')
 $(function() {
-	$('.left-arrow').click(function(){
-		window.location.href='{:url("member/center/index")}'
-	})
 	
 	$('.addType').on('click',function(){
 		$('.model').show();
