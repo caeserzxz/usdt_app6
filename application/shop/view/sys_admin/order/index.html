@@ -68,11 +68,11 @@
             var val = obj.options[obj.selectedIndex].value;
         }
         if (val == 3){
-            $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
-                '<a href="javascript:;" class="btn btn-sm m-t" data-remote="{:url('batchShipping')}" data-toggle="ajaxModal"><i class="fa fa-truck "></i> 勾选订单批量发货</a>');
+            $('.footer_other').html('<label class="m-r" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
+                '<a href="javascript:;" class="btn btn-sm " data-remote="{:url('batchShipping')}" data-toggle="ajaxModal"><i class="fa fa-truck "></i> 勾选订单批量发货</a>');
         }else if(val == 4){
-            $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
-                '<a href="javascript:;" class="btn btn-sm m-t" onclick="PrintOrder()"><i class="fa fa-truck"></i> 勾选订单批量打单</a>');
+            $('.footer_other').html('<label class="m-r" ><input type="checkbox" class="checkboxAll" data-name="order_id"> 全选 </label> ' +
+                '<a href="javascript:;" class="btn btn-sm" onclick="PrintOrder()"><i class="fa fa-truck"></i> 勾选订单批量打单</a>');
         }else{
             $('.footer_other').html('');
         }

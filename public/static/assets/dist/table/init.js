@@ -3,6 +3,7 @@ function diy_Paginator(b,pagesTotal,pageCurrent,totalCount,otherTotal)
 	var e = b("ul.pagination");
 	e.html('');
 	if (pagesTotal > -1)$('.footer .text-muted').html('');
+	if (typeof(otherTotal) == 'undefined') otherTotal = '';
 	if (pagesTotal > 0)
 	{		
 		$('.footer .text-muted').html('总共'+totalCount+'条,共'+pagesTotal+'页'+otherTotal);
