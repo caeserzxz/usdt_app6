@@ -136,6 +136,10 @@ class MessageModel extends BaseModel
         $whereReceived[] = ['user_id', '=', $user_id];
         $whereReceived[] = ['message_type', '=', 0];
         $message_ids = $UserMessageModel->where($whereReceived)->column('ext_id');
+        if(!$message_ids){
+            Cache::set($mkey, $unSeeNum, 300);
+            return $unSeeNum;
+        }
 
         //未接收的消息数量
         $whereUnReceive[] = ['status', '=', 0];
@@ -147,7 +151,7 @@ class MessageModel extends BaseModel
         $unReceiveNum = $this->where($whereUnReceive)->where($whereUnReceiveOr)->count('message_id');
         $unSeeNum += $unReceiveNum;
         Cache::set($mkey, $unSeeNum, 300);
-        return $info;
+        return $unSeeNum;
     }
     /*------------------------------------------------------ */
     //-- 消息设为已读
