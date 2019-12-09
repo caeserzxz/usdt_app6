@@ -16,8 +16,11 @@ class Attachment extends AdminController{
     //-- 初始化
     /*------------------------------------------------------ */
     public function initialize(){
-
-        parent::initialize(false);
+        $ckv = input('ckv','','trim');
+        $checkCkv = checkCkv($ckv);
+        if ($checkCkv == false){
+            parent::initialize(false);
+        }
         $this->_root_ = Request::root();
     }
 
@@ -26,6 +29,7 @@ class Attachment extends AdminController{
      * 编辑器上传
      */
     public function editer_upload() {
+
         $dir = 'image/';
         if ($this->supplyer_id > 0) {
             $dir = 'supplyer/' . $this->supplyer_id . '/image/';
@@ -45,8 +49,6 @@ class Attachment extends AdminController{
      * 编辑器图片空间
      */
     public function editer_manager() {
-
-
         $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
         $dir_name = empty($_GET['dir']) ? '' : trim($_GET['dir']);
 

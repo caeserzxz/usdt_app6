@@ -57,35 +57,36 @@ class Goods extends ApiController
         }
         
         $sqlOrder = input('order','','trim');
+        $sort_by = strtoupper(input('sort','DESC','trim'));
          if (empty($sqlOrder)){
+
             $search['is_best'] = input('is_best',0,'intval');
             if ($search['is_best'] > 0){
-                $this->sqlOrder = "is_best DESC, virtual_sale $sort_by";
+                $this->sqlOrder = "is_best DESC, virtual_sale $sort_by,goods_id DESC";
             }
             $search['is_hot'] = input('is_hot',0,'intval');
             if ($search['is_hot'] > 0){
-                $this->sqlOrder = "is_hot DESC, virtual_sale $sort_by";
+                $this->sqlOrder = "is_hot DESC, virtual_sale $sort_by,goods_id DESC";
             }   
             $search['is_new'] = input('is_new',0,'intval');
             if ($search['is_new'] > 0){
-                $this->sqlOrder = "is_new DESC, virtual_sale $sort_by";
+                $this->sqlOrder = "is_new DESC, virtual_sale $sort_by,goods_id DESC";
             }
         }
        
         if (empty($this->sqlOrder)) {               
-            $sort_by = strtoupper(input('sort','DESC','trim'));
             if (in_array(strtoupper($sort_by), array('DESC', 'ASC')) == false) {
                 $sort_by = 'DESC';
             }
             switch ($sqlOrder){
                 case 'sales':
-                    $this->sqlOrder = "virtual_sale $sort_by";
+                    $this->sqlOrder = "virtual_sale $sort_by,goods_id DESC";
                     break;
                 case 'price':
-                    $this->sqlOrder = "shop_price $sort_by";
+                    $this->sqlOrder = "shop_price $sort_by,goods_id DESC";
                     break;
                 default:
-                    $this->sqlOrder = "sort_order $sort_by,virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by";
+                    $this->sqlOrder = "sort_order $sort_by,virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by,goods_id DESC";
                     break;
             }           
         }

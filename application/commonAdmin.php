@@ -47,9 +47,22 @@ function formatBytes($size, $delimiter = '') {
 /*------------------------------------------------------ */
 //-- swf上传跨域，session无法传参时调用
 /*------------------------------------------------------ */ 
-function editerUploadCkv($val = ''){
-	$val = time();
-	return md5($val);
+function editerUploadCkv(){
+    $time = time();
+    $val = AUID.'_keyby_'.$time;
+    return md5($val).'_'.$time;
+}
+function checkCkv($val = ''){
+    if (empty($val)) return false;
+    list($md5val,$time) = explode('_',$val);
+    if (time() > $time + 7200){//两个小时有效
+        return false;
+    }
+    $_md5val = md5(AUID.'_keyby_'.$time);
+    if ($md5val != $_md5val){
+        return false;
+    }
+    return true;
 }
 /*------------------------------------------------------ */
 //-- 后台判断是否加载历史查询

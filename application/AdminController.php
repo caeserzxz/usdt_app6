@@ -4,7 +4,7 @@ namespace app;
 
 use think\facade\Cache;
 use think\facade\Session;
-
+include_once dirname(__DIR__) . '/application/commonAdmin.php';
 
 /**
  * 后台控制器基类
@@ -47,7 +47,7 @@ class AdminController extends BaseController
     protected function initialize($check_priv = true)
     {
         parent::initialize();
-        include_once dirname(__DIR__) . '/application/commonAdmin.php';
+
         // 当前路由信息
         $this->getRouteinfo();
         if ($this->initialize_isretrun == false) {
@@ -56,9 +56,9 @@ class AdminController extends BaseController
         }
         // 商家登录信息
         $this->admin = Session::get('main_admin');
-        define('AUID', $this->admin['info']['user_id']);
         // 验证登录
         $this->checkLogin();
+        define('AUID', $this->admin['info']['user_id']);
         if ($check_priv == true){
             //自动验证权限
             $this->_priv($this->module,$this->controller,$this->action);

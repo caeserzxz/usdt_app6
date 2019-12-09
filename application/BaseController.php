@@ -296,16 +296,18 @@ class BaseController extends Controller
         $file_type = empty($_GET['dir']) ? 'image' : trim($_GET['dir']);
         $ext_arr = array(
             'image' => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
+            'img'   => array('jpg', 'jpeg'),
             'flash' => array('swf', 'flv'),
             'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
-            'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
+            'file'  => array('htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
+            'work'  => array('doc', 'docx', 'xls', 'xlsx', 'ppt'),
         );
+
         //和总配置取交集
-        
 		if (empty($ext_arr[$file_type]) == false){
-        	$upload->allowExts = $ext_arr[$file_type];  //文件类型限制
-		}else{
-            $upload->allowExts = $ext_arr['image'];//强制类型为图片
+        	$upload->allowExts = $ext_arr[$file_type];
+		}elseif (in_array($file_type, ['image','i㎎','flash','media','file','work']) == false){
+            $upload->allowExts = $ext_arr['image'];
         }
         $upload->savePath =  config('config._upload_'). $file_type . '/';
         $upload->saveRule = 'uniqid';
