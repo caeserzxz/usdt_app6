@@ -103,7 +103,7 @@ class Index  extends ClientbaseController{
                 if ($row['id'] == 'notice'){//公告处理
                     if ($row['params']['noticedata'] == 0){
                         $ArticleModel = new \app\mainadmin\model\ArticleModel();
-                        $noticeList = $ArticleModel->limit($row['noticenum'])->select()->toArray();
+                        $noticeList = $ArticleModel->where('type',1)->limit($row['params']['noticenum'])->select()->toArray();
                     }else{
                         $noticeList = $row['data'];
                     }

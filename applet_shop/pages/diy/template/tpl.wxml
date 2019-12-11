@@ -1,0 +1,185 @@
+<block>
+    <block wx:if="{{diyitem.id=='fixedsearch'&&istopmenu!=true}}">
+        <include src="/pages/diy/template/tpl_fixedsearch.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='banner'}}">
+        <include src="/pages/diy/template/tpl_banner.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='search'}}">
+        <include src="/pages/diy/template/tpl_search.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='notice'}}">
+        <include src="/pages/diy/template/tpl_notice.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='line'}}">
+        <include src="/pages/diy/template/tpl_line.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='blank'}}">
+        <include src="/pages/diy/template/tpl_blank.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='title'}}">
+        <include src="/pages/diy/template/tpl_title.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='menu'}}">
+        <include src="/pages/diy/template/tpl_menu.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='menu2'}}">
+        <include src="/pages/diy/template/tpl_menu2.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='listmenu'}}">
+        <include src="/pages/diy/template/tpl_listmenu.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='picture'}}">
+        <include src="/pages/diy/template/tpl_picture.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='picturew'}}">
+        <include src="/pages/diy/template/tpl_picturew.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='coupon'}}">
+        <include src="/pages/diy/template/tpl_coupon.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='goods'}}">
+        <include src="/pages/diy/template/tpl_goods.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='richtext'}}">
+        <include src="/pages/diy/template/tpl_richtext.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='video'}}">
+        <include src="/pages/diy/template/tpl_video.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='copyright'&&!copyright}}">
+        <include src="/pages/diy/template/tpl_copyright.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='topmenu'}}">
+        <include src="/pages/diy/template/tpl_topmenu.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='tabbar'}}">
+        <include src="/pages/diy/template/tpl_tabbar.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='seckillgroup'}}">
+        <include src="/pages/diy/template/tpl_seckillgroup.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='member'}}">
+        <include src="/pages/diy/template/tpl_memberhead.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='bindmobile'}}">
+        <include src="/pages/diy/template/tpl_bindmobile.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='logout'}}">
+        <include src="/pages/diy/template/tpl_logout.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='verify'}}">
+        <include src="/pages/diy/template/tpl_verifygoods.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='pictures'}}">
+        <include src="/pages/diy/template/tpl_pictures.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='icongroup'}}">
+        <include src="/pages/diy/template/tpl_icongroup.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='audio'}}">
+        <include src="/pages/diy/template/tpl_audio.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_swipe'}}">
+        <include src="/pages/diy/template/tpl_detail_swipe.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_info'}}">
+        <include src="/pages/diy/template/tpl_detail_info.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_sale'}}">
+        <include src="/pages/diy/template/tpl_detail_sale.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_spec'}}">
+        <include src="/pages/diy/template/tpl_detail_spec.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_package'}}">
+        <include src="/pages/diy/template/tpl_detail_package.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_shop'}}">
+        <include src="/pages/diy/template/tpl_detail_shop.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_buyshow'}}">
+        <include src="/pages/diy/template/tpl_detail_buyshow.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_comment'}}">
+        <include src="/pages/diy/template/tpl_detail_comment.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_navbar'}}">
+        <include src="/pages/diy/template/tpl_detail_navbar.wxml"></include>
+    </block>
+</block>
+<block>
+    <block wx:if="{{diyitem.id=='detail_seckill'}}">
+        <include src="/pages/diy/template/tpl_detail_seckill.wxml"></include>
+    </block>
+</block>

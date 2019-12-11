@@ -1,0 +1,49 @@
+<block>
+    <block wx:if="{{goods.canbuy}}">
+        <view class="fui-navbar bottom-buttons {{iphonexnavbar}}">
+            <block>
+                <block wx:if="{{!limits}}">
+                    <view bindtap="favorite" class="nav-item favorite-item">
+                        <view class="icox {{goods.isfavorite?'icox-likefill':'icox-like'}}"></view>
+                        <view class="label">关注</view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{goods.customer!=1&&limits}}">
+                    <view bindtap="favorite" class="nav-item favorite-item {{goods.isfavorite?'active':''}}" data-isfavorite="{{goods.isfavorite?1:0}}">
+                        <view class="icox {{goods.isfavorite?'icox-likefill':'icox-like'}}"></view>
+                        <view class="label">关注</view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{goods.customer==1&&limits}}">
+                    <button class="nav-item customer-item" openType="contact" sessionFrom="weapp" showMessageCard="true">
+                        <view class="icox icox-customerservice"></view>
+                        <view class="label">客服</view>
+                    </button>
+                </block>
+            </block>
+            <navigator class="nav-item external" openType="switchTab" url="/pages/index/index?merchid={{goods.merchid}}">
+                <view class="icox icox-shop1"></view>
+                <view class="label">店铺</view>
+            </navigator>
+            <view bindtap="menucart" class="nav-item cart-item" id="menucart">
+                <block>
+                    <block wx:if="{{goods.cartcount&&limits}}">
+                        <view class="badge {{goods.cartount<=0?'out':'in'}}">{{goods.cartcount}}</view>
+                    </block>
+                </block>
+                <view class="icox icox-cart1"></view>
+                <view class="label">购物车</view>
+            </view>
+            <block>
+                <block wx:if="{{goods.canAddCart}}">
+                    <view bindtap="selectPicker" class="nav-item btn cartbtn" data-buytype="cart" data-id="{{goods.id}}" data-tap="{{active}}">加入购物车</view>
+                </block>
+            </block>
+            <view bindtap="selectPicker" class="nav-item btn buybtn" data-buytype="buy" data-id="{{goods.id}}" data-tap="{{active}}">立刻购买</view>
+        </view>
+    </block>
+</block>

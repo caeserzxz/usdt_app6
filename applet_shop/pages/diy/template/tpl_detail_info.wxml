@@ -1,0 +1,182 @@
+<view class="fui-cell-group fui-detail-group">
+    <view class="fui-cell">
+        <view class="fui-cell-text name">
+            <block>
+                <block wx:if="{{goods.ispresell==1&&goods.ispresellshow==1}}">
+                    <text class="fui-tag fui-tag-danger">预</text>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{goods.type==9}}">
+                    <text class="cycle-tip">周期购</text>
+                </block>
+            </block>
+            <text selectable="true" style="color:{{diyitem.style.titlecolor}}">{{goods.title}}</text>
+        </view>
+        <block>
+            <block wx:if="{{diyitem.params.hideshare!=1}}">
+                <view bindtap="showshade" class="fui-cell-remark showshade" style="margin-left: 60rpx;">
+                    <i class="icox {{diyitem.params.share_icon}}" style="font-size:42rpx;color: #fd5555;"></i>
+                    <view style="font-size: 20rpx;color: #666;margin-top:-6rpx;">{{diyitem.params.share==''?'分享':diyitem.params.share}}</view>
+                </view>
+            </block>
+        </block>
+    </view>
+    <block>
+        <block wx:if="{{goods.subtitle}}">
+            <view class="fui-cell goods-subtitle">
+                <text class="text-danger" selectable="true">{{goods.subtitle}}</text>
+            </view>
+        </block>
+    </block>
+    <block>
+        <block wx:if="{{!goods.seckillinfo}}">
+            <view class="fui-cell">
+                <view class="fui-cell-text price">
+                    <view class="text-danger" style="color:{{diyitem.style.pricecolor}}">
+                            ¥<block>
+                            <block wx:if="{{goods.ispresell>0&&preselltimeend==0||preselltimeend>now}}">
+                                <block>
+                                    <block wx:if="{{goods.hasoption==1}}">
+                                        <text>
+                                            <block>
+                                                <block wx:if="{{goods.minpresellprice!=goods.maxpresellprice}}">
+                                                    <text>
+                                {{goods.minpresellprice}}~{{goods.maxpresellprice}}
+                              </text>
+                                                </block>
+                                                <block wx:else>
+                                                    <text>{{goods.minpresellprice}}</text>
+                                                </block>
+                                            </block>
+                                        </text>
+                                    </block>
+                                    <block wx:else>
+                                        <text>{{goods.presellprice}}</text>
+                                    </block>
+                                </block>
+                            </block>
+                            <block wx:else>
+                                <block>
+                                    <block wx:if="{{minprice==goods['maxprice']}}">
+                                    {{minprice}}
+                                </block>
+                                    <block wx:else>
+                                    {{minprice}} ~ {{maxprice}}
+                                </block>
+                                </block>
+                            </block>
+                        </block>
+                        <block>
+                            <block wx:if="{{goods.isdiscount!=0&&goods.isdiscount_time>=now}}">
+                                <text class="original">¥{{goods.productprice}}</text>
+                            </block>
+                            <block wx:else>
+                                <block>
+                                    <block wx:if="{{goods.productprice>minprice}}">
+                                        <text class="original">¥{{goods.productprice}}</text>
+                                    </block>
+                                </block>
+                            </block>
+                        </block>
+                    </view>
+                </view>
+                <block>
+                    <block wx:if="{{goods.cansee>0&&goods.seecommission>0}}">
+                        <view class="detail-Commission flex" style="padding-bottom: 0">
+                            <view class="text">{{goods.seetitle}}</view>
+                            <view class="num flex1">￥{{goods.seecommission}}</view>
+                        </view>
+                    </block>
+                </block>
+            </view>
+        </block>
+    </block>
+    <block>
+        <block wx:if="{{goods.ispresell==1&&goods.preselltimeend!=0&&goods.ispresellshow==1}}">
+            <view class="row row-time">
+                <view id="time-container">
+                    <text class="label">{{goods.preselltitle?goods.preselltitle:'距离预售开始'}}</text>
+                    <block wx:for="{{time}}">
+                        <span class="number" style="{{index==0?'margin-left:20rpx':''}}">{{item}}{{index==0?' 天 ':''}}{{index==1?' 时 ':''}}{{index==2?' 分 ':''}}{{index==3?' 秒 ':''}}</span>
+                    </block>
+                </view>
+            </view>
+        </block>
+    </block>
+    <block>
+        <block wx:if="{{goods.isdiscount!=0&&goods.isdiscount_time>=now}}">
+            <view class="row row-time" id="discount">
+                <view id="discount-container">
+                    <text class="icox icox-shijian1"></text>
+                    <text class="label">{{goods.isdiscount_title?goods.isdiscount_title:'促销'}}</text>
+                    <block>
+                        <block wx:if="{{discountTitle}}">{{discountTitle}}</block>
+                        <block wx:else>
+                            <block wx:for="{{time}}">
+                                <span class="number" style="{{index==0?'margin-left:20rpx':''}}">{{item}}{{index==0?' 天 ':''}}{{index==1?' 时 ':''}}{{index==2?' 分 ':''}}{{index==3?' 秒 ':''}}</span>
+                            </block>
+                        </block>
+                    </block>
+                </view>
+            </view>
+        </block>
+    </block>
+    <block>
+        <block wx:if="{{goods.istime>0}}">
+            <view class="row row-time" style="color:{{diyitem.style.timecolor}}">
+                <view id="time-container" style="color:{{diyitem.style.timetextcolor}}">
+                    <text class=" icox icox-shijian1"></text>
+                    <text class="label">{{istimeTitle?istimeTitle:'限时购'}}</text>
+                    <block>
+                        <block wx:if="{{istime==0}}">活动已结束</block>
+                        <block wx:else>
+                            <block wx:for="{{time}}">
+                                <span class="number" style="{{index==0?'margin-left:20rpx':''}}">{{item}}{{index==0?' 天 ':''}}{{index==1?' 时 ':''}}{{index==2?' 分 ':''}}{{index==3?' 秒 ':''}}</span>
+                            </block>
+                        </block>
+                    </block>
+                </view>
+            </view>
+        </block>
+    </block>
+    <view class="fui-cell">
+        <view class="fui-cell-text flex">
+            <block>
+                <block wx:if="{{dispatchpriceObj==1}}">
+                    <block>
+                        <block wx:if="{{goods.type==1&&goods.isverify!=2}}">
+                            <text>快递:{{goods.dispatchprice.min}} ~ {{goods.dispatchprice.max}}</text>
+                        </block>
+                    </block>
+                </block>
+                <block wx:elif="{{goods.type==1&&goods.isverify!=2}}">
+                    <text>快递:<block>
+                            <block wx:if="{{goods.dispatchprice==0}}">包邮</block>
+                            <block wx:else>{{goods.dispatchprice}}</block>
+                        </block>
+                    </text>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{!goods.seckillinfo||goods.seckillinfo&&goods.seckillinfo.status==1}}">
+                    <block>
+                        <block wx:if="{{goods.showtotal==1}}">
+                            <text>库存:{{goods.total}}</text>
+                        </block>
+                    </block>
+                    <block>
+                        <block wx:if="{{goods.showsales==1}}">
+                            <text>销量:{{goods.sales}}{{goods.unit}}</text>
+                        </block>
+                    </block>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{goods.province!='请选择省份'&&goods.city!='请选择城市'}}">
+                    <text>{{goods.province}}{{goods.city}}</text>
+                </block>
+            </block>
+        </view>
+    </view>
+</view>

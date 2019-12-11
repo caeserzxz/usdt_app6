@@ -1,0 +1,24 @@
+<block>
+    <block wx:if="{{packagegoods}}">
+        <view class="fui-cell-group fui-comment-group">
+            <navigator url="/pages/goods/package/index?id={{packagegoodsid}}">
+                <view class="fui-cell fui-cell-click">
+                    <view class="fui-cell-text desc">{{packageList.title}}</view>
+                    <text class="fui-cell-text desc label" url="/pages/goods/package/index?id={{packagegoodsid}}">更多套餐</text>
+                    <view class="fui-cell-remark"></view>
+                </view>
+            </navigator>
+            <view id="package">
+                <navigator hoverClass="none" id="package_list" style="width:{{packageList.goods.length*220-20}}rpx" url="/pages/goods/package/detail/index?id={{packageList.id}}">
+                    <block wx:for="{{packageList.goods}}">
+                        <view class="package-goods package-goods3">
+                            <image class="package-goods-img" src="{{item.thumb}}"></image>
+                            <p>{{item.title}}</p>
+                            <text class="icox icox-tianjiazhuanhuan"></text>
+                        </view>
+                    </block>
+                </navigator>
+            </view>
+        </view>
+    </block>
+</block>

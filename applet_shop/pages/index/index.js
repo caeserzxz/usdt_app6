@@ -2,6 +2,7 @@ const app = getApp()
 var api = require("../../common/api.js")
 Page({
   data: {
+    duration: 500,
     toptis: true,
     codePop: false,
     imgBase: app.globalData.imgUrl,
@@ -119,15 +120,10 @@ Page({
    */
   onLoad: function(options) {
     const _this = this
-    _this.countdown();
-    _this.loadIndexinfo();
-    // _this.promoteList();
-
     wx.showLoading({
       title: '数据加载中',
     })
-
-
+    _this.loadIndexinfo();
     api.getconfig('', function (err, data) {
       // console.log(data)
       _this.setData({
@@ -135,21 +131,35 @@ Page({
       })
     })
   },
-
-  //猜你喜欢
+  //获取首页数据
   loadIndexinfo: function () {
-    const _this = this
+    const _this = this;
     api.fetchPost(api.https_path + '/publics/api.index/get_index_data', {}, function (err, res) {
       wx.hideLoading()
       console.log(res)
       if (res.code == 1) {
-        _this.setData({
-          bestGoods: res.bestGoods,
-          classGoods: res.classGoods,
-          promoteList: res.promoteList,
-          navMenuList: res.navMenuList,
-          slideList: res.slideList,
-        })
+        if (res.is_diy == 1){//自定义装修
+          _this.setData({
+            is_diy: 1,
+            diypages: res.diypage,
+          })
+          wx.setNavigationBarTitle({
+            title: res.diypage.page.title
+          }), wx.setNavigationBarColor({
+            frontColor: res.diypage.page.titlebarcolor,
+            backgroundColor: res.diypage.page.titlebarbg
+          })
+        }else{//默认首页
+          _this.countdown();
+          _this.setData({
+              is_diy: 0,
+              bestGoods: res.bestGoods,
+              classGoods: res.classGoods,
+              promoteList: res.promoteList,
+              navMenuList: res.navMenuList,
+              slideList: res.slideList,
+          })
+        }
       } else {
         api.error_msg("系统繁忙，稍后再试")
       }
@@ -172,24 +182,16 @@ Page({
       }
     })
   },
-
-
   morebest:function(){
     wx.navigateTo({
       url: '/pages/goodsList/goodsList?is_best=1',
     })
-
-
   },
-
   goshopinfo:function(e){
-    
     let goods_id = e.currentTarget.dataset.goods_id;
     wx.navigateTo({
-      url: '/pages/productDetails/productDetails?goods_id='+goods_id,
+      url: ' '+goods_id,
     })
-
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -197,46 +199,78 @@ Page({
   onReady: function() {
 
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
 
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
 
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
 
   },
-
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
 
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
 
   },
-
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
 
-  }
+  },
+  //商品翻页
+  cutGoods: function (t) {
+    var a = this, e = t.currentTarget.dataset.type, i = t.currentTarget.dataset.num, s = t.currentTarget.dataset.id, n = a.data.diypages;
+    for (var o in n.items) if (o == s) {
+      var r = n.items[o].current || 0;
+      "advance" == e ? r < i - 1 ? (n.items[o].current = r + 1, a.setData({
+        diypages: n
+      })) : (n.items[o].current = 0, a.setData({
+        diypages: n
+      })) : r > 0 ? (n.items[o].current = r - 1, a.setData({
+        diypages: n
+      })) : (n.items[o].current = i - 1, a.setData({
+        diypages: n
+      }));
+    }
+  },
+  //自定义装修跳转调用
+  navigate: function (t) {
+    var _url = t.currentTarget.dataset.url;
+    wx.navigateTo({
+      url: _url,
+    })
+  }, 
+  //领取红包
+  receivecoupon: function (e) {
+    const _this = this
+    let type_id = e.currentTarget.id;
+    api.fetchPost(api.https_path + '/shop/api.Bonus/receiveFree', { id: type_id }, function (err, res) {
+      console.log(res)
+      if (res.code == 0) {
+        api.error_msg(res.msg)
+        return false
+      } else {
+        api.success_msg(res.msg, 1500);
+      }
+    });
+
+  },
 })

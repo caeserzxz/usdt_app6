@@ -22,5 +22,8 @@ App({
     globalData: {
         userInfo: null,
         imgUrl: 'https://deking008.gitee.io/zpimg/wximg/'
+    },
+    requirejs: function (e) {
+      return require("utils/" + e + ".js");
     }
 })

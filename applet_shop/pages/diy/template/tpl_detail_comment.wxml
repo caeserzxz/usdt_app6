@@ -1,0 +1,84 @@
+<view class="goods-detail-comment {{comment}}">
+    <view class="fui-icon-group col-5 ">
+        <block wx:for="{{stararr}}">
+            <view bindtap="comentTap" class="fui-icon-col" data-level="item" data-type="{{index+1}}">
+                <view class="{{commentObjTab==index+1?'text-danger':''}}">{{index==0?'全部':''}}{{index==1?'好评':''}}{{index==2?'中评':''}}{{index==3?'差评':''}}{{index==4?'晒图':''}}<view class="count {{commentObjTab==index+1?'text-danger':''}}">{{commentObj.count[item]}}</view>
+                </view>
+            </view>
+        </block>
+    </view>
+    <block>
+        <block wx:if="{{loading}}">
+            <view class="fui-loading">
+                <view class="icon"></view>
+                <view class="text">正在加载</view>
+            </view>
+        </block>
+    </block>
+    <view class="container" id="comments-all">
+        <view class="fui-cell-group fui-comment-group">
+            <block wx:for="{{commentList}}" wx:for-index="idx">
+                <view class="fui-cell">
+                    <view class="fui-cell-text comment ">
+                        <view class="info head">
+                            <view class="img">
+                                <image src="{{item.headimgurl}}"></image>
+                            </view>
+                            <view class="nickname">{{item.nickname}}</view>
+                            <view class="date">{{item.createtime}}</view>
+                            <view class="star star1">
+                                <block wx:for="{{stararr}}" wx:for-index="idx2" wx:for-item="item2">
+                                    <text class="{{item.level>=idx2+1?'shine':''}}">★</text>
+                                </block>
+                            </view>
+                        </view>
+                        <view class="remark">{{item.content}}</view>
+                        <view class="remark img">
+                            <block wx:for="{{item.images}}" wx:for-index="idx" wx:for-item="image">
+                                <view class="img">
+                                    <image bindtap="preview" data-src="{{image}}" data-urls="{{item.images}}" src="{{image}}"></image>
+                                </view>
+                            </block>
+                        </view>
+                        <block>
+                            <block wx:if="{{item.reply_content}}">
+                                <view class="reply-content" style="background:#EDEDED;">
+                                掌柜回复：{{item.reply_content}}
+                                <view class="remark img">
+                                        <block wx:for="{{item.reply_images}}" wx:for-index="idx" wx:for-item="replyImage">
+                                            <view class="img">
+                                                <image src="{{replyImage}}"></image>
+                                            </view>
+                                        </block>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <block>
+                            <block wx:if="{{item.append_content&&item.replychecked==0}}">
+                                <view class="remark reply-title">用户追加评价</view>
+                                <view class="remark">{{item.append_content}}</view>
+                            </block>
+                        </block>
+                        <block>
+                            <block wx:if="{{item.append_reply_content}}">
+                                <view class="reply-content" style="background:#EDEDED;">
+                                掌柜回复：{{item.append_reply_content}}
+                                <view class="remark img">
+                                        <block wx:for="{{item.append_reply_images}}" wx:for-index="idx" wx:for-item="appendReplyImage">
+                                            <view class="img">
+                                                <image src="{{appendReplyImage}}"></image>
+                                            </view>
+                                        </block>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class="fui-cell-group fui-comment-group"></view>
+    </view>
+    <view class="content-empty" style="{{commentEmpty?'display:block':'display:none'}}">暂时没有任何评价</view>
+</view>

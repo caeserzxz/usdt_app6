@@ -21,6 +21,48 @@ html {
     color: #fd5454;
 }
 
+.diy-video {
+    height: 172px;
+    width: 100%;
+    background: #eee;
+    position: relative;
+    background-image: url("../images/default/videocover.png");
+    background-size: 100% 100%;
+}
+
+.diy-video.style1 {
+    height: 270px;
+}
+
+.diy-video.style2 {
+    height: 306px;
+}
+
+.diy-video:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.diy-video:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("../images/default/video_play.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60px;
+    z-index: 2;
+}
+
 .diy-richtext {
     min-height: 20px;
     display: block;

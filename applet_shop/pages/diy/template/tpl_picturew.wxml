@@ -1,0 +1,86 @@
+<block>
+    <block wx:if="{{diyitem.params.row==1}}">
+        <view class="fui-cube" style="background:{{diyitem.style.background}};">
+            <view class="fui-cube-left">
+                <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[0].appid}}" data-appurl="{{diyitem.data[0].appurl}}" data-phone="{{diyitem.data[0].phone}}" data-url="{{diyitem.data[0].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}}">
+                    <image mode="" src="{{diyitem.data[0].imgurl}}"></image>
+                </view>
+            </view>
+            <view class="fui-cube-right">
+                <block>
+                    <block wx:if="{{diyitem.data.length==2}}">
+                        <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[1].appid}}" data-appurl="{{diyitem.data[1].appurl}}" data-phone="{{diyitem.data[1].phone}}" data-url="{{diyitem.data[1].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}} {{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} 0;">
+                            <image mode="" src="{{diyitem.data[1].imgurl}}"></image>
+                        </view>
+                    </block>
+                </block>
+                <block>
+                    <block wx:if="{{diyitem.data.length>2}}">
+                        <view class="fui-cube-right1">
+                            <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[1].appid}}" data-appurl="{{diyitem.data[1].appurl}}" data-phone="{{diyitem.data[1].phone}}" data-url="{{diyitem.data[1].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}} 0 0;">
+                                <image mode="" src="{{diyitem.data[1].imgurl}}"></image>
+                            </view>
+                        </view>
+                        <view class="fui-cube-right2">
+                            <block>
+                                <block wx:if="{{diyitem.data.length==3}}">
+                                    <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[2].appid}}" data-appurl="{{diyitem.data[2].appurl}}" data-phone="{{diyitem.data[2].phone}}" data-url="{{diyitem.data[2].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}} {{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} 0;">
+                                        <image mode="" src="{{diyitem.data[2].imgurl}}"></image>
+                                    </view>
+                                </block>
+                            </block>
+                            <block>
+                                <block wx:if="{{diyitem.data.length>3}}">
+                                    <view class="left">
+                                        <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[2].appid}}" data-appurl="{{diyitem.data[2].appurl}}" data-phone="{{diyitem.data[2].phone}}" data-url="{{diyitem.data[2].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}} {{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} 0;">
+                                            <image mode="" src="{{diyitem.data[2].imgurl}}"></image>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                            <block>
+                                <block wx:if="{{diyitem.data.length==4}}">
+                                    <view class="right">
+                                        <view bindtap="navigate" class="navigator" data-appid="{{diyitem.data[3].appid}}" data-appurl="{{diyitem.data[3].appurl}}" data-phone="{{diyitem.data[3].phone}}" data-url="{{diyitem.data[3].linkurl}}" openType="navigate" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}} {{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} 0;">
+                                            <image mode="" src="{{diyitem.data[3].imgurl}}"></image>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                        </view>
+                    </block>
+                </block>
+            </view>
+        </view>
+    </block>
+    <block wx:else>
+        <view class="fui-picturew row-{{diyitem.params.row}}" style="background:{{diyitem.style.background}}">
+            <block>
+                <block wx:if="{{diyitem.params.showtype==1}}">
+                    <swiper duration="{{duration}}" interval="{{interval}}" style="background:{{diyitem.style.background}};padding:20rpx 0;">
+                        <block wx:for="{{diyitem.data_temp}}" wx:for-index="childid" wx:for-item="childitem">
+                            <swiper-item class="fui-picturew">
+                                <block wx:for="{{childitem}}" wx:for-index="pic_index" wx:for-item="pic_item">
+                                    <view class="item">
+                                        <view bindtap="navigate" class="navigator" data-appid="{{pic_item.appid}}" data-appurl="{{pic_item.appurl}}" data-phone="{{pic_item.phone}}" data-url="{{pic_item.linkurl}}" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}}">
+                                            <image class="{{diyitem.style.navstyle}}" mode="widthFix" src="{{pic_item.imgurl}}"></image>
+                                        </view>
+                                    </view>
+                                </block>
+                            </swiper-item>
+                        </block>
+                    </swiper>
+                </block>
+                <block wx:else>
+                    <block wx:for="{{diyitem.data}}" wx:for-item="childitem">
+                        <view class="item" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}};box-sizing:border-box;">
+                            <view bindtap="navigate" class="navigator" data-appid="{{childitem.appid}}" data-phone="{{childitem.phone}}" data-url="{{childitem.linkurl}}" style="padding:{{diyitem.style.paddingtop==0?0:diyitem.style.paddingtop+'rpx'}} {{diyitem.style.paddingleft==0?0:diyitem.style.paddingleft+'rpx'}}">
+                                <image mode="widthFix" src="{{childitem.imgurl}}" style="padding:0;margin:0"></image>
+                            </view>
+                        </view>
+                    </block>
+                </block>
+            </block>
+        </view>
+    </block>
+</block>

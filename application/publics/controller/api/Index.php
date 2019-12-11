@@ -50,13 +50,19 @@ class Index extends ApiController
     }
     
     public function  get_index_data(){
-        $GoodsModel = new GoodsModel();
-        $result = [];
-        $result['slideList'] = SlideModel::getRows();//获取幻灯片
-        $result['navMenuList'] = NavMenuModel::getRows();//获取导航菜单
-        $result['classGoods'] = $GoodsModel->getIndexClass();//获取商品橱窗商品
-        $result['promoteList'] = $GoodsModel->getIndexPromoteList();//促销商品
-        $result['bestGoods'] = $GoodsModel->getIndexBestGoods();//猜你喜欢
+        $result['is_diy'] = settings('xcx_index_tpl');
+        if ($result['is_diy'] == 1){//自定义修装
+            $ShopPageTheme = new \app\shop\model\ShopPageTheme();
+            $result['diypage'] = $ShopPageTheme->getToWxApp();
+        }else{
+            $GoodsModel = new GoodsModel();
+            $result = [];
+            $result['slideList'] = SlideModel::getRows();//获取幻灯片
+            $result['navMenuList'] = NavMenuModel::getRows();//获取导航菜单
+            $result['classGoods'] = $GoodsModel->getIndexClass();//获取商品橱窗商品
+            $result['promoteList'] = $GoodsModel->getIndexPromoteList();//促销商品
+            $result['bestGoods'] = $GoodsModel->getIndexBestGoods();//猜你喜欢
+        }
         $result['code'] = 1;
         return $this->ajaxReturn($result);
     }

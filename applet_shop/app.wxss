@@ -1,7 +1,7 @@
 @import 'weui.wxss';
 @import 'comm.wxss';
 @import 'font.wxss';
-
+@import 'diy.wxss';
 image {
     width: 100rpx;
     height: 100rpx;
@@ -9,8 +9,17 @@ image {
 }
 
 page {
-    background-color: #f4f4f4;
-    font-size: 24rpx;
+    background-color: #f3f3f3;
+    font-size: 16px;
+    height: 100%;
+    font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
+}
+
+.page {
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100%;
+    overflow-y: scroll;
 }
 
 .hr {
@@ -63,3 +72,5 @@ radio .wx-radio-input {
     width: 16px;
     height: 16px;
 }
+
+

@@ -19,6 +19,7 @@ class ShopPageTheme extends BaseModel {
     public function cleanMemcache(){
         Cache::rm($this->mkey,'del');
 		Cache::rm('shopIndex_web','del');
+        Cache::rm('xcx_diy_index','del');
     }
 	/*------------------------------------------------------ */
 	//-- 获取详情
@@ -288,6 +289,121 @@ class ShopPageTheme extends BaseModel {
 			$component['mainmenu']['data'][] = $rowb;
 		}			
 		return json_encode($component);
+	}
+    /**
+     * 小程序路径替换
+	 * $json string 自定义装修内容
+     */
+    private function xcxPathReplace($json){
+        $urla = $urlb = [];
+		$repUrl[] = [str_replace('/','\\/',config('config.host_path')),'\/pages\/index\/index'];
+    	$repUrl[] = ['\/shop\/goods\/info\/id\/','\/pages\/productDetails\/productDetails?goods_id='];
+        $repUrl[] = ['\/member\/center\/index','\/pages\/my\/my'];
+        $repUrl[] = ['\/shop\/goods\/index\/cid\/','\/pages\/goodsList\/goodsList?categoryid='];
+        $repUrl[] = ['\/shop\/goods\/index','\/pages\/goodsList\/goodsList'];
+        $repUrl[] = ['\/shop\/flow\/cart','pages\/cart\/cart'];
+        $repUrl[] = ['\/shop\/index\/allsort','\/pages\/classify\/classify'];
+        $repUrl[] = ['\/shop\/order\/index','\/pages\/myorders\/myorders'];
+        $repUrl[] = ['\/member\/center\/address','\/pages\/address\/address'];
+        $repUrl[] = ['\/member\/center\/userinfo','\/pages\/personalData\/personalData'];
+        $repUrl[] = ['\/member\/my_team\/index','\/pages\/myfans\/myfans'];
+        $repUrl[] = ['\/member\/wallet\/index','\/pages\/myBalance\/myBalance'];
+        $repUrl[] = ['\/member\/user_sign\/index','\/pages\/sign\/sign'];
+        $repUrl[] = ['\/integral\/goods\/index',''];//积分商城入口，未发现
+        $repUrl[] = ['\/distribution\/role_goods\/index',''];//身份商品入口，未发现
+        $repUrl[] = ['\/shop\/bonus\/bonuscenterx','\/pages\/couponCenter\/couponCenter'];
+        $repUrl[] = ['\/fightgroup\/index\/index','\/pages\/groupBuy\/groupBuy'];
+        $repUrl[] = ['\/second\/index\/index','\/pages\/seckill\/seckill'];
+        $repUrl[] = ['\/shop\/article\/info\/id\/',''];//文章内容，未发现
+        $repUrl[] = ['\/shop\/index\/diypage\/pageid\/',''];//其它装修，未发现
+
+        foreach ($repUrl as $url){
+            $urla[] = $url[0];
+            $urlb[] = $url[1];
+		}
+        return str_replace($urla,$urlb,$json);
+	}
+    /**
+     * 获取模板To微信小程序
+     */
+	public function getToWxApp(){
+        $mkey = 'xcx_diy_index';
+        $page = Cache::get($mkey);
+        if (empty($page) == false){
+        	return $page;
+		}
+        $theme = $this->where('is_index',1)->find();
+        if (empty($theme)) return [];
+        $host_path = config('config.host_path');
+        $page = $this->xcxPathReplace($theme['page']);//替换成小程序路径
+        $page = str_replace(['\/upload','\/static'],[$host_path.'\/upload',$host_path.'\/static'],$page);
+        $page = json_decode($page,true);
+        foreach ($page['items'] as $key=>$arr){
+            $arr['data'] = array_values($arr['data']);
+            if ($arr['id'] == 'notice'){
+            	if ($arr['params']['noticedata'] == 0){
+                    $ArticleModel = new \app\mainadmin\model\ArticleModel();
+                    $noticeList = $ArticleModel->where('type',1)->limit($arr['params']['noticenum'])->select()->toArray();
+                    $arr['data'] = [];
+					foreach ($noticeList as $notice){
+						$row = [];
+						$row['title'] = $notice['title'];
+                        $row['linkurl'] = '';
+                        $arr['data'][] = $row;
+					}
+				}
+			}elseif ($arr['id'] == 'goods'){
+            	switch ($arr['style']['goodsicon']){
+					case 'recommand':
+                        $arr['style']['goodsicon'] = '推荐';
+                        break;
+                    case 'hotsale':
+                        $arr['style']['goodsicon'] = '热销';
+                        break;
+                    case 'isnew':
+                        $arr['style']['goodsicon'] = '新上';
+                        break;
+                    case 'sendfree':
+                        $arr['style']['goodsicon'] = '包邮';
+                        break;
+                    case 'istime':
+                        $arr['style']['goodsicon'] = '限时卖';
+                        break;
+                    case 'bigsale':
+                        $arr['style']['goodsicon'] = '促销';
+                        break;
+					default:
+						break;
+				}
+				if ($arr['params']['goodsscroll'] == 1){//商品划动支持
+					if ($arr['style']['liststyle'] == 'one'){
+						$snum = 1;
+					}elseif ($arr['style']['liststyle'] == 'block'){
+                        $snum = 2;
+                    }else{
+                        $snum = 3;
+					}
+					$goods = [];
+                    $arr['data_temp'] = [];
+                    $gi = 0;
+					foreach ($arr['data'] as $data){
+                        $goods[] = $data;
+                        $gi++;
+						if ($gi % $snum == 0 ){
+                            $arr['data_temp'][] = $goods;
+                            $goods = [];
+						}
+					}
+					if (empty($goods) == false){
+                        $arr['data_temp'][] = $goods;
+					}
+					unset($arr['data']);
+				}
+			}
+            $page['items'][$key] = $arr;
+		}
+        Cache::set($mkey,$page,5);
+        return $page;
 	}
 }
 ?>

@@ -9,6 +9,7 @@ use app\shop\model\ShopPageTheme;
 /*------------------------------------------------------ */
 class EditPageb extends AdminController
 {
+    public $is_xcx = 0;
     /*------------------------------------------------------ */
     //-- 优先执行
     /*------------------------------------------------------ */
@@ -24,7 +25,7 @@ class EditPageb extends AdminController
     {
         $this->assign('title', '魔幻装修');
         $this->getList(true);
-        return $this->fetch();
+        return $this->fetch('sys_admin/edit_pageb/index');
     }
     /*------------------------------------------------------ */
     //-- 自定义错误提示
@@ -41,7 +42,9 @@ class EditPageb extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false)
     {
-        $data = $this->getPageList($this->Model);
+        $where = [];
+        $where[] = ['is_xcx','=',$this->is_xcx];
+        $data = $this->getPageList($this->Model,$where);
         $this->assign("data", $data);
         if ($runData == false) {
             $data['content'] = $this->fetch('list')->getContent();
@@ -58,7 +61,7 @@ class EditPageb extends AdminController
         $this->assign('title', '魔幻装修');
         $id = input('id',0,'intval');
         $this->assign('id', $id);
-        return $this->fetch('info');
+        return $this->fetch('sys_admin/edit_pageb/info');
     }
     /*------------------------------------------------------ */
     //-- 编辑
@@ -71,17 +74,17 @@ class EditPageb extends AdminController
             $data = empty($info['page'])?'null':$info['page'];
             $data = json_decode($data,true);
             $data['page']['isindex'] = $info['is_index'];
-            $data = json_encode($data);
             $name = $info['theme_name'];
         }else{
             $data = 'null';
             $name = '商城';
         }
+        $this->assign('is_xcx', $this->is_xcx);
         $this->assign('id', $id);
         $this->assign('name', $name);
         $this->assign('data', $data);
         $this->assign('title', '魔幻装修');
-        return $this->fetch();
+        return $this->fetch('sys_admin/edit_pageb/edit');
     }
     /*------------------------------------------------------ */
     //-- 保存页面
@@ -94,6 +97,7 @@ class EditPageb extends AdminController
            return $this->_error('请设置排版内容后再操作.');
         }
         $tmpData['is_new'] = 1;//默认设置为新版
+        $tmpData['is_xcx'] = $this->is_xcx;//是否小程序
         $tmpData['theme_name'] = $data['page']['name'];
         $tmpData['is_index'] = $data['page']['isindex'] * 1;
         $tmpData['theme_type'] = 'index';
@@ -151,7 +155,7 @@ class EditPageb extends AdminController
         $this->assign('links', (new LinksModel)->links());
         $CategoryModel = new \app\shop\model\CategoryModel();
         $this->assign('CategoryList', $CategoryModel->getRows());
-        return $this->fetch('links');
+        return $this->fetch('sys_admin/edit_pageb/links');
     }
 
     /*------------------------------------------------------ */
@@ -182,7 +186,7 @@ class EditPageb extends AdminController
         }
         $this->assign('list',$list);
         $this->assign('kw',$kw);
-        return $this->fetch('search_'.$type);
+        return $this->fetch('sys_admin/edit_pageb/search_'.$type);
     }
 
     /*------------------------------------------------------ */
@@ -255,16 +259,17 @@ class EditPageb extends AdminController
                 $list[] = $_info;
             }
         }
+        $this->assign('is_xcx',$this->is_xcx);
         $this->assign('list',$list);
         $this->assign('keyword',$keyword);
-        return $this->fetch('query_'.$type);
+        return $this->fetch('sys_admin/edit_pageb/query_'.$type);
     }
     /*------------------------------------------------------ */
     //-- 选择图标
     /*------------------------------------------------------ */
     public function selecticon()
     {
-        return $this->fetch('selecticon');
+        return $this->fetch('sys_admin/edit_pageb/selecticon');
     }
     /*------------------------------------------------------ */
     //-- 快速修改
@@ -273,6 +278,7 @@ class EditPageb extends AdminController
         if (isset($data['is_index'])){
             $log = '快速自定义首页';
             if ($data['is_index'] == 1){
+                $upwhere[] = ['is_xcx','=',$this->is_xcx];
                 $upwhere[] = ['st_id','<>',$st_id];
                 $this->Model->where($upwhere)->update(['is_index'=>0]);
             }

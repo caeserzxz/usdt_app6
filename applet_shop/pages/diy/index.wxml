@@ -1,0 +1,7 @@
+<view style="{{istopmenu==false?'':'padding-top:'+topmenuheight+'rpx;'}}">
+    <block wx:for="{{diypages.items}}" wx:for-index="diyitemid" wx:for-item="diyitem">
+        <view>
+            <include src="/pages/diy/template/tpl.wxml"></include>
+        </view>
+    </block>
+</view>

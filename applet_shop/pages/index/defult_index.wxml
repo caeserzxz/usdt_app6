@@ -1,0 +1,227 @@
+<view class='page'>
+  <!-- <view class='toptis' wx:if="{{toptis}}">
+    <view class='tx'><image class='avatar' src='/images/ZGBank.png'/></view>
+    <view class='text'>您当前还未关注微信公众号</view>
+    <view class='gzbtn' bindtap='switchCode'>立即关注</view>
+    <view class='close' bindtap='closeToptis'>×</view>
+  </view>
+  <view class='index_popup' wx:if="{{codePop}}">
+    <view class='popup_inner'>
+      <view class='rwmbox'>
+        <image src='/images/code.png'></image>
+        <view class='fs28 mt20'>长按二维码识别关注</view>
+      </view>
+      <view class='tc'><image class='close_wy' bindtap='switchCode' src='/images/close_wy.png'></image></view>
+    </view>
+  </view> -->
+  <view class='pagetop'>
+    <view class='gosearch' bindtap='goSearch'>{{shop_index_search_text}}</view>
+    <view class='swiper-box'>
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{slideList}}" wx:key="sw">
+          <swiper-item>
+            <image src="{{https_path}}{{item.imgurl}}" class="slide-image" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class='card-flex grid3 index_card_01'>
+      <block wx:for="{{navMenuList}}" wx:key>
+        <navigator class='flex_item'>
+          <view class='icon'>
+            <image src="{{https_path}}{{item.imgurl}}" />
+          </view>
+          <view class='text'>{{item.title}}</view>
+        </navigator>
+      </block>
+    </view>
+    <!-- <view class='jrms_box'>
+      <view class='jrms_hd'>
+        <view class='left'>
+          <text>今日秒杀</text>
+          <view class='countdown'>
+            <text>{{showTime[0]}}</text>:
+            <text>{{showTime[1]}}</text>:
+            <text>{{showTime[2]}}</text>
+          </view>
+        </view>
+        <view class='more'>更多</view>
+      </view>
+      <view class='jrms_bd'>
+        <swiper display-multiple-items="3.2" interval="{{interval}}" duration="{{duration}}">
+          <block wx:for="{{imgUrls2}}" wx:key="sw2">
+            <swiper-item>
+              <view class='mspor_item'>
+                <view class='imgbox'>
+                  <image src=" {{imgBase}}{{item}}" class="slide2-image" />
+                </view>
+                <view class='textbox'>
+                  <view class='title ellipsisLn1'>补水保湿套装</view>
+                  <view class='price'>
+                    <text class='fs20 fw_b'>￥</text>
+                    <text class='fs30 ff'>189.</text>
+                    <text class='fs20 ff'>00</text>
+                  </view>
+                </view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+    </view> -->
+  </view>
+
+  <!-- <view class='groupbuy'>
+    <view class='swiper-box'>
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{imgUrls3}}" wx:key="sw3">
+          <swiper-item>
+            <view class='sw_item'>
+              <view class='imgbox'>
+                <image src="{{imgBase}}{{item}}" class="slide-image" />
+              </view>
+              <view class='textbox'>
+                <view class='title ellipsisLn1'>KENZO/高田贤三春夏新款</view>
+                <view class='weui-flex mt10'>
+                  <view class='weui-flex__item stitle'>韩系时髦搭配指南</view>
+                  <view class='price'>
+                    <text class='fs22 fw_b'>￥</text>
+                    <text class='fs40 ff'>189.</text>
+                    <text class='fs22 ff'>00</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+
+    </view>
+    <view class='tcmore'>
+      <text class='arrow_r'>查看更多拼团</text>
+    </view>
+  </view> -->
+  <block wx:for="{{classGoods}}" wx:key>
+
+    <block wx:if="{{item.gooodsList.length > 0}}">
+      <view class='goods_hot'>
+        <view class='topimg'>
+          <image src='{{https_path}}{{item.cover}}' mode='widthFix' />
+        </view>
+        <view class='card-flex grid3'>
+
+          <block wx:for="{{item.gooodsList}}" wx:for-item="vo" wx:key>
+            <view class='flex_item' bindtap='goshopinfo' data-goods_id="{{vo.goods_id}}">
+              <view class='mspor_item'>
+                <view class='imgbox'>
+                  <image src="{{https_path}}{{vo.goods_thumb}}" class="slide2-image" />
+                </view>
+                <view class='textbox'>
+                  <view class='title ellipsisLn1'>{{vo.goods_name}}</view>
+                  <view class='price'>
+                    <text class='fs22 fw_b'>￥</text>
+                    <text class='fs40 ff'>{{vo.exp_price[0]}}.</text>
+                    <text class='fs22 ff'>{{vo.exp_price[1]}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="/images/trademark01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>                    
+              <text class='fs22 fw_b'>￥</text>
+              <text class='fs40 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='flex_item'>
+        <view class='mspor_item'>
+          <view class='imgbox'>
+            <image src="/images/trademark01.png" class="slide2-image" />
+          </view>
+          <view class='textbox'>
+            <view class='title ellipsisLn1'>补水保湿套装</view>
+            <view class='price'>
+                          <text class='fs22 fw_b'>￥</text>
+              <text class='fs40 ff'>189.</text>
+              <text class='fs22 ff'>00</text>
+            </view>
+          </view>
+        </view>
+      </view> -->
+        </view>
+        <view class='tcmore'>
+          <navigator url='/pages/goodsList/goodsList?categoryid={{item.id}}' class='arrow_r'>查看更多</navigator>
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <block wx:if="{{promoteList.length > 0}}">
+    <view class='goods_like'>
+      <view class='weui-flex flex-center'>
+        <view class='weui-flex__item fs36 fw600'>促销活动</view>
+      </view>
+      <view class='card-flex grid2'>
+        <view wx:for="{{promoteList}}" wx:for-item="item" wx:key="k" class='flex_item'>
+          <navigator url='/pages/productDetails/productDetails?goods_id={{item.goods_id}}' class='goods'>
+            <view class='mspor_item'>
+              <view class='imgbox'>
+                <!-- <image src="{{imgBase}}/youLike01.png" class="slide2-image" /> -->
+                <image src="{{https_path}}{{item.goods_thumb}}" class="slide2-image" />
+              </view>
+              <view class='textbox'>
+                <view class='title ellipsisLn1'>{{item.goods_name}}</view>
+                <view class='price'>
+                  <text class='fs22 fw_b'>￥</text>
+                  <text class='fs36 ff'>{{item.exp_price[0]}}.</text>
+                  <text class='fs22 ff'>{{item.exp_price[1]}}</text>
+                </view>
+              </view>
+            </view>
+          </navigator>
+        </view>
+      </view>
+      <view class='tcmore'>
+        <navigator url='/pages/promoteList/promoteList' class='arrow_r'>查看更多</navigator>
+      </view>
+    </view>
+  </block>
+
+  <view class='goods_like'>
+    <view class='weui-flex flex-center'>
+      <view class='weui-flex__item fs36 fw600'>猜你喜欢</view>
+      <view>
+        <text class='arrow_r text-muted' bindtap='morebest'>更多</text>
+      </view>
+    </view>
+    <view class='card-flex grid2'>
+      <view wx:for="{{bestGoods}}" wx:for-item="item" wx:key="k" class='flex_item'>
+        <navigator url='/pages/productDetails/productDetails?goods_id={{item.goods_id}}' class='goods'>
+          <view class='mspor_item'>
+            <view class='imgbox'>
+              <!-- <image src="{{imgBase}}/youLike01.png" class="slide2-image" /> -->
+              <image src="{{https_path}}{{item.goods_thumb}}" class="slide2-image" />
+            </view>
+            <view class='textbox'>
+              <view class='title ellipsisLn1'>{{item.goods_name}}</view>
+              <view class='price'>
+                <text class='fs22 fw_b'>￥</text>
+                <text class='fs36 ff'>{{item.exp_price[0]}}.</text>
+                <text class='fs22 ff'>{{item.exp_price[1]}}</text>
+              </view>
+            </view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</view>

@@ -70,7 +70,7 @@
             <div class="diy-phone" data-merch="0">
                 <div class="phone-head"></div>
                 <div class="phone-body">
-                    <div class="phone-title" id="page">loading...</div>
+                    <div class="phone-title" id="page" >loading...</div>
                     <div class="phone-main" id="phone">
                         <p style="text-align: center; line-height: 400px">您还没有添加任何元素</p>
                     </div>
@@ -105,11 +105,12 @@
         var path = '../diypage/js/diy.min';
         myrequire([path,'tpl','web/biz'],function(modal,tpl){
             modal.init({
+                is_xcx: {$is_xcx},
                 tpl: tpl,
                 attachurl: "/",
                 id: '{$id}',
                 type: 2,
-                data: {$data|raw},
+                data: {$data|json_encode|raw},
                 diymenu: [{"id":"{$id}","name":"{$name}"}],
                 diyadvs: [],
                 levels: null,

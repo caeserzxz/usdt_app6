@@ -1,0 +1,15 @@
+<block>
+    <block wx:if="{{goods_error==0}}">
+        <view class="swiper-container adv-container">
+            <view class="swiper-wrapper" style="width:{{268*adv_num}}rpx">
+                <block wx:for="{{diyitem.data}}" wx:for-item="adv">
+                    <view class="swiper-slide adv-slide">
+                        <navigator url="{{adv.linkurl}}">
+                            <image mode="widthFix" src="{{adv.imgurl}}"></image>
+                        </navigator>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </block>
+</block>

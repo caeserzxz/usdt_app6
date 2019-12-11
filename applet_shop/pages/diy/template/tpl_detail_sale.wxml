@@ -1,0 +1,287 @@
+<block>
+    <block wx:if="{{goods.ispresell==1&&goods.preselltimestart<now&&(preselltimeend>now||preselltimeend==0)}}">
+        <view class="fui-cell-group fui-cell-click fui-sale-group" style="margin-top:0">
+            <view class="fui-list">
+                <view class="fui-list-media">
+                    <view class="fui-cell-text">
+                        <span class="fui-label fui-label-safety">预售</span>
+                    </view>
+                </view>
+                <view class="fui-list-inner" style="font-size:26rpx;color:#666;">
+                    <block>
+                        <block wx:if="{{preselltimeend>0}}">
+                            <view>结束时间：{{goods.preselldateend}}</view>
+                        </block>
+                    </block>
+                          预计发货：
+                        <block>
+                        <block wx:if="{{goods.presellsendtype>0}}">
+                          购买后{{goods.presellsendtime}}天发货
+                        </block>
+                        <block wx:else>
+                          {{goods['presellsendstatrttime']}}
+                        </block>
+                    </block>
+                </view>
+            </view>
+        </view>
+    </block>
+</block>
+<block>
+    <block wx:if="{{!goods.seckillinfo}}">
+        <view class="favourable">
+            <block>
+                <block wx:if="{{goods.buyagain>0}}">
+                    <view class="fui-cell-group fui-sale-group" style="margin-top:0">
+                        <view class="fui-cell">
+                            <view class="fui-cell-text" style="white-space:normal;">此商品二次购买 可享受<span class="text-danger">{{goods.buyagain}}</span>折优惠
+                        <block>
+                                    <block wx:if="{{!goods.buyagain_sale}}">
+                                        <view>二次购买的时候 不与其他优惠共享</view>
+                                    </block>
+                                </block>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{coupon.length>0}}">
+                    <view bindtap="couponPicker" class="fui-cell-group fui-cell-click fui-sale-group noborder">
+                        <view class="fui-cell">
+                            <view class="fui-cell-text coupon-selector">
+                                <span style="margin-right: 0.25rem">优惠券</span>
+                                <block wx:for="{{coupon}}">
+                                    <block>
+                                        <block wx:if="{{index<5}}">
+                                            <span class="coupon-mini">
+                                                <block>
+                                                    <block wx:if="{{item.backpre}}">
+                                                        <span class="subtitle">￥</span>
+                                                    </block>
+                                                </block>{{item.backmoney}}<block>
+                                                    <block wx:if="{{item.backtype==1}}">
+                                                        <span class="subtitle">折</span>
+                                                    </block>
+                                                </block>
+                                            </span>
+                                        </block>
+                                    </block>
+                                </block>
+                            </view>
+                            <view class="fui-cell-remark">
+                                <block>
+                                    <block wx:if="{{coupon_l>5}}">
+                                        <text>更多</text>
+                                    </block>
+                                </block>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{limits}}">
+                    <block>
+                        <block wx:if="{{goods.isdiscount==0||goods.isdiscount!=0&&goods.isdiscount_time<now}}">
+                            <block>
+                                <block wx:if="{{!goods.memberprice==''&&goods.memberprice!=minprice&&!goods.levelbuy==0}}">
+                                    <view class="fui-cell-group fui-sale-group">
+                                        <view class="fui-cell">
+                                            <view class="fui-cell-label" style="color:#000;width:86rpx">会员</view>
+                                            <view class="fui-cell-text">
+                                                <view class="sale-line">
+                                                    <span class="sale-tip">{{goods.memberprice.levelname}}</span> 可享受 <span class="text-danger">¥{{goods.memberprice.price}}</span> 的价格</view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                        </block>
+                    </block>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{limits}}">
+                    <block>
+                        <block wx:if="{{goods.isgift==1}}">
+                            <view bindtap="giftPicker" class="fui-cell-group fui-sale-group">
+                                <view class="fui-cell">
+                                    <view class="fui-cell-label" style="color:#000;width:98rpx">赠品</view>
+                                    <block>
+                                        <block wx:if="{{goods.gifts.length==1}}">
+                                            <view class="fui-cell-info">{{goods.gifts[0].title}}</view>
+                                        </block>
+                                        <block wx:else>
+                                            <view class="fui-cell-info" style="{{gift_title?'':'color:#666;'}}">{{gift_title?gift_title:'请选择赠品'}}</view>
+                                        </block>
+                                    </block>
+                                    <view class="fui-cell-remark"></view>
+                                </view>
+                            </view>
+                        </block>
+                    </block>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{limits&&activity!=''}}">
+                    <view bindtap="activityPicker" class="fui-cell-group fui-sale-group" style="margin-top: 1rpx;">
+                        <view class="fui-cell">
+                            <view class="fui-cell-label" style="color:#000;width:86rpx">活动</view>
+                            <view class="fui-cell-text">
+                                <block>
+                                    <block wx:if="{{activity.enough||activity.merch_enough}}">
+                                        <view class="sale-line" style="font-size: 24rpx;">
+                                            <span class="sale-tip">满减</span>
+                                            <block>
+                                                <block wx:if="{{activity.enough}}">
+                                                    <text>全场满{{activity.enough[0].enough}}立减{{activity.enough[0].money}};</text>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{activity.merch_enough}}">
+                                                    <text>本店满{{activity.merch_enough[0].enough}}立减{{activity.merch_enough[0].give}};</text>
+                                                </block>
+                                            </block>
+                                        </view>
+                                    </block>
+                                </block>
+                                <block>
+                                    <block wx:if="{{fullbackgoods}}">
+                                        <view class="sale-line" style="font-size: 24rpx;">
+                                            <span class="sale-tip">{{goods.fullbacktext}}</span> 
+                                  该商品享受 
+                                  <block>
+                                                <block wx:if="{{fullbackgoods.type==0}}">
+                                                    <span class="text-danger">¥{{fullbackgoods.maxallfullbackallprice}}</span>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{fullbackgoods.type==1}}">
+                                                    <span class="text-danger">{{maxallfullbackallratio}}%</span>
+                                                </block>
+                                            </block>
+                                  的{{goods.fullbacktext}}
+	                              </view>
+                                    </block>
+                                </block>
+                                <block>
+                                    <block wx:if="{{activity.postfree}}">
+                                        <view class="sale-line" style="font-size: 24rpx;">
+                                            <span class="sale-tip">包邮</span>
+                                            <block>
+                                                <block wx:if="{{activity.postfree.goods}}">
+                                                    <span> 本商品包邮;</span>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{activity.postfree.scope}}">
+                                                    <text>
+                                                        <text>{{activity.postfree.scope}}</text>
+                                                        <block>
+                                                            <block wx:if="{{activity.postfree.enoughfree>0}}">
+                                                                <text>满￥{{activity.postfree.enoughfree}}</text>
+                                                            </block>
+                                                        </block>
+                                                        <text>包邮</text>
+                                                    </text>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{activity.postfree.num}}">
+                                                    <text>单品买{{activity.postfree.num}}件包邮；</text>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{activity.postfree.price}}">
+                                                    <text>单品买￥{{activity.postfree.price}}包邮</text>
+                                                </block>
+                                            </block>
+                                        </view>
+                                    </block>
+                                </block>
+                                <block>
+                                    <block wx:if="{{activity.buyagain}}">
+                                        <view class="sale-line" style="font-size: 24rpx;">
+                                            <span class="sale-tip">复购</span> 
+                                  此商品重复购买可享受 {{activity.buyagain.discount}}折;
+                                  <block>
+                                                <block wx:if="{{activity.buyagain.buyagain_sale==0}}">
+                                                    <span>重复购买 不与其他优惠共享</span>
+                                                </block>
+                                            </block>
+                                        </view>
+                                    </block>
+                                </block>
+                                <block>
+                                    <block wx:if="{{activity.credit}}">
+                                        <view class="sale-line" style="font-size: 24rpx;">
+                                            <span class="sale-tip">{{credittext}}</span>
+                                            <block>
+                                                <block wx:if="{{activity.credit.deduct}}">
+                                                    <text>最高抵扣￥{{activity.credit.deduct}}</text>
+                                                </block>
+                                            </block>
+                                            <block>
+                                                <block wx:if="{{activity.credit.give}}">
+                                                    <text>；购买赠送{{activity.credit.give}}积分</text>
+                                                </block>
+                                            </block>
+                                        </view>
+                                    </block>
+                                </block>
+                            </view>
+                            <view class="fui-cell-remark"></view>
+                        </view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{goods.city_express_state}}">
+                    <view bindtap="sendclick" class="fui-cell-group fui-sale-group" style="margin-top: 1rpx;">
+                        <view class="fui-cell">
+                            <view class="fui-cell-label" style="color:#000;width:86rpx">配送</view>
+                            <view class="fui-cell-label sale-line" style="flex: 1;font-size: 24rpx;">
+                                <span class="sale-tip">同城</span> 查看商家位置
+                </view>
+                            <view class="fui-cell-remark"></view>
+                        </view>
+                    </view>
+                </block>
+            </block>
+        </view>
+    </block>
+</block>
+<block>
+    <block wx:if="{{goods.citys.length>0}}">
+        <view bindtap="cityPicker" class="fui-cell-group fui-cell-click  fui-sale-group" data-class="city-picker" data-tap="{{active}}" id="city-picker" style="margin-top:0">
+            <view class="fui-cell">
+                <view class="fui-cell-text">不配送区域:
+                        <block wx:for="{{goods.citys}}" wx:for-index="idx">{{item}}</block>
+                </view>
+                <view class="fui-cell-remark"></view>
+            </view>
+        </view>
+    </block>
+</block>
+<block>
+    <block wx:if="{{goods.hasServices||goods.labelname}}">
+        <view class="fui-cell-group fui-option-group" style="margin-top:0">
+            <view class="goods-label-demo">
+                <view class="goods-label-list goods-label-style{{labels.style+1}}" style="background:#fafafa">
+                    <block wx:for="{{labels.list}}">
+                        <span>
+                            <block>
+                                <block wx:if="{{labels.style<2}}">
+                                    <icon class="icox icox-duihao1"></icon>
+                                </block>
+                            </block>
+                            <text>{{item}}</text>
+                        </span>
+                    </block>
+                    <view style="clear: both;"></view>
+                </view>
+            </view>
+        </view>
+    </block>
+</block>

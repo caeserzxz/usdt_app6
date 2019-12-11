@@ -24,13 +24,24 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="basic">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">首页设定：</label>
+                            <label class="col-sm-2 control-label">H5首页设定：</label>
                             <div class="controls">
                                 <label class="radio-inline">
                                     <input name="shop_index_tpl" value="0" {$setting['shop_index_tpl']==0?'checked':''} type="radio">默认首页
                                 </label>
                                 <label class="radio-inline">
                                     <input name="shop_index_tpl" value="1" {$setting['shop_index_tpl']==1?'checked':''} type="radio" >自定义首页
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">小程序首页设定：</label>
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="xcx_index_tpl" value="0" {$setting['xcx_index_tpl']==0?'checked':''} type="radio">默认首页
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="xcx_index_tpl" value="1" {$setting['xcx_index_tpl']==1?'checked':''} type="radio" >自定义首页
                                 </label>
                             </div>
                         </div>

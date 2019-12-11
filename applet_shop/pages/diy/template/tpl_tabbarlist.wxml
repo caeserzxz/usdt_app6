@@ -1,0 +1,79 @@
+<block>
+    <block wx:if="{{diyitem.id=='tabbar'}}">
+        <block>
+            <block wx:if="{{(diyitem.type!='stores'||diyitem.type=='goods')&&diyitem.type!=''}}">
+                <view class="fui-goods-group block" style="background:#f3f3f3">
+                    <block wx:for="{{diyitem.data[index].data}}">
+                        <view class="fui-goods-item">
+                            <navigator class="image {{diyitem.params.showicon=='1'?diyitem.style.iconstyle:''}}" data-text="{{diyitem.style.goodsicon}}" style="background-image:url({{item.thumb}})" url="/pages/productDetails/productDetails?goods_id={{item.id}}">
+                                <block>
+                                    <block wx:if="{{item.total<=0}}">
+                                        <image class="salez" src="{{item.total<=0?'/static/images/saleout-2.png':diyitem.params.saleout}}"></image>
+                                    </block>
+                                </block>
+                                <block>
+                                    <block wx:if="{{item.cansee>0&&item.seecommission>0}}">
+                                        <view class="goods-Commission">{{item.seetitle}}￥{{item.seecommission}}</view>
+                                    </block>
+                                </block>
+                            </navigator>
+                            <view class="detail">
+                                <navigator class="name" style="color:{{diyitem.style.titlecolor}}" url="/pages/productDetails/productDetails?goods_id={{childitem.gid}}">
+                                    <text>{{item.title}}</text>
+                                </navigator>
+                                <view class="price">
+                                    <text class="text" style="color:{{diyitem.style.pricecolor}}">￥{{item.minprice}}</text>
+                                    <navigator url="/pages/productDetails/productDetails?goods_id={{item.id}}">
+                                        <text bindtap="selectPicker" class="buy buybtnbtn buybtn-1" data-buytype="buy" data-id="{{childitem.gid}}" style="color:{{diyitem.style.buybtncolor}};border-color:{{diyitem.style.buybtncolor}}">购买</text>
+                                    </navigator>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                    <block>
+                        <block wx:if="{{diyitem.status==undefined||diyitem.status==''}}">
+                            <block>
+                                <block wx:if="{{diyitem.data[0].showmore!=true&&diyitem.data[0].data.length>0}}">
+                                    <view bindtap="getstoremore" class="getmore" data-id="{{diyitemid}}" style="text-align: center;line-height: 72rpx;font-size: 26rpx;color: #999;">查看更多</view>
+                                </block>
+                            </block>
+                        </block>
+                        <block wx:else>
+                            <block>
+                                <block wx:if="{{diyitem.data[diyitem.status].showmore!=true&&diyitem.data[diyitem.status].data.length>0}}">
+                                    <view bindtap="getstoremore" class="getmore" data-id="{{diyitemid}}" style="text-align: center;line-height: 72rpx;font-size: 26rpx;color: #999;">查看更多</view>
+                                </block>
+                            </block>
+                        </block>
+                    </block>
+                </view>
+            </block>
+            <block wx:elif="{{diyitem.type=='stores'}}">
+                <view class="fui-tabbar-content">
+                    <block wx:for="{{diyitem.data[index].data}}">
+                        <navigator class="tabbar-list" openType="navigate" url="/pages/order/store/map?id={{item.id}}">
+                            <text>{{item.storename}}</text>
+                            <i class="icox icox-dingwei1"></i>
+                        </navigator>
+                    </block>
+                    <block>
+                        <block wx:if="{{diyitem.status==undefined||diyitem.status==''}}">
+                            <block>
+                                <block wx:if="{{diyitem.data[0].showmore!=true&&diyitem.data[0].data.length>0}}">
+                                    <view bindtap="getstoremore" class="getmore" data-id="{{diyitemid}}" style="text-align: center;line-height: 72rpx;font-size: 26rpx;color: #999;">查看更多</view>
+                                </block>
+                            </block>
+                        </block>
+                        <block wx:else>
+                            <block>
+                                <block wx:if="{{diyitem.data[diyitem.status].showmore!=true&&diyitem.data[diyitem.status].data.length>0}}">
+                                    <view bindtap="getstoremore" class="getmore" data-id="{{diyitemid}}" style="text-align: center;line-height: 72rpx;font-size: 26rpx;color: #999;">查看更多</view>
+                                </block>
+                            </block>
+                        </block>
+                    </block>
+                </view>
+            </block>
+        </block>
+    </block>
+</block>

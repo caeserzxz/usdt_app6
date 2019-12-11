@@ -473,6 +473,16 @@
     </div>
 </script>
 
+<script type="text/html" id="tpl_show_video">
+
+    <div class="drag" data-itemid="<%itemid%>">
+
+        <div class="diy-video style<%style.ratio%>" style='background-image: url("<%imgsrc(params.poster) || "/static/customize/diypage/images/default/videocover.png"%>")'></div>
+
+    </div>
+
+</script>
+
 <script type="text/html" id="tpl_show_icongroup">
     <div class="drag" data-itemid="<%itemid%>">
         <div class="fui-icon-group noborder col-<%params.rownum%> selecter" style="background-color: <%style.background%>; <%if params.bordertop=='1'%>border-top: 1px solid <%style.bordercolor%>;<%else%>border-top: none;<%/if%> <%if params.borderbottom=='1'%>border-bottom: 1px solid <%style.bordercolor%>;<%else%>border-bottom: none;<%/if%>">
@@ -1646,19 +1656,18 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-2 control-label">关键字</div>
-        <div class="col-sm-10">
-            <input class="form-control input-sm diy-bind" data-bind="keyword" data-placeholder="" placeholder="请输入标题" value="<%page.keyword%>" />
-        </div>
-    </div>
-
-    <div class="form-group">
         <div class="col-sm-2 control-label">页面介绍</div>
         <div class="col-sm-10">
             <textarea class="form-control richtext diy-bind" cols="70" rows="5" placeholder="请输入页面介绍" data-bind="desc" data-placeholder=""><%page.desc%></textarea>
         </div>
     </div>
-
+    <%if is_xcx!=1%>
+    <div class="form-group">
+        <div class="col-sm-2 control-label">关键字</div>
+        <div class="col-sm-10">
+            <input class="form-control input-sm diy-bind" data-bind="keyword" data-placeholder="" placeholder="请输入标题" value="<%page.keyword%>" />
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-sm-2 control-label">封面图</div>
         <div class="col-sm-10">
@@ -1673,6 +1682,7 @@
         </div>
     </div>
     <%/if%>
+    <%/if%>
 
     <div class="form-group">
         <div class="col-sm-2 control-label">背景颜色</div>
@@ -1683,23 +1693,25 @@
             </div>
         </div>
     </div>
-
-    <div class="line"></div>
-
-    <!--<% if page.type!=5 && page.type!=8%>
+    <%if is_xcx==1%>
     <div class="form-group">
-        <div class="col-sm-2 control-label">底部菜单</div>
-        <div class="col-sm-10">
-            <select class="form-control input-sm diy-bind" data-bind="diymenu">
-                <option value="-1"<%if page.diymenu=='-1'%>selected="selected"<%/if%>>不显示</option>
-                <option value="0" <%if page.diymenu=='0'%>selected="selected"<%/if%>>系统默认</option>
-                <%each diymenu as menu%>
-                <option value="<%menu.id%>" <%if page.diymenu==menu.id%>selected="selected"<%/if%>><%menu.name%></option>
-                <%/each%>
-            </select>
+        <div class="col-sm-2 control-label">标题栏背景</div>
+        <div class="col-sm-4">
+            <div class="input-group input-group-sm">
+                <input class="form-control input-sm diy-bind color" data-bind="titlebarbg" value="<%page.titlebarbg%>" type="color">
+                <span class="input-group-addon btn btn-default" onclick="$(this).prev().val('#ffffff').trigger('propertychange')">重置</span>
+            </div>
         </div>
     </div>
-    <% /if %>-->
+    <div class="form-group">
+        <div class="col-sm-2 control-label">标题栏文字</div>
+        <div class="col-sm-10">
+            <label class="radio-inline"><input type="radio" name="titlebarcolor" value="#000000" class="diy-bind" data-bind="titlebarcolor" <%if page.titlebarcolor=='#000000'%>checked="checked"<%/if%>> 黑色</label>
+            <label class="radio-inline"><input type="radio" name="titlebarcolor" value="#ffffff" class="diy-bind" data-bind="titlebarcolor" <%if page.titlebarcolor=='#ffffff'%>checked="checked"<%/if%>> 白色</label>
+        </div>
+    </div>
+    <%else%>
+    <div class="line"></div>
     <div class="form-group">
         <div class="col-sm-2 control-label">底部菜单</div>
         <div class="col-sm-10">
@@ -1730,7 +1742,7 @@
             <label class="radio-inline"><input type="radio" name="followbar" value="0" class="diy-bind" data-bind="followbar" <%if page.followbar=='0' || !page.followbar%>checked="checked"<%/if%> > 不显示</label>
         </div>
     </div>
-
+    <%/if%>
     <div class="line"></div>
 
     <div class="form-group hide">
@@ -1822,6 +1834,7 @@
             <label class="radio-inline"><input type="radio" name="dotstyle" value="round" class="diy-bind" data-bind-child="style" data-bind="dotstyle" <%if style.dotstyle=='round'%>checked="checked"<%/if%>> 圆形</label>
         </div>
     </div>
+    <%if is_xcx!=1%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮位置</div>
         <div class="col-sm-10">
@@ -1830,6 +1843,7 @@
             <label class="radio-inline"><input type="radio" name="dotalign" value="right" class="diy-bind" data-bind-child="style" data-bind="dotalign" <%if style.dotalign=='right'%>checked="checked"<%/if%>> 居右</label>
         </div>
     </div>
+    <%/if%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮颜色</div>
         <div class="col-sm-4">
@@ -3051,7 +3065,50 @@
 
 </script>
 
+<script type="text/html" id="tpl_edit_video">
+    <div class="form-group">
+        <div class="col-sm-2 control-label">视频样式</div>
+        <div class="col-sm-10">
+            <label class="radio-inline"><input type="radio" name="ratio" value="0" class="diy-bind" data-bind-child="style" data-bind="ratio" data-bind-init="true" <%if style.ratio=='0'%>checked="checked"<%/if%>> 16:9</label>
+            <label class="radio-inline"><input type="radio" name="ratio" value="1" class="diy-bind" data-bind-child="style" data-bind="ratio" data-bind-init="true" <%if style.ratio=='1'%>checked="checked"<%/if%>> 4:3</label>
+            <label class="radio-inline"><input type="radio" name="ratio" value="2" class="diy-bind" data-bind-child="style" data-bind="ratio" data-bind-init="true" <%if style.ratio=='2'%>checked="checked"<%/if%>> 1:1</label>
+        </div>
+    </div>
 
+    <div class="form-group">
+        <div class="col-sm-2 control-label">视频封面</div>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="poster" data-bind-init="true" value="<%params.poster%>" id="poster" placeholder="请选择图片或输入图片地址" />
+                <span data-input="#poster" data-img="#showposter" data-toggle="selectImg" class="input-group-addon btn btn-default">选择图片</span>
+            </div>
+            <div class="input-group " style="margin-top:.5em;">
+                <img src="<%imgsrc params.poster%>" onerror="this.src='/static/customize/images/nopic.jpg';" class="img-responsive img-thumbnail" width="150" id="showposter">
+            </div>
+            <div class="form-control-static">请上传<%if style.ratio=='0'%>16:9<%/if%><%if style.ratio=='1'%>4:3<%/if%><%if style.ratio=='2'%>1:1<%/if%>比例的图片</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-2 control-label">选择视频</div>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input class="form-control input-sm diy-bind" data-bind-child="params" data-bind="videourl" data-bind-init="true" value="<%params.videourl%>" data-url="<%imgsrc params.videourl%>" id="videourl" placeholder="请选择视频或输入视频地址" />
+                <span data-input="#videourl" data-img="#showvideo" data-toggle="selectVideo" data-network="true" class="input-group-addon btn btn-default">选择视频</span>
+            </div>
+            <% if params.videourl%>
+            <div class="input-group">
+                <div class="multi-item" style="display: block" title="预览视频" data-toggle="previewVideo" data-input="#videourl">
+                    <div class="img-responsive img-thumbnail img-video" style="width: 100px; height: 100px; position: relative; text-align: center; cursor: pointer;" src="">
+                        <i class="fa fa-play-circle" style="font-size: 60px; line-height: 90px; color: #999;"></i>
+                    </div>
+                    <em class="close" title="移除视频" data-toggle="setNull" data-element="#videourl">×</em>
+                </div>
+            </div>
+            <%/if%>
+        </div>
+    </div>
+</script>
 
 <script type="text/html" id="tpl_edit_listmenu">
     <div class="form-group">
@@ -3698,7 +3755,7 @@
             <label class="radio-inline"><input type="radio" name="dotstyle" value="round" class="diy-bind" data-bind-child="style" data-bind="dotstyle" <%if style.dotstyle=='round'%>checked="checked"<%/if%>> 圆形</label>
         </div>
     </div>
-
+    <%if is_xcx!=1%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮位置</div>
         <div class="col-sm-10">
@@ -3707,7 +3764,7 @@
             <label class="radio-inline"><input type="radio" name="dotalign" value="right" class="diy-bind" data-bind-child="style" data-bind="dotalign" <%if style.dotalign=='right'%>checked="checked"<%/if%>> 居右</label>
         </div>
     </div>
-
+    <%/if%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮颜色</div>
         <div class="col-sm-4">
@@ -5776,6 +5833,7 @@
             <label class="radio-inline"><input type="radio" name="dotstyle" value="round" class="diy-bind" data-bind-child="style" data-bind="dotstyle" <%if style.dotstyle=='round'%>checked="checked"<%/if%>> 圆形</label>
         </div>
     </div>
+    <%if is_xcx!=1%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮位置</div>
         <div class="col-sm-10">
@@ -5784,6 +5842,7 @@
             <label class="radio-inline"><input type="radio" name="dotalign" value="right" class="diy-bind" data-bind-child="style" data-bind="dotalign" <%if style.dotalign=='right'%>checked="checked"<%/if%>> 居右</label>
         </div>
     </div>
+    <%/if%>
     <div class="form-group">
         <div class="col-sm-2 control-label">按钮颜色</div>
         <div class="col-sm-4">
