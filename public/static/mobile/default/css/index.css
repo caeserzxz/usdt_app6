@@ -1,7 +1,64 @@
 .page-bd {
   padding-bottom: 0.133333rem;
 }
-
+.topTipSmodel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 99999;
+  display: none;
+}
+.topTipSmodel .modelBG {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+.topTipSmodel .medelCanten {
+  position: relative;
+  margin: 25vh 1rem 0 1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  z-index: 99999;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.topTipSmodel .medelCanten .codeBox {
+  padding: 0.75rem;
+  background: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.topTipSmodel .medelCanten .codeBox img {
+  width: 10rem;
+}
+.topTipSmodel .medelCanten .codeBox span {
+  margin-top: 0.5rem;
+}
+.topTipSmodel .medelCanten .closeimg {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.25rem;
+}
 #swiper01 .swiper-slide img {
   width: 100%;
   height: 3.333333rem;
