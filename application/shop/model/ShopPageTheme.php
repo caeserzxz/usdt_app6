@@ -338,69 +338,137 @@ class ShopPageTheme extends BaseModel {
         $page = $this->xcxPathReplace($theme['page']);//替换成小程序路径
         $page = str_replace(['\/upload','\/static'],[$host_path.'\/upload',$host_path.'\/static'],$page);
         $page = json_decode($page,true);
-        foreach ($page['items'] as $key=>$arr){
-            $arr['data'] = array_values($arr['data']);
-            if ($arr['id'] == 'notice'){
-            	if ($arr['params']['noticedata'] == 0){
+        $GoodsModel = new GoodsModel();
+        foreach ($page['items'] as $key=>$row){
+            $row['data'] = array_values($row['data']);
+            if ($row['id'] == 'notice'){
+            	if ($row['params']['noticedata'] == 0){
                     $ArticleModel = new \app\mainadmin\model\ArticleModel();
-                    $noticeList = $ArticleModel->where('type',1)->limit($arr['params']['noticenum'])->select()->toArray();
-                    $arr['data'] = [];
+                    $noticeList = $ArticleModel->where('type',1)->limit($row['params']['noticenum'])->select()->toArray();
+                    $row['data'] = [];
 					foreach ($noticeList as $notice){
-						$row = [];
-						$row['title'] = $notice['title'];
-                        $row['linkurl'] = '';
-                        $arr['data'][] = $row;
+						$_row = [];
+                        $_row['title'] = $notice['title'];
+                        $_row['linkurl'] = '';
+                        $row['data'][] = $_row;
 					}
 				}
-			}elseif ($arr['id'] == 'goods'){
-            	switch ($arr['style']['goodsicon']){
+			}elseif ($row['id'] == 'goods'){
+            	switch ($row['style']['goodsicon']){
 					case 'recommand':
-                        $arr['style']['goodsicon'] = '推荐';
+                        $row['style']['goodsicon'] = '推荐';
                         break;
                     case 'hotsale':
-                        $arr['style']['goodsicon'] = '热销';
+                        $row['style']['goodsicon'] = '热销';
                         break;
                     case 'isnew':
-                        $arr['style']['goodsicon'] = '新上';
+                        $row['style']['goodsicon'] = '新上';
                         break;
                     case 'sendfree':
-                        $arr['style']['goodsicon'] = '包邮';
+                        $row['style']['goodsicon'] = '包邮';
                         break;
                     case 'istime':
-                        $arr['style']['goodsicon'] = '限时卖';
+                        $row['style']['goodsicon'] = '限时卖';
                         break;
                     case 'bigsale':
-                        $arr['style']['goodsicon'] = '促销';
+                        $row['style']['goodsicon'] = '促销';
                         break;
 					default:
 						break;
 				}
-				if ($arr['params']['goodsscroll'] == 1){//商品划动支持
-					if ($arr['style']['liststyle'] == 'one'){
+                if ($row['params']['goodsdata'] > 0){
+                    $row['data'] = [];
+                    $classList = $GoodsModel->getClassList();
+                    $where[] = ['is_delete','=',0];
+                    $where[] = ['is_alone_sale','=',1];
+                    $where[] = ['isputaway','=',1];
+                    $where[] = ['is_promote','=',0];
+                    if ($row['params']['goodsdata'] == 1 && $row['params']['cateid'] > 0){
+                        $where[] = ['cid','in',$classList[$row['params']['cateid']]['children']];
+                    }
+
+                    switch ($row['params']['goodssort']){
+                        case 1://按销量
+                            $sqlOrder = "sale_num DESC";
+                            break;
+                        case 2://价格降序
+                            $sqlOrder = "shop_price DESC";
+                            break;
+                        case 3://价格降序
+                            $sqlOrder = "shop_price ASC";
+                            break;
+                        default://综合
+                            $sqlOrder = "virtual_sale DESC,virtual_collect DESC,is_best DESC";
+                            break;
+                    }
+                    $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
+                    foreach ($goodIds as $key=>$gid){
+                        $good = $GoodsModel->info($gid);
+                        $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
+                        $ginfo['title'] = $good['goods_name'];
+                        $ginfo['subtitle'] = $good['short_name'];
+                        $ginfo['price'] = $good['shop_price'];
+                        $ginfo['gid'] = $good['goods_id'];
+                        $ginfo['total'] = $good['goods_number'];
+                        $ginfo['price'] = $good['shop_price'];
+                        $ginfo['productprice'] = $good['market_price'];
+                        $ginfo['sales'] = $good['sale_num'];
+                        $ginfo['bargain'] = 0;
+                        $ginfo['credit'] = null;
+                        $ginfo['ctype'] = null;
+                        $ginfo['gtype'] = null;
+                        $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                        $row['data'][$key] = $ginfo;
+                    }
+                }else{
+                    foreach ($row['data'] as $key=>$good){
+                        if ($good['gid'] > 0 ){
+                            $good = $GoodsModel->info($good['gid']);
+                            $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
+                            $ginfo['title'] = $good['goods_name'];
+                            $ginfo['subtitle'] = $good['short_name'];
+                            $ginfo['price'] = $good['shop_price'];
+                            $ginfo['gid'] = $good['goods_id'];
+                            $ginfo['total'] = $good['goods_number'];
+                            $ginfo['price'] = $good['shop_price'];
+                            $ginfo['productprice'] = $good['market_price'];
+                            $ginfo['sales'] = $good['sale_num'];
+                            $ginfo['bargain'] = 0;
+                            $ginfo['credit'] = null;
+                            $ginfo['ctype'] = null;
+                            $ginfo['gtype'] = null;
+                            $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                            $row['data'][$key] = $ginfo;
+                        }
+                    }
+                }
+
+				if ($row['params']['goodsscroll'] == 1){//商品划动支持
+					if ($row['style']['liststyle'] == 'one'){
 						$snum = 1;
-					}elseif ($arr['style']['liststyle'] == 'block'){
+					}elseif ($row['style']['liststyle'] == 'block'){
                         $snum = 2;
                     }else{
                         $snum = 3;
 					}
 					$goods = [];
-                    $arr['data_temp'] = [];
+                    $row['data_temp'] = [];
                     $gi = 0;
-					foreach ($arr['data'] as $data){
+					foreach ($row['data'] as $data){
                         $goods[] = $data;
                         $gi++;
 						if ($gi % $snum == 0 ){
-                            $arr['data_temp'][] = $goods;
+                            $row['data_temp'][] = $goods;
                             $goods = [];
 						}
 					}
 					if (empty($goods) == false){
-                        $arr['data_temp'][] = $goods;
+                        $row['data_temp'][] = $goods;
 					}
-					unset($arr['data']);
+					unset($row['data']);
 				}
 			}
-            $page['items'][$key] = $arr;
+            $page['items'][$key] = $row;
 		}
         Cache::set($mkey,$page,5);
         return $page;

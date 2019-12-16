@@ -15,7 +15,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.6.1",
 	"appid": "wxd77df653c73f8147",
-	"projectname": "%E6%96%B0%E7%89%88%E5%95%86%E5%9F%8Eshop_main",
+	"projectname": "applet_shop",
 	"cloudfunctionTemplateRoot": "",
 	"debugOptions": {
 		"hidedInDevtools": []

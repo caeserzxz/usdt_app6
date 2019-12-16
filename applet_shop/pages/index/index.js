@@ -143,12 +143,14 @@ Page({
             is_diy: 1,
             diypages: res.diypage,
           })
-          wx.setNavigationBarTitle({
-            title: res.diypage.page.title
-          }), wx.setNavigationBarColor({
-            frontColor: res.diypage.page.titlebarcolor,
-            backgroundColor: res.diypage.page.titlebarbg
-          })
+          if (res.diypage.page.topdiystyle == 1){
+            wx.setNavigationBarTitle({
+              title: res.diypage.page.title
+            }), wx.setNavigationBarColor({
+              frontColor: res.diypage.page.titlebarcolor,
+              backgroundColor: res.diypage.page.titlebarbg
+            })
+          }
         }else{//默认首页
           _this.countdown();
           _this.setData({
