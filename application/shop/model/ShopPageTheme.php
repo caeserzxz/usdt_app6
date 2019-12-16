@@ -417,7 +417,7 @@ class ShopPageTheme extends BaseModel {
                         $ginfo['credit'] = null;
                         $ginfo['ctype'] = null;
                         $ginfo['gtype'] = null;
-                        $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                        $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
                         $row['data'][$key] = $ginfo;
                     }
                 }else{
@@ -437,7 +437,7 @@ class ShopPageTheme extends BaseModel {
                             $ginfo['credit'] = null;
                             $ginfo['ctype'] = null;
                             $ginfo['gtype'] = null;
-                            $ginfo['linkurl'] = url('shop/goods/info',['id'=>$ginfo['gid']]);
+                            $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
                             $row['data'][$key] = $ginfo;
                         }
                     }
