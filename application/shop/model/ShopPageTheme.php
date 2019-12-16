@@ -402,7 +402,7 @@ class ShopPageTheme extends BaseModel {
                             break;
                     }
                     $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
-                    foreach ($goodIds as $key=>$gid){
+                    foreach ($goodIds as $gkey=>$gid){
                         $good = $GoodsModel->info($gid);
                         $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
                         $ginfo['title'] = $good['goods_name'];
@@ -418,10 +418,10 @@ class ShopPageTheme extends BaseModel {
                         $ginfo['ctype'] = null;
                         $ginfo['gtype'] = null;
                         $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
-                        $row['data'][$key] = $ginfo;
+                        $row['data'][$gkey] = $ginfo;
                     }
                 }else{
-                    foreach ($row['data'] as $key=>$good){
+                    foreach ($row['data'] as $gkey=>$good){
                         if ($good['gid'] > 0 ){
                             $good = $GoodsModel->info($good['gid']);
                             $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
@@ -438,7 +438,7 @@ class ShopPageTheme extends BaseModel {
                             $ginfo['ctype'] = null;
                             $ginfo['gtype'] = null;
                             $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
-                            $row['data'][$key] = $ginfo;
+                            $row['data'][$gkey] = $ginfo;
                         }
                     }
                 }
