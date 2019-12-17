@@ -75,7 +75,7 @@ class Index  extends ClientbaseController{
         if ($pageid > 0){
             $theme = $ShopPageTheme->find($pageid);
         }else{
-            $theme = $ShopPageTheme->where('is_index',1)->find();
+            $theme = $ShopPageTheme->where(['is_index'=>1,'is_xcx'=>0])->find();
             $pageid = $theme['st_id'];
         }
         if (empty($theme)){

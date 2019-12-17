@@ -332,7 +332,7 @@ class ShopPageTheme extends BaseModel {
         if (empty($page) == false){
         	return $page;
 		}
-        $theme = $this->where('is_index',1)->find();
+        $theme = $this->where(['is_index'=>1,'is_xcx'=>1])->find();
         if (empty($theme)) return [];
         $host_path = config('config.host_path');
         $page = $this->xcxPathReplace($theme['page']);//替换成小程序路径
