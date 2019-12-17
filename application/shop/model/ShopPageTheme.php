@@ -341,18 +341,36 @@ class ShopPageTheme extends BaseModel {
         $GoodsModel = new GoodsModel();
         foreach ($page['items'] as $key=>$row){
             $row['data'] = array_values($row['data']);
-            if ($row['id'] == 'notice'){
-            	if ($row['params']['noticedata'] == 0){
+            if ($row['id'] == 'notice') {
+                if ($row['params']['noticedata'] == 0) {
                     $ArticleModel = new \app\mainadmin\model\ArticleModel();
-                    $noticeList = $ArticleModel->where('type',1)->limit($row['params']['noticenum'])->select()->toArray();
+                    $noticeList = $ArticleModel->where('type', 1)->limit($row['params']['noticenum'])->select()->toArray();
                     $row['data'] = [];
-					foreach ($noticeList as $notice){
-						$_row = [];
+                    foreach ($noticeList as $notice) {
+                        $_row = [];
                         $_row['title'] = $notice['title'];
                         $_row['linkurl'] = '';
                         $row['data'][] = $_row;
-					}
+                    }
+                }
+            }elseif ($row['id'] == 'picturew'){
+                if ($row['params']['showtype'] == 1){
+                    $pi = 0;
+                    $datas = [];
+                    foreach ($row['data'] as $data){
+                        $datas[] = $data;
+                        $pi++;
+                        if ($pi % $row['params']['pagenum'] == 0 ){
+                            $row['data_temp'][] = $datas;
+                            $datas = [];
+                        }
+                    }
+                    if (empty($goods) == false){
+                        $row['data_temp'][] = $datas;
+                    }
+                    unset($row['data']);
 				}
+
 			}elseif ($row['id'] == 'goods'){
             	switch ($row['style']['goodsicon']){
 					case 'recommand':
@@ -402,7 +420,7 @@ class ShopPageTheme extends BaseModel {
                             break;
                     }
                     $goodIds = $GoodsModel->where($where)->order($sqlOrder)->limit($row['params']['goodsnum'])->column('goods_id');
-                    foreach ($goodIds as $key=>$gid){
+                    foreach ($goodIds as $gkey=>$gid){
                         $good = $GoodsModel->info($gid);
                         $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
                         $ginfo['title'] = $good['goods_name'];
@@ -418,10 +436,10 @@ class ShopPageTheme extends BaseModel {
                         $ginfo['ctype'] = null;
                         $ginfo['gtype'] = null;
                         $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
-                        $row['data'][$key] = $ginfo;
+                        $row['data'][$gkey] = $ginfo;
                     }
                 }else{
-                    foreach ($row['data'] as $key=>$good){
+                    foreach ($row['data'] as $gkey=>$good){
                         if ($good['gid'] > 0 ){
                             $good = $GoodsModel->info($good['gid']);
                             $ginfo['thumb'] = str_replace(['/upload','/static'],[$host_path.'/upload',$host_path.'/static'],$good['goods_thumb']);
@@ -438,7 +456,7 @@ class ShopPageTheme extends BaseModel {
                             $ginfo['ctype'] = null;
                             $ginfo['gtype'] = null;
                             $ginfo['linkurl'] = str_replace('\\/','/',$this->xcxPathReplace('\/shop\/goods\/info\/id\/'.$ginfo['gid']));
-                            $row['data'][$key] = $ginfo;
+                            $row['data'][$gkey] = $ginfo;
                         }
                     }
                 }
