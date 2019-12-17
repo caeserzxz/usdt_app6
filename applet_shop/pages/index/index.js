@@ -143,6 +143,14 @@ Page({
             is_diy: 1,
             diypages: res.diypage,
           })
+          wx.getSystemInfo({
+            success: function (t) {
+              var e = t.windowWidth / 1.7;
+              _this.setData({
+                swiperheight: e
+              });
+            }
+          })
           if (res.diypage.page.topdiystyle == 1){
             wx.setNavigationBarTitle({
               title: res.diypage.page.title

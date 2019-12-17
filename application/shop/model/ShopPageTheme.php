@@ -332,7 +332,7 @@ class ShopPageTheme extends BaseModel {
         if (empty($page) == false){
         	return $page;
 		}
-        $theme = $this->where('is_index',1)->find();
+        $theme = $this->where(['is_index'=>1,'is_xcx'=>1])->find();
         if (empty($theme)) return [];
         $host_path = config('config.host_path');
         $page = $this->xcxPathReplace($theme['page']);//替换成小程序路径
@@ -341,18 +341,36 @@ class ShopPageTheme extends BaseModel {
         $GoodsModel = new GoodsModel();
         foreach ($page['items'] as $key=>$row){
             $row['data'] = array_values($row['data']);
-            if ($row['id'] == 'notice'){
-            	if ($row['params']['noticedata'] == 0){
+            if ($row['id'] == 'notice') {
+                if ($row['params']['noticedata'] == 0) {
                     $ArticleModel = new \app\mainadmin\model\ArticleModel();
-                    $noticeList = $ArticleModel->where('type',1)->limit($row['params']['noticenum'])->select()->toArray();
+                    $noticeList = $ArticleModel->where('type', 1)->limit($row['params']['noticenum'])->select()->toArray();
                     $row['data'] = [];
-					foreach ($noticeList as $notice){
-						$_row = [];
+                    foreach ($noticeList as $notice) {
+                        $_row = [];
                         $_row['title'] = $notice['title'];
                         $_row['linkurl'] = '';
                         $row['data'][] = $_row;
-					}
+                    }
+                }
+            }elseif ($row['id'] == 'picturew'){
+                if ($row['params']['showtype'] == 1){
+                    $pi = 0;
+                    $datas = [];
+                    foreach ($row['data'] as $data){
+                        $datas[] = $data;
+                        $pi++;
+                        if ($pi % $row['params']['pagenum'] == 0 ){
+                            $row['data_temp'][] = $datas;
+                            $datas = [];
+                        }
+                    }
+                    if (empty($goods) == false){
+                        $row['data_temp'][] = $datas;
+                    }
+                    unset($row['data']);
 				}
+
 			}elseif ($row['id'] == 'goods'){
             	switch ($row['style']['goodsicon']){
 					case 'recommand':
