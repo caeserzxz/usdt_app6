@@ -239,7 +239,8 @@ class WeiXinModel extends BaseModel {
 		$code = input('code','','trim');
 		if (empty($code)){
 			//获取code
-			$redirect_uri = urlencode(getUrl());
+			//$redirect_uri = urlencode(getUrl());
+			$redirect_uri = getWxBackUrl();
 			//$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
 			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
 			 header("location:".$url);
