@@ -1,0 +1,240 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['fa_id']>0?"编辑优惠活动":"添加优惠活动"}</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
+        <section class="panel panel-default">
+
+            <div class="form-group m-t">
+                <label class="col-sm-1 control-label">活动名称：</label>
+                <div class="col-sm-5 must" >
+                    <input type="text" class="input-max" data-rule-maxlength="80" data-rule-required="true" data-msg-required="活动名称不能为空" name="title" value="{$row.title}" >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">活动时间：</label>
+                <div class="col-sm-2" >
+                    <span class="fl help-inline">开始时间：</span><div class="input-group"> <input type="text" class="input-max" data-bytype="day" name="start_date" id="start_date" value="{$row.start_date}"  readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+
+                <div class="col-sm-2" >
+                    <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" data-bytype="day" name="end_date"  id="end_date" value="{$row.end_date}"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">活动方案：</label>
+                <div class="col-sm-8">
+                    {if condition="$row.favour_type"}
+                    <input type="hidden" name="favour_type" id="favour_type" value="{$row.favour_type}">
+                    <span class="help-inline">{$favourType[$row['favour_type']]['name']}</span>
+                    {else/}
+                    <select name="favour_type" id="favour_type" onchange="selectDateType()">
+                        {foreach name="favourType" item="vo"}
+                        <option value="{$vo.dict_key}">{$vo.name}</option>
+                        {/foreach}
+                    </select>
+                    <span class="help-inline">* 添加后不能修改</span>
+                    {/if}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">状态：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="1" {$row['status']==1?'checked':''}  class="js_radio_undertake">开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="0" {$row['status']==0?'checked':''}  class="js_radio_undertake">关闭
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">活动商品：</label>
+                <div class="col-sm-10 lh30" >
+                    <div class="col-sm-12 " >
+                        <select class="hide dateType dateType-1" name="date_sel" id="dateList">
+                            <option value="0" >全部日期</option>
+                        </select>
+                        <select class="hide dateType dateType-2" name="week_sel" id="weekList">
+                            <option value="-1" >全部周</option>
+                            <option value="1" >周一</option>
+                            <option value="2" >周二</option>
+                            <option value="3" >周三</option>
+                            <option value="4" >周四</option>
+                            <option value="5" >周五</option>
+                            <option value="6" >周六</option>
+                            <option value="0" >周日</option>
+                        </select>
+                        <select name="cycle_sel" id="cycleList">
+                            <option value="0" >全部档期</option>
+                            {foreach name="$cycleList" item="vo"}
+                            <option value="{$vo.value}" >{$vo.value}</option>
+                            {/foreach}
+                        </select>
+                        <button class="btn btn-sm" type="button" title="搜索"><a href="javascript:setGoods(0);" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加商品</a></button>
+
+                    </div>
+                    <div class="col-sm-12 goods_info m-t-md" id="goodsList">
+                    </div>
+            </div>
+            </div>
+
+            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
+            <div class="form-group" style="width:90%;">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="fa_id" id="fa_id" type="hidden" value="{$row.fa_id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    var start_date="",end_date="";
+    //选择活动方案
+    function selectDateType(){
+        var favour_type = $('#favour_type').val();
+        $('.dateType').addClass('hide');
+        $('.dateType-'+favour_type).removeClass('hide');
+    }
+    //拆分日期列表
+    function splitDate(){
+         var start = $("#start_date").val();
+         var end = $("#end_date").val();
+         if(start_date==start&&end_date==end){
+             return false;
+         }
+        start_date=start;
+        end_date=end;
+        var dateList =getBetweenDateStr(start_date,end_date);
+        $("#dateList").html('').append("<option value='0'>全部日期</option>");
+        $.each(dateList,function (i,val) {
+            $("#dateList").append("<option value='"+val+"'>"+val+"</option>");
+        });
+    }
+    //获取两个日期之间的日期列表
+    function getBetweenDateStr(start,end){
+        var result = [];
+        if(start==end){
+            result.push(start);
+            return result;
+        }
+        var beginDay = start.split("-");
+        var endDay = end.split("-");
+        var diffDay = new Date();
+        var dateList = new Array;
+        var i = 0;
+        diffDay.setDate(beginDay[2]);
+        diffDay.setMonth(beginDay[1]-1);
+        diffDay.setFullYear(beginDay[0]);
+        result.push(start);
+        while(i == 0){
+            var countDay = diffDay.getTime() + 24 * 60 * 60 * 1000;
+            diffDay.setTime(countDay);
+            dateList[2] = diffDay.getDate();
+            dateList[1] = diffDay.getMonth() + 1;
+            dateList[0] = diffDay.getFullYear();
+            if(String(dateList[1]).length == 1){dateList[1] = "0"+dateList[1]};
+            if(String(dateList[2]).length == 1){dateList[2] = "0"+dateList[2]};
+            result.push(dateList[0]+"-"+dateList[1]+"-"+dateList[2]);
+            if(dateList[0] == endDay[0] && dateList[1] == endDay[1] && dateList[2] == endDay[2]){ i = 1;
+            }
+        };
+        return result;
+    }
+
+    //获取商品列表商品
+    function getGoodsList(){
+        var data = new Object();
+        data.fa_id = $('#fa_id').val();
+        data.week_sel = $('#weekList').val();
+        data.date_sel = $('#dateList').val();
+        data.cycle_sel = $('#cycleList').val();
+        jq_ajax('{:url("favour/sys_admin.favourGoods/getList")}',data,function(res){
+            if (res.code == 0){
+                return false;
+            }
+            $('#goodsList').html(res.data.content);
+        });
+    }
+
+
+    $(function (e) {
+        $('#favour_type').click(function () {
+           var trObj = $('#goodsList .goodsTpl tbody').find('tr');
+           if(trObj.length>0){
+               alert('已添加活动商品，不可更改活动方案.');
+               return false;
+           }
+        });
+
+        selectDateType();
+        splitDate();
+        $("#dateList").focus(function () {
+            splitDate();
+        });
+        getGoodsList();
+        $("#dateList").on('change',function (e){
+            getGoodsList();
+        })
+        $("#weekList").on('change',function (e){
+            getGoodsList();
+        })
+        $("#cycleList").on('change',function (e){
+            getGoodsList();
+        })
+    })
+
+    /**设置活动商品**/
+    function setGoods(fg_id)
+    {
+        var favour_type = $('#favour_type').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        var fa_id = $('input[name=fa_id]').val();
+        var param='fg_id='+fg_id+'&fa_id='+fa_id+'&favour_type='+favour_type+'&start_date='+start_date+'&end_date='+end_date
+        var url = "{:url('favour/sys_admin.favourGoods/info')}"+"?"+param+"#"+Math.random();
+        layer.open({
+            type: 2,
+            title: '添加商品',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['70%', '82%'],
+            content: url,
+        });
+    }
+    /**设置活动商品-回调**/
+    function call_back(status)
+    {
+        layer.closeAll('iframe');
+        if(status==1){
+            getGoodsList();
+        }
+    }
+</script>
+{/block}

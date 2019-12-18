@@ -35,7 +35,7 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 添加购物车处理
     /*------------------------------------------------------ */
-    public function addToCart($goods_id, $num, $spec = '', $sku_id = 0, $type = '')
+    public function addToCart($goods_id, $num, $spec = '', $sku_id = 0, $type = '', $prom_type = 0, $prom_id = 0)
     {
         $GoodsModel = new GoodsModel();
         $use_integral = 0;
@@ -94,10 +94,17 @@ class CartModel extends BaseModel
         $where['is_integral'] = $this->is_integral;
         $row = $this->field('goods_number,rec_id,use_integral')->where($where)->find();
         unset($where);
+
+        //活动信息相关：1-限时优惠
+        $promInfo = [];
+        if ($prom_type == 1) {
+            $promInfo = (new \app\favour\model\FavourGoodsModel)->getFavourInfo($prom_id, $sku_id);
+        }
+
         if ($row) {// 如果购物车已经有此物品，则更新
             $update['use_integral'] = $use_integral;
             // 判断是商品能否购买或修改
-            $res = $this->checkGoodsOrder($goods, $num, $spec);
+            $res = $this->checkGoodsOrder($goods, $num, $spec, $prom_type, $promInfo);
             if ($res !== true) {
                 if ($res['code'] == -1) {//如果返回码为-1，更新商品为无效
                     $this->updateCart($row['rec_id'], ['is_invalid' => 1]);
@@ -105,7 +112,7 @@ class CartModel extends BaseModel
                 return $res['msg'];
             }
             if ($this->is_integral == 0) {//非积分商品执行
-                $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                $price = $GoodsModel->evalPrice($goods, $num, $spec, $prom_type, $promInfo);//计算需显示的商品价格
                 $update['sale_price'] = $price['min_price'];
                 if ($goods['give_integral'] == 0) {//1:1赠送积分
                     $update['give_integral'] = $goods['sale_price'];
@@ -119,6 +126,8 @@ class CartModel extends BaseModel
             $update['settle_price'] = $goods['settle_price'];
             $update['shop_price'] = $goods['shop_price'];
             $update['buy_again_discount'] = 0;
+            $update['prom_type'] = $prom_type;
+            $update['prom_id'] = $prom_id;
             if ($goods['is_dividend'] == 1) {//分销商品处理，计算分销复购优惠
                 $Dividend = json_decode(settings('Dividend'), true);
                 if ($Dividend['buy_again_lower'] == 1) {
@@ -131,7 +140,7 @@ class CartModel extends BaseModel
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
             $rec_id = $row['rec_id'];
         } else {// 购物车没有此物品，则插入
-            $res = $this->checkGoodsOrder($goods, $num, $spec);// 判断是商品能否购买或修改
+            $res = $this->checkGoodsOrder($goods, $num, $spec, $prom_type, $promInfo);// 判断是商品能否购买或修改
             if ($res !== true) return $res['msg'];
 
             $parent = array(
@@ -141,6 +150,8 @@ class CartModel extends BaseModel
                 'brand_id' => $goods['brand_id'],
                 'cid' => $goods['cid'],
                 'supplyer_id' => $goods['supplyer_id'],
+                'prom_type' => $prom_type,
+                'prom_id' => $prom_id,
                 'goods_id' => $goods_id,
                 'goods_number' => $num,
                 'is_dividend' => $goods['is_dividend'],
@@ -153,12 +164,12 @@ class CartModel extends BaseModel
                 'is_integral' => $this->is_integral,
                 'pic' => $goods['goods_thumb'],
                 'use_integral' => $use_integral,
-                'add_time' => time()
+                'add_time' => time(),
             );
 
             $discont = 0;
             if ($this->is_integral == 0) {//非积分商品执行
-                $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                $price = $GoodsModel->evalPrice($goods, $num, $spec, $prom_type, $promInfo);//计算需显示的商品价格
                 $parent['sale_price'] = $price['min_price'];
                 $discont = $goods['shop_price'] - $price['min_price'];
                 if ($goods['give_integral'] == 0) {//1:1赠送积分
@@ -179,7 +190,7 @@ class CartModel extends BaseModel
                 $parent['market_price'] = $sub_goods['market_price'];
                 $parent['shop_price'] = $sub_goods['shop_price'];
                 if ($this->is_integral == 0) {//非积分商品执行
-                    $price = $GoodsModel->evalPrice($goods, $num, $spec);//计算需显示的商品价格
+                    $price = $GoodsModel->evalPrice($goods, $num, $spec, $prom_type, $promInfo);//计算需显示的商品价格
                     $parent['sale_price'] = $price['min_price'];
                     if ($sub_goods['market_price'] > 0 && $sub_goods['market_price'] > $sub_goods['shop_price']) {
                         $discont = $sub_goods['shop_price'] - $parent['sale_price'];
@@ -210,7 +221,7 @@ class CartModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 验证商品能否下单
     /*------------------------------------------------------ */
-    public function checkGoodsOrder(&$goods, $num, $spec = '')
+    public function checkGoodsOrder(&$goods, $num, $spec = '', $prom_type = 0, $promInfo = [])
     {
         if ($this->is_integral == 1) {//积分商品
             $IntegralGoodsModel = new \app\integral\model\IntegralGoodsModel();
@@ -258,6 +269,45 @@ class CartModel extends BaseModel
             return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】已下架，暂不支持购买！'];
         }
         if ($goods['is_alone_sale'] == 0) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】为赠品或配件，不能直接进行购买！'];
+        if ($goods['is_spec'] == 1) {// 多规格商品执行
+            if (empty($spec)) return ['code' => 0, 'msg' => '当前商品为多规格商品，请前往详情页选择规格后再操作'];
+            $sub_goods = $goods['sub_goods'][$spec];
+            $SkuCustomModel = new SkuCustomModel();
+            $sku_name = $SkuCustomModel->getSkuName($sub_goods);
+            if ($sub_goods['BuyMaxNum'] < 1) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】<br>库存不足，暂不能购买！'];
+            if ($sub_goods['goods_number'] < $num) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】<br>库存不够当前定义购买数量，不能直接进行购买！'];
+        } else {// 单规格商品执行
+            if ($goods['goods_number'] < $num) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . '】<br>库存不够当前定义购买数量，不能直接进行购买！'];
+        }
+
+        //活动相关：1-限时优惠
+        if ($prom_type == 1) {
+            if ($promInfo['code'] == 0) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】<br>' . $promInfo['msg']];
+            $favourGoods = $promInfo['data']['goods'];
+            $favourGoodsInfo = $promInfo['data']['goodsInfo'];
+            if ($goods['is_spec'] == 1) {// 多规格商品执行
+                $sub_goods = $goods['sub_goods'][$spec];
+                $SkuCustomModel = new SkuCustomModel();
+                $sku_name = $SkuCustomModel->getSkuName($sub_goods);
+                if ($favourGoodsInfo['goods_number'] < 1) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】<br>活动库存不足，暂不能购买！'];
+                if ($favourGoodsInfo['goods_number'] < $num) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】<br>活动库存不够当前定义购买数量，不能直接进行购买！'];
+
+                if ($favourGoods['limit_num'] > 0) {
+                    $ogNum = (new \app\favour\model\FavourGoodsModel)->getFavourBuyNum($promInfo);
+                    if (($num + $ogNum) > $favourGoods['limit_num']) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . ' - ' . $sku_name . '】<br>当前活动档期只能购买' . $favourGoods['limit_num'] . '件<br>已购买' . $ogNum . '件'];
+                }
+
+            } else {// 单规格商品执行
+                if ($favourGoodsInfo['goods_number'] < 1) return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】<br>活动库存不足，暂不能购买！'];
+                if ($favourGoodsInfo['goods_number'] < $num) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . '】<br>活动库存不够当前定义购买数量，不能直接进行购买！'];
+                if ($favourGoods['limit_num'] > 0) {
+                    $ogNum = (new \app\favour\model\FavourGoodsModel)->getFavourBuyNum($promInfo);
+                    if (($num + $ogNum) > $favourGoods['limit_num']) return ['code' => 0, 'msg' => '商品【' . $goods['goods_name'] . '】<br>当前活动档期只能购买' . $favourGoods['limit_num'] . '件<br>已购买' . $ogNum . '件'];
+                }
+            }
+            return true;
+        }
+
         //限制等级购买
         if (empty($goods['limit_user_level']) == false) {
             $limit_user_level = explode(',', $goods['limit_user_level']);
@@ -439,8 +489,15 @@ class CartModel extends BaseModel
         $cg = $this->where('rec_id', $rec_id)->find();
         $GoodsModel = new GoodsModel();
         $goods = $GoodsModel->info($cg['goods_id'], fales);
+
+        //活动信息相关：1-限时优惠
+        $promInfo = [];
+        if ($cg['prom_type'] == 1) {
+            $promInfo = (new \app\favour\model\FavourGoodsModel)->getFavourInfo($cg['prom_id'], $cg['sku_id']);
+        }
+
         // 判断是商品能否购买或修改
-        $res = $this->checkGoodsOrder($goods, $num, $cg['sku_val']);
+        $res = $this->checkGoodsOrder($goods, $num, $cg['sku_val'], $cg['prom_type'], $promInfo);
         if ($res !== true) {
             if ($res['code'] == -1) {//如果返回码为-1，更新商品为无效
                 $this->updateCart($rec_id, ['is_invalid' => 1]);
@@ -449,7 +506,7 @@ class CartModel extends BaseModel
         }
 
         //计算需显示的商品价格
-        $price = $GoodsModel->evalPrice($goods, $num, $cg['sku_val']);
+        $price = $GoodsModel->evalPrice($goods, $num, $cg['sku_val'], $cg['prom_type'], $promInfo);
         $arr['goods_number'] = $num;
         $arr['is_select'] = 1;
         if ($goods['is_spec'] == 1) {

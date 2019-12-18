@@ -34,6 +34,21 @@ class Index  extends ClientbaseController{
         //首页头条
         $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
         $this->assign('headline', $headline);
+
+        //楼层板块
+        $plateList = (new \app\shop\model\PlateModel)->getRows();
+        $this->assign('plateList', $plateList);
+        foreach ($plateList as $val){
+            $this->assign($val['key'], $val['name']);
+        }
+
+        //标签
+        $tagList = (new \app\shop\model\GoodsTagModel)->getAbleList();
+        $this->assign('tagList', $tagList);
+
+        //广告
+        $adList = (new \app\shop\model\AdModel)->getRows();
+        $this->assign('adList', $adList);
         
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片

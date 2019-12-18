@@ -1,0 +1,308 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['id']>0?"编辑幻灯片":"添加幻灯片"}</strong>
+            </li>
+        </ul>
+
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">广告简称</label>
+                    <div class="controls" >
+                        <input type="text" class="input-xlarge" data-rule-maxlength="40" data-rule-required="true" data-msg-required="文章标题不能为空" name="title" value="{$row.title}" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">广告类型</label>
+                    <div class="controls" >
+                        <select id="ad_type" name="ad_type" onChange="showAdType(this);" class="input-medium" style="width:200px;">
+                            <option value="1"  {eq name="row['ad_type']" value="1"}selected{/eq} >单图广告</option>
+                            <option value="2"  {eq name="row['ad_type']" value="2"}selected{/eq} >双图广告</option>
+                            <option value="3"  {eq name="row['ad_type']" value="3"}selected{/eq} >三图广告</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group goods_info m-t">
+                    <label class="control-label">广告内容：</label>
+                    <div class="col-sm-9 lh30" >
+                        <div class="col-sm-10 goods_name " >
+                            {gt name="$row.fg_id" value="0" }
+                            商品ID：{$goods.goods_id} -- 商品名称： {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
+                            {/gt}
+                        </div>
+                        <div class="col-sm-12 m-t-md tableBox" >
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>广告图片</th>
+                                    <th>链接类型</th>
+                                    <th>链接内容</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {if condition="$row.id>0"}
+                                {foreach name="$row.data" item="vo" key="k"}
+                                <tr class="ad_tr ad_tr_{$k} hide">
+                                    <td>
+                                        <div id="image_upload{$k}" class="">
+                                            <img class="thumb_img" name="imagefile" src="{$vo.imgurl}" style="max-height: 100px;">
+                                            <input class="hide" name="data[{$k}][imgurl]" value="{$vo.imgurl}" type="text">
+                                            <br>
+                                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                                            <span class="size_tip">（建议尺1寸：750 * 500）</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-2">
+                                            <select  name="data[{$k}][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                                <option value="">请选择</option>
+                                                {foreach name="WeixinReplyType" item="vv"}
+                                                <option value="{$vv.ext_val}" {eq name="vv['ext_val']" value="$vo.bind_type"}selected{/eq} >{$vv.name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-4">
+                                            <input name="data[{$k}][type_val]"  class="type_val input-xlarge" type="text" value="{$vo.type_val}">
+                                            <input name="data[{$k}][ext_id]" class="ext_id" type="hidden" value="{$vo.ext_id}">
+                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$vo['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
+                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$vo['bind_type']=='goods'?'':'hide'}">绑定商品</a>
+                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$vo['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                {else/}
+                                <tr class="ad_tr ad_tr_0 hide">
+                                    <td>
+                                        <div id="image_upload0" class="">
+                                            <img class="thumb_img" name="imagefile" src="" style="max-height: 100px;">
+                                            <input class="hide" name="data[0][imgurl]" value="" type="text">
+                                            <br>
+                                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                                            <span class="size_tip">（建议尺寸：750 * 500）</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-2">
+                                            <select  name="data[0][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                                <option value="">请选择</option>
+                                                {foreach name="WeixinReplyType" item="vv"}
+                                                <option value="{$vv.ext_val}">{$vv.name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-4">
+                                            <input name="data[0][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
+                                            <input name="data[0][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
+                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
+                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
+                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="ad_tr ad_tr_1 hide">
+                                    <td>
+                                        <div id="image_upload1" class="">
+                                            <img class="thumb_img" name="imagefile" src="" style="max-height: 100px;">
+                                            <input class="hide" name="data[1][imgurl]" value="" type="text">
+                                            <br>
+                                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                                            <span class="size_tip">（建议尺寸：750 * 500）</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-2">
+                                            <select  name="data[1][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                                <option value="">请选择</option>
+                                                {foreach name="WeixinReplyType" item="vv"}
+                                                <option value="{$vv.ext_val}">{$vv.name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-4">
+                                            <input name="data[1][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
+                                            <input name="data[1][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
+                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
+                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
+                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="ad_tr ad_tr_2 hide">
+                                    <td>
+                                        <div id="image_upload2" class="">
+                                            <img class="thumb_img" name="imagefile" src="" style="max-height: 100px;">
+                                            <input class="hide" name="data[2][imgurl]" value="" type="text">
+                                            <br>
+                                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                                            <span class="size_tip">（建议尺寸：750 * 500）</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-2">
+                                            <select  name="data[2][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                                <option value="">请选择</option>
+                                                {foreach name="WeixinReplyType" item="vv"}
+                                                <option value="{$vv.ext_val}">{$vv.name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-4">
+                                            <input name="data[2][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
+                                            <input name="data[2][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
+                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
+                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
+                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/if}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">是否启用</label>
+                    <div class="col-sm-3 ">
+                        <label class=" inline">
+                            <input type="radio" name="status" value="1" {$row['status']|tplckval=1,'checked',true} />
+                            是
+                        </label>
+                        <label class=" inline">
+                            <input type="radio" name="status" value="2" {$row['status']|tplckval=0,'checked'}/>
+                            否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">排序</label>
+                    <div class="col-sm-3 must">
+                        <input type="text" name="sort_order" id="sort_order" value="{$row.sort_order|intval}"
+                               data-rule-required="true" data-rule-maxlength="30" class="input-mini">
+                        <span style="color:red;">（数字越大越靠前）</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+</section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="id" type="hidden" value="{$row['id']}"/>
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
+{/block}
+{block name="footer" }
+{literal}
+<script type="text/html" id="adTpl">
+        <tr>
+            <td>
+                <div id="image_upload" class="">
+                    <img class="thumb_img" name="imagefile" src="" style="max-height: 100px;">
+                    <input class="hide" name="imgurl" value="" type="text">
+                    <br>
+                    <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                    <span class="">（建议尺寸：750 * 500）</span>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-2">
+                    <select id="bind_type" name="bind_type" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                        <option>请选择</option>
+                        {$WeixinReplyType|raw}
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-4 must">
+                    <input name="type_val"  class="type_val input-xlarge" type="text" value="{$row.data}">
+                    <input name="ext_id" class="ext_id" type="hidden" value="{$row.ext_id}">
+                    <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
+                    <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
+                    <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                </div>
+            </td>
+            <td><input type="text" name="limit_num" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info[limit_num]}"></td>
+        </tr>
+</script>
+{/literal}
+
+
+<script type="text/javascript">
+    seajs.use("dist/plupload/init.js");
+    var this_tr="";
+    function showAdType() {
+        var sel_val =$('#ad_type').val();
+       $('.ad_tr').addClass('hide');
+       if(sel_val==1){
+           $('.size_tip').text('（建议尺寸：710 * 284）');
+       }else if(sel_val==2){
+           $('.size_tip').text('（建议尺寸：348 * 178）');
+       }else if(sel_val==3){
+           $('.size_tip').text('（建议尺寸：200 * 200）');
+       }
+        for(var i=0;i<sel_val;i++){
+            $('.ad_tr_'+i).removeClass('hide');
+        }
+    }
+
+    function showUrlType(sel, input_id) {
+        $(sel).parents('tr').find(".type_bding_btn").addClass('hide');
+        $(sel).parents('tr').find(".type_val").val('');
+        $(sel).parents('tr').find(".ext_id").val(0);
+        $(sel).parents('tr').find(".ext_activity").val(0);
+        if (sel.value == 'article')   $(sel).parents('tr').find(".article_btn").removeClass('hide');
+        else if (sel.value == 'link') {
+            $(sel).parents('tr').find(".type_val").val('http://');
+            $(sel).parents('tr').find(".link_btn").removeClass('hide');
+        }
+        else if (sel.value == 'goods') $(sel).parents('tr').find(".goods_btn").removeClass('hide');
+        else if (sel.value == 'activity') $(sel).parents('tr').find(".activity_btn").removeClass('hide');
+    }
+    function assigBack(type, type_id, id, title, tid) {
+        console.log(this_tr);
+        $(this_tr).find(".ext_id").val(id);
+        $(this_tr).find(".ext_activity").val(tid);
+        $(this_tr).find(".type_val").val(title);
+    }
+    var McMore = {
+        selectUrlCallback: function (url, type, type_id) {
+            $(this_tr).find(".type_val").val(url);
+            $(".modal-dialog .close").trigger("click");
+        }
+    }
+    $(function () {
+        showAdType();
+        $('.type_bding_btn').on('click',function (e) {
+            this_tr =  $(this).parents('tr');
+        });
+    })
+</script>
+{/block}

@@ -126,25 +126,78 @@
   margin-left: 0.093333rem;
 }
 
+.top_img {
+  width: 100vw;
+  height: 3.493333rem;
+}
+
 .seckill .scrollbox {
   overflow: auto;
+  margin: -2.373333rem 0 0.133333rem;
+  z-index: 9;
+}
+
+.seckill .nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #f65236;
 }
 
 .seckill .BGcolor_e {
   background-color: #eee;
 }
 
+.seckill  .emptySeckill {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  top: 0.8rem;
+}
+.seckill .emptySeckill img {
+  width: 100%;
+  margin-top: 20vh;
+}
+.seckill .emptySeckill span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding-bottom: 0.266667rem;
+}
+
+
 .seckill .tab {
   height: 0.733333rem;
-  background-color: #fff;
   box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: inline-flex;
   overflow-x: scroll;
   overflow-y: hidden;
+  margin-bottom: 0.066667rem;
 }
 
+.seckill .tab .active_s {
+  position: relative;
+  font-size: 0.28rem;
+  opacity: 1;
+}
+
+.seckill .tab .active_s::after {
+  content: " ";
+  position: absolute;
+  left: 34%;
+  top: 0.666667rem;
+  width: 0.333333rem;
+  border-bottom: 0.08rem solid #fff;
+  -webkit-transform-origin: left top;
+          transform-origin: left top;
+}
+
+.seckill .tab a,
 .seckill .tab div {
   float: left;
   display: -webkit-box;
@@ -161,29 +214,37 @@
   -webkit-justify-content: center;
           justify-content: center;
   height: 100%;
+  opacity: .6;
   width: 1rem;
 }
 
+.seckill .tab a .num,
 .seckill .tab div .num {
   margin-bottom: -0.053333rem;
 }
 
+.seckill .tab div > span:first-child {
+  padding-bottom: 0.08rem;
+}
+
 .seckill .tabBox {
-  height: 100%;
+  position: relative;
 }
 
 .seckill .tabBox .box {
   display: none;
 }
 
-.seckill .tabBlock {
-  height: 100%;
-  overflow: auto;
+.seckill .tabBlock > div {
+  border-radius: 0.133333rem;
+  margin: 0 0.133333rem;
+  background-color: #fff;
 }
 
 .seckill .butt {
-  width: 1.066667rem;
-  height: 0.373333rem;
+  width: 0.8rem;
+  height: 0.333333rem;
+  border-radius: 0.173333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

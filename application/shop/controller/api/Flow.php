@@ -38,18 +38,23 @@ class Flow extends ApiController
     {
         $goods_id = input('goods_id', 0, 'intval');
         $num = input('number', 1, 'intval');
-		$type = input('type','','trim');
-		if ($type == 'onbuy'){
-			$this->checkLogin();//验证登陆
-		}
+        $type = input('type', '', 'trim');
+        $prom_type = input('prom_type', 0, 'intval');
+        $prom_id = input('prom_id', 0, 'intval');
+        if ($type == 'onbuy') {
+            $this->checkLogin();//验证登陆
+        }
         if ($num < 1) $num = 1;
         $specifications = input('specifications', '', 'trim');
         $sku_id = input('sku_id', 0, 'intval');
         if ($specifications == 'undefined') $specifications = '';
         if ($goods_id < 1) return $this->error('传值失败，请重新尝试提交！');
-        $rec_id = $this->Model->addToCart($goods_id, $num, $specifications,$sku_id,$type);
+        $rec_id = $this->Model->addToCart($goods_id, $num, $specifications, $sku_id, $type, $prom_type, $prom_id);
         if (is_numeric($rec_id) == false) {
-            return $this->error($rec_id);
+            $return['code'] = 2;
+            $return['msg'] = $rec_id;
+            return $this->ajaxReturn($return);
+//            return $this->error($rec_id);
         }
         if ($type != 'onbuy') {
             $return['cartInfo'] = $this->Model->getCartInfo();
@@ -211,14 +216,22 @@ class Flow extends ApiController
         $rec_ids = [];
         $allGoodsSn = [];
         $allGoodsId = [];
+        $allFavourId = [];
         $cartList['use_bonus_goods_amount'] = 0;//使用了优惠券的商品总额
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $key => $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
+            //活动信息相关：1-限时优惠
+            $promInfo = [];
+            if ($grow['prom_type'] == 1) {
+                $promInfo = (new \app\favour\model\FavourGoodsModel)->getFavourInfo($grow['prom_id'], $grow['sku_id']);
+            }
+
             // 判断是商品能否购买或修改
-            $res = $this->Model->checkGoodsOrder($goods, $grow['goods_number'], $grow['sku_val']);
-            if ($res !== true) return $this->error($res);
-            $price = $GoodsModel->evalPrice($goods, $grow['goods_number'], $grow['sku_val']);//计算需显示的商品价格
+            $res = $this->Model->checkGoodsOrder($goods, $grow['goods_number'], $grow['sku_val'], $grow['prom_type'], $promInfo);
+            if ($res !== true) return $this->error($res['msg']);
+
+            $price = $GoodsModel->evalPrice($goods, $grow['goods_number'], $grow['sku_val'], $grow['prom_type'], $promInfo);//计算需显示的商品价格
             if ($this->is_integral == 0 && $grow['sale_price'] != $price['min_price']) {
                 return $this->error('商品' . $grow['goods_name'] . $grow['sku_name'] . '价格发生变化，购物车价格：￥' . $grow['sale_price'] . '，当前价格：￥' . $price['min_price']);
             }
@@ -264,6 +277,9 @@ class Flow extends ApiController
             $allGoodsSn[$grow['goods_sn']] = 1;
             $allGoodsId[$grow['goods_id']] = 1;
             $rec_ids[] = $grow['rec_id'];
+            if (empty($promInfo) == false) {
+                $allFavourId[$promInfo['data']['goods']['fa_id']] = $promInfo['data']['goods']['fa_id'];
+            }
         }
 
         if (empty($supplyer_ids) == false){
@@ -355,6 +371,7 @@ class Flow extends ApiController
         $inArr['goods_amount'] = $cartList['totalGoodsPrice'];
         $inArr['buy_goods_sn'] = join(',', array_keys($allGoodsSn));
         $inArr['buy_goods_id'] = join(',', array_keys($allGoodsId));
+        $inArr['favour_id'] = join(',', array_keys($allFavourId));
         $inArr['ipadderss'] = request()->ip();
         $inArr['is_pay'] = $payment['is_pay'];//是否需要支付,1线上支付，0，不需要支付，
         $inArr['is_success'] = 1;//普通订单默认有效，如果拼团默认为0，须拼团成功才会为1
@@ -453,6 +470,8 @@ class Flow extends ApiController
                 'brand_id' => $og['brand_id'],
                 'cid' => $og['cid'],
                 'supplyer_id' => $og['supplyer_id'],
+                'prom_type' => $og['prom_type'],
+                'prom_id' => $og['prom_id'],
                 'goods_id' => $og['goods_id'],
                 'goods_name'=>$og['goods_name'],
                 'sku_id' => $og['sku_id'],

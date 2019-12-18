@@ -1,0 +1,48 @@
+<table class="table table-bordered  ">
+<thead class="flip-content bordered-palegreen">
+<tr>
+    <th width="60">ID</th>
+    <th width="120">活动名称</th>
+    <th width="120">活动方案</th>
+    <th width="200">商品数量</th>
+    <th width="80">状态</th>
+    <th width="140">开始时间</th>
+    <th width="140">结束时间</th>
+    <th width="80">操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+    <!--<tr>-->
+        <!--<td>{$vo.sg_id}</td>-->
+      	<!--<td>{$vo['is_spec']==0?$vo['goods_sn']:'多规格'}</td>-->
+        <!--<td>{$vo.goods_name}</td>-->
+        <!--<td align="center">{$vo.shop_price}</td>-->
+        <!--<td align="center"></td>-->
+        <!--<td align="center">{$vo.start_date|dateTpl}</td>-->
+        <!--<td align="center">{$vo.end_date|dateTpl}</td>-->
+        <!--<td align="center">-->
+        	<!--<a href="{:url('info',array('sg_id'=>$vo['sg_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>-->
+        <!--</td>-->
+    <!--</tr>-->
+<tr>
+    <td>{$vo.fa_id}</td>
+    <td>{$vo.title}</td>
+    <td>{$FavourType[$vo['favour_type']]['name']}</td>
+    <td>{$vo.goods_num}</td>
+    <td >{$statusList[$vo.status]}</td>
+    <td >{$vo.start_date}</td>
+    <td >{$vo.end_date}</td>
+    <td >
+        <a href="{:url('info',array('fa_id'=>$vo['fa_id']))}"  title="编辑" class="fa fa-edit m-xs" ></a>
+        <a href="{:url('/shop/sys_admin.order/index',array('favour_id'=>$vo['fa_id']))}" class="m-xs" title="查看订单"><i class="fa fa-search text-muted"></i></a>
+    </td>
+</tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

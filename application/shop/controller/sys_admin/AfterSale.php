@@ -41,11 +41,20 @@ class AfterSale extends AdminController
     public function wait_return()
     {
         $this->assign('title','待退货');
-        $this->listType = 'wait_shipping';
+        $this->listType = 'wait_return';
         $this->getList(true);
         return $this->fetch('index');
     }
-
+    //*------------------------------------------------------ */
+    //-- 待退货（供应商）
+    /*------------------------------------------------------ */
+    public function wait_return_s()
+    {
+        $this->assign('title','待退货（供应商）');
+        $this->listType = 'wait_return_s';
+        $this->getList(true);
+        return $this->fetch('index');
+    }
     //*------------------------------------------------------ */
     //-- 待收货
     /*------------------------------------------------------ */
@@ -130,7 +139,12 @@ class AfterSale extends AdminController
             case 'wait_check':
                 $where[] = ['status', '=', 0];
                 break;
-            case 'wait_shipping':
+            case 'wait_return':
+	    	$where[] = ['supplyer_id', '=', 0];
+                $where[] = ['status', '=', 2];
+                break;
+	    case 'wait_return_s':
+	    	$where[] = ['supplyer_id', '>', 0];
                 $where[] = ['status', '=', 2];
                 break;
             case 'wait_sign':

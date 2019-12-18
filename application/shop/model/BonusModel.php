@@ -260,14 +260,15 @@ class BonusModel extends BaseModel
     //-- 获取结算页可用优惠券
     //-- $user_id 用户ID
     //-- $cartInfo 购买的商品信息
+    //-- $goods_type 指定商品类型，1-普通商品，2-拼团
     /*------------------------------------------------------ */
-    public function getListAvailable($user_id, $cartInfo)
+    public function getListAvailable($user_id, $cartInfo,$goods_type=1)
     {
         $time = time();
         $BonusListModel = new BonusListModel();
         $where[] = ['bl.user_id', '=', $user_id];
         $where[] = ['bl.status', '=', 0];
-        $where[] = ['bt.goods_type', '=', 1];
+        $where[] = ['bt.goods_type', '=', $goods_type];
         $where[] = ['bt.use_status', '=', 1];
         $where[] = ['bt.use_start_date', '<', $time];
         $where[] = ['bt.use_end_date', '>', $time];
@@ -343,7 +344,7 @@ class BonusModel extends BaseModel
                 $use_by = explode(',', $row['use_by']);//可用的商品ID
                 if ($cartList['goodsList']) {
                     foreach ($cartList['goodsList'] as $goods) {
-                        if (in_array($goods['goods_id'], $use_by)) {//符合使用商品
+                        if (in_array($goods['goods_id'], $use_by)) {//符合使用商品，拼团时goods_id=fg_id
                             $TotalGoodsPrice += $goods['sale_price'] * $goods['goods_number'];
                         }
                     }

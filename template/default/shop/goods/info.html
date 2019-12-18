@@ -32,6 +32,15 @@
             <div class="swiper-pagination pagination1"></div>
 
         </div>
+        <div class="timeBox text_box hide" id="prom_box">
+            <p class="fs28 color_w fw_b" id="prom_status_text">--</p>
+            <div class="time start">
+                <p class="fs28 color_w" id="prom_time_text">--</p>
+                <div>00</div><span>:</span>
+                <div>00</div><span>:</span>
+                <div>00</div>
+            </div>
+        </div>
     </div>
     <!-- 商品信息 -->
     <div class="moneyBox">
@@ -53,9 +62,8 @@
                         <p>.{$goods.exp_max_price[1]}</p>
                     {/if}
                 {/eq}
-
             </div>
-           <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}">活动价</span>
+           <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}" id="is_prom_price">活动价</span>
         </div>
           <!-- 浮按钮 -->
         <div class="floatBtn">
@@ -134,24 +142,29 @@
     <div class="left">
         <a href="/"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span
                 class="fs22 color_6">首页</span></a>
-        <!-- <div v5_href><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6" >客服</span>
-        </div> -->
+        <div v5_href><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6" >客服</span>
+        </div>
         <a href="{:url('flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">{$cartInfo.num|intval}</em><img
                 src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span
                 class="fs22 color_6">购物车</span></a>
     </div>
     <div class="right">
         <div class="fs28 color_w fw_b BGcolor_3 buyBtn" data-type="show">加入购物车</div>
-        <div class="fs28 color_w fw_b BGcolor_r buyBtn" data-type="show">立即购买</div>
+        <div class="fs28 color_w fw_b BGcolor_r butt buyBtn" data-type="show"> <span class="fs28 color_w fw_b buy_m">立即购买</span></div>
     </div>
+    <input type="hidden" name="goods_id" value="{$goods['goods_id']}">
+    <input type="hidden" name="sku_id" value="">
+    <input type="hidden" name="prom_type" id="prom_type" value="">
+    <input type="hidden" name="prom_id"  id="prom_id" value="">
 </div>
 {/block}
 {block name="footer"}
 <script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
 <script>
 $(function () {
-	
 	swiper1 = createSwiper(1);
+	initActivity();
+
 	// 关注
 	$('.attention').on('click', function () {
 		var imgObj = $(this).find('img');
@@ -169,7 +182,6 @@ $(function () {
 				imgObj.data('no', '0')
 			}
 		});
-		
 	})
 	jq_ajax('{:url("shop/api.comment/getListByGoods",["goods_id"=>$goods["goods_id"],"limit"=>1])}','',function(res){
 		if (res.code == 0){
@@ -262,6 +274,9 @@ function addToCart(obj) {
     }
 	arr.type = obj.data('type');
 	arr.number = $('#buynumber').val();
+    arr.prom_type = $('#prom_type').val();
+    arr.prom_id = $('#prom_id').val();
+
 	var res = jq_ajax("{:url('shop/api.flow/addCart')}", arr);
 	if (res.code == 1) {
 		if (arr.type == 'onbuy') {
@@ -270,9 +285,13 @@ function addToCart(obj) {
 		}
 		$('.cartNum').html(res.cartInfo.num);
 	}
+	if(res.code==2){
+        if (res.msg) _alert(res.msg);
+        return false;
+    }
 	if (arr.type == 'onbuy') {
         if (res.msg) _alert(res.msg,function(){
-            window.location.href = '{:_url("member/passport/login")}';
+            // window.location.href = '{:_url("member/passport/login")}';
         });
         return;
     }
@@ -302,5 +321,147 @@ function createSwiper(index) {
 function closeModel(obj){
     $(obj).parents('.model').hide()
 }
+
+/**
+ * 初始化商品活动
+ */
+function initActivity() {
+    var arr = new Object;
+    arr.goods_id = $('input[name=goods_id]').val();
+    var sku = [];
+    $('.sku_list .tag_active').each(function(){
+        var skukey = $(this).data('skukey');
+        sku.push(skukey);
+    });
+    if(sku.length>0){
+        var _sku = sku.join(":");
+        console.log(_sku);
+        arr.sku_id=sub_goods[_sku].sku_id;
+    }
+    //获取相关活动
+    jq_ajax("{:url('shop/api.goods/checkActivity')}", arr,function (res) {
+       if(res.code==1){
+           console.log(res);
+           activityTheme(res.data);
+       }
+    });
+}
+//活动相关显示
+function activityTheme(data){
+
+    if(data.activity_is_on==1){
+        if(data.status==1){
+            $('#prom_box').css('background','#f65236');
+            $('#prom_status_text').text('限时优惠中');
+            $('#prom_time_text').text('距结束');
+
+            if(data.goods.stock<=0){
+                $('#prom_box').css('background','#333333');
+                $('#prom_status_text').text('该商品活动库存已售罄');
+                buyBTnTheme(data,0);
+            }
+
+            if(data.goods.is_spec==1){
+                if(data.goods_info){
+                    if(data.goods_info.goods_number<0)
+                    $(".tan_text").text("该规格活动库存已售罄，您将以原价购买！");
+                    $(".tan_text").show();
+                    buyBTnTheme(data,0);
+                }
+            }
+
+        }else if(data.status==0){
+            $('#prom_box').css('background','#36b12a');
+            $('#prom_status_text').text('限时优惠即将开始');
+            $('#prom_time_text').text('距开始');
+        }
+
+        $("#is_prom_price").text('活动价').removeClass('hide');
+        if(data.goods_info){
+            $("#is_prom_price_sku").text('活动价').removeClass('hide');
+            $(".tan_text").hide();
+
+            $('.skuPrice').find('em').html(data.goods_info.exp_price[0]);
+            $('.skuPrice').find('p').html('.'+data.goods_info.exp_price[1]);
+            $('.moneyPrimary').html('￥'+data.goods_info.market_price);
+
+            buyBTnTheme(data,1);
+        }else{
+            $("#is_prom_price_sku").text('').addClass('hide');
+            $(".tan_text").text("该规格不参与优惠！")
+            $(".tan_text").show();
+            buyBTnTheme(data,0);
+        }
+
+        if(data.goods.is_spec==1){
+            var html = '<p class="fw_b fm_p">￥</p><em class="fs52">'+data.goods.exp_min_price[0]+'</em><p>.'+data.goods.exp_min_price[1]+'</p><em class="fs52">~</em><em class="fs52">'+data.goods.exp_max_price[0]+'</em><p>.'+data.goods.exp_max_price[1]+'</p>';
+        }else{
+            var html = '<p class="fw_b fm_p">￥</p><em class="fs52">'+data.goods.exp_min_price[0]+'</em><p>.'+data.goods.exp_min_price[1]+'</p>';        }
+        $('.moneyBox .money').html(html);
+
+        $('#prom_box').removeClass('hide');//显示优惠活动
+        codeButton($('.time div'),data.diff_time,data.status);//倒计时
+    }else{
+        $('#prom_box').addClass('hide');
+        $("#is_prom_price").text('').addClass('hide');
+        $("#is_prom_price_sku").text('').addClass('hide');
+        buyBTnTheme(data,0);
+    }
+}
+//购买按钮显示
+function buyBTnTheme(data,status){
+    if(status==0){
+        $('#prom_type').val(0);
+        $('#prom_id').val(0);
+        $('.butt ').html('<span class="fs28 color_w fw_b buy_m">立即购买</span>');
+    }else{
+        $('#prom_type').val(data.prom_type);
+        $('#prom_id').val(data.prom_id);
+        var goods_price = data.goods_info.goods_price*1;
+        var shop_price = data.goods_info.market_price*1;
+        var html='<span class="fs28 color_w fw_b buy_m">购买￥'+goods_price+'</span>';
+        html+='<span><del class="fs24 color_f o_5">￥'+shop_price+'</del></span>';
+        $('.butt ').html(html);
+    }
+}
+
+//活动倒计时
+function codeButton(obj,time,status) {
+    var code = obj;
+    var time = parseInt(time) //总秒数
+    var hour = time % 3600 == 0 ? parseInt(time / 3600) - 1 : parseInt(time / 3600); //shi
+    var min = time % 60 == 0 ? parseInt((time - hour * 3600) / 60) - 1 : parseInt(time / 3600) > 0 ? parseInt((time - hour * 3600) / 60) : parseInt(time / 60); //fen
+    var second = time % 60 == 0 ? 59 : time % 60 //miao
+    code.eq(0).text(hour > 9 ? hour : '0' + hour)
+    code.eq(1).text(min > 9 ? min : '0' + min)
+    code.eq(2).text(second > 9 ? second : '0' + second)
+    set = setInterval(function() {
+        code.eq(0).text(hour > 9 ? hour : '0' + hour)
+        code.eq(1).text(min > 9 ? min : '0' + min)
+        code.eq(2).text(--second > 9 ? second : '0' + second);
+        if(hour<=0&&min<=0&&second<=0){
+            var prom_type = $('#prom_type').val();
+            if(prom_type==1&&status==1){
+                $('#prom_box').css('background','#333333');
+                $('#prom_status_text').text('限时优惠已结束');
+            }else if(prom_type==1&&status==0){
+                initActivity();
+            }
+        }
+        if (second == 0) {
+            second = 60
+            min < 0 ? 0 : --min
+            if (min == 0 && hour > 0) {
+                min = 59
+                hour <= 0 ? 0 : --hour
+            }
+        }
+    }, 1000);
+    setTimeout(function() {
+        clearInterval(set);
+    }, 1000 * time);
+}
+
+
 </script>
 {/block}

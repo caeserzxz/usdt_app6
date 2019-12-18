@@ -1,0 +1,22 @@
+<!-- 分类 -->
+{volist name="classGoods" id="cg" }
+{notempty name="cg.gooodsList"}
+<div class="trademark">
+    <img src="__STATIC__/mobile/default/images/loading.svg" data-original="{$cg.cover}" alt="" class="lazy trademarkBG">
+    <div class="googslist">
+        {volist name="cg.gooodsList" id="goods" }
+        <a href="{:url('goods/info',['id'=>$goods['goods_id']])}">
+            <img  src="__STATIC__/mobile/default/images/loading.svg" data-original="{$goods.goods_thumb}" class="lazy" alt="">
+            <span class="fs26 color_3">{$goods.goods_name}</span>
+            <div class="color_r fs20 num"><p class="fw_b fm_p">￥</p><em class="fs30">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p></div>
+        </a>
+        {/volist}
+        <a href="{:url('goods/index',['cid'=>$cg['id']])}"  class="moreBox">
+            <p class="fs28 color_3">查看</br>更多</p>
+            <img src="__STATIC__/mobile/default/images/index_icon12.png" alt="">
+        </a>
+    </div>
+</div>
+
+{/notempty}
+{/volist}

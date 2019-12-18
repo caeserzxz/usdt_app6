@@ -35,11 +35,11 @@
             </div>
         {elseif condition="$fgJoin['status'] == 3"}
             <div class="timeBox">
-                <div class="text fs30 fw_b color_3"><span class="color_r">{$fgJoin['success_num']}人团，已成团</div>
+                <div class="text fs30 fw_b color_3"><span class="color_r">{$fgJoin['success_num']}人团，已成团</span></div>
             </div>
         {elseif condition="$fgJoin['status'] == 9"}
             <div class="timeBox">
-                <div class="text fs30 fw_b color_3"><span class="color_r">拼团失败</div>
+                <div class="text fs30 fw_b color_3"><span class="color_r">拼团失败</span></div>
             </div>
         {/if}
         <div class="memberimg">
@@ -50,11 +50,13 @@
                 <span class="fs22 color_w BGcolor_r">团长</span>
             </div>
             {else/}
+            <div>
             {empty name="$fgJoin['order'][$k]"}
             <img src="__STATIC__/mobile/default/images/groupOrder04.jpg" alt="">
             {else/}
             <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
             {/empty}
+            </div>
             {/if}
             {/for}
         </div>
@@ -81,10 +83,12 @@
                     <p class="fs28 color_3">{$goods.goods_name}</p>
                     <div class="appleBox"><span class="fs28 color_9">{$goods.sku_name}</span></div>
                     <div class="money">
-                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em
-                                class="fs36">{$goods.exp_price[0]}</em>
-                            <p>.{$goods.exp_price[1]}</p></div>
-                        <em class="fs28 color_3">x{$goods.goods_number}</em></div>
+                        <div class="color_3 fs24 num">
+                            <p class="fw_b fm_p">￥</p><em class="fs36">{$goods.exp_price[0]}</em><i>.{$goods.exp_price[1]}</i>
+                        </div>
+                        <em class="fs28 color_3">x{$goods.goods_number}</em>
+                        <span class="fs22 color_w BGcolor_r groupType">{$fgJoin['success_num']}人团</span>
+                    </div>
                 </div>
             </a>
             {/volist}

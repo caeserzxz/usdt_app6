@@ -30,7 +30,6 @@
                     {/volist}
                 </div>
                 <div class="swiper-pagination pagination1"></div>
-
             </div>
         </div>
         <!-- 拼团的购买信息 -->
@@ -42,21 +41,35 @@
         </div>
         <!-- 商品信息 -->
         <div class="moneyBox">
-            <div class="top">
-                <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div>
-
-                <span class="fs22 color_w BGcolor_r">拼团价</span>
-                <p class="fs24 color_3 price">单买价 ￥{$goods.shop_price}</p>
+            <div class="money_shou">
+                <div class="top">
+                    <div class="color_3 fs30 num money"><p class="fw_b fm_p">￥</p><em class="fs52">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div>
+                    <span class="fs22 color_w BGcolor_r">拼团价</span>
+                    <p class="fs24 color_3 price">单买价 ￥{$goods.shop_price}</p>
+                </div>
+                <!-- 浮按钮 -->
+                <div class="floatBtn">
+                    <a href="{:url('myCode',['fg_id'=>$fgInfo['fg_id']])}" class="share "><img src="__STATIC__/mobile/default/images/goodsIcon01_2.png" alt=""></a>
+                    <div class="attention "><img src="__STATIC__/mobile/default/images/goodsIcon01_3{$isCollect==1?'_lh':''}.png" data-no="{$isCollect}" alt=""></div>
+                </div>
             </div>
-            <div class="original fs24 color_9">￥{$goods.market_price}</div>
+
+            <!--<div class="original fs24 color_9">￥{$goods.market_price}</div>-->
             <div class="name fw_b fs34 color_3"><span class="color_r">【{$fgInfo.success_num}人团】</span>{$goods.goods_name}</div>
-            <div class="tips fs28 color_9 hide"><span>热销</span><p>运费0元</p></div>
+            <div class="tips fs28 color_9 goCoupons">
+                <div style="display: flex;"><span>热销{$goods.sale_count}</span>
+                    <p class="hide">运费10元</p></div>
+                {if condition="$fgInfo.is_usd_bonus eq 1"}
+                <div class="goCouponsBtn"><span class="fs28 fw_b color_3">领券</span><img src="__STATIC__/mobile/default//images/rightIcon.png" alt="" class="threeRight"></div>
+                {/if}
+            </div>
         </div>
         <!-- 参团规则 -->
-        <div class="cell groupRule">
-            <div class="timeBox">
-                <div class="text fs28 color_r fw_b">已有{$fgInfo.all_order_num}参与</div>
-                <div class="time fs32"><span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em></div>
+        <div class="groupRule">
+            <div class="ruleTips">
+                <div class="text fs28 color_r fw_b">已有{$fgInfo.all_order_num}人参与</div>
+                <div class="time fs32">
+                    <span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em></div>
             </div>
             <div class="rule"><p class="fs28 color_9">参团规则</p><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
         </div>
@@ -70,7 +83,7 @@
             <a href="{:url('join',['join_id'=>$fgl['gid']])}">
             <div class="member">
                 <div class="left">
-                    <img src="{$fgl['headimgurl']}" alt="">
+                    <img src="{$fgl['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                     <div class="info">
                         <p class="fs28 color_3">{$fgl['nick_name']}</p>
                         <span class="fs24 color_9">还差{$fgInfo['success_num'] - $fgl['order_count']}人 剩余<i class="fg_last_time" data-time="{$fgl['fail_time']}"></i></span>
@@ -128,6 +141,10 @@
 
 <!-- 弹出规格选择 -->
 {include file="index/sku" /}
+
+<!-- 弹出领取优惠券 -->
+{include file="index/bonus_layer" /}
+
 <!-- 弹出拼团规则 -->
 <div class="model modelRule">
     <div class="modelContent">
@@ -146,7 +163,6 @@
         <a href="{:url('shop/flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">0</em><img src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span class="fs22 color_6">购物车</span></a>
     </div>
     <div class="right">
-
         <div class="fs28 color_w BGcolor_3 butt">
         {empty name="$fgJoin"}
             <a href="{:url('shop/goods/info',['id'=>$goods['goods_id']])}" >
@@ -201,9 +217,7 @@
 <script src="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.js"></script>
 <script>
     $(function () {
-
         swiper1 = createSwiper(1);
-
         $('#goods').animate({scrollTop:1},1);
         $("img.textimg").lazyload({
             effect : "fadeIn",
@@ -214,16 +228,36 @@
         var time=[]//倒计时总毫秒数
         var tmp = Date.parse( new Date() );
 
-        //console.log({$fgInfo['end_date']} - tmp);
+        console.log({$fgInfo['end_date']} - tmp);
         time.push({$fgInfo['end_date'] * 1000} - tmp );
         $('.fg_last_time').each(function(){
             time.push($(this).data('time') * 1000 - tmp );
         })
+
         countdown(time);
 
         //开启规拼团弹窗
         $('.rule').on('click',function(){
             $('.modelRule').show()
+        })
+
+        // 关注
+        $('.attention').on('click', function () {
+            var imgObj = $(this).find('img');
+            var status = imgObj.data('no');
+            jq_ajax('{:url("shop/api.goods/collect")}', 'goods_id={$goods.goods_id}', function (res) {
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    return false;
+                }
+                if (status == 0) {
+                    imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon01_3_lh.png')
+                    imgObj.data('no', '1')
+                } else {
+                    imgObj.attr('src', '__STATIC__/mobile/default/images/goodsIcon01_3.png')
+                    imgObj.data('no', '0')
+                }
+            });
         })
 
         jq_ajax('{:url("shop/api.comment/getListByGoods",["goods_id"=>$goods["goods_id"],"limit"=>1])}','',function(res){
@@ -290,13 +324,21 @@
                 $("#goods").animate({scrollTop:imgTextTop+'px'}, 300)
             }
         })
+        //拼团消息提示
+        setInterval(function () {
+            // $('.groupTips').show();
+            // setTimeout("$('.groupTips').hide()", 3000)
+        }, 5000)
+
         //点击购买按钮
         $('.buyBtn ').on('click', function () {
             var obj = $(this);
             if (obj.data('type') == 'show') {
                 $('.skubox').show();
                 selsku();
-            } else {
+            }else if (obj.data('type') == 'off') {
+                return false;
+            }else {
                 checkOut(obj);
             }
         })
@@ -309,8 +351,8 @@
     //前往结算
     function checkOut(obj) {
         var arr = new Object;
-        arr.goods_id = obj.data('goods_id');
-        arr.specifications = obj.data('sku');
+        arr.goods_id = $('#goods_id').val();
+        arr.specifications = $('#sku').val();
         arr.join_id = '{$join_id}';
         arr.number = $('#buynumber').val();
         window.location = '{:_url("checkout",["fg_id"=>$fgInfo["fg_id"],"join_id"=>$join_id,"number"=>"【arr.number】","sku_val"=>"【arr.specifications】"])}';
@@ -337,18 +379,26 @@
         });
         return swiper;
     }
+    function closeModel(obj){
+        $(obj).parents('.model').hide()
+    }
+
+
     function countdown (time) {
         var countDownTime;
         var timeArr=[];
         time.forEach(function (item,index,array) {
             if(index==0){
                 if (item < 0) {
-                    countDownTime = '<span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em>';
+                    $('.ruleTips').html('<div class="text fs28 color_r fw_b">拼团活动已结束，请期待下次</div>');
+                    $('.right .buyBtn').remove();
+                    $('.right .butt').removeClass('BGcolor_3').addClass('BGcolor_r');
+                    // countDownTime = '<span class="fs28">还剩0天</span><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em><i>:</i><em class="num fs24 BGcolor_3 color_w">00</em>';
                 }else{
                     countDownTime = dateformat(item,index)//显示的时间
                     item -= 1000;//剩余的毫秒数
                 }
-                $('.timeBox .time').html(countDownTime)
+                $('.ruleTips .time').html(countDownTime)
             }else{
                 if (item < 0) {
                     countDownTime = '00:00:00'
@@ -358,7 +408,6 @@
                 }
                 $('.info i').eq(index-1).html(countDownTime)
             }
-
             timeArr.push(item)
         });
         setTimeout(function () {

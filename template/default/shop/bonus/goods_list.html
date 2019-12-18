@@ -39,7 +39,7 @@
 </script>
 <script type="text/html"  id="TabTpl">
     {{each list as  item index}}
-        <a href='{:_url("goods/info",["id"=>"[[item.goods_id]]"])}' class="Box">
+        <a href='javascript:;' class="Box" data-goods_id="{{item.goods_id}}}"  data-prom_id="{{item.prom_id}}" >
         <img src="{{item.goods_thumb}}" alt="">
         <div class="info">
             <span class="fs30 color_3">{{item.goods_name}}</span>
@@ -53,7 +53,7 @@
     {{/each}}
 </script>
 <script>
-    var nowPage = 1,getAgain = false,isLoadend = false;type_id={$bonus['type_id']|default=0};keyword="";
+    var nowPage = 1,getAgain = false,isLoadend = false;type_id={$bonus['type_id']|default=0};keyword="",goods_type="{$bonus.goods_type}";
     //请求列表数据
     function getList(page,isagain) {
         if (page == 1){
@@ -77,7 +77,7 @@
             cache:false,
             dataType:'json',
             success:function(res) {
-                console.log(res);
+
                 isLoadend = false;
                 if(res.code  == 0 ){
                     _alert(res.msg);
@@ -113,6 +113,19 @@
         }
     })
     $(function () {
+        //去详情
+        $('#goodslist').on('click','.Box',function () {
+            var goods_id = $(this).data('goods_id');
+            var prom_id = $(this).data('prom_id');
+            var url='';
+            if(goods_type==1){
+                url="{:url('shop/goods/info')}"+"?id="+goods_id;
+            }else if(goods_type==2){
+                url="{:url('fightgroup/index/info')}"+"?fg_id="+prom_id;
+            }
+            window.location.href=url;
+        });
+
         $('.inputBox').on('keydown', function () {
             var e=window.event||arguments.callee.caller.arguments[0];
             if(e.keyCode==13){

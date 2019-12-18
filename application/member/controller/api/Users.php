@@ -93,10 +93,14 @@ class Users extends ApiController
         $return['userInfo'] = $this->userInfo;
         $BonusModel = new BonusModel();
         $bonus = $BonusModel->getListByUser();
-        $return['unusedNum'] = $bonus['unusedNum'];
+        $return['unusedNum'] = $bonus['unusedNum'];//未使用优惠券
         $MessageModel = new MessageModel();
         $unSeeMessageNum = $MessageModel->userMessageStats($this->userInfo['user_id']);//未读消息数量
         $return['unSeeNum'] = $unSeeMessageNum;
+        $where[]=['user_id','=',$this->userInfo['user_id']];
+        $collectNum = (new \app\shop\model\GoodsCollectModel)->where($where)->cache(true,60)->count('collect_id');
+        $return['collectNum'] = $collectNum;
+
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }

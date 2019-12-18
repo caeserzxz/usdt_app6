@@ -1,39 +1,69 @@
 <div class="bottom-tabbar-wrapper">
   <div class="bottom-tabbar">
-    <a href="/" class="bottom-tabbar__item {$routeUri=='index/index'?'active':''}">
+      {volist name="navFootList" id="nav"}
+      <a href="{$nav.url}" class="bottom-tabbar__item">
         <span class="icon">
-            <img src="__STATIC__/mobile/default/images/bottom_icon01.png"/>
-            <img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon01_lh.png"/>
+            <img src="{$nav.imgurl}"/>
+            <img class="lhimg" src="{$nav.imgurl_s}"/>
         </span>
-      <p class="label">首页</p>
-    </a>
-    <a href="{:url('shop/index/allSort')}" class="bottom-tabbar__item {$routeUri=='index/allsort'?'active':''}">
-        <span class="icon">
-            <img src="__STATIC__/mobile/default/images/bottom_icon02.png"/>
-            <img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon02_lh.png"/>
-        </span>
-      <p class="label">分类</p>
-    </a>
-    <a href="{:url('member/Center/myCode')}" class="bottom-tabbar__item ">
-        <span class="icon">
-            <img src="__STATIC__/mobile/default/images/bottom_icon03.png"/>
-            <img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon03_lh.png"/>
-        </span>
-      <p class="label">二维码</p>
-    </a>
-    <a href="{:url('shop/flow/cart')}" class="bottom-tabbar__item {$routeUri=='flow/cart'?'active':''}">
-        <span class="icon">
-            <img src="__STATIC__/mobile/default/images/bottom_icon04.png"/>
-            <img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon04_lh.png"/>
-        </span>
-      <p class="label">购物车</p>
-    </a>
-    <a href="{:url('member/Center/index')}" class="bottom-tabbar__item  {:isset($isUserIndex)?'active':''}">
-      <span class="icon">
-          <img src="__STATIC__/mobile/default/images/bottom_icon05.png"/>
-          <img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon05_lh.png"/>
-      </span>
-    <p class="label">我的</p>
-  </a>
+          <p class="label">{$nav.title}</p>
+      </a>
+      {/volist}
+    <!--<a href="/" class="bottom-tabbar__item {$routeUri=='index/index'?'active':''}">-->
+        <!--<span class="icon">-->
+            <!--<img src="__STATIC__/mobile/default/images/bottom_icon01.png"/>-->
+            <!--<img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon01_lh.png"/>-->
+        <!--</span>-->
+      <!--<p class="label">首页</p>-->
+    <!--</a>-->
+    <!--<a href="{:url('shop/index/allSort')}" class="bottom-tabbar__item {$routeUri=='index/allsort'?'active':''}">-->
+        <!--<span class="icon">-->
+            <!--<img src="__STATIC__/mobile/default/images/bottom_icon02.png"/>-->
+            <!--<img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon02_lh.png"/>-->
+        <!--</span>-->
+      <!--<p class="label">分类</p>-->
+    <!--</a>-->
+    <!--<a href="{:url('member/Center/myCode')}" class="bottom-tabbar__item ">-->
+        <!--<span class="icon">-->
+            <!--<img src="__STATIC__/mobile/default/images/bottom_icon03.png"/>-->
+            <!--<img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon03_lh.png"/>-->
+        <!--</span>-->
+      <!--<p class="label">二维码</p>-->
+    <!--</a>-->
+    <!--<a href="{:url('shop/flow/cart')}" class="bottom-tabbar__item {$routeUri=='flow/cart'?'active':''}">-->
+        <!--<span class="icon">-->
+            <!--<img src="__STATIC__/mobile/default/images/bottom_icon04.png"/>-->
+            <!--<img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon04_lh.png"/>-->
+        <!--</span>-->
+      <!--<p class="label">购物车</p>-->
+    <!--</a>-->
+    <!--<a href="{:url('member/Center/index')}" class="bottom-tabbar__item  {:isset($isUserIndex)?'active':''}">-->
+      <!--<span class="icon">-->
+          <!--<img src="__STATIC__/mobile/default/images/bottom_icon05.png"/>-->
+          <!--<img class="lhimg" src="__STATIC__/mobile/default/images/bottom_icon05_lh.png"/>-->
+      <!--</span>-->
+    <!--<p class="label">我的</p>-->
+  <!--</a>-->
   </div>
 </div>
+<script>
+    var index=-1;
+    function setSelect(url){
+        $('.bottom-tabbar a').each(function (i,val) {
+            var thisUrl = $(this).attr('href');
+            var sear=new RegExp(thisUrl);
+            if(sear.test(url)){
+                index=i;
+            }
+        });
+    }
+    $(function (){
+        var curUrl = window.location.href;
+        setSelect(curUrl);
+        if(index==-1){
+            var referrer = document.referrer;
+            setSelect(referrer);
+        }
+        $('.bottom-tabbar a').eq(index).addClass('active');
+    })
+</script>

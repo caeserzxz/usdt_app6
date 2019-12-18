@@ -7,6 +7,7 @@ namespace app\fightgroup\controller;
 use app\ClientbaseController;
 use app\fightgroup\model\FightGroupModel;
 use app\fightgroup\model\FightGroupListModel;
+use app\shop\model\GoodsModel;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
 
@@ -49,6 +50,8 @@ class Index  extends ClientbaseController{
             return $this->fetch('not_start');
         }elseif ($fgInfo['is_on_sale'] == 9){
             return $this->fetch('over');
+        } elseif ($fgInfo['status'] == 0) {
+            return $this->fetch('not_open');
         }
         $FightGroupListModel = new FightGroupListModel();
         $this->assign('fgListCount',  $FightGroupListModel->where(['fg_id'=>$fg_id,'status'=>1])->count());

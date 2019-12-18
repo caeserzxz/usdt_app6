@@ -457,7 +457,7 @@ class GoodsModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 计算商品销售价
     /*------------------------------------------------------ */
-    public function evalPrice(&$goods, $buyNum = 0, $spec = '')
+    public function evalPrice(&$goods, $buyNum = 0, $spec = '',$prom_type=0,$promInfo=[])
     {
         $u_price = $vol_price = 0;
         if ($spec) {//多规格商品
@@ -536,6 +536,12 @@ class GoodsModel extends BaseModel
             }
         }
         $arr['volume_price'] = $volume_price;
+        //相关活动：1-限时优惠
+        if($prom_type==1){
+            if($promInfo['code']==1){
+                $arr['min_price']=$promInfo['data']['goodsInfo']['goods_price'];
+            }
+        }
         return $arr;
     }
     /*------------------------------------------------------ */
@@ -550,11 +556,9 @@ class GoodsModel extends BaseModel
                 if ($type == 'cancel') {
                     $sub_data['goods_number'] = ['INC', $grow['goods_number']];
                     $data['sale_num'] = ['DEC', $grow['goods_number']];
-                    $data['goods_number'] = ['INC', $grow['goods_number']];
                 } else {
                     $sub_data['goods_number'] = ['DEC', $grow['goods_number']];
                     $data['sale_num'] = ['INC', $grow['goods_number']];
-                    $data['goods_number'] = ['DEC', $grow['goods_number']];
                 }
                 $sub_map['goods_id'] = $grow['goods_id'];
                 $sub_map['sku_val'] = $grow['sku_val'];
@@ -574,6 +578,10 @@ class GoodsModel extends BaseModel
                 $res = $this->where('goods_id', $grow['goods_id'])->update($data);
                 if ($res < 1) return false;
             }
+
+            //优惠活动
+            $res = (new \app\favour\model\FavourGoodsModel)->evalFavourStore($grow,$type);
+
             $this->cleanMemcache($grow['goods_id']);
 
         }

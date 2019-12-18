@@ -22,7 +22,10 @@ class FightGroupModel extends BaseModel
     /*------------------------------------------------------ */
     public function cleanMemcache($fg_id = 0)
     {
-        Cache::rm($this->mkey . $fg_id);
+        if ($fg_id > 0) {
+            Cache::rm($this->mkey . $fg_id);
+        }
+        Cache::rm($this->mkey . 'best');
     }
     /*------------------------------------------------------ */
     //-- 获取拼团信息
@@ -80,6 +83,44 @@ class FightGroupModel extends BaseModel
         return $fgInfo;
     }
     /*------------------------------------------------------ */
+    //-- 获取首页推荐拼团
+    /*------------------------------------------------------ */
+    public function getBestList()
+    {
+        $goodsList = Cache::get($this->mkey . 'best');
+        $fightgroup_show_num = settings('fightgroup_show_num');
+        $fightgroup_show_num = empty($fightgroup_show_num) ? 300 : $fightgroup_show_num;
+        if (empty($goodsList)) {
+            $time = time();
+            $where[] = ['status', '=', 1];
+            $where[] = ['is_best', '=', 1];
+            $where[] = ['start_date', '<', $time];
+            $where[] = ['end_date', '>', $time];
+            $list = $this->where($where)->order('is_best DESC,sort_order DESC')->limit($fightgroup_show_num)->select();
+            if (count($list) > 0) $list = $list->toArray();
+            $GoodsModel = new GoodsModel();
+            $goodsList = [];
+            foreach ($list as $key => $_goods) {
+                $goods = $GoodsModel->info($_goods['goods_id']);
+                if ($goods['is_on_sale'] == 0) {//下架的商品显示
+                    continue;
+                }
+                $_goods['goods_id'] = $goods['goods_id'];
+                $_goods['goods_name'] = $goods['goods_name'];
+                $_goods['short_name'] = $goods['short_name'];
+                $_goods['goods_thumb'] = $goods['goods_thumb'];
+                $_goods['is_spec'] = $goods['is_spec'];
+                $_goods['exp_price'] = explode('.', $_goods['show_price']);
+                $_goods['market_price'] = $goods['market_price'];
+                $_goods['shop_price'] = $goods['shop_price'];
+                $goodsList[] = $_goods;
+            }
+            Cache::set($this->mkey . 'best', $goodsList, 60);
+        }
+        return $goodsList;
+    }
+
+    /*------------------------------------------------------ */
     //-- 获取商品图片
     /*------------------------------------------------------ */
     public function getImg($goods_id)
@@ -101,34 +142,43 @@ class FightGroupModel extends BaseModel
         $skuarr = array();
         $sub_goods = [];
 
-        foreach ($goods['sub_goods'] as $row) {
-            $sub_goods[$row['sku_id']] = $row;
-        }
+        $sub_goods = $goods['sub_goods'];
 
-        unset($goods['sub_goods']);
-        foreach ($fgInfo['goods'] as $row) {
+        $fgGoods = array_column($fgInfo['goods'], null, 'sku_id');//重置数组的键
+        $goods['fg_number'] = 0;
+        foreach ($sub_goods as $key => $row) {
             $sku = $row['sku'];
-            $_row = $sub_goods[$row['sku_id']];
+            $_row = $row;
             $skuval[] = $_row['sku_val'];
-            $_row['fg_number'] = $row['fg_number'];
+            $_row['is_group'] = 0;
+            $_row['fg_number'] = 0;
             $_row['BuyMaxNum'] = $row['goods_number'];
-            $_row['sale_price'] = $row['fg_price'];
-            $_row['sale_num'] = $row['sale_num'];
-            $_row['exp_price'] = explode('.', $row['fg_price']);
-            $_row['exp_sale_price'] = explode('.', $_row['sale_price']);
-            if ($fgInfo['limit_num'] > 0) {
-                $_row['BuyMaxNum'] = $_row['BuyMaxNum'] > $fgInfo['limit_num'] ? $fgInfo['limit_num'] : $_row['BuyMaxNum'];
+            $_row['exp_shop_price'] = explode('.', $_row['shop_price']);
+            $goods['goods_number'] += $row['goods_number'];
+
+            if ($fgGoods[$row['sku_id']]) {//规格活动存在
+                $_row['is_group'] = 1;
+                $_row['fg_number'] = $fgGoods[$row['sku_id']]['fg_number'];
+                $goods['fg_number'] += $_row['fg_number'];
+                $_row['sale_price'] = $fgGoods[$row['sku_id']]['fg_price'];
+                $_row['sale_num'] = $fgGoods[$row['sku_id']]['sale_num'];
+                $_row['exp_price'] = explode('.', $fgGoods[$row['sku_id']]['fg_price']);
+                $_row['exp_sale_price'] = explode('.', $_row['sale_price']);
+                if ($fgInfo['limit_num'] > 0) {
+                    $_row['BuyMaxNum'] = $_row['BuyMaxNum'] > $fgInfo['limit_num'] ? $fgInfo['limit_num'] : $fgGoods[$row['sku_id']]['BuyMaxNum'];
+                }
             }
 
             $sku_val = explode(':', $_row['sku_val']);
             $_sval = array();
-            foreach ($sku_val as $key => $sval) {
+            foreach ($sku_val as $keys => $sval) {
                 $_sval[] = $sval;
                 $skuarr[$sval] = 1;
             }
-
-            $goods['sub_goods'][$_row['sku_val']] = $_row;
+            $sub_goods[$key] = $_row;
         }
+        $goods['sub_goods'] = $sub_goods;
+
         $goods['exp_sale_price'] = explode('.', $goods['sale_price']);
         unset($sub_goods);
         $skuarr = array_keys($skuarr);
@@ -138,7 +188,6 @@ class FightGroupModel extends BaseModel
 
         $SkuCustomModel = new SkuCustomModel();
         $skurows = $SkuCustomModel->field('id,val,speid')->where($where)->order('id ASC')->select()->toArray();
-
         $skuCstom = $isdef = array();
         foreach ($skurows as $row) {
             $skuCstom[$row['id']] = $row['val'];
@@ -154,15 +203,15 @@ class FightGroupModel extends BaseModel
                 $lstSKUVal[$speid]['lstVal'][] = $row;
             }
         }
+
         foreach ($lstSKUVal as $row) {
-            $row['is_show'] = empty($row['lstVal'][1]) ? 0 : 1;
+            $row['is_show'] = empty($row['lstVal'][0]) ? 0 : 1;
             $row['new_name'] = $row['name'];
             $lstSKUArr[] = $row;
         }
         unset($lstSKUVal, $skuval, $isdef, $skurows);
         $goods['lstSKUArr'] = $lstSKUArr;
         $goods['skuCstom'] = $skuCstom;
-
         return true;
     }
 }

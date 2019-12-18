@@ -64,10 +64,13 @@
                     {if condition="$orderInfo.order_type == 0"}
                         <div class="money">
                             <div>
+                                <div class="color_3 fs24 num mg_rg"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods.exp_price[0]}</em><i>.{$goods.exp_price[1]}</i></div>
                                 {if condition="$goods.is_use_bonus == 1"}
                                 <div class="couponsPriceType">券后价</div>
                                 {/if}
-                                <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods.exp_price[0]}</em><i>.{$goods.exp_price[1]}</i></div>
+                                {if $goods.prom_type == 1}
+                                <div class="couponsPriceType">优惠价</div>
+                                {/if}
                             </div>
                         <em class="fs28 color_3">x{$goods.goods_number}</em></div>
                     {else/}
@@ -145,8 +148,10 @@
 {/block}
 {block name="footer"}
 <script type="text/javascript">
-$('.left-arrow').attr('href','{:url("order/index")}')
 $(function(){
+    $('.left-arrow').on('click',function(){
+        window.location.href = '{:url("order/index")}';
+    })
     //订单操作
     $('.button').on('click','span',function(res){
         var _this = $(this);

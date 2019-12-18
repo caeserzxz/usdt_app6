@@ -75,7 +75,14 @@
 .orderDetails .orderBox {
   background-color: #fff;
 }
+.orderDetails .mg_rg {
+  margin-right: 0.093333rem;
+}
 
+.orderDetails .couponsPriceType {
+  color: #ffffff;
+  background-color: #f65236;
+}
 .orderDetails .orderBox .code {
   height: 0.666667rem;
   display: -webkit-box;

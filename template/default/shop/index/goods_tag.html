@@ -1,0 +1,153 @@
+<!-- 商品标签 -->
+<!-- 两列显示方式 -->
+<!--
+<div class="list" style="display:none">
+    <a href="商品.html">
+        <img src="../assets/images/youLike01.png" alt="">
+        <span class="fs30 color_3">连帽系腰带鹅绒羽绒服</span>
+        <div class="color_r fs22 num">
+            <p class="fw_b fm_p">￥</p><em class="fs36">199</em><i>.00</i>
+        </div>
+    </a>
+    <a href="商品.html">
+        <img src="../assets/images/index_goods1.png" alt="">
+        <span class="fs30 color_3">连帽系腰带鹅绒羽绒服</span>
+        <div class="color_r fs22 num">
+            <p class="fw_b fm_p">￥</p><em class="fs36">199</em><i>.00</i>
+        </div>
+    </a>
+</div>-->
+{notempty name="tagList" item="tag"}
+<div class="youLike">
+    <div class="navBox">
+        <div class="divActive" data-tag_id="0">
+            <span>精选</span>
+            <p>猜你喜欢</p>
+        </div>
+        {volist name="tagList" id="tag" }
+        <div data-tag_id="{$tag.id}">
+            <span>{$tag.title}</span>
+            <p>{$tag.subtitle}</p>
+        </div>
+        {/volist}
+    </div>
+    <!-- 一列 -->
+    <div class="list listBox" id="tagBox-0">
+
+    </div>
+    {volist name="tagList" id="tag" }
+    <div class="list listBox" id="tagBox-{$tag.id}" ></div>
+    {/volist}
+</div>
+
+<script id="TagTpl" type="text/html">
+    {{each list as goods index}}
+    <a href='{:_url("goods/info",["id"=>"[[goods.goods_id]]"])}'>
+        <img   src="{{goods.goods_thumb}}"  class="lazy" >
+        <span class="fs30 color_3">{{goods.goods_name}}</span>
+        <div class="boxBottom">
+            <div class="color_r fs22 num">
+                <p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i>
+            </div>
+            <p class="fs24 color_r fw_b btn">立即购买</p>
+        </div>
+    </a>
+    {{/each}}
+</script>
+<!-- 没有相关订单-->
+<script type="text/html" id="emptyTagTpl">
+    <div class="empeyOrder">
+        <img src="__STATIC__/mobile/default/images/emptyData.png" alt="">
+        <span class="fs28 color_3">暂无相关商品</span>
+    </div>
+</script>
+<script>
+    var nowPage = [],getAgain = [],isLoadend = [];
+    var _type = 0;
+    $(function(){
+        $('.page-bd').scroll(function(){
+            var box_h=$(this).height()
+            var content_h=$('.scrollBox').height()
+            var scroll_h=$(this).scrollTop();
+            if(content_h-box_h-scroll_h<20){
+                getList();
+            }
+        })
+
+        //请求列表数据
+        function getList(isagain) {
+            page = nowPage[_type];
+            var objBox = $('#tagBox-'+_type);
+            if (typeof(page) == 'undefined') page = 1;
+            if (isLoadend[_type] == true ) return false;
+            if (isagain == true){
+                if (getAgain[_type] == false) return false;
+                getAgain[_type] = false;
+            }else{
+                $(objBox).append('<div class="get_list_tip" data-type="'+_type+'">加载数据中...</div>');
+            }
+            isLoadend[_type] = true;
+            $.ajax({
+                url:'{:_url("shop/api.goods/getTagGoodsList",["tag_id"=>"【_type】","p"=>"【page】"])}',// 跳转到 action
+                data:{},
+                type:'post',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    isLoadend[_type] = false;
+                    if(res.code  == 0 ){
+                        _alert(res.msg);
+                        getAgain[_type] = true;
+                        $(objBox).find('.get_list_tip').html('加载失败，点击重新加载.');
+                        return false;
+                    }
+                    nowPage[_type] = page+1;
+                    $(objBox).find('.get_list_tip').remove();
+                    if (res.list){
+                        $(objBox).append(template('TagTpl',res));
+                    }else{
+                        $(objBox).html(template('emptyTagTpl'));
+                    }
+                    if (res.page_count == page) {
+                        $(objBox).append('<div class="get_list_tip">—— 我也有底线的 ——</div>');
+                        isLoadend[_type] = true;
+                    }
+                },error : function() {
+                    isLoadend[_type] = false;
+                    getAgain[_type] = true;
+                    $(objBox).find('.get_list_tip').html('加载失败，点击重新加载.');
+                }
+            });
+        }
+        getList();//执行加载
+        //重新请求数据
+        $(document).on('click','.get_list_tip',function () {
+            _type = $(this).data('tag_id');
+            getList(true);
+        })
+
+        $('.youLike .navBox div').on('click', function () {
+            var index=$(this).index();
+            _type = $(this).data('tag_id');
+            if ($('#tagBox-'+_type).html() == ''){
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+                getList();//执行加载
+            }
+            $(this).siblings().removeClass('divActive')
+            $(this).addClass('divActive')
+            $('.listBox').hide()
+            $('.listBox').eq(index).show()
+        })
+
+        $('.tab div').each(function () {
+            if ($(this).data('type') == _type){
+                $(this).trigger('click');
+                isLoadend[_type] = false;
+                getAgain[_type] = false;
+            }
+        })
+    })
+</script>
+{/notempty}
+

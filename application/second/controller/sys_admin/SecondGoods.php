@@ -38,6 +38,12 @@ class SecondGoods extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
         $where = [];
+
+        $search['keyword'] = input('keyword', '', 'trim');
+        if (empty($search['keyword']) == false) {
+            $where[] = ['g.goods_name|g.goods_sn', 'like',"%".$search['keyword']."%"];
+        }
+
         $viewObj = $this->Model->alias('sg')->join("shop_goods g", 'sg.goods_id=g.goods_id', 'left');
         $viewObj->where(join(' AND ', $where))->field('sg.*,g.goods_name,g.goods_sn,g.is_spec')->order('sg_id DESC');
 
@@ -283,6 +289,11 @@ class SecondGoods extends AdminController
         $search['goodsArr'] = input('goodsArr', 0, 'trim');
         if (empty($search['goodsArr']) == false) {
             $where[] = ['sg.sg_id', 'not in', $search['goodsArr']];
+        }
+
+        $search['keyword'] = input('keyword', '', 'trim');
+        if (empty($search['keyword']) == false) {
+            $where[] = ['g.goods_name|g.goods_sn', 'like',"%".$search['keyword']."%"];
         }
 
         $viewObj = $SecondModel->alias('sg')->join("shop_goods g", 'sg.goods_id=g.goods_id', 'left');

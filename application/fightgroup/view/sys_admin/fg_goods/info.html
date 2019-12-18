@@ -4,6 +4,56 @@
 <link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
 {/block}
 {block name="main" }
+{literal}
+<script type="text/html" id="goods_info">
+    <table class="table table-bordered">
+        {{if goods.is_spec==1}}
+        <thead>
+        <tr>
+            <th >商品规格</th>
+            <th>当前库存</th>
+            <th>商品售价</th>
+            <th>活动库存</th>
+            <th>活动价格</th>
+            <!--<th>限购量</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        {{each goods.sub_goods as item index}}
+        <tr>
+            <td><label><input type="checkbox" name="sku_ids[{{item.sku_id}}]" value="{{item.sku_id}}">{{item.sku_name}}</label></td>
+            <td>{{item.goods_number}}</td>
+            <td>{{item.shop_price}}</td>
+            <td><input type="text" name="fg_number[{{item.sku_id}}]" min=0 class="input-small" value=""></td>
+            <td>
+                <input type="text" name="fg_price[{{item.sku_id}}]" min=0.01  class="input-small" data-rule-ismoney="true" value="">
+            </td>
+        </tr>
+        {{/each}}
+        </tbody>
+        {{else}}
+        <thead>
+        <tr>
+            <th>当前库存</th>
+            <th>商品售价</th>
+            <th>活动库存</th>
+            <th>活动价格</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{goods.goods_number}}</td>
+            <td>{{goods.shop_price}}</td>
+            <td><input type="text" name="fg_number" min=0 class="input-small" value=""></td>
+            <td>
+                <input type="text" name="fg_price" min=0.01  class="input-small" data-rule-ismoney="true" value="">
+            </td>
+        </tr>
+        </tbody>
+        {{/if}}
+    </table>
+</script>
+{/literal}
 
 <header>
     <div class="page-breadcrumbs">
@@ -52,52 +102,73 @@
                 function goodsSelect(){
                     var goods_id = $('#goods_select').val();
                     $('.goods_name').html('');
-                    $('.goods_info').html('');
-                    jq_ajax('{:url("shop/api.goods/info")}','goods_id='+goods_id,function(res){
+                    jq_ajax('{:url("shop/api.goods/info")}','id='+goods_id,function(res){
                         if (res.code == 0){
                             return false;
                         }
-                        $('#goods_id').val(res.data.goods_id);
-                        $('.goods_name').html('商品ID：'+res.data.goods_id+' - '+res.data.goods_name+'('+(res.data.is_spec==1?'多规格':res.data.goods_sn)+')');
-                        if (res.data.is_spec == 1){
-                            $.each(res.data.sub_goods, function(i,val){
-                                $('.goods_info').append('<div class="relative"><label><input type="checkbox" name="sku_ids['+val.sku_id+']" value="'+val.sku_id+'"> ' +
-                                    ''+val.sku_name+'</label>，' +
-                                    '当前库存：'+val.goods_number+'，拼团销售数量：<input type="text" name="fg_number['+val.sku_id+']" min=0 class="input-ssmall" value="">，' +
-                                    '拼团价：￥<input type="text" name="fg_price['+val.sku_id+']" min=0.01  class="input-small" data-rule-ismoney="true" value="">元</div>');
-                            })
-                        }else{
-                            $('.goods_info').html('当前库存：'+res.data.goods_number+'，拼团销售数量：<input type="text" name="fg_number" class="input-ssmall" data-rule-ismoney="true" value="">，拼团价：￥<input type="text" name="fg_price" class="input-small" data-rule-ismoney="true" value="">元');
-                        }
+                        var goods = res.list.goods;
+                        $('#goods_id').val(goods.goods_id);
+                        $('.goods_name').html('商品ID：'+goods.goods_id+' - '+goods.goods_name+'('+(goods.is_spec==1?'多规格':goods.goods_sn)+')');
+                        $(".goods_info").find('.tableBox').html(template("goods_info",res.list));
                     });
                 }
             </script>
             {/if}
 
-            <div class="form-group m-t">
+
+            <div class="form-group goods_info m-t">
                 <label class="col-sm-2 control-label">拼团商品：</label>
                 <div class="col-sm-9 lh30" >
                     <div class="col-sm-10 goods_name " >
                         {gt name="$row.fg_id" value="0" }
-                        商品ID：{$goods.goods_id} - {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
+                        商品ID：{$goods.goods_id} -- 商品名称： {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
                         {/gt}
                     </div>
-                    <div class="col-sm-10 goods_info m-t-md" >
-                        {gt name="$row.fg_id" value="0" }
-                            {if condition="$goods.is_spec == 1"}
-                            {volist name="$goods.sub_goods" id="sku" }
-                                <div class="relative">
-                                    <label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$fg_goods[$sku['sku_id']]?'checked':''}> {$sku.sku_name}</label>
-                                    当前库存：{$sku.goods_number}，已销售：{$fg_goods[$sku['sku_id']]['sale_num']},拼团销售数量：<input type="text" min="0" name="fg_number[{$sku.sku_id}]" min=0 class="input-ssmall" value="{$fg_goods[$sku['sku_id']]['fg_number']}">，
-                                    拼团价：￥<input type="text" name="fg_price[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['fg_price']}">元
-                                </div>
-                            {/volist}
+                    <div class="col-sm-10 m-t-md tableBox" >
+                        {if condition="$goods"}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                {if condition="$goods.is_spec eq 1"}
+                                <th >商品规格</th>
+                                {/if}
+                                <th>当前库存</th>
+                                <th>商品售价</th>
+                                <th>已售数量</th>
+                                <th>活动库存</th>
+                                <th>活动价格</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$goods.is_spec eq 1"}
+                            {foreach name="$goods.sub_goods" item="sku" }
+                            <tr>
+                                <td><label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$fg_goods[$sku['sku_id']]?'checked':''}>{$sku.sku_name}</label></td>
+                                <td>{$sku.goods_number}</td>
+                                <td>{$sku.shop_price}</td>
+                                <td>{$fg_goods[$sku['sku_id']]['sale_num']}</td>
+                                <td><input type="text" name="fg_number[{$sku.sku_id}]" min=0 class="input-small" value="{$fg_goods[$sku['sku_id']]['fg_number']}"></td>
+                                <td>
+                                    <input type="text" name="fg_price[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['fg_price']}">
+                                </td>
+                            </tr>
+                            {/foreach}
                             {else/}
-                            当前库存：{$goods.goods_number}，已销售：{$fg_goods.sale_num},拼团销售数量：<input type="text" name="fg_number" min="0" class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods.fg_number}">，拼团价：￥<input type="text" name="fg_price" class="input-small" data-rule-ismoney="true" value="{$fg_goods.fg_price}">元
+                            <tr>
+                                <td>{$goods.goods_number}</td>
+                                <td>{$goods.shop_price}</td>
+                                <td>{$fg_goods.sale_num}</td>
+                                <td><input type="text" name="fg_number" min=0 class="input-small" value="{$fg_goods['fg_number']}"></td>
+                                <td>
+                                    <input type="text" name="fg_price" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods['fg_price']}">
+                                </td>
+                                <!--<td><input type="text" name="limit_num" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info[limit_num]}"></td>-->
+                            </tr>
                             {/if}
-                        {/gt}
+                            </tbody>
+                        </table>
+                        {/if}
                     </div>
-                    <div class="col-sm-10 red m-t-md">* 拼团销售数量：拼团销售量达到此值时，将不能继续销售。</div>
                 </div>
             </div>
 
@@ -173,6 +244,40 @@
                     <span class="fl help-inline">结束时间：</span><div class="input-group"> <input type="text" class="input-max" name="end_date" value="{$row.end_date|dateTpl='Y-m-d H:i',true}" id="end_date"   readonly="readonly" data-toggle="datetimepicker" data-position="top-right" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否推荐：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="is_best" value="1" {$row['is_best']==1?'checked':''}  class="js_radio_undertake">推荐
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_best" value="0" {$row['is_best']==0?'checked':''}  class="js_radio_undertake">不推荐
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">状态：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="1" {$row['status']==1?'checked':''}  class="js_radio_undertake">开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="0" {$row['status']==0?'checked':''}  class="js_radio_undertake">关闭
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序号：</label>
+                <div class="col-sm-8">
+                    <input type="text"  class="input" min="0" name="sort_order" value="{$row.sort_order|default=0}">
+                    <span class=" help-inline">* 值越大排序越靠前</span>
+                </div>
+            </div>
+
+
             <div class="form-group">
                 <label class="col-sm-2 control-label">拼团简介：</label>
                 <div class="col-sm-8">

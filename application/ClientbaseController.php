@@ -76,6 +76,7 @@ class ClientbaseController extends BaseController{
         // 输出到view
         $this->assign('userInfo',$this->userInfo);//登陆会员信息
 		$this->assign('setting',settings());// 系统配置
+        $this->assign('navFootList', (new \app\shop\model\NavMenuModel)->getRows(2));//获取底部菜单
 		$this->assign([
 			'routeUri' => $this->routeUri,  // 当前uri			
 		]);

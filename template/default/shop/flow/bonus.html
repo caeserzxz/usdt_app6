@@ -15,59 +15,67 @@
     <div class="modelContent">
         <div class="title fs36 fw_b color_3">请选择优惠券</div>
         <div class="list useTicket">
-            <label for="r01">
-                <div class="ticketInfo">
-                    <div class="fs30 fw_b color_3">不使用优惠券</div>
-                </div>
-                <div class="iconBox">
-                    <input type="radio" class="check" name="couponbox" id="r01"  checked value="0"  data-bonus_id="0" data-money="0">
-                    <i class="icon_checked"></i>
-                </div>
-            </label>
-            <div class="lineBox">
-                <p></p>
-                <span class="fs24 color_9">可使用(<em class="ableNum">0</em>)</span>
-            </div>
-            <div id="ableList">
-                <!--可用优惠券-->
-            </div>
-            <div class="lineBox">
-                <p></p>
-                <span class="fs24 color_9">不可使用(<em class="unableNum">0</em>)</span>
-            </div>
-            <div id="unableList">
-                <!--不可用优惠券-->
-            </div>
         </div>
         <div class="closeBtn fs32 fw_b color_w BGcolor_r">完成</div>
     </div>
 </div>
-<script type="text/html" id="ableTpl">
-    {{each able as item index}}
-    <label for="r1{{index}}">
+<script type="text/html" id="bounsTpl">
+    <label for="nosel">
         <div class="ticketInfo">
-            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}
-            </div>
-            <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
-            <p>满{{item.min_amount}}元可用</p>
+            <div class="fs30 fw_b color_3">不使用优惠券</div>
         </div>
         <div class="iconBox">
-            <input type="radio" class="check" name="couponbox" id="r1{{index}}" value="满{{item.min_amount}}减{{item.type_money}}" data-bonus_id="{{item.bonus_id}}" data-money="{{item.type_money}}">
+            <input id="nosel" type="radio" class="check" name="couponbox"  value="0"  data-bonus_id="0" data-money="0">
             <i class="icon_checked"></i>
         </div>
     </label>
-    {{/each}}
-</script>
-<script type="text/html" id="unableTpl">
-    {{each unable as item index}}
-    <label>
-        <div class="ticketInfo noUse">
-            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}</div>
-            <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
-            <p>满{{item.min_amount}}元可用</p>
-        </div>
-    </label>
-    {{/each}}
+    <div class="lineBox">
+        <p></p>
+        <span class="fs24 color_9">可使用(<em class="ableNum">{{ableNum}}</em>)</span>
+    </div>
+    <div id="ableList">
+        <!--可用优惠券-->
+        {{each able as item index}}
+        <label for="r1{{index}}">
+            <div class="ticketInfo">
+                <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}
+                </div>
+                <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
+                <p>满{{item.min_amount}}元可用</p>
+            </div>
+            <div class="iconBox">
+                <input type="radio" class="check" name="couponbox" id="r1{{index}}" value="满{{item.min_amount}}减{{item.type_money}}" data-bonus_id="{{item.bonus_id}}" data-money="{{item.type_money}}">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        {{/each}}
+        {literal}
+        {{if ableNum<1}}
+        <div class="get_list_tip">---您没有可使用的优惠券---</div>
+        {{/if}}
+        {/literal}
+    </div>
+    <div class="lineBox">
+        <p></p>
+        <span class="fs24 color_9">不可使用(<em class="unableNum">{{unableNum}}</em>)</span>
+    </div>
+    <div id="unableList">
+        <!--不可用优惠券-->
+        {{each unable as item index}}
+        <label>
+            <div class="ticketInfo noUse">
+                <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em class="fs40 num">{{item.type_money}}</em>{{item.type_name}}</div>
+                <p>{{item._use_start_date}}-{{item._use_end_date}}</p>
+                <p>满{{item.min_amount}}元可用</p>
+            </div>
+        </label>
+        {{/each}}
+        {literal}
+        {{if unableNum<1}}
+        <div class="get_list_tip">---您没有不可使用的优惠券---</div>
+        {{/if}}
+        {/literal}
+    </div>
 </script>
 <script>
     var bounsData = {};
@@ -76,13 +84,18 @@
         $('.selectCoupons').on('click', function () {
            if(bounsData['ableNum']<1&&bounsData['unableNum']<1){
                _alert('您暂时没有可用优惠券');
-               // return false;
+               return false;
            }
             $('.getCoupons').show();
         });
     })
     //点击选择优惠券
     $('.closeBtn').on('click', function () {
+        selBouns(1);
+        $(this).parents('.model').hide()
+    })
+    //选择优惠券
+    function selBouns(type) {
         var val=$('input:radio[name="couponbox"]:checked').val();
         used_bonus_id  = $('input:radio[name="couponbox"]:checked').data('bonus_id');
         bonus_money = $('input:radio[name="couponbox"]:checked').data('money');
@@ -95,13 +108,14 @@
             $("#couponMoney").show();
             $("#couponMoney").find('em').text(parseFloat(bonus_money).toFixed(2));
         }else{
-            objDOM_span.show().text('不使用优惠券');
+            var showText = type==1?'不使用优惠券':'请选择优惠券';
+            objDOM_span.show().text(showText);
             objDOM_p.hide();
             $("#couponMoney").hide();
         }
         evalPrice();//计算支付金额
-        $(this).parents('.model').hide()
-    })
+    }
+
     //获取优惠券列表
     function getBonusList() {
         var arr = new Object();
@@ -116,10 +130,21 @@
                 return false;
             }
             bounsData= res.data;
-            $('.ableNum').html(bounsData['ableNum']);
-            $('.unableNum').html(bounsData['unableNum']);
-            $('#ableList').html(template('ableTpl', bounsData));
-            $('#unableList').html(template('unableTpl', bounsData));
+            $('.useTicket').html(template('bounsTpl', bounsData));
+            var selObj = $('#nosel');
+            //判断应选中项
+            $.each($('#ableList input[name=couponbox]'),function (i,val) {
+                if($(this).data('bonus_id')==used_bonus_id){
+                    selObj = $(this);
+                }
+            });
+            selObj.attr('checked',true);
+            if(bounsData.able.length>0){
+                selBouns(0);
+            }else{
+                selBouns(1);
+            };
+
         })
     }
 </script>

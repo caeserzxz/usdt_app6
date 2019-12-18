@@ -1,5 +1,15 @@
 {extend name="mainadmin@layouts/base" /}
 {block name="main" }
+<style>
+    #cp1 .input-group-addon {
+        border-radius: 0!important;
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0d…0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
+        background-image: -webkit-linear-gradient(top,#eee 0,#fbfbfb 100%);
+        background-image: -moz-linear-gradient(top,#eee 0,#fbfbfb 100%);
+        background-image: -o-linear-gradient(top,#eee 0,#fbfbfb 100%);
+        background-image: linear-gradient(to bottom,#eee 0,#000 100%);
+    }
+</style>
 <header>
     <div class="page-breadcrumbs">
         <ul class="breadcrumb">
@@ -59,6 +69,16 @@
                 <div class="line line-dashed line-lg pull-in"></div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">背景颜色：</label>
+                    <div class="col-sm-2">
+                            <div id="cp1" class="input-group colorpicker-component" data-color="{$row.bg_color|default='#FFFFFF'}"  title="设置幻灯片背景颜色，默认为白色" style="width: 200px;">
+                                <input type="text" name="bg_color" class="form-control"/>
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
+                        </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label">是否启用</label>
                     <div class="col-sm-3 ">
                         <label class=" inline">
@@ -94,8 +114,14 @@
 </form>
 {/block}
 {block name="footer" }
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/colorpicker/bootstrap-colorpicker.css">
+<script src="__STATIC__/js/colorpicker/bootstrap-colorpicker.js"></script>
 <script type="text/javascript">
-    seajs.use("dist/plupload/init.js")
+    seajs.use("dist/plupload/init.js");
+
+    $(function () {
+        $('#cp1').colorpicker();
+    });
 
     function showUrlType(sel, input_id) {
         $(".type_bding_btn").addClass('hide');

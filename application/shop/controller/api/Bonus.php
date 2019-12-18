@@ -70,9 +70,12 @@ class Bonus extends ApiController
             $CartModel = new \app\shop\model\CartModel();
             $cartInfo = $CartModel->getCartList($is_sel, false, $recids);
         } elseif ($goods_type == 2) {//拼团
-
+            //获取购物信息
+            $FightGroupModel = new \app\fightgroup\model\FightGoodsModel();
+            $cartInfo = $FightGroupModel->getCartList();
         }
-        $bonusList = $this->Model->getListAvailable($userInfo['user_id'], $cartInfo);//获取可用优惠券
+
+        $bonusList = $this->Model->getListAvailable($userInfo['user_id'], $cartInfo,$goods_type);//获取可用优惠券
         $return['data'] = $bonusList;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
@@ -181,6 +184,18 @@ class Bonus extends ApiController
         }
 
         foreach ($data['list'] as $key => $goods) {
+            switch ($bonus['goods_type']){
+                case 1:
+                    $prom_id=0;
+                    break;
+                case 2:
+                    $prom_id=$goods['fg_id'];
+                    break;
+                case 3:
+                    $prom_id=$goods['sg_id'];
+                    break;
+            }
+            $_goods['prom_id'] = $prom_id;
             $goods = $goodsModel->info($goods['goods_id']);
             $_goods['goods_id'] = $goods['goods_id'];
             $_goods['goods_name'] = $goods['goods_name'];

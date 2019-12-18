@@ -1,0 +1,328 @@
+{extend name="mainadmin@layouts/simple_base" /}
+{block name="main" }
+{literal}
+<script type="text/html" id="goods_info">
+    <table class="table table-bordered">
+    {{if goods.is_spec==1}}
+    <thead>
+    <tr>
+        <th >商品规格</th>
+        <th>当前库存</th>
+        <th>商品售价</th>
+        <th>活动库存</th>
+        <th>活动价格</th>
+        <!--<th>限购量</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    {{each goods.sub_goods as item index}}
+    <tr>
+        <td><label><input type="checkbox" name="sku_ids[{{item.sku_id}}]" value="{{item.sku_id}}">{{item.sku_name}}</label></td>
+        <td>{{item.goods_number}}</td>
+        <td>{{item.shop_price}}</td>
+        <td><input type="text" name="goods_number[{{item.sku_id}}]" min=0 class="input-small" value=""></td>
+        <td>
+            <input type="text" name="price_num[{{item.sku_id}}]" min=0.01  class="input-small" data-rule-ismoney="true" value="">
+            <select name="price_type[{{item.sku_id}}]">
+                <option value="1">（元）固定价格</option>
+                <option value="2">（%）折扣</option>
+                <option value="3">（元）减免金额</option>
+            </select>
+        </td>
+        <!--<td><input type="text" name="limit_num[{{item.sku_id}}]" min=1  class="input-ssmall" data-rule-ismoney="true" value=""></td>-->
+    </tr>
+    {{/each}}
+    </tbody>
+    {{else}}
+    <thead>
+    <tr>
+        <th>当前库存</th>
+        <th>商品售价</th>
+        <th>活动库存</th>
+        <th>活动价格</th>
+        <!--<th>限购量</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{goods.goods_number}}</td>
+        <td>{{goods.shop_price}}</td>
+        <td><input type="text" name="goods_number" min=0 class="input-small" value=""></td>
+        <td>
+            <input type="text" name="price_num" min=0.01  class="input-small" data-rule-ismoney="true" value="">
+            <select name="price_type">
+                <option value="1">（元）固定价格</option>
+                <option value="2">（%）折扣</option>
+                <option value="3">（元）减免金额</option>
+            </select>
+        </td>
+        <!--<td><input type="text" name="limit_num" min=1  class="input-ssmall" data-rule-ismoney="true" value=""></td>-->
+    </tr>
+    </tbody>
+    {{/if}}
+    </table>
+</script>
+{/literal}
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" id="fromData" method="post" action="{:url('info')}">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$row.goods_id}">
+        <section class="panel panel-default">
+            {if condition="$row['goods_id'] == 0"}
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">选择商品：</label>
+                <div class="col-sm-8 " >
+                    <input id="goods_keyword" type="text" class="input-medium " placeholder="商品名称/SN" aria-invalid="false">
+
+                    <a class="btn btn-default fa fa-search" title="搜索"  onclick="searchGoods()" ></a>
+
+                    <select id="goods_select" class="m-r" style="width:250px;" data-toggle="select2" onChange="goodsSelect()">
+                        <option value="">选择商品</option>
+                    </select>
+                    <span class="help-inline">* 添加后不能修改</span>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                function searchGoods(){
+                    var arr = new Object();
+                    arr.keyword = $('#goods_keyword').val();
+                    arr.min_search = 1;
+                    $('#goods_select').html('<option value="">选择商品</option>');
+                    var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
+                    $.each(res.list, function(i,value){
+                        $('#goods_select').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+                    })
+                }
+                //选择商品
+                function goodsSelect(){
+                    var goods_id = $('#goods_select').val();
+                    $('.goods_name').html('');
+                    jq_ajax('{:url("shop/api.goods/info")}','id='+goods_id,function(res){
+                        if (res.code == 0){
+                            return false;
+                        }
+                        var goods = res.list.goods;
+                        $('#goods_id').val(goods.goods_id);
+                        $('.goods_name').html('商品ID：'+goods.goods_id+' - '+goods.goods_name+'('+(goods.is_spec==1?'多规格':goods.goods_sn)+')');
+                        $(".goods_info").find('.tableBox').html(template("goods_info",res.list));
+                    });
+                }
+            </script>
+            {/if}
+
+            <div class="form-group goods_info m-t">
+                <label class="col-sm-2 control-label">活动商品：</label>
+                <div class="col-sm-9 lh30" >
+                    <div class="col-sm-10 goods_name " >
+                        {gt name="$row.fg_id" value="0" }
+                        商品ID：{$goods.goods_id} -- 商品名称： {$goods.goods_name} {$goods['is_spec'] == 1?'多规格':$goods['goods_sn']}
+                        {/gt}
+                    </div>
+                    <div class="col-sm-10 m-t-md tableBox" >
+                        {if condition="$goods"}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                {if condition="$goods.is_spec eq 1"}
+                                <th >商品规格</th>
+                                {/if}
+                                <th>当前库存</th>
+                                <th>商品售价</th>
+                                <th>活动库存</th>
+                                <th>活动价格</th>
+                                <!--<th>限购量</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {if condition="$goods.is_spec eq 1"}
+                            {foreach name="$goods.sub_goods" item="sku" }
+                            <tr>
+                                <td><label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$fg_goods_info[$sku['sku_id']]?'checked':''}>{$sku.sku_name}</label></td>
+                                <td>{$sku.goods_number}</td>
+                                <td>{$sku.shop_price}</td>
+                                <td><input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-small" value="{$fg_goods_info[$sku['sku_id']]['goods_number']}"></td>
+                                <td>
+                                    <input type="text" name="price_num[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods_info[$sku['sku_id']]['price_num']}">
+                                    <select name="price_type[{$sku.sku_id}]">
+                                        <option value="1" {eq name="fg_goods_info[$sku.sku_id][price_type]" value="1"}selected{/eq}>（元）固定价格</option>
+                                        <option value="2" {eq name="fg_goods_info[$sku.sku_id][price_type]" value="2"}selected{/eq}>（%）折扣</option>
+                                        <option value="3" {eq name="fg_goods_info[$sku.sku_id][price_type]" value="3"}selected{/eq}>（元）减免金额</option>
+                                    </select>
+                                </td>
+                                <!--<td><input type="text" name="limit_num[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info[$sku['sku_id']]['limit_num']}"></td>-->
+                            </tr>
+                            {/foreach}
+                            {else/}
+                            <tr>
+                            <td>{$goods.goods_number}</td>
+                            <td>{$goods.shop_price}</td>
+                            <td><input type="text" name="goods_number" min=0 class="input-small" value="{$fg_goods_info['goods_number']}"></td>
+                            <td>
+                            <input type="text" name="price_num" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info['price_num']}">
+                            <select name="price_type">
+                            <option value="1" {eq name="fg_goods_info.price_type" value="1"}selected{/eq}>（元）固定价格</option>
+                            <option value="2" {eq name="fg_goods_info.price_type" value="2"}selected{/eq}>（%）折扣</option>
+                            <option value="3" {eq name="fg_goods_info.price_type" value="3"}selected{/eq}>（元）减免金额</option>
+                            </select>
+                            </td>
+                            <!--<td><input type="text" name="limit_num" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info[limit_num]}"></td>-->
+                            </tr>
+                            {/if}
+                            </tbody>
+                        </table>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+
+            {if condition="$favourInfo[favour_type] eq 1"}
+            <div class="form-group dateType dateType-2 ">
+                <label class="col-sm-2 control-label">选择日期：</label>
+                <div class="col-sm-8 checkbox-box" >
+                    <label>全选&nbsp;<input type="checkbox" class="checkbox-all"></label><br>
+                    {foreach name="$dateList" item="vo"}
+                    <label><input type="checkbox" name="date_slot[]" value="{$vo}" {in name="vo" value="$row.date_slot"}checked{/in} >{$vo}</label>
+                    {/foreach}
+                </div>
+            </div>
+            {elseif condition="$favourInfo[favour_type] eq 2"/}
+            <div class="form-group dateType dateType-2 ">
+                <label class="col-sm-2 control-label">选择周：</label>
+                <div class="col-sm-8 checkbox-box" >
+                    <label>全选&nbsp;<input type="checkbox" class="checkbox-all"></label><br>
+                    <label><input type="checkbox" name="week_slot[]" value="1" {in name="1" value="$row.week_slot"}checked{/in} >周一</label>
+                    <label><input type="checkbox" name="week_slot[]" value="2" {in name="2" value="$row.week_slot"}checked{/in} >周二</label>
+                    <label><input type="checkbox" name="week_slot[]" value="3" {in name="3" value="$row.week_slot"}checked{/in} >周三</label>
+                    <label><input type="checkbox" name="week_slot[]" value="4" {in name="4" value="$row.week_slot"}checked{/in} >周四</label>
+                    <label><input type="checkbox" name="week_slot[]" value="5" {in name="5" value="$row.week_slot"}checked{/in} >周五</label>
+                    <label><input type="checkbox" name="week_slot[]" value="6" {in name="6" value="$row.week_slot"}checked{/in} >周六</label>
+                    <label><input type="checkbox" name="week_slot[]" value="0" {in name="0" value="$row.week_slot"}checked{/in} >周日</label>
+                </div>
+            </div>
+            {/if}
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label">选择档期：</label>
+                <div class="col-sm-8 checkbox-box" >
+                    <label>全选&nbsp;<input type="checkbox" class="checkbox-all"></label><br>
+                    {foreach name="$cycleList" item="vo"}
+                    <label><input type="checkbox" name="time_slot[]" value="{$vo.value}" {in name="vo.value" value="$row.time_slot"}checked{/in}>{$vo.value}</label>
+                    {/foreach}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">限购数量：</label>
+                <div class="col-sm-8">
+                    <input type="text"  class="input" min="0" name="limit_num" value="{$row.limit_num|default=0}">
+                    <span class=" help-inline">每个档期的限购量，设置为0默认不限制</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">虚拟销量：</label>
+                <div class="col-sm-8">
+                    <input type="text"  class="input" min="0" name="virtual_sale" value="{$row.virtual_sale|default=0}">
+                    <span class=" help-inline"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否推荐：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="is_best" value="1" {$row['is_best']==1?'checked':''}  class="js_radio_undertake">推荐
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_best" value="0" {$row['is_best']==0?'checked':''}  class="js_radio_undertake">不推荐
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">状态：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="1" {$row['status']==1?'checked':''}  class="js_radio_undertake">开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="0" {$row['status']==0?'checked':''}  class="js_radio_undertake">关闭
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">排序号：</label>
+                <div class="col-sm-8">
+                    <input type="text"  class="input" min="0" name="sort_order" value="{$row.sort_order|default=0}">
+                    <span class=" help-inline">* 值越大排序越靠前</span>
+                </div>
+            </div>
+
+            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
+            <div class="form-group" style="width:90%;">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="button" class="btn btn-primary js_save">保存
+                    </button>
+                    <button type="button" class="btn btn-default js_back" >取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="fg_id" id="fg_id" type="hidden" value="{$row.fg_id|intval}">
+        <input name="fa_id" id="fa_id" type="hidden" value="{$favourInfo.fa_id|intval}">
+        <input name="favour_type" id="favour_type" type="hidden" value="{$favourInfo.favour_type|intval}">
+    </form>
+</section>
+
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function saveInfo(){
+        var data = $("#fromData").serialize();
+        console.log(data);
+        var url = $("#fromData").attr('action');
+        jq_ajax(url,data,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg);
+            setTimeout(function () {
+                window.parent.call_back(1);
+            },1000)
+        });
+    }
+
+    $(function (){
+        $('.js_save').on('click',function () {
+            saveInfo();
+        })
+        $('.js_back').on('click',function () {
+            window.parent.call_back(0);
+        })
+
+        //点击选择框
+        $('.checkbox-box').find('input').on('change',function (){
+            var isAll = $(this).hasClass('checkbox-all');
+            if(isAll==true){
+                if ($(this).attr("checked")){
+                    $(this).parents('.checkbox-box').find('input').attr("checked",true);
+                }else{
+                    $(this).parents('.checkbox-box').find('input').attr("checked",false);
+                }
+            }else{
+                if ($(this).attr("checked")){
+                    //非全选框选中
+                }else{
+                    $(this).parents('.checkbox-box').find('input[class=checkbox-all]').attr("checked",false);
+                }
+            }
+        })
+    })
+
+
+
+</script>
+{/block}

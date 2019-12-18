@@ -32,6 +32,9 @@ class LinksModel extends BaseModel
                 'name' => '我的订单',
                 'url' =>'/shop/order/index'
             ],[
+                'name' => '我的评价',
+                'url' =>'/shop/comment/index'
+            ],[
                 'name' => '地址管理',
                 'url' =>'/member/center/address'
             ],[
@@ -40,6 +43,18 @@ class LinksModel extends BaseModel
             ],[
                 'name' => '我的粉丝',
                 'url' =>'/member/my_team/index'
+            ],[
+                'name' => '我的收藏',
+                'url' =>'/shop/collect/index'
+            ],[
+                'name' => '我的二维码',
+                'url' =>'/member/center/mycode'
+            ],[
+                'name' => '我的优惠券',
+                'url' =>'/shop/bonus/index'
+            ],[
+                'name' => '领劵中心',
+                'url' =>'/shop/bonus/bonuscenter'
             ],[
                 'name' => '我的钱包',
                 'url' =>'/member/wallet/index'
@@ -64,6 +79,11 @@ class LinksModel extends BaseModel
                 'name' => '拼团活动',
                 'url' =>'/fightgroup/index/index'
             );
+            $links[] = array
+            (
+                'name' => '我的拼团',
+                'url' =>'/fightgroup/order/index'
+            );
         }
         //判断秒杀模块是否存在
         if (class_exists('app\second\model\SecondModel')) {
@@ -71,6 +91,14 @@ class LinksModel extends BaseModel
             (
                 'name' => '秒杀活动',
                 'url' =>'/second/index/index'
+            );
+        }
+        //判断限时优惠模块是否存在
+        if (class_exists('app\favour\model\FavourModel')) {
+            $links[] = array
+            (
+                'name' => '限时优惠',
+                'url' =>'/favour/index/index'
             );
         }
         return $links;

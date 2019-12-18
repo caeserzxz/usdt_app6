@@ -153,6 +153,9 @@ class Flow extends ApiController
         if ($number < 1) return $this->error('请选择拼团商品.');
 
         $fgInfo = $this->Model->info($fg_id,false);
+        if ($fgInfo['status'] == 0) {
+            return $this->error('拼团活动未开启.');
+        }
         if ($fgInfo['is_on_sale'] == 0){
             return $this->error('拼团活动未开始.');
         }elseif ($fgInfo['is_on_sale'] == 9){
@@ -182,7 +185,7 @@ class Flow extends ApiController
 
 
         if ($fgInfo['limit_num'] < $number){
-            return  $this->error('单次限购'.$buyGoods['limit_num'].'件');
+            return $this->error('单次限购' . $fgInfo['limit_num'] . '件');
         }
         $stock = $buyGoods['fg_number'] - $buyGoods['sale_num'];//计算剩余可销售的拼团数量
         if ($stock < $number){
@@ -283,6 +286,28 @@ class Flow extends ApiController
             }
             $inArr['use_bonus'] = $bonus['info']['type_money'];
         }
+
+
+        $inArr['use_bonus'] = 0;
+        if ($used_bonus_id > 0) {//优惠券验证
+            $BonusModel = new BonusModel();
+            $bonus = $BonusModel->binfo($used_bonus_id);
+            if ($bonus['user_id'] != $this->userInfo['user_id']) {
+                return $this->error('优惠券出错，请核实.');
+            }
+            if ($bonus['status'] == 2) {
+                return $this->error('优惠券无法使用：已失效');
+            }
+            if ($bonus['info']['stauts'] != 1) {
+                return $this->error('优惠券无法使用：' . $bonus['info']['stauts_info']);
+            }
+            if ($cartList['totalGoodsPrice'] < $bonus['info']['min_amount']) {
+                return $this->error('选择的优惠券满￥' . $bonus['info']['min_amount'] . '才可以使用，请核实.');
+            }
+            $inArr['use_bonus'] = $bonus['info']['type_money'];
+        }
+
+
         //运费处理
         $shippingFee = (new CartModel)->evalShippingFee($address,$cartList);
         if ($shippingFee === false){
@@ -388,6 +413,15 @@ class Flow extends ApiController
         $inArr['goods_weight'] = $buyGoods['goods_weight'];
         $inArr['add_time'] = $time;
         $inArr['user_id'] = $this->userInfo['user_id'];
+
+        if ($used_bonus_id > 0) {//优惠券验证
+            $scale = $buyGoods['sale_price'] / $buyGoods['sale_price'] * $number;//对比总订单商品价格占比
+            $use_bonus = bcmul($bonus['info']['type_money'], $scale, 2);//精确两位小数，不四舍五入
+            $bonus_after_price = $buyGoods['sale_price'] - $use_bonus;
+            $inArr['bonus_ids'] = $bonus['bonus_id'];
+            $inArr['bonus_after_price'] = $bonus_after_price;
+        }
+
         $res = (new OrderGoodsModel)->save($inArr);
         if ($res < 1) {
             Db::rollback();// 回滚事务
@@ -401,6 +435,7 @@ class Flow extends ApiController
             $upArr['used_time'] = $time;
             $upArr['order_id'] = $order_id;
             $upArr['order_sn'] = $inArr['order_sn'];
+            $upArr['status'] = 1;
             $BonusListModel = new BonusListModel();
             $res = $BonusListModel->where('bonus_id', $used_bonus_id)->update($upArr);
             if ($res < 1) {

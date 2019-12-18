@@ -29,8 +29,15 @@ class Setting extends AdminController
 	/*------------------------------------------------------ */
     public function save(){
         $set = input('post.');
-		$res = $this->Model->editSave($set);
-		if ($res == false) return $this->error();
+        $favour_time_cycle= settings('favour_time_cycle');
+        $favour_start_time= settings('favour_start_time');
+        $res = $this->Model->editSave($set);
+        if ($res == false) return $this->error();
+        //档期档期间隔 或 活动开始时间 变动，清空档期记录
+        if($set['favour_time_cycle']!=$favour_time_cycle||$set['favour_start_time']!=$favour_start_time){
+            (new \app\favour\model\FavourGoodsModel)->clearTimeSlot();
+
+        }
 		return $this->success('设置成功.');
     }
 	/*------------------------------------------------------ */

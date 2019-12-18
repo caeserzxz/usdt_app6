@@ -53,9 +53,10 @@
         </div>
 
         <!-- 优惠券 -->
-        {if condition="$setting.shop_used_bonus == 1 && $fgInfo.is_usd_bonus == 1"}
-        {include file="fightgroup@index/bonus" /}
+        {if condition="$setting.shop_used_bonus eq 1&&$fgInfo.is_usd_bonus eq 1"}
+        {include file="index/bonus" /}
         {/if}
+
         <div class="color_3 cell">
             <span class="fs28">运费</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 shippingFee">0.00</em></div>
@@ -71,7 +72,7 @@
     <div class="gopay fs28 fw_b color_w BGcolor_r">立即支付</div>
 </div>
 <!-- 支付方式 -->
-<div class="model">
+<div class="model payListModel">
     <div class="modelContent">
         <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
         <div class="title fs36 color_3 fw_b">请选择支付方式</div>
@@ -119,7 +120,7 @@
     $('#buy_num').val({$number});
     //计算运费,主要用于复盖不执行
     function evalShippingFee(){
-        evalCart();
+        // evalCart();
     }
     //购物车统一请求
     function evalCart() {
@@ -144,8 +145,6 @@
             orderTotal = res.orderTotal;
             totalGoodsPrice = res.totalGoodsPrice;
             shippingFee = res.shippingFee.shipping_fee;
-            console.log(res);
-            used_bonus_id = 0;
             $('.bonusInfo .ticket').show();
             $('.bonusInfo .usdinfo').html('')
             getBonusList();
@@ -162,7 +161,6 @@
         $('.payTotal').find('em').html(payTotal[0]);
         $('.payTotal').find('span').html('.' + payTotal[1]);
         $('.shippingFee').html(shippingFee);
-
     }
     //修改购物车订购数量
     function editNum(obj, type) {
@@ -188,7 +186,7 @@
                     return false;
                 }
                 $('#payListBox').html(template('payListTpl', res));
-                $('.model').show();
+                $('.payListModel').show();
             });
         });
         $('.closeBox').on('click', function () {

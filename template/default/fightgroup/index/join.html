@@ -4,15 +4,252 @@
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
 
 <style>
-    .Goods .header-title{
-        display: block; margin:auto;height:auto;
+     .model {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
     }
+
+     .model .modelContent {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+        background-color: #fff;
+        height: 70vh;
+    }
+
+     .model .modelContent .closeBox {
+        position: absolute;
+        top: 0.2rem;
+        right: 0.2rem;
+    }
+
+     .model .modelContent .closeBox img {
+        width: 0.173333rem;
+        height: 0.173333rem;
+    }
+
+     .model .modelContent .top{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+     .model .modelContent .top .left{
+        margin-left: 0.253333rem;
+    }
+
+     .model .modelContent .top .left img {
+        width: 1.733333rem;
+        height: 1.733333rem;
+        box-shadow: 0 0.133333rem 0.266667rem 0 rgba(0, 0, 0, 0.1);
+        margin-top: -0.373333rem;
+        padding: 0.04rem;
+        background-color: #fff;
+    }
+
+     .model .modelContent .top .right {
+        margin-left: 0.226667rem;
+    }
+
+     .model .modelContent .top .right .money {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        margin-top: 0.266667rem;
+    }
+
+     .model .modelContent .top .right .money span {
+        width: 0.52rem;
+        height: 0.2rem;
+        margin-left: 0.08rem;
+        text-align: center;
+    }
+
+     .model .modelContent .top .right .money div{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: baseline;
+        -webkit-align-items: baseline;
+        align-items: baseline;
+    }
+
+     .model .modelContent .top .right .moneyPrimary {
+        text-decoration: line-through;
+    }
+
+     .model .modelContent .top .right p {
+        margin-top: 0.066667rem;
+    }
+
+     .model .modelContent .cantre {
+        position: absolute;
+        left: 0;
+        top: 1.533333rem;
+        bottom: 0.8rem;
+        width: 100%;
+        padding: 0 0.2rem;
+        overflow-y: scroll;
+    }
+
+     .model .modelContent .cantre .block {
+        margin-top: 0.266667rem;
+    }
+
+     .model .modelContent .cantre .block .list {
+        margin-top: 0.2rem;
+        overflow: hidden;
+    }
+
+     .model .modelContent .cantre .block .list span{
+        height: 0.466667rem;
+        padding: 0 0.2rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        float: left;
+        margin-right: 0.133333rem;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 0.133333rem;
+    }
+
+     .model .modelContent .cantre .block .numberBox {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+    }
+
+     .model .modelContent .cantre .block .numberBox .number {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+     .model .modelContent .cantre .block .numberBox .number img {
+        width: 0.293333rem;
+        height: 0.293333rem;
+    }
+
+     .model .modelContent .cantre .block .numberBox .number input {
+        width: 0.4rem;
+        margin: 0 0.133333rem;
+        text-align: center;
+    }
+
+     .model .modelContent .cantre .block:last-child {
+        margin-bottom: 0.2rem;
+    }
+
+     .model .modelContent .buttBox {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0.8rem;
+        width: 100%;
+        padding: 0.106667rem 0.2rem 0.16rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+     .model .modelContent .buttBox span,
+     .model .modelContent .buttBox a,
+ {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        height: 0.533333rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+
+     .model .modelContent .buttBox div,
+     {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        margin-left: 0.066667rem;
+        -webkit-box-align: baseline;
+        -webkit-align-items: baseline;
+        align-items: baseline;
+    }
+     .buttBox span{
+         flex: 1;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         height: 0.533333rem;
+     }
+     .buttBox span div{
+         display: flex;
+         align-items: baseline;
+         margin-top: -0.05rem;
+     }
+    .modelContent .modelSizetips {
+         background-color: rgba(246, 82, 54, 0.1);
+         text-align: center;
+         line-height: 0.28rem;
+         margin-bottom: 0.066667rem;
+     }
 </style>
 {/block}
-{block name='pageType'}Goods  groupOrder{/block}
+{block name='pageType'}  groupOrder{/block}
 {block name="main" }
+<div class="page-bd ">
 <div class="orderDetails">
 <!-- 页面内容-->
+    {if condition="$fgJoin.status eq 9"}
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder03.jpg" alt="">
+        <p class="fs34 fw_b color_3">拼团已结束</p>
+        <span class="fs26 color_9">对不起，该拼团活动已结束！</span>
+    </div>
+    {elseif condition="$fgJoin.status eq 2"}
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder03.jpg" alt="">
+        <p class="fs34 fw_b color_3">拼团已满员</p>
+        <span class="fs26 color_9">该拼团已满员，您可以重新发起拼团！</span>
+    </div>
+    {elseif condition="$goods.fg_number lt 1"}
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder03.jpg" alt="">
+        <p class="fs34 fw_b color_3">拼团结束</p>
+        <span class="fs26 color_9">对不起，该拼团商品已售罄！</span>
+    </div>
+    {elseif condition="$goods.goods_number lt 1"}
+    <div class="type">
+        <img src="__STATIC__/mobile/default/images/groupOrder03.jpg" alt="">
+        <p class="fs34 fw_b color_3">拼团结束</p>
+        <span class="fs26 color_9">对不起，该商品已售罄！</span>
+    </div>
+    {/if}
+
 <div class="orderBox">
     <div class="code fs32 fw_b">商品信息</div>
     <div class="goodslist">
@@ -32,7 +269,8 @@
         </a>
     </div>
 </div>
-<div class="member">
+    {if condition="$fgJoin.status eq 1"}
+    <div class="member">
     <div class="timeBox">
         <div class="text fs30 fw_b color_3"><span class="color_r">还差{$fgInfo['success_num'] - count($fgJoin['order'])}人，</span>距离结束还剩
         </div>
@@ -46,43 +284,55 @@
                     <span class="fs22 color_w BGcolor_r">团长</span>
                 </div>
             {else/}
+                <div>
                 {empty name="$fgJoin['order'][$k]"}
                     <img src="__STATIC__/mobile/default/images/groupOrder04.jpg" alt="">
                 {else/}
-                    <img src="{${$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                    <img src="{$fgJoin['order'][$k]['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                 {/empty}
+                </div>
             {/if}
         {/for}
     </div>
 </div>
+    {/if}
 <div class="groupRule">
     <p class="fs32 fw_b color_3">拼团规则</p>
     <div class="textbox">
         <div><i>1</i><span class="fs26 color_9">如规定时间内团内人数不足{$fgInfo['success_num']}人，则订单取消，原路返还</span></div>
     </div>
 </div>
-{if condition="$orderInfo['fg_status']==0"}
-<div class="butt">
-    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r buyBtn" data-type="show">参与拼团</a>
-</div>
+
+    {if condition="$fgJoin.status eq 9"}
+    <div class="butt">
+        <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_r">去首页逛逛</a>
+    </div>
+    {elseif condition="$fgJoin.status eq 2"}
+    <div class="butt">
+        <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_3">去首页逛逛</a>
+        <a href="{:url('info',['fg_id'=>$fgInfo['fg_id']])}" class="fs32 fw_b color_w BGcolor_r">发起拼团</a>
+    </div>
+    {elseif condition="$goods.fg_number lt 1"}
+    <div class="butt">
+        <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_r">去首页逛逛</a>
+    </div>
+    {elseif condition="$goods.goods_number lt 1"}
+    <div class="butt">
+        <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_r">去首页逛逛</a>
+    </div>
+    {else}
+    <div class="butt">
+        <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r buyBtn" data-type="show">参与拼团</a>
+    </div>
     <div class="butt">
         {notempty name="wxShare"}
-            <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r shareBtn" >分享朋友</a>
+        <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r shareBtn" >分享朋友</a>
         {else/}
-            <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}" >复制链接</a>
+        <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}" >复制链接</a>
         {/notempty}
-
     </div>
-{elseif condition="$orderInfo['fg_status']==1"}
-<div class="butt">
-    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r">参与拼团(满员)</a>
-</div>
-{else/}
-<!-- 开发时请移除 仅用于设计浏览 -->
-<div class="butt">
-    <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r">参与拼团(结束)</a>
-</div>
-{/if}
+    {/if}
+
 </div>
 <!-- 弹出规格选择 -->
 {include file="index/sku" /}
@@ -91,7 +341,9 @@
     <span class="fs28 color_w">分享邀请您的好友参与您的拼团吧~</span>
     <div class="close fs26 color_w">知道了</div>
 </div>
+</div>
 {/block}
+
 {block name="footer"}
 <script src="__STATIC__/js/clipboard.min.js"></script>
 <script type="text/javascript">
@@ -130,7 +382,7 @@
     //前往结算
     function checkOut(obj) {
         var arr = new Object;
-        arr.goods_id = obj.data('goods_id');
+        arr_id = obj.data('goods_id');
         arr.specifications = obj.data('sku');
         arr.join_id = '{$join_id}';
         arr.number = $('#buynumber').val();

@@ -7,18 +7,19 @@
                 <div class="money">
                     <div class="color_3 fs30 num"><p class="fw_b fm_p">￥</p>
                         {eq name="goods.is_spec" value="0"}
+                        <div class="skuPrice">
                             <em class="fs52">{$goods.exp_price[0]}</em><p>.{$goods.exp_price[1]}</p>
+                        </div>
                         {else/}
                             <div class="skuPrice">
                                 <em class="fs52"></em><p></p>
-
                             </div>
                         {/eq}
                         {gt name="goods.use_integral" value="0"}
                             <p class="fw_b fm_p"> + </p><em class="fs32 color_r">{$goods.use_integral}</em>积分
                         {/gt}
                     </div>
-                    <span class="fs22 color_w BGcolor_r is_promote {$goods['is_promote']==0?'hide':''}">活动价</span>
+                    <span class="fs22 color_w BGcolor_r is_promote {$goods['is_promote']==0?'hide':''}" id="is_prom_price_sku">活动价</span>
                 </div>
                 {gt name="goods.use_integral" value="0"}
                 <div class="color_3 fs20 num money" style="margin-top: 0px;"> </div>
@@ -27,6 +28,7 @@
                 {notempty name="$goods.sub_goods"}<p class="fs28 fw_b color_3 selSkuName">请选择规格</p>{/notempty}
             </div>
         </div>
+        <div class="tan_text fs24 color_r fw_b"  style="display: none;">对不起！该规格不参与优惠！</div>
         <div class="cantre sku_list">
             {volist name="goods.lstSKUArr" id="sku"  }
             <div class="block {$sku['is_show']==0?'hide':''}">
@@ -89,18 +91,20 @@
             skuName.push(skuCstom[v]);
         })
         $('#skuImg').attr('src',skuImgs[_sku]);
+        var buynumber = $('#buynumber').val();
         $('.selSkuName').html(skuName.join(" - "));
 
-        if (sub_goods[_sku].is_promote == 1){
-            $('.is_promote').removeClass('hide');
-        }else{
-            $('.is_promote').addClass('hide');
-        }
+        // if (sub_goods[_sku].is_promote == 1){
+        //     $('.is_promote').removeClass('hide');
+        // }else{
+        //     $('.is_promote').addClass('hide');
+        // }
 
         $('.skuPrice').find('em').html(sub_goods[_sku].exp_price[0]);
         $('.skuPrice').find('p').html('.'+sub_goods[_sku].exp_price[1]);
         $('.moneyPrimary').html('￥'+sub_goods[_sku].market_price);
 
+        initActivity();
         //$('.kcnum').html(sub_goods[sku].goods_number);
     }
 

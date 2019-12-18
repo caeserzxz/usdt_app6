@@ -66,6 +66,19 @@
     </div>
 </div>
 
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">商品标签：</label>
+    <div class="col-sm-6">
+        {foreach name="tagList" item="vo"}
+        <label class="radio inline">
+            <input type="radio" name="tag_id" value="{$vo.id}" {$vo.id==$row.tag_id?"checked":""}> {$vo.title}
+        </label>&nbsp;&nbsp;
+        {/foreach}
+    </div>
+</div>
+
+
 <div class="form-group">
     <label class="col-sm-2 control-label">虚拟销量：</label>
     <div class="col-sm-5">

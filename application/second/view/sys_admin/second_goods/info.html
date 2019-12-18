@@ -53,14 +53,15 @@
                     var goods_id = $('#goods_select').val();
                     $('.goods_name').html('');
                     $('.goods_info').html('');
-                    jq_ajax('{:url("shop/api.goods/info")}','goods_id='+goods_id,function(res){
+                    jq_ajax('{:url("shop/api.goods/info")}','id='+goods_id,function(res){
                         if (res.code == 0){
                             return false;
                         }
-                        $('#goods_id').val(res.data.goods_id);
-                        $('.goods_name').html('商品ID：'+res.data.goods_id+' - '+res.data.goods_name+'('+(res.data.is_spec==1?'多规格':res.data.goods_sn)+')');
-                        if (res.data.is_spec == 1){
-                            $.each(res.data.sub_goods, function(i,val){
+                        var goods = res.list.goods;
+                        $('#goods_id').val(goods.goods_id);
+                        $('.goods_name').html('商品ID：'+goods.goods_id+' - '+goods.goods_name+'('+(goods.is_spec==1?'多规格':goods.goods_sn)+')');
+                        if (goods.is_spec == 1){
+                            $.each(goods.sub_goods, function(i,val){
                                 $('.goods_info').append('<div class="relative"><label><input type="checkbox" name="sku_ids['+val.sku_id+']" value="'+val.sku_id+'"> ' +
                                     ''+val.sku_name+'</label>，' +
                                     '参与秒杀的库存：<input type="text" name="goods_number['+val.sku_id+']" min=0 class="input-ssmall" value="">，' +

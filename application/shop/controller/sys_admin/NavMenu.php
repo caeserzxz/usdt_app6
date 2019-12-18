@@ -7,33 +7,38 @@ use app\shop\model\NavMenuModel;
 /*------------------------------------------------------ */
 class NavMenu extends AdminController
 {
-	/*------------------------------------------------------ */
-	//-- 优先执行
-	/*------------------------------------------------------ */
+    protected $type = 1;//导航类型
+    /*------------------------------------------------------ */
+    //-- 优先执行
+    /*------------------------------------------------------ */
 	public function initialize(){
+    {
         parent::initialize();
-        $this->Model = new NavMenuModel();		
+        $this->Model = new NavMenuModel();
     }
-	/*------------------------------------------------------ */
-	//-- 首页
-	/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
+    //-- 首页
+    /*------------------------------------------------------ */
     public function index(){
-		$this->getList(true);
+    {
+        $this->getList(true);
         return $this->fetch();
     }
-	/*------------------------------------------------------ */
+    /*------------------------------------------------------ */
     //-- 获取列表
-	//-- $runData boolean 是否返回模板
+    //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
-		$this->sqlOrder = 'sort_order DESC';
-        $data = $this->getPageList($this->Model);
-		$this->assign("data", $data);
-		if ($runData == false){
-			$data['content'] = $this->fetch('list')->getContent();
-			unset($data['list']);
-			return $this->success('','',$data);
-		}
+    {
+        $where[] = ['type', '=', $this->type];
+        $this->sqlOrder = 'sort_order DESC';
+        $data = $this->getPageList($this->Model, $where);
+        $this->assign("data", $data);
+        if ($runData == false) {
+            $data['content'] = $this->fetch('list')->getContent();
+            unset($data['list']);
+            return $this->success('', '', $data);
+        }
         return true;
     }
 	/*------------------------------------------------------ */

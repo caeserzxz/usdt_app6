@@ -1,3 +1,24 @@
+.empeyData {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  top: 0.2rem;
+  left: 0;
+}
+.empeyData img {
+  width: 100%;
+  margin-top: 20vh;
+}
+.empeyData span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding-bottom: 0.266667rem;
+}
+
 .goodsBox {
   margin-top: 0.133333rem;
   padding: 0.133333rem 0.2rem 0.133333rem;
@@ -20,11 +41,37 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   width: 3.2rem;
 }
 
+.goodsBox .info .info_na {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.goodsBox .info .liji_pay {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 1.066667rem;
+  height: 0.373333rem;
+  background-color: #f65236;
+  border: solid 0.006667rem #f65236;
+}
+
 .goodsBox .info .name {
+  width: 2.32rem;
   margin-bottom: 0.04rem;
 }
 
@@ -34,10 +81,10 @@
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   margin-top: auto;
 }
 
@@ -47,7 +94,7 @@
   display: flex;
   -webkit-box-align: baseline;
   -webkit-align-items: baseline;
-  align-items: baseline;
+          align-items: baseline;
 }
 
 .goodsBox .info .infoBott .num {
@@ -56,7 +103,7 @@
   display: flex;
   -webkit-box-align: baseline;
   -webkit-align-items: baseline;
-  align-items: baseline;
+          align-items: baseline;
 }
 
 .goodsBox .info .infoBott .originalMoney {
@@ -65,36 +112,48 @@
 }
 
 .my .top {
-  background-color: #fff;
-  height: 1.4rem;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
   padding: 0 0.2rem;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  background-image: url('../images/myTopBG.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  min-height: 3rem;
 }
 
-.my .top .left {
+.my .top .title {
+  width: 100%;
+  height: 0.666667rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
 }
 
-.my .top .left img {
-  width: 0.733333rem;
-  height: 0.733333rem;
+.my .top .info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.my .top .info .userimg {
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 50%;
+  background-color: #fff;
+  padding: 0.013333rem;
 }
 
-.my .top .left .userInfo {
+.my .top .info .userInfo {
   margin-left: 0.133333rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -102,52 +161,56 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
 }
 
-.my .top .left .userInfo div {
+.my .top .info .userInfo div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   margin-bottom: 0.026667rem;
 }
 
-.my .top .left .userInfo div em {
+.my .top .info .userInfo div em {
   text-align: center;
   margin-left: 0.066667rem;
   padding: 1px 3px 0;
+  background-color: #e4cfb7;
+}
+
+.my .top .info .userInfo span {
+  border-radius: 0.12rem;
+  border: solid 0.006667rem #e4cfb7;
+  color: #e4cfb7;
+  padding: 0.013333rem 0.093333rem;
+  margin-top: 0.04rem;
+  display: block;
 }
 
 .my .top .right {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
+  margin-left: auto;
 }
-.my .top .right .newsicon{
-  position: relative;
-}
-.my .top .right .newsicon em{
-  position: absolute;
-  top: -0.05rem;
-  right: -0.05rem;
-  width: 0.1rem;
-  height: 0.1rem;
-  border-radius: 100%;
-  background-color: #F65236;
-}
+
 .my .top .right a img {
   width: 0.293333rem;
   height: 0.293333rem;
   margin-left: 0.253333rem;
+}
+
+.my .banner {
+  margin: 0 0.166667rem  0.8rem;
+  min-height: 0.006667rem;
+}
+
+.my .banner img {
+  width: 100%;
 }
 
 .my .moneyInfo {
@@ -156,54 +219,53 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-justify-content: space-around;
-  justify-content: space-around;
+          justify-content: space-around;
   background-color: #fff;
-  padding-bottom: 0.133333rem;
+  border-radius: 0.133333rem;
+  margin: -.8rem 0.133333rem 0;
 }
 
 .my .moneyInfo a {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-  flex: 1;
+          flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
-  height: 0.866667rem;
-}
-
-.my .moneyInfo a span {
-  margin-top: -0.053333rem;
+          justify-content: center;
+  height: 0.906667rem;
 }
 
 .my .myOrder {
   background-color: #fff;
-  margin-top: 0.08rem;
+  margin: 0.133333rem 0.133333rem 0;
+  border-radius: 0.133333rem;
 }
 
 .my .myOrder .title {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  height: 0.666667rem;
+  height: 0.6rem;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   padding: 0 0.2rem;
+  color: #040404;
 }
 
 .my .myOrder .title a {
@@ -213,7 +275,8 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
+  color: #b5b5b5;
 }
 
 .my .myOrder .title a img {
@@ -227,8 +290,11 @@
   display: -webkit-flex;
   display: flex;
   -webkit-justify-content: space-around;
-  justify-content: space-around;
-  padding-bottom: 0.133333rem;
+          justify-content: space-around;
+  height: 1.133333rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
 }
 
 .my .myOrder .list a {
@@ -237,24 +303,24 @@
   display: flex;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-  flex: 1;
+          flex: 1;
   height: 0.906667rem;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   position: relative;
 }
 
 .my .myOrder .list a img {
-  width: 0.333333rem;
-  height: 0.333333rem;
+  width: 0.28rem;
+  height: 0.28rem;
   margin-bottom: 0.08rem;
 }
 
@@ -265,10 +331,10 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   width: 0.213333rem;
   height: 0.213333rem;
   border-radius: 50%;
@@ -291,10 +357,10 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
   padding: 0 0.2rem;
 }
 
@@ -304,7 +370,7 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .my .cellBox a .left img {
@@ -319,12 +385,11 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .my .cellBox a .right p {
-  /*width: 0.6rem;*/
-  padding: 0 0.08rem;
+  width: 0.6rem;
   text-align: center;
 }
 
@@ -342,23 +407,39 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   margin: 0.08rem 0;
   background-color: #fff;
 }
 
 .my .girdBox {
   background-color: #fff;
-  margin-top: 0.08rem;
+  margin: 0.106667rem 0.133333rem 0.133333rem;
+  border-radius: 0.133333rem;
+}
+
+.my .girdBox .title {
+  height: 0.6rem;
+  padding-left: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #040404;
+}
+
+.my .girdBox div {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding: 0.2rem 0;
+          flex-wrap: wrap;
+  padding: 0.133333rem 0;
 }
 
 .my .girdBox a {
@@ -369,20 +450,49 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
-  height: 1.2rem;
+          align-items: center;
+  height: 1.04rem;
 }
 
 .my .girdBox a img {
-  width: 0.466667rem;
-  height: 0.466667rem;
+  width: 0.346667rem;
+  height: 0.346667rem;
   margin-bottom: 0.08rem;
+}
+
+.my .tab {
+  margin: 0.08rem 0;
+  background-color: #fff;
+  padding-left: 0.2rem;
+}
+
+.my .tab a {
+  width: 100%;
+  padding-right: 0.2rem;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.my .tab a .icon {
+  width: 0.293333rem;
+  height: 0.293333rem;
+  margin-right: 0.106667rem;
+}
+
+.my .tab a .right {
+  width: 0.133333rem;
+  margin-left: auto;
 }
 
 .evaluate .tab {
@@ -391,9 +501,9 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-justify-content: space-around;
-  justify-content: space-around;
+          justify-content: space-around;
   height: 0.666667rem;
   background-color: #fff;
   box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
@@ -402,16 +512,16 @@
 .evaluate .tab div {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-  flex: 1;
+          flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   height: 100%;
 }
 
@@ -437,10 +547,10 @@
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .evaluate .tabBlock .borColor_e {
@@ -459,10 +569,10 @@
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   height: 0.666667rem;
 }
 
@@ -509,7 +619,7 @@
   display: flex;
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
-  justify-content: flex-end;
+          justify-content: flex-end;
 }
 
 .evaluating .title {
@@ -540,10 +650,10 @@
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   width: 4.6rem;
   margin: 0 auto;
   height: 0.533333rem;
@@ -585,15 +695,11 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
 }
-.news .blocklist .block .top  p{
-  margin-right: 0.1rem;
-}
-
 
 .news .blocklist .block .imgBox {
   display: -webkit-box;
@@ -622,10 +728,9 @@
   width: 3.2rem;
 }
 
-
 .newsDetails .detailsBox {
   padding: 0.333333rem 0.266667rem;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .newsDetails .detailsBox span {
@@ -634,9 +739,7 @@
 }
 
 .newsDetails .detailsBox img {
-  width: 100% !important;
-  margin: 0.2rem 0 0.266667rem;
-  height: auto !important;
+  width: 100%;
 }
 
 .newsDetails .detailsBox p {
@@ -645,37 +748,39 @@
   line-height: 0.28rem;
   text-align: justify;
 }
-.news .loadEnd{
-     text-align: center;
-     padding: 0.12rem;
-}
-.newsDetails_ft{
-  padding: 0.2rem 0;
-  background-color: #fff;
-}
-.newsDetails_ft a{
-  height: 0.533333rem;
+
+.myGroup .box_tab {
+  width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  width: 92%;
-  margin: 0 0.2rem;
+          align-items: center;
+  margin-top: 0.08rem;
+  background-color: #fff;
 }
+
+.myGroup .noDate_img {
+  width: 1.133333rem;
+  height: 1.133333rem;
+  margin: 1.36rem 0 0.333333rem;
+}
+
 .myGroup .tab {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-justify-content: space-around;
-  justify-content: space-around;
+          justify-content: space-around;
   height: 0.666667rem;
   background-color: #fff;
   box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
@@ -684,16 +789,16 @@
 .myGroup .tab div {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-  flex: 1;
+          flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   height: 100%;
 }
 
@@ -719,10 +824,10 @@
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .myGroup .tabBlock .borColor_e {
@@ -735,7 +840,7 @@
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
 }
 
 .myGroup .type {
@@ -744,7 +849,7 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .myGroup .line {
@@ -777,7 +882,6 @@
   border-radius: 0.066667rem;
 }
 
-/** 头条 **/
 .hotspotNews .navBox {
   background-color: #fff;
   overflow: hidden;
@@ -795,14 +899,14 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: center;
+          justify-content: center;
   height: 0.666667rem;
   overflow: hidden;
   -webkit-flex-shrink: 0;
-  flex-shrink: 0;
+          flex-shrink: 0;
   white-space: nowrap;
   padding: 0 0.16rem;
 }
@@ -822,7 +926,7 @@
   left: 50%;
   bottom: 0;
   -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
 }
 
 .hotspotNews .blockList {
@@ -839,7 +943,7 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-  align-items: center;
+          align-items: center;
 }
 
 .hotspotNews .blockList .block img {
@@ -856,9 +960,9 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-  flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+          justify-content: space-between;
   height: 1.066667rem;
 }

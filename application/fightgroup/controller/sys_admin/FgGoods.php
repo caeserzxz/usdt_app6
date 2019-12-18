@@ -55,6 +55,12 @@ class FgGoods extends AdminController
             default:
             break;
         }
+
+        $search['keyword'] = input('keyword', '', 'trim');
+        if (empty($search['keyword']) == false) {
+            $where[] = ['g.goods_name|g.goods_sn', 'like', "%" . $search['keyword'] . "%"];
+        }
+
         $viewObj = $this->Model->alias('fg')->join("shop_goods g", 'fg.goods_id=g.goods_id', 'left');
         $viewObj->where($where)->field('fg.*,g.goods_name,g.goods_sn,g.is_spec')->order('fg_id DESC');
         $this->data = $this->getPageList($this->Model, $viewObj);
@@ -257,6 +263,16 @@ class FgGoods extends AdminController
         if ($row['start_date'] >= $row['end_date']) return $this->error('操作失败::开始时间必须大于结束时间.');
         $row['is_usd_bonus'] = $row['is_usd_bonus'] * 1;
         return $row;
+    }
+
+    /*------------------------------------------------------ */
+    //-- ajax快速修改
+    //-- id int 修改ID
+    //-- data array 修改字段
+    /*------------------------------------------------------ */
+    public function afterAjax($fg_id, $data)
+    {
+        $this->Model->cleanMemcache($fg_id);
     }
 
     /*------------------------------------------------------ */

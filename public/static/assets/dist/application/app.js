@@ -894,7 +894,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             minuteStep: c,
                             pickerPosition: d
                         };
-                        if (l == 'month'){
+                        if (l == 'month') {
                             json = {
                                 format: 'yyyy-mm',
                                 endDate: g,
@@ -905,6 +905,17 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                                 forceParse: false,
                                 language: 'zh-CN'
                             };
+                        }else if(l == 'day'){
+                                json = {
+                                    format: 'yyyy-mm-dd',
+                                    endDate: g,
+                                    weekStart: 1,
+                                    autoclose: true,
+                                    startView: 2,
+                                    minView: 2,
+                                    forceParse: false,
+                                    language: 'zh-CN'
+                                };
                         }else if(l == 'year'){
                             json = {
                                 format: 'yyyy',
@@ -913,6 +924,16 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                                 startView: 4,
                                 minView: 4,
                                 forceParse: false,
+                                language: 'zh-CN'
+                            };
+                        }else if(l == 'hour'){
+                            json = {
+                                format: 'hh:00',
+                                weekStart: 1,
+                                autoclose: true,
+                                startView: 1,
+                                minView: 1,
+                                forceParse: true,
                                 language: 'zh-CN'
                             };
                         }else if(l == 'time'){

@@ -1,0 +1,86 @@
+<table class="table table-bordered goodsTpl">
+<thead class="flip-content bordered-palegreen">
+<tr>
+    <th width="150">商品名称</th>
+    <th width="150">商品规格</th>
+    <th width="90">优惠方案</th>
+    <th width="90">商品售价</th>
+    <th width="90">活动价格</th>
+    <th width="90">当前库存</th>
+    <th width="90">活动库存</th>
+    <th width="90">销量</th>
+    <th width="90">每档限购</th>
+    <th width="90">状态</th>
+    <th width="90">推荐</th>
+    <th width="90">排序</th>
+    <th>操作</th>
+</tr>
+</thead>
+<tbody>
+{volist name="data.list" id="vo" }
+{if condition="$vo.goods.is_spec eq 1"}
+<tr>
+    <td>{$vo.goods.goods_name}</td>
+    <td colspan="6">多规格<i class="fa row-details fa-plus-square-o list_tr_open" ></i></td>
+    <td>{$vo.actual_sale}</td>
+    <td>{eq name="vo.limit_num" value="0"}不限购{else/}{$vo.limit_num}{/eq}</td>
+    <td width="90"><a href="#" data-remote="{:url('ajaxEdit',array('fg_id'=>$vo['fg_id'],'field'=>'status'))}" class="{$vo.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">开启</i><i class="fa fa-times text-danger text">关闭</i></a></td>
+    <td width="90"><a href="#" data-remote="{:url('ajaxEdit',array('fg_id'=>$vo['fg_id'],'field'=>'is_best'))}" class="{$vo.is_best|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">是</i><i class="fa fa-times text-danger text">否</i></a></td>
+    <td width="90">{$vo.sort_order}</td>
+    <td>
+        <a href="javascript:setGoods({$vo.fg_id});"  title="编辑"><i class="fa fa-edit  fa-fw"></i></a>
+        <a href="{:url('del',array('fg_id'=>$vo['fg_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.goods.goods_name} ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+    </td>
+</tr>
+<tr class="hide">
+    <td>|-</td>
+    <td colspan="7" style="padding: 0;">
+        <table class="table table-bordered">
+            <tbody>
+            {foreach name="vo.goods.sub_goods" item="sku"}
+            {if condition="$vo.fg_goods_info[$sku.sku_id]"}
+            <tr>
+                <td width="149">{$sku.sku_name}</td>
+                <td width="90">{$priceType[$vo.fg_goods_info[$sku.sku_id][price_type]]}</td>
+                <td width="90">{$sku.shop_price}</td>
+                <td width="90">{$vo.fg_goods_info[$sku.sku_id][goods_price]}</td>
+                <td width="90">{$sku.goods_number}</td>
+                <td width="90">{$vo.fg_goods_info[$sku.sku_id][goods_number]}</td>
+                <td width="90">{$vo.fg_goods_info[$sku.sku_id][sale]}</td>
+            </tr>
+            {/if}
+            {/foreach}
+            </tbody>
+        </table>
+    </td>
+    <td colspan="4">-|</td>
+</tr>
+{else/}
+<tr>
+    <td>{$vo.goods.goods_name}</td>
+    <td>统一规格</td>
+    <td>{$priceType[$vo.fg_goods_info.price_type]}</td>
+    <td>{$vo.goods.shop_price}</td>
+    <td>{$vo.show_price}</td>
+    <td>{$vo.goods.goods_number}</td>
+    <td>{$vo.fg_goods_info.goods_number}</td>
+    <td>{$vo.fg_goods_info.sale}</td>
+    <td>{eq name="vo.limit_num" value="0"}不限购{else/}{$vo.limit_num}{/eq}</td>
+    <td width="90"><a href="#" data-remote="{:url('ajaxEdit',array('fg_id'=>$vo['fg_id'],'field'=>'status'))}" class="{$vo.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">开启</i><i class="fa fa-times text-danger text">关闭</i></a></td>
+    <td width="90"><a href="#" data-remote="{:url('ajaxEdit',array('fg_id'=>$vo['fg_id'],'field'=>'is_best'))}" class="{$vo.is_best|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active">是</i><i class="fa fa-times text-danger text">否</i></a></td>
+    <td>{$vo.sort_order}</td>
+    <td>
+        <a href="javascript:setGoods({$vo.fg_id});"  title="编辑"><i class="fa fa-edit  fa-fw"></i></a>
+        <a href="{:url('del',array('fg_id'=>$vo['fg_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.goods.goods_name} ?"><i class="fa fa-trash-o icon-muted fa-fw"></i></a>
+    </td>
+</tr>
+{/if}
+
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

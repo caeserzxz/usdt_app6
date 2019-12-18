@@ -1,0 +1,43 @@
+
+<table class="table  table-hover m-b-none ">
+    <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th width="120">标题</th>
+            <th>显示图标</th>
+            <th>选中图标</th>
+            <th width="80">排序</th>
+            <th width="100">是否启用</th>
+            <th width="140">添加时间</th>
+            <th width="80">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+{volist name="data.list" id="g"}
+        <tr>
+       	  	<td>{$g.id}</td>
+            <td>{$g.title}</td>
+       	  	<td><img src="{$g.imgurl}" style="max-width:50px;max-width:50px;"/></td>
+            <td><img src="{$g.imgurl_s}" style="max-width:50px;max-width:50px;"/></td>
+            <td>{$g.sort_order}</td>
+            <td>
+                <a href="#" data-remote="{:url('ajaxEdit',array('id'=>$g['id'],'field'=>'status'))}" class="{$g.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+            </td>
+            <td>{$g.add_time|dateTpl}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$g['id']))}" class="m-xs" title="编辑">
+                    <i class="fa fa-edit text-muted"></i>
+                </a>
+                <a href="{:url('del',array('id'=>$g['id']))}" data-toggle="ajaxRemove" data-msg="确定删除该幻灯片？" class="m-xs" title="删除">
+                    <i class="fa fa-trash-o text-muted"></i>
+                </a>
+            </td>
+        </tr>
+{/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

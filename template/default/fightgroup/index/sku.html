@@ -14,7 +14,7 @@
                             </div>
                         {/eq}
                     </div>
-                    <span class="fs22 color_w BGcolor_r">{$fgInfo.success_num}人团</span>
+                    <span class="fs22 color_w BGcolor_r success_num">{$fgInfo.success_num}人团</span>
                 </div>
                 <div class="fs24 color_9 moneyPrimary">￥{$goods.market_price}</div>
                 {notempty name="$goods.sub_goods"}<p class="fs28 fw_b color_3 selSkuName">请选择规格</p>{/notempty}
@@ -22,8 +22,8 @@
         </div>
 
         <div class="cantre sku_list">
+            <div class="modelSizetips fs24 color_r fw_b hide"></div>
             {volist name="goods.lstSKUArr" id="sku"  }
-
             <div class="block {$sku['is_show']==0?'hide':''}">
                 <p class="fs32 fw_b color_3">{$sku.name}</p>
                 <div class="list">
@@ -45,11 +45,15 @@
             </div>
         </div>
         <div class="buttBox">
+            <input type="hidden" name="goods_id" id="goods_id" value="{$goods.goods_id}">
+            <input type="hidden" name="sku" id="sku" value="">
             {empty name="$fgJoin"}
-            <span class="fs28 fw_b color_w BGcolor_r buyBtn" data-goods_id="{$goods.goods_id}" data-type="onfg">发起拼团<div class="num fg_price">￥<em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+            <span class="fs28 fw_b color_w BGcolor_3 singleBuyBtn hide">单独购买 ￥<div class="num shop_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+            <span class="fs28 fw_b color_w BGcolor_r groupBuyBtn buyBtn"  data-goods_id="{$goods.goods_id}" data-type="onfg">发起拼团 ￥<div class="num fg_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
             {else/}
             {if condition="$orderInfo['fg_status'] == 0"}
-           <span class="fs28 fw_b color_w BGcolor_r buyBtn" data-goods_id="{$goods.goods_id}" data-type="onfg">参与拼团<div class="num fg_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+            <span class="fs28 fw_b color_w BGcolor_3 singleBuyBtn hide">单独购买 ￥<div class="num shop_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
+           <span class="fs28 fw_b color_w BGcolor_r buyBtn" data-goods_id="{$goods.goods_id}" data-type="onfg">参与拼团 ￥<div class="num fg_price"><em class="fs42">{$fgInfo.exp_price[0]}</em><i>.{$fgInfo.exp_price[1]}</i></div></span>
             {elseif condition="$orderInfo['fg_status'] == 1"}
             <span class="fs22 color_w buyBtn" data-type="show">拼团满员</span>
             {else/}
@@ -82,7 +86,6 @@
     });
     function selsku(){
 		if (sub_goods.length < 1) return false;
-
         var sku = new Array();
         $('.sku_list .tag_active').each(function(){
             var skukey = $(this).data('skukey');
@@ -90,12 +93,12 @@
         });
 
        var _sku = sku.join(":");
-
-        $('.buyBtn').attr('data-sku',_sku);
+        $('#sku').val(_sku);
         var skuName = new Array();
         $.each(sku,function (k,v) {
             skuName.push(skuCstom[v]);
         })
+
         $('#skuImg').attr('src',skuImgs[_sku]);
         $('.selSkuName').html(skuName.join(" - "));
         $('.selSkuNameByInfo').html(skuName.join(" - "));
@@ -108,8 +111,51 @@
         $('.shop_price').find('em').html(sub_goods[_sku].exp_shop_price[0]);
         $('.shop_price').find('i').html('.'+sub_goods[_sku].exp_shop_price[1]);
 
-        $('.moneyPrimary').html('￥'+sub_goods[_sku].market_price);
+        if(sub_goods[_sku].is_group==1){
+            $('.modelSizetips').addClass('hide');
+            $('.success_num').show();
+            $(".singleBuyBtn").addClass('hide');
+            $('.moneyPrimary').html('￥'+sub_goods[_sku].shop_price);
+            if(sub_goods[_sku].fg_number<=0){
+                if(sub_goods[_sku].goods_number>0){
+                    $('.modelSizetips').text('对不起，该规格拼团库存已售罄.').removeClass('hide');
+                    btnShow(3);
+                    return false;
+                }else{
+                    $('.modelSizetips').text('对不起，该规格库存已售罄.').removeClass('hide');
+                    btnShow(4);
+                    return false;
+                }
+            }
+            btnShow(1);
+        }else{
+            $('.success_num').hide();
+            $('.moneyPrimary').html('￥'+sub_goods[_sku].market_price);
+            $('.modelSizetips').text('对不起，该规格不参与拼团活动.').removeClass('hide');
+            btnShow(2);
+        }
+    }
 
+    //按钮的显示
+    function btnShow(status){
+        if(status==1){
+            $('.modelSizetips').text('').addClass('hide');
+            $(".singleBuyBtn").addClass('hide');
+            $(".groupBuyBtn").removeClass('BGcolor_9').addClass('BGcolor_r');
+            $(".groupBuyBtn").data('type','onfg');
+        }else if(status==2){
+            $(".singleBuyBtn").removeClass('hide');
+            $(".groupBuyBtn").data('type','off');
+            $(".groupBuyBtn").removeClass('BGcolor_r').addClass('BGcolor_9');
+        }else if(status==3){
+            $(".singleBuyBtn").removeClass('hide');
+            $(".groupBuyBtn").data('type','off');
+            $(".groupBuyBtn").removeClass('BGcolor_r').addClass('BGcolor_9');
+        }else if(status==4){
+            $(".singleBuyBtn").removeClass('hide');
+            $(".groupBuyBtn").data('type','off');
+            $(".groupBuyBtn").removeClass('BGcolor_r').addClass('BGcolor_9');
+        }
     }
 
     $(function() {
@@ -128,5 +174,46 @@
         $('.closeBox').on('click', function () {
             $('.model').hide()
         })
+
+        $('.singleBuyBtn ').on('click', function () {
+            var obj = $(this);
+            var obj = $(this);
+            if (obj.data('type') == 'show') {
+                $('.modelSize').show();
+                selsku();
+            } else {
+                addToCart(obj);
+            }
+        })
     })
+
+    //添加到购物车-单独购买
+    function addToCart(obj) {
+        var arr = new Object;
+        arr.goods_id = $('#goods_id').val();
+        arr.specifications = $('#sku').val();
+        if (typeof(arr.specifications) != 'undefined'){
+            arr.sku_id = sub_goods[arr.specifications].sku_id;
+        }
+        arr.type = 'onbuy';
+        arr.number = $('#buynumber').val();
+        arr.prom_type = 0;
+        arr.prom_id = 0;
+        var res = jq_ajax("{:url('shop/api.flow/addCart')}", arr);
+        if (res.code == 1) {
+            if (arr.type == 'onbuy') {
+                window.location = '{:_url("shop/flow/checkout",array("rec_id"=>"【res.rec_id】"))}';
+                return false;
+            }
+            $('.cartNum').html(res.cartInfo.num);
+        }
+        if (arr.type == 'onbuy') {
+            if (res.msg) _alert(res.msg,function(){
+                window.location.href = '{:_url("member/passport/login")}';
+            });
+            return;
+        }
+        if (res.msg) _alert(res.msg);
+    }
+
 </script>

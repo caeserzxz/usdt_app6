@@ -60,6 +60,9 @@ class Order extends AdminController
             $this->assign("start_date",str_replace('_', '/', $start_date));
             $this->assign("end_date",str_replace('_', '/', $end_date));
         }
+        //限时优惠活动ID
+        $favour_id = input('favour_id',0,'intval');
+        $this->assign("favour_id",$favour_id);
 
         $this->getList(true);
         return $this->fetch('index');
@@ -144,6 +147,11 @@ class Order extends AdminController
         if ($search['mobile']) {
             $where[] = ['mobile', '=', $search['mobile']];
         }
+        $search['favour_id'] = input('favour_id', 0, 'intval');
+        if ($search['favour_id']) {
+            $where['and'][] = "find_in_set(".$search['favour_id'].",favour_id)";
+        }
+
         //省市区
         $search['province'] = input('province', 0, 'intval');
         $search['city'] = input('city', 0, 'intval');
@@ -760,7 +768,8 @@ EOF;
         }else{
             $data['order_status'] = $config['OS_UNCONFIRMED'];
         }
-
+        $shop_reduce_stock = settings('shop_reduce_stock');
+        $data['is_stock'] = ($shop_reduce_stock == 0) ? 1 : 0;
         $res = $this->Model->upInfo($data,'recover');
         if ($res !== true) return $this->error($res);
         $orderInfo['order_status'] = $data['order_status'];

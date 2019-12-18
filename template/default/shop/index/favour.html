@@ -1,0 +1,60 @@
+<div class="sale favourBox" style="display: none;">
+    <div class="title">
+        <div class="left">
+            <img src="__STATIC__/mobile/default/images/index_icon11.png" alt="">
+            <p class="fs32 color_3 fw_b">[title]</p>
+        </div>
+        <a href="{:_url('/favour/Index/index')}" class="right">
+            <span class="fs24 color_9">查看更多</span>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+        </a>
+    </div>
+    <div class="salelist">
+    </div>
+</div>
+<script id="favourTpl" type="text/html">
+    {{each list as item index}}
+    <a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}" class="box">
+        <img src="{{item.cover}}" alt="">
+        <span class="fs28 color_3">{{item.goods_name}}</span>
+        <div class="color_r fs20 num">
+            <p class="fw_b fm_p">￥</p><em class="fs30">{{item.exp_price[0]}}</em><i>.{{item.exp_price[1]}}</i>
+        </div>
+    </a>
+    {{/each}}
+    <a href="{:_url('/favour/Index/index')}" class="box moreBox">
+        <p class="fs28 color_3">查看</br>更多</p>
+        <img src="__STATIC__/mobile/default/images/index_icon12.png" alt="">
+    </a>
+</script>
+<script>
+    //请求限时优惠首页推荐数据
+    function getFavourList(){
+        $('.favourBox .salelist').append('<div class="get_list_tip">加载数据中...</div>');
+        $.ajax({
+            url:'{:_url("favour/api.goods/getBestList")}',// 跳转到 action
+            data:{},
+            type:'post',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.code  == 0 ){
+                    _alert(res.msg);
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                $('.favourBox .salelist').find('.get_list_tip').remove();
+                if (res.data.list.length>0){
+                    $(".favourBox").show();
+                    $('.favourBox .salelist').html(template('favourTpl',res.data));
+                }else{
+                }
+            },error : function() {
+                $('.favourBox .salelist').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    $(function () {
+        getFavourList();
+    })
+</script>

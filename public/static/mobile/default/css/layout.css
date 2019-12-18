@@ -883,22 +883,24 @@ label .check[type=checkbox]:checked + i:after {
   height: 100%;
   opacity: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.couponsPriceType {
+  width: 0.6rem;
+  height: 0.2rem;
+  background-color: rgba(246, 82, 54, 0.12);
+  font-size: 0.146667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  color: #f65236;
+  line-height: 1.5;
+  margin-right: 0.04rem;
+}
 
 .alertBox {
   position: fixed;

@@ -179,6 +179,11 @@ class Bonus extends AdminController
             $goodsList = $GoodsModel->where($where)->field("goods_id,goods_name,shop_price,is_spec,goods_sn,goods_thumb")->limit(20)->select();
             $this->assign("goodsList", $goodsList);
         }
+        if(empty($row['type_id'])){
+            $row['send_type']=1;
+            $row['goods_type']=1;
+            $row['use_type']=0;
+        }
         return $row;
     }
 
@@ -576,7 +581,7 @@ class Bonus extends AdminController
         if ($runJson == 1) {
             return $this->success('', '', $this->data);
         } elseif ($runData == false) {
-            $this->data['content'] = $this->fetch('goods_list')->getContent();
+            $this->data['content'] = $this->fetch('goods_list');
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }
@@ -628,7 +633,7 @@ class Bonus extends AdminController
         $this->assign("data", $this->data);
         $this->assign("time", $time);
         if ($runData == false) {
-            $this->data['content'] = $this->fetch('fight_group_list')->getContent();
+            $this->data['content'] = $this->fetch('fight_group_list');
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }
@@ -677,7 +682,7 @@ class Bonus extends AdminController
         $this->assign("data", $this->data);
         $this->assign("time", $time);
         if ($runData == false) {
-            $this->data['content'] = $this->fetch('second_list')->getContent();
+            $this->data['content'] = $this->fetch('second_list');
             unset($this->data['list']);
             return $this->success('', '', $this->data);
         }

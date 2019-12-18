@@ -1,6 +1,7 @@
 <?php
 namespace app\shop\controller\api;
 use app\ApiController;
+use app\favour\controller\sys_admin\FavourGoods;
 use app\shop\model\CartModel;
 use app\shop\model\GoodsModel;
 use app\weixin\model\MiniModel;
@@ -58,6 +59,7 @@ class Goods extends ApiController
         
         $sqlOrder = input('order','','trim');
         $sort_by = strtoupper(input('sort','DESC','trim'));
+	$this->sqlOrder = "is_best DESC";
          if (empty($sqlOrder)){
 
             $search['is_best'] = input('is_best',0,'intval');
@@ -205,6 +207,46 @@ class Goods extends ApiController
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
+    //-- 获取标签商品列表
+    /*------------------------------------------------------ */
+    public function getTagGoodsList()
+    {
+        $GoodsTagModel = new \app\shop\model\GoodsTagModel();
+
+        $where[] = ['is_delete','=',0];
+        $where[] = ['is_alone_sale','=',1];
+        $where[] = ['isputaway','=',1];
+        $where[] = ['is_promote','=',0];
+
+        $tag_id = input('tag_id',0,'intval');
+        if($tag_id>0){
+            $where[] = ['tag_id','=',$tag_id];
+        }else{
+            $where[] = ['tag_id','>',0];
+        }
+
+        $data = $this->getPageList($this->Model, $where,'goods_id',10);
+        foreach ($data['list'] as $key=>$goods){
+            $goods = $this->Model->info($goods['goods_id']);
+            $_goods['goods_id'] = $goods['goods_id'];
+            $_goods['goods_name'] = $goods['goods_name'];
+            $_goods['short_name'] = $goods['short_name'];
+            $_goods['is_spec'] = $goods['is_spec'];
+            $_goods['exp_price'] = $goods['exp_price'];
+            $_goods['now_price'] = $goods['sale_price'];
+            $_goods['market_price'] = $goods['market_price'];
+            $_goods['sale_count'] = $goods['sale_count'];
+            $_goods['collect_count'] = $goods['collect_count'];
+            $_goods['goods_thumb'] = $goods['goods_thumb'];
+            $_goods['is_promote'] = $goods['is_promote'];
+            $return['list'][] = $_goods;
+        }
+        $return['page_count'] = $data['page_count'];
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+
+    /*------------------------------------------------------ */
     //-- 获取商品品牌列表
     /*------------------------------------------------------ */
     public function getBrandList()
@@ -214,6 +256,9 @@ class Goods extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
+
+
+
     /*------------------------------------------------------ */
     //-- 添加/取消收藏商品
     /*------------------------------------------------------ */
@@ -346,4 +391,19 @@ class Goods extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
+    /*------------------------------------------------------ */
+    //-- 检查商品活动
+    /*------------------------------------------------------ */
+    public function checkActivity(){
+        $goods_id = input('goods_id',0,'intval');
+        $sku_id = input('sku_id',0,'intval');
+        $goods['activity_is_on']=0;
+        $result = (new \app\favour\model\FavourGoodsModel)->checkIsFavour($goods_id,$sku_id);
+        if(empty($result)==false)$goods = $result;
+        $return['code'] = 1;
+        $return['data'] = $goods;
+        return $this->ajaxReturn($return);
+    }
+
+
 }

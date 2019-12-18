@@ -1,53 +1,63 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/pingtuan.css"/>
 {/block}
-{block name='pageType'}orderDetails groupOrder{/block}
 {block name="main" }
+<div class="page-bd groupOrder" style="display: flex;flex-direction: column;">
+    <!-- 页面内容-->
+    <div class="orderBox">
+        <div class="code fs32 fw_b">商品信息</div>
+        <div class="goodslist">
+            <a href="{:url('info',['fg_id'=>$fgInfo['fg_id']])}"  class="goods">
+                <img src="{$goods.goods_thumb}" alt="">
+                <div class="goodsinfo">
+                    <p class="fs28 color_3 textline_2">{$goods['goods_name']}</p>
 
-<!-- 页面内容-->
-<div class="orderBox">
-    <div class="code fs32 fw_b">商品信息</div>
-    <div class="goodslist">
-        <a href="{:url('info',['fg_id'=>$fgInfo['fg_id']])}"  class="goods">
-            <img src="{$goods.goods_thumb}" alt="">
-            <div class="goodsinfo">
-                <p class="fs28 color_3 textline_2">{$goods['goods_name']}</p>
-
-                <div class="money">
-                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_price'][0]}</em><i>.{$goods['exp_price'][1]}</i>
+                    <div class="money">
+                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_price'][0]}</em><i>.{$goods['exp_price'][1]}</i>
+                        </div>
+                        <span class="fs22 color_w BGcolor_r groupType">{$fgInfo['success_num']}人团</span>
+                        <strong class="fs26 color_9">已团{$fgInfo['buy_goods_num']}件</strong>
                     </div>
-                    <span class="fs22 color_w BGcolor_r groupType">{$fgInfo['success_num']}人团</span>
-                    <strong class="fs26 color_9">已团{$fgInfo['buy_goods_num']}件</strong>
-                </div>
 
+                </div>
+            </a>
+        </div>
+    </div>
+    {empty name="fgList"}
+    <div class="noneGroup" style="flex: 1;">
+        <img src="__STATIC__/mobile/default/images/groupOrder02.jpg" alt="">
+        <span class="fs30 color_9">暂不存在拼团活动~</span>
+    </div>
+    {else/}
+    <div class="groupScale">
+        <div class="cell">
+            <span class="fs32 fw_b color_3">{:count($fgList)}个在拼单</span>
+        </div>
+        {volist name="fgList" id="fgl" }
+        <a href="{:url('join',['join_id'=>$fgl['gid']])}">
+            <div class="member">
+                <div class="left">
+                    <img src="{$fgl['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                    <div class="info">
+                        <p class="fs28 color_3">{$fgl['nick_name']}</p>
+                        <span class="fs24 color_9">还差{$fgInfo['success_num'] - $fgl['order_count']}人 剩余<i class="fg_last_time" data-time="{$fgl['fail_time']}"></i></span>
+                    </div>
+                </div>
+                <div class="right fs24 fw_b color_r">去拼团</div>
             </div>
         </a>
+        {/volist}
     </div>
+    {/empty}
 </div>
-<div class="groupScale">
-    <div class="cell">
-        <span class="fs32 fw_b color_3">{:count($fgList)}个在拼单</span>
-    </div>
-    {volist name="fgList" id="fgl" }
-    <a href="{:url('join',['join_id'=>$fgl['gid']])}">
-        <div class="member">
-            <div class="left">
-                <img src="{$fgl['headimgurl']}" alt="">
-                <div class="info">
-                    <p class="fs28 color_3">{$fgl['nick_name']}</p>
-                    <span class="fs24 color_9">还差{$fgInfo['success_num'] - $fgl['order_count']}人 剩余<i class="fg_last_time" data-time="{$fgl['fail_time']}"></i></span>
-                </div>
-            </div>
-            <div class="right fs24 fw_b color_r">去拼团</div>
-        </div>
-    </a>
-    {/volist}
-
+{empty name="fgList"}
+<div class="butt">
+    <a href="{:url('shop/index/index')}" class="fs32 fw_b color_w BGcolor_3">去首页逛逛</a>
+    <a href="{:url('info',['fg_id'=>$fgInfo['fg_id']])}" class="fs32 fw_b color_w BGcolor_r">发起拼团</a>
 </div>
-</div>
-
+{/empty}
 {/block}
 {block name="footer"}
 <script>

@@ -9,9 +9,7 @@
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="scrollBox">
-
         <div class="listbox">
-
         </div>
     </div>
 </div>
@@ -33,10 +31,13 @@
         <div class="moneyBox">
             <div class="left fs24">
                 <div class="money color_3 fw_b">￥<span class="fs42 num fw_4">{{item.exp_price[0]}}</span><span class="num fw_4">.{{item.exp_price[1]}}</span></div>
-                <p class="color_9">￥{{item.market_price}}</p>
+                <!--<p class="color_9">￥{{item.market_price}}</p>-->
                 <div class="color_3 univalence">单买价 ￥{{item.shop_price}}</div>
             </div>
-            <a href="{:_url('info',['fg_id'=>'[[item.fg_id]]'])}" class="fs28 fw_b color_w BGcolor_r butt">去开团</a>
+            <div class='btnBox'>
+                <a href="{:_url('more',['fg_id'=>'[[item.fg_id]]'])}" class="fs28 fw_b color_r butt">去参团</a>
+                <a href="{:_url('info',['fg_id'=>'[[item.fg_id]]'])}" class="fs28 fw_b color_w BGcolor_r butt">去开团</a>
+            </div>
         </div>
     </div>
     {{/each}}
@@ -50,8 +51,6 @@
             var content_h=$('.scrollBox').height()
             var scroll_h=$(this).scrollTop();
             if(content_h-box_h-scroll_h<20){
-                getAgain = false;
-                isLoadend = false;
                 getList(nowPage);
             }
         })
@@ -94,7 +93,6 @@
                     }else{
                         $('.listbox').append('<div class="get_list_tip">---没有找到相关商品---</div>');
                     }
-
 
                 },error : function() {
                     isLoadend = false;

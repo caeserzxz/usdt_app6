@@ -1,0 +1,72 @@
+<div class="group groupBox">
+    <div class="title">
+        <div class="left">
+            <img src="__STATIC__/mobile/default/images/index_icon10.png" alt="">
+            <p class="fs32 color_3 fw_b">[title]</p>
+        </div>
+        <a href="{:_url('/fightgroup/Index/index')}" class="right">
+            <span class="fs24 color_9">查看更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="">
+        </a>
+    </div>
+    <div class="swiper-container swiper3 " id="swiper03">
+        <div class="swiper-wrapper grouplist">
+        </div>
+        <div class="swiper-pagination pagination3"></div>
+    </div>
+</div>
+
+
+<script id="groupTpl" type="text/html">
+    {{each list as item index}}
+    <div class="swiper-slide">
+        {{each item as goods sub_index}}
+        <a href="{:_url('/fightgroup/Index/info',['fg_id'=>'[[goods.fg_id]]'])}" class="groupBlock">
+            <img src="{{goods.goods_thumb}}" alt="">
+            <div class="info">
+                <div class="name">{{goods.goods_name}}</div>
+                <div class="price">
+                    <div class="color_3 fs24 num">
+                        <p class="fw_b fm_p">￥</p><em class="fs42">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i></div>
+                    <span class="fs24 color_9">￥{{goods.shop_price}}</span>
+                </div>
+                <div class="fs24 color_r">已拼{{goods.buy_goods_num}}件</div>
+            </div>
+        </a>
+        {{/each}}
+    </div>
+    {{/each}}
+</script>
+<script>
+    //请求限时优惠首页推荐数据
+    function getGroupList() {
+        $('.groupBox .grouplist').append('<div class="get_list_tip">加载数据中...</div>');
+        $.ajax({
+            url: '{:_url("fightgroup/api.goods/getBestList")}',// 跳转到 action
+            data: {},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (res) {
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                $('.groupBox .grouplist').find('.get_list_tip').remove();
+                if (res.list.length > 0) {
+                    $(".groupBox").show();
+                    $('.groupBox .grouplist').html(template('groupTpl', res));
+                    var swiper3 = createSwiper01();
+                } else {
+                    $(".groupBox").hide();
+                }
+            }, error: function () {
+                $('.groupBox .grouplist').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+
+    $(function () {
+        getGroupList();
+    })
+</script>

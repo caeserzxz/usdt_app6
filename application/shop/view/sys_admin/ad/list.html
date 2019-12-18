@@ -1,0 +1,49 @@
+
+<table class="table  table-hover m-b-none table-hover ">
+    <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th>广告简称</th>
+            <th width="100">广告类型</th>
+            <th>图片</th>
+            <th width="80">排序</th>
+            <th width="100">是否启用</th>
+            <th width="140">添加时间</th>
+            <th width="80">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+{volist name="data.list" id="vo"}
+        <tr>
+       	  	<td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+            <td>{$adType[$vo.ad_type]}</td>
+       	  	<td>
+                {foreach name="$vo.data" item="vv" key="kk"}
+                    {lt name="kk" value="$vo.ad_type"}
+                    <img src="{$vv.imgurl}" style="width:100px;height:80px;padding: 5px"/>
+                    {/lt}
+                {/foreach}
+            </td>
+            <td>{$vo.sort_order}</td>
+            <td>
+                <a href="#" data-remote="{:url('ajaxEdit',array('id'=>$vo['id'],'field'=>'status'))}" class="{$vo.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+            </td>
+            <td>{$vo.add_time|dateTpl}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑">
+                    <i class="fa fa-edit text-muted"></i>
+                </a>
+                <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除该幻灯片？" class="m-xs" title="删除">
+                    <i class="fa fa-trash-o text-muted"></i>
+                </a>
+            </td>
+        </tr>
+{/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

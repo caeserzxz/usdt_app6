@@ -45,12 +45,13 @@
 </script>
 
 <!-- 内容区域 start -->
-<div class="tpl-content-wrapper <?= empty($second) ? 'no-sidebar-second' : '' ?>"  style="margin-left: 0px;">
+<div class="tpl-content-wrapper <?= empty($second) ? 'no-sidebar-second' : '' ?>"  style="margin-left: 0px;    margin-top: 10px;">
     <section class="vbox">
         {block name="main"}{/block}
         {include file="mainadmin@layouts/page" /}
     </section>
 </div>
+    {$second}
 <!-- 内容区域 end -->
 
 </div>

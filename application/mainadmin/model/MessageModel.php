@@ -136,10 +136,6 @@ class MessageModel extends BaseModel
         $whereReceived[] = ['user_id', '=', $user_id];
         $whereReceived[] = ['message_type', '=', 0];
         $message_ids = $UserMessageModel->where($whereReceived)->column('ext_id');
-        if(!$message_ids){
-            Cache::set($mkey, $unSeeNum, 300);
-            return $unSeeNum;
-        }
 
         //未接收的消息数量
         $whereUnReceive[] = ['status', '=', 0];
@@ -147,11 +143,12 @@ class MessageModel extends BaseModel
         $whereUnReceive[] = ['send_start_date', '<', $time];
         $whereUnReceive[] = ['send_end_date', '>', $time];
         $user_level_id = isset($user['level']['level_id'])?$user['level']['level_id']:0;//防止无等级报错
-        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" . $user_level_id . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
+        $user_role_id = $user['role']['role_id']?$user['role']['role_id']:0;
+        $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" . $user_level_id . ") OR (type=2 AND type_ext_id=" . $user_role_id . ")";
         $unReceiveNum = $this->where($whereUnReceive)->where($whereUnReceiveOr)->count('message_id');
         $unSeeNum += $unReceiveNum;
         Cache::set($mkey, $unSeeNum, 300);
-        return $unSeeNum;
+        return $info;
     }
     /*------------------------------------------------------ */
     //-- 消息设为已读

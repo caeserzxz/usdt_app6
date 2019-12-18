@@ -1,0 +1,241 @@
+
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/seckill.css" />
+{/block}
+{block name='pageType'}seckill{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <img class="top_img" src="__STATIC__/mobile/default/images/scall.png" alt="">
+    <div class="scrollbox nav">
+        <div class="tab  fs32 color_3">
+            {foreach name="cycleList" item="vo" key="k"}
+            <div data-cycle="{$vo.value}" data-index="{$k}" data-diff_time="{$vo.diff_time}" data-status="{$vo.status}" data-name="{$vo.name}" ><span class="fs34 num color_w">{$vo.name}</span><span class="fs22 color_w">{$vo._status}</span></div>
+            {/foreach}
+        </div>
+    </div>
+    <div class="tabBox">
+        {foreach name="cycleList" item="vo" key="k"}
+        <div class="tabBlock " data-v="{$k}">
+            <div class="listbox{$k}">
+                <div class="timeBox">
+                    <p class="fs34 color_2 fw_b">好货限量抢！</p>
+                    <div class="time countdown">
+                        {if condition="$vo.status eq 0"}
+                        <p class="fs28 color_3">距开始</p>
+                        {elseif condition="$vo.status eq 1"/}
+                        <p class="fs28 color_3">距结束</p>
+                        {elseif condition="$vo.status eq 2"/}
+                        <p class="fs28 color_3">已结束</p>
+                        {/if}
+                        <div>00</div>
+                        <span>:</span>
+                        <div>00</div>
+                        <span>:</span>
+                        <div>00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+        {empty name="cycleList"}
+        <div class="emptySeckill">
+            <img src="__STATIC__/mobile/default/images/emptyData.png" alt="">
+            <span class="fs28 color_3">暂无优惠活动</span>
+        </div>
+        {/empty}
+    </div>
+
+</div>
+{/block}
+{block name="footer"}
+{literal}
+<script id="TabTpl" type="text/html">
+    {{each goods_list as item index}}
+    <div class="goodsBox" data-goods_id="{{item.goods_id}}" data-fg_id="{{item.fg_id}}">
+        <div class='imgBox'>
+            <img src={{item.cover}} alt="">
+            {{if status=='1'}}
+             {{if item.percent=='100'}}<div class='imgBg'><span class='fs28 color_w'>抢光啦</span></div>{{/if}}
+            {{/if}}
+        </div>
+        <div class="info">
+            <div class="name fs28 color_3 textline_2">{{item.goods_name}}</div>
+            <div class="type">
+                {{if status=='1'}}
+                <div class='line'><i style='width:{{item.percent}}%'></i></div>
+                    {{if item.percent=='100'}}
+                    <div class="color_r fs26">已售罄</div>
+                    {{else}}
+                    <span class='fs26 color_9'>已售{{item.sales}}件</span>
+                    {{/if}}
+                {{/if}}
+            </div>
+            <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs42">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+                    <div class="fs24 color_9 originalMoney">￥{{item.shop_price}}</div>
+                </div>
+                {{if status=='0'}}
+                <div class="butt color_9 fs28 BGcolor_e">未开始</div>
+                {{/if}}
+                {{if status=='1'}}
+                    {{if item.percent=='100'}}
+                    <div class="butt color_9 fs28 BGcolor_e">已抢完</div>
+                    {{else}}
+                    <div class="butt color_w fs28 BGcolor_r">马上抢</div>
+                    {{/if}}
+                {{/if}}
+                {{if status=='2'}}
+                <div class="butt color_9 fs28 BGcolor_e">已结束</div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<!-- 没有相关订单-->
+<script type="text/html" id="emptyTpl">
+    <div class="empeyOrder">
+        <img src="__STATIC__/mobile/default/images/emptyData.png" alt="">
+        <span class="fs28 color_3">暂无相关商品</span>
+    </div>
+</script>
+{/literal}
+<script>
+    var isLoadend=[];
+    $(function () {
+        initShowCycle();
+        countdown();
+        getList();
+        //去详情
+        $('.tabBox').on('click','.goodsBox',function (e){
+            var goods_id = $(this).data('goods_id');
+            var fg_id = $(this).data('fg_id');
+            window.location.href='{:_url("shop/goods/info")}'+'?id='+goods_id+'&favour_fg_id='+fg_id;
+        });
+        //点击档期
+        $('.tab div').on('click', function () {
+            var index = $(this).index();
+            $(this).addClass('active_s')
+            $(this).siblings().removeClass('active_s')
+            $('.tabBlock').eq(index).show();
+            $('.tabBlock').eq(index).siblings().hide();
+            getList();
+        })
+    })
+
+    //请求列表数据
+    function getList(){
+       var index =  $('.tab .active_s').data('index');
+       var status =  $('.tab .active_s').data('status');
+       var cycleName =  $('.tab .active_s').data('name');
+        if (isLoadend[index] == true ) return false;
+
+        $('.listbox'+index).append('<div class="get_list_tip">加载数据中...</div>');
+        $.ajax({
+            url:'{:_url("favour/api.goods/getList")}',// 跳转到 action
+            data:{},
+            type:'post',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.code  == 0 ){
+                    _alert(res.msg);
+                    $('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                $('.listbox'+index).find('.get_list_tip').remove();
+                if (res.list[cycleName]){
+                    res.goods_list=res.list[cycleName];
+                    res.status = status;
+                    console.log(res);
+                    $('.listbox'+index).append(template('TabTpl',res));
+                    $('.listbox'+index).append('<div class="get_list_tip">—— 没有更多啦，我是有底线的 ——</div>');
+                }else{
+                    $('.listbox'+index).append('<div class="get_list_tip">—— 暂无相关商品 ——</div>');
+                }
+                isLoadend[index]=true;
+            },error : function() {
+                $('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    //初始化当前显示档期
+    function initShowCycle(){
+        var status0=[],status1=[],status2=[],index=0;
+        $.each($('.tab div'),function (i,val) {
+            if($(this).data('status')==0){
+                status0.push(i);
+            }else if($(this).data('status')==1){
+                status1.push(i);
+            }else if($(this).data('status')==2){
+                status2.push(i);
+            }
+        });
+        if(status1.length>0){
+            index=status1[0];
+        }else if(status0.length>0){
+            index=status0[0];
+        }else if(status2.length>0){
+            index=status2.length-1;
+        }
+        $('.tab div').eq(index).addClass('active_s');
+        $(".tabBlock").eq(index).show().siblings().hide();
+        $('.scrollbox').scrollLeft($('.active_s').position().left);
+    }
+
+    $('.tabBlock').scroll(function () {
+        if ($(this).children('div').height() - $(this).height() - $(this).scrollTop() < 50) {
+            if ($('.tab .color_r').index() == 0) {
+                console.log('需要加载抢购的')
+            } else {
+                console.log('需要加载即将开始的')
+            }
+        }
+    })
+    //倒计时相关
+    function countdown(){
+        $.each($('.tab div'),function (i,val) {
+            var diffTime = $('.tab div').eq(i).data('diff_time');
+            var obj = $('.listbox'+i).find('.countdown').find('div');
+            diffTime=diffTime<0?0:diffTime;
+            codeButton(obj,diffTime);
+        })
+    }
+    function codeButton(obj,diffTime) {
+        var code = obj;
+        var time = diffTime //总秒数
+        var hour = time % 3600 == 0 ? parseInt(time / 3600) - 1 : parseInt(time / 3600); //shi
+        var min = time % 60 == 0 ? parseInt((time - hour * 3600) / 60) - 1 : parseInt(time / 3600) > 0 ? parseInt((time - hour * 3600) / 60) : parseInt(time / 60); //fen
+        var second = time % 60 == 0 ? 59 : time % 60 //miao
+        if(diffTime<=0){
+            hour=0;min=0;second=0;
+        }
+        code.eq(0).text(hour > 9 ? hour : '0' + hour)
+        code.eq(1).text(min > 9 ? min : '0' + min)
+        code.eq(2).text(second > 9 ? second : '0' + second)
+        var set = setInterval(function () {
+            code.eq(0).text(hour > 9 ? hour : '0' + hour)
+            code.eq(1).text(min > 9 ? min : '0' + min)
+            code.eq(2).text(--second > 9 ? second : '0' + second);
+            //倒计时为0时,刷新页面
+            if(hour<=0&&min<=0&&second<=0){
+                window.location.reload();
+            }
+            if (second == 0) {
+                second = 60
+                min <= 0 ? 0 : --min
+                if (min == 0 && hour > 0) {
+                    min = 59
+                    hour <= 0 ? 0 : --hour
+                }
+            }
+        }, 1000);
+        setTimeout(function () {
+            clearInterval(set);
+        }, 1000 * time);
+    }
+</script>
+{/block}

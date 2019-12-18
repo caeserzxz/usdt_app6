@@ -29,6 +29,66 @@
   opacity: 1;
 }
 
+.Goods .timeBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 0 0.2rem;
+  height: 0.533333rem;
+  background-color: #f65236;
+}
+
+.Goods .timeBox .time {
+  margin-left: 0.106667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.Goods .timeBox .time p {
+  margin-right: 0.066667rem;
+}
+
+.Goods .timeBox .time span {
+  font-weight: bold;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 0.253333rem;
+  width: 0.08rem;
+  color: #fff;
+}
+
+.Goods .timeBox .time div {
+  width: 0.213333rem;
+  height: 0.253333rem;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+  font-family: "num";
+  font-size: 0.16rem;
+  color: #f65236;
+}
+
 .Goods .header {
   height: 0.6rem;
 }
@@ -132,11 +192,12 @@
 .Goods .floatBtn a {
   margin-right: 0.133333rem;
 }
+
 .Goods .groupTips {
   position: fixed;
   z-index: 77;
   left: 0;
-  top: 3.48rem;
+  top: 2rem;
   display: none;
 }
 
@@ -169,36 +230,48 @@
 
 .Goods .groupRule {
   margin-bottom: 0.133333rem;
+  background-color: #fff;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 0 0.2rem;
 }
 
-.Goods .groupRule .timeBox {
+.Goods .groupRule .ruleTips {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 
-.Goods .groupRule .timeBox span {
+.Goods .groupRule .ruleTips span {
   margin-right: 0.066667rem;
 }
 
-.Goods .groupRule .timeBox .time {
+.Goods .groupRule .ruleTips .time {
   margin-left: 0.093333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   height: 0.253333rem;
 }
 
-.Goods .groupRule .timeBox .time em {
+.Goods .groupRule .ruleTips .time em {
   width: 0.213333rem;
   height: 0.253333rem;
   display: -webkit-box;
@@ -206,18 +279,27 @@
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: end;
   -webkit-align-items: flex-end;
-          align-items: flex-end;
+  align-items: flex-end;
 }
 
-.Goods .groupRule .timeBox .time i {
+.Goods .groupRule .ruleTips .time i {
   width: 0.066667rem;
   height: 0.253333rem;
   text-align: center;
   line-height: 0.226667rem;
   font-size: 0.213333rem;
+}
+
+.Goods .groupRule .rule {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 .Goods .groupScale {
@@ -724,21 +806,21 @@
 .Goods .page-ft .right .butt {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
 
 .Goods .page-ft .right .butt .money {
@@ -830,6 +912,13 @@
   z-index: 99;
   background: rgba(0, 0, 0, 0.6);
   display: none;
+}
+
+.Goods .model .modelContent .modelSizetips, .Goods .modelRule .modelContent .modelSizetips {
+  background-color: rgba(246, 82, 54, 0.1);
+  text-align: center;
+  line-height: 0.28rem;
+  margin-bottom: 0.066667rem;
 }
 
 .Goods .model .modelContent,
@@ -1034,7 +1123,6 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  margin-left: 0.066667rem;
   -webkit-box-align: baseline;
   -webkit-align-items: baseline;
           align-items: baseline;
@@ -1402,7 +1490,15 @@
   -webkit-align-items: center;
           align-items: center;
 }
-
+.tan_text {
+  display: none;
+  height: 100%;
+  height: 0.266667rem;
+  line-height: 0.266667rem;
+  text-align: center;
+  margin: 0.133333rem 0.2rem;
+  background-color: rgba(246, 82, 54, 0.1);
+}
 .goCoupons .goCouponsBtn {
   width: 1.2rem;
   display: -webkit-box;

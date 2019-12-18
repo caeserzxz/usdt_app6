@@ -43,16 +43,26 @@ class Goods extends ApiController
             $return['list'][] = $_goods;
         }
         $return['page_count'] = $data['page_count'];
-		$return['code'] = 1;
-		return $this->ajaxReturn($return);
-	}
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取首页列表
+    /*------------------------------------------------------ */
+    public function getBestList()
+    {
+        $goodsList = $this->Model->getBestList();
+        $return['list'] = array_chunk($goodsList, 3);
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 
     /*------------------------------------------------------ */
     //-- 获取详情
     /*------------------------------------------------------ */
     public function info()
     {
-        $fg_id = input('fg_id','','intval');
+        $fg_id = input('fg_id', '', 'intval');
         if (empty($fg_id)) return $this->error('传参失败.');
         $return['data'] = $this->Model->info($fg_id);
         if (empty($return['data'])) return $this->error('没有找到相关商品.');

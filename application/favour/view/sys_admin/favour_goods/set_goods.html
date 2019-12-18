@@ -1,0 +1,314 @@
+{extend name="mainadmin@layouts/simple_base" /}
+{block name="main" }
+
+<section class="scrollable wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}">
+        <input type="hidden" id="goods_id" name="goods_id" value="{$row.goods_id}">
+        <section class="panel panel-default">
+            {if condition="$row['goods_id'] == 0"}
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">选择商品：</label>
+                <div class="col-sm-8 " >
+                    <input id="goods_keyword" type="text" class="input-medium " placeholder="商品名称/SN" aria-invalid="false">
+
+                    <a class="btn btn-default fa fa-search" title="搜索"  onclick="searchGoods()" ></a>
+
+                    <select id="goods_select" class="m-r" style="width:250px;" data-toggle="select2" onChange="goodsSelect()">
+                        <option value="">选择商品</option>
+                    </select>
+                    <span class="help-inline">* 添加后不能修改</span>
+                </div>
+
+            </div>
+            <script type="text/javascript">
+                function searchGoods(){
+                    var arr = new Object();
+                    arr.keyword = $('#goods_keyword').val();
+                    arr.min_search = 1;
+                    $('#goods_select').html('<option value="">选择商品</option>');
+                    var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
+                    $.each(res.list, function(i,value){
+                        $('#goods_select').append('<option value="'+value.goods_id+'" data-goods_sn="'+value.goods_sn+'">'+value.goods_name+'</option>');
+                    })
+                }
+                //选择商品
+                function goodsSelect(){
+                    var goods_id = $('#goods_select').val();
+                    $('.goods_name').html('');
+                    $('.goods_info').html('');
+                    jq_ajax('{:url("shop/api.goods/info")}','id='+goods_id,function(res){
+                        if (res.code == 0){
+                            return false;
+                        }
+                        var goods = res.list.goods;
+                        $('#goods_id').val(goods.goods_id);
+                        $('.goods_name').html('商品ID：'+goods.goods_id+' - '+goods.goods_name+'('+(goods.is_spec==1?'多规格':goods.goods_sn)+')');
+                        if (goods.is_spec == 1){
+                            $.each(goods.sub_goods, function(i,val){
+                                $('.goods_info').append('<div class="relative"><label><input type="checkbox" name="sku_ids['+val.sku_id+']" value="'+val.sku_id+'"> ' +
+                                    ''+val.sku_name+'</label>，' +
+                                    '参与秒杀的库存：<input type="text" name="goods_number['+val.sku_id+']" min=0 class="input-ssmall" value="">，' +
+                                    '秒杀价：￥<input type="text" name="goods_price['+val.sku_id+']" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="">元</div>');
+                            })
+                        }else{
+                            $('.goods_info').html('参与秒杀的库存：<input type="text" name="goods_number" class="input-ssmall" data-rule-ismoney="true" value="">，秒杀价：￥<input type="text" name="goods_price" class="input-ssmall" data-rule-ismoney="true" value="">元');
+                        }
+                    });
+                }
+            </script>
+            {/if}
+
+            <div class="form-group m-t">
+                <label class="col-sm-2 control-label">秒杀商品：</label>
+                <div class="col-sm-9 lh30" >
+                    <div class="col-sm-10 goods_name " >
+                        商品ID：100 - 爆款产品 sn10000001
+                    </div>
+                    <div class="col-sm-10 goods_info m-t-md" >
+                        <table class="table table-bordered">
+                            <!--<caption>边框表格布局</caption>-->
+                            <thead>
+                            <tr>
+                                <th>商品规格</th>
+                                <th>当前库存</th>
+                                <th>商品售价</th>
+                                <th>活动库存</th>
+                                <th>活动价格</th>
+                                <th>限购量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$sg_goods[$sku['sku_id']]?'checked':''}>红色-S</label></td>
+                                <td>1000</td>
+                                <td>299</td>
+                                <td><input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-small" value="{$fg_goods[$sku['sku_id']]['goods_number']}"></td>
+                                <td>
+                                    <input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">
+                                    <select name="award_value[{{key}}][num_type][{{role.role_id}}]">
+                                        <option value="money">（元）固定价格</option>
+                                        <option value="per">（%）折扣</option>
+                                        <option value="per">（元）减免金额</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}"></td>
+                            </tr>
+                            <tr>
+                                <td><label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$sg_goods[$sku['sku_id']]?'checked':''}>红色-M</label></td>
+                                <td>1000</td>
+                                <td>299</td>
+                                <td><input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-small" value="{$fg_goods[$sku['sku_id']]['goods_number']}"></td>
+                                <td>
+                                    <input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-small" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">
+                                    <select name="award_value[{{key}}][num_type][{{role.role_id}}]">
+                                        <option value="money">（元）固定价格</option>
+                                        <option value="per">（%）折扣</option>
+                                        <option value="per">（元）减免金额</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!--<table class="table table-bordered">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                        <!--<th>当前库存</th>-->
+                        <!--<th>商品售价</th>-->
+                        <!--<th>活动库存</th>-->
+                        <!--<th>活动价格</th>-->
+                        <!--<th>单笔限购</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                        <!--<td>1000</td>-->
+                        <!--<td>299</td>-->
+                        <!--<td><input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-small" value="{$fg_goods[$sku['sku_id']]['goods_number']}"></td>-->
+                        <!--<td>-->
+                        <!--<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">-->
+                        <!--<select name="award_value[{{key}}][num_type][{{role.role_id}}]">-->
+                        <!--<option value="money">（元）固定价格</option>-->
+                        <!--<option value="per">（%）折扣</option>-->
+                        <!--<option value="per">（元）减免金额</option>-->
+                        <!--</select>-->
+                        <!--</td>-->
+                        <!--<td><input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}"></td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                        <!--</table>-->
+
+                        <!--<div class="relative">-->
+                        <!--<label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$sg_goods[$sku['sku_id']]?'checked':''}>红色-S</label>-->
+                        <!--当前库存：1000，-->
+                        <!--参与活动库存：<input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-ssmall" value="{$fg_goods[$sku['sku_id']]['goods_number']}">，-->
+                        <!--商品售价：299，-->
+                        <!--活动价：<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">-->
+                        <!--<span class="">-->
+                        <!--<select name="award_value[{{key}}][num_type][{{role.role_id}}]">-->
+                        <!--<option value="money">（元）固定价格</option>-->
+                        <!--<option value="per">（%）折扣</option>-->
+                        <!--<option value="per">（元）减免金额</option>-->
+                        <!--</select>-->
+                        <!--</span>，-->
+                        <!--单笔限购：<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">-->
+                        <!--</div>-->
+                        <!--<div class="relative">-->
+                        <!--<label><input type="checkbox" name="sku_ids[{$sku.sku_id}]" value="{$sku.sku_id}"  {$sg_goods[$sku['sku_id']]?'checked':''}>红色-M</label>-->
+                        <!--当前库存：1000，-->
+                        <!--参与活动库存：<input type="text" name="goods_number[{$sku.sku_id}]" min=0 class="input-ssmall" value="{$fg_goods[$sku['sku_id']]['goods_number']}">，-->
+                        <!--商品原价：299，-->
+                        <!--活动价：<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">-->
+                        <!--<span class="">-->
+                        <!--<select name="award_value[{{key}}][num_type][{{role.role_id}}]">-->
+                        <!--<option value="money">（元）固定价格</option>-->
+                        <!--<option value="per">（%）折扣</option>-->
+                        <!--<option value="per">（元）减免金额</option>-->
+                        <!--</select>-->
+                        <!--</span>，-->
+                        <!--单笔限购：<input type="text" name="goods_price[{$sku.sku_id}]" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods[$sku['sku_id']]['goods_price']}">-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+
+
+            {if condition="$favour_type eq 1"}
+            <div class="form-group dateType dateType-2 ">
+                <label class="col-sm-2 control-label">选择日期：</label>
+                <div class="col-sm-8" >
+                    <label><input type="checkbox" name="week[]" value="1">2019-10-01</label>
+                    <label><input type="checkbox" name="week[]" value="2">2019-10-02</label>
+                    <label><input type="checkbox" name="week[]" value="3">2019-10-03</label>
+                    <label><input type="checkbox" name="week[]" value="4">2019-10-04</label>
+                    <label><input type="checkbox" name="week[]" value="5">2019-10-05</label>
+                    <label><input type="checkbox" name="week[]" value="6">2019-10-06</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-07</label>
+                    <label><input type="checkbox" name="week[]" value="5">2019-10-08</label>
+                    <label><input type="checkbox" name="week[]" value="6">2019-10-09</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-10</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-11</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-12</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-13</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-14</label>
+                    <label><input type="checkbox" name="week[]" value="0">2019-10-15</label>
+                </div>
+            </div>
+            {elseif condition="$favour_type eq 2"/}
+            <div class="form-group dateType dateType-2 ">
+                <label class="col-sm-2 control-label">选择周：</label>
+                <div class="col-sm-8" >
+                    <label><input type="checkbox" name="week[]" value="1">周一</label>
+                    <label><input type="checkbox" name="week[]" value="2">周二</label>
+                    <label><input type="checkbox" name="week[]" value="3">周三</label>
+                    <label><input type="checkbox" name="week[]" value="4">周四</label>
+                    <label><input type="checkbox" name="week[]" value="5">周五</label>
+                    <label><input type="checkbox" name="week[]" value="6">周六</label>
+                    <label><input type="checkbox" name="week[]" value="0">周日</label>
+                </div>
+            </div>
+            {/if}
+
+            <div class="form-group ">
+                <label class="col-sm-2 control-label">选择档期：</label>
+                <div class="col-sm-8" >
+                    <label><input type="checkbox" name="time_slot[]" value="1">8:00 - 10:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="2">10:00 - 12:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="3">12:00 - 14:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="4">14:00 - 16:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="5">16:00 - 18:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="6">18:00 - 20:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="0">20:00 - 22:00</label>
+                    <label><input type="checkbox" name="time_slot[]" value="0">22:00 - 24:00</label>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">虚拟销量：</label>
+                <div class="col-sm-8">
+                    <input type="text" value="100" class="input" min="0" name="limit_num">
+                    <span class=" help-inline"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">是否推荐：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="0" {$row['give_integral']==0?'checked':''}  class="js_radio_undertake">推荐
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="-1" {$row['give_integral']==-1?'checked':''}  class="js_radio_undertake">不推荐
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">状态：</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="0" {$row['give_integral']==0?'checked':''}  class="js_radio_undertake">开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="is_give_integral" value="-1" {$row['give_integral']==-1?'checked':''}  class="js_radio_undertake">关闭
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="line line-dashed line-lg m-l" style="width:96%;"></div>
+            <div class="form-group" style="width:90%;">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <input name="fg_id" id="fg_id" type="hidden" value="{$row.fg_id|intval}">
+    </form>
+</section>
+
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+    function state_select(obj){
+        $('.footer_other').html('<label class="m-r m-t" ><input type="checkbox" class="checkboxAll" data-name="goods_id"> 全选 </label> ' +
+            '<a href="javascript:;" class="btn btn-sm m-t" onclick="sureSelect()"><i class="fa fa-plus"></i>确认选择</a>'
+        );
+    }
+    state_select();
+    //商品对象
+    function GoodsItem(goods_id, goods_sn,goods_name, shop_price) {
+        this.goods_id = goods_id;
+        this.goods_sn = goods_sn;
+        this.goods_name = goods_name;
+        this.shop_price = shop_price;
+    }
+    function sureSelect()
+    {
+        var inputs = $("input[name='goods_id']:checked");
+        if (inputs.length == 0) {
+            _alert('请选择商品.');
+            return false;
+        }
+        var goodsArr = new Array();
+        inputs.each(function(i,o){
+            var goods_id = $(o).val();
+            var goods = new GoodsItem(goods_id, $(o).data('goods_sn'), $(o).data('goods_name'),$(o).data('shop_price'));
+            goodsArr.push(goods);
+        })
+        console.log(goodsArr)
+        if(goodsArr.length == 0){
+            _alert('请至少选择一个商品.');
+            return false;
+        }
+        window.parent.call_back(goodsArr);
+    }
+
+</script>
+{/block}

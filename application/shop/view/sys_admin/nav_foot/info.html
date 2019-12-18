@@ -1,0 +1,141 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['id']>0?"编辑底部菜单":"添加底部菜单"}</strong>
+            </li>
+        </ul>
+        <a class="pull-right pointer p-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">菜单名称</label>
+                    <div class="col-sm-3 must">
+                        <input name="title" class="input-large" type="text" value="{$row.title}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">默认图标</label>
+                    <div class="col-sm-4 ">
+                        <div id="image_upload" class="">
+                            <img class="thumb_img" name="imagefile" src="{$row.imgurl}" style="max-height: 100px;">
+                            <input class="hide" name="imgurl" value="{$row.imgurl}" type="text">
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <span>选择上传图标（建议尺寸：280 * 280）</span></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">选中图标</label>
+                    <div class="col-sm-4 ">
+                        <div id="image_upload1" class="">
+                            <img class="thumb_img" name="imagefile" src="{$row.imgurl_s}" style="max-height: 100px;">
+                            <input class="hide" name="imgurl_s" value="{$row.imgurl_s}" type="text">
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <span>选择上传图标（建议尺寸：280 * 280）</span></div>
+                    </div>
+                </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">链接类型</label>
+                    <div class="col-sm-2 must">
+                        <select id="bind_type" name="bind_type" onChange="showUrlType(this,0);" class="input-medium"
+                                style="width:200px;">
+                            <option>请选择</option>
+                            {$WeixinReplyType|raw}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">绑定关联</label>
+                    <div class="col-sm-5 ">
+                        <input name="type_val" id="type_val" class="input-xlarge" type="text" value="{$row.data}">
+                        <input name="ext_id" id="ext_id" type="hidden" value="{$row.ext_id}">
+                        <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}"
+                        data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default
+                        {$row['bind_type']=='article'?'':'hide'}" id="article_btn" >绑定文章</a>
+                        <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}"
+                        data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default
+                        {$row['bind_type']=='goods'?'':'hide'}" id="goods_btn" >绑定商品</a>
+                        <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}"
+                           data-toggle="iframeModal"
+                           class="type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}"
+                           id="link_btn">绑定URL</a>
+                    </div>
+                </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否启用</label>
+                    <div class="col-sm-3 ">
+                        <label class=" inline">
+                            <input type="radio" name="status" value="1" {$row['status']|tplckval=1,'checked',true} />
+                            是
+                        </label>
+                        <label class=" inline">
+                            <input type="radio" name="status" value="2" {$row['status']|tplckval=2,'checked'}/>
+                            否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">排序</label>
+                    <div class="col-sm-3 ">
+                        <input type="text" name="sort_order" id="sort_order" value="{$row.sort_order|intval}"
+                               data-rule-required="true" data-rule-maxlength="30" class="input-mini">
+                        <span style="color:red;">（数字越大越靠前）</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+</section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input type="hidden" name="id" value="{$row.id}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use("dist/plupload/init.js")
+
+    function showUrlType(sel, input_id) {
+        $(".type_bding_btn").addClass('hide');
+        $("#type_val").val('');
+        $("#ext_id").val(0);
+        $("#ext_activity").val(0);
+        if (sel.value == 'article') $("#article_btn").removeClass('hide');
+        else if (sel.value == 'link') {
+            $("#type_val").val('http://');
+            $("#link_btn").removeClass('hide');
+        }
+        else if (sel.value == 'goods') $("#goods_btn").removeClass('hide');
+        else if (sel.value == 'activity') $("#activity_btn").removeClass('hide');
+    }
+    function assigBack(type, type_id, id, title, tid) {
+        $("#ext_id").val(id);
+        $("#ext_activity").val(tid);
+        $("#type_val").val(title);
+    }
+    var McMore = {
+        selectUrlCallback: function (url, type, type_id) {
+            $("#type_val").val(url);
+            $(".modal-dialog .close").trigger("click");
+        }
+    }
+</script>
+{/block}

@@ -106,6 +106,9 @@ class Goods extends AdminController
         $this->assign("classListOpt", arrToSel($this->classList, $search['cid']));
         $BrandList = $this->Model->getBrandList();
         $this->assign("brandListOpt", arrToSel($BrandList));
+
+        $this->assign('tagList',(new \app\shop\model\GoodsTagModel)->getAll());//获取商品标签
+
         if ($runJson == 1) {
             return $this->success('', '', $data);
         } elseif ($runData == false) {
@@ -180,6 +183,8 @@ class Goods extends AdminController
             $this->assign('limit_user_level', explode(',', $data['limit_user_level']));
             $this->assign('limit_user_role', explode(',', $data['limit_user_role']));
             $goodsLog = (new GoodsLogModel)->where('goods_id', $data['goods_id'])->order('log_id DESC')->select()->toArray();
+
+            $this->assign('tagList',(new \app\shop\model\GoodsTagModel)->getAll());//获取商品标签
 
             $this->assign("goodsLog", $goodsLog);
         } else {
@@ -914,13 +919,14 @@ class Goods extends AdminController
         $this->assign("classListOpt", arrToSel($this->classList, input('cid', 0, 'intval')));
         $this->assign("_menu_index", input('_menu_index', '', 'trim'));
         $this->assign("searchType", input('searchType', '', 'trim'));
-        return response($this->fetch()->getContent());
+        return $this->fetch()->getContent();
     }
     /*------------------------------------------------------ */
     //-- 根据关键字查询
     /*------------------------------------------------------ */
     public function pubSearch()
     {
+        $where[] = ['is_delete', '=', 0];//过滤已删除-Lu
         $keyword = input('keyword', '', 'trim');
         if (!empty($keyword)) {
             $where = "( goods_name LIKE '%" . $keyword . "%' OR goods_sn LIKE '%" . $keyword . "%' )";
