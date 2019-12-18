@@ -399,7 +399,7 @@ class Flow extends ApiController
             }
             if ($res != true) {
                 Db::rollback();//回滚
-                return '扣库存失败.';
+                return $this->error('扣库存失败.');
             }
         }
         //end
