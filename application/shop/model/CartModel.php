@@ -312,7 +312,7 @@ class CartModel extends BaseModel
         if (empty($goods['limit_user_level']) == false) {
             $limit_user_level = explode(',', $goods['limit_user_level']);
             if (in_array($this->userInfo['level']['level_id'], $limit_user_level) == false) {
-                return ['code' => -1, 'msg' => '商品【' . $goods['goods_name'] . '】，您的等级不满足购买条件.'];
+                return ['code' => -1, 'msg' => langStr('商品【' . $goods['goods_name'] . '】，您的等级不满足购买条件.','shop.flow.limit_user_level',[$goods['goods_name']])];
             }
         }
         //限制身份购买

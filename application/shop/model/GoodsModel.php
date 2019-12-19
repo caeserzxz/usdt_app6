@@ -276,7 +276,6 @@ class GoodsModel extends BaseModel
 
         $time = time();
 
-        $goods['is_on_sale'] = 0;
         if ($goods['isputaway'] == 1){
             $goods['is_on_sale'] = 1;
         }elseif ($goods['isputaway'] == 2){
