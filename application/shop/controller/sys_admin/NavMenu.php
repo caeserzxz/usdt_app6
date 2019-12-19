@@ -12,7 +12,6 @@ class NavMenu extends AdminController
     //-- 优先执行
     /*------------------------------------------------------ */
 	public function initialize(){
-    {
         parent::initialize();
         $this->Model = new NavMenuModel();
     }
@@ -20,7 +19,7 @@ class NavMenu extends AdminController
     //-- 首页
     /*------------------------------------------------------ */
     public function index(){
-    {
+
         $this->getList(true);
         return $this->fetch();
     }
@@ -29,7 +28,6 @@ class NavMenu extends AdminController
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false,$is_delete=0) {
-    {
         $where[] = ['type', '=', $this->type];
         $this->sqlOrder = 'sort_order DESC';
         $data = $this->getPageList($this->Model, $where);

@@ -122,12 +122,11 @@ class MessageModel extends BaseModel
     {
         $mkey = $this->mkey . '_user_stat_' . $user_id;
         $info = Cache::get($mkey);
+        if (empty($info) == false) return $info;
         $UserMessageModel = new UserMessageModel();
         $time = time();
         $user_id = $user_id * 1;
-        if (empty($info) == false) return $info;
         $user = $this->userInfo;
-
         $where[] = ['user_id', '=', $user_id];
         $where[] = ['is_see', '=', 0];
         $unSeeNum = $UserMessageModel->where($where)->count('rec_id');//未读信息数量
@@ -148,7 +147,7 @@ class MessageModel extends BaseModel
         $unReceiveNum = $this->where($whereUnReceive)->where($whereUnReceiveOr)->count('message_id');
         $unSeeNum += $unReceiveNum;
         Cache::set($mkey, $unSeeNum, 300);
-        return $info;
+        return $unSeeNum;
     }
     /*------------------------------------------------------ */
     //-- 消息设为已读
