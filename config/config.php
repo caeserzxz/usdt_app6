@@ -11,9 +11,11 @@
 error_reporting(E_ERROR | E_PARSE );
 return [
     // 是否开启多语言
-    'lang_switch_on'         => true,
+    'd_lang_switch_on'         => true,
+    //支持语言列表，默认支持中文不需要输入
+    'd_lang_list' => ['en'],
     // 默认语言
-    'default_lang'           => 'zh-cn',
+    'd_default_lang'           => 'cn',
     // 上传目录
 	'_upload_'=> './upload/',
 	'apikey'=>'eb5c6b3e4505c1fd7878bde2ed8544cf',

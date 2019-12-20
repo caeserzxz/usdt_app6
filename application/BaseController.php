@@ -31,6 +31,27 @@ class BaseController extends Controller
  	public  $returnJson = false;//是否统一返回json
     public  $Model;
     public  $main_transfer = true;//是否主层级调用
+    // 初始化
+    protected function initialize(){
+        //多语言支持
+        $langPre = '';
+        $lang = '';
+        $d_default_lang = config('config.d_default_lang');
+        if (config('config.d_lang_switch_on') == true){
+            $SERVER_NAME = explode('.',$_SERVER['SERVER_NAME']);
+            $lang = strtolower($SERVER_NAME[0]);
+            if (in_array($lang,config('config.d_lang_list'))){
+                $langPre = $lang.'_';
+            }elseif( empty($d_default_lang) == false && $d_default_lang != 'cn'){
+                $lang = $d_default_lang;
+                $langPre = $lang.'_';
+            }
+        }
+        define('LANG_PRE',$langPre);
+        define('LANG',$lang);
+        //多语言end
+    }
+
     //*------------------------------------------------------ */
 	//-- 获取字典数据
 	/*------------------------------------------------------ */

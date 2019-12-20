@@ -30,7 +30,7 @@ class Passport extends ApiController
         $res = $this->Model->login(input());
         if (is_array($res) == false) return $this->error($res);
         $data['code'] = 1;
-        $data['msg'] = '登录成功.';
+        $data['msg'] = langMsg('登录成功.','member.login.success');
         if ($res[0] == 'developers'){
             $data['developers'] = $res[1];
         }
@@ -45,12 +45,12 @@ class Passport extends ApiController
     {
 		$register_status = settings('register_status');
 		if ($register_status != 1){
-			return $this->error('暂不开放注册.');
+			return $this->error(langMsg('暂不开放注册.','member.register.register_close'));
 		}
         $this->checkCode('register',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->register(input());
         if ($res !== true) return $this->error($res);
-        return $this->success('注册成功.');
+        return $this->success(langMsg('注册成功.','member.register.success'));
     }
 	/*------------------------------------------------------ */
     //-- 找回用户密码
@@ -60,7 +60,7 @@ class Passport extends ApiController
         $this->checkCode('forget_password',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->forgetPwd(input(),$this);
         if ($res !== true) return $this->error($res);		
-        return $this->success('密码已重置，请用新密码登陆.');
+        return $this->success(langMsg('密码已重置，请用新密码登陆.','member.forgetpwd.success'));
     }
 	
 }

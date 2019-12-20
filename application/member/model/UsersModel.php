@@ -33,21 +33,22 @@ class UsersModel extends BaseModel
     public function login($data = array())
     {
         $res = $this->checkPwd($data['password']);
-        if ($res !== true) return '密码不正确，格式错误.';
+        if ($res !== true) return langMsg('密码不正确，格式错误.','member.login.password_format_error');
         $password = f_hash($data['password']);
         $mobile = $data['mobile'] * 1;
         $userInfo = $this->where('mobile', $mobile)->find();
         if (empty($userInfo)) {
-            return '用户不存在.';
+            return langMsg('用户不存在.','member.login.not_exist');
         }
-        if ($userInfo['is_ban'] == 1) {
-            return '用户已被禁用.';
+        if ($userInfo['is_ban'] == 1){
+            return langMsg('用户已被禁用.','member.login.is_ban');
         }
 
         $time = time();
         if ($userInfo['login_odd_num'] >= 10) {
             if ($userInfo['login_odd_time'] > $time - 3600) {
-                return '密码错误次数过多帐号封停，解封时间：' . date('Y-m-d H:i:s', $userInfo['login_odd_time'] + 3600);
+                $login_odd_time =  date('Y-m-d H:i:s', $userInfo['login_odd_time'] + 3600);
+                return langMsg('密码错误次数过多帐号封停，解封时间：' .$login_odd_time,'member.login.login_is_lock',[$login_odd_time]);
             } else {
                 $userInfo['login_odd_num'] = 7;//如果已到解封时间，给3次机会再登陆
             }
@@ -55,7 +56,7 @@ class UsersModel extends BaseModel
         if ($userInfo['password'] != $password) {
             //记录异常登陆
             $this->where('user_id', $userInfo['user_id'])->update(['login_odd_time' => $time, 'login_odd_num' => $userInfo['login_odd_num'] + 1]);
-            return '用户或密码不正确.';
+            return langMsg('用户密码不正确.','member.login.password_error');
         }
         $upData['login_odd_num'] = 0;//登陆异常清空
         $upData['login_time'] = $time;
@@ -101,16 +102,16 @@ class UsersModel extends BaseModel
     {
         $pwd = trim($pwd);
         if (empty($pwd)) {
-            return '密码不能为空';
+            return langMsg('密码不能为空.','member.checkpwd.empty_pwd');
         }
         if (strlen($pwd) < 8) {//必须大于8个字符
-            return '密码必须大于八字符';
+            return langMsg('密码必须大于八字符.','member.checkpwd.pwd_length_error');
         }
         if (preg_match("/^[0-9]+$/", $pwd)) { //必须含有特殊字符
-            return '密码不能全是数字，请包含数字，字母大小写或者特殊字符';
+            return langMsg('密码不能全是数字.','member.checkpwd.pwd_not_number');
         }
         if (preg_match("/^[a-zA-Z]+$/", $pwd)) {
-            return '密码不能全是字母，请包含数字，字母大小写或者特殊字符';
+            return langMsg('密码不能全是字母.','member.checkpwd.pwd_not_letter');
         }
         /*if (preg_match("/^[0-9A-Z]+$/", $pwd)) {
             return '请包含数字，字母大小写或者特殊字符';

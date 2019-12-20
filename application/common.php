@@ -11,6 +11,43 @@
 
 // 应用公共文件
 /**
+ * 语言包定义
+ * @param $cn_msg string 中文提示
+ * @param $keys array 提示对应key值
+ * @param $param array 替换参数
+ * @return string
+ */
+function langMsg($cn_msg,$keys = [],$param = []){
+    if (empty($keys) == true){//没有设置提示对应key值，直接返回中文
+        return $cn_msg;
+    }
+    if (defined('LANG') == false || LANG == 'cn'){//未设置语言常量
+        return $cn_msg.'-'.LANG;
+    }
+
+    $keys = explode('.',$keys);
+    $langFile = dirname(__DIR__) . '/application/'.$keys[0].'/lang/'.LANG.'.php';
+    if (is_file($langFile) == false){//语言包不存在
+        return $cn_msg;
+    }
+    $lang = include($langFile);
+    unset($keys[0]);
+    foreach ($keys as $key){
+        if (empty($lang[$key])){
+            return $cn_msg;
+        }
+        $lang = $lang[$key];
+    }
+    if (empty($param)){
+        return $lang;
+    }
+    $replace = [];
+    foreach ($param as $key=>$val){
+        $replace[] = '$'.($key+1);
+    }
+    return str_replace($replace,$param,$lang);
+}
+/**
  * 驼峰命名转下划线命名
  * @param $str
  * @return string
