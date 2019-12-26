@@ -58,20 +58,17 @@ class Region extends AdminController
 		$PHPExcel = $reader->load($filePath); // Reader读出来后，加载给Excel实例
 
 		$currentSheet = $PHPExcel->getSheet(0); // 拿到第一个sheet（工作簿？）
-		$allColumn = $currentSheet->getHighestColumn(); // 最高的列，比如AU. 列从A开始
+        $allColumn = \PHPExcel_Cell::columnIndexFromString($currentSheet->getHighestColumn());
 		$allRow = $currentSheet->getHighestRow(); // 最大的行，比如12980. 行从0开始
 		$keyarr = array();
-			
 		$time = time();
 		 //循环获取表中的数据，$currentRow表示当前行，从哪行开始读取数据，索引值从0开始
 		for ($currentRow = 1; $currentRow <= $allRow; $currentRow++) {
 			$row = array();
 			//从哪列开始，A表示第一列
-			for($currentColumn='A';$currentColumn<=$allColumn;$currentColumn++){
-				//数据坐标
-				$address=$currentColumn.$currentRow;
+            for ($currentColumn = 0; $currentColumn < $allColumn; $currentColumn++){
 				//读取到的数据，保存到数组$arr中
-				$cell =$currentSheet->getCell($address)->getValue();
+                $cell = $currentSheet->getCellByColumnAndRow($currentColumn,$currentRow)->getValue();
 				if($cell instanceof PHPExcel_RichText){
 					$cell  = $cell->__toString();
 				}					
