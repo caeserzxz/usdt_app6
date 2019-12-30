@@ -49,6 +49,11 @@ return [
         $config['FG_FULL']=>'拼团满员',
         $config['FG_SEUCCESS']=>'拼团成功',
         $config['FG_FAIL']=>'拼团失败'
+    ],
+	//提现相关
+    'withdraw'=>[
+        '0'=>'待审核',
+        '1'=>'拒绝申请',
+        '9'=>'已打款'
     ]
-	
 ];

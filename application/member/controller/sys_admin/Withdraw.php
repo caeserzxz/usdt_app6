@@ -53,7 +53,7 @@ class Withdraw extends AdminController
 		}	
 		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
-			 $uids = $UsersModel->where(" mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR mobile LIKE '%".$search['keyword']."%'")->column('user_id');
+			 $uids = $UsersModel->where(" mobile LIKE '%".$search['keyword']."%' OR user_name LIKE '%".$search['keyword']."%' OR nick_name LIKE '%".$search['keyword']."%' OR user_id = '".$search['keyword']."'")->column('user_id');
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['user_id','in',$uids];
 		}
@@ -168,7 +168,8 @@ class Withdraw extends AdminController
         $export_arr['申请日期'] = 'add_time';
         $export_arr['提现金额'] = 'amount';
         $export_arr['处理状态'] = 'status';
-        $export_arr['提现方式'] = 'type';
+        $export_arr['提现方式'] = 'account_type';
+
         $export_arr['支付宝账户姓名'] = 'alipay_account';
         $export_arr['支付宝帐号'] = 'alipay_user_name';
 
@@ -183,23 +184,31 @@ class Withdraw extends AdminController
         $page_size = 500;
         $page_count = 100;
         $title = join("\t", array_keys($export_arr)) . "\t";
-
+        $lang = lang('withdraw');
         $data = '';
         do {
-            $rows = $this->Model->alias('w')->join("users_withdraw_account uwa", 'w.account_id=uwa.account_id','left')->where($where)->limit($page * $page_size, $page_size)->select();
-
+            $rows = $this->Model->where($where)->limit($page * $page_size, $page_size)->select();
             if (empty($rows)) break;
             foreach ($rows as $row) {
+                $account_info = json_decode($row['account_info'],true);
                 foreach ($export_arr as $val) {
                     if (strstr($val, '_time')) {
                         $data .= dateTpl($row[$val]) . "\t";
+                    }elseif ($val == 'status'){
+                        $data .= $lang[$row[$val]]. "\t";
                     } elseif ($val == 'user_name') {
                         $data .= userInfo($row['user_id']). "\t";
-                    } elseif ($val == 'type') {
-                        $data .= ($row['type']=='alipay'?'支付宝':'银行卡'). "\t";
-                    } elseif ($val == 'bank_card_number') {
-                        $data .= "'".$row['bank_card_number']. "\t";
-                    } else {
+                    } elseif ($val == 'account_type') {
+                        $data .= ($row['account_type']=='alipay'?'支付宝':'银行卡'). "\t";
+                    }elseif (strstr($val, 'alipay_')) {
+                        $data .= $account_info[$val]. "\t";
+                    }elseif (strstr($val, 'bank_')) {
+                        if ($val == 'bank_card_number') {
+                            $data .= "'".$account_info['bank_card_number']. "\t";
+                        }else{
+                            $data .= $account_info[$val]. "\t";
+                        }
+                    }else{
                         $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
                     }
                 }

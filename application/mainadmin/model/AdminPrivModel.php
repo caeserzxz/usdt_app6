@@ -28,7 +28,7 @@ class AdminPrivModel extends BaseModel
 		if (empty($data) == false){
 			return $data;
 		}
-		$rows = $this->select()->toArray();
+		$rows = $this->where('is_del',0)->select()->toArray();
 		foreach ($rows as $row){
             $row['right'] = explode(',',strtolower($row['right']));
 			$data[$row['group']][] = $row;
