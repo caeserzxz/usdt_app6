@@ -58,7 +58,7 @@ class Withdraw extends AdminController
 			 $where[] = ['user_id','in',$uids];
 		}
 		if (empty($search['type']) == false){
-			$where[] = ['type','=',$search['type']];
+			$where[] = ['account_type','=',$search['type']];
 		}
         $is_export =  input('is_export',0,'intval');
         if ($is_export > 0) {

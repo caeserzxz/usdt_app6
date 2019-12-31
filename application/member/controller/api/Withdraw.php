@@ -281,7 +281,7 @@ class Withdraw extends ApiController
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
         $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
-        $inArr['account_type'] = $account_info['account_type'];
+        $inArr['account_type'] = $account_info['type'];
         $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
 
         $AccountModel = new AccountModel();
