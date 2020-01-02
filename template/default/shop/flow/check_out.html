@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
 <script type="text/javascript">
     var orderTotal = 0,shippingFee = 0,bonus_money = 0,totalGoodsPrice=0,used_bonus_id = 0;
+    var offlineChoose = false;
 </script>
 {/block}
 {block name='pageType'}payment payment_coupons{/block}
@@ -67,6 +68,7 @@
         </div>
     </div>
 </div>
+{include file="flow/offline" /}
 <script type="text/html" id="goodsListTpl">
     {{each goodsList as item index}}
         <div class="checkbox">
@@ -220,6 +222,22 @@
 			if (rec_id != ''){
 				 arr.recids = rec_id;
 			}
+            //线下支付
+            if(arr.pay_id == 3){
+                //没弹窗
+                if(offlineChoose == false){
+                    offlineChoose = true;
+                    $('.offlinepage').css('left',0);
+                    return false;
+                }
+                //上传图片判断
+                arr.payimg = $(".payimg").attr('src');
+                if(typeof(arr.payimg) == 'undefined' || arr.payimg == ''){
+                   _alert('请上传支付凭证.'); 
+                   return false;
+                }
+                
+            }
             jq_ajax('{:url("shop/api.flow/addOrder")}',arr,function(res){
                 if (res.code==0){
                     _alert(res.msg);

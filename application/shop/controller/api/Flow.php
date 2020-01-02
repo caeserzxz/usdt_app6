@@ -352,6 +352,10 @@ class Flow extends ApiController
 
         }
 
+        if($payment['pay_code'] == 'offline'){
+            $inArr['offlineimg'] = input('payimg', '', 'trim');
+        }
+
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
         $inArr['consignee'] = $address['consignee'];
         $inArr['address'] = $address['address'];
