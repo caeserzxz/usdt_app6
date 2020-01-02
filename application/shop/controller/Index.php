@@ -96,9 +96,7 @@ class Index  extends ClientbaseController{
         if (empty($theme)){
             return $this->error('页面不存在.');
         }
-        if ($theme['is_new'] == 0){
-            return $this->shopIndex();
-        }
+
         $page = json_decode($theme['page'],true);
         $mkey = 'shopIndex_diy_'.$pageid;
         $tmpPath = '../../customize/';
@@ -222,91 +220,6 @@ class Index  extends ClientbaseController{
         $this->assign('page', $page['page']);
         return $this->fetch($tmpPath.'index');
     }
-	/*------------------------------------------------------ */
-	//-- 自定义首页 -- 旧
-	/*------------------------------------------------------ */
-	protected function shopIndex(){
-		
-		$mkey = 'shopIndex_web';
-        $ShopPageTheme = new \app\shop\model\ShopPageTheme();
-		$theme = $ShopPageTheme->find(1);
-		if (empty($theme)) return $this->index(true);
-	    $body = Cache::get($mkey);
-		if (empty($body)){
-			$d_products = $ShopPageTheme->defPproducts();
-			$page = json_decode($theme['page'],true);
-			$GoodsModel = new GoodsModel();
-			foreach ($page['pageElement'] as $key=>$row){
-				$_body = '';
-				if ($row['componentType'] != 'search'){				
-					if ($_body){
-						$body .= $_body;
-						continue;
-					}
-				}
-				if ($row['componentType'] == 'products'){
-					 foreach ($row['data'] as $keyb=>$rowb){
-						 if ($rowb['visible'] == 0) continue;
-						 if (empty($rowb['goodsDataType']) || $rowb['goodsDataType'] == 'custom'){
-							  foreach ($rowb['products'] as $keyc=>$rowc){
-								  if (!is_numeric($rowc['id'])){
-									$rowb['products'][$keyc] = $d_products[$rowc['id']];
-                                      $rowb['products'][$keyc]['id'] = '#';
-								  }else{							 
-									  $grow = $GoodsModel->info($rowc['id']);
-									  if(!$grow['is_on_sale']){
-										 unset($rowb['products'][$keyc]);
-										 continue; 
-									  }
-									  $rowc['thumb']['url'] = $grow['goods_thumb'];
-									  $rowc['name'] = $grow['goods_name'];
-                                      $rowc['description'] = $grow['description'];
-									  $rowc['par_price'] = $grow['market_price'];
-									  $rowc['sale_price'] = $grow['shop_price'];
-									  $rowc['vip_price'] = 0;
-									  $rowc['sale_count'] = $grow['sale_num']+ $grow['virtual_sale'];
-									  $rowb['products'][$keyc] = $rowc;
-								  }
-							  }
-						 }else{
-							unset($where,$rowb['products']);
-							$where[] = ['is_alone_sale','=',1];							
-							if ($rowb['goodsDataType'] == 'recommend'){
-								$where[] = ['is_best','=',1];
-							}elseif ($rowb['goodsDataType'] == 'new'){
-								$where[] = ['is_new','=',1];
-							}else{
-								$where[] = ['is_hot','=',1];
-							}
-							$time = time();
-							$grows = $GoodsModel->field('goods_id,goods_thumb,goods_name,market_price,shop_price,is_spec,sale_num,virtual_sale,description')->where($where)->where("isputaway = 1 OR (isputaway = 2  AND  added_time < '".$time."' AND shelf_time > '".$time."' )")->order('update_time desc')->limit($row['dataLimit'])->select();
-												
-							foreach ($grows as $grow){
-								$rowc['id'] = $grow['goods_id'];
-								$rowc['thumb']['url'] = $grow['goods_thumb'];
-								$rowc['name'] = $grow['goods_name'];
-                                $rowc['description'] = $grow['description'];
-								$rowc['par_price'] = $grow['market_price'];
-								$rowc['sale_price'] = $grow['shop_price'];
-								$rowc['vip_price'] = 0;
-								$rowc['sale_count'] = $grow['sale_num'] + $grow['virtual_sale'];
-								$rowb['products'][$rowc['id']] = $rowc;
-							}
-						 }						
-						 $row['data'][$keyb] = $rowb;
-					 }
-					 
-				}
-				
-				$this->assign('theme_row', $row);
-				$_body = $this->fetch('page/'.$row['componentType'])->getContent();
-				$body .= $_body;
-			}
-			Cache::set($mkey,$body,60);
-		}
-		$this->assign('theme', $theme);
-		$this->assign('body', $body);
-		return $this->fetch('page/index');
-	}
+
 	
 }?>
