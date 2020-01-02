@@ -304,8 +304,7 @@
                                         <th>支付金额</th>
                                         <th>支付时间</th>
 
-                                        <th>支付流水号|商户订单号</th>
-
+                                        <th>支付流水号|商户订单号|线下打款凭证</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -314,7 +313,9 @@
                                         <td>{$orderInfo.money_paid|priceFormat}</td>
                                         <td>{$orderInfo.pay_time|dateTpl}</td>
 
-                                        <td>{$orderInfo.transaction_id}</td>
+                                        <td>{eq name="orderInfo.pay_code" value="offline"}
+                                        <img src="{$orderInfo.offlineimg}" style="width:200px;height: 200px;"  data-toggle="popover">
+                                        {else}{$orderInfo.transaction_id}{/eq}</td>
                                     </tr>
                                     </tbody>
                                 </table>

@@ -1,0 +1,168 @@
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payments.css?v=1" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css" />
+<style>
+    .text{
+        padding: .2rem;
+    }
+    .account{
+        background-color: #fff;
+    }
+    .oblock{
+        margin: 0 .2rem .08rem;
+        border-radius: .066667rem;
+    }
+    .oblock .type{
+        display: flex;
+        align-items: center;
+        margin-bottom: .133333rem;
+    }
+    .oblock{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: .2rem 0;
+        background-color: #ff00000a;
+    }
+    .oblock .type img{
+        width: .266667rem;
+        height: .266667rem;
+        margin-right: .053333rem;
+    }
+    .weixinCode{
+        width: 1.466667rem;
+        height: 1.466667rem;
+    }
+    .oblock p{
+        margin: .1rem 0 .2rem;
+    }
+    .chongzhi .button {
+        width: 4.466667rem;
+        margin: 0.266667rem 0.2rem;
+        height: 0.533333rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    .offlinepage{
+        position:absolute;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        z-index: 999;
+    }
+
+</style>
+<div class="offlinepage">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a class="left-arrow" onClick="hideoff()"></a>
+            </div>
+            <div class="header-title">上传凭证</div>
+            <div class="header-right">
+                <a href=''></a>
+            </div>
+        </div>
+    </div>
+    <div class="page-bd chongzhi">
+        <!-- 页面内容-->
+        <div class="account">
+            <div class="text fs28">您需要转款至以下任一账户</div>
+            <div class="oblock">
+                <div class="type"><img src="__STATIC__/mobile/default/images/weixinPay.png" alt=""><span class="fs28">微信收款码</span></div>
+                <img src="{$settings.weixin}" alt="" class="weixinCode">
+            </div>
+            <div class="oblock">
+                <div class="type"><img src="__STATIC__/mobile/default/images/aliPay.png" alt=""><span class="fs28">支付宝收款码</span></div>
+                <img src="{$settings.alipaycode}" alt="" class="weixinCode">
+            </div>
+            <div class="oblock">
+                <div class="type"><img src="__STATIC__/mobile/default/images/offlinePay.png" alt=""><span class="fs28">银行账户</span></div>
+                <p class="fs32 fw_b color_3">{$settings.bank_name}</p>
+                <span class="fs28 color_3">{$settings.bank_card}</span>
+                <div class="fs28 color_3"><span>{$settings.bank_address}</span></div>
+            </div>
+        </div>
+        <div class="uploading" style="display: block; " >
+            <div class="title fs28 fw_b color_3">上传打款凭证（必须)</div>
+            <div class="uploadBox" style="flex-wrap: wrap;overflow: initial;">
+                <ul class="weui-uploader__files uploaderFiles" id="uploaderFiles1">
+                </ul>
+                <form enctype="multipart/form-data" id="uploadForma">
+                <div class="Box">
+                    <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                        <input id="uploadInput" onchange="uploadFile(this,event)" class="weui-uploader__input"
+                               type="file"
+                               accept="image/*" multiple="">
+                </div>
+                </form>
+                <div ></div>
+            </div>
+        </div>
+        <div class="button fs32 fw_b color_w BGcolor_r buttBox"><span>提交</span></div>
+    </div>
+    <!-- 弹出提示 -->
+    <div class="layout" style="display: none">
+        <div class="layoutBG"></div>
+        <div class="layoutBox">
+            <div class="text fs30 color_3 bor_b">
+                您还未上传支付凭证！
+            </div>
+            <!-- 单按钮 -->
+            <div class="button fs32 color_9">
+                知道了
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var fd = new FormData();
+    var imgNum = 0;
+
+    //选择上传图片
+    function uploadFile(_this,e){
+
+        var formData = new FormData($("#uploadForma")[0])  //创建一个forData
+        formData.append('file', $('#uploadInput')[0].files[0]) //把file添加进去  name命名为img
+        $.ajax({
+            url: '{:url("member/api.Passport/proposal_img")}',
+            data: formData,
+            type: "POST",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                if (data.code == 1) {
+                    _alert(data.msg);
+                    return false;
+
+                }
+                imgNum++;
+                fd.append("imgfile["+imgNum+"]", data.url);
+                $('#uploaderFiles1').before('<div class="Box"><img src="'+ data.url+'" alt="" class="imgBox payimg"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+imgNum+'" class="closeImg"></div>');
+            },
+            error: function () {
+                //失败
+            }
+
+        });
+
+    }
+    function hideoff(){
+        $('.offlinepage').css('left','100%');
+        offlineChoose = false;
+    }
+</script>

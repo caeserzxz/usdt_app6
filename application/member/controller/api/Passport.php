@@ -62,5 +62,27 @@ class Passport extends ApiController
         if ($res !== true) return $this->error($res);		
         return $this->success(langMsg('密码已重置，请用新密码登陆.','member.forgetpwd.success'));
     }
+
+    /*------------------------------------------------------ */
+    //-- 线下支付上传图片
+    /*------------------------------------------------------ */
+    public function proposal_img()
+    {
+        if ($_FILES['file']) {
+            $dir = 'proposal/';
+            $result = $this->_upload($_FILES['file'], $dir);
+            if ($result['error']) {
+                $data['code'] = 1;
+                $data['msg'] = $result['info'];
+                return $this->ajaxReturn($data);
+            }
+            $data['code'] = 1;
+
+            $result['url'] = '/' . $result['info'][0]['savepath'] . $result['info'][0]['savename'];
+            return $this->ajaxReturn($result);
+        }
+        return $this->ajaxReturn(['code' => 0]);
+
+    }
 	
 }

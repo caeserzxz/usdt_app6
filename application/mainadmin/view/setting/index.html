@@ -18,6 +18,7 @@
                     <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
                     <li><a href="#about_us" data-toggle="tab">关于我们</a></li>
                     <li><a href="#app" data-toggle="tab">APP设置</a></li>
+                    <li><a href="#payment" data-toggle="tab">收款方式</a></li>
                 </ul>
             </header>
 
@@ -163,6 +164,50 @@
                         <label class="col-sm-2 control-label">下载页面：</label>
                         <div class="controls col-sm-4 help-inline">
                             <a href="{:_url('publics/download/app',false,true,true)}" target="_blank">{:_url('publics/download/app',false,true,true)}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane " id="payment">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">微信收款二维码：</label>
+                        <div class="controls col-sm-6">
+                            <span class="help-inline">建议图片尺寸：150*150像素</span><br>
+                            <img class="thumb_imgs" src="{$setting.weixin}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="setting[weixin]" value="{$setting.weixin}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择微信收款二维码</button>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">支付宝收款二维码：</label>
+                        <div class="controls col-sm-6">
+                            <span class="help-inline">建议图片尺寸：150*150像素</span><br>
+                            <img class="thumb_imgs" src="{$setting.alipaycode}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="setting[alipaycode]" value="{$setting.alipaycode}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择支付宝收款二维码</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">持卡人姓名：</label>
+                        <div class="controls col-sm-4 ">
+                            <input type="text" name="setting[bank_name]" placeholder="持卡人姓名" class="input-max" data-rule-required="true"
+                                   value="{$setting.bank_name}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">银行卡号：</label>
+                        <div class="controls col-sm-4 ">
+                            <input type="text" name="setting[bank_card]" placeholder="银行卡号" class="input-max" data-rule-required="true"
+                                   value="{$setting.bank_card}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">开户行：</label>
+                        <div class="controls col-sm-4 ">
+                            <input type="text" name="setting[bank_address]" placeholder="开户行" class="input-max" data-rule-required="true"
+                                   value="{$setting.bank_address}">
                         </div>
                     </div>
                 </div>
