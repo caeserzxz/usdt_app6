@@ -919,7 +919,7 @@ class Goods extends AdminController
         $this->assign("classListOpt", arrToSel($this->classList, input('cid', 0, 'intval')));
         $this->assign("_menu_index", input('_menu_index', '', 'trim'));
         $this->assign("searchType", input('searchType', '', 'trim'));
-        return $this->fetch()->getContent();
+        return $this->fetch();
     }
     /*------------------------------------------------------ */
     //-- 根据关键字查询

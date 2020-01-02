@@ -157,10 +157,9 @@ class UsersModel extends BaseModel
             if ($res !== true) {
                 return $res;
             }
-            $time = time();
             $inArr['password'] = f_hash($inArr['password']);
         }
-
+        $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
         $inArr['pid'] = 0;
