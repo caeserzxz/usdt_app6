@@ -32,7 +32,7 @@ class Payment extends ClientbaseController
         if (empty($this->pay_code)) {
             exit('pay_code 不能为空');
         }
-        if (in_array($this->pay_code,['balance','integral']) == false) {
+        if (in_array($this->pay_code,['balance','integral','offline']) == false) {
             define('SITE_URL',config('config.host_path'));
             // 导入具体的支付类文件
             $code = str_replace('/', '\\', "/payment/{$this->pay_code}/{$this->pay_code}");
@@ -131,13 +131,18 @@ class Payment extends ClientbaseController
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
             exit($code_str);
-        } elseif ($this->pay_code == 'weixinH5') {
+        }elseif ($this->pay_code == 'weixinH5') {
             //微信H5支付
             $return = $this->payment->get_code($order, $config);
             if ($return['status'] != 1) {
                 $this->error($return['msg'], url('shop/flow/done', ['order_id' => $order_id]));
             }
             $this->assign('deeplink', $return['result']);
+        }elseif($this->pay_code == 'offline'){//线下支付
+            $payment['pay_config'] = json_decode(urldecode($payment['pay_config']),true);
+            $this->assign('payment', $payment);
+            $this->assign('order_id', $order_id);
+            return $this->fetch('offline');
         } else {
             //其他支付（支付宝、银联...）
             $code_str = $this->payment->get_code($order, $config);
