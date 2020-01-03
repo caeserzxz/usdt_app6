@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>支付-{$setting.shop_title}</title>
+
+    <script src="__STATIC__/js/jquery/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        *{ margin:0; padding:0}
+        .wihe-ee{ background:#FFF; padding:25px; color:#666; font-family:song,arial; font-size:14px; margin:0 auto; text-align:center}
+        .wihe-ee p{text-align:center}
+        .co999{color:#999}
+        .fo-si-18{font-size:18px}
+        .fail-fasu a:hover{ background-color:#ee9775}
+        .fail-fasu a{padding:8px 24px; background-color:#f8a584; display:table; margin:0 auto; color:#fff; text-decoration:none; margin-top:10px}
+        .re-qtzfgg a,.success-fasu a{padding:8px 24px; background-color:#eee; display:table; margin:0 auto; color:#999; text-decoration:none; margin-top:10px}
+        .re-qtzfgg a:hover,.success-fasu a:hover{background-color:#ddd;}
+        .btn{
+            width: 95%;
+            padding: 10px;
+            border-radius: 10px;
+            font-size:22px;
+            color: #fff;
+
+            border: 0px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .pay{
+            background: #07BF05;
+
+        }
+        .back{
+            background: #f8a584;
+
+        }
+        a{
+            color: #fff;
+            background: transparent !important;
+        }
+    </style>
+</head>
+<body style=" max-width:640px; min-width:320px; margin:0 auto">
+<div class="tac-sd">
+    <div class="wihe-ee">
+        <p>
+            <span class="fo-si-18"><img src="{$payment.pay_config.qcode}" style="width:100%;"></span>
+            <br><br>
+            <span class="co999">支付后，请联系客服.</span>
+        </p>
+    </div>
+</div>
+<a href="{:url('flow/done',['order_id'=>$order_id])}"><button class="btn back">返回选择其他支付方式</button></a>
+<a href="{:url('order/info',['order_id'=>$order_id])}"><button class="btn back">返回订单</button></a>
+
+    <script>
+        function deeplinkCall() {
+            var deeplink = "{$deeplink|default=''}";
+            if (deeplink) {
+                location.href = deeplink;
+            }
+        }
+        var u = navigator.userAgent;
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if (!isiOS){
+            deeplinkCall()
+        }
+    </script>
+</body>
+</html>
