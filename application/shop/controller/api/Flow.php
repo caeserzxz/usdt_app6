@@ -511,4 +511,80 @@ class Flow extends ApiController
         $this->Model->cleanMemcache();
         return $res;
     }
+
+
+    /*------------------------------------------------------ */
+    //-- 续付款-改成线下支付通道
+    //--- wemk   20200103
+    /*------------------------------------------------------ */
+    public function toOffline(){
+
+        $wh['order_id'] = input('order_id',0,'intval');
+        if($wh['order_id'] <= 0){
+            return $this->error('非法操作.');
+        }
+
+        $cd['offlineimg'] = input('payimg','','trim');
+        if($cd['offlineimg'] == ''){
+            return $this->error('请先上传付款凭证.');
+        }
+
+        $OrderModel = new OrderModel();
+        $order = $OrderModel->find($wh['order_id']);
+        if($this->userInfo['user_id'] != $order['user_id']){
+            return $this->error('无订单操作权限.');
+        }
+
+        if($order['order_status'] != 0 || $order['pay_status'] != 0){
+            return $this->error('订单状态异常.');
+        }
+
+        if($order['money_paid'] > 0){
+            return $this->error('改订单已使用其他付款方式付款,无法改为线下支付.');
+        }
+
+        $PaymentModel = new PaymentModel();
+        //此处写死线下支付
+        $newpayment = $PaymentModel->where(['pay_code'=>'offline','status'=>1])->find();
+
+        if(!$newpayment){
+            return $this->error('支付方式已停用.');
+        }
+
+        //订单更改数据
+        $cd['pay_id'] = $newpayment['pay_id'];
+        $cd['pay_code'] = $newpayment['pay_code'];
+        $cd['pay_name'] = $newpayment['pay_name'];
+        $cd['is_pay'] = 2;
+        $cd['update_time'] = time();
+
+        //日志数据
+        $log['order_id'] = $order['order_id'];
+        $log['order_status'] = $order['order_status'];
+        $log['shipping_status'] = $order['shipping_status'];
+        $log['pay_status'] = $order['pay_status'];
+        $_log = '支付方式由['.$order['pay_name'].']变更为['.$newpayment['pay_name'].']';
+
+        Db::startTrans();
+        //更新订单
+        $res = $OrderModel->where($wh)->update($cd);
+        if(!$res){
+            Db::rollback();
+            return $this->error('支付方式异常，请联系管理员.');
+        }
+
+        //添加日志
+        $res = $OrderModel->_log($log,$_log);
+        if ($res < 1) {
+            Db::rollback();// 回滚事务
+            return $this->error('未知原因，订单日志写入失败.');
+        }
+        
+        //更新缓存
+        $OrderModel->cleanMemcache($order['order_id']);
+
+        Db::commit();
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 }

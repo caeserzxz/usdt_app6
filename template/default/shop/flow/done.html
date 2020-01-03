@@ -1,6 +1,9 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+<script type="text/javascript">
+    var offlineChoose = false;
+</script>
 {/block}
 {block name='pageType'}payResult payment{/block}
 {block name="main" }
@@ -53,7 +56,7 @@
         {/if}
     </div>
 </div>
-
+{include file="flow/offline" /}
 <!-- 支付方式 -->
 <div class="model">
     <div class="modelContent">
@@ -98,7 +101,7 @@
 {block name="footer"}
 <script type="text/javascript">
 var goPay = {$goPay};
-$('.left-arrow').attr('href','/')
+$('.base-header .left-arrow').attr('href','/')
   //选择支付方式
   $('.gopay').on('click',function(){
 	  jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
@@ -119,8 +122,38 @@ $('.left-arrow').attr('href','/')
 		    _alert('请选择支付方式.');
 			return false;
 		}
-		var pay_code = obj.data("pay_code");
-	  window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
+        var pay_code = obj.data("pay_code");
+
+        //线下支付
+        if(obj.val() == 3){
+            //没弹窗
+            if(offlineChoose == false){
+                offlineChoose = true;
+                //弹一下窗
+                $('.offlinepage').css('left',0);
+                return false;
+            }
+            //上传图片判断
+            var payimg = $(".payimg").attr('src');
+            if(typeof(payimg) == 'undefined' || payimg == ''){
+               _alert('请上传支付凭证.'); 
+               return false;
+            }
+
+            var arr = new Object();
+            arr.order_id = {$orderInfo['order_id']|default=0};
+            arr.pay_code = pay_code;
+            arr.payimg = payimg;
+            jq_ajax('{:url("shop/api.flow/toOffline")}',arr,function(res){
+                if (res.code==0){
+                    _alert(res.msg);
+                    return false;
+                }
+                // window.location.reload();
+            })
+            
+        }
+	    // window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
   });
   if (goPay == 1){
 	   window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
