@@ -51,5 +51,43 @@ class Setting extends AdminController
 		}
 		return $modules;
 	}
+    /*------------------------------------------------------ */
+    //-- 商品分享海报合成处理
+    /*------------------------------------------------------ */
+    public function mergeShareImg(){
+        $MergeImg = new \lib\MergeImg();
+        $post = input('post.');
+        $data['share_goods_bg'] = $post['share_goods_bg'];
+        if (empty($data['share_goods_bg'])){
+            return false;
+        }
+        $data['share_avatar'] = './static/share/avatar.jpg';
+        $data['share_nick_name'] = '测试';
+        $data['share_qrcode'] = './static/share/qrcode.png';
 
+        $data['share_goods_name'] = '【屈臣氏】新碧双重保湿水感防晒露80克*2件 隔离防晒伤小金帽';
+        $data['share_goods_price'] = '售价：￥99.00元';
+        $data['share_goods_img'] = './static/share/goods.jpg';
+        $data['share_goods_xy'] =  $post['share_goods_xy'];
+        $data['share_goods_wh'] =  $post['share_goods_wh'];
+        $data['share_goods_name_xy'] =  $post['share_goods_name_xy'];
+        $data['share_goods_name_color'] =  $post['share_goods_name_color'];
+        $data['share_goods_name_size'] =  $post['share_goods_name_size'];
+        $data['share_goods_name_br'] =  $post['share_goods_name_br'];
+        $data['share_goods_price_xy'] =  $post['share_goods_price_xy'];
+        $data['share_goods_price_color'] =  $post['share_goods_price_color'];
+        $data['share_goods_price_size'] =  $post['share_goods_price_size'];
+
+        $data['share_goods_avatar_xy'] = $post['share_goods_avatar_xy'];
+        $data['share_goods_avatar_width'] = $post['share_goods_avatar_width'];
+        $data['share_goods_avatar_shape'] = $post['share_goods_avatar_shape'];
+        $data['share_goods_nickname_xy'] = $post['share_goods_nickname_xy'];
+        $data['share_goods_nickname_color'] = $post['share_goods_nickname_color'];
+        $data['share_goods_nickname_size'] = $post['share_goods_nickname_size'];
+        $data['share_goods_qrcode_xy'] = $post['share_goods_qrcode_xy'];
+        $data['share_goods_qrcode_width'] = $post['share_goods_qrcode_width'];
+
+        $MergeImg->shareGoodsImg($data,'./upload/share_bg/test_goods_share.jpg');
+        return $this->success('请求成功.');
+    }
 }

@@ -11,19 +11,20 @@
       </div>
 </header>
 <section class="scrollable  wrapper w-f">
-    <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+    <form class="form-horizontal form-validate" id="_form" method="post" action="{:url('save')}">
         <section class="panel panel-default">
-                  <header>
-                      <ul class="nav nav-tabs">
-                          <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
-                          <li><a href="#return" data-toggle="tab">退货信息</a></li>
-                          <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
-                          <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
-                          <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
-                      </ul>
-                  </header>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="basic">
+            <header>
+                 <ul class="nav nav-tabs">
+                     <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
+                     <li><a href="#return" data-toggle="tab">退货信息</a></li>
+                     <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
+                     <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
+                     <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
+                     <li><a href="#share" data-toggle="tab">商品分享设置</a></li>
+                 </ul>
+            </header>
+            <div class="tab-content">
+                <div class="tab-pane active" id="basic">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">H5首页设定：</label>
                             <div class="controls">
@@ -185,8 +186,8 @@
                             </div>
                         </div>
 
-                    </div>
-                    <div class="tab-pane " id="return">
+                </div>
+                <div class="tab-pane " id="return">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">退货收货人：</label>
                             <div class="controls">
@@ -211,8 +212,9 @@
                                <textarea rows="4" class="input-xxlarge" name="return_desc">{$setting.return_desc}</textarea>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane" id="kdnset">
+                </div>
+
+                <div class="tab-pane" id="kdnset">
                         <div class="form-group">
                             <label class="col-sm-2 control-label" >电商ID（快递鸟）：</label>
                             <div class="controls">
@@ -269,9 +271,9 @@
                                 <input type="text" name="kdn_address" value="{$setting.kdn_address}" style="width: 300px;"> <span class="help-line"></span>
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <div class="tab-pane" id="cnset">
+                <div class="tab-pane" id="cnset">
                         <div class="form-group">
                             <label class="col-sm-2 control-label" >电商ID（菜鸟）：</label>
                             <div class="controls">
@@ -328,9 +330,9 @@
                                 <input type="text" name="cn_address" value="{$setting.cn_address}" style="width: 300px;"> <span class="help-line"></span>
                             </div>
                         </div>
-                    </div>
+                </div>
 
-                    <div class="tab-pane " id="bonus">
+                <div class="tab-pane " id="bonus">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">开放优惠券：</label>
                             <div class="controls">
@@ -351,9 +353,8 @@
                                 <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane " id="favour">
-                            
+                </div>
+                <div class="tab-pane " id="favour">
 					    <header class="panel-heading bg-light">限时优惠相关</header>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">档期间隔：</label>
@@ -401,10 +402,140 @@
                                 </select> <span class="help-line"></span>
                             </div>
                         </div>
-
+                </div>
+                <div class="tab-pane " id="share">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">海报背景图片：</label>
+                        <div class="controls col-sm-6">
+                            <img class="thumb_img" src="{$setting.share_goods_bg}" style="max-height: 100px;"/>
+                            <input class="hide" type="text" name="share_goods_bg" value="{$setting.share_goods_bg}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                        </div>
                     </div>
-                 </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品图片位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_xy"  class="input-small" value="{$setting.share_goods_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品图片宽度：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_wh"  class="input-small" value="{$setting.share_goods_wh}"  placeholder="格式：w,h"> <span class="help-line">w：宽度，h：高度(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名称位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_name_xy"  class="input-small" value="{$setting.share_goods_name_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名称颜色：</label>
+                        <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                            <input type="text" name="share_goods_name_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_name_color}" size="7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名称字体大小：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_name_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_name_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品名称换行：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_name_br"  data-rule-digits="true" data-rule-required="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_name_br}" placeholder=""> <span class="help-line">个字，达到长度即换行，0不换行</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_price_xy"  class="input-small" value="{$setting.share_goods_price_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格颜色：</label>
+                        <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                            <input type="text" name="share_goods_price_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_price_color}" size="7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品价格字体大小：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_price_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_price_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_avatar_xy"  class="input-small" value="{$setting.share_goods_avatar_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像宽度：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_avatar_width" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_avatar_width}" > <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">头像形状：</label>
+                        <div class="controls">
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="share_goods_avatar_shape" value="0" {$setting['share_goods_avatar_shape']<=0?'checked':''} type="radio">圆形
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="share_goods_avatar_shape" value="1" {$setting['share_goods_avatar_shape']==1?'checked':''} type="radio" >方形
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_nickname_xy"  class="input-small" value="{$setting.share_goods_nickname_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称颜色：</label>
+                        <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                            <input type="text" name="share_goods_nickname_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_nickname_color}" size="7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称字体大小：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_nickname_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_nickname_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">二维码位置：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_qrcode_xy"  class="input-small" value="{$setting.share_goods_qrcode_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">二维码宽度：</label>
+                        <div class="controls">
+                            <input type="text" name="share_goods_qrcode_width" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_qrcode_width}" > <span class="help-line">(px)像素，只可输入数字</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
+                    <div class="form-group">
+                        <div class="controls col-sm-offset-1">
+
+                        </div>
+                    </div>
+                    <div style="width:30%; max-width: 500px; position: absolute; top:50px; right: 5%;">
+                        <button type="button" class="btn btn-blue" id="show_share_img" >点击预览效果</button><span class="help-inline">此项只是预览，要保存后才能生效.</span><br>
+                        <a href="/upload/share_bg/test_goods_share.jpg" target="_blank"><img id="shareimg" src="/upload/share_bg/test_goods_share.jpg" style="max-height:400px;"></a>
+                    </div>
+                </div>
+            </div>
           </section>
 </section>
 <footer class="footer bg-white b-t p-t">
@@ -417,4 +548,38 @@
     </div>
 </footer>
 </form>
+{/block}
+{block name="footer" }
+<script src="__STATIC__/js/colorpicker/jquery.minicolors.js"></script>
+<script type="text/javascript">
+    $('#show_share_img').click(function () {
+        var obj = this;
+        $(obj).html('预览图生成中..');
+        var data = $('#_form').toJson();
+        jq_ajax('{:url("mergeShareImg")}',data,function(){
+            $(obj).html('点击预览效果');
+            $('#shareimg').attr('src','/upload/share_bg/test_goods_share.jpg?'+ Math.random());
+        })
+    })
+    //--jQuery MiniColors--
+    $('.colorpicker').each(function () {
+        $(this).minicolors({
+            control: $(this).attr('data-control') || 'hue',
+            defaultValue: $(this).attr('data-defaultValue') || '',
+            inline: $(this).attr('data-inline') === 'true',
+            letterCase: $(this).attr('data-letterCase') || 'lowercase',
+            opacity: $(this).attr('data-opacity'),
+            position: $(this).attr('data-position') || 'bottom left',
+            change: function (hex, opacity) {
+                if (!hex) return;
+                if (opacity) hex += ', ' + opacity;
+                try {
+                    console.log(hex);
+                } catch (e) { }
+            },
+            theme: 'bootstrap'
+        });
+
+    });
+</script>
 {/block}
