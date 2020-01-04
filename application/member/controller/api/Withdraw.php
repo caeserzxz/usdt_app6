@@ -247,9 +247,10 @@ class Withdraw extends ApiController
              return $this->error('支付密码错误，请核实.');
         }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
+        $inArr['account_type'] = input('account_type','','trim');
 		$inArr['account_id'] = input('account_id') * 1;
-		if ($inArr['account_id'] < 1){
-			return $this->error('选择提现方式.');
+		if ($inArr['account_type'] == 'bank' && $inArr['account_id'] < 1){
+			return $this->error('请选择提现银行卡.');
 		}
 		$WithdrawModel = new WithdrawModel();
 		$withdraw_num = settings('withdraw_num');
@@ -280,15 +281,29 @@ class Withdraw extends ApiController
         $inArr['arrival_money'] = $settings['fee_type']==0?$inArr['amount']:$inArr['amount']-$inArr['withdraw_fee'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['add_time'] = time();
-        $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
-        $inArr['account_type'] = $account_info['type'];
-        $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
+
+
+
+
+        //微信、支付宝，处理图片
+        if (in_array($inArr['account_type'],['wxpay','alipay'])){
+            $qrcodefile = input('qrcodefile');
+            if (empty($qrcodefile)){
+                return $this->error('请上传收款二给码.');
+            }
+            $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
+            makeDir($file_path);
+            $file_name = $file_path.random_str(12).'.jpg';
+            file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$qrcodefile)));
+            $inArr['qrcode_file'] = trim($file_name,'.');
+        }else{//银行卡提现
+            $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
+            $inArr['account_type'] = $account_info['type'];
+            $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
+        }
 
         $AccountModel = new AccountModel();
-
-
 		Db::startTrans();//启动事务
-
 		//加锁查询 select for update
 		$tmpUser = $AccountModel->lock(true)->where(['user_id'=>$this->userInfo['user_id']])->find();
 		if($tmpUser && $tmpUser['balance_money'] < $withdraw_money){

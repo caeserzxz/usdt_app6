@@ -25,16 +25,34 @@
 
     </div>
     <div class="paytype">
-        <div class="title fs34 color_3 fw_b">请选择提现银行</div>
-        <div class="cells">
+        <div class="title fs34 color_3 fw_b ">
+            <label><span class="iconBox"><input class="check" type="radio" name="account_type" value="bank" checked><i class="icon_checked"></i> 银行卡</span></label>
+            <label><span class="iconBox"><input class="check"  type="radio" name="account_type" value="wxpay"><i class="icon_checked"></i> 微信</span></label>
+            <label><span class="iconBox"><input class="check"  type="radio" name="account_type" value="alipay"><i class="icon_checked"></i> 支付宝</span></label>
+        </div>
+        <div class="cells" id="bank_box">
         	<div class="banklist">
 
            </div>
-            <a href="javascript:;" data-url="{:url('bankAdd')}" class="cell">
+            <a href="{:url('bankAdd')}" class="cell">
                 <div class="cell_hd"><img src="__STATIC__/mobile/default/images/add.png" alt=""></div>
-               <div class="cell_bd"><span class="fs30 color_3 fw_b add_type">添加提现方式</span></div>
+                <div class="cell_bd"><span class="fs30 color_3 fw_b add_type">添加银行卡</span></div>
             </a>
         </div>
+        <div class="cells hide" id="file_box">
+            <div class="uploading">
+                <div class="title fs32 fw_b color_3">上传收款二维码</div>
+                <div class="uploadBox" >
+
+                    <div class="Box" id="upload_qrcode_box">
+                        <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                        <input type="file" class="uploadInput" onchange="uploadFile(this,event)">
+                    </div>
+                    <div c></div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="button fs32 fw_b color_w BGcolor_r postBtn">确认提现</div>
 
@@ -98,8 +116,23 @@
 
 {block name="footer"}
 <script>
+var fd = new FormData();
+//删除上传图片
+$('.uploadBox').on('click','.closeImg',function(){
+    $(this).parent().remove();
+    fd.delete("qrcodefile");
+    $('#upload_qrcode_box').show();
+})
+//选择上传图片
+function uploadFile(_this,e){
+   compress(e, function(base64Img){
+       fd.append("qrcodefile", base64Img);
+       $(_this).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg"></div>');
+       $('#upload_qrcode_box').hide();
+   })
+}
 $(function() {
-    $('.add_type').on('click',function(){
+   /* $('.add_type').on('click',function(){
         $('.model').show();
     })
     $('.closeBox').on('click',function(){
@@ -112,9 +145,19 @@ $(function() {
         }else{
             window.location.href='{:url("alipayAdd")}'
         }
+    })*/
+    $('.paytype .title input').click(function (){
+        $('.paytype .cells').addClass('hide');
+        var paytype = $(this).val();
+        if (paytype == 'wxpay' || paytype == 'alipay'){
+            $('#file_box').removeClass('hide');
+             $('.uploading').show();
+        }else{
+            $('#bank_box').removeClass('hide');
+        }
     })
 
-	//加载列表
+    //加载列表
 	jq_ajax('{:url("member/api.withdraw/getList")}','',function(res){
 		if (res.code == 0){
 			_alert(res.msg);
@@ -154,10 +197,12 @@ $(function() {
 	    if (isPost == true){
 	        return false;
         }
+
 		var arr = new Object();
 		arr.account_id = $('input[name="account_id"]:checked').val();
 		arr.amount = $('#amount').val();
 		arr.pay_password = $('#pay_password').val();
+        arr.account_type = $('input[name="account_type"]:checked').val();
 		if (arr.amount < 1){
 			_alert('请输入提现金额.');
 			return false;	
@@ -166,20 +211,32 @@ $(function() {
             _alert('请写6位长度的支付密码.');
             return false;
         }
-		if (arr.account_id < 1){
-			_alert('请选择提现方式.');
-			return false;	
+		if (arr.account_type == 'bank' && arr.account_id < 1){
+			_alert('请选择提现银行卡.');
+			return false;
 		}
+
+        fd.append("account_id", arr.account_id);
+        fd.append("amount", arr.amount);
+        fd.append("pay_password", arr.pay_password);
+        fd.append("account_type", arr.account_type);
         isPost = true;
-		jq_ajax('{:url("member/api.withdraw/postWithdraw")}',arr,function(res){
-            isPost = false;
-            _alert(res.msg);
-			if (res.code == 0){
-				return false;
-			}
-			_alert(res.msg,'{:url("member/wallet/index")}')
-		})
-	})	
+        $.ajax({
+            url: '{:url("member/api.withdraw/postWithdraw")}',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: fd,
+            success: function (res) {
+                isPost = false;
+                _alert(res.msg);
+                if (res.code == 0){
+                    return false;
+                }
+                _alert(res.msg,'{:url("member/wallet/index")}')
+            }
+        })
+	})
 })
 </script>
 {/block}

@@ -551,6 +551,13 @@
           align-items: center;
   height: 0.866667rem;
 }
+.chongzhi .paytype .title label{
+  width: 33%;
+}
+.chongzhi .paytype .title span{
+  width: 100%;
+  text-align: center;
+}
 
 .chongzhi .paytype .cells {
   width: 100%;
