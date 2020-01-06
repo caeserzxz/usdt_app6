@@ -35,7 +35,7 @@
         </label>
     </div>
 </div>
-
+{notempty name="$UsersLevel"}
 <div class="help-inline red">默认全等级可购买，一旦勾选则只有勾选中的等级才能进行购买</div>
 <div class="form-group">
       <label class="col-sm-2 control-label">限制会员购买：</label>
@@ -46,6 +46,31 @@
        {/volist}
       </div>
 </div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">会员价格优惠：</label>
+    <div class="col-sm-9" >
+        <select name="level_price_type" class="level_price_type" >
+            <option value="0" {$row['level_price_type']==0?'selected':''}>默认商城售价</option>
+            <option value="1" {$row['level_price_type']==1?'selected':''}>会员等级折扣</option>
+            <option value="2" {$row['level_price_type']==2?'selected':''}>自定义折扣</option>
+            <option value="3" {$row['level_price_type']==3?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
+        </select>
+    </div>
+</div>
+<div class="form-group level_price_box {$row['level_price_type']==0?'hd':''}">
+    <label class="col-sm-2 control-label">会员价格：</label>
+    <div class="col-sm-9" >
+        {volist name="UsersLevel" id="urow" }
+        <li style="list-style:none; float:left; position:relative; margin-right:10px;">
+            {$urow.level_name}：<input type="text" class="input-mini" min="0.1"  name="level_price[{$urow['level_id']}]" data-rule-ismoney="true"  value="{$row['level_price_type']==1?$urow['level_pro']:$levelPrice[$urow['level_id']]|default='0'}" {$row['level_price_type']==1?'disabled':''} data-level_pro="{$urow.level_pro}"><b class="symbol p-l">{$row['level_price_type']<=2?'%':'元'}</b></li>
+        {/volist}
+    </div>
+</div>
+<div class="line line-dashed line-lg pull-in"></div>
+{/notempty}
+
+{notempty name="$UsersRole"}
 <div class="help-inline red">默认全分销身份可购买，一旦勾选则只有勾选中的分销身份才能进行购买</div>
 <div class="form-group">
       <label class="col-sm-2 control-label">限制分销身份购买：</label>
@@ -56,48 +81,28 @@
        {/volist}
       </div>
 </div>
-<div class="line line-dashed line-lg pull-in"></div>
-
 
 <div class="form-group">
-      <label class="col-sm-2 control-label">会员价格优惠：</label>
-      <div class="col-sm-9" >
-        <select name="level_price_type" class="level_price_type" >
-         	   <option value="0" {$row['level_price_type']==0?'selected':''}>默认商城售价</option>
-               <option value="1" {$row['level_price_type']==1?'selected':''}>会员等级折扣</option>
-               <option value="2" {$row['level_price_type']==2?'selected':''}>自定义折扣</option>
-               <option value="3" {$row['level_price_type']==3?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
-         </select>
-      </div>
-</div>
-<div class="form-group level_price_box {$row['level_price_type']==0?'hd':''}">
-      <label class="col-sm-2 control-label">会员价格：</label>
-      <div class="col-sm-9" >
-      {volist name="UsersLevel" id="urow" }
-        <li style="list-style:none; float:left; position:relative; margin-right:10px;">
-        {$urow.level_name}：<input type="text" class="input-mini" min="0.1"  name="level_price[{$urow['level_id']}]" data-rule-ismoney="true"  value="{$row['level_price_type']==1?$urow['level_pro']:$levelPrice[$urow['level_id']]|default='0'}" {$row['level_price_type']==1?'disabled':''} data-level_pro="{$urow.level_pro}"><b class="symbol p-l">{$row['level_price_type']<=2?'%':'元'}</b></li>
-       {/volist}
-      </div>
-</div>
-<div class="form-group">
-      <label class="col-sm-2 control-label">身份价格优惠：</label>
-      <div class="col-sm-9" >
+    <label class="col-sm-2 control-label">身份价格优惠：</label>
+    <div class="col-sm-9" >
         <select name="role_price_type" class="role_price_type">
-         	   <option value="0" {$row['role_price_type']==0?'selected':''}>默认商城售价</option>
-               <option value="1" {$row['role_price_type']==1?'selected':''}>自定义折扣</option>
-               <option value="2" {$row['role_price_type']==2?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
-         </select>
-      </div>
+            <option value="0" {$row['role_price_type']==0?'selected':''}>默认商城售价</option>
+            <option value="1" {$row['role_price_type']==1?'selected':''}>自定义折扣</option>
+            <option value="2" {$row['role_price_type']==2?'selected':''}>指定固定售价(多规格的子商品价格统一售价)</option>
+        </select>
+    </div>
 </div>
 <div class="form-group role_price_box {$row['role_price_type']==0?'hd':''}">
-      <label class="col-sm-2 control-label">身份价格：</label>
-      <div class="col-sm-9" >
-      {volist name="UsersRole" id="urow" }
+    <label class="col-sm-2 control-label">身份价格：</label>
+    <div class="col-sm-9" >
+        {volist name="UsersRole" id="urow" }
         <li style="list-style:none; float:left; position:relative; margin-right:10px;">
-        {$urow.role_name}：<input type="text" class="input-mini" min="0.1"  name="role_price[{$urow['role_id']}]" data-rule-ismoney="true" value="{$rolePrice[$urow['role_id']]|default='0'}" ><b class="symbol p-l">{$row['role_price_type']==1?'%':'元'}</b></li>
-       {/volist}
-      </div>
+            {$urow.role_name}：<input type="text" class="input-mini" min="0.1"  name="role_price[{$urow['role_id']}]" data-rule-ismoney="true" value="{$rolePrice[$urow['role_id']]|default='0'}" ><b class="symbol p-l">{$row['role_price_type']==1?'%':'元'}</b></li>
+        {/volist}
+    </div>
 </div>
+<div class="line line-dashed line-lg pull-in"></div>
+{/notempty}
 
 <div style=" padding-bottom:10px; line-height:20px;">
 <div class="help-inline red">设置会员价格或阶梯价格则所有规格商品统一售价</div>
