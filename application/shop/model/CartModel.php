@@ -504,7 +504,6 @@ class CartModel extends BaseModel
             }
             return $res['msg'];
         }
-
         //计算需显示的商品价格
         $price = $GoodsModel->evalPrice($goods, $num, $cg['sku_val'], $cg['prom_type'], $promInfo);
         $arr['goods_number'] = $num;
@@ -514,8 +513,13 @@ class CartModel extends BaseModel
         } else {
             $arr['settle_price'] = $goods['settle_price'];
         }
-
         $arr['sale_price'] = $price['min_price'];
+        $arr['sale_price'] = $price['min_price'];
+        if ($goods['is_spec'] == 1){
+            $arr['market_price'] = $goods['sub_goods'][$cg['sku_val']]['market_price'];
+        }else{
+            $arr['market_price'] = $goods['market_price'];
+        }
         $arr['buy_again_discount'] = 0;
         if ($this->is_integral == 0 && $goods['is_dividend'] == 1 && $this->userInfo['dividend_role_id'] > 0) {
             $Dividend = json_decode(settings('Dividend'), true);

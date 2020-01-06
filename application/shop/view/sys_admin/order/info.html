@@ -117,9 +117,95 @@
             </div>
         </div>
         <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">订单编号：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.order_sn}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">下单时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.add_time|dateTpl}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">支付时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.pay_time|dateTpl}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">确定时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.confirm_time|dateTpl}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">购买会员：</label>
+                            <div class="col-sm-5 form-control-static">
+                                <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">赠送积分：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.give_integral} (订单签收后即返)
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">发货时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.shipping_time|dateTpl}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">签收/自提时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.sign_time|dateTpl}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">退货时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.returned_time|dateTpl}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">取消时间：</label>
+                            <div class="col-sm-5 form-control-static">
+                                {$orderInfo.cancel_time|dateTpl}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">买家留言：</label>
+                            <div class="col-sm-8 form-control-static">
+                                {$orderInfo.buyer_message}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">佣金总额：</label>
+                            <div class="col-sm-8 form-control-static">
+                                {$orderInfo.dividend_amount|priceFormat=true}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <header>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tabinfo" data-toggle="tab">订单信息</a></li>
+                    <li class="active"><a href="#tabinfo" data-toggle="tab">商品信息</a></li>
                     <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
                     <li><a href="#tabdescribe" data-toggle="tab">物流信息</a></li>
                     {if condition="$orderInfo.order_type == 0"}
@@ -132,90 +218,7 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="tabinfo">
-                        <div class="col-sm-12">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">订单编号：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.order_sn}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">下单时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.add_time|dateTpl}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">支付时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.pay_time|dateTpl}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">确定时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.confirm_time|dateTpl}
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">购买会员：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$orderInfo['user_id']])}" target="_blank">{$orderInfo.user_id} - {$orderInfo.user_id|userInfo}</a>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">赠送积分：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.give_integral} (订单签收后即返)
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-6">
-
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">发货时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.shipping_time|dateTpl}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">签收/自提时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.sign_time|dateTpl}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">退货时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.returned_time|dateTpl}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">取消时间：</label>
-                                    <div class="col-sm-5 form-control-static">
-                                        {$orderInfo.cancel_time|dateTpl}
-                                    </div>
-                                </div>
-                            
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">买家留言：</label>
-                                    <div class="col-sm-8 form-control-static">
-                                        {$orderInfo.buyer_message}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">佣金总额：</label>
-                                    <div class="col-sm-8 form-control-static">
-                                        {$orderInfo.dividend_amount|priceFormat=true}
-                                    </div>
-                                </div>
-							</div>
-                        </div>
                         <div class="col-sm-12 table-responsive">
 
                             <table class="table table-bordered ">

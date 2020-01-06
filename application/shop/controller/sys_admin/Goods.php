@@ -24,7 +24,8 @@ use app\shop\model\ShippingTplModel;
 class Goods extends AdminController
 {
     public $ext_status = 0;//额外默认指定商品状态
-    public $is_supplyer = 0;//是否后台供应商管理
+    public $is_supplyer = false;//是否后台供应商管理
+    public $supplyer_id = 0;//当前操作的供应商IDs
     public $_field = '';
     public $_pagesize = 0;
     //*------------------------------------------------------ */
@@ -34,7 +35,7 @@ class Goods extends AdminController
     {
         parent::initialize();
         $this->Model = new GoodsModel();
-        $this->assign('is_supplyer', $this->is_supplyer);//
+        $this->assign('is_supplyer', $this->is_supplyer);
     }
 
     //*------------------------------------------------------ */
@@ -125,7 +126,9 @@ class Goods extends AdminController
     /*------------------------------------------------------ */
     public function asInfo($data)
     {
-
+        if ($data['supplyer_id'] > 0 && $this->is_supplyer == false && $this->supplyer_id == 0){
+            return $this->error('此商品为供应商产品，请到供应商功能操作.');
+        }
         $ModelList = $this->Model->getModelList();
         $this->assign('modelListOpt', arrToSel($ModelList, $data['type_model']));//商品模型对应属性调用
         $ClassList = $this->Model->getClassList();
@@ -326,7 +329,8 @@ class Goods extends AdminController
         } else {//多规格处理
             $Products = input('post.Products');
             $goods_sn = [];
-            $prices = $market_price = [];
+            $prices = [];
+            $market_price[] = 0;
             $PromotePrice = 0;
             $goods_number = 0;
             foreach ($Products as $prow) {
@@ -694,17 +698,7 @@ class Goods extends AdminController
         unset($imgwhere);
         if ($row['is_spec'] == 1) {
             $GoodsSkuModel = new GoodsSkuModel();
-            //查询不同模型的sku,如果查询有删除
-            $skudelwhere[] = ['goods_id', '=', $row['goods_id']];
-            $skudelwhere[] = ['sku_model', '<>', $row['sku_model']];
-            $sku_count = $GoodsSkuModel->where($skudelwhere)->count('sku_id');
-            if ($sku_count > 0) {
-                $res = $GoodsSkuModel->where($skudelwhere)->delete();
-                if ($res < 1) {
-                    Db::rollback();// 回滚事务
-                    return $this->error('操作失败:删除旧规格商品失败，请重试.');
-                }
-            }//end
+
             $specifications = input('post.specifications');
             $sku = join(':', array_values($specifications['id']));
             $Products = input('post.Products');

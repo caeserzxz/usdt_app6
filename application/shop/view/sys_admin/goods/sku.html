@@ -198,15 +198,14 @@
 				{{/each}}
 				<th class="mn100">商品图片</th>
 				<th class="mn130">商品编码<span class="maroon">*</span></th>
-				<th class="mn130">商品条码<span class="maroon"></span></th>
+				<th class="mn130">库存<span class="maroon">*</span></th>
 				{{if is_supplyer == 1}}
 				<th class="mn100">供货价</th>
 				{{/if}}
 				<th class="mn90">售价<span class="maroon">*</span></th>
 				<th class="mn90">促销价</th>
 				<th class="mn90">市场价</th>
-				<th class="mn130">库存<span class="maroon">*</span></th>
-				<th class="mn80">重量</th>
+				<th class="mn80">重量（g）</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -239,7 +238,7 @@
                     <input type="hidden" name="Products[{{index}}][ProductSn]" value="{{tr.ProductSn}}" />
 				</td>
 				<td>
-                    {{tr.ProductCode}}
+					{{tr.Store}}
 				</td>
 				<td>
 					￥{{tr.SettlePrice}}
@@ -254,9 +253,7 @@
 				<td>
                     {{tr.MarketPrice}}
 				</td>
-				<td>
-					{{tr.Store}}
-				</td>
+
 				<td>
                     {{tr.Weight}}
 				</td>
@@ -272,9 +269,9 @@
                 <td>
                     <input type="text" class="form-control" name="Products[{{index}}][ProductSn]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductSn" value="{{tr.ProductSn}}" data-rule-required="true">
                 </td>
-                <td>
-                    <input type="text" class="form-control" name="Products[{{index}}][ProductCode]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductCode" value="{{tr.ProductCode}}" >
-                </td>
+				<td>
+					{{tr.Store > 0 ? tr.Store+'+' :''}}<input type="text" style=" width:50px;" class="sku_stores" name="Products[{{index}}][Store]" data-id="{{tr.key}}" data-name="Store" value="{{tr.sku_id>0?0:''}}" data-rule-number="true" data-rule-required="true">
+				</td>
                 <td>
                     <input type="text" class="form-control" name="Products[{{index}}][Price]" data-id="{{tr.key}}" data-name="Price" value="{{tr.Price}}" data-rule-ismoney="true" data-rule-required="true">
                 </td>
@@ -284,9 +281,7 @@
                 <td>
                     <input type="text" class="form-control" name="Products[{{index}}][MarketPrice]" data-id="{{tr.key}}" data-name="MarketPrice" value="{{tr.MarketPrice}}" data-rule-ismoney="true">
                 </td>
-                <td>
-                    {{tr.Store > 0 ? tr.Store+'+' :''}}<input type="text" style=" width:50px;" class="sku_stores" name="Products[{{index}}][Store]" data-id="{{tr.key}}" data-name="Store" value="{{tr.sku_id>0?0:''}}" data-rule-number="true" data-rule-required="true">
-                </td>
+
                 <td>
                     <input type="text" class="form-control" name="Products[{{index}}][Weight]" data-id="{{tr.key}}" data-name="Weight" value="{{tr.Weight}}" >
                 </td>

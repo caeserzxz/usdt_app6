@@ -1,65 +1,5 @@
 
 <div class="form-group">
-      <label class="col-sm-2 control-label">商品名称：</label>
-      <div class="col-sm-7 must" >
-          <input type="text" class="input-max" data-rule-maxlength="80" data-rule-required="true" data-msg-required="商品名称不能为空" name="goods_name" value="{$row.goods_name}" >
-      </div>
-</div>
-
-<div class="form-group">
-      <label class="col-sm-2 control-label">商品简称：</label>
-      <div class="col-sm-5" >
-          <input type="text" class="input-max" data-rule-maxlength="60"  name="short_name" value="{$row.short_name}" >
-      </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">商品分类：</label>
-    <div class="col-sm-3 must">
-      <select name="cid"  style="width:100%;" data-toggle="select2" data-placeholder="选择分类" >
-         <option value="">选择分类</option>
-           {$classListOpt|raw}             
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">商品品牌：</label>
-    <div class="col-sm-3 ">
-      <select name="brand_id"  style="width:100%;" data-toggle="select2" >
-         <option value="">选择品牌</option>
-           {$brandListOpt|raw}             
-        </select>
-    </div>
-</div>
-
-
-
-<div class="form-group">
-    <label class="col-sm-2 control-label">运费计算方式：</label>
-    <div class="col-sm-10">
-        <label class="radio-inline">
-            <input name="undertake" value="0" {$row.freight_template|tplckval='=0','checked',true} class="js_undertake" type="radio">卖家承担运费
-        </label>
-        <label class="radio-inline">
-            <input name="undertake" value="1" {$row['freight_template']>0 || $row['freight_template'] ==-1?'checked':''} class="js_undertake js_freight_container_show" type="radio">
-            买家承担运费
-        </label>
-   <label class="js_freight_container" style="display:{$row['freight_template'] > 0 || $row['freight_template'] ==-1?'':'none'}; position:relative;">
-            <select  name="freight_template" data-rule-required="true" aria-required="true" aria-invalid="true" >
-            	<option value="-1" selected>-- 使用默认运费模板 --</option>
-                 {volist name="ShippingTpl" id="sfrow" }
-                  <option value="{$sfrow.sf_id}" {$row['freight_template']==$sfrow['sf_id']?'selected':''}>{$sfrow.sf_name}{$sfrow['is_default']==1?'(默认)':''}</option>
-                 {/volist}
-                 {empty name="ShippingTpl"}
-                 <option value="0" selected>-- 没有运费模板 --</option>
-                 {/empty}
-             </select>
-        </label>
-       
-    </div>
-</div>
-<div class="line line-dashed line-lg pull-in" style="width:98%;"></div>
-
-<div class="form-group">
     <label class="col-sm-2 control-label" >商品图片：</label>
     <div class="col-sm-10">
         <div class="js_upload_container">
@@ -122,7 +62,7 @@
 
 
         <div class="clearfix"></div>
-        <div data-toggle="specifications" class="hd"><i class="fa fa-spinner fa-spin"></i></div>
+        <div data-toggle="specifications" class="hd {$is_supplyer?'hide':''}"><i class="fa fa-spinner fa-spin"></i></div>
 
     </div>
 </div>
