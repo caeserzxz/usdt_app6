@@ -96,7 +96,7 @@ class Order extends AdminController
             } elseif ($this->is_supplyer == true) {
                 $where[] = ['supplyer_id', '>', 0];
             }else{
-                $where[] = ['is_split', '=', 0];//不查询拆单的
+                $where[] = ['is_split', '<', 2];//不查询拆单的
                 $where[] = ['supplyer_id', '=', 0];
                 $where[] = ['store_id', '=', 0];
             }
@@ -560,26 +560,27 @@ EOF;
             if ($orderInfo['is_pay'] != 2) return $this->error('非线下支付订单，不允许操作！');
             $operating = $this->Model->operating($orderInfo);//订单操作权限
             if ($operating['cfmCodPay'] !== true) return $this->error('订单当前状态不能操作线下打款确认.');
-            $data['order_status'] = $config['OS_CONFIRMED'];
-            $data['pay_status'] = $config['PS_PAYED'];
+            $upData['order_status'] = $config['OS_CONFIRMED'];
+            $upData['pay_status'] = $config['PS_PAYED'];
             if ($orderInfo['confirm_time'] < 1) {
-                $data['confirm_time'] = time();
+                $upData['confirm_time'] = time();
             }
-            $data['transaction_id'] = input('transaction_id', '', 'trim');
-            $data['pay_time'] = time();
-            $data['money_paid'] = $orderInfo['order_amount'];
-            $data['cfmpay_user'] = AUID;
-            $data['order_amount'] = 0;
-            $data['order_id'] = $order_id;
-            $res = $this->Model->upInfo($data);
-            if ($res < 1) return $this->error();
-            $orderInfo['order_status'] = $data['order_status'];
-            $orderInfo['pay_status'] = $data['pay_status'];
+            $upData['transaction_id'] = input('transaction_id', '', 'trim');
+            $upData['pay_time'] = time();
+            $upData['money_paid'] = $orderInfo['order_amount'];
+            $upData['cfmpay_user'] = AUID;
+            $upData['order_id'] = $order_id;
+            $upData['is_pay_eval'] = 1;//设为待执行支付成功后的相关处理
+            $res = $this->Model->upInfo($upData);
+            if ($res !== true) return $this->error($res);
+            $orderInfo['order_status'] = $upData['order_status'];
+            $orderInfo['pay_status'] = $upData['pay_status'];
             $this->Model->_log($orderInfo, '线下支付收款确认：' . input('pay_no', '', 'trim'));
+            $this->Model->paySuccessEval($orderInfo);
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return $this->fetch('shop@sys_admin/order/cfm_cod_pay')->getContent();
+        return $this->fetch('shop@sys_admin/order/cfm_cod_pay');
     }
 
     /*------------------------------------------------------ */
@@ -593,13 +594,26 @@ EOF;
         if ($orderInfo['store_id'] > 0) return $this->error('此订单只有门店有操作权限.');
         $operating = $this->Model->operating($orderInfo);//订单操作权限
         if ($operating['isCancel'] !== true) return $this->error('订单当前状态不能操作取消.');
-        $data['order_id'] = $order_id;
-        $data['order_status'] = $config['OS_CANCELED'];
-        $data['cancel_time'] = time();
-        $res = $this->Model->upInfo($data);
+        $upData['order_id'] = $order_id;
+        $upData['order_status'] = $config['OS_CANCELED'];
+        $upData['cancel_time'] = time();
+        $res = $this->Model->upInfo($upData);
         if ($res !== true) return $this->error($res);
-        $orderInfo['order_status'] = $data['order_status'];
+        $orderInfo['order_status'] = $upData['order_status'];
         $this->Model->_log($orderInfo, '取消订单');
+        if ($orderInfo['pid'] > 0){//如果是子订单取消，判断主订单下属所有子订单是澡都已取消，是则主订单也取消
+            $where['pid'] = $orderInfo['pid'];
+            $where['order_status'] = $config['OS_CONFIRMED'];
+            $count = $this->Model->where($where)->count('order_id');
+            if ($count < 1){
+                $upData = [];
+                $upData['order_id'] = $orderInfo['pid'];
+                $upData['order_status'] = $config['OS_CANCELED'];
+                $upData['cancel_time'] = time();
+                $this->Model->upInfo($upData);
+                $this->Model->_log($orderInfo, '子订单全部取消，主订单执行取消');
+            }
+        }
         return $this->success('取消订单成功.');
     }
 
@@ -695,13 +709,17 @@ EOF;
         $orderInfo = $this->Model->info($order_id);
         $config = config('config.');
         if ($orderInfo['pay_status'] != $config['PS_PAYED']) return $this->error('订单不是付款状态，无法设为未付款！');
-        $data['order_id'] = $order_id;
-        $data['pay_status'] = $config['PS_UNPAYED'];
-        $data['pay_time'] = 0;
-        $data['money_paid'] = 0;
-        $res = $this->Model->upInfo($data);
+        if ($orderInfo['is_pay'] == 2){//线下支付，撤销付款状态，确定状态也撤销
+            $upData['order_status'] = 0;
+            $orderInfo['order_status'] = $upData['order_status'];
+        }
+        $upData['order_id'] = $order_id;
+        $upData['pay_status'] = $config['PS_UNPAYED'];
+        $upData['pay_time'] = 0;
+        $upData['money_paid'] = 0;
+        $res = $this->Model->upInfo($upData);
         if ($res !== true) return $this->error($res);
-        $orderInfo['pay_status'] = $data['pay_status'];
+        $orderInfo['pay_status'] = $upData['pay_status'];
         $this->Model->_log($orderInfo, '设为未付款');
         return $this->success('设为未付款成功！', url('info', array('order_id' => $order_id)));
     }

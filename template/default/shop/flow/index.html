@@ -88,8 +88,8 @@
                             <p class="fw_b fm_p"> + </p><em class="fs36">{{item.use_integral}}</em>积分
                            {{else if item.prom_type == 1}}
                             <div class="couponsPriceType">优惠价</div>
-                            {{else}}
-                            <span class="fs24 color_9">￥{{item.market_price}}</span>
+                            {{else if item.shop_price != item.sale_price}}
+                            <span class="fs24 color_9">￥{{item.shop_price}}</span>
                             {{/if}}
                             {/literal}
                         </div>

@@ -72,6 +72,7 @@ class Flow extends ApiController
         $is_sel = input('is_sel', 0, 'intval');
 		$recids = input('recids', '', 'trim');
         $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
+        $return['shipping_fee_type'] = settings('shipping_fee_type');
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
@@ -87,7 +88,7 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 修改商品订购数量
     /*------------------------------------------------------ */
-    function editNum()
+    public function editNum()
     {
         $rec_id = input('rec_id', 0, 'intval');
         $is_sel = input('is_sel', 0, 'intval');
@@ -112,7 +113,7 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 删除购物车的商品
     /*------------------------------------------------------ */
-    function delGoods()
+    public function delGoods()
     {
         $rec_id = input('rec_id', 0, 'intval');
         if ($rec_id < 1) return $this->error('传值失败，请重新尝试提交！');
@@ -124,7 +125,7 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 清除购物车无效的商品
     /*------------------------------------------------------ */
-    function clearInvalid()
+    public function clearInvalid()
     {
         $this->Model->clearInvalid();
         $return['cartInfo'] = $this->Model->getCartList();
@@ -134,7 +135,7 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 设置商品是否选中
     /*------------------------------------------------------ */
-    function setSel()
+    public function setSel()
     {
         $rec_id = input('rec_id');
         if ($rec_id < 1 && $rec_id != 'all') return $this->error('传值失败，请重新尝试提交！');
@@ -147,7 +148,7 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     //-- 删除选中的商品
     /*------------------------------------------------------ */
-    function delSelGoods()
+    public function delSelGoods()
     {
         $this->Model->delGoods();
         $return['cartInfo'] = $this->Model->getCartList();
@@ -155,10 +156,13 @@ class Flow extends ApiController
         return $this->ajaxReturn($return);
     }
 
-    /*------------------------------------------------------ */
-    //-- 计算运费
-    /*------------------------------------------------------ */
-    function evalShippingFee($address_id = 0, $is_return = false,$recids = '')
+    /**计算运费
+     * @param int $address_id 收货地址
+     * @param bool $is_return 是否直接返回数据
+     * @param string $recids 指定购物车中商品
+     * @return mixed|void
+     */
+    public function evalShippingFee($address_id = 0, $is_return = false,$recids = '')
     {
         if ($address_id < 0) {
             $address_id = input('address_id', '0', 'intval');
@@ -173,19 +177,56 @@ class Flow extends ApiController
 		$UserAddressModel = new UserAddressModel();
         $addressList = $UserAddressModel->getRows();
         $address = $addressList[$address_id];
-		$cartList = $this->Model->getCartList(1, true,$recids);
-        $shippingFee = $this->Model->evalShippingFee($address,$cartList);
-        $shippingFee = reset($shippingFee);//现在只返回默认快递
-        $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee'] * 1);
+        $cartList = $this->Model->getCartList(1, true,$recids);
+        $shippingFee = $this->_evalShippingFee($address,$cartList);
         if ($is_return == true) return $shippingFee;
         $return['shippingFee'] = $shippingFee;
         return $this->ajaxReturn($return);
     }
 
+    /**
+     * @param $address 收货地址信息
+     * @param $cartList 订购商品
+     * @return mixed
+     */
+    private function _evalShippingFee($address,$cartList){
+        $shipping_fee_type = settings('shipping_fee_type');
+        if ($shipping_fee_type == 1){//供应商商品独立计算
+            foreach ($cartList['supplyerGoods'] as $supplyer_id=>$sg){
+                $_cartList = [];
+                $_cartList['buyGoodsNum'] = 0;
+                $_cartList['totalGoodsPrice'] = 0;
+                $_cartList['buyGoodsWeight'] = 0;
+                $_cartList['goodsList'] = [];
+                foreach ($cartList['goodsList'] as $cg){
+                    if ($cg['supplyer_id'] == $supplyer_id){
+                        $_cartList['buyGoodsNum'] += $cg['goods_number'];
+                        $_cartList['totalGoodsPrice'] += $cg['sale_price'] * $cg['goods_number'];
+                        $_cartList['buyGoodsWeight']  += $cg['goods_weight'] * $cg['goods_number'];
+                        $_cartList['goodsList'][] = $cg;
+                    }
+                }
+                $_shippingFee = $this->Model->evalShippingFee($address,$_cartList);
+                $_shippingFee = reset($_shippingFee);//现在只返回默认快递
+                if (empty($shippingFee)){
+                    $shippingFee = $_shippingFee;
+                }else{
+                    $shippingFee['shipping_fee'] += $_shippingFee['shipping_fee'];
+                }
+                $shippingFee['supplyerShippingFee'][$supplyer_id] =  $_shippingFee['shipping_fee'];
+            }
+            $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee'] * 1);
+        }else{
+            $shippingFee = $this->Model->evalShippingFee($address,$cartList);
+            $shippingFee = reset($shippingFee);//现在只返回默认快递
+            $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee'] * 1);
+        }
+        return $shippingFee;
+    }
     /*------------------------------------------------------ */
     //-- 执行下单
     /*------------------------------------------------------ */
-    function addOrder()
+    public function addOrder()
     {
         $this->checkLogin();//验证登录
 
@@ -313,9 +354,9 @@ class Flow extends ApiController
         $inArr['shipping_status'] = 0;
         $_log = '生成订单';
         //运费处理
-        $shippingFee = $this->Model->evalShippingFee($address, $cartList);
-        $shippingFee = reset($shippingFee);//现在只返回默认快递
+        $shippingFee = $this->_evalShippingFee($address, $cartList);
         $inArr['shipping_fee'] = $shippingFee['shipping_fee'] * 1;
+        $inArr['shipping_fee_detail'] = json_encode($shippingFee['supplyerShippingFee']);
 
         //优惠金额处理
         if ($inArr['use_bonus'] > $cartList['use_bonus_goods_amount']) {

@@ -73,7 +73,7 @@ function _url($url,$arr=[],$isNotHtml=true,$domain = false){
     if (empty($domain) == false){
         $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);
     }
-	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D'),array("'+","+'",'{{','}}'),$url);
+	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D','%5B','%5D'),array("'+","+'",'{{','}}','[',']'),$url);
 }
 /**
  * 获取当前页面完整URL地址，前台调用

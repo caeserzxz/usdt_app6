@@ -58,7 +58,19 @@
                                 </label>
                             </div>
                         </div>
-
+                        {if condition="$has_supplyer == 1"}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">运费计算：</label>
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="shipping_fee_type" value="0" {$setting['shipping_fee_type']==0?'checked':''} type="radio">统一计算(运费根据商品金额比例分配)
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="shipping_fee_type" value="1" {$setting['shipping_fee_type']==1?'checked':''} type="radio" >供应商独立计算
+                                </label>
+                            </div>
+                        </div>
+                        {/if}
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商城Title：</label>
                             <div class="controls">

@@ -194,7 +194,6 @@
 				{{/each}}
 				<th class="mn100">商品图片</th>
 				<th class="mn130">商品编码<span class="maroon">*</span></th>
-				<th class="mn130">商品条码<span class="maroon"></span></th>
 				<th class="mn90">供货价<span class="maroon">*</span></th>
 				<th class="mn90">市场价</th>
 				<th class="mn130">库存<span class="maroon">*</span></th>
@@ -233,9 +232,7 @@
 				<td>
 					<input type="text" class="form-control" name="Products[{{index}}][ProductSn]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductSn" value="{{tr.ProductSn}}" data-rule-required="true">
 				</td>
-				<td>
-					<input type="text" class="form-control" name="Products[{{index}}][ProductCode]" data-nochangeval="1" data-id="{{tr.key}}" data-name="ProductCode" value="{{tr.ProductCode}}" >
-				</td>
+
 				<td>
 					<input type="text" class="form-control" name="Products[{{index}}][SettlePrice]" data-id="{{tr.key}}" data-name="Price" value="{{tr.SettlePrice}}" data-rule-ismoney="true" data-rule-required="true">
 				</td>

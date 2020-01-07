@@ -19,9 +19,14 @@ class Setting extends AdminController
 	//-- 首页
 	/*------------------------------------------------------ */
     public function index(){
-		
 		$this->assign("setting", $this->Model->getRows());
 		$this->assign('shippingFunction',  $this->getShippingFunction());
+		$has_supplyer = 0;
+        //判断供应商模块是否存在
+        if (class_exists('app\supplyer\model\SupplyerModel')) {
+            $has_supplyer = 1;
+        }
+        $this->assign('has_supplyer',$has_supplyer);
         return $this->fetch();
     }
 	/*------------------------------------------------------ */

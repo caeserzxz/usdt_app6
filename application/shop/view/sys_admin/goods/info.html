@@ -101,6 +101,43 @@
                         </label>
                     </div>
                 </div>
+
+                {if condition="$row['supplyer_id'] > 0" }
+                <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品状态：</label>
+                    <div class="col-sm-5 m-t-md">
+                        {$goods_status[$row['isputaway']]}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">操作选项：</label>
+
+                    <div class="col-sm-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="opt" value="0" checked/>不操作
+                        </label>
+                        {if condition="$row['isputaway'] == 10" }
+                        <label class="radio-inline">
+                            <input type="radio" name="opt" value="1"/>允许上架
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="opt" value="11"/>拒绝上架
+                        </label>
+                        {elseif condition="$row['isputaway'] == 1"}
+                        <label class="radio-inline">
+                            <input type="radio" name="opt" value="12"/>下架商品
+                        </label>
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">操作备注：</label>
+                    <div class="col-sm-8">
+                        <textarea name="opt_remark"  style=" width:80%; height:100px;"></textarea>
+                    </div>
+                </div>
+                {/if}
             </div>
             <header>
                 <ul class="nav nav-tabs">
@@ -201,43 +238,7 @@
                     </table>
                 </div>
                 {/gt}
-                <div class="line line-dashed line-lg pull-in" style="width:99%;"></div>
 
-                {if condition="$row['supplyer_id'] > 0" }
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">商品状态：</label>
-                    <div class="col-sm-5 m-t-md">
-                        {$goods_status[$row['isputaway']]}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">操作选项：</label>
-
-                    <div class="col-sm-5">
-                        <label class="radio-inline">
-                            <input type="radio" name="opt" value="0" checked/>不操作
-                        </label>
-                        {if condition="$row['isputaway'] == 10" }
-                        <label class="radio-inline">
-                            <input type="radio" name="opt" value="1"/>允许上架
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="opt" value="11"/>拒绝上架
-                        </label>
-                        {elseif condition="$row['isputaway'] == 1"}
-                        <label class="radio-inline">
-                            <input type="radio" name="opt" value="12"/>下架商品
-                        </label>
-                        {/if}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">操作备注：</label>
-                    <div class="col-sm-8">
-                        <textarea name="opt_remark"  style=" width:80%; height:100px;"></textarea>
-                    </div>
-                </div>
-                {/if}
             </div>
         </section>
 </section>

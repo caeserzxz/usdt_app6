@@ -256,9 +256,13 @@ class OrderModel extends BaseModel
     {
         return OrderLogModel::_log($order, $logInfo);
     }
-    /*------------------------------------------------------ */
-    //-- 更新订单信息
-    /*------------------------------------------------------ */
+
+    /**更新订单信息
+     * @param $upData
+     * @param string $extType 扩展执行内容
+     * @param bool $isTrans 是否启动事务
+     * @return bool|string
+     */
     function upInfo($upData, $extType = '')
     {
         $order_id = $upData['order_id'];
@@ -564,6 +568,9 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function operating(&$order)
     {
+        if ($order['is_split'] == 2){//已拆分订单主订单不能操作
+            return [];
+        }
         $os = $order['order_status'];
         $ss = $order['shipping_status'];
         $ps = $order['pay_status'];
@@ -651,6 +658,9 @@ class OrderModel extends BaseModel
         if ($orderInfo['order_type'] == 1) {//积分商品不返利
             return true;
         }
+        if ($orderInfo['is_split'] > 0){//拆分的主订单不执行
+            return true;
+        }
         $orderInfo['d_type'] = 'order';//普通订单
         return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
     }
@@ -702,7 +712,7 @@ class OrderModel extends BaseModel
             $oglist[$og['supplyer_id']]['goods_ids'][] = $og['goods_id'];
             $oglist[$og['supplyer_id']]['goods_list'][] = $og;
         }
-
+        $shipping_fee_detail = json_decode($orderInfo['shipping_fee_detail'],true);
         $i = 1;
         foreach ($oglist as $key => $sogl) {
             $inArr = $orderInfo;
@@ -726,7 +736,11 @@ class OrderModel extends BaseModel
             }
             $inArr['shipping_fee'] = 0;
             if ($orderInfo['shipping_fee'] > 0) {
-                $inArr['shipping_fee'] = $orderInfo['shipping_fee'] * $scale;
+                if (empty($shipping_fee_detail[$key]) == false){
+                    $inArr['shipping_fee'] = $shipping_fee_detail[$key];
+                }else{
+                    $inArr['shipping_fee'] = $orderInfo['shipping_fee'] * $scale;
+                }
             }
             $inArr['diy_discount'] = 0;
             if ($orderInfo['diy_discount'] > 0) {
@@ -748,7 +762,6 @@ class OrderModel extends BaseModel
             $this->_log($inArr, '订单拆分：' . $orderInfo['order_sn'] . '，拆分生成子订单');
             $i++;
         }
-        $this->_log($orderInfo, '拆分订单');
 
         return true;
     }
@@ -763,7 +776,7 @@ class OrderModel extends BaseModel
         $upData['pay_time'] = time();
         $upData['is_pay_eval'] = 1;//设为待执行支付成功后的相关处理
         $res = $this->upInfo($upData, 'sys');
-        if ($res != true) {
+        if ($res !== true) {
             return false;
         }
         $orderInfo = $this->find($upData['order_id'])->toArray();

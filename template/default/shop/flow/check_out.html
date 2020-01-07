@@ -1,9 +1,10 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css"/>
 <script type="text/javascript">
-    var orderTotal = 0,shippingFee = 0,bonus_money = 0,totalGoodsPrice=0,used_bonus_id = 0;
+    var orderTotal = 0, shippingFee = 0, bonus_money = 0, totalGoodsPrice = 0, used_bonus_id = 0;
     var offlineChoose = false;
+    var supplyerShippingFee = new Object();
 </script>
 {/block}
 {block name='pageType'}payment payment_coupons{/block}
@@ -14,22 +15,24 @@
     {include file="flow/address" /}
     <!-- 购物车 -->
     <div class="goodslist" style="padding-bottom:0px;">
-        <div class="title fs32 color_3 fw_b">商品信息</div>
         <div class="goodsList">
-           <div style="line-height: 100px; text-align: center">数据加载中..</div>
+            <div style="line-height: 100px; text-align: center">数据加载中..</div>
         </div>
         <div class="inputBox bor_t">
-            <span class="fs28 color_3">留言</span><input type="text" placeholder="请输入" class="fs26 color_3" id="buyMsg"><p class="fs28 color_9 num" id="wordNum">0/140</p>
+            <span class="fs28 color_3">留言</span><input type="text" placeholder="请输入" class="fs26 color_3" id="buyMsg">
+            <p class="fs28 color_9 num" id="wordNum">0/140</p>
         </div>
     </div>
     <div class="cellBox">
         <div class="color_3 cell">
             <span class="fs28">商品金额</span>
-            <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 totalGoodsPrice">0.00</em></div>
+            <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 totalGoodsPrice">0.00</em>
+            </div>
         </div>
         <div class="color_3 cell">
             <span class="fs28">折扣</span>
-            <div class="color_3 fs28 num money"><p class="fw_b fm_p">-￥</p><em class="fs34 totalDiscount">0.00</em></div>
+            <div class="color_3 fs28 num money"><p class="fw_b fm_p">-￥</p><em class="fs34 totalDiscount">0.00</em>
+            </div>
         </div>
         <!-- 优惠券 -->
         {eq name="$setting.shop_used_bonus" value="1"}
@@ -48,7 +51,8 @@
 
 <div class="paymentbox">
     <div class="left"><span class="fs28 color_9">实付</span>
-        <div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span></div>
+        <div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span>
+        </div>
         <span class="color_9 fs28 num money use_integral hide"> + 积分<i class="color_3 fs52 integralTotal"></i></span>
     </div>
     <div class="gopay fs28 fw_b color_w BGcolor_r">立即支付</div>
@@ -60,7 +64,7 @@
         <div class="title fs36 color_3 fw_b">请选择支付方式</div>
         <div class="cantre pay" id="payListBox">
 
-                <p class="get_list_tip">加载中...</p>
+            <p class="get_list_tip">加载中...</p>
 
         </div>
         <div class="buttBox">
@@ -70,54 +74,72 @@
 </div>
 {include file="flow/offline" /}
 <script type="text/html" id="goodsListTpl">
-    {{each goodsList as item index}}
-        <div class="checkbox">
-            <a href="{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}" >
-            <img src="{{item.pic}}" alt="" class="goodsimg">
-            </a>
-            {literal}
-            <div class="info">
-                <p class="fs28 color_3">{{item.goods_name}}</p>
-                <div class="sign fs28 color_9">{{item.sku_name}}</div>
-                <div class="Money">
-                    <div class="left">
-                        <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
-                        {{if item.use_integral > 0}}
-                            <p class="fw_b fm_p"> + </p><em class="fs36">{{item.use_integral}}</em>积分
-                        {{else if item.prom_type == 1}}
-                        <div class="couponsPriceType">优惠价</div>
-                        {{else}}
-                            <span class="fs24 color_9">￥{{item.market_price}}</span>
-                        {{/if}}
-                    </div>
-                    <div class="number">
-                        <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{item.rec_id}}','down');" class="minus">
-                        <input class="fs30 color_3" type="text" readonly value="{{item.goods_number}}">
-                        <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{item.rec_id}}','up');" class="add"></div>
-                </div>
+    {{each supplyerGoods as skuKey index}}
+        {literal}
+        {{if index == 0}}
+            <div class="title fs32 color_3 fw_b">
+                商品信息
+                <div class="color_r fs24" id="shipping_fee_child_{{index}}" style="position: absolute;right: 10px;font-weight: normal;"></div>
             </div>
-            {/literal}
-        </div>
+        {{else if supplyerList}}
+            <div class="title fs32 color_3 fw_b">
+                <span>{{supplyerList[index]}}</span>
+                <div class="color_r fs24 " id="shipping_fee_child_{{index}}" style="position: absolute;right: 10px;font-weight: normal;"></div>
+            </div>
+        {{/if}}
+        {/literal}
+        {{each skuKey as skey}}
+            <div class="checkbox">
+                <a href='{:_url("shop/goods/info",["id"=>"[[goodsList[skey].goods_id]]"])}' >
+                <img src="{{goodsList[skey].pic}}" alt="" class="goodsimg">
+                </a>
+                {literal}
+                <div class="info">
+                    <p class="fs28 color_3">{{goodsList[skey].goods_name}}</p>
+                    <div class="sign fs28 color_9">{{goodsList[skey].sku_name}}</div>
+                    <div class="Money">
+                        <div class="left">
+                            <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{goodsList[skey].exp_price[0]}}</em>
+                                <p>.{{goodsList[skey].exp_price[1]}}</p></div>
+                            {{if goodsList[skey].use_integral > 0}}
+                            <p class="fw_b fm_p"> + </p><em class="fs36">{{goodsList[skey].use_integral}}</em>积分
+                            {{else if goodsList[skey].prom_type == 1}}
+                            <div class="couponsPriceType">优惠价</div>
+                            {{else if goodsList[skey].shop_price != goodsList[skey].sale_price}}
+                            <span class="fs24 color_9">￥{{goodsList[skey].shop_price}}</span>
+                            {{/if}}
+                        </div>
+                        <div class="number">
+                            <img src="__STATIC__/mobile/default/images/goodsIcon05.png"
+                                 onClick="editNum(this,'{{goodsList[skey].rec_id}}','down');" class="minus">
+                            <input class="fs30 color_3" type="text" readonly value="{{goodsList[skey].goods_number}}">
+                            <img src="__STATIC__/mobile/default/images/goodsIcon06.png"
+                                 onClick="editNum(this,'{{goodsList[skey].rec_id}}','up');" class="add"></div>
+                    </div>
+                </div>
+                {/literal}
+            </div>
+        {{/each}}
     {{/each}}
- </script>
+</script>
 {literal}
 <script type="text/html" id="payListTpl">
     {{each data as item index}}
     <div class="block">
         <label for="{{item.pay_code}}" style="width: 100%;">
-        <div class="payType">
-            <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
-            <div>
-                <span class="fs30 color_3">{{item.pay_name}}</span>
-                {{if item.pay_code == 'balance'}}
-                <span class="fs26 color_r">(￥{{balance_money}})</span>
-                {{/if}}
+            <div class="payType">
+                <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+                <div>
+                    <span class="fs30 color_3">{{item.pay_name}}</span>
+                    {{if item.pay_code == 'balance'}}
+                    <span class="fs26 color_r">(￥{{balance_money}})</span>
+                    {{/if}}
+                </div>
             </div>
-        </div>
         </label>
         <label for="{{item.pay_code}}">
             <div class="iconBox">
-                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" id="{{item.pay_code}}" >
+                <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" id="{{item.pay_code}}">
                 <i class="icon_checked"></i>
             </div>
         </label>
@@ -129,28 +151,28 @@
 {block name="footer"}
 
 <script>
-	var rec_id = '{$rec_id}';
+    var rec_id = '{$rec_id}';
     //购物车统一请求
-    function evalCart(action,arr){ 
-	 	arr += "&is_sel=1";      
-		if (rec_id != ''){
-			 arr += "&recids="+rec_id;
-		}
-        jq_ajax('{:url("shop/api.flow/'+action+'")}',arr,function(res){
-            if (res.code==0){
+    function evalCart(action, arr) {
+        arr += "&is_sel=1";
+        if (rec_id != '') {
+            arr += "&recids=" + rec_id;
+        }
+        jq_ajax('{:url("shop/api.flow/' + action + '")}', arr, function (res) {
+            if (res.code == 0) {
                 if (res.msg != '') _alert(res.msg);
                 return false;
             }
-			if (action == 'getList'){
-				if (res.cartInfo.allGoodsNum < 1){
-					_alert('请选择需购买的商品.','{:url("shop/index/index")}');
-					return false;
-				}
-			}
-            $('.goodsList').html(template('goodsListTpl',res.cartInfo));
+            if (action == 'getList') {
+                if (res.cartInfo.allGoodsNum < 1) {
+                    _alert('请选择需购买的商品.', '{:url("shop/index/index")}');
+                    return false;
+                }
+            }
+            $('.goodsList').html(template('goodsListTpl', res.cartInfo));
             $('.totalGoodsPrice').html(res.cartInfo.totalGoodsPrice);
             $('.totalDiscount').html(res.cartInfo.totalDiscount);
-            if (res.cartInfo.integralTotal > 0){
+            if (res.cartInfo.integralTotal > 0) {
                 $('.use_integral').removeClass('hide');
                 $('.integralTotal').html(res.cartInfo.integralTotal);
             }
@@ -158,6 +180,7 @@
             totalGoodsPrice = res.cartInfo.totalGoodsPrice;
             if (action == 'editNum') {
                 shippingFee = res.shippingFee.shipping_fee;
+                supplyerShippingFee = res.shippingFee.supplyerShippingFee;
                 $('.bonusInfo .ticket').show();
                 $('.bonusInfo .usdinfo').html('')
                 getBonusList();
@@ -167,79 +190,84 @@
         })
     }
     //计算支付金额
-    function evalPrice(){
+    function evalPrice() {
         var payTotal = parseFloat(orderTotal) + parseFloat(shippingFee) - parseFloat(bonus_money);
         payTotal = payTotal.toFixed(2);
         payTotal = payTotal.split(".");
         $('.payTotal').find('em').html(payTotal[0]);
-        $('.payTotal').find('span').html('.'+payTotal[1]);
+        $('.payTotal').find('span').html('.' + payTotal[1]);
         $('.shippingFee').html(shippingFee);
+        if (Object.keys(supplyerShippingFee).length > 1){
+            $.each(supplyerShippingFee,function (i,v) {
+                $('#shipping_fee_child_'+i).html('运费：￥'+v);
+            })
+        }
     }
     //修改购物车订购数量
-    function editNum(obj,recid,type) {
+    function editNum(obj, recid, type) {
         var num = $(obj).parent().find('input').val();
-        if (type == 'up'){
+        if (type == 'up') {
             num++;
-        }else {
+        } else {
             num--;
         }
         if (num < 1) return false;
-        var address_id = $('#address_id').val();		
-        return evalCart('editNum','rec_id='+recid+'&num='+num+'&address_id='+address_id+'&recids='+rec_id);
+        var address_id = $('#address_id').val();
+        return evalCart('editNum', 'rec_id=' + recid + '&num=' + num + '&address_id=' + address_id + '&recids=' + rec_id);
     }
     evalCart('getList');//获取购买商品列表
-    $(function(){
-        countTxtEvent("buyMsg","wordNum",140);
+    $(function () {
+        countTxtEvent("buyMsg", "wordNum", 140);
         //选择支付方式
-        $('.gopay').on('click',function(){
-            jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
-                if (res.code==0){
+        $('.gopay').on('click', function () {
+            jq_ajax('{:url("publics/api.pay/getList")}', '', function (res) {
+                if (res.code == 0) {
                     _alert(res.msg);
                     return false;
                 }
-                $('#payListBox').html(template('payListTpl',res));
+                $('#payListBox').html(template('payListTpl', res));
                 $('.payModel').show();
             });
         });
-        $('.closeBox').on('click',function(){
+        $('.closeBox').on('click', function () {
             $('.model').hide();
         });
         //下单
-        $('.buttBox span').on('click',function(){
+        $('.buttBox span').on('click', function () {
             var arr = new Object();
             arr.used_bonus_id = used_bonus_id;
             arr.buy_msg = $('#buyMsg').val();
             arr.address_id = $('#address_id').val();
-            if (arr.address_id < 1){
+            if (arr.address_id < 1) {
                 _alert('请设置收货地址后，再操作.');
                 return false;
             }
             arr.pay_id = $("input[name='pay_id']:checked").val();
-            if (typeof(arr.pay_id) == 'undefined' || arr.pay_id < 1){
+            if (typeof(arr.pay_id) == 'undefined' || arr.pay_id < 1) {
                 _alert('请选择支付方式.');
                 return false;
             }
-			if (rec_id != ''){
-				 arr.recids = rec_id;
-			}
+            if (rec_id != '') {
+                arr.recids = rec_id;
+            }
             //线下支付
-            if(arr.pay_id == 3){
+            if (arr.pay_id == 3) {
                 //没弹窗
-                if(offlineChoose == false){
+                if (offlineChoose == false) {
                     offlineChoose = true;
-                    $('.offlinepage').css('left',0);
+                    $('.offlinepage').css('left', 0);
                     return false;
                 }
                 //上传图片判断
                 arr.payimg = $(".payimg").attr('src');
-                if(typeof(arr.payimg) == 'undefined' || arr.payimg == ''){
-                   _alert('请上传支付凭证.'); 
-                   return false;
+                if (typeof(arr.payimg) == 'undefined' || arr.payimg == '') {
+                    _alert('请上传支付凭证.');
+                    return false;
                 }
-                
+
             }
-            jq_ajax('{:url("shop/api.flow/addOrder")}',arr,function(res){
-                if (res.code==0){
+            jq_ajax('{:url("shop/api.flow/addOrder")}', arr, function (res) {
+                if (res.code == 0) {
                     _alert(res.msg);
                     return false;
                 }

@@ -426,6 +426,7 @@ class CartModel extends BaseModel
                     unset($row['settle_price']);
                 }
                 $data['goodsList'][$row['goods_id'] . '_' . $row['sku_val']] = $row;
+                $data['supplyerGoods'][$row['supplyer_id']][] = $row['goods_id'] . '_' . $row['sku_val'];
             }
             unset($rows);
             if (empty($brand_list) == false) $data['brand_list'] = array_keys($brand_list);
@@ -450,7 +451,15 @@ class CartModel extends BaseModel
                 $data['goodsList'][$key]['is_collect'] = $GoodsCollectModel->where($where)->count();
             }
         }
-
+        $shipping_fee_type = settings('shipping_fee_type');
+        if ($shipping_fee_type == 1) {//供应商商品独立计算，获取供应商名称
+            $SupplyerModel = new \app\supplyer\model\SupplyerModel();
+            foreach ($data['supplyerGoods'] as $supplyer_id=>$val){
+                if ($supplyer_id > 0){
+                    $data['supplyerList'][$supplyer_id] = $SupplyerModel->where('supplyer_id',$supplyer_id)->value('supplyer_name');
+                }
+            }
+        }
         return $data;
     }
     /*------------------------------------------------------ */
