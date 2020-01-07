@@ -124,6 +124,9 @@
                             <label class="col-sm-3 control-label">订单编号：</label>
                             <div class="col-sm-5 form-control-static">
                                 {$orderInfo.order_sn}
+                                {if condition="$orderInfo['pid'] > 0"}
+                                <a href="{:url('info',['order_id'=>$orderInfo['pid']])}" class="fr" target="_blank">查看主订单</a>
+                                {/if}
                             </div>
                         </div>
                         <div class="form-group">
