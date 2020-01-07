@@ -27,7 +27,7 @@ class NavMenu extends AdminController
     //-- 获取列表
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
-    public function getList($runData = false,$is_delete=0) {
+    public function getList($runData = false) {
         $where[] = ['type', '=', $this->type];
         $this->sqlOrder = 'sort_order DESC';
         $data = $this->getPageList($this->Model, $where);
@@ -55,11 +55,12 @@ class NavMenu extends AdminController
 			$data['add_time'] =  time();	
 		}
 		$data['update_time'] = time();
+        $data['type'] = $this->type;
 		$data['data'] = input('type_val','','trim');
 		if(empty($data['imgurl'])) return $this->error('图片未选择！');
 		if(empty($data['bind_type'])) return $this->error('链接类型未选择！');
 		if(empty($data['data'])) return $this->error('链接类型绑定关联未填写！');
-		if($data['bind_type'] == 'article' || $ud['bind_type'] == 'product' ){
+		if($data['bind_type'] == 'article' || $data['bind_type'] == 'product' ){
 			// 文章、商品
 			if(empty($data['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
 		

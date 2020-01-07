@@ -49,10 +49,10 @@
                     <div class="col-sm-5 ">
                         <input name="type_val" id="type_val" class="input-xlarge" type="text" value="{$row.data}">
                         <input name="ext_id" id="ext_id" type="hidden" value="{$row.ext_id}">
-                        <a href="javascript:;" data-remote="{:url(" mainadmin/article/searchBox")}"
+                        <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}"
                         data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default
                         {$row['bind_type']=='article'?'':'hide'}" id="article_btn" >绑定文章</a>
-                        <a href="javascript:;" data-remote="{:url(" sys_admin.goods/searchBox")}"
+                        <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}"
                         data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default
                         {$row['bind_type']=='goods'?'':'hide'}" id="goods_btn" >绑定商品</a>
                         <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}"
