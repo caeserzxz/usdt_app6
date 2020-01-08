@@ -71,15 +71,14 @@ class Attachment extends AdminController{
                 mkdir($root_path);
             }
         }
-
         //根据path参数，设置各路径和URL
         if (empty($_GET['path'])) {
-            $current_path = $root_path . '/';
+            $current_path = $root_path ;
             $current_url = $root_url;
             $current_dir_path = '';
             $moveup_dir_path = '';
         } else {
-            $current_path = $root_path . '/' . $_GET['path'];
+            $current_path = $root_path .  $_GET['path'];
             $current_url = $root_url . $_GET['path'];
             $current_dir_path = $_GET['path'];
             $moveup_dir_path = preg_replace('/(.*?)[^\/]+\/$/', '$1', $current_dir_path);
@@ -97,6 +96,9 @@ class Attachment extends AdminController{
         if (!preg_match('/\/$/', $current_path)) {
             echo 'Parameter is not valid.';
             exit;
+        }
+        if ($current_path == './upload/image/menuimg/'){
+            $current_url = $current_path = './static/menuimg/';
         }
         //目录不存在或不是目录
         if (!file_exists($current_path) || !is_dir($current_path)) {
@@ -133,6 +135,9 @@ class Attachment extends AdminController{
                 $i++;
             }
             closedir($handle);
+        }
+        if ($current_path == './upload/image/'){
+            $file_list[] = ['is_dir'=>1,'has_file'=>1,'filesize'=>0,'is_photo'=>'','filetype'=>'','filename'=>'menuimg','datetime'=>''];
         }
         usort($file_list, array($this, '_cmp_func'));
         $result = array();
