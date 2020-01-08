@@ -45,6 +45,13 @@ class Wallet  extends ClientbaseController{
         return $this->fetch('dividend_log');
     }
     /*------------------------------------------------------ */
+    //-- 充值记录
+    /*------------------------------------------------------ */
+    public function rechargeLog(){
+        $this->assign('title', '充值记录');
+        return $this->fetch('recharge_log');
+    }
+    /*------------------------------------------------------ */
     //-- 排行榜
     /*------------------------------------------------------ */
     public function leaderboard(){

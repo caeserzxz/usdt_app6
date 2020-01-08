@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 08/01/2020 10:30:54
+ Date: 08/01/2020 15:51:23
 */
 
 SET NAMES utf8mb4;
@@ -1025,7 +1025,7 @@ CREATE TABLE `main_admin_user` (
 -- Records of main_admin_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `main_admin_user` VALUES (10002, 1, 'test', '老关', '42bc491a8917d524b86f3c4dae21308a', '', 1542197433, 1542705280, 1578445056, '::1', 1578377405, '::1', 1);
+INSERT INTO `main_admin_user` VALUES (10002, 1, 'test', '老关', '42bc491a8917d524b86f3c4dae21308a', '', 1542197433, 1542705280, 1578466813, '::1', 1578445056, '::1', 1);
 INSERT INTO `main_admin_user` VALUES (10003, 2, 'testv', 'testb', '42bc491a8917d524b86f3c4dae21308a', '', 1550223837, 1567736658, 1577343858, '::1', 1577343857, '::1', 1);
 INSERT INTO `main_admin_user` VALUES (10004, 2, 'testx', 'xxxx', '93ab876e05024f852f6bf6d2120fe414', '', 1550223936, 1573093650, 1573106979, '::1', 1573099009, '::1', 1);
 COMMIT;
@@ -1115,7 +1115,7 @@ CREATE TABLE `main_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=1324 DEFAULT CHARSET=utf8mb4 COMMENT='后台登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=1325 DEFAULT CHARSET=utf8mb4 COMMENT='后台登陆日志';
 
 -- ----------------------------
 -- Records of main_log_login
@@ -1913,6 +1913,7 @@ INSERT INTO `main_log_login` VALUES (1320, '::1', 1578291251, 10002);
 INSERT INTO `main_log_login` VALUES (1321, '::1', 1578359953, 10002);
 INSERT INTO `main_log_login` VALUES (1322, '::1', 1578377405, 10002);
 INSERT INTO `main_log_login` VALUES (1323, '::1', 1578445056, 10002);
+INSERT INTO `main_log_login` VALUES (1324, '::1', 1578466813, 10002);
 COMMIT;
 
 -- ----------------------------
@@ -7912,16 +7913,16 @@ CREATE TABLE `shop_goods_category` (
 -- Records of shop_goods_category
 -- ----------------------------
 BEGIN;
-INSERT INTO `shop_goods_category` VALUES (2, 0, '化妆品', '化妆品', '/upload/image/20190109/5c35b002292c8.png', '/upload/image/20190109/5c35aff74c370.png', 1, 1, -1, 1, 1, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (3, 2, '口红', '口红', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (4, 2, '护肤品', '护肤', '/upload/image/20190109/5c356cc9e1886.png', '', 0, 0, -1, 1, 1, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (5, 0, '数码产品', '数码', '/upload/image/20190110/5c36e5f666550.png', '/upload/image/20190109/5c35aff74c370.png', 1, 1, 0, 1, 0, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (6, 5, '手机', '手机', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, -1, 1, 1, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (7, 5, '数码相机', '相机', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, 0, 1, 0, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (8, 4, '面霜', '面霜', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (9, 0, '服装', '服装', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, 0, 1, 2, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (10, 9, '女装', '女装', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1548316368);
-INSERT INTO `shop_goods_category` VALUES (12, 10, '连衣裙', '连衣裙', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1548316368);
+INSERT INTO `shop_goods_category` VALUES (2, 0, '化妆品', '化妆品', '/upload/image/20190109/5c35b002292c8.png', '/upload/image/20190109/5c35aff74c370.png', 1, 1, -1, 1, 1, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (3, 2, '口红', '口红', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (4, 2, '护肤品', '护肤', '/upload/image/20190109/5c356cc9e1886.png', '', 0, 0, -1, 1, 1, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (5, 0, '数码产品', '数码', '/upload/image/20190110/5c36e5f666550.png', '/upload/image/20190109/5c35aff74c370.png', 1, 1, 0, 1, 0, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (6, 5, '手机', '手机', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, -1, 1, 1, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (7, 5, '数码相机', '相机', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, 0, 1, 0, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (8, 4, '面霜', '面霜', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (9, 0, '服装', '服装', '/upload/image/20190110/5c36e5f666550.png', '', 0, 0, 0, 1, 2, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (10, 9, '女装', '女装', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1578467642);
+INSERT INTO `shop_goods_category` VALUES (12, 10, '连衣裙', '连衣裙', '/upload/image/20190110/5c36e5f666550.png', '', 1, 0, -1, 1, 0, 0, 1578467642);
 COMMIT;
 
 -- ----------------------------
@@ -8518,8 +8519,8 @@ INSERT INTO `shop_nav_menu` VALUES (16, '/static/menuimg/center_fightgroup.png',
 INSERT INTO `shop_nav_menu` VALUES (17, '/static/menuimg/centetr_myteam.png', '我的团队', 'link', 0, '/member/my_team/index', 1, NULL, 3, 0, 1574674486, 1578450485);
 INSERT INTO `shop_nav_menu` VALUES (18, '/static/menuimg/center_bonus.png', '优惠券', 'link', 0, '/shop/bonus/index', 1, NULL, 3, 0, 1574674514, 1578450496);
 INSERT INTO `shop_nav_menu` VALUES (19, '/static/menuimg/center_collect.png', '我的收藏', 'link', 0, '/shop/collect/index', 1, NULL, 3, 0, 1574674760, 1578450507);
-INSERT INTO `shop_nav_menu` VALUES (20, '/upload/image/2019/11/5ddba19391cb0.png', '我的评价', 'link', 0, '/shop/comment/index', 1, NULL, 3, 0, 1574674857, 1574907742);
-INSERT INTO `shop_nav_menu` VALUES (21, '/upload/image/2019/11/5ddba1eb26dc8.png', '收货地址', 'link', 0, '/member/center/address', 1, NULL, 3, 0, 1574674931, 1574674931);
+INSERT INTO `shop_nav_menu` VALUES (20, '/static/menuimg/cneter_comment.png', '我的评价', 'link', 0, '/shop/comment/index', 1, NULL, 3, 0, 1574674857, 1578452472);
+INSERT INTO `shop_nav_menu` VALUES (21, '/static/menuimg/center_address.png', '收货地址', 'link', 0, '/member/center/address', 1, NULL, 3, 0, 1574674931, 1578452483);
 INSERT INTO `shop_nav_menu` VALUES (22, '/static/menuimg/footer_code_a.png', '推荐码', 'link', 0, '/member/center/index', 1, '/static/menuimg/footer_code_b.png', 2, 6, 1574679086, 1578450406);
 INSERT INTO `shop_nav_menu` VALUES (23, '/upload/image/2019/11/5dd39c5ec798b.jpg', '312313', 'article', 3, '章标章标章标11222', 1, NULL, 0, 0, 1578377789, 1578377789);
 COMMIT;
@@ -8970,7 +8971,7 @@ INSERT INTO `shop_order_info` VALUES (183, 0, 0, 0, 182, '2020010786584-1', 0, '
 INSERT INTO `shop_order_info` VALUES (184, 0, 4, 0, 182, '2020010786584-2', 0, '', 0, 1, 0, 29889, 7, 1, 0, 1, '', '12313', 110000, 110100, 110101, '北京,北京市,东城区', '15625077763', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, '/./upload/proposal/2020/01/5e13e3a2f0983.jpg', 800.00, 0, 0.00, 42.00, 842.00, 842.00, 0.00, 1578361805, 1578365198, 0, 1578365198, 0, 0, 0, 1578365198, '', 0.00, 0.00, 0.00, 0.00, 0.00, 800, '11321313', '122', 1, 2, '', '::1', 0, 0, 0, 444.00, 0.00, 0, '', '10002', 1, 0, 0, 0, '{\"0\":36,\"4\":42}');
 INSERT INTO `shop_order_info` VALUES (185, 0, 0, 2, 0, '2020010761441', 0, '', 0, 1, 0, 29889, 7, 1, 0, 1, '', '12313', 110000, 110100, 110101, '北京,北京市,东城区', '15625077763', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, '/./upload/proposal/2020/01/5e13f2daced6e.jpg', 599.00, 0, 0.00, 66.00, 665.00, 665.00, 0.00, 1578365662, 1578365683, 0, 1578365683, 0, 0, 0, 1578365683, '', 0.00, 0.00, 0.00, 0.00, 0.00, 599, 'xx2,11321313', '102,122', 0, 2, '', '::1', 0, 0, 0, 111.00, 0.00, 0, '', '10002', 1, 0, 0, 0, '{\"0\":\"33.00\",\"4\":\"33.00\"}');
 INSERT INTO `shop_order_info` VALUES (186, 0, 0, 0, 185, '2020010761441-1', 0, '', 0, 1, 0, 29889, 7, 1, 0, 1, '', '12313', 110000, 110100, 110101, '北京,北京市,东城区', '15625077763', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, '/./upload/proposal/2020/01/5e13f2daced6e.jpg', 399.00, 0, 0.00, 33.00, 432.00, 432.00, 0.00, 1578365662, 0, 0, 0, 0, 0, 0, 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 399, 'xx2', '102', 1, 0, '', '::1', 0, 0, 0, 0.00, 0.00, 0, '', '', 1, 0, 0, 0, '{\"0\":\"33.00\",\"4\":\"33.00\"}');
-INSERT INTO `shop_order_info` VALUES (187, 0, 4, 0, 185, '2020010761441-2', 0, '', 0, 1, 0, 29889, 7, 1, 0, 1, '', '12313', 110000, 110100, 110101, '北京,北京市,东城区', '15625077763', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, '/./upload/proposal/2020/01/5e13f2daced6e.jpg', 200.00, 0, 0.00, 33.00, 233.00, 233.00, 0.00, 1578365662, 0, 0, 0, 0, 0, 0, 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 200, '11321313', '122', 0, 0, '', '::1', 0, 0, 0, 111.00, 0.00, 0, '', '', 1, 0, 0, 0, '{\"0\":\"33.00\",\"4\":\"33.00\"}');
+INSERT INTO `shop_order_info` VALUES (187, 0, 4, 0, 185, '2020010761441-2', 0, '', 0, 1, 0, 29889, 7, 1, 0, 1, '', '12313', 110000, 110100, 110101, '北京,北京市,东城区', '15625077763', '', '', '15625077763', '', '', '', 0, '', 3, 'offline', '线下打款', 2, '/./upload/proposal/2020/01/5e13f2daced6e.jpg', 200.00, 0, 0.00, 33.00, 233.00, 233.00, 0.00, 1578365662, 0, 0, 0, 0, 0, 0, 0, '', 0.00, 0.00, 0.00, 0.00, 0.00, 200, '11321313', '122', 1, 0, '', '::1', 0, 0, 0, 111.00, 0.00, 0, '', '', 1, 0, 0, 0, '{\"0\":\"33.00\",\"4\":\"33.00\"}');
 COMMIT;
 
 -- ----------------------------
@@ -9588,7 +9589,7 @@ CREATE TABLE `shop_print_template` (
   `template_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `order_id` int(10) unsigned NOT NULL COMMENT '订单id',
   `order_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '订单号',
-  `temp_html` text COMMENT '模板代码',
+  `temp_html` longtext COMMENT '模板代码',
   PRIMARY KEY (`template_id`),
   KEY `order_id` (`order_id`),
   KEY `order_sn` (`order_sn`)
@@ -9614,6 +9615,7 @@ CREATE TABLE `shop_shipping` (
   `customer_pwd` varchar(255) DEFAULT '' COMMENT '电子面单密码（快递鸟）',
   `month_code` varchar(50) NOT NULL DEFAULT '' COMMENT '月结号（快递鸟）',
   `send_site` varchar(60) NOT NULL DEFAULT '' COMMENT '网点（快递鸟）',
+  `template_size` varchar(60) NOT NULL DEFAULT '' COMMENT '模板ID',
   PRIMARY KEY (`shipping_id`) USING BTREE,
   KEY `kd_type` (`kdn_code`) USING BTREE,
   KEY `shipping_code` (`shipping_code`) USING BTREE
@@ -9623,25 +9625,25 @@ CREATE TABLE `shop_shipping` (
 -- Records of shop_shipping
 -- ----------------------------
 BEGIN;
-INSERT INTO `shop_shipping` VALUES (1, 'ZT', '线下自提', '自己到线下门店或自提点提货', 1, 0, 1, 1, 0, 1, '', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (6, 'SF', '顺丰', '', 1, 0, 0, 0, 0, 0, 'SF', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (7, 'EMS', 'EMS', '', 1, 0, 0, 0, 0, 0, 'EMS', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (8, 'ZJS', '宅急送', '', 1, 0, 0, 0, 0, 0, 'ZJS', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (9, 'YZPY', '邮政快递包裹', '', 1, 0, 0, 0, 0, 0, 'YZPY', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (10, 'ZTKY', '中铁快运', '', 1, 0, 0, 0, 0, 0, 'ZTKY', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (11, 'YZBK', '邮政国内标快', '', 1, 0, 0, 0, 0, 0, 'YZBK', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (12, 'UAPEX', '全一快递', '', 1, 0, 0, 0, 0, 0, 'UAPEX', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (13, 'DBL', '德邦', '', 1, 0, 0, 0, 0, 0, 'DBL', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (14, 'UC', '优速', '', 1, 0, 0, 0, 0, 0, 'UC', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (15, 'YD', '韵达', '', 1, 0, 0, 0, 0, 0, 'YD', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (16, 'YTO', '圆通', '', 1, 0, 0, 0, 0, 0, 'YTO', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (17, 'YCWL', '远成', '', 1, 0, 0, 0, 0, 0, 'YCWL', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (18, 'ANE', '安能', '', 1, 0, 0, 0, 0, 0, 'ANE', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (19, 'HTKY', '百世快递', '', 1, 0, 0, 0, 0, 0, 'HTKY', '511057_0032', 'eXHbjwFOPB32', '', '');
-INSERT INTO `shop_shipping` VALUES (20, 'JDKY', '京东快运', '', 1, 0, 0, 0, 0, 0, 'JDKY', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (21, 'ANEKY', '安能快运', '', 1, 0, 0, 0, 0, 0, 'ANEKY', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (22, 'DBLKY', '德邦快运', '', 1, 0, 0, 0, 0, 0, 'DBLKY', '', '', '', '');
-INSERT INTO `shop_shipping` VALUES (23, 'LB', '龙邦快运', '', 1, 0, 0, 0, 0, 0, 'LB', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (1, 'ZT', '线下自提', '自己到线下门店或自提点提货', 1, 0, 1, 1, 0, 1, '', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (6, 'SF', '顺丰', '', 1, 0, 0, 0, 0, 0, 'SF', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (7, 'EMS', 'EMS', '', 1, 0, 0, 0, 0, 0, 'EMS', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (8, 'ZJS', '宅急送', '', 1, 0, 0, 0, 0, 0, 'ZJS', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (9, 'YZPY', '邮政快递包裹', '', 1, 0, 0, 0, 0, 0, 'YZPY', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (10, 'ZTKY', '中铁快运', '', 1, 0, 0, 0, 0, 0, 'ZTKY', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (11, 'YZBK', '邮政国内标快', '', 1, 0, 0, 0, 0, 0, 'YZBK', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (12, 'UAPEX', '全一快递', '', 1, 0, 0, 0, 0, 0, 'UAPEX', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (13, 'DBL', '德邦', '', 1, 0, 0, 0, 0, 0, 'DBL', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (14, 'UC', '优速', '', 1, 0, 0, 0, 0, 0, 'UC', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (15, 'YD', '韵达', '', 1, 0, 0, 0, 0, 0, 'YD', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (16, 'YTO', '圆通', '', 1, 0, 0, 0, 0, 0, 'YTO', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (17, 'YCWL', '远成', '', 1, 0, 0, 0, 0, 0, 'YCWL', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (18, 'ANE', '安能', '', 1, 0, 0, 0, 0, 0, 'ANE', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (19, 'HTKY', '百世快递', '', 1, 0, 0, 0, 0, 0, 'HTKY', '511057_0032', 'eXHbjwFOPB32', '', '', '');
+INSERT INTO `shop_shipping` VALUES (20, 'JDKY', '京东快运', '', 1, 0, 0, 0, 0, 0, 'JDKY', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (21, 'ANEKY', '安能快运', '', 1, 0, 0, 0, 0, 0, 'ANEKY', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (22, 'DBLKY', '德邦快运', '', 1, 0, 0, 0, 0, 0, 'DBLKY', '', '', '', '', '');
+INSERT INTO `shop_shipping` VALUES (23, 'LB', '龙邦快运', '', 1, 0, 0, 0, 0, 0, 'LB', '', '', '', '', '');
 COMMIT;
 
 -- ----------------------------
@@ -9952,7 +9954,7 @@ CREATE TABLE `users` (
 -- Records of users
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES (29889, 0, 7, '15625077763', '', 'bfb4060d37b944afa1c6d96f5192323e', '4d1638df3997ea92385f7ba389a67ad3', 'aaa', '/upload/headimg/9/4vadfuqUrdQZ.jpg', NULL, 'RQTOs4ZOs9lmISEK', '', 0, 0, 0, 0, 0, 1565228912, 0.00, 0, 1578365685, 1566799595, 1578399231, '::1', 1578361023, '::1', 0, 1578099596, 0, 0);
+INSERT INTO `users` VALUES (29889, 0, 7, '15625077763', '', 'bfb4060d37b944afa1c6d96f5192323e', '4d1638df3997ea92385f7ba389a67ad3', 'aaa', '/upload/headimg/9/4vadfuqUrdQZ.jpg', NULL, 'RQTOs4ZOs9lmISEK', '', 0, 0, 0, 0, 0, 1565228912, 0.00, 0, 1578365685, 1566799595, 1578466254, '::1', 1578452105, '::1', 0, 1578099596, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -9974,7 +9976,7 @@ CREATE TABLE `users_account` (
 -- Records of users_account
 -- ----------------------------
 BEGIN;
-INSERT INTO `users_account` VALUES (29889, 0.39, 100, 806.39, 144, 0.00, 1578101614);
+INSERT INTO `users_account` VALUES (29889, 0.39, 100, 906.39, 144, 0.00, 1578466824);
 COMMIT;
 
 -- ----------------------------
@@ -10002,7 +10004,7 @@ CREATE TABLE `users_account_log` (
   KEY `user_id` (`user_id`) USING BTREE,
   KEY `change_type` (`change_type`) USING BTREE,
   KEY `by_id` (`by_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='帐户明细流水';
 
 -- ----------------------------
 -- Records of users_account_log
@@ -10032,6 +10034,7 @@ INSERT INTO `users_account_log` VALUES (21, 29889, 0.00, 0.39, 0, 100, -110.00, 
 INSERT INTO `users_account_log` VALUES (22, 29889, 0.00, 0.39, 0, 100, 1000.00, 50.39, 0, 144, 1574834638, '::1', '111', 1, '9d41e69c76ea0f6833eba800d0120431', 10002);
 INSERT INTO `users_account_log` VALUES (23, 29889, 0.00, 0.39, 0, 100, -134.00, 1050.39, 0, 144, 1574834642, '::1', '订单余额支付', 3, '7708516a00a827f6578e847152ef94c0', 172);
 INSERT INTO `users_account_log` VALUES (24, 29889, 0.00, 0.39, 0, 100, -110.00, 916.39, 0, 144, 1578101614, '::1', '提现扣除', 5, 'a29e1c0ee3aacd646b628e92f2a898d6', 3);
+INSERT INTO `users_account_log` VALUES (25, 29889, 0.00, 0.39, 0, 100, 100.00, 806.39, 0, 144, 1578466824, '::1', '充值到帐', 6, '0585fc1bf3a55b2a245ba127b6e75763', 1);
 COMMIT;
 
 -- ----------------------------
@@ -10100,7 +10103,7 @@ CREATE TABLE `users_log_login` (
   `log_time` int(10) DEFAULT '0' COMMENT '记录时间',
   `user_id` mediumint(8) DEFAULT '0' COMMENT '会员ID',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=464 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
+) ENGINE=MyISAM AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员登陆日志';
 
 -- ----------------------------
 -- Records of users_log_login
@@ -10146,6 +10149,8 @@ INSERT INTO `users_log_login` VALUES (460, '::1', 1578292135, 29889);
 INSERT INTO `users_log_login` VALUES (461, '::1', 1578310356, 29889);
 INSERT INTO `users_log_login` VALUES (462, '::1', 1578361023, 29889);
 INSERT INTO `users_log_login` VALUES (463, '::1', 1578399231, 29889);
+INSERT INTO `users_log_login` VALUES (464, '::1', 1578452105, 29889);
+INSERT INTO `users_log_login` VALUES (465, '::1', 1578466254, 29889);
 COMMIT;
 
 -- ----------------------------
@@ -10197,7 +10202,14 @@ CREATE TABLE `users_recharge_log` (
   `check_time` int(10) DEFAULT '0' COMMENT '审核时间',
   `admin_id` mediumint(8) DEFAULT '0' COMMENT '管理员ID',
   PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员充值日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='会员充值日志表';
+
+-- ----------------------------
+-- Records of users_recharge_log
+-- ----------------------------
+BEGIN;
+INSERT INTO `users_recharge_log` VALUES (1, 29889, 'recharge157846679966', 100.00, '', 3, 'offline', '线下打款', '/upload/recharge/20200108/Ti4wSxYF6T32.jpg', 9, 1578466799, 1578466824, 10002);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for users_sign

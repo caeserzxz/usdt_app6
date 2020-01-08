@@ -1,0 +1,146 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css"/>
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css"/>
+<style>
+    .right {
+        display: block;
+        text-align: right;
+    }
+
+    .balanceDetail .top .dataBox {
+        height: 0.666666rem;
+        margin-bottom: 0.133333rem;
+    }
+
+    .noData {
+        height: 0.666666rem;
+        text-align: center;
+        line-height: 0.666666rem;
+    }
+
+    .list {
+        padding: 0.133333rem .266667rem !important;
+        margin-top: .133333rem;
+    }
+
+    .list-isscucc {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .img-boxs {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .img-boxs li {
+        float: left;
+        margin-top: .133333rem;
+        width: 1.42rem;
+        height: 1.2rem;
+        padding: 0.05rem;
+        margin-right:0.1rem ;
+        border: 1px solid #f3f3f3;
+
+    }
+    .img-boxs li:nth-child(3){
+        margin-right:0rem ;
+    }
+    .img-boxs img {
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0px auto;
+    }
+</style>
+{/block}
+{block name="pageType"}balanceDetail{/block}
+{block name="main" }
+<div class="top">
+    <div class="dataBox">
+        <div class="left">
+            <input type="text" class="fs28 fw_b color_3" readonly value="" id="nowValue"/>
+        </div>
+        <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
+    </div>
+</div>
+<div class="page-bd">
+    <!-- 页面内容-->
+
+</div>
+
+{literal}
+<script type="text/html" id="logTpl">
+{{each list as item index}}
+<div class="list">
+    <div class="list-isscucc">
+        <p class="fs28 color_3 fw_b">充值金额:￥{{item.order_amount}}</p>
+        <p class="Fs24 color_9">{{item.status_lang}}</p>
+    </div>
+    <p class="fs24 color_9">{{item._time}}</p>
+    <ul class="img-boxs">
+        {{each item.imgs as img }}
+            <li><img src="{{img}}" alt=""></li><li><img src="{{img}}" alt=""></li><li><img src="{{img}}" alt=""></li><li><img src="{{img}}" alt=""></li><li><img src="{{img}}" alt=""></li>
+        {{/each}}
+    </ul>
+</div>
+{{/each}}
+</script>
+{/literal}
+{/block}
+
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/datePicker.js"></script>
+<script>
+	function getList(){
+		var arr = new Object;
+		arr.time = $('#nowValue').val();
+		jq_ajax('{:url("member/api.Users/getRechargeLog")}',arr,function(res){
+		    if (res.code == 0){
+		        _alert(res.msg);
+		        return false;
+            }
+            if (typeof(res.list) == 'undefined'){
+                $('.page-bd').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+            }else{
+                $('.page-bd').html(template('logTpl', res));
+            }
+			$('#nowValue').val(res.time);
+		});
+	}
+    $(function(){		
+		getList();
+        $('.dataBox').on('click',function(){
+            $('.model').hide()
+            $('.typeimg').attr('data-type','0')
+            $('.typeimg').css('transform','rotate(0deg)')
+            demoClick()
+        })
+
+    })
+
+    // 日期选择器
+    function demoClick() {
+        var nowValue = document.getElementById('nowValue');
+        var reg = new RegExp("年|月","g");
+        var nowval=nowValue.value.replace(reg,"-").substring(0,7);
+        new DatePicker({
+            "type": "1",//0年, 1年月, 2月日, 3年月日
+            "title": '请选择年月',//标题(可选)
+            "maxYear": "2030",//最大年份（可选）
+            "minYear": "2010",//最小年份（可选）
+            "separator": "-",//分割符(可选)
+            "defaultValue": nowval,//默认值（可选）
+            "callBack": function (val) {
+                //回调函数（val为选中的日期）
+                var arr=val.split('-');
+                val=arr[0]+'年'+arr[1]+'月'
+                nowValue.value = val;
+				getList();
+            }
+        });
+    }
+</script>
+
+{/block}

@@ -7,6 +7,7 @@ use app\member\model\UsersModel;
 use app\member\model\UsersSignModel;
 use app\member\model\WithdrawModel;
 use app\member\model\AccountLogModel;
+use app\member\model\RechargeLogModel;
 use app\mainadmin\model\MessageModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
@@ -355,7 +356,33 @@ class Users extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
+    /*------------------------------------------------------ */
+    //-- 获取会员充值日志
+    /*------------------------------------------------------ */
+    public function getRechargeLog()
+    {
+        $time = input('time', '', 'trim');
+        if (empty($time)) {
+            $time = date('Y年m月');
+        }
+        $return['time'] = $time;
+        $_time = strtotime(str_replace(array('年', '月'), array('-', ''), $time));
+        $return['code'] = 1;
+        $RechargeLogModel = new RechargeLogModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+        $rows = $RechargeLogModel->where($where)->order('add_time DESC')->select();
 
+        $lang = lang('recharge');
+        foreach ($rows as $key => $row) {
+            $row['_time'] = timeTran($row['add_time']);
+            $row['order_amount'] = $row['order_amount'];
+            $row['status_lang'] = $lang[$row['status']];
+            $row['imgs'] = explode(',',$row['imgs']);
+            $return['list'][] = $row;
+        }
+        return $this->ajaxReturn($return);
+    }
     /*------------------------------------------------------ */
     //-- 获取会员帐户变动日志-----改
     /*------------------------------------------------------ */
