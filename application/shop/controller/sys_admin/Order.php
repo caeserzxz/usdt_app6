@@ -361,48 +361,52 @@ class Order extends AdminController
         return $this->fetch('shop@sys_admin/order/shipping');
     }
 
+
+    /**
+     * 快递鸟打单页面
+     */
+    public function printPage(){
+        $order_id = input('id');
+        if(!$order_id){
+            return $this->error('订单号异常');
+        }
+        $print_type = settings('kdn_print_type');
+        $this->assign('print_type',$print_type);
+        $this->assign('order_ids',$order_id);
+        return $this->fetch();
+    }
+
     /*------------------------------------------------------ */
-    //-- 快递鸟批量打单
+    //-- 快递鸟批量打单数据出口
     /*------------------------------------------------------ */
     public function printOrder(){
         $order_id = input('id');
         if(!$order_id){
-            $this->error('订单号异常');
+            return $this->error('订单号异常');
         }
         $id_arr = explode(',',$order_id);
-        $by_one = count($id_arr)>1?false:true;
         $orderModel = new OrderModel();
         $PrintModel = new PrintTemplateModel();
-        $html = '';
+        $result = [];
         foreach ($id_arr as $k => $v) {
+            $order = $orderModel->where(['order_id'=>$v])->find();
             $order_devc = $PrintModel->where('order_id',$v)->find();
+            $arr = [];
+            $arr['order_sn'] = $order['order_sn'];
             if(!$order_devc){
-                if($by_one){
-                    $this->error('该订单未在快递鸟下单!');
-                }
-                continue;
+                $arr['code'] = 0;
+                $arr['msg'] = '该订单未在快递鸟下单';
+                $arr['html'] = '';
+            }else{
+                $arr['code'] = 1;
+                $arr['msg'] = '打印成功';
+                $arr['html'] = $order_devc['temp_html'];
+                $orderModel->where(['order_id'=>$v])->update(['print_state'=>1]);
+                $orderModel->cleanMemcache($v);
             }
-            if($k>0){
-                $html .= '<div style="page-break-after: always;"></div>';
-            }
-            $html .= $order_devc['temp_html'];
-            $orderModel->where(['order_id'=>$v])->update(['print_state'=>1]);
+            $result[] = $arr;
         }
-
-        $header = <<<EOF
-        <head><title>快递鸟批量打单</title></head>
-EOF;
-        
-        $script = <<<EOF
-        <script src="/static/js/jquery/jquery/2.1.4/jquery.min.js"></script>
-        <script>
-        $(".yd").css("margin-top","5px");
-        $(function(){
-            window.print();
-        })
-        </script>
-EOF;
-        return $header.$html.$script;
+        return json($result);
     }
 
     /*------------------------------------------------------ */

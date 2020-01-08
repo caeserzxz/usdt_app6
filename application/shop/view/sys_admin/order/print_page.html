@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<style>
+    .ckbox {
+        width: 300px;
+        height: 200px;
+        background: #ff730f;
+        position: absolute;
+        left: calc(50% - 150px);
+        top: 200px;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    .ckbox select {
+        padding: 5px;
+        margin: 0px 30px;
+        margin-top: 10px;
+        width: 230px;
+    }
+    .ckbox p{
+        margin-top: 30px;
+        color: #f2f2f2;
+    }
+    .cop_btn{
+        background: #fefe3f;
+        padding: 6px 40px;
+        margin-top: 12px;
+    }
+</style>
+<body>
+<div id="text">
+    <div class="toast">
+        <p style="color:red">如果打印未启动,请先下载安装打印插件:</p>
+        <p><a href="http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.093Extend.zip">C-Lodop扩展版32位3.093</a>
+        </p>
+        <p><a href="http://www.lodop.net/download/CLodop_Setup_for_Win64NT_3.093Extend.zip">C-Lodop扩展版64位3.093</a></p>
+        <p>安装完毕刷新本页即可开始打单:</p>
+    </div>
+</div>
+
+<div class="ckbox" style="display: none;">
+<p>请先选择默认打印机和打印尺寸</p>
+<select name="cop_name" id="cop_name" onchange="demoCreatePagSizeList()"></select>
+<select name="cop_size" id="cop_size"></select>
+<button class="cop_btn" onclick="print()">确认</button>
+</div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/jquery/jquery/1.8.3/jquery.min.js"></script>
+<script src='http://127.0.0.1:8000/CLodopfuncs.js'></script>
+<script>
+    var order_ids = "{$order_ids|default=''}";
+    var data = {
+        'id': order_ids
+    }
+    var CLODOP;
+    window.On_CLodop_Opened = function () {
+        CLODOP = getCLodop();
+        demoCreatePrinterList();
+        demoCreatePagSizeList();
+        $('.toast').css('display', 'none');
+        startPrint();
+    };
+
+
+    //获取打印机设备数，用于进行遍历
+    // var count = CLODOP.GET_PRINTER_COUNT();
+    // window.onload = function print() {
+    //     for (var i = 0; i < count; i++) {
+    //         //根据设备序号获取设备名
+    //         var msg = LODOP.GET_PRINTER_NAME(i);
+    //         //将设备名添加到select块，并添加相应value值
+    //         if (i == 0) {
+    //             $("#cop_name").append("<option value='" + i + "'>" + msg + "</option>");
+    //         } else {
+    //             $("#cop_name").append("<option value='" + i + "'>" + msg + "</option>");
+    //         }
+
+    //         // alert(LODOP.GET_PRINTER_NAME(1));
+    //     }
+    // }
+
+    function startPrint() {
+        var print_type = {$print_type|default=1};
+        if(get_print() == true){
+            $.post('{:url("shop/sys_admin.order/printOrder")}', data, function (res) {
+                if (res) {
+                    var obj = $('#text');
+                    $.each(res, function (index, value) {
+                        if(value.code == 1){
+                            var strHTML = value.html;
+                            //一联单打单
+                            if(print_type == 1){
+                                CLODOP.SET_PRINTER_INDEXA(localStorage.getItem('printn'));
+                                CLODOP.SET_PRINT_PAGESIZE(0,760,1330,'yt');
+                                CLODOP.ADD_PRINT_HTM(0, "1mm", "100%", "100%", strHTML);
+                                CLODOP.PRINT();
+                            }else{
+                                //二联单打单
+                                CLODOP.SET_PRINTER_INDEXA(localStorage.getItem('printn'));
+                                CLODOP.SET_PRINT_PAGESIZE(0,0,0,localStorage.getItem('prints'));
+                                CLODOP.ADD_PRINT_HTM(0, 0, "100%", "100%", strHTML);
+                                CLODOP.PRINT();
+                            }
+                            
+                        }
+                        var html = '';
+                        html += '<br>'
+                        html += '<p>订单编号:' + value.order_sn + '</p>';
+                        html += '<p>状态:' + value.msg + '</p>';
+                        obj.append(html);
+                        // CLODOP.PREVIEW();
+                    });
+                }
+            });
+        }else{
+           showprint();
+        }
+    }
+
+    //修改默认打印机
+    function showprint(){
+        $('.ckbox').show();
+    }
+
+    //确认选择打印机
+    function print() {
+        $('.ckbox').hide();
+        var value = $('#cop_name').val();
+        var size = $('#cop_size').val();
+        localStorage.setItem('printn', value);
+        localStorage.setItem('prints', size);
+        startPrint();
+    }
+
+
+    //获取默认打印机
+    function get_print(){
+        var temps = localStorage.getItem('printn');
+        var size =  localStorage.getItem('prints');
+        if(temps == undefined || size == undefined){
+            return false;
+        }else{
+            CLODOP.SET_PRINTER_INDEX(unescape(temps));
+            var strPName = CLODOP.GET_PRINTER_NAME(unescape(temps));
+            console.log("当前设备：" + strPName);
+            return true;
+        }
+    }
+
+    //获取打印机列表
+    function demoCreatePrinterList(){
+            CLODOP.Create_Printer_List(document.getElementById('cop_name'));
+            demoCreatePagSizeList();
+    }
+
+    //获取打印机纸张列表
+    function demoCreatePagSizeList(){
+        var oSelect=document.getElementById('cop_size');
+        var iPrintIndex=document.getElementById("cop_name").value;
+        CLODOP.Create_PageSize_List(oSelect,iPrintIndex);
+    }
+
+</script>
+</html>

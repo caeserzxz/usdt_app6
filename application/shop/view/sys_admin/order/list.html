@@ -53,8 +53,8 @@
         </a>
         {/eq}
         {eq name="vo.ostatus" value="已发货" }
-        <a href="{:url('printOrder',array('id'=>$vo['order_id']))}" class="m-xs" title="打单" target="_blank">
-            <i class="fa fa-print"></i>
+        <a href="{:url('printPage',array('id'=>$vo['order_id']))}" class="m-xs" title="打单" target="_blank">
+                <i class="fa fa-print"></i>
         </a>
         {/eq}
     </td>
