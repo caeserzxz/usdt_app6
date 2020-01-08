@@ -75,6 +75,7 @@ class Goods extends ClientbaseController{
 		$goods_id = input('goods_id',0,'intval');
 		$goods = $this->Model->info($goods_id);
 		$this->assign('goods', $goods);
+        $this->assign('goods_id', $goods_id);
         $shareUrl = getUrl('goods/info','',['id'=>$goods_id]);
         if ($this->is_wx == 1){
             $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
