@@ -51,7 +51,7 @@ class Recharge extends AdminController
 			$where[] = ['status','=',$search['status']];
 		}
 		if ($search['pay_id'] > 0){
-			$where[] = ['pay_code','=',$search['pay_id']];
+			$where[] = ['pay_id','=',$search['pay_id']];
 		}
 		if (empty($search['keyword']) == false){
 			 $UsersModel = new UsersModel();
