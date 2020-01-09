@@ -644,6 +644,7 @@ class OrderModel extends BaseModel
             $upData['sign_time'] = $time;
             $res = $this->upInfo($upData);
             if ($res === true) {
+                $orderInfo = $this->info($order_id);
                 $this->_log($orderInfo, '自动签收');
             }
         }
