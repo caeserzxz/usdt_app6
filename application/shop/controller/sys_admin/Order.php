@@ -507,7 +507,7 @@ class Order extends AdminController
             return $this->success('修改价格成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return $this->fetch('shop@sys_admin/order/change_price')->getContent();;
+        return $this->fetch('shop@sys_admin/order/change_price');
     }
     /*------------------------------------------------------ */
     //-- 修改收货信息
@@ -549,7 +549,7 @@ class Order extends AdminController
             return $this->success('修改收货信息成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
-        return $this->fetch('shop@sys_admin/order/edit_consignee')->getContent();
+        return $this->fetch('shop@sys_admin/order/edit_consignee');
     }
 
     /*------------------------------------------------------ */

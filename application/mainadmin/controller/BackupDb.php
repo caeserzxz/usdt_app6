@@ -116,7 +116,7 @@ class BackupDb  extends AdminController{
 		$glob = new \FilesystemIterator($path,  $flag);
 		$list = array();$filenum = $total = 0;
 		foreach ($glob as $name => $file) {
-			if(preg_match('/^\d{8,8}-\d{6,6}-\d+\.sql(?:\.gz)?$/', $name)){
+			if(preg_match('/^\d{8,8}-\d{6,6}\d+-1\.sql(?:\.gz)?$/', $name)){
 				$name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
 				$date = "{$name[0]}-{$name[1]}-{$name[2]}";
 				$time = "{$name[3]}:{$name[4]}:{$name[5]}";
