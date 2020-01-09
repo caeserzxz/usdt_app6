@@ -301,7 +301,7 @@ class ShopPageTheme extends BaseModel {
         $repUrl[] = ['\/member\/center\/index','\/pages\/my\/my'];
         $repUrl[] = ['\/shop\/goods\/index\/cid\/','\/pages\/goodsList\/goodsList?categoryid='];
         $repUrl[] = ['\/shop\/goods\/index','\/pages\/goodsList\/goodsList'];
-        $repUrl[] = ['\/shop\/flow\/cart','pages\/cart\/cart'];
+        $repUrl[] = ['\/shop\/flow\/cart','\/pages\/cart\/cart'];
         $repUrl[] = ['\/shop\/index\/allsort','\/pages\/classify\/classify'];
         $repUrl[] = ['\/shop\/order\/index','\/pages\/myorders\/myorders'];
         $repUrl[] = ['\/member\/center\/address','\/pages\/address\/address'];

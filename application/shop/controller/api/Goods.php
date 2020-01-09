@@ -346,7 +346,7 @@ class Goods extends ApiController
         $list['title'] = $goods['goods_name'];
           
         $web_path = config('config.host_path');
-        $goods['m_goods_desc'] = preg_replace('/<img src=\"/', '<img style="width:100%;height:auto;" src="' .$web_path.$goods['m_goods_desc']);
+        $goods['m_goods_desc'] = preg_replace('/<img src=\"/', '<img style="width:100%;height:auto;" src="' .$web_path,$goods['m_goods_desc']);
         $list['goods'] = $goods;
         $list['imgsList'] = $this->Model->getImgsList($goods_id);
         $list['skuImgs'] = $this->Model->getImgsList($goods_id,true,true);
