@@ -153,7 +153,7 @@ $('.base-header .left-arrow').attr('href','/')
             })
             
         }
-	    // window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
+	    window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
   });
   if (goPay == 1){
 	   window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
