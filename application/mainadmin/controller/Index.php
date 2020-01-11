@@ -171,18 +171,15 @@ class Index extends AdminController
                 $info['order_pay_num'] += 1;//成交数
                 $info['order_amount'] += $row['order_amount'];//成交金额
                 $info['dividend_amount'] += $row['dividend_amount'];//分佣金额
+                if ($row['shipping_status'] > 0){
+                    $info['shipping_num'] += 1;
+                }
+                if ($row['shipping_status'] == 2){
+                    $info['sign_num'] += 1;
+                }
             }
         }
-        if ($row['order_status'] == 1) {
-            $info['order_pay_num'] += 1;//成交数
-            $info['order_amount'] += $row['order_amount'];//成交金额
-            if ($row['shipping_status'] > 0){
-                $info['shipping_num'] += 1;
-            }
-            if ($row['shipping_status'] == 2){
-                $info['sign_num'] += 1;
-            }
-        }
+
         Cache::set($mkey, $info, 20);
         return $info;
     }

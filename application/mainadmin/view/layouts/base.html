@@ -10,9 +10,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <title><?php echo empty($title)?'后台管理系统':$title;?></title>
-  
+
     <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
-    
+
     <link rel="stylesheet" href="__STATIC__/main/css/app.css"/>
     <!--Basic Styles-->
     <link href="__STATIC__/main/css/stylesheets/bootstrap.min.css" rel="stylesheet" />
@@ -21,11 +21,11 @@
     <!--Beyond styles-->
     <link id="beyond-link" href="__STATIC__/main/css/stylesheets/beyond.min.css" rel="stylesheet" type="text/css" />
     <link href="__STATIC__/main/css/stylesheets/style.min.css" rel="stylesheet" />
-    
-    
+
+
     <script type="text/javascript" src="__STATIC__/js/jquery/jquery/1.8.3/jquery.min.js"></script>
     <script src="__STATIC__/js/inside.js"></script>
-    
+
     <link rel="stylesheet" href="__STATIC__/main/css/public.css"/>
     <link href="__STATIC__/main/css/stylesheets/daterangepicker/daterangepicker-bs3.min.css" rel="stylesheet" />
     <script src="__STATIC__/main/js/jquery.webui-popover.min.js"></script>
@@ -41,7 +41,7 @@
 		order_by = '<?=empty($data["order_by"])?'':$data["order_by"];?>',
 		sort_by = '<?=empty($data["sort_by"])?'':$data["sort_by"];?>',
 		page_size = '';
-		
+
 		/**
  * app.js
  */
@@ -65,10 +65,10 @@ $(function () {
     });
 
 });
-    </script>    
+    </script>
     {block name="head"}{/block}
 </head>
-  
+
 
 <body  {block name="body"}{/block}>
 <div class="am-g tpl-g">
@@ -80,13 +80,13 @@ $(function () {
             <div class="am-fl tpl-header-button switch-button">
                 <i class="fa fa-bars"></i>
             </div>
-           
+
            {volist name="top_menus" id="vo"}
                 <a class="am-fl tpl-header-fun-button {$_module==$vo['key']?'top_select':'top_no_select'}"  href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
 
            {/volist}
 
-            
+
             <!-- 其它功能-->
             <div class="fr tpl-header-navbar">
                 <ul>
@@ -118,7 +118,7 @@ $(function () {
         <!-- 一级菜单 -->
         <ul class="sidebar-nav">
             <li class="sidebar-nav-heading">正品社交电商系统</li>
-            <?php foreach ($menus as $key => $item): 
+            <?php foreach ($menus as $key => $item):
                 if (empty($item['submenu'])==false){
                     $vob = reset($item['submenu']);
                     if (empty($vob['submenu']) == false){
@@ -139,7 +139,7 @@ $(function () {
             <div style=" position: absolute; bottom: 0px; width:150px;padding: 5px; color: #fff; font-size: 12px; text-align: center;"> Copyright © 2013-2019 All Rights <br>广东正品信息科技有限公司版权所有</div>
         </ul>
         <!-- 子级菜单-->
-        <?php 
+        <?php
         $second = isset($menus[$menus_group]['submenu']) ? $menus[$menus_group]['submenu'] : [];
         ?>
         <?php if (!empty($second)) : ?>
@@ -194,7 +194,7 @@ $(function () {
 <script src="__STATIC__/assets/sea.js"></script>
 <script src="__STATIC__/assets/seajs_config.js"></script>
 <script type="text/javascript">
-	seajs.use("dist/application/app.js");	
+	seajs.use("dist/application/app.js");
 </script>
 {block name="footer"}{/block}
 </body>

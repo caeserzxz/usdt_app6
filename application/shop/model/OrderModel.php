@@ -563,10 +563,13 @@ class OrderModel extends BaseModel
         $this->cleanMemcache($order_id);
         return true;
     }
-    /*------------------------------------------------------ */
-    //-- 订单后台操作权限
-    /*------------------------------------------------------ */
-    public function operating(&$order)
+
+    /**订单后台操作权限
+     * @param array $order 订单详情
+     * @param bool $by_supplyer 供应商管理
+     * @return array
+     */
+    public function operating(&$order,$by_supplyer = false)
     {
         if ($order['is_split'] == 2){//已拆分订单主订单不能操作
             return [];
@@ -575,6 +578,18 @@ class OrderModel extends BaseModel
         $ss = $order['shipping_status'];
         $ps = $order['pay_status'];
         $time = time();
+        if ($by_supplyer == true){
+            if ($os == $this->config['OS_CONFIRMED']) { //已确认
+                if ($ss == $this->config['SS_UNSHIPPED']) {//未发货
+                    $operating['shipping'] = true;
+                } elseif ($ss == $this->config['SS_SHIPPED']) {//已发货
+                    $operating['sign'] = true;
+                    $operating['unshipping'] = true;//设为未发货
+                    $operating['returned'] = true;//设为退货
+                }
+            }
+            return $operating;
+        }
         if ($os == $this->config['OS_UNCONFIRMED']) {//未确认
             $operating['isCancel'] = true;//取消
             if ($order['pay_id'] == 1) $operating['confirmed'] = true;//确认
@@ -682,10 +697,14 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 拆分订单
     /*------------------------------------------------------ */
-    public function splitOrder(&$orderInfo)
+    public function splitOrder($order_id)
     {
         static $OrderGoodsModel;
-
+        $orderInfo = $this->find($order_id);
+        if (empty($orderInfo)){
+            return false;
+        }
+        $orderInfo = $orderInfo->toArray();
         if ($orderInfo['is_split'] != 1) {
             return false;
         }
@@ -708,8 +727,10 @@ class OrderModel extends BaseModel
             $oglist[$og['supplyer_id']]['use_integral'] += $og['use_integral'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['settle_price'] += $og['settle_price'] * $og['goods_number'];
             $oglist[$og['supplyer_id']]['goods_amount'] += $og['sale_price'] * $og['goods_number'];
-            $oglist[$og['supplyer_id']]['discount'] += $og['discount'];
-            $oglist[$og['supplyer_id']]['goods_sns'][] = $og['goods_sn'];
+            if ($og['shop_price'] > $og['sale_price']) {
+                $oglist[$og['supplyer_id']]['discount'] += ($og['shop_price'] - $og['sale_price']) * $og['goods_number'];
+            }
+            $oglist[$og['supplyer_id']]['buy_goods_sn'][] = $og['goods_sn'];
             $oglist[$og['supplyer_id']]['goods_ids'][] = $og['goods_id'];
             $oglist[$og['supplyer_id']]['goods_list'][] = $og;
         }
@@ -724,9 +745,8 @@ class OrderModel extends BaseModel
             $inArr['give_integral'] = $sogl['give_integral'];
             $inArr['use_integral'] = $sogl['use_integral'];
             $inArr['pid'] = $orderInfo['order_id'];
-            $inArr['buy_goods_sn'] = join(',', $sogl['goods_sns']);
+            $inArr['buy_goods_sn'] = join(',', $sogl['buy_goods_sn']);
             $inArr['buy_goods_id'] = join(',', $sogl['goods_ids']);
-            $inArr['settle_price'] = $sogl['settle_price'];
             $inArr['discount'] = $sogl['discount'];
             $inArr['goods_amount'] = $sogl['goods_amount'];
             //使用相关优惠处理
@@ -743,6 +763,8 @@ class OrderModel extends BaseModel
                     $inArr['shipping_fee'] = $orderInfo['shipping_fee'] * $scale;
                 }
             }
+            $inArr['settle_goods_price'] = $sogl['settle_price'];
+            $inArr['settle_price'] = $sogl['settle_price'] + $inArr['shipping_fee'];
             $inArr['diy_discount'] = 0;
             if ($orderInfo['diy_discount'] > 0) {
                 $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;
@@ -790,6 +812,7 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     function paySuccessEval(&$orderInfo)
     {
+
         //执行库存扣除，下单时未扣库存，则支付成功后扣除
         //先扣库存才能拆分订单，拆分订单时不扣库存
         if ($orderInfo['is_stock'] == 0) {
@@ -817,7 +840,7 @@ class OrderModel extends BaseModel
         //确认订单，执行拆单处理，独立出来并外部使用事务
         if ($orderInfo['is_split'] == 1) {
             Db::startTrans();//启动事务
-            $res = $this->splitOrder($orderInfo);
+            $res = $this->splitOrder($orderInfo['order_id']);
             if ($res == true) {
                 $upData['is_split'] = 2;
                 $res = $this->where('order_id',$orderInfo['order_id'])->update($upData);

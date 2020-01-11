@@ -86,7 +86,12 @@ class Controller extends AdminController
         $list_type = input('list_type','','trim');
         $controller = explode('.',$this->controller);
         $controller = $controller[0];
+        $shipping_tmp_supplyer = settings('shipping_tmp_supplyer');//供应商自行配置
         foreach ($data as $group => $first) {
+            if ($shipping_tmp_supplyer == 0 && $first['controller'] == 'shipping_tpl'){//非供应商自行配置
+                unset($data[$group]);
+                continue;
+            }
             if ($controller == $first['controller']){
                   $this->menus_group = $group;
             }
@@ -104,9 +109,11 @@ class Controller extends AdminController
                     }
                 }
             }
-            if (empty($first['action'])){
+            if ($this->routeUri == $first['controller'] . '/' . $first['action'] || in_array($this->routeUri, explode(',', $first['urls']))) {
+                $data[$group]['active'] = 1;
+            }elseif (empty($first['action'])){
                 $data[$group]['active'] = $controller == $first['controller'];
-            }elseif($controller == $first['controller'] && $this->action == $first['action']){
+            }elseif($controller == $first['controller'] && $this->action == $first['action'] ){
                 $data[$group]['active'] = 1;
             }
         }

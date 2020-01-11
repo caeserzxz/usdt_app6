@@ -8,19 +8,22 @@ use app\mainadmin\model\RegionModel;
 
 class ShippingTpl extends AdminController
 {
+    public $supplyer_id = 0;//当前操作的供应商ID
 	/*------------------------------------------------------ */
 	//-- 优先执行
 	/*------------------------------------------------------ */
 	public function initialize(){
         parent::initialize();
-        $this->Model = new ShippingTplModel();		
+        $this->Model = new ShippingTplModel();
+        $this->assign('supplyer_id',$this->supplyer_id);
     }
    /*------------------------------------------------------ */
 	//-- 首页
 	/*------------------------------------------------------ */
     public function index()
-    {		
-		$list = $this->Model->order('is_default DESC')->select();
+    {
+        $where[] = ['supplyer_id','=',$this->supplyer_id];
+		$list = $this->Model->where($where)->order('is_default DESC')->select();
         $this->assign("list", $list);
         $this->assign("shippingList", ShippingModel::getToSTRows());
 		return $this->fetch();
@@ -58,6 +61,9 @@ class ShippingTpl extends AdminController
 	//-- $data array 自动读取对应的数据
 	/*------------------------------------------------------ */
 	public function asInfo($data){
+	    if ($this->supplyer_id > 0 && data['supplyer_id'] > 0 && $data['supplyer_id'] != $this->supplyer_id){
+            return $this->error('操作无效.');
+        }
 		$this->assign("d_region", $this->selRegion());
 		$data['sf_info'] =  ($data['sf_id']>0) ? json_decode($data['sf_info'],true) : [];	
 		$this->assign("shippingList", ShippingModel::getToSTRows());
@@ -68,8 +74,13 @@ class ShippingTpl extends AdminController
 	/*------------------------------------------------------ */
 	public function beforeAdd($row){
         if (empty($row['delivery'])) return $this->error('请选择运送方式！');
-        $this->oldData = $this->Model->find($row['sf_id']);
-
+        if ($this->supplyer_id > 0){//供应商管理
+            $where[] = ['supplyer_id','=',$this->supplyer_id];
+            $count = $this->Model->where($where)->count('sf_id');
+            if ($count>=3){
+                return $this->error('只能设置三套运费模板.');
+            }
+        }
         $sf_info = array();
         foreach ($row['delivery'] as $val){
             $sf_info[$val] = $row[$val];
@@ -77,7 +88,8 @@ class ShippingTpl extends AdminController
         }
         $row['sf_info'] = json_encode($sf_info);
         unset($row['delivery']);
-		$row['add_time'] = $row['update_time'] = time();		
+		$row['add_time'] = $row['update_time'] = time();
+        $row['supplyer_id'] = $this->supplyer_id;
 		return $row;
 	}
 	/*------------------------------------------------------ */
@@ -86,6 +98,7 @@ class ShippingTpl extends AdminController
 	public function afterAdd($row){
 		$info = '添加运费模板：'.$row['sf_name'];
 		if ($row['is_default'] == 1){
+            $where[] = ['supplyer_id','=',$this->supplyer_id];
 			$where[] = ['is_default','=',1];
 			$where[] = ['sf_id','<>',$row['sf_id']];
 			$this->Model->where($where)->update(['is_default'=>0]);
@@ -99,8 +112,10 @@ class ShippingTpl extends AdminController
 	/*------------------------------------------------------ */
 	public function beforeEdit($row){
 		if (empty($row['delivery'])) return $this->error('请选择运送方式！');
-
 		$this->oldData = $this->Model->find($row['sf_id'])->toArray();
+		if ($this->oldData['supplyer_id'] != $this->supplyer_id){
+            return $this->error('操作无效.');
+        }
 		if ($this->oldData['is_default'] == 1 && $row['is_default'] == 0){
 			return $this->error('默认模板不能直接设为非默认，请修改其它模板为默认.');
 		}
@@ -135,7 +150,11 @@ class ShippingTpl extends AdminController
 	public function delete(){
         $sf_id = input('sf_id',0,'intval');
 		if ($sf_id<1) return $this->error('传递参数失败！');
-		$res = $this->Model->where('sf_id',$sf_id)->delete();
+        $where[] = ['sf_id','=',$sf_id];
+        if ($this->supplyer_id > 0) {//供应商管理
+            $where[] = ['supplyer_id','=',$this->supplyer_id];
+        }
+		$res = $this->Model->where($where)->delete();
 		if ($res < 1) return $this->error();
 		$this->Model->cleanMemcache();
 		$this->_Log($sf_id,'删除运费模板');//记录日志

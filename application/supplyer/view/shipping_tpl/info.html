@@ -1,0 +1,360 @@
+{extend name="layouts/base" /}
+{block name="head" }
+<style>
+    .pop-area{line-height:1;margin-top:-10px;-webkit-user-select:none;width:830px}.
+                                                                                  pop-area .check{margin-right:7px}
+    .pop-area-row{border-bottom:1px solid #E8E8E8}
+    .pop-area-provinces{margin:10px 0}
+    .pop-area-provinces [disabled]{color:#aaa}
+    .pop-area-region{position:relative;display:inline-block;width:98px}
+    .pop-area-region .ys-hint3-content{left:-20px!important}
+    .pop-area-region .ico-help-arrow{left:23px!important}
+    .pop-area-region .ico-arrow-1{position:absolute;top:2px;right:15px}
+    .pop-area-province{position:relative;display:inline-block;width:98px}
+    .pop-area-province-arrow{cursor:pointer;display:inline-block;position:relative;padding:2px}
+    .pop-area-province-arrow .ico{top:-2px}
+    .pop-area-cities-count{font-size:12px;color:#49d}
+    .check-inverse .pop-area-cities-count{color:#D55}
+    .pop-area-cities{padding:15px 15px 0;border:1px solid #D8D8D8;border-radius:2px;background-color:#FCFCFC;position:relative;top:1px}
+    .pop-area-cities [disabled]{color:#aaa}
+    .pop-area-cities-arrow{position:absolute;top:-6px;left:0}
+    .pop-area-city{position:relative;display:inline-block;margin:0 20px 10px 0}
+    .pop-area-checkbox-warning{position:absolute;top:0;left:0;width:16px;height:16px;background:url(../img/ico.png) -340px -80px}
+    .pop-area-checkbox-warning .ico-help{opacity:0}
+    .pop-area-province .pop-area-checkbox-warning{top:2px}
+    .caret-2 {
+        border-top: none;
+        border-bottom: 4px solid #000000;
+    }
+
+</style>
+
+{/block}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb" >
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>新增运费模板</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right fr pointer m-t-md m-r" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+
+
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">模版名称：</label>
+                    <div class="col-sm-3 must">
+                        <input type="text" class="form-control" data-rule-required="true" name="sf_name" value="{$row.sf_name}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">消费满免邮：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="input-mini" data-rule-required="true" data-rule-decimal="2" name="consume" value="{$row.consume * 1}" /><span class="help-inline">元，等于0则不生效</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">默认模板：</label>
+                    <div class="col-sm-10">
+                        <label class="checkbox-inline" style="padding-left:0px;"><input value="0" name="is_default" {$row['is_default']<=0?'checked':'';} type="radio" > 不是</label>
+                        <label class="checkbox-inline"><input value="1" name="is_default" type="radio" {$row['is_default']==1?'checked':'';}> 是</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">计算方式：</label>
+                    <div class="col-sm-10">
+                        <label class="checkbox-inline" style="padding-left:0px;"><input value="1" name="valuation" data-toggle="valuation" data-type="number" data-name="件" data-unit="个"  {$row['valuation']<=1?'checked':'';} type="radio" > 计件</label>
+                        <label class="checkbox-inline"><input value="2" name="valuation" data-toggle="valuation" data-type="weight" data-name="重" data-unit="KG"  type="radio" {$row['valuation']==2?'checked':'';}> 计重</label>
+                        <p class="help-inline">多个运模板时，此项要统一设置，否则可能出现计算错误</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">运送方式：</label>
+                    <div class="col-sm-10">
+                        {volist name="shippingList" id="shipping"}
+                        {neq name="shipping.is_zt" value="1"}
+                        <label class="checkbox-inline">
+                            <input  name="delivery[]" type="checkbox" value="{$key}"  data-delivery="{$key}" data-toggle="delivery" data-name="{$shipping.shipping_name}" {$row['sf_info'][$key]?'checked':''}/>{$shipping.shipping_name}
+                        </label>
+                        {/neq}
+                        {/volist}
+                    </div>
+
+                </div>
+                <div class="line line-dashed line-lg pull-in"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        运费设置：
+                    </label>
+                    <div class="col-sm-8" data-toggle="delivery_list">
+                        {volist name="row.sf_info" id="rowb"}
+                        {assign name="fs_type" value="$key" /}
+                        <div style="display: block;" class="panel panel-default" id="delivery_item_{$fs_type}" data-delivery="{$fs_type}">
+                            <header class="panel-heading">{$shippingList[$fs_type]['shipping_name']}运费设置</header>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-sm-4">配送区域
+                                        </th>
+                                        <th>{$row['valuation']==1?'首件(个)':'首重(KG)'}</th>
+                                        <th>运费(元)</th>
+                                        <th>{$row['valuation']==1?'续件(个)':'续重(KG)'}</th>
+                                        <th>运费(元)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="rowb" id="rowc"}
+                                    <tr>
+                                        <td>
+                                            {notempty name="rowc.area" }
+                                            全国默认地区<input name="{$fs_type}[{$key}][area]" value="all" type="hidden">
+                                            {else/}
+                                            指定地区 <a href="javascript:;" title="编辑运送区域" class="js_edit_area m-r-xs" data-remote="sel_region" data-fun="open_region" data-delivery="{$fs_type}" data-index="{$key}" data-toggle="divModal"><i class="fa fa-edit text-muted"></i></a><a href="javascript:;" title="删除运送区域" data-toggle="removeRow"><i class="fa fa-trash-o text-muted"></i></a>
+                                            <p class="  js_area_item_{$fs_type}_{$key}"><span class="js_no_area"> {$rowc.region_list}</span></p>
+                                            <input name="{$fs_type}[{$key}][region_id]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_id" value="{$rowc.region_id}" type="hidden">
+                                            <input name="{$fs_type}[{$key}][region_list]" class="select_region_{$fs_type}" id="{$fs_type}_{$key}_region_list" value="{$rowc.region_list}" type="hidden">
+                                            {/notempty}
+                                        </td>
+                                        <td style="position:relative;">
+                                            <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][start]" type="text" value="{$rowc.start}"></td>
+                                        <td style="position:relative;">
+                                            <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postage]" type="text" value="{$rowc.postage|number_format=2}">
+                                        </td>
+                                        <td style="position:relative;">
+                                            <input class="form-control" data-rule-required="true" min="1" data-rule-decimal="2" name="{$fs_type}[{$key}][plus]" type="text" value="{$rowc.plus}">
+                                        </td>
+                                        <td style="position:relative;">
+                                            <input class="form-control" data-rule-required="true"  data-rule-decimal="2" name="{$fs_type}[{$key}][postageplus]" type="text" value="{$rowc.postageplus|number_format=2}">
+                                        </td>
+
+                                    </tr>
+                                    {/volist}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <footer class="panel-footer">
+                                <a href="javascript:;" class="js_add_area"><i class="fa fa-map-marker text-muted m-r-xs"></i>指定地区城市设置运费</a>
+                            </footer>
+                        </div>
+                        {/volist}
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+</section>
+
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="sf_id" type="hidden" value="{$row.sf_id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
+
+{/block}
+{block name="footer"}
+{literal}
+<script type="text/html" id="delivery_setting_tpl">
+    <div class="panel panel-default" id="delivery_item_{{delivery}}" data-delivery="{{delivery}}">
+        <header class="panel-heading">{{name}}运费设置 </header>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-sm-4">配送区域
+                    </th>
+                    <th>首{{valuation.name}}({{valuation.unit}})</th>
+                    <th>运费(元)</th>
+                    <th>续{{valuation.name}}({{valuation.unit}})</th>
+                    <th>运费(元)</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>全国默认地区<input type="hidden" name="{{delivery}}[0][area]" value="all"></td>
+                    {{include 'edit_fee_tpl' normal}}
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <a href="javascript:;" class="js_add_area"><i class="fa fa-map-marker text-muted m-r-xs"></i>指定地区城市设置运费</a>
+        </footer>
+    </div>
+</script>
+<script type="text/html" id="delivery_area_tpl">
+    <tr>
+        <td>指定地区 <a href="javascript:;" title="编辑运送区域" class="js_edit_area m-r-xs"  data-remote="sel_region"  data-fun="open_region" data-delivery="{{normal.delivery}}" data-index="{{normal.index}}" data-toggle="divModal" ><i class="fa fa-edit text-muted"></i></a><a href="javascript:;" title="删除运送区域" data-toggle="removeRow"><i class="fa fa-trash-o text-muted"></i></a>
+            <p class="  js_area_item_{{normal.delivery}}_{{normal.index}}">{{#area}}</p>
+            <input type="hidden" name="{{normal.delivery}}[{{normal.index}}][region_id]" class="select_region_{{normal.delivery}}" id="{{normal.delivery}}_{{normal.index}}_region_id" value="" />
+            <input type="hidden" name="{{normal.delivery}}[{{normal.index}}][region_list]" class="select_region_{{normal.delivery}}" id="{{normal.delivery}}_{{normal.index}}_region_list" value="" />
+        </td>
+        {{include 'edit_fee_tpl' normal}}
+    </tr>
+</script>
+
+<script type="text/html" id="edit_fee_tpl">
+    <td style="position:relative;">
+        <input type="text" class="form-control" data-rule-required="true" min="1" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][start]" /></td>
+    <td style="position:relative;">
+        <input type="text" class="form-control" data-rule-required="true" data-rule-decimal="2" name="{{delivery}}[{{index}}][postage]" />
+    </td>
+    <td style="position:relative;">
+        <input type="text" class="form-control" data-rule-required="true" min="1" {{if valid=="positiveInteger"}} data-rule-positiveInteger="true"{{else}}data-rule-decimal="2"{{/if}} name="{{delivery}}[{{index}}][plus]" />
+    </td>
+    <td style="position:relative;">
+        <input type="text" class="form-control" data-rule-required="true" data-rule-decimal="2" name="{{delivery}}[{{index}}][postageplus]" />
+    </td>
+</script>
+{/literal}
+<script type="text/html" id="sel_region">
+    {include file="shop@sys_admin/shipping_tpl/selRegion" /}
+</script>
+
+<script type="text/javascript">
+    seajs.use("dist/system/init.js");
+    var n_delivery = '',n_index = 0;
+    function open_region(obj){
+        n_delivery = obj.delivery;
+        n_index = obj.index;
+        var region_id = $('#'+n_delivery+'_'+n_index+'_region_id').val();
+        if (region_id) region_id=region_id.split(",");
+
+        var select_region = [];
+        $(".select_region_"+n_delivery).each(function(){
+            select_region.push($(this).val());
+        })
+        if (select_region){
+            select_region = select_region.join(",");
+            select_region = select_region.split(",");
+        }
+        var pid = 0;
+        $("input[name=sel_region]").each(function(){
+            if (in_array($(this).val(),region_id)){
+                $(this).attr("checked",true);
+                pid = $(this).attr('pid');
+                if (pid > 0) changeCheck(this,3);
+            }
+            else if(in_array($(this).val(),select_region)){
+                $(this).attr("disabled",true);
+            }
+        })
+    }
+    function in_array(_search,array){
+        for(var i in array){
+            if(array[i]==_search) return true;
+        }
+        return false;
+    }
+    //点击选择事件方法
+    function changeCheck(obj,type){
+        var i = 0,checked_num=0,checked_all=0,element,cities;
+        if (type == 1){
+            var provinces = $(obj).parents(".pop-area-row");
+            if ($(obj).attr("checked")){
+                provinces.find('input').each(function(){
+                    if ($(this).attr("disabled") !== 'disabled')  $(this).attr("checked",true);
+                })
+            }else{
+                provinces.find('input').attr("checked",false);
+            }
+            $(provinces).find(".pop-area-cities").each(function(){
+                element = $('.pop-area-cities-count').eq($('.pop-area-cities').index(this));
+                checked_num = $(this).find('input:checked').length;
+                checked_all = $(this).find('input').length;
+                (checked_num > 0) ? element.html('('+checked_num+')'):element.html('');
+            })
+            return false;
+        }else if (type == 2){
+            var province = $(obj).parents(".pop-area-province");
+            i = $(".pop-area-province").index(province);
+            cities = $(".pop-area-cities").eq(i);
+            cities.find('input').attr("checked",false);
+            if ($(obj).attr("checked")){
+                cities.find('input').each(function(){
+                    if ($(this).attr("disabled") !== 'disabled')  $(this).attr("checked",true);
+                })
+            }
+        }else if (type == 3){
+            cities = $(obj).parents(".pop-area-cities");
+            i = $(".pop-area-cities").index(cities);
+        }
+        element = $('.pop-area-cities-count').eq(i);
+        checked_num = $(cities).find('input:checked').length;
+        checked_all = $(cities).find('input').length;
+        (checked_num > 0) ? element.html('('+checked_num+')'):element.html('');
+        if (checked_all == checked_num){
+            $('.pop-area-province').eq(i).find('input').attr("checked",true);
+        }else{
+            $('.pop-area-province').eq(i).find('input').attr("checked",false);
+        }
+
+    }
+    //显示城市
+    function toggleProvince(obj){
+        var i = $('.pop-area-province-arrow').index(obj);
+        var element = $('.pop-area-cities').eq(i);
+        var caret = $('.caret').eq(i);
+        $('.caret').removeClass('caret-2');
+        if (element.is(":visible")){
+            element.hide();
+        }else{
+            $('.pop-area-cities').hide();
+            caret.addClass('caret-2');
+            element.show();
+        }
+    }
+    function edit_sel_region(){
+        var region_id = [],sel_num = {},sel_region = [];
+        var pid = 0,id=0;
+        $("input[name='sel_region']:checked").each(function(){
+            pid = $(this).attr('pid');
+            id = $(this).val()
+            region_id.push(id);
+            if (pid > 0){
+                if (typeof(sel_num[pid]) == 'undefined') sel_num[pid]=0;
+                sel_num[pid] += 1;
+            }
+        });
+        region_id = region_id.join(',');
+        $('#'+n_delivery+'_'+n_index+'_region_id').val(region_id);
+        $.each(sel_num,function(key,val){
+            sel_region.push($('#region_name_'+key).html()+'('+val+')');
+        })
+        sel_region.reverse();
+        sel_region = sel_region.join(',');
+        $('.js_area_item_'+n_delivery+'_'+n_index).html(sel_region);
+        $('#'+n_delivery+'_'+n_index+'_region_list').val(sel_region);
+        return false;
+    }
+    {lt name="row.sf_id" value="1"}
+    //模拟点击
+    $(function(){
+        setTimeout (function(){
+            $("input[name='delivery[]']").trigger("click");
+        },500);
+    });
+    {/lt}
+</script>
+
+
+{/block}

@@ -32,7 +32,7 @@
                     </div>
                     <div class="media-body">
                         <div style="color:#999;">{$grow.goods_name} {$grow.sku_name}</div>
-                        <small class="text-muted">单价： {$grow.goods_price|priceFormat}<span class="m-l-xs"></span></small>
+                        <small class="text-muted">单价： {$grow.settle_price|priceFormat}<span class="m-l-xs"></span></small>
                     </div>
                 </div>
             </li>
@@ -41,7 +41,7 @@
     </td>
     <td>
         <p class=" m-b-xs">
-             {$vo.order_amount|priceFormat}
+             {$vo.settle_price|priceFormat}
            {eq name="vo.ostatus" value="待付款" }
             <a href="javascript:;" data-remote="{:url('changePrice',array('id'=>$vo['order_id']))}" data-toggle="ajaxModal" class="m-xs" >
                 <i class="fa fa-edit text-muted"></i>

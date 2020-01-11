@@ -87,6 +87,7 @@ class AdminController extends BaseController
                 '_module' => $this->module,                   // 模块名称
                 'admin' => $this->admin,                       // 登录信息
                 'menus_group' => $this->menus_group,
+                'baseUrl' => 'mainadmin@layouts/main_base',
             ]);
             //print_r($this->menus_list);exit;
         }

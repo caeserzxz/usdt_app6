@@ -10,25 +10,28 @@ class ShippingTplModel extends BaseModel
 {
 	protected $table = 'shop_shipping_tpl';
 	public  $pk = 'sf_id';
-	protected $mkey = 'shipping_tpl_list';
+	protected $mkey = 'shipping_tpl_list_';
    /*------------------------------------------------------ */
     //--  清除memcache
     /*------------------------------------------------------ */
-    public function cleanMemcache(){
-        Cache::rm($this->mkey);
+    public function cleanMemcache($supplyer_id){
+        Cache::rm($this->mkey.$supplyer_id);
     }
 	/*------------------------------------------------------ */
 	//-- 列表
 	/*------------------------------------------------------ */
-	public function getRows(){
-		$data = Cache::get($this->mkey);
+	public function getRows($supplyer_id = 0){
+        $supplyer_id = $supplyer_id * 1;
+        $mkey = $this->mkey.$supplyer_id;
+		$data = Cache::get($mkey);
 		if (empty($data) == false) return $data;
-		$rows = $this->order('is_default DESC')->select()->toArray();
+        $where[] = ['supplyer_id','=',$supplyer_id];
+        $rows = $this->where($where)->order('is_default DESC')->select()->toArray();
 		foreach ($rows as $row){
             $row['sf_info'] = json_decode($row['sf_info'],true);
 			$data[$row['sf_id']] = $row;
 		}
-		Cache::set($this->mkey,$data,600);
+		Cache::set($mkey,$data,600);
 		return $data;
 	}
 

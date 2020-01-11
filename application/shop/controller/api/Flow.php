@@ -213,7 +213,7 @@ class Flow extends ApiController
                 }else{
                     $shippingFee['shipping_fee'] += $_shippingFee['shipping_fee'];
                 }
-                $shippingFee['supplyerShippingFee'][$supplyer_id] =  $_shippingFee['shipping_fee'];
+                $shippingFee['supplyerShippingFee'][$supplyer_id] = sprintf("%.2f", $_shippingFee['shipping_fee'] * 1);
             }
             $shippingFee['shipping_fee'] = sprintf("%.2f", $shippingFee['shipping_fee'] * 1);
         }else{

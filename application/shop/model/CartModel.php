@@ -416,7 +416,7 @@ class CartModel extends BaseModel
                         $data['orderTotal'] += $row['total'];
                         $data['totalGoodsPrice'] += $row['goods_number'] * $row['sale_price'];
                         //当销售价和商城价一致时，计算折扣的总金额
-                        if ($row['shop_price'] != $row['sale_price']) {
+                        if ($row['shop_price'] > $row['sale_price']) {
                             $data['totalDiscount'] += ($row['shop_price'] - $row['sale_price']) * $row['goods_number'];
                         }
                     }
@@ -565,9 +565,12 @@ class CartModel extends BaseModel
         $this->cleanMemcache();
         return true;
     }
-    /*------------------------------------------------------ */
-    //-- 计算运费
-    /*------------------------------------------------------ */
+
+    /**计算运费
+     * @param array $userAddress 收货地址信息
+     * @param array $cartList 购物车商品
+     * @return int
+     */
     public function evalShippingFee(&$userAddress = [], &$cartList = [])
     {
         if ($cartList['buyGoodsNum'] < 1) return 0;
@@ -575,99 +578,122 @@ class CartModel extends BaseModel
         $CategoryModel = new CategoryModel();
         $Category = $CategoryModel->getRows();
         $sf_id = array();
-        $isUsdDef = false;//是否使用默认模板
-        foreach ($cartList['goodsList'] as $goods) {
-            $goods = $GoodsModel->info($goods['goods_id']);
-            if ($goods['freight_template'] == -1) {
-                $isUsdDef = true;
-            } elseif ($goods['freight_template'] > 0) {//判断商品运模板
-                $sf_id[$goods['freight_template']] = 1;
-            } else {//判断分类运费模板
-                $class = $Category[$goods['cid']];
-                if ($class['freight_template'] > 0) {
-                    $sf_id[$class['freight_template']] = 1;
-                }
-            }
-        }
-
-        $ShippingModel = new \app\shop\model\ShippingModel();
-        $shippingList = $ShippingModel->getToSTRows();
+        $shipping_fee_plus = settings('shipping_fee_plus');//运费累加计算方式
+        $sfCartList = [];
+        $shipping_tmp_supplyer = settings('shipping_tmp_supplyer');//运费模板是否调用供应商
         $ShippingTplModel = new \app\shop\model\ShippingTplModel();
-        $shippingTpl = $ShippingTplModel->getRows();//获取全部运费模板
-        if ($isUsdDef == true) {
-            $defShippingTpl = reset($shippingTpl);//获取默认模板
-            $sf_id[$defShippingTpl['sf_id']] = 1;//写入默认模板ID
+        $defSf = [];
+        foreach ($cartList['goodsList'] as $goods) {
+            $goods_sfid = $GoodsModel->where('goods_id',$goods['goods_id'])->value('freight_template');
+            $supplyer_id = $goods['supplyer_id'];
+            if ($shipping_tmp_supplyer == 0 && $supplyer_id > 0){//统一调用平台运费模板
+                $tpl_supplyer_id = $ShippingTplModel->where('sf_id',$goods_sfid)->value('supplyer_id');
+                if ($tpl_supplyer_id > 0){//非平台运费模板，强制调用平台默认模板
+                    $goods_sfid = -1;
+                }
+                $supplyer_id = 0;//排除供应商相关运费模板
+            }
+
+            if ($goods_sfid == -1) {
+                if (empty($defSf[$supplyer_id]) == true){
+                    //获取对应平台/供应商默认模板
+                    $defSf[$supplyer_id] = $ShippingTplModel->where('supplyer_id',$supplyer_id)->order('is_default DESC')->value('sf_id');
+                }
+                $goods_sfid = $defSf[$supplyer_id];
+                if($supplyer_id == 0) {//判断平台商品分类运费模板
+                    $class = $Category[$goods['cid']];
+                    if ($class['freight_template'] > 0) {
+                        $goods_sfid = $class['freight_template'];
+                    }
+                }
+                $sf_id[$goods_sfid] = $supplyer_id;
+            }elseif ($goods_sfid > 0) {//设置商品运模板
+                $sf_id[$goods_sfid] = $goods['supplyer_id'];
+            }
+
+            if (empty($sfCartList[$goods_sfid]) == true){
+                $sfCartList[$goods_sfid]['totalGoodsPrice'] = 0;
+                $sfCartList[$goods_sfid]['buyGoodsNum'] = 0;
+                $sfCartList[$goods_sfid]['buyGoodsWeight'] = 0;
+            }
+            $sfCartList[$goods_sfid]['totalGoodsPrice'] += $goods['goods_number'] * $goods['sale_price'];
+            $sfCartList[$goods_sfid]['buyGoodsNum'] += $goods['goods_number'];
+            $sfCartList[$goods_sfid]['buyGoodsWeight'] += $goods['goods_number'] * $goods['goods_weight'];
         }
         if (empty($sf_id)) {
-            return false;
+            return 0;
         }
-        $sf_info = array();
+        $ShippingModel = new \app\shop\model\ShippingModel();
+        $shippingList = $ShippingModel->getToSTRows();
+
+        $sfList = array();
         //获取最贵的运费模板，根据起步价判断
         foreach ($sf_id as $key => $val) {
-            $_sf_info = $shippingTpl[$key]['sf_info'];
-            $_consume = $shippingTpl[$key]['consume'];
-            $_valuation = $shippingTpl[$key]['valuation'];//计件方式
-            if (empty($_sf_info)) continue;
+            $ssTpl = $ShippingTplModel->find($key);
+            if (empty($ssTpl)) continue;
+            $sf_info = json_decode($ssTpl['sf_info'],true);
+            if ($shipping_fee_plus == 0){//不累加运费
+                $setSfId = 0;
+            }else{
+                $setSfId = $ssTpl['sf_id'];
+            }
             foreach ($shippingList as $code => $shipping) {
-                if ($shipping['status'] == 0 || empty($_sf_info[$code])) continue;
-                foreach ($_sf_info[$code] as $rowb) {
+                if ($shipping['status'] == 0 || empty($sf_info[$code])) continue;
+                foreach ($sf_info[$code] as $rowb) {
                     $region_id = empty($rowb['region_id']) ? array() : explode(',', $rowb['region_id']);
                     if (empty($rowb['area']) && empty($rowb['region_id'])) continue;//区域定义为空跳出
 
                     if (empty($rowb['area']) == false) {//如果是全国
-                        if (empty($sf_info[$code]) == false){//已有区域定义，跳出
+                        if (empty($sfList[$setSfId][$code]) == false){//已有区域定义，跳出
                             continue;
                         }
                     }elseif (in_array($userAddress['city'], $region_id) == false) {
                         //如果不存在区域，跳出
                         continue;
-                    }elseif (empty($sf_info[$code]) == true) {//如果已存在相关快递的模板,并且不是全国
-                        if ($sf_info[$code]['postage'] > $rowb['postage']) {
+                    }
+
+                    if (empty($sfList[$setSfId][$code]) == true) {//如果已存在相关运费的模板，按初始运费对比，不论计件或计重
+                        if ($sfList[$setSfId][$code]['postage'] > $rowb['postage']) {
                             continue;
                         }
                     }
-                    $rowb['sf_id'] = $key;
-                    $rowb['consume'] = $_consume;
-                    $sf_info[$code] = $rowb;
+                    $rowb['sf_id'] = $ssTpl['sf_id'];
+                    $rowb['consume'] = $ssTpl['consume'];
+                    $rowb['sf_name'] = $ssTpl['sf_name'];
+                    $rowb['valuation'] = $ssTpl['valuation'];
+                    $sfList[$setSfId][$code] = $rowb;
                 }
             }
         }
-        if ($_valuation == 1) {
-            //根据商品数量计算
-            foreach ($sf_info as $code => $val) {
-                $n_info[$code]['name'] = $shippingList[$code]['shipping_name'];
-                $n_info[$code]['code'] = $code;
-                $n_info[$code]['sf_id'] = $val['sf_id'];
-                $row = $sf_info[$code];
-                if ($row['consume'] > 0 && $cartList['totalGoodsPrice'] >= $row['consume']) {
+        foreach ($sfList as $sf_id=>$sf){
+            foreach ($sf as $code => $row) {
+                if (empty($n_info[$code]['shipping_fee']) == true){
                     $n_info[$code]['shipping_fee'] = 0;
-                } else {
-                    if ($cartList['buyGoodsNum'] > $row['start']) {
-                        $d_num = $cartList['buyGoodsNum'] - $row['start'];
-                        $d_num = ceil($d_num / $row['plus']);
-                        $n_info[$code]['shipping_fee'] = $row['postage'] + ($d_num * $row['postageplus']);
-                    } else {
-                        $n_info[$code]['shipping_fee'] = $row['postage'];
-                    }
                 }
-            }
-        } else {
-            //按商品重量计算
-            foreach ($sf_info as $code => $val) {
                 $n_info[$code]['name'] = $shippingList[$code]['shipping_name'];
                 $n_info[$code]['code'] = $code;
-                $n_info[$code]['sf_id'] = $val['sf_id'];
-                $row = $sf_info[$code];
-                if ($row['consume'] > 0 && $cartList['totalGoodsPrice'] > $row['consume']) {
-                    $n_info[$code]['shipping_fee'] = 0;
+                $n_info[$code]['sf_id'] = $row['sf_id'];
+
+                if ($row['consume'] > 0 && $cartList[$sf_id]['totalGoodsPrice'] >= $row['consume']) {
+                    $n_info[$code]['shipping_fee'] += 0;
                 } else {
-                    $buyGoodsWeight = $cartList['buyGoodsWeight'] / 1000;
-                    if ($buyGoodsWeight > $row['start']) {
-                        $d_num = $buyGoodsWeight - $row['start'];
-                        $d_num = ceil($d_num / $row['plus']);
-                        $n_info[$code]['shipping_fee'] = $row['postage'] + ($d_num * $row['postageplus']);
-                    } else {
-                        $n_info[$code]['shipping_fee'] = $row['postage'];
+                    if ($sf['valuation'] == 1){//根据商品数量计算
+                        if ($cartList[$sf_id]['buyGoodsNum'] > $row['start']) {
+                            $d_num = $cartList[$sf_id]['buyGoodsNum'] - $row['start'];
+                            $d_num = ceil($d_num / $row['plus']);
+                            $n_info[$code]['shipping_fee'] += $row['postage'] + ($d_num * $row['postageplus']);
+                        } else {
+                            $n_info[$code]['shipping_fee'] += $row['postage'];
+                        }
+                    }else{//根据商品重量计算
+                        $buyGoodsWeight = $cartList[$sf_id]['buyGoodsWeight'] / 1000;
+                        if ($buyGoodsWeight > $row['start']) {
+                            $d_num = $buyGoodsWeight - $row['start'];
+                            $d_num = ceil($d_num / $row['plus']);
+                            $n_info[$code]['shipping_fee'] += $row['postage'] + ($d_num * $row['postageplus']);
+                        } else {
+                            $n_info[$code]['shipping_fee'] += $row['postage'];
+                        }
                     }
                 }
             }

@@ -25,7 +25,7 @@ class Goods extends AdminController
 {
     public $ext_status = 0;//额外默认指定商品状态
     public $is_supplyer = false;//是否后台供应商管理
-    public $supplyer_id = 0;//当前操作的供应商IDs
+    public $supplyer_id = 0;//当前操作的供应商ID
     public $_field = '';
     public $_pagesize = 0;
     //*------------------------------------------------------ */
@@ -141,7 +141,13 @@ class Goods extends AdminController
         $DividendRoleModel = new DividendRoleModel();
         $this->assign("UsersRole", $DividendRoleModel->getRows());//分销身份
         $ShippingTplModel = new ShippingTplModel();
-        $this->assign("ShippingTpl", $ShippingTplModel->getRows());//运费模板
+        if (settings('shipping_tmp_supplyer') == 0){
+            $this->assign("ShippingTpl", $ShippingTplModel->getRows());//运费模板
+        }elseif ($this->is_supplyer == true){
+            $this->assign("ShippingTpl", $ShippingTplModel->getRows($data['supplyer_id']));//运费模板
+        }else{
+            $this->assign("ShippingTpl", $ShippingTplModel->getRows($this->supplyer_id));//运费模板
+        }
 
         $products = $specifications = array();
         if ($data['goods_id'] > 0) {

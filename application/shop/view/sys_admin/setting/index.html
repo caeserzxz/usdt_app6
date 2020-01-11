@@ -16,7 +16,7 @@
             <header>
                  <ul class="nav nav-tabs">
                      <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
-                     <li><a href="#return" data-toggle="tab">退货信息</a></li>
+                     <li><a href="#return" data-toggle="tab">运费&退货</a></li>
                      <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
                      <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
                      <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
@@ -58,19 +58,7 @@
                                 </label>
                             </div>
                         </div>
-                        {if condition="$has_supplyer == 1"}
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">运费计算：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shipping_fee_type" value="0" {$setting['shipping_fee_type']==0?'checked':''} type="radio">统一计算(运费根据商品金额比例分配)
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shipping_fee_type" value="1" {$setting['shipping_fee_type']==1?'checked':''} type="radio" >供应商独立计算
-                                </label>
-                            </div>
-                        </div>
-                        {/if}
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商城Title：</label>
                             <div class="controls">
@@ -199,31 +187,77 @@
                         </div>
 
                 </div>
+
                 <div class="tab-pane " id="return">
-                        <div class="form-group">
+
+                    {if condition="$has_supplyer == 1"}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">运费模板：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shipping_tmp_supplyer" value="0" {$setting['shipping_tmp_supplyer']==0?'checked':''} type="radio">平台统一设置
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shipping_tmp_supplyer" value="1" {$setting['shipping_tmp_supplyer']==1?'checked':''} type="radio" >供应商自行配置
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">运费计算：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shipping_fee_type" value="0" {$setting['shipping_fee_type']==0?'checked':''} type="radio">统一计算(拆单，根据商品金额比例分配运费)
+                            </label>
+                            <br>
+                            <label class="radio-inline">
+                                <input name="shipping_fee_type" value="1" {$setting['shipping_fee_type']==1?'checked':''} type="radio" >按供应商独立计算(供应商可以自行设置运费模板)
+                            </label>
+                        </div>
+                    </div>
+                    {else/}
+                        <input name="shipping_fee_type" value="0" type="hidden">
+                        <input name="shipping_tmp_supplyer" value="0" type="hidden">
+                    {/if}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">运费累加计算：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shipping_fee_plus" value="0" {$setting['shipping_fee_plus']==0?'checked':''} type="radio">不累加(按算出最贵的运费模板，按最贵的计算)
+                            </label>
+                            <br>
+                            <label class="radio-inline">
+                                <input name="shipping_fee_plus" value="1" {$setting['shipping_fee_plus']==1?'checked':''} type="radio" >累加(按运费模板累加计算)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                    <div class="form-group">
                             <label class="col-sm-2 control-label">退货收货人：</label>
                             <div class="controls">
                                 <input type="text" name="return_consignee" value="{$setting.return_consignee}" class="input-large"> <span class="help-line"></span>
                             </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">退货联系电话：</label>
+                        <div class="controls">
+                            <input type="text" name="return_mobile" value="{$setting.return_mobile}"
+                                   class="input-large"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">退货联系电话：</label>
-                            <div class="controls">
-                                <input type="text" name="return_mobile" value="{$setting.return_mobile}" class="input-large"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">退货地址：</label>
+                        <div class="controls">
+                            <input type="text" name="return_address" value="{$setting.return_address}"
+                                   class="input-xxlarge"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">退货地址：</label>
-                            <div class="controls">
-                                <input type="text" name="return_address" value="{$setting.return_address}" class="input-xxlarge"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">退货说明：</label>
+                        <div class="controls">
+                            <textarea rows="4" class="input-xxlarge"
+                                      name="return_desc">{$setting.return_desc}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">退货说明：</label>
-                            <div class="controls">
-                               <textarea rows="4" class="input-xxlarge" name="return_desc">{$setting.return_desc}</textarea>
-                            </div>
-                        </div>
+                    </div>
                 </div>
 
                 <div class="tab-pane" id="kdnset">

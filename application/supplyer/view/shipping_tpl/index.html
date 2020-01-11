@@ -1,0 +1,94 @@
+{extend name="layouts/base" /}
+{block name="head"}
+
+{/block}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb" >
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>运费模板</strong>
+            </li>
+        </ul>
+
+        <a href="{:url('info')}" title="新建运费模版" class="btn btn-sm btnbtn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>新建运费模版</a>
+    </div>
+</header>
+
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            <?php foreach ($list as $key=>$row){?>
+            <section class="panel panel-default ">
+                <header class="panel-heading">
+                    {$row['is_default']==1?'<i class="fa fa-check-square-o red">默认</i>':''}
+
+                    <span class="m-r">{$row['sf_name']}</span>
+                    <span class="m-r red">{$row['consume'] > 0?"消费满".$row['consume']."包邮":''}</span>
+
+                    <span class="pull-right">
+                <span class=" m-r">最后编辑时间：{$row['update_time']|dateTpl}</span>
+                <a href="{:url('info',['sf_id'=>$row['sf_id']])}" class="m-xs" title="编辑"><i class="fa fa-edit text-muted"></i></a>
+                <a  href="#" data-remote="{:url('delete',['sf_id'=>$row['sf_id']])}" title="删除" data-toggle="ajaxRemove" data-_confirm="您确定要删除此项吗？"><i class="fa fa-trash-o text-muted"></i></a>
+            </span>
+
+                </header>
+                <div class="table-responsive">
+                    <table class="table   m-b-none">
+                        <thead>
+                        <tr>
+                            <th class="col-sm-2 mn130">运送方式</th>
+                            <th class="col-sm-3">运送到</th>
+                            <?php if ($row['valuation'] == 1){?>
+                            <th>首件(个)</th>
+                            <th>运费(元)</th>
+                            <th>续件(个)</th>
+                            <th>运费(元)</th>
+                            <?php }else{?>
+                            <th>首重(KG)</th>
+                            <th>运费(元)</th>
+                            <th>续重(g)</th>
+                            <th>运费(元)</th>
+                            <?php }?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                $sf_info = json_decode($row['sf_info'],true);
+                foreach ($sf_info as $key=>$rowb){
+                        $fs_type = $key;
+                        foreach ($rowb as $key=>$rowc){
+                        ?>
+                        <tr>
+                            <td><?=$shippingList[$fs_type]['shipping_name']?></td>
+                            <td><?=empty($rowc['region_list'])?'全国':$rowc['region_list']?></td>
+                            <td><?=$rowc['start']?></td>
+                            <td><?=number_format($rowc['postage'],2)?></td>
+                            <td><?=$rowc['plus']?></td>
+                            <td><?=number_format($rowc['postageplus'],2)?></td>
+                        </tr>
+                        <?php }
+                }
+                ?>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <?php }?>
+            {empty name="list"}
+            <table width="100%" >
+                <tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+            </table>
+            {/empty}
+        </div>
+    </section>
+</section>
+
+{/block}
+
+
+
+
