@@ -168,11 +168,16 @@ class MergeImg{
         $share_goods_name_xy = explode(',',$data['share_goods_name_xy']);
         $rgb = $this->hex2rgb($data['share_goods_name_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
-        $goodsNames = $this->mb_str_split($data['share_goods_name'],$data['share_goods_name_br']);
-        foreach ($goodsNames as $key=>$gname){
-            $gm_y =  $share_goods_name_xy[1] + ($key * $data['share_goods_name_size'] * 2);
-            imagettftext($im, $data['share_goods_name_size'], 0, $share_goods_name_xy[0] , $gm_y ,$balk, $fontfile, $gname);
+        if ($data['share_goods_name_br'] <= 0){
+            imagettftext($im, $data['share_goods_name_size'], 0, $share_goods_name_xy[0] , $share_goods_name_xy[1] ,$balk, $fontfile, $data['share_goods_name']);
+        }else{
+            $goodsNames = $this->mb_str_split($data['share_goods_name'],$data['share_goods_name_br']);
+            foreach ($goodsNames as $key=>$gname){
+                $gm_y =  $share_goods_name_xy[1] + ($key * $data['share_goods_name_size'] * 2);
+                imagettftext($im, $data['share_goods_name_size'], 0, $share_goods_name_xy[0] , $gm_y ,$balk, $fontfile, $gname);
+            }
         }
+
         //商品名称
         //商品价格
         $share_goods_price_xy = explode(',',$data['share_goods_price_xy']);
