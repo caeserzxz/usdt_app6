@@ -34,7 +34,12 @@ class Wallet  extends ClientbaseController{
     //-- 余额明细
     /*------------------------------------------------------ */
     public function mylog(){
-        $this->assign('title', '帐户明细');
+        $type = input('type','balance','trim');
+        $title = '';
+        $title = $type == 'balance' ? '余额明细' : $title;
+        $title = $type == 'score' ? '积分明细' : $title;
+        $this->assign('title', $title);
+        $this->assign('type', $type);
         return $this->fetch('mylog');
     }
     /*------------------------------------------------------ */
@@ -43,6 +48,13 @@ class Wallet  extends ClientbaseController{
     public function dividendLog(){
         $this->assign('title', '佣金明细');
         return $this->fetch('dividend_log');
+    }
+    /*------------------------------------------------------ */
+    //-- 提现记录
+    /*------------------------------------------------------ */
+    public function withdrawLog(){
+        $this->assign('title', '提现记录');
+        return $this->fetch('withdraw_log');
     }
     /*------------------------------------------------------ */
     //-- 充值记录

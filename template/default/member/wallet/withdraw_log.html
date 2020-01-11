@@ -75,15 +75,10 @@
 {{each list as item index}}
 <div class="list">
     <div class="list-isscucc">
-        <p class="fs28 color_3 fw_b">充值金额:￥{{item.order_amount}}</p>
+        <p class="fs28 color_3 fw_b">提现金额:￥{{item.order_amount}}</p>
         <p class="Fs24 color_9">{{item.status_lang}}</p>
     </div>
     <p class="fs24 color_9">{{item._time}}</p>
-    <ul class="img-boxs">
-        {{each item.imgs as img }}
-            <li><img src="{{img}}" alt=""></li>
-        {{/each}}
-    </ul>
 </div>
 {{/each}}
 </script>
@@ -96,7 +91,7 @@
 	function getList(){
 		var arr = new Object;
 		arr.time = $('#nowValue').val();
-		jq_ajax('{:url("member/api.Users/getRechargeLog")}',arr,function(res){
+		jq_ajax('{:url("member/api.Users/getWithdrawLog")}',arr,function(res){
 		    if (res.code == 0){
 		        _alert(res.msg);
 		        return false;

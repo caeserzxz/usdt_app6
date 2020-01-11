@@ -9,15 +9,13 @@
     <div class="dataBox">
         <div class="left">
             <input type="text" class="fs28 fw_b color_3" readonly value="" id="nowValue"/>
-            <span class="fs24 color_9">余额收入：￥<em class="b_income">0</em> 余额支出：￥<em class="b_expend">0</em></span>
-            <span class="fs24 color_9">积分收入：<em class="i_income">0</em> 积分支出：<em class="i_expend">0</em></span>
+            <span class="fs24 color_9">总收入：￥<em class="b_income">0</em> <span style="margin-left: 10px;">总支出：￥<em class="b_expend">0</em></span></span>
         </div>
         <img src="__STATIC__/mobile/default/images/detail01.png" alt="">
     </div>
     <div class="title">
-        <span class="fs26 color_6">商城消费</span>
+        <span class="fs26 color_6">全部记录</span>
         <div><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0" class="typeimg"></div>
-
     </div>
 </div>
 <div class="page-bd">
@@ -30,38 +28,23 @@
     <div class="modelBg"></div>
     <div class="modelbd">
         <label for="s10">
-            <span class="fs28 color_3 fw_b">全部</span>
+            <span class="fs28 color_3 fw_b">全部记录</span>
             <div class="iconBox">
                 <input type="radio" class="check" value="all" name="radiobox" id="s10" checked>
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s11">
-            <span class="fs28 color_3 fw_b">商城消费</span>
+            <span class="fs28 color_3 fw_b">收入</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="order" name="radiobox" id="s11" >
+                <input type="radio" class="check" value="income" name="radiobox" id="s11" >
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s12">
-            <span class="fs28 color_3 fw_b">提现相关</span>
+            <span class="fs28 color_3 fw_b">支出</span>
             <div class="iconBox">
-                <input type="radio" class="check" value="withdraw" name="radiobox" id="s12">
-                <i class="icon_checked"></i>
-            </div>
-        </label>
-       
-        <label for="s14">
-            <span class="fs28 color_3 fw_b">佣金流水</span>
-            <div class="iconBox">
-                <input type="radio" class="check" value="brokerage" name="radiobox" id="s14">
-                <i class="icon_checked"></i>
-            </div>
-        </label>
-        <label for="s15">
-            <span class="fs28 color_3 fw_b">积分流水</span>
-            <div class="iconBox">
-                <input type="radio" class="check" value="integral"  name="radiobox" id="s15">
+                <input type="radio" class="check" value="expend" name="radiobox" id="s12">
                 <i class="icon_checked"></i>
             </div>
         </label>
@@ -90,7 +73,8 @@
 	function getList(){
 		var arr = new Object;
 		arr.time = $('#nowValue').val();
-		arr.type = $("input[name='radiobox']:checked").val();
+		arr.type = '{$type|default=balance}';
+        arr.flag = $("input[name='radiobox']:checked").val();
 		jq_ajax('{:url("member/api.Users/getAccountLog")}',arr,function(res){
             if (res.code == 0){
                 _alert(res.msg);
@@ -102,10 +86,8 @@
                 $('.list').html(template('logTpl', res));
             }
 			$('#nowValue').val(res.time);
-			$('.b_expend').html(res.b_expend);
-			$('.b_income').html(res.b_income);
-            $('.i_expend').html(res.i_expend);
-            $('.i_income').html(res.i_income);
+			$('.b_expend').html(res.expend);
+			$('.b_income').html(res.income);
 		});
 	}
     $(function(){		
@@ -128,7 +110,6 @@
                 imgBox.attr('data-type','1');
                 imgBox.css('transform','rotate(180deg)');
             }
-			
         })
         $('.modelBg').on('click',function(){
             $('.model').hide()

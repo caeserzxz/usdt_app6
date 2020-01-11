@@ -140,27 +140,24 @@ class Users extends ApiController
         $return['frozen_amount'] = $WithdrawModel->where($where)->sum('amount');
         //end
         $DividendModel = new DividendModel();
-        //今天收益
+        //今日收益
         unset($where);
         $where[] = ['dividend_uid', '=', $this->userInfo['user_id']];
-        $where[] = ['status', 'in', [1, 2, 3, 9]];
+        $where[] = ['status', '=', 9];
         $where[] = ['add_time', '>=', strtotime("today")];
         $return['today_income'] = $DividendModel->where($where)->sum('dividend_amount');
-        $return['today_income'] += $DividendModel->where($where)->sum('dividend_bean');
         //end
         //本月收益
         unset($where);
         $where[] = ['dividend_uid', '=', $this->userInfo['user_id']];
-        $where[] = ['status', 'in', [1, 2, 3, 9]];
-        $where[] = ['add_time', '>', strtotime(date('Y-m-01', strtotime('-1 month')))];
+        $where[] = ['status', '=', 9];
+        $where[] = ['add_time', '>', strtotime(date('Y-m-01'))];
         $return['month_income'] = $DividendModel->where($where)->sum('dividend_amount');
-        $return['month_income'] += $DividendModel->where($where)->sum('dividend_bean');
         //累计收益
         unset($where);
         $where[] = ['dividend_uid','=',$this->userInfo['user_id']];
-        $where[] = ['status','in',[1,2,3,9]];
+        $where[] = ['status','=',9];
         $return['end_income'] = $DividendModel->where($where)->sum('dividend_amount');
-        $return['end_income'] += $DividendModel->where($where)->sum('dividend_bean');
         $return['end_income'] = number_format($return['end_income'],2);
         //end
         $return['withdraw_status'] = settings('withdraw_status');//获取是否开启提现
@@ -172,8 +169,9 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function getAccountLog()
     {
-        $type = input('type', 'order', 'trim');
+        $type = input('type', 'balance', 'trim');
         $time = input('time', '', 'trim');
+        $flag = input('flag','all','trim');
         if (empty($time)) {
             $time = date('Y年m月');
         }
@@ -182,52 +180,40 @@ class Users extends ApiController
         $return['code'] = 1;
         $AccountLogModel = new AccountLogModel();
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        switch ($type) {
+            //余额
+            case 'balance':
+                $field = 'balance_money';
+                break;
+            //积分
+            case 'score':
+                $field = 'use_integral';
+                break;
+            //其他币种自己加
+            //默认查余额
+            default:
+                $field = 'balance_money';
+                break;
+        }
+
+        //收入 支出 全部 筛选
+        $arr = '';
+        $arr = $flag == 'all' ? [$field, '<>', 0] : $arr;
+        $arr = $flag == 'income' ? [$field, '>', 0] : $arr;
+        $arr = $flag == 'expend' ? [$field, '<', 0] : $arr;
+        $where[] = $arr;
+
         $where[] = ['change_time', 'between', array($_time, strtotime(date('Y-m-t', $_time)) + 86399)];
-
-
         $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
+        $return['income'] = 0;
+        $return['expend'] = 0;
         foreach ($rows as $key => $row) {
-
-            if ($row['balance_money'] > 0) {
-                $return['b_income'] += $row['balance_money'];
+            if ($row[$field] > 0) {
+                $return['income'] += $row[$field];
+                $row['value'] = '+' . $row[$field];
             } else {
-                $return['b_expend'] += $row['balance_money'] * -1;
-            }
-
-            if ($row['use_integral'] > 0) {
-                $return['i_income'] += $row['use_integral'];
-            } else {
-                $return['i_expend'] += $row['use_integral'] * -1;
-            }
-
-            if ($type == 'order'){
-                if ($row['change_type'] != 3){
-                    continue;
-                }
-            }elseif($type == 'brokerage'){
-                if ($row['change_type'] != 4){
-                    continue;
-                }
-            }elseif($type == 'withdraw'){
-                if ($row['change_type'] != 5){
-                    continue;
-                }
-            }elseif($type == 'use_integral'){
-                if ($row['use_integral'] == 0){
-                    continue;
-                }
-            }
-
-            if ($row['balance_money'] > 0) {
-                $row['value'] = '+' . $row['balance_money'];
-            } elseif ($row['balance_money'] < 0) {
-                $row['value'] = $row['balance_money'];
-            }
-
-            if ($row['use_integral'] > 0) {
-                $row['value'] = '+' . $row['use_integral'];
-            } elseif ($row['use_integral'] < 0){
-                $row['value'] = $row['use_integral'];
+                $return['expend'] += $row[$field] * -1;
+                $row['value'] = $row[$field];
             }
 
             $row['_time'] = timeTran($row['change_time']);
@@ -379,6 +365,32 @@ class Users extends ApiController
             $row['order_amount'] = $row['order_amount'];
             $row['status_lang'] = $lang[$row['status']];
             $row['imgs'] = explode(',',$row['imgs']);
+            $return['list'][] = $row;
+        }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取会员充值记录
+    /*------------------------------------------------------ */
+    public function getWithdrawLog()
+    {
+        $time = input('time', '', 'trim');
+        if (empty($time)) {
+            $time = date('Y年m月');
+        }
+        $return['time'] = $time;
+        $_time = strtotime(str_replace(array('年', '月'), array('-', ''), $time));
+        $return['code'] = 1;
+        $WithdrawModel = new WithdrawModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['add_time','between',array($_time,strtotime(date('Y-m-t',$_time))+86399)];
+        $rows = $WithdrawModel->where($where)->order('add_time DESC')->select();
+
+        $lang = lang('withdraw');
+        foreach ($rows as $key => $row) {
+            $row['_time'] = timeTran($row['add_time']);
+            $row['order_amount'] = $row['amount'];
+            $row['status_lang'] = $lang[$row['status']];
             $return['list'][] = $row;
         }
         return $this->ajaxReturn($return);

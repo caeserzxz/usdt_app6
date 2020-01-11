@@ -31,26 +31,34 @@
         </div>
         <div>
             <p class="fs40 color_3 num total_income">0.00</p>
-            <span class="fs26 color_9">累计到帐(元)</span>
+            <span class="fs26 color_9">累计到账(元)</span>
         </div>
     </div>
     <div class="cellBox">
-        <a href="{:url('mylog')}">
-            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">帐户明细</span></div>
-            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
-        </a>
         <a href="{:url('dividendLog')}">
             <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">佣金明细</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+        <a href="{:url('mylog',array('type'=>'balance'))}">
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">余额明细</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+        <a href="{:url('mylog',array('type'=>'score'))}">
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">积分明细</span></div>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
+        </a>
+        <a href="{:url('withdrawLog')}">
+            <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">提现记录</span></div>
             <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
         </a>
         <a href="{:url('rechargeLog')}">
             <div><img src="__STATIC__/mobile/default/images/wallet01.png" alt=""><span class="fs30 fw_b color_3">充值记录</span></div>
             <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
         </a>
-        <a href="{:url('leaderboard')}" class="hide">
+        <!-- <a href="{:url('leaderboard')}" class="hide">
             <div><img src="__STATIC__/mobile/default/images/wallet02.png" alt=""><span class="fs30 fw_b color_3">排行榜</span></div>
             <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="rightIcon">
-        </a>
+        </a> -->
     </div>
 </div>
 <div class="button">

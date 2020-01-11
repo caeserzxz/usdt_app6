@@ -36,14 +36,14 @@
             </div>
         </label>
         <label for="s12">
-            <span class="fs28 color_3 fw_b">待到帐明细</span>
+            <span class="fs28 color_3 fw_b">待到账明细</span>
             <div class="iconBox">
                 <input type="radio" class="check" value="wait_balance_money" name="radiobox" id="s12" >
                 <i class="icon_checked"></i>
             </div>
         </label>
         <label for="s13">
-            <span class="fs28 color_3 fw_b">已到帐明细</span>
+            <span class="fs28 color_3 fw_b">已到账明细</span>
             <div class="iconBox">
                 <input type="radio" class="check" value="arrival_balance_money" name="radiobox" id="s13" >
                 <i class="icon_checked"></i>
@@ -102,7 +102,7 @@
 			if (arr.type == 'dividend_bean'){
                 $('.income').html('旅游豆收入：'+res.income);
             }else{
-                $('.income').html('金币收入：￥'+res.income);
+                $('.income').html('总计：￥'+res.income);
             }
 
 		});
