@@ -195,7 +195,7 @@ class Index extends AdminController
                 $redis->rm($val);
             }
         }
-        return $this->success('清理完成.');
+        return $this->success('清理完成.',url('index'));
     }
 
 }
