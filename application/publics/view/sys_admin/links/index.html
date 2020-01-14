@@ -110,8 +110,8 @@
                     {volist name="classList" id="vo"}
                          <tr>
                             <td>{$vo.icon|raw}{$vo.name}</td>
-                            <td>{:_url('shop/goods/index',['cid'=>$vo['id']],false,true)}</td>
-                            <td><button class="btn btn-default" onclick="selectUrlCallback('{:_url('shop/goods/index',['cid'=>$vo['id']],false,true)}','{$searchType}','{$_menu_index}')">使用</button></td>
+                            <td>{:_url('shop/goods/index',['cid'=>$vo['id']],false,false,true)}</td>
+                            <td><button class="btn btn-default" onclick="selectUrlCallback('{:_url('shop/goods/index',['cid'=>$vo['id']],false,false,true)}','{$searchType}','{$_menu_index}')">使用</button></td>
                         </tr>
                     {/volist}
                 </tbody>
@@ -189,11 +189,11 @@ function getLinkList(whatis,ptype){
 	$('#_totalPages_'+whatis).html(res.data.page_count);
     if(whatis == 'goods'){
         $.each(res.data.list,function(key,val){
-            $('#data_list_'+whatis).append('<tr><td height=""><img style="display:block;" src="'+val.goods_thumb+'" width="100" height="100"/><p style="margin-top:10px;">'+val.goods_name+'</p></td><td height="100"><p style="margin-top:30px;">{:_url("shop/goods/info",["id"=>"【val.goods_id】"],false,true)}</p></td><td><button style="margin-top:50%;" class="btn btn-default" onclick="selectUrlCallback(\'{:_url("shop/goods/info",["id"=>"【val.goods_id】"],false,true)}\',\'{$searchType}\',\'{$_menu_index}\')">使用</button></td></tr>');
+            $('#data_list_'+whatis).append('<tr><td height=""><img style="display:block;" src="'+val.goods_thumb+'" width="100" height="100"/><p style="margin-top:10px;">'+val.goods_name+'</p></td><td height="100"><p style="margin-top:30px;">{:_url("shop/goods/info",["id"=>"【val.goods_id】"],false,false,true)}</p></td><td><button style="margin-top:50%;" class="btn btn-default" onclick="selectUrlCallback(\'{:_url("shop/goods/info",["id"=>"【val.goods_id】"],false,false,true)}\',\'{$searchType}\',\'{$_menu_index}\')">使用</button></td></tr>');
         })
     }else if(whatis == 'article'){
         $.each(res.data.list,function(key,val){
-            $('#data_list_'+whatis).append('<tr><td >'+val.title+'</td><td >{:_url("shop/article/info",["id"=>"【val.id】"],'',true)}</td><td><button class="btn btn-default" onclick="selectUrlCallback(\'{:_url("shop/article/info",["id"=>"【val.id】"],false,true)}\',\'{$searchType}\',\'{$_menu_index}\')">使用</button></td></tr>');
+            $('#data_list_'+whatis).append('<tr><td >'+val.title+'</td><td >{:_url("shop/article/info",["id"=>"【val.id】"],false,false,true)}</td><td><button class="btn btn-default" onclick="selectUrlCallback(\'{:_url("shop/article/info",["id"=>"【val.id】"],false,false,true)}\',\'{$searchType}\',\'{$_menu_index}\')">使用</button></td></tr>');
         })
     }
 }

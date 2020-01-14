@@ -61,18 +61,24 @@ function toUnderScore($str)
 }
 
 /**
- * 自定义URL
-*/
-function _url($url,$arr=[],$isNotHtml=true,$domain = false){
+ * @param $url 链接直址
+ * @param array $arr 参数
+ * @param bool $isNotHtml 是否带html结尾
+ * @param bool $domain 是否补全域名
+ * @param bool $replaceAdmin 是否过滤后台zpadmin.php路径
+ * @return mixed
+ */
+function _url($url,$arr=[],$isNotHtml=true,$domain = false,$replaceAdminPath=false){
 
     if ($domain === '/'){
         $url = url($url,$arr,$isNotHtml,false);
     }else{
          $url = url($url,$arr,$isNotHtml,$domain);
     }
-    if (empty($domain) == false){
+    if (empty($domain) == false || $replaceAdminPath == true){
         $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);
     }
+
 	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D','%5B','%5D'),array("'+","+'",'{{','}}','[',']'),$url);
 }
 /**

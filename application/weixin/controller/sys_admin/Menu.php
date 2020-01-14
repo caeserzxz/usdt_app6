@@ -23,7 +23,7 @@ class Menu extends AdminController
 	//-- 主页
 	/*------------------------------------------------------ */
     public function index(){
-		
+
 		$WeixinEventType = $this->getDict('WeixinEventType');		
 		$this->assign("WeixinEventType_opt", arrToSel($WeixinEventType));
 		$rows = $this->Model->field('id,pid,sort,name,keyword,keyword_value,is_show,type')->order('sort,id asc')->select();
@@ -40,7 +40,7 @@ class Menu extends AdminController
 		$add_menu = input('new','', 'trim');
         $save_menu = input('ps','', 'trim');
 		$res = $this->Model->saveMenu($add_menu,$save_menu);
-		if($res['res'] != 0) return $this->error($res['error']);
+		if($res !== true) return $this->error($res);
 		return $this->success('保存成功！');
 	}
 	/*------------------------------------------------------ */
@@ -51,7 +51,7 @@ class Menu extends AdminController
 	   $mapb['pid'] = $map['id'] = input('id',0,'intval');
 	   if($map['id'] < 1) return $this->error('非法操作！');
 	   $res = $this->Model->where($map)->delete();
-       if ($res <　1) return $this->error();
+       if ($res < 1) return $this->error();
 	   $res = $this->Model->where($mapb)->delete();
        return $this->success('删除成功！');
     }
@@ -100,7 +100,7 @@ class Menu extends AdminController
 						$p_row['url'] = _url('shop/article/info',array('id'=>$row['keyword']),false,true);
 					}else{
                         if ($p_row['type'] == 'view'){
-                            if (strstr($row['keyword_value'],'http://') == false) {
+                            if (strstr($row['keyword_value'],'http://') == false && strstr($row['keyword_value'],'https://') == false) {
                                 $row['keyword_value'] = config('config.host_path').$row['keyword_value'];
                             }
                             $p_row['url'] = $row['keyword_value'];
