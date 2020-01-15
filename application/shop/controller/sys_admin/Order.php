@@ -323,8 +323,9 @@ class Order extends AdminController
                 $ptModel = new PrintTemplateModel();
                 $res = $ShippingModel->kdnShipping($shipping[$kdn_shipping_id], $orderInfo);
                 if (is_array($res) == false) return $this->error($res);
-                $data['shipping_id'] = $res[0];
+                $data['shipping_id'] = $res[0]['shipping_id'];
                 $data['invoice_no'] = $res[1];
+                $data['shipping_name'] = $res[0]['shipping_name'];
                 if($res[2]){
                     $Arr['temp_html'] = $res[2];
                     $pt_row = $ptModel->where(['order_id'=>$order_id])->find();
@@ -447,8 +448,9 @@ class Order extends AdminController
                         $error[] = '订单' . $orderInfo['order_sn'] . ':' . $res;
                         continue;
                     }
-                    $upData['shipping_id'] = $res[0];
+                    $upData['shipping_id'] = $res[0]['shipping_id'];
                     $upData['invoice_no'] = $res[1];
+                    $upData['shipping_name'] = $res[0]['shipping_name'];
                     if($res[2]){
                         $Arr['temp_html'] = $res[2];
                         $pt_row = $ptModel->where(['order_id'=>$order_id])->find();

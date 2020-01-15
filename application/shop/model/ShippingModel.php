@@ -158,6 +158,6 @@ class ShippingModel extends BaseModel
             $PrintTemplate = $returndata['PrintTemplate'];  //返回电子面单模板
         }
 
-        return [$shipping['shipping_id'],$logisticcode,$PrintTemplate];
+        return [$shipping,$logisticcode,$PrintTemplate];
     }
 }
