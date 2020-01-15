@@ -11,6 +11,7 @@ use app\member\model\AccountLogModel;
 /*------------------------------------------------------ */
 class Recharge extends AdminController
 {
+    public $pay_id;
 	 //*------------------------------------------------------ */
 	//-- 初始化
 	/*------------------------------------------------------ */
@@ -24,6 +25,7 @@ class Recharge extends AdminController
     public function index(){		
 		$this->assign("start_date", date('Y/m/01',strtotime("-1 months")));
 		$this->assign("end_date",date('Y/m/d'));
+        $this->pay_id = 3;//默认选中线下打款
 		$this->getList(true);
 		$this->assign("userRechargeTypeOpt", arrToSel($this->userRechargeType,0));	
 		$this->assign("payList",$this->payList);
@@ -38,7 +40,7 @@ class Recharge extends AdminController
 		$this->payList = (new PaymentModel)->getRows(false,'pay_code');
 		$search['keyword'] = input('keyword','','trim');
 		$search['status'] = input('status',0,'intval');
-		$search['pay_id'] = input('pay_id',0,'intval');
+		$search['pay_id'] = input('pay_id',$this->pay_id,'intval');
 		$reportrange = input('reportrange');
 		$where = [];
 		if (empty($reportrange) == false){

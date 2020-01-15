@@ -491,7 +491,7 @@ class OrderModel extends BaseModel
             $log = $AccountLogModel->where($where)->find();
             if ($log['use_integral'] > 0) {
                 unset($inData);
-                $inData['total_integral'] = intval($orderInfo['total_amount']) * -1;
+                $inData['total_integral'] = $log['use_integral'] * -1;
                 $inData['use_integral'] = $inData['total_integral'];
                 $inData['change_type'] = 2;
                 $inData['by_id'] = $orderInfo['order_id'];

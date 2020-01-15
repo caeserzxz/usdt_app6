@@ -234,14 +234,20 @@ class Payment extends ClientbaseController
         $this->assign('order_id', $order_id);
         return $this->fetch('pub_pay'); //分跳转 和不 跳转
     }
-    // 服务器点对点 //Payment/notifyUrl
+
+    /**
+     * 支付异步回调处理
+     */
     public function notifyUrl()
     {
         $this->payment->response();
         exit();
     }
 
-    // 页面跳转 //Payment/returnUrl
+    /**
+     * 支付同步回调地址
+     * @return mixed
+     */
     public function returnUrl()
     {
         $result = $this->payment->respond2(); // $result['order_sn'] = '201512241425288593';
