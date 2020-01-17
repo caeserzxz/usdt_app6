@@ -322,10 +322,10 @@ class Goods extends AdminController
             if ($row['shop_price'] < 0) {
                 return $this->error('商品销售价不能少于0.');
             }
-            if ($row['goods_number'] < 0) {
+
+            if ($row['goods_id'] < 1 && $row['goods_number'] < 0) {
                 return $this->error('商品库存不能少于0.');
             }
-
 
             if ($row['is_promote'] == 1) {
                 if ($row['promote_price'] < 0) {
@@ -635,11 +635,7 @@ class Goods extends AdminController
         }
         $row = $this->checkData($row);
         if ($row['is_spec'] == 0) {
-            $goods_number = $row['goods_number'];
-            unset($row['goods_number']);
-            if ($goods_number > 0) {
-                $row['goods_number'] = ['INC', $goods_number];
-            }
+            $row['goods_number'] = ['INC', $row['goods_number'] * 1];
             $row['shop_price'] = $row['shop_price'] * 1;
         }
 

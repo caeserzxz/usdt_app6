@@ -130,7 +130,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">库存：</label>
         <div class="col-sm-8">
-            {$row['goods_id']>0?'当前库存：'.$row['goods_number'].' + ':''}<input type="text" class="input-mini" name="goods_number" data-rule-digits="true" data-rule-required="true" data-msg-required="库存不能为空" value="{$row['goods_id']>0?'0':''}">
+            {$row['goods_id']>0?'当前库存：'.$row['goods_number'].' + ':''}<input type="text" class="input-mini" name="goods_number" data-rule-number="true" data-rule-required="true" data-msg-required="库存不能为空" value="{$row['goods_id']>0?'0':''}">
             <span class="red">*</span>
         </div>
     </div>
