@@ -575,4 +575,27 @@ class Users extends AdminController
         return $this->fetch();
     }
 
+    public function upMobile(){
+        $mobile = input('mobile');
+        $user_id = input('user_id');
+        if (checkMobile($mobile) == false) {
+            // return '手机号码不正确.';
+            return $this->error('手机号码不正确');
+        }
+        $user = $this->Model->find($user_id);
+        $count = $this->Model->where('mobile',$mobile)->count('user_id');
+        if ($count > 0) {
+            return $this->error('手机号已存在');
+        }
+        $upDate['mobile'] = $mobile;
+        $res = $this->Model->where('user_id',$user_id)->update($upDate);
+        if ($res < 1) {
+            return $this->error('未知错误，处理失败.');
+        }
+        $this->Model->cleanMemcache($user_id);
+        $text = '原手机号:'.$user['mobile'].'改为'.$mobile;
+        $this->_log($user_id,$text);
+        return $this->success('修改成功.');
+    }
+
 }

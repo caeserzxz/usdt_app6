@@ -32,7 +32,11 @@
                             <div class="tab-pane active" id="tabinfo">
                                 <div class="form-group">
                                     <label class="control-label">注册手机：</label>
-                                    <div class="col-sm-3"><label>{$row.mobile}</label></div>
+                                    <div class="col-sm-3">
+                                      <label>
+                                        <input onchange="upMobile()" id="mobile" type="text" value="{$row.mobile}">
+                                      </label>
+                                    </div>
                                     <label class="control-label">会员等级：</label>
                                     <div class="col-sm-3"><label>{$row.account.total_integral|userLevel}</label>
                                         <a href="{:url('member/sys_admin.log_operate/index',array('edit_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
@@ -355,6 +359,33 @@
             </tbody>
         </table>
     </div>
+</script>
+<script>
+  function upMobile(){
+    var mobile = $('#mobile').val();
+    var user_id = "{$row.user_id}";
+    var arr = new Object();
+    arr.mobile = mobile;
+    arr.user_id = user_id;
+    if (arr.mobile == ''){
+        _alert('请输入手机号码.');
+        return false;
+    }
+    $.ajax({ 
+        url: '{:url("upMobile")}',
+        type: "POST",
+        data: arr, 
+        success: function(res){
+            console.log(res)
+            _alert(res.msg);
+            if (res.code == 0) {
+              var mobile1 = "{$row.mobile}"
+              $('#mobile').val(mobile1)
+            };
+            return false;
+        }
+    });
+  }
 </script>
 <script type="text/javascript">
 	$('.superior_tab').click(function(){
