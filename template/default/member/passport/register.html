@@ -1,133 +1,152 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css" />
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css"/>
 {/block}
 {block name="main" }
 <div class="page-bd">
-   <!-- 页面内容-->
-   <div class="top">
-          <img src="__STATIC__/mobile/default/images/APPLOGO.png" alt="">
-          <span class="fs34 color_3 fw_b">{:settings('shop_title')}</span>
+    <!-- 页面内容-->
+    <div class="top">
+        <img src="__STATIC__/mobile/default/images/APPLOGO.png" alt="">
+        <span class="fs34 color_3 fw_b">{:settings('shop_title')}</span>
+    </div>
+    <div class="inputBlock bor_b">
+        <img src="__STATIC__/mobile/default/images/register03.png" alt="" class="imgIcon">
+        <input type="text" class="fs32 fw_b textBox" id="mobile" placeholder="手机号">
+    </div>
+    {if condition="$sms_fun['register']==1"}
+    <div class="inputBlock bor_b">
+        <img src="__STATIC__/mobile/default/images/register04.png" alt="" class="imgIcon">
+        <input type="text" class="fs32 fw_b textBox code" id="code" placeholder="验证码">
+        <div class="codeBox">
+            <span class="color_r fs28 fw_b getCode" onclick="codeButton()">获取验证码</span>
+            <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
         </div>
-        <div class="inputBlock bor_b">
-            <img src="__STATIC__/mobile/default/images/register03.png" alt="" class="imgIcon">  
-            <input type="text" class="fs32 fw_b textBox" id="mobile" placeholder="手机号">
+    </div>
+    {/if}
+    <div class="inputBlock bor_b">
+        <img src="__STATIC__/mobile/default/images/register05.png" alt="" class="imgIcon">
+        <input type="text" class="fs32 fw_b textBox" id="nick_name" placeholder="昵称">
+    </div>
+    <div class="inputBlock bor_b">
+        <img src="__STATIC__/mobile/default/images/register02.png" alt="" class="imgIcon">
+        <input type="password" class="fs32 fw_b textBox" id="password" placeholder="密码">
+        <div class="ereBox">
+            <img src="__STATIC__/mobile/default/images/login01.png" alt="" data-type="0">
         </div>
-        {if condition="$sms_fun['register']==1"}
-        <div class="inputBlock bor_b">
-            <img src="__STATIC__/mobile/default/images/register04.png" alt="" class="imgIcon">           
-              <input type="text" class="fs32 fw_b textBox code" id="code" placeholder="验证码">
-              <div class="codeBox">
-                    <span class="color_r fs28 fw_b getCode" onclick="codeButton()">获取验证码</span>
-                    <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
-              </div>  
-        </div>
-        {/if}
-        <div class="inputBlock bor_b">
-            <img src="__STATIC__/mobile/default/images/register05.png" alt="" class="imgIcon">  
-            <input type="text" class="fs32 fw_b textBox" id="nick_name" placeholder="昵称">
-        </div>
-        <div class="inputBlock bor_b">
-            <img src="__STATIC__/mobile/default/images/register02.png" alt="" class="imgIcon">   
-              <input type="password" class="fs32 fw_b textBox" id="password" placeholder="密码">
-              <div class="ereBox">
-                  <img src="__STATIC__/mobile/default/images/login01.png" alt="" data-type="0">
-              </div>  
-        </div>
-        <div class="rulesBox">
-            <label for="isAgree">
-                <div class="iconBox">
-                  <input type="checkbox" class="check" name="checkbox1" id="isAgree" value="1">
-                  <i class="icon_checked"></i>
-                </div>
-            </label>
-            <div class="rules fs26 color_9">我同意<a href="{:url('shop/article/registerAgreement')}" class="color_3">《{:settings('shop_title')}》注册协议</a></div>
-        </div>
+    </div>
 
-        <div class="loginbutton fs32 fw_b color_w BGcolor_r register">注册</div>
-        <div class="fs30 goregister"><span class="color_9">已有账号，</span><a href="{:url('login')}" class="fw_b color_3">立即登录</a></div>
-      </div>
+    <div class="inputBlock bor_b {$register_invite_code==0?'hide':''}">
+        <img src="__STATIC__/mobile/default/images/register01.png" alt="" class="imgIcon">
+        {empty name="$share_token"}
+            <input type="text" class="fs32 fw_b textBox" id="invite_code" placeholder="{$lang_register_invite_code[$register_invite_code]}">
+        {else/}
+            <input type="text" class="fs32 fw_b textBox" id="invite_code" value="{$share_token}" disabled placeholder="{$lang_register_invite_code[$register_invite_code]}">
+        {/empty}
+    </div>
+    <div class="rulesBox">
+        <label for="isAgree">
+            <div class="iconBox">
+                <input type="checkbox" class="check" name="checkbox1" id="isAgree" value="1">
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+        <div class="rules fs26 color_9">我同意<a href="{:url('shop/article/registerAgreement')}" class="color_3">《{:settings('shop_title')}》注册协议</a>
+        </div>
+    </div>
+
+    <div class="loginbutton fs32 fw_b color_w BGcolor_r register">注册</div>
+    <div class="fs30 goregister"><span class="color_9">已有账号，</span><a href="{:url('login')}"
+                                                                      class="fw_b color_3">立即登录</a></div>
+</div>
 {/block}
 {block name="footer"}
- <script>
-    $(function(){
-      $('.ereBox').on('click',function(){
-        var obj=$(this).find('img')
-        if(obj.attr('data-type')=='0'){
-          obj.attr('src','__STATIC__/mobile/default/images/login02.png')
-          obj.attr('data-type','1')
-          $(this).siblings('input').attr('type','text')
-        }else{
-          obj.attr('src','__STATIC__/mobile/default/images/login01.png')
-          obj.attr('data-type','0')
-          $(this).siblings('input').attr('type','password')
-        }
-      })
+<script>
+    var register_invite_code = {$register_invite_code|intval};
+    var register_must_invite = {$register_must_invite|intval};
+    $(function () {
+        $('.ereBox').on('click', function () {
+            var obj = $(this).find('img')
+            if (obj.attr('data-type') == '0') {
+                obj.attr('src', '__STATIC__/mobile/default/images/login02.png')
+                obj.attr('data-type', '1')
+                $(this).siblings('input').attr('type', 'text')
+            } else {
+                obj.attr('src', '__STATIC__/mobile/default/images/login01.png')
+                obj.attr('data-type', '0')
+                $(this).siblings('input').attr('type', 'password')
+            }
+        })
     })
-    $('.register').on('click',function(){
+    $('.register').on('click', function () {
         var arr = new Object();
         arr.mobile = $('#mobile').val();
         arr.nick_name = $('#nick_name').val();
         arr.password = $('#password').val();
-
-        if (arr.mobile == ''){
+        arr.invite_code = $('#invite_code').val();
+        if (arr.mobile == '') {
             _alert('请输入手机号码.');
             return false;
         }
 
-        if ($('#code').length > 0){
+        if ($('#code').length > 0) {
             arr.code = $('#code').val();
 
-            if (arr.code == ''){
+            if (arr.code == '') {
                 _alert('请输入验证码..');
                 return false;
             }
         }
-        if (arr.nick_name == ''){
+        if (arr.nick_name == '') {
             _alert('请输入用户昵称.');
             return false;
         }
-        if (arr.password == '' ){
+        if (arr.password == '') {
             _alert('请输入用户密码.');
             return false;
         }
-        if (arr.password.length < 8){
+        if (arr.password.length < 8) {
             _alert('用户密码长度不能小于八位.');
             return false;
         }
-        if ($('#isAgree').is(':checked') == false){
+        if (register_invite_code == 1 && register_must_invite == 1){
+            if (arr.invite_code.length < 1) {
+                _alert('请填写邀请码.');
+                return false;
+            }
+        }
+        if ($('#isAgree').is(':checked') == false) {
             _alert('请查看后并勾选同意注册协议..');
             return false;
         }
-        jq_ajax('{:url("member/api.passport/register")}',arr,function (res) {
+        jq_ajax('{:url("member/api.passport/register")}', arr, function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;
             }
-            _alert(res.msg,'{:url("login")}');
+            _alert(res.msg, '{:url("login")}');
         })
     })
-	function codeButton(){
+    function codeButton() {
         var arr = new Object();
         arr.type = 'register';
         arr.mobile = $('#mobile').val();
-        if (arr.mobile == ''){
+        if (arr.mobile == '') {
             _alert('请输入手机号码');
             return false;
         }
-        jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
-            if (res.code == 0){
+        jq_ajax('{:url("publics/api.sms/sendCode")}', arr, function (res) {
+            if (res.code == 0) {
                 _alert(res.msg);
                 return false;
             }
-            var timeObj=$('.time')
-            var getCodeObj=$('.getCode')
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
             getCodeObj.hide();
             timeObj.show();
             var time = 60;
-            var set=setInterval(function(){
-                timeObj.text(""+--time+"s");
-                if (time<=0) {
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
                     timeObj.hide();
                     getCodeObj.show();
                     clearInterval(set);
@@ -135,6 +154,6 @@
             }, 1000);
         })
 
-	}
-    </script>
+    }
+</script>
 {/block}

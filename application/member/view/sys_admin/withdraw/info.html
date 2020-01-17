@@ -51,10 +51,8 @@
                         <div class="col-sm-8 m-t-mc">
                             {if condition="$row['account_type']=='bank'"}
                             	{$row.account.bank_name}：{$row.account.bank_location_outlet} - {$row.account.bank_branch_name}<br>{$row.account.bank_cardholder} - {$row.account.bank_card_number} - {$row.account.bank_cardholder_phone}
-                            {elseif condition="$row['account_type']=='wxpay'"}
-                                微信
-                            {elseif condition="$row['account_type']=='wxpay'"}
-                                支付宝
+                            {else}
+                                {$withdraw_account_type[$row['account_type']]}
                             {/if}
                             {if condition="$row['account_type']!='bank'"}
                                 <a href="{$row['qrcode_file']}" target="_blank"><img src="{$row['qrcode_file']}" style="width: 100%;"></a>

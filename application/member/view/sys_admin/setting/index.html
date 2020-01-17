@@ -43,6 +43,61 @@
                             <span class="help-line">会员注册赠送积分</span>
                           </div>
                      </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">注册填写邀请码：</label>
+                        <div class="controls">
+                            <div>
+                            <label class="radio-inline">
+                                <input name="register_invite_code" value="0" {$setting['register_invite_code']==0?'checked':''} type="radio" >关闭(注册页不显示邀请码输入框，不影响分享绑定上下级)
+                            </label>
+                            </div>
+                            <label class="radio-inline">
+                                <input name="register_invite_code" value="1" {$setting['register_invite_code']==1?'checked':''} type="radio">填写邀请码
+                            </label>
+                            <label class="radio-inline">
+                                <input name="register_invite_code" value="2" {$setting['register_invite_code']==2?'checked':''} type="radio">填写会员ID
+                            </label>
+                            <label class="radio-inline">
+                                <input name="register_invite_code" value="3" {$setting['register_invite_code']==3?'checked':''} type="radio">填写会员手机号码
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">注册必须邀请：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="register_must_invite" value="0" {$setting['register_must_invite']==0?'checked':''} type="radio" >不强制
+                            </label>
+                            <label class="radio-inline">
+                                <input name="register_must_invite" value="1" {$setting['register_must_invite']==1?'checked':''} type="radio">强制填写
+                            </label>
+                            <span class="help-inline">注册填写邀请码【关闭】时此项不生效</span>
+                        </div>
+                    </div>
+                    <div class="form-group m-t">
+                        <label class="col-sm-2  control-label">绑定关系时间：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="bind_pid_time" value="0" {$setting['bind_pid_time']==0?'checked':''} type="radio"> 注册
+                            </label>
+                            <label class="radio-inline">
+                                <input name="bind_pid_time" value="1" {$setting['bind_pid_time']==1?'checked':''} type="radio"> 订单支付后
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group m-t">
+                        <label class="col-sm-2  control-label">分享绑定规则：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="bind_share_rule" value="0" {$setting['bind_share_rule']==0?'checked':''} type="radio"> 按最先分享绑定
+                            </label>
+                            <label class="radio-inline">
+                                <input name="bind_share_rule" value="1" {$setting['bind_share_rule']==1?'checked':''} type="radio"> 按最后分享绑定
+                            </label>
+                            <span class="help-inline">此项只支持微信访问，非微信访问按当前分享来源绑定</span>
+                        </div>
+                    </div>
                     <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
                     <div class="form-group">
                           <label class="col-sm-2 control-label">是否开放签到：</label>

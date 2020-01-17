@@ -400,8 +400,9 @@ class OrderModel extends BaseModel
             }
         } elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']) {//退款，退回帐户余额
             if ($orderInfo['money_paid'] > 0) {
-                if ($orderInfo['pay_code'] == 'balance') {
-                    $inData['balance_money'] = $orderInfo['money_paid'];
+                $refund_amount = $orderInfo['money_paid'] - $orderInfo['tuikuan_money'];//实付金额减去已退金额
+                if (in_array($orderInfo['pay_code'] ,['balance','offline'])) {//线下打款和余额支付，退回余额
+                    $inData['balance_money'] = $refund_amount;
                     $inData['change_type'] = 3;
                     $inData['by_id'] = $orderInfo['order_id'];
                     $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
@@ -413,7 +414,7 @@ class OrderModel extends BaseModel
                 } else {//在线退款
                     $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
-                    $orderInfo['refund_amount'] = $orderInfo['money_paid'];
+                    $orderInfo['refund_amount'] = $refund_amount;//实付金额减去已退金额
                     $res = $payment->refund($orderInfo);
                     if ($res !== true) {
                         Db::rollback();//回滚
@@ -491,7 +492,7 @@ class OrderModel extends BaseModel
             $log = $AccountLogModel->where($where)->find();
             if ($log['use_integral'] > 0) {
                 unset($inData);
-                $inData['total_integral'] = $log['use_integral'] * -1;
+                $inData['total_integral'] = intval($orderInfo['total_amount']) * -1;
                 $inData['use_integral'] = $inData['total_integral'];
                 $inData['change_type'] = 2;
                 $inData['by_id'] = $orderInfo['order_id'];
@@ -854,8 +855,8 @@ class OrderModel extends BaseModel
         }//end
         $UsersModel =  new \app\member\model\UsersModel();
         //如果设置支付再绑定关系时执行
-        $DividendInfo = settings('DividendInfo');
-        if ($DividendInfo['bind_type'] == 1){
+        $bind_pid_time = settings('bind_pid_time');
+        if ($bind_pid_time == 1){//支付成功时绑定关系
             $UsersModel->regUserBind($orderInfo['user_id']);
         }//end
         $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间

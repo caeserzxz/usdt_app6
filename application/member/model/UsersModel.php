@@ -131,12 +131,43 @@ class UsersModel extends BaseModel
         if ($count >= 1) return $this->getToken();
         return $token;
     }
-    /*------------------------------------------------------ */
-    //-- 会员注册
-    //-- $is_admin 是否是后台添加的用户
-    /*------------------------------------------------------ */
+
+    /**
+     * 会员注册
+     * @param array $inArr 写入数据
+     * @param int $wxuid 微信会员ID
+     * @param bool $is_admin 是否是后台添加的用户
+     * @param string $obj
+     * @return bool|string
+     */
     public function register($inArr = array(), $wxuid = 0, $is_admin = false,&$obj = '')
     {
+        $wxInfo = session('wxInfo');
+        if (empty($wxInfo)){
+            $wxInfo['wxuid'] = 0;
+        }
+        $inArr['pid'] = 0;
+        //分享注册
+        if ($is_admin == false) {
+            if ($wxInfo['wxuid'] > 0) {//微信访问根据微信分享来源记录，执行
+                $bind_share_rule = settings('bind_share_rule');
+                if ($bind_share_rule == 0){//按最先分享绑定
+                    $sort = 'id ASC';
+                }else{//按最后分享绑定
+                    $sort = 'id DESC';
+                }
+                $share_user_id = (new \app\weixin\model\WeiXinInviteLogModel)->where('wxuid',$wxInfo['wxuid'])->order($sort)->value('user_id');
+                if (empty($share_user_id) == false){
+                    $inArr['pid'] = $share_user_id;
+                }
+            }else{
+                $share_token = session('share_token');
+                if (empty($share_token) == false){
+                    $inArr['pid'] = $this->getShareUser($share_token);
+                }
+            }
+        }//end
+
         if ($wxuid == 0) {
             if (empty($inArr)) {
                 return '获取注册数据失败.';
@@ -158,16 +189,31 @@ class UsersModel extends BaseModel
                 return $res;
             }
             $inArr['password'] = f_hash($inArr['password']);
+
+            if ($is_admin == false && $inArr['pid'] == 0){//非后台新增会员
+                $register_invite_code = settings('register_invite_code');
+                $register_must_invite = settings('register_must_invite');
+                if ($register_invite_code > 0){
+                    if ($register_must_invite == 1 && empty($inArr['invite_code'])) {
+                        return '需要填写邀请信息才能注册.';
+                    }
+                    $share_user_id = 0;
+                    if ($register_invite_code == 2) {//会员ID
+                        $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
+                    }elseif ($register_invite_code == 3) {//会员手机号
+                        $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
+                    }
+                    if ($share_user_id < 1){
+                        return '邀请帐号不存在.';
+                    }
+                    $inArr['pid'] = $share_user_id;
+                }
+            }
         }
+        unset($inArr['invite_code']);
         $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
-        $inArr['pid'] = 0;
-        //分享注册
-        $share_token = session('share_token');
-        if (empty($share_token) == false) {
-            $inArr['pid'] = $this->getShareUser($share_token);
-        }//end
 
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
             Db::startTrans();
@@ -213,7 +259,6 @@ class UsersModel extends BaseModel
         //edn
         //捆绑微信会员信息
         if ($wxuid == 0) {
-            $wxInfo = session('wxInfo');
             $wxuid = $wxInfo['wxuid'];
         }
         if ($wxuid > 0) {
@@ -225,8 +270,8 @@ class UsersModel extends BaseModel
             }
         } //end
         Db::commit();
-        $DividendInfo = settings('DividendInfo');
-        if ($DividendInfo['bind_type'] < 1) {
+        $bind_pid_time = settings('bind_pid_time');
+        if ($bind_pid_time < 1) {
             //写入九级关系链
             $this->regUserBind($user_id,$inArr['pid']);
         }
@@ -366,8 +411,8 @@ class UsersModel extends BaseModel
         }
         //还没有执行绑定关系执行
         if ($info['is_bind'] == 0 && $info['pid'] > 0){
-            $DividendInfo = settings('DividendInfo');
-            if ($DividendInfo['bind_type'] == 0){
+            $bind_pid_time = settings('bind_pid_time');
+            if ($bind_pid_time < 1){
                 $this->regUserBind($info['user_id'],$info['pid'],'edit');
             }elseif($info['last_buy_time'] > 0){
                 $this->regUserBind($info['user_id'],$info['pid'],'edit');

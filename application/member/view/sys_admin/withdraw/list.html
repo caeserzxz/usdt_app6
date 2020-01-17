@@ -1,43 +1,47 @@
 <table class="table  table-hover  m-b-none">
-<thead>
-<tr>
-    <th>会员名称</th>
-    <th>申请日期</th>
-    <th>提现金额</th>
-    <th>手续费</th>
-    <th>到账金额</th>
-    <th>手续费扣除</th>
-    <th>提现方式</th>
-    <th>处理状态</th>
-    <th>更新时间</th>
-    <th>操作</th>
-</tr>
-</thead>
-<tbody>
-{volist name="data.list" id="vo" }
-<tr>
-<td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
-<td>{$vo.add_time|dateTpl}</td>
-<td>{$vo.amount|priceFormat}</td>
-<td>{$vo.withdraw_fee|priceFormat}</td>
-<td>{$vo.arrival_money|priceFormat}</td>
-<td>{$fee_types[$vo.fee_type]}</td>
-<td>
-{if condition="$vo['account_type']=='bank'"}
-{$vo.account_info.bank_name}<br>{$vo.account_infobank_cardholder} - {$vo.account_info.bank_card_number} - {$vo.account_info.bank_location_outlet} - {$vo.account_info.bank_branch_name}
-{else/}
-支付宝<br>{$vo.account_info.alipay_user_name} - {$vo.account_info.alipay_account}
-{/if}
-</td>
-<td>{$userWithdrawType[$vo['status']]['name']}</td>
-<td>{$vo.update_time|dateTpl}</td>
-<td><a href="{:url('info',array('log_id'=>$vo['log_id']))}"  data-toggle="ajaxModal" title="编辑"><i class="fa fa-edit text-muted"></i></a></td>
-</tr>
-{/volist} 
-</tbody>
+    <thead>
+    <tr>
+        <th>会员名称</th>
+        <th>申请日期</th>
+        <th>提现金额</th>
+        <th>手续费</th>
+        <th>到账金额</th>
+        <th>手续费扣除</th>
+        <th>提现方式</th>
+        <th>处理状态</th>
+        <th>更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
+        <td>{$vo.add_time|dateTpl}</td>
+        <td>{$vo.amount|priceFormat}</td>
+        <td>{$vo.withdraw_fee|priceFormat}</td>
+        <td>{$vo.arrival_money|priceFormat}</td>
+        <td>{$fee_types[$vo.fee_type]}</td>
+        <td>
+            {if condition="$vo['account_type']=='bank'"}
+            {$vo.account_info.bank_name}<br>{$vo.account_infobank_cardholder} - {$vo.account_info.bank_card_number} -
+            {$vo.account_info.bank_location_outlet} - {$vo.account_info.bank_branch_name}
+            {else/}
+            {$withdraw_account_type[$vo['account_type']]}
+            {/if}
+        </td>
+        <td>{$userWithdrawType[$vo['status']]['name']}</td>
+        <td>{$vo.update_time|dateTpl}</td>
+        <td><a href="{:url('info',array('log_id'=>$vo['log_id']))}" data-toggle="ajaxModal" title="编辑"><i
+                class="fa fa-edit text-muted"></i></a></td>
+    </tr>
+    {/volist}
+    </tbody>
 </table>
 {empty name="data.list"}
-<table width="100%" >
- 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据.</td></tr>
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" align="center" valign="middle">没有相关数据.</td>
+    </tr>
 </table>
 {/empty}   

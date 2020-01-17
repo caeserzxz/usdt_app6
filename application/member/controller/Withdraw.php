@@ -16,6 +16,7 @@ class Withdraw  extends ClientbaseController{
             return $this->redirect('bindMobile');
         }
         $this->assign('title', '提现管理');
+        $this->assign('withdraw_account_type', config('config.withdraw_account_type'));
 		return $this->fetch('index');
 	}
     /*------------------------------------------------------ */

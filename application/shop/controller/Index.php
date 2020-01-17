@@ -203,10 +203,11 @@ class Index  extends ClientbaseController{
                             }
                         }
                     }
+                    if ($row['params']['showicon'] == 0) {
+                        $row['style']['iconstyle'] = '';
+                    }
                 }
-                if ($row['style']['showicon'] == 0) {
-                    $row['style']['iconstyle'] = '';
-                }
+
                 $this->assign('diyInfo', $row);
                 $body .= $this->fetch($tmpPath.$row['id'])->getContent();
             }

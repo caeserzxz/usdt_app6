@@ -76,6 +76,7 @@ class Withdraw extends AdminController
 		$this->assign("data", $data);
 		$fee_types = config('config.fee_types');
         $this->assign('fee_types', $fee_types);
+        $this->assign('withdraw_account_type', config('config.withdraw_account_type'));
 		if ($runData == false){
 			$data['content']= $this->fetch('list')->getContent();
 			unset($data['list']);
@@ -92,6 +93,7 @@ class Withdraw extends AdminController
         $data['account'] = json_decode($data['account_info'],true);
 		$userWithdrawType = $this->getDict('UserWithdrawType');
 		$data['status_name'] = $userWithdrawType[$data['status']]['name'];
+        $this->assign('withdraw_account_type', config('config.withdraw_account_type'));
 		return $data;
 	}
 	
@@ -186,6 +188,7 @@ class Withdraw extends AdminController
         $title = join("\t", array_keys($export_arr)) . "\t";
         $lang = lang('withdraw');
         $data = '';
+        $withdraw_account_type = config('config.withdraw_account_type');
         do {
             $rows = $this->Model->where($where)->limit($page * $page_size, $page_size)->select();
             if (empty($rows)) break;
@@ -199,7 +202,7 @@ class Withdraw extends AdminController
                     } elseif ($val == 'user_name') {
                         $data .= userInfo($row['user_id']). "\t";
                     } elseif ($val == 'account_type') {
-                        $data .= ($row['account_type']=='alipay'?'支付宝':'银行卡'). "\t";
+                        $data .= $withdraw_account_type[$row['account_type']]. "\t";
                     }elseif (strstr($val, 'alipay_')) {
                         $data .= $account_info[$val]. "\t";
                     }elseif (strstr($val, 'bank_')) {

@@ -642,7 +642,7 @@ class Order extends AdminController
         $res = $this->Model->upInfo($data);
         if ($res !== true) return $this->error($res);
         $orderInfo['shipping_status'] = $config['SS_UNSHIPPED'];
-        $this->Model->_log($orderInfo, '设为未发货,原发货信息：' . $orderInfo['shipping_name'] . '，单号：' . $data['invoice_no']);
+        $this->Model->_log($orderInfo, '设为未发货,原发货信息：' . $orderInfo['shipping_name'] . '，单号：' . $orderInfo['invoice_no']);
         return $this->success('设为未发货成功！', url('info', array('order_id' => $order_id)));
     }
 

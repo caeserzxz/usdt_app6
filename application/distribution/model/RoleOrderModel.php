@@ -58,8 +58,8 @@ class RoleOrderModel extends BaseModel
         }
         Db::commit();// 提交事务
         //如果设置支付再绑定关系时执行,须优先于分佣计算前执行
-        $DividendInfo = settings('DividendInfo');
-        if ($DividendInfo['bind_type'] == 1){
+        $bind_pid_time = settings('bind_pid_time');
+        if ($bind_pid_time == 1){
             $UsersModel =  new \app\member\model\UsersModel();
             $UsersModel->regUserBind($orderInfo['user_id']);
         }//end

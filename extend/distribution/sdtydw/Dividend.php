@@ -55,7 +55,6 @@ class Dividend extends BaseModel
             return $logArr;
         }//end
 
-        $DividendInfo = settings('DividendInfo');
         $upData = [];//更新分佣记录状态
         $OrderModel = new OrderModel();
         $order_operating = '';
@@ -92,7 +91,8 @@ class Dividend extends BaseModel
             }
             return $upData;
         } elseif ($type == 'pay') {//订单支付成功
-            if ($DividendInfo['bind_type'] == 1) {//支付成功时绑定关系
+            $bind_pid_time = settings('bind_pid_time');
+            if ($bind_pid_time == 1){//支付成功时绑定关系
                 $this->UsersModel->regUserBind($orderInfo['user_id']);
             }
             $goodsList = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select();

@@ -2,6 +2,7 @@
 namespace app\weixin\controller\sys_admin;
 use app\AdminController;
 use app\weixin\model\WeiXinUsersModel;
+use app\weixin\model\WeiXinInviteLogModel;
 /*------------------------------------------------------ */
 //-- 微信会员
 /*------------------------------------------------------ */
@@ -52,5 +53,18 @@ class Users extends AdminController
 		}
         return true;
     }
-	
+
+    /**
+     * 微信用户分享来源记录
+     */
+	public function inviteLog(){
+	    $wxuid = input('wxuid',0,'intval');
+	    $lists = [];
+	    if ($wxuid > 0 ){
+	        $where['wxuid'] = $wxuid;
+            $lists = (new WeiXinInviteLogModel)->where('wxuid',$wxuid)->order('id ASC')->select();
+        }
+        $this->assign("lists",$lists);
+        return $this->fetch();
+    }
 }

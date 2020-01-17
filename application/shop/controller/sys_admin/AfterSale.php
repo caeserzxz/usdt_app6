@@ -219,14 +219,14 @@ class AfterSale extends AdminController
             return $this->error('提交处理失败-1，请重试.');
         }
 
-        //修改订单
-        if ($upData['status'] == 2) {//通过时执行
-            $oupData['tuikuan_money'] = $asInfo['return_money'];
-            $oupData['is_dividend'] = 0;//重新计算佣金
-        }
+        $OrderModel = new OrderModel();
         $oupData['is_after_sale'] = 9;
         $oupData['update_time'] = time();
-        $OrderModel = new OrderModel();
+        //修改订单
+        if ($upData['status'] == 2) {//通过时执行
+            $oupData['tuikuan_money'] = ['INC', $asInfo['return_money']];
+            $oupData['is_dividend'] = 0;//重新计算佣金
+        }
         $res = $OrderModel->where('order_id',$asInfo['order_id'])->update($oupData);
         if ($res < 1){
             Db::rollback();// 回滚事务

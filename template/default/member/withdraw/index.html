@@ -26,9 +26,9 @@
     </div>
     <div class="paytype">
         <div class="title fs34 color_3 fw_b ">
-            <label><span class="iconBox"><input class="check" type="radio" name="account_type" value="bank" checked><i class="icon_checked"></i> 银行卡</span></label>
-            <label><span class="iconBox"><input class="check"  type="radio" name="account_type" value="wxpay"><i class="icon_checked"></i> 微信</span></label>
-            <label><span class="iconBox"><input class="check"  type="radio" name="account_type" value="alipay"><i class="icon_checked"></i> 支付宝</span></label>
+            {volist name="withdraw_account_type" id="val"}
+            <label><span class="iconBox"><input class="check" type="radio" name="account_type" value="{$key}" checked><i class="icon_checked"></i> {$val}</span></label>
+            {/volist}
         </div>
         <div class="cells" id="bank_box">
         	<div class="banklist">

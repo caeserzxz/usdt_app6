@@ -24,7 +24,9 @@ return [
     'shop_modules'=> ['fightgroup','integral', 'second','favour'],//商城关联模块
 
     'bind_max_level' => 50,//绑定指定层数关系链
-	'dividend_level' => array(1=>'一级',2=>'二级',3=>'三级',4=>'四级',5=>'五级',6=>'六级',7=>'七级',8=>'八级',9=>'九级'),//提成等级
+	'dividend_level' => [1=>'一级',2=>'二级',3=>'三级',4=>'四级',5=>'五级',6=>'六级',7=>'七级',8=>'八级',9=>'九级'],//提成等级
+    'register_invite_code'=>['1'=>'邀请码 ','2'=>'会员ID','3'=>'会员手机号码'],
+    'withdraw_account_type'=>['bank'=>'银行卡 ','wxpay'=>'微信','alipay'=>'支付宝'],
     //使用的分销模式
     'dividend_type' => 'sdtydw',
     //使用的分销模式
@@ -43,7 +45,6 @@ return [
     'PS_UNPAYED' =>   0,// 未付款
     'PS_PAYED' => 1, // 已付款
     'PS_RUNPAYED' => 2, // 已退款
-
     //提成状态
     'DD_UNCONFIRMED' => 0, // 待处理
     'DD_PAYED' => 1, // 已支付
