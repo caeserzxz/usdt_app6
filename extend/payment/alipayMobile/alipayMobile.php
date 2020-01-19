@@ -123,7 +123,7 @@ class alipayMobile
             if ($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
                 $data['order_sn'] =  $_POST['out_trade_no']; //商户订单号
                 $data['total_fee'] = $_POST['price'] * 100;//支付金额
-                $orderInfo['transaction_id'] = $_POST['trade_no'];//支付宝交易号
+                $data['transaction_id'] = $_POST['trade_no'];//支付宝交易号
                 $res = (new UpdatePayModel)->update($data);
             }
 

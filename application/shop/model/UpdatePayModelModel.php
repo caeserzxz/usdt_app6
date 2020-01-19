@@ -55,7 +55,7 @@ class UpdatePayModel
             if ((string)($orderInfo['order_amount'] * 100) != (string)$data['total_fee']) {
                 return false; //验证失败
             }
-            return $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$data["transaction_id"]),'微信支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
+            return $OrderModel->updatePay(array('order_id'=>$orderInfo['order_id'],'money_paid'=>$orderInfo['order_amount'],'transaction_id'=>$data["transaction_id"]),'支付成功，流水号：'.$data["transaction_id"]);// 修改订单支付状态
         }
         return false;
     }
