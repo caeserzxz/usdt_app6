@@ -22,6 +22,7 @@ return array(
             '0' => '否',
             '1' =>  '是',
         )),
-        array('name'=>'website','label'=>'指定使用的网站域名','type' =>'text','value'=>'','is_must'=>1,'tip'=>'只填写域名，格式如：www.xxx.com，多个用|坚线隔开')
+        array('name'=>'website','label'=>'指定使用的网站域名','type' =>'text','value'=>'','is_must'=>1,
+            'tip'=>'只填写域名，格式如：www.xxx.com，多个用|坚线隔开<br><b class="red">注：修改此项必需核实支付宝信息是否正确</b>')
     ),
 );

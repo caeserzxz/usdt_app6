@@ -63,7 +63,7 @@
                             <span class="maroon">*</span>
                         {/if}
                         {notempty name="$prow['tip']"/}
-                            <span class="help-inline">{$prow['tip']}</span>
+                            <span class="help-inline">{$prow['tip']|raw}</span>
                         {/notempty}
                     </div>
                 </div>
