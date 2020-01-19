@@ -137,7 +137,7 @@ class alipayMobile
                 }
             } elseif (stripos($order_sn, 'recharge') !== false) { //用户在线充值
                 $RechargeLogModel = new RechargeLogModel();
-                $orderInfo = $RechargeLogModel->where('order_sn', "$order_sn")->field('log_id,order_amount,user_id,status')->find();
+                $orderInfo = $RechargeLogModel->where('order_sn', "$order_sn")->field('order_id,order_amount,user_id,status')->find();
                 if (empty($orderInfo)) exit("fail");
                 $orderInfo = $orderInfo->toArray();
                 if ($orderInfo['status'] == 9) exit("success");
