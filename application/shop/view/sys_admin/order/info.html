@@ -212,7 +212,10 @@
                     <li><a href="#payinfo" data-toggle="tab">支付信息</a></li>
                     <li><a href="#tabdescribe" data-toggle="tab">物流信息</a></li>
                     {if condition="$orderInfo.order_type == 0"}
-                    <li><a href="#tabdividend" data-toggle="tab">分佣信息</a></li>
+                        <li><a href="#tabdividend" data-toggle="tab">分佣信息</a></li>
+                    {/if}
+                    {if condition="$orderInfo.is_after_sale > 0"}
+                        <li><a href="#afterasle" data-toggle="tab">售后订单</a></li>
                     {/if}
                     <li><a href="#log" data-toggle="tab">订单日志</a></li>
 

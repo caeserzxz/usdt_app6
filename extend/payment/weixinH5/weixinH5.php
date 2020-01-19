@@ -207,7 +207,33 @@ class weixinH5
     		return false;
     	}
     }
-    
+
+    /**
+     * 微信支付订单查询
+     * @param $str 微信订单号/商户订单号
+     * @param string $type transaction_id/out_trade_no
+     * @return bool === true 为成功
+     */
+    public function orderQuery($str,$type='transaction_id'){
+        $input = new \WxPayOrderQuery();
+        if ($type == 'transaction_id'){
+            $input->SetTransaction_id($str);
+        }else{
+            $input->SetOut_refund_no($str);
+        }
+        $res = \WxPayApi::orderQuery($input);
+        if ($res['return_code'] == 'FAIL'){
+            return $res['return_msg'];
+        }
+        if($res['result_code'] == 'FAIL'){
+            return $res['err_code_des'];
+        }
+        if($res['trade_state'] != 'SUCCESS'){
+            return $res['trade_state'];
+        }
+        return true;
+    }
+
      // 微信订单退款原路退回
     public function refund($data){
     /*code_4支付原路退回逻辑*/
@@ -224,9 +250,8 @@ class weixinH5
             }
             if($res['result_code'] == 'FAIL'){
                 return $res['err_code_des'];
-            }if ($res['return_code'] == 'FAIL'){
-                return $res['return_msg'];
             }
+
             return true;
     	}else{
     		return false;

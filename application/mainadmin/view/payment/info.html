@@ -46,23 +46,25 @@
                             </button>
                             <div style="color:red;margin-top:0.5rem">(请上传500*500的图片)</div>
                         </div>
-
                         {elseif condition="$prow['type'] == 'select'"/}
                         <select name="pay_config[{$prow['name']}]">
                             {volist name="prow.option" id="val" key='k'}
-                            <option value="{$index}" {$row[
-                            'pay_config'][$prow['name']]==$index?'selected':''}>{$val}</option>
+                            <option value="{$index}" {$row['pay_config'][$prow['name']]==$index?'selected':''}>{$val}</option>
                             {/volist}
                         </select>
                         {elseif condition="$prow['type'] == 'textarea'"/}
-                        <textarea data-rule-required="true" name="pay_config[{$prow['name']}]"
+                        <textarea name="pay_config[{$prow['name']}]"  {$prow['is_must']==1?'data-rule-required="true"':''}
                                   style="width:80%; height:130px;">{$row['pay_config'][$prow['name']]}</textarea>
                         {else/}
-                        <input type="text" class="input-xlarge" data-rule-required="true"
+                        <input type="text" class="input-xlarge" {$prow['is_must']==1?'data-rule-required="true"':''}
                                name="pay_config[{$prow['name']}]" value="{$row['pay_config'][$prow['name']]}"/>
-                        <span class="maroon">*</span>
                         {/if}
-
+                        {if condition="$prow['is_must'] == 1"/}
+                            <span class="maroon">*</span>
+                        {/if}
+                        {notempty name="$prow['tip']"/}
+                            <span class="help-inline">{$prow['tip']}</span>
+                        {/notempty}
                     </div>
                 </div>
                 {/volist}

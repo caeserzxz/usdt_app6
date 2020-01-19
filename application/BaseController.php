@@ -7,6 +7,7 @@ use think\facade\Cache;
 use think\exception\HttpResponseException;
 use think\Response;
 use think\response\Redirect;
+use think\facade\Env;
 error_reporting(E_ERROR | E_PARSE );
 /**
  * 控制器基类
@@ -336,5 +337,29 @@ class BaseController extends Controller
         $upload->subType = 'date';
         $upload->dateFormat = 'Y/m/';
         return $upload;
+    }
+    /**
+     * [自定义Log 日志log]
+     * @param  [type] $type        [类型]
+     * @param  [type] $log_content [内容]
+     * @return [type]              [description]
+     */
+    public function diyLog($type, $log_content) {
+        $max_size = 30000000;
+        $log_file_path = Env::get('runtime_path') . 'diylogs/'.$type.'/';
+        $log_filename = $log_file_path.date('Ymd') . ".log";
+        !is_dir($log_file_path) && mkdir($log_file_path, 0755, true);
+        if (file_exists($log_filename) && (abs(filesize($log_filename)) > $max_size)) {
+            rename($log_filename, dirname($log_filename) . DS . date('Ym-d-His') . $keyp . ".log");
+        }
+
+        $t = microtime(true);
+        $micro = sprintf("%06d", ($t - floor($t)) * 1000000);
+        $d = new \DateTime (date('Y-m-d H:i:s.' . $micro, $t));
+        if(is_array($log_content)){
+            $log_content = json_encode($log_content,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+        }
+
+        file_put_contents($log_filename, '   ' . $d->format('Y-m-d H:i:s u') .  "\r\n" . $log_content . "\r\n------------------------ --------------------------\r\n", FILE_APPEND);
     }
 }

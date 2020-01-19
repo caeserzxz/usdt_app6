@@ -6,11 +6,12 @@
 namespace app\shop\controller;
 
 use app\ClientbaseController;
-use app\member\model\RechargeLogModel;
-use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
 
+use app\member\model\RechargeLogModel;
+use app\shop\model\OrderModel;
 use app\distribution\model\RoleOrderModel;
+
 
 class Payment extends ClientbaseController
 {
@@ -47,43 +48,35 @@ class Payment extends ClientbaseController
     public function getCode()
     {
         header("Content-type:text/html;charset=utf-8");
-
         // 修改订单的支付方式
         $order_id = input('order_id/d'); // 订单id
         $OrderModel = new OrderModel();
         $order = $OrderModel->where("order_id", $order_id)->find();
+
+        if ($order['order_type'] == 1) {//积分订单
+            $returnDoneUrl = 'integral/flow/done';
+            $returnErrorUrl = 'integral/order/info';
+        }elseif ($order['order_type'] == 2) {//拼团订单
+            $returnDoneUrl = 'fightgroup/index/done';
+            $returnErrorUrl = 'fightgroup/order/info';
+        }else{
+            $returnDoneUrl = 'shop/flow/done';
+            $returnErrorUrl = 'shop/order/info';
+        }
         if ($order['pay_status'] == 1) {
-            if ($order['order_type'] == 1) {//积分订单
-                return $this->error('此订单，已完成支付.', url('integral/flow/done', ['order_id' => $order_id]));
-            }elseif ($order['order_type'] == 2) {//拼团订单
-                return $this->error('此订单，已完成支付.', url('fightgroup/index/done', ['order_id' => $order_id]));
-            }else{
-                return $this->error('此订单，已完成支付.', url('shop/flow/done', ['order_id' => $order_id]));
-            }
+            return $this->error('此订单，已完成支付.', url($returnDoneUrl, ['order_id' => $order_id]));
         }
         if ($order['order_status'] == 2) {
-            if ($order['order_type'] == 1) {//积分订单
-                return $this->error('此订单，已取消不能执行支付.', url('integral/order/info', ['order_id' => $order_id]));
-            }elseif ($order['order_type'] == 2) {//拼团订单
-                return $this->error('此订单，已取消不能执行支付.', url('fightgroup/order/info', ['order_id' => $order_id]));
-            }else{
-                return $this->error('此订单，已取消不能执行支付.', url('shop/order/info', ['order_id' => $order_id]));
-            }
+            return $this->error('此订单，已取消不能执行支付.', url($returnErrorUrl, ['order_id' => $order_id]));
         }
 
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
         if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
             if ($order['user_id'] != $this->userInfo['user_id']){
-                return $this->error('此订单你无权操作.',url('shop/index/index', ['order_id' => $order_id]));
+                return $this->error('此订单你无权操作.');
             }
             if ($order['order_amount'] > $this->userInfo['account']['balance_money']) {
-                if ($order['order_type'] == 1) {//积分订单
-                    return $this->error('余额不足，请使用其它支付方式.', url('integral/flow/done', ['order_id' => $order_id]));
-                }elseif ($order['order_type'] == 2) {//拼团订单
-                    return $this->error('余额不足，请使用其它支付方式.', url('fightgroup/index/done', ['order_id' => $order_id]));
-                }else{
-                    return $this->error('余额不足，请使用其它支付方式.', url('shop/flow/done', ['order_id' => $order_id]));
-                }
+                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['order_id' => $order_id]));
             }
             //余额完成支付
             $upArr['order_id'] = $order_id;
@@ -95,13 +88,7 @@ class Payment extends ClientbaseController
             if ($res !== true) {
                 return $this->error($res);
             }
-            if ($order['order_type'] == 1) {//积分订单
-                return $this->redirect('integral/flow/done', ['order_id' => $order_id]);
-            }elseif ($order['order_type'] == 2){//拼团订单
-                return $this->redirect('fightgroup/index/done', ['order_id' => $order_id]);
-            }else{
-                return $this->redirect('shop/flow/done', ['order_id' => $order_id]);
-            }
+            return $this->redirect($returnDoneUrl, ['order_id' => $order_id]);
         }
         if ($order['use_integral'] > 0 && $order['order_amount'] == 0) {//积分支付，订单金额为零时直接支付成功
             $upArr['order_id'] = $order_id;
@@ -112,13 +99,7 @@ class Payment extends ClientbaseController
             if ($res !== true) {
                 return $this->error($res);
             }
-            if ($order['order_type'] == 1) {//积分订单
-                return $this->redirect('integral/flow/done', ['order_id' => $order_id]);
-            }elseif ($order['order_type'] == 2){//拼团订单
-                return $this->redirect('fightgroup/index/done', ['order_id' => $order_id]);
-            }else{
-                return $this->redirect('shop/flow/done', ['order_id' => $order_id]);
-            }
+            return $this->redirect($returnDoneUrl, ['order_id' => $order_id]);
         }
 
         $OrderModel->where("order_id", $order_id)->update(['is_pay' => $payment['is_pay'], 'pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name']]);
@@ -135,7 +116,7 @@ class Payment extends ClientbaseController
             //微信H5支付
             $return = $this->payment->get_code($order, $config);
             if ($return['status'] != 1) {
-                $this->error($return['msg'], url('shop/flow/done', ['order_id' => $order_id]));
+                $this->error($return['msg'], url($returnDoneUrl, ['order_id' => $order_id]));
             }
             $this->assign('deeplink', $return['result']);
         }elseif($this->pay_code == 'offline'){//线下支付
@@ -146,13 +127,20 @@ class Payment extends ClientbaseController
         } else {
             //其他支付（支付宝、银联...）
             $code_str = $this->payment->get_code($order, $config);
+            if ($code_str === false){
+                return $this->error('暂不能使用当前支付方式，请使用其它支付方式.',url($returnErrorUrl, ['order_id' => $order_id]));
+            }
         }
 
         $this->assign('code_str', $code_str);
         $this->assign('order_id', $order_id);
         return $this->fetch('payment');  // 分跳转 和不 跳转
     }
-//充值
+
+    /**
+     * 充值
+     * @return mixed|void
+     */
     public function getPay()
     {
         //手机端在线充值
@@ -184,7 +172,11 @@ class Payment extends ClientbaseController
         $this->assign('order_id', $order_id);
         return $this->fetch('recharge'); //分跳转 和不 跳转
     }
-    //购买身份
+
+    /**
+     * 购买身份
+     * @return mixed|void
+     */
     public function getRolePay()
     {
         header("Content-type:text/html;charset=utf-8");
@@ -244,6 +236,9 @@ class Payment extends ClientbaseController
         exit();
     }
 
+
+
+
     /**
      * 支付同步回调地址
      * @return mixed
@@ -278,4 +273,5 @@ class Payment extends ClientbaseController
         else
             return $this->fetch('error');
     }
+
 }

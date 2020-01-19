@@ -24,7 +24,7 @@ class Order extends ApiController
  	public function getList(){
         $where[] = ['order_type','in',[0,1]];
         $where[] = ['user_id','=',$this->userInfo['user_id']];
-        $where[] = ['is_split','=',0];
+        $where[] = ['is_split','in',[0,1]];
         $where[] = ['is_del','=',0];
         $type = input('type','','trim');
         switch ($type){
