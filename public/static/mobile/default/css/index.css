@@ -44,7 +44,7 @@
 
 #swiper01 .swiper-slide img {
     width: 100%;
-    height: 1.866667rem;
+    max-height: 2.5rem;
     border-radius: 0.133333rem;
 }
 
