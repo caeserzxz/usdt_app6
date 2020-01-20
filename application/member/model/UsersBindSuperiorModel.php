@@ -17,14 +17,16 @@ class UsersBindSuperiorModel extends BaseModel
      */
 	public function treat($user_id = 0,$pid = 0){
         $data = $this->where('user_id',$user_id)->find();
-        $superior = '';
+
         if ($pid > 0){
             $superior = $this->where('user_id',$pid)->value('superior');
             if (empty($superior) == true) {
-                $superior = $pid;
+                $superior = $user_id.','.$pid;
             }else {
-                $superior .= ',' . $pid;
+                $superior = $user_id.','.$superior;
             }
+        }else{
+            $superior = $user_id;
         }
         if (empty($data)){//不存在数据时执行
             $inData['user_id'] = $user_id;
