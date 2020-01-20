@@ -4,6 +4,7 @@ namespace app\member\controller\sys_admin;
 
 use app\AdminController;
 use app\member\model\UsersModel;
+use app\member\model\UsersBindSuperiorModel;
 
 use app\member\model\UsersLevelModel;
 use app\member\model\UsersBindModel;
@@ -35,7 +36,6 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
-
         $this->assign('rode_id',input('rode_id', 0, 'intval'));
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
@@ -449,7 +449,6 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function editSuperior()
     {
-
         $user_id = input('user_id', 0, 'intval');
         $userInfo = $this->Model->info($user_id);
         if ($this->request->isPost()) {
@@ -483,11 +482,17 @@ class Users extends AdminController
                 Db::rollback();
                 return $this->error('修改会员所属上级失败.');
             }
-
+            //会员上级汇总处理
+            $res = (new UsersBindSuperiorModel)->treat($user_id,$select_user_id);
+            if ($res == false){
+                Db::rollback();
+                return $this->error('汇总会员关系链失败.');
+            }
+            //会员上级汇总处理end
             $res = $this->Model->regUserBind($user_id,$select_user_id,true);//重新绑定当前用户的关系链
             if ($res == false){
                 Db::rollback();
-                return $this->error('绑定当前会员系链失败.');
+                return $this->error('绑定当前会员关系链失败.');
             }
             $this->evaleditSuperior($user_id);//执行重新生成所有下属的关系链
             Db::commit();//事务，提交

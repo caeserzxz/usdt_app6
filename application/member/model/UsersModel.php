@@ -511,14 +511,21 @@ class UsersModel extends BaseModel
     public function regUserBind($user_id = 0, $pid = 0, $is_edit = false)
     {
         static $UsersBindModel;
-        if ($user_id < 1 || $pid < 1) return true;
+        if ($user_id < 1) return true;
         if ($is_edit == false){
             $DividendSatus = settings('DividendSatus');
             if ($DividendSatus == 0) return true;//不开启推荐，不执行
-            $userInfo = $this->where('user_id', $user_id)->field('is_bind,pid')->find();
-            if ($userInfo['is_bind'] > 0) return false;//已执行绑定不再执行
+            $is_bind= $this->where('user_id', $user_id)->value('is_bind');
+            if ($is_bind > 0) return false;//已执行绑定不再执行
             $this->where('user_id', $user_id)->update(['is_bind'=>1]);
         }
+
+        //会员上级汇总处理
+        $res = (new UsersBindSuperiorModel)->treat($user_id,$pid);
+        if ($res == false){
+            return false;
+        }
+        //会员上级汇总处理end
 
         if (isset($UsersBindModel) == false){
             $UsersBindModel = new UsersBindModel();
@@ -542,6 +549,8 @@ class UsersModel extends BaseModel
             if ($is_edit == true && $res->pid < 1) return false;
             $_pid = $this->where('user_id', $_pid)->value('pid');
         }
+
+
 
         if ($is_edit == false) {
             //发送模板消息
