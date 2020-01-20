@@ -518,14 +518,15 @@ class UsersModel extends BaseModel
             $is_bind= $this->where('user_id', $user_id)->value('is_bind');
             if ($is_bind > 0) return false;//已执行绑定不再执行
             $this->where('user_id', $user_id)->update(['is_bind'=>1]);
+            //会员上级汇总处理
+            $res = (new UsersBindSuperiorModel)->treat($user_id,$pid);
+            if ($res == false){
+                return false;
+            }
+            //会员上级汇总处理end
         }
 
-        //会员上级汇总处理
-        $res = (new UsersBindSuperiorModel)->treat($user_id,$pid);
-        if ($res == false){
-            return false;
-        }
-        //会员上级汇总处理end
+
 
         if (isset($UsersBindModel) == false){
             $UsersBindModel = new UsersBindModel();

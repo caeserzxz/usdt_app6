@@ -47,6 +47,7 @@ class UsersBindSuperiorModel extends BaseModel
         $allCount = $this->where($where)->count('user_id');
 
         if ($allCount < 1) return true;//没有下级不执行
+
         $upDataAll['superior'] = Db::raw("REPLACE(superior,'{$data['superior']}','{$superior}')");
         $res = $this->where($where)->update($upDataAll);
 
