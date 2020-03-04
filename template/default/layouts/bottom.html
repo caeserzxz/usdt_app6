@@ -1,3 +1,11 @@
+<div class="copyright">
+    {notempty name=":settings('copyright')"}
+        Copyright © {:settings('copyright')}<br>
+    {/notempty}
+    {notempty name=":settings('ipc_no')"}
+        {:settings('ipc_no')}
+    {/notempty}
+</div>
 <div class="bottom-tabbar-wrapper">
   <div class="bottom-tabbar">
       {volist name="navFootList" id="nav"}

@@ -41,7 +41,7 @@
                     <label><input type="radio" name="goods_limit" value="1" class="js_radio_undertake" {$row['goods_limit']<=1?'checked':''} > 购买任意分销商品（不包含身份商品）</label>
                     <label><input type="radio" name="goods_limit" value="2" class="js_radio_undertake" data-class="buy_goods" {$row['goods_limit']==2?'checked':''}> 购买全部指定分销商品</label>
                         <label><input type="radio" name="goods_limit" value="3" class="js_radio_undertake" data-class="buy_goods" {$row['goods_limit']==3?'checked':''}> 购买任意指定分销商品</label>
-                        <label><input type="radio" name="goods_limit" value="4" class="js_radio_undertake" data-class="role_goods" {$row['goods_limit']==4?'checked':''}> 购买指定身份商品</label>
+                        <label><input type="radio" name="goods_limit" value="4" class="js_radio_undertake" data-class="role_goods|buy_user_award" {$row['goods_limit']==4?'checked':''}> 购买指定身份商品</label>
                        <div class="radio_undertake_goods_limit buy_goods  {:in_array($row['goods_limit'],[2,3])?'':'hide'}" ></div>
                         <div class="radio_undertake_goods_limit role_goods  {$row['goods_limit']==4?'':'hide'}" >
                             <select name="role_goods" >
@@ -56,6 +56,12 @@
                        </div>
                   </div>
             	</div>
+                    <div class="form-group buy_user_award radio_undertake_goods_limit {$row['goods_limit']==4?'':'hide'}">
+                        <label class="control-label">购买者返现：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="input-ssmall"   data-rule-ismoney="true" name="buy_user_award" value="{$row.buy_user_award}" ><select name="buy_user_award_type"><option value="money" {$row['buy_user_award_type']=='money'?'selected':''}>固定金额</option><option value="per" {$row['buy_user_award_type']=='per'?'selected':''}>%百分比</option></select><span class="maroon">* 为0则不返</span>
+                        </div>
+                    </div>
                 <div class="form-group">
                     <label class=" control-label">奖项类型：</label>
                     <div class="col-sm-9" >
@@ -78,12 +84,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label">购买者返现：</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="input-ssmall"   data-rule-ismoney="true" name="buy_user_award" value="{$row.buy_user_award}" ><select name="buy_user_award_type"><option value="money" {$row['buy_user_award_type']=='money'?'selected':''}>固定金额</option><option value="per" {$row['buy_user_award_type']=='per'?'selected':''}>%百分比</option></select><span class="maroon">* 为0则不返</span>
-                        </div>
-                    </div>
+
                 <div class="line line-dashed line-lg pull-in"></div>
                 <div class="form-group radio_undertake_award_type award_setting {$row['award_type']<=2?'':'hide'}">
                      <label class="control-label">奖项设置：</label>
