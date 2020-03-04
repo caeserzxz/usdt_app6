@@ -11,7 +11,7 @@
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active"><a href="#nloprinteorder" onclick="$('.kd_type').val(3);" data-toggle="tab">快递鸟打单</a>
                         </li>
-                        <li><a href="#nlogistics" onclick="$('.kd_type').val(2);" data-toggle="tab">无需物流</a></li>
+                        <li><a href="#nlogistics" onclick="$('.kd_type').val(2);evalOrderids();" data-toggle="tab">无需物流</a></li>
                     </ul>
                     <input type="hidden" name="kd_type" class="kd_type" value="3"/>
                     <div id="myTabContent" class="tab-content">
@@ -49,6 +49,7 @@
 
 <script type="text/javascript">
     function evalOrderids(){
+        $('#order_ids').val('');
         var sel_order = [];
         $('input[name="order_id"]').each(function () {
             if ($(this).is(':checked')) {
