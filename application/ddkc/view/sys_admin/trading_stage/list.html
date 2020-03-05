@@ -1,0 +1,39 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+  <th width="120">ID</th>
+  <th width="200">开始时间</th>
+  <th width="200">结束时间</th>
+  <th width="200">最低出售数量</th>
+  <th width="200">最高出售数量</th>
+  <th width="200">预约所需信用积分</th>
+  <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$vo.start_time}</td>
+    <td>{$vo.end_time}</td>
+    <td>{$vo.min_num}</td>
+    <td>{$vo.max_num}</td>
+    <td>{$vo.scribe_integral}</td>
+    <td>
+        <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+        <a href="{:url('delete',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.miner_name}" class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a>
+    </td>
+</tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

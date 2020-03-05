@@ -669,3 +669,119 @@ function getWxBackUrl() {
         $relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : $path_info);
         return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$relate_url;
 }
+
+/**
+ ** @desc 封装 curl 的调用接口，post的请求方式
+ **/
+function http_curl($url,$type='get',$res='json',$arr=''){
+    //初始化curl
+    $ch = curl_init();
+    //设置curl的参数
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // post数据
+    if($type=='post'){
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $arr);
+    }
+    //采集
+    $output = curl_exec($ch);
+    curl_close($ch);
+
+    if($res=='json'){
+        return json_decode($output,true);
+    }
+}
+
+/**
+ **获取买家订单状态
+ **/
+function get_buy_status($status){
+    if($status==0){
+        $str = '等待下单';
+    }elseif($status==1){
+        $str = '已拍下,等待您上传凭证';
+    }elseif($status==2){
+        $str = '已上传凭证,等待卖家确认';
+    }elseif($status==3){
+        $str = '申诉中,等待平台处理';
+    }elseif($status==4){
+        $str = '交易成功';
+    }elseif($status==5){
+        $str = '交易失败,您未及时上传凭证';
+    }elseif($status==6){
+        $str = '订单取消';
+    }
+    return  $str;
+}
+
+/**
+ **获取卖家订单状态
+ **/
+function get_sell_status($status){
+    if($status==0){
+        $str = '等待下单';
+    }elseif($status==1){
+        $str = '买家已拍下,等待买家上传凭证';
+    }elseif($status==2){
+        $str = '买家已上传凭证,等待您确认';
+    }elseif($status==3){
+        $str = '申诉中,等待平台处理';
+    }elseif($status==4){
+        $str = '交易成功';
+    }elseif($status==5){
+        $str = '交易失败,挂卖取消';
+    }elseif($status==6){
+        $str = '订单取消';
+    }
+
+    return  $str;
+}
+
+/**
+ **上传付款凭证
+ **/
+function upload_img($img_name){
+    $file = request()->file($img_name);
+    if($file){
+        $info = $file->move("./".UPLOAD_PATH."/$img_name");
+        if($info){
+            $tmp_path = $info->getSaveName();
+            $path = UPLOAD_PATH."/$img_name/".$tmp_path;
+//            $path = substr($path, 9);
+            return  $path;
+        }else{
+            return $info->getError();die;
+        }
+    }
+}
+
+//发送聚合断信
+function send_sms($mobile,$tplCode){
+    $sms_fun = settings('sms_fun');
+    $sms = new \sms\Juhe($sms_fun['function_val']);
+    $code = rand(1000,9999);
+    $sms->send($mobile,$tplCode,['code'=>$code]);
+}
+
+/**
+ * 求两个日期之间相差的天数
+ * (针对1970年1月1日之后，求之前可以采用泰勒公式)
+ * @param string $day1
+ * @param string $day2
+ * @return number
+ */
+function diffBetweenTwoDays ($day1, $day2)
+{
+    $second1 = strtotime($day1);
+    $second2 = strtotime($day2);
+
+    if ($second1 < $second2) {
+        $tmp = $second2;
+        $second2 = $second1;
+        $second1 = $tmp;
+    }
+    return ($second1 - $second2) / 86400;
+}

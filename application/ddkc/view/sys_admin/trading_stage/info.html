@@ -1,0 +1,72 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>帐号管理</strong>
+            </li>                                  
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">开始时间</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="开始时间" name="start_time" value="{$row['start_time']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="结束时间" name="end_time" value="{$row['end_time']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">最低出售数量</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="最低出售数量" name="min_num" value="{$row['min_num']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">最高出售数量</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="最高出售数量" name="max_num" value="{$row['max_num']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">预约所需信用积分</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="预约所需信用积分" name="scribe_integral" value="{$row['scribe_integral']}" >
+                    </div>
+                </div>
+               
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="id" type="hidden" value="{$row.id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"]);
+</script>
+{/block}
+
