@@ -3,9 +3,8 @@
 <tr>
   <th width="80">矿机类型</th>
   <th width="120">周期</th>
-  <th width="150">质押币量</th>
-  <th width="80">算力</th>
-  <th width="200">日产币量</th>
+  <th width="150">消耗/租赁</th>
+  <th width="200">日收益</th>
   <th width="200">质押返还期</th>
   <th width="150">操作</th>
 </tr>
@@ -16,8 +15,7 @@
 <tr>
     <td>{$vo.miner_name}</td>
     <td>{$vo.scrap_days}天</td>
-    <td>{$vo.price}起</td>
-    <td>{$vo.power}</td>
+    <td>{$vo.price_min}-{$vo.price_max}</td>
     <td>{$vo.rebate_rate} %</td>
     <td>{$vo.principal_periods}期/{$vo.principal_day}天</td>
     <td>  

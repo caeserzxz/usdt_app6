@@ -21,9 +21,9 @@
         <section class="panel panel-default">
             <div class="panel-body">  
                 <div class="form-group">
-                    <label class="control-label">矿机名称</label>
+                    <label class="control-label">型号</label>
                     <div class="controls">
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="矿机名称不能为空" name="miner_name" value="{$row['miner_name']}" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="矿机型号不能为空" name="miner_name" value="{$row['miner_name']}" >
                     </div>
                 </div>
                 <div class="form-group">
@@ -40,7 +40,6 @@
                                 <button type="button" class="btn btn-default js_new_upload" data-count="1" data-submitname="imgs" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
                                 <span class="maroon">*</span>
                                 <span class="help-inline">
-                                    <!-- <small>建议尺寸：300*540,默认显示第1张图片，最多5张 (可拖拽图片调整显示顺序) </small> -->
                                     <small>建议尺寸：300*300</small>
                                 </span>
                             </div>
@@ -61,107 +60,53 @@
                 <div class="form-group">
                     <label class="control-label">合约期限</label>
                     <div class="controls" >
-                        <input type="number" class="input" data-rule-maxlength="10" name="scrap_days" value="{$row['scrap_days']}" > 天
+                        <input type="number" class="input-small" data-rule-maxlength="10" name="scrap_days" value="{$row['scrap_days']}" > 天
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">最小购买数</label>
+                    <label class="control-label">消耗/租赁</label>
                     <div class="controls" >
-                        <input type="number" class="input-max" data-rule-maxlength="10" name="price" value="{$row['price']}" >
+                        <input type="number" class="input-small" data-rule-maxlength="10" name="price_min" value="{$row['price_min']}" >-
+                        <input type="number" class="input-small" data-rule-maxlength="10" name="price_max" value="{$row['price_max']}" >叮叮
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">本金返还</label>
+                    <label class="control-label">日收益</label>
                     <div class="controls" >
-                        <input type="number" data-rule-maxlength="10" name="principal_periods" value="{$row['principal_periods']}"> 期 /
-                        <input type="number" data-rule-maxlength="10" name="principal_day" value="{$row['principal_day']}"> 天
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">日返</label>
-                    <div class="controls" >
-                        <input type="number" class="input-max" data-rule-maxlength="10" name="rebate_rate" value="{$row['rebate_rate']}" >
+                        <input type="number" class="input-small" data-rule-maxlength="10" name="rebate_rate" value="{$row['rebate_rate']}" >
                     </div>
                     <span class="help-inline">%/天</span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">算力</label>
+                    <label class="control-label">产量</label>
                     <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="算力不能为空" name="power" value="{$row['power']}" >
+                        <input type="text" class="input-small" data-rule-maxlength="10" data-rule-required="true" data-msg-required="算力不能为空" name="power" value="{$row['power']}" > %DDB
                     </div>
-                </div>
-
-
-
-
-
-
-
-               <!--  <div class="form-group">
-                    <label class="control-label">积分购买</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="integral_price" value="{$row['integral_price']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">ZBL购买</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="ZBL_price" value="{$row['ZBL_price']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">日返</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="日返不能为空" name="rebate_rate" value="{$row['rebate_rate']}" >
-                    </div>
-                    <span class="help-inline">%/天</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">报废时间</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="报废时间不能为空" name="scrap_days" value="{$row['scrap_days']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">收益延长时间</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="profit_extend" value="{$row['profit_extend']}" >
-                    </div>
-                    <span class="help-inline">报废后X天内仍可领取收益,超时未领取自动消失</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">本金延长时间</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="principal_extend" value="{$row['principal_extend']}" >
-                    </div>
-                    <span class="help-inline">报废后X天内仍可领取本金,超时未领取自动消失</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">可回收天数</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="returnable_day" value="{$row['returnable_day']}" >
-                    </div>
-                    <span class="help-inline">积分购买X天内后台可回收,收益锁仓;X天后不可回收,收益可领</span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">限购</label>
                     <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" name="limit_buy" value="{$row['limit_buy']}" >
+                        <input type="text" class="input-small" data-rule-maxlength="10" name="limit_buy" value="{$row['limit_buy']}" >
                     </div>
                     <span class="help-inline">件</span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">算力</label>
-                    <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="算力不能为空" name="power" value="{$row['power']}" >
-                    </div>
+                      <label class="col-sm-2 control-label">可购买身份：</label>
+                      <div class="col-sm-8" >
+                      {volist name="UsersRole" id="urow" }
+                        <li style="list-style:none; float:left; margin:2px;">
+                        <label><input type="checkbox" name="limit_user_role[]" value="{$urow.role_id}" <?=in_array($urow['role_id'],$limit_user_role)?'checked':'';?>> {$urow.role_name}</label></li>
+                       {/volist}
+                      </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">总收益</label>
+                    <label class="control-label">信用积分</label>
                     <div class="controls" >
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="总收益" name="total_revenue" value="{$row['total_revenue']}" >
+                        <input type="text" class="input-small" data-rule-maxlength="10" name="credit_integral" value="{$row['credit_integral']}" >
                     </div>
-                </div> -->
+                    <span class="help-inline">购买此矿机信用积分需大于等于此设置</span>
+                </div>
+
                 <div class="line line-dashed line-lg pull-in"></div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
