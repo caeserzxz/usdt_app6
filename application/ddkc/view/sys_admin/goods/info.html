@@ -1,0 +1,183 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>矿机管理</strong>
+            </li>                                  
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">  
+                <div class="form-group">
+                    <label class="control-label">矿机名称</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="矿机名称不能为空" name="miner_name" value="{$row['miner_name']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">矿机描述</label>
+                    <div class="col-sm-4">
+                        <textarea class="input-max" name="content" style="width:100%; height:70px;" data-rule-maxlength="500" >{$row.content}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">矿机图片：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-count="1" data-submitname="imgs" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">
+                                    <!-- <small>建议尺寸：300*540,默认显示第1张图片，最多5张 (可拖拽图片调整显示顺序) </small> -->
+                                    <small>建议尺寸：300*300</small>
+                                </span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue">
+                            </div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="imgs" id="shbg"  }
+                                <li class="imgbox" data-path="{$shbg}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}" title="删除" ></a>
+                                    <span class="item_box"><img src="{$shbg}"></span>
+                                    <input type="hidden" name="imgs[path][]" value="{$shbg}">
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">合约期限</label>
+                    <div class="controls" >
+                        <input type="number" class="input" data-rule-maxlength="10" name="scrap_days" value="{$row['scrap_days']}" > 天
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">最小购买数</label>
+                    <div class="controls" >
+                        <input type="number" class="input-max" data-rule-maxlength="10" name="price" value="{$row['price']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">本金返还</label>
+                    <div class="controls" >
+                        <input type="number" data-rule-maxlength="10" name="principal_periods" value="{$row['principal_periods']}"> 期 /
+                        <input type="number" data-rule-maxlength="10" name="principal_day" value="{$row['principal_day']}"> 天
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">日返</label>
+                    <div class="controls" >
+                        <input type="number" class="input-max" data-rule-maxlength="10" name="rebate_rate" value="{$row['rebate_rate']}" >
+                    </div>
+                    <span class="help-inline">%/天</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">算力</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="算力不能为空" name="power" value="{$row['power']}" >
+                    </div>
+                </div>
+
+
+
+
+
+
+
+               <!--  <div class="form-group">
+                    <label class="control-label">积分购买</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="integral_price" value="{$row['integral_price']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">ZBL购买</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="ZBL_price" value="{$row['ZBL_price']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">日返</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="日返不能为空" name="rebate_rate" value="{$row['rebate_rate']}" >
+                    </div>
+                    <span class="help-inline">%/天</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">报废时间</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="报废时间不能为空" name="scrap_days" value="{$row['scrap_days']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">收益延长时间</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="profit_extend" value="{$row['profit_extend']}" >
+                    </div>
+                    <span class="help-inline">报废后X天内仍可领取收益,超时未领取自动消失</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">本金延长时间</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="principal_extend" value="{$row['principal_extend']}" >
+                    </div>
+                    <span class="help-inline">报废后X天内仍可领取本金,超时未领取自动消失</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">可回收天数</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="returnable_day" value="{$row['returnable_day']}" >
+                    </div>
+                    <span class="help-inline">积分购买X天内后台可回收,收益锁仓;X天后不可回收,收益可领</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">限购</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" name="limit_buy" value="{$row['limit_buy']}" >
+                    </div>
+                    <span class="help-inline">件</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">算力</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="算力不能为空" name="power" value="{$row['power']}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">总收益</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="总收益" name="total_revenue" value="{$row['total_revenue']}" >
+                    </div>
+                </div> -->
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="miner_id" type="hidden" value="{$row.miner_id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"]);
+</script>
+{/block}
+
