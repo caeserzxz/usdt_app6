@@ -20,32 +20,24 @@
     <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
         <section class="panel panel-default">
             <div class="panel-body">
-                <div class="form-group">
-                    <label class="control-label">开始时间</label>
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label">交易时间范围：</label>
                     <div class="controls">
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="开始时间" name="start_time" value="{$row['start_time']}" >
+                        <input type="text" value="{$row['trade_start_time']}" class="input-small" name="trade_start_time"> -
+                        <input type="text" value="{$row['trade_end_time']}" class="input-small" name="trade_end_time">
+                        <span class="help-line"> （注：请填写规范,最少精确到分钟 如9:30:29 17:00）</span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label">挂卖价格交易范围：</label>
+                    <div class="controls">
+                        <input type="text" value="{$row['trade_min_num']}" class="input-small" name="trade_min_num"> -
+                        <input type="text" value="{$row['trade_max_num']}" class="input-small" name="trade_max_num">
+                        <span class="help-line"> （注：请填写规范数字）</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">结束时间</label>
-                    <div class="controls">
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="结束时间" name="end_time" value="{$row['end_time']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">最低出售数量</label>
-                    <div class="controls">
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="最低出售数量" name="min_num" value="{$row['min_num']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">最高出售数量</label>
-                    <div class="controls">
-                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="最高出售数量" name="max_num" value="{$row['max_num']}" >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">预约所需信用积分</label>
+                    <label class="col-sm-2 control-label">预约所需信用积分</label>
                     <div class="controls">
                         <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="预约所需信用积分" name="scribe_integral" value="{$row['scribe_integral']}" >
                     </div>

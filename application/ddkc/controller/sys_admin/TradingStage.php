@@ -60,13 +60,13 @@ class TradingStage extends AdminController
     /*------------------------------------------------------ */
     public function beforeEdit($data){
 
-        $data['time'] = $data['time'].':00';
-        $data['time'] = strtotime($data['time']);
-        $daybegin=strtotime(date("Ymd",$data['time']));
-        $dayend=$daybegin+86400;
-
-        $count = $this->Model->where('time','between',[$daybegin,$dayend])->where('id','neq',$data['id'])->count();
-        if ($count > 0) return $this->error('操作失败:当天已存在行情，不允许重复添加！');
+//        $data['time'] = $data['time'].':00';
+//        $data['time'] = strtotime($data['time']);
+//        $daybegin=strtotime(date("Ymd",$data['time']));
+//        $dayend=$daybegin+86400;
+//
+//        $count = $this->Model->where('time','between',[$daybegin,$dayend])->where('id','neq',$data['id'])->count();
+//        if ($count > 0) return $this->error('操作失败:当天已存在行情，不允许重复添加！');
 
 //        $daybegin2=strtotime(date("Ymd"));
 //        $dayend2=$daybegin2+86400;
@@ -85,9 +85,9 @@ class TradingStage extends AdminController
     //-- 删除等级
     /*------------------------------------------------------ */
     public function delete(){
-        $miner_id = input('id',0,'intval');
-        if ($miner_id < 1)  return $this->error('传参失败！');
-        $res = $this->Model->where('id',$miner_id)->delete();
+        $id = input('id',0,'intval');
+        if ($id < 1)  return $this->error('传参失败！');
+        $res = $this->Model->where('id',$id)->delete();
         if ($res < 1) return $this->error('未知错误，删除失败！');
         return $this->success('删除成功！',url('index'));
     }
