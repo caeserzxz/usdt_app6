@@ -1,0 +1,376 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<style type="text/css">
+    body{
+        overflow: auto!important;  
+    }
+</style>
+{/block}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb" >
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>商城设置</strong>
+            </li>                                  
+        </ul>
+    </div>
+</header>
+<form class="form-horizontal form-validate" method="post" action="{:url('save')}">
+    <section class="scrollable  wrapper w-f">
+        <section class="panel panel-default">
+            <header>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#basic" data-toggle="tab">交易市场配置</a></li>
+                    <li><a href="#usdt_wallet" data-toggle="tab">矿机配置</a></li>
+                    <li><a href="#gold_entry" data-toggle="tab">入金设置</a></li>
+                    <li><a href="#awards" data-toggle="tab">分享收益设置</a></li>
+                    <li><a href="#trade_team" data-toggle="tab">社区收益设置</a></li>
+                </ul>
+            </header>
+            <div class="tab-content">
+                <div class="tab-pane active" id="basic">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">取消时间</label>
+                        <div class="controls">
+                            <input type="text" name="cancel_time"  class="input-large" value="{$setting.cancel_time}"> <span class="help-line">分钟内,没有上传打款凭证，此订单会自动取消</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申诉时间</label>
+                        <div class="controls">
+                            <input type="text" name="complain_time"  class="input-large" value="{$setting.complain_time}"> <span class="help-line">分钟内卖家可以申诉</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">1USDT=</label>
+                        <div class="controls">
+                            <input type="text" name="USDT_RMB" class="input-large" value="{$setting.USDT_RMB}"> <span class="help-line">RMB</span>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">挂买价格交易范围：</label>
+                        <div class="controls">
+                            <input type="text" value="{$setting['buy_price_start']}" class="input-small" name="buy_price_start"> -
+                            <input type="text" value="{$setting['buy_price_end']}" class="input-small" name="buy_price_end">
+                            <span class="help-line"> （注：请填写规范数字）</span>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">挂卖价格交易范围：</label>
+                        <div class="controls">
+                            <input type="text" value="{$setting['sell_price_start']}" class="input-small" name="sell_price_start"> -
+                            <input type="text" value="{$setting['sell_price_end']}" class="input-small" name="sell_price_end">
+                            <span class="help-line"> （注：请填写规范数字）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">购买和出售代币的数量</label>
+                        <div class="controls">
+                            <input type="text" name="trading_capacity"  class="input-large" value="{$setting.trading_capacity}"> <span class="help-line">起</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">每天交易未打款</label>
+                        <div class="controls">
+                            <input type="text" name="trading_close"  class="input-large" value="{$setting.trading_close}"> <span class="help-line">次就封号</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">实名认证是否需要审核：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="is_authentication" value="0" class="js_undertake"type="radio" {$setting['is_authentication']|tplckval='=0','checked',true}>不审核
+                            </label>
+                            <label class="radio-inline">
+                                <input name="is_authentication" value="1"  class="js_undertake " type="radio" {$setting['is_authentication']|tplckval='=1','checked'}>审核
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">挂买市场：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="is_open_buy" value="0" {$setting['is_open_buy']==0?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="is_open_buy" value="1" {$setting['is_open_buy']==1?'checked':''} type="radio" >开启
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">挂卖市场：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="is_open_sell" value="0" {$setting['is_open_sell']==0?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="is_open_sell" value="1" {$setting['is_open_sell']==1?'checked':''} type="radio" >开启
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">客服链接</label>
+                        <div class="controls">
+                            <input type="text" name="customer_service_url" class="input-large" value="{$setting.customer_service_url}">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">交易时间范围：</label>
+                        <div class="controls">
+                            <input type="text" value="{$setting['trade_time_start']}" class="input-small" name="trade_time_start"> -
+                            <input type="text" value="{$setting['trade_time_end']}" class="input-small" name="trade_time_end">
+                            <span class="help-line"> （注：请填写规范,最少精确到分钟 如9:30:29 17:00）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">首页轮播图：</label>
+                        <div class="col-sm-10">
+                            <div class="js_upload_container">
+                                <div class="js_file_upload ">
+                                    <button type="button" class="btn btn-default js_new_upload" data-count="5" data-submitname="index_banner" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
+                                    <span class="help-inline">
+                                        <small>建议尺寸：750*410，最多5张 (可拖拽图片调整显示顺序) </small>
+                                    </span>
+                                </div>
+                                <div class="uploadify-queue js_file_upload_queue"></div>
+                                <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                    {volist name="index_banner" id="shbg"  }
+                                    <li class="imgbox" data-path="{$shbg}">
+                                        <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}" title="删除" ></a>
+                                        <span class="item_box"><img src="{$shbg}"></span>
+                                        <input type="hidden" name="index_banner[path][]" value="{$shbg}">
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="usdt_wallet">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">USDT主钱包地址：</label>
+                        <div class="controls">
+                            <input type="text" name="usdt_main_adress" class="input-large" value="{$setting.usdt_main_adress}"> <span class="help-line">USDT主钱包地址</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="gold_entry">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">USDT与BTEH日返：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="return_switch" value="0" {$setting['return_switch']==0?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="return_switch" value="1" {$setting['return_switch']==1?'checked':''} type="radio" >开启
+                            </label>
+                            <span class="help-line">关闭USDT与BTEH将不执行返还,开启后接着返</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">入金下限：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_min" class="input-large" value="{$setting.gold_entry_min}">
+                            <span class="help-line">入金金额小于该值不可入金，0表示不设下限</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">入金上限：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_max" class="input-large" value="{$setting.gold_entry_max}"> 
+                            <span class="help-line">入金金额大于该值按上限入金，0表示不设上限</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排队期：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_lineup_days" class="input-large" value="{$setting.gold_entry_lineup_days}"> <span class="help-line">天 </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">动态奖冻结：</label>
+                        <div class="controls">
+                            <input type="number" name="dynamic_award_frozen_days" class="input-large" value="{$setting.dynamic_award_frozen_days}"> <span class="help-line"> 天 注:入金到期后X天不复投将暂停动态奖</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第一轮返还期：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_one_return" class="input-large" value="{$setting.gold_entry_one_return}"> <span class="help-line">天 该天数内待返USDT统一返到余额</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第一轮入金期：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_one_frozen" class="input-large" value="{$setting.gold_entry_one_frozen}"> <span class="help-line">天 入金期有入金下一笔待返USDT返到余额,没有入金返到冻结金额</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第一轮自返奖：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_reward_1" class="input-large" value="{$setting.gold_reward_1}"> <span class="help-line">% 每日返还给自己的奖励，以充值金额为基数</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第二轮返还期：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_two_return" class="input-large" value="{$setting.gold_entry_two_return}"> <span class="help-line">天 该天数内待返USDT统一返到余额</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第二轮入金期：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_two_frozen" class="input-large" value="{$setting.gold_entry_two_frozen}"> <span class="help-line">天 入金期有入金下一笔待返USDT返到余额,没有入金返到冻结金额</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">第二轮自返奖：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_reward_2" class="input-large" value="{$setting.gold_reward_2}"> <span class="help-line">% 每日返还给自己的奖励，以充值金额为基数</span>
+                        </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">入金赠送BTEH：</label>
+                        <div class="controls">
+                            <input type="number" name="gold_entry_give_bteh" class="input-large" value="{$setting.gold_entry_give_bteh}"> <span class="help-line">% 以充值金额为基数</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">日返BTEH：</label>
+                        <div class="controls">
+                            <input type="number" name="bteh_daily_return" class="input-large" value="{$setting.bteh_daily_return}"> <span class="help-line">个</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">USDT管理奖资格：直推</label>
+                        <div class="controls">
+                            <input type="number" name="usdt_manage_return" class="input-large" value="{$setting.usdt_manage_return}"> <span class="help-line">个V0及以上会员</span>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
+                        <label class="col-sm-2 control-label">1USDT=</label>
+                        <div class="controls">
+                            <input type="text" name="USDT_RMB" class="input-large" value="{$setting.USDT_RMB}"> <span class="help-line">RMB 该设置在会员选择充值金额时自动换算</span>
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">充值金额</label>
+                        <div class="controls" id="rechargeMoneyList">
+                            <button type="button" class="btn btn-default " onClick="addRechargeMoney();" style="margin-bottom: 1%">增加充值金额</button>
+                            <span class="help-line">该设置在会员充值时选择充值金额</span><br/>
+
+                            {volist name="setting.rechargeMoneyList" id="vo" }
+                            <div>
+                                <input type="text" name="rechargeMoneyList[]" class="input-large" value="{$vo}">
+                                <button type="button" class="btn btn-default " onClick="delRechargeMoney(this);" style="margin-bottom: 1%;margin-left:1%">删除</button><br/>
+                            </div>
+                            {/volist}
+
+                        </div>
+                    </div>
+                    <div class="help-inline ">其他奖励参数可在：分销-><a href="{:url('distribution/sys_admin.role/index')}">分销身份</a> 设置</div>
+                </div>
+                <div class="tab-pane " id="awards">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分享收益</label>
+                        <div class="controls" id="shareAwards">
+                            <button type="button" class="btn btn-default " onClick="addShareAwards();" style="margin-bottom: 1%">增加设置</button>
+                            <span class="help-line">直推量请从小到大设置</span><br/>
+
+                            {volist name="setting.shareAwards" id="vo" }
+                            <div>
+                                直推量 <input type="text" name="shareAwards[num][]" style="width:10%" value="{$vo.num}"> 台 
+                                分享代数 <input type="text" name="shareAwards[layer][]" style="width:10%" value="{$vo.layer}"> 代 
+                                收益比例 <input type="text" name="shareAwards[ratio][]" style="width:10%" value="{$vo.ratio}"> % 
+                                <button type="button" class="btn btn-default" onClick="delShareAwards(this);" style="margin-bottom: 1%;margin-left:2.3%">删除</button><br/>
+                            </div>
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane " id="trade_team">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">社区收益</label>
+                        <div class="controls" id="tradeTeams">
+                            <button type="button" class="btn btn-default " onClick="addTradeTeams();" style="margin-bottom: 1%">增加设置</button>
+                            <span class="help-line">直推量请从小到大设置</span><br/>
+
+                            {volist name="setting.traderTeams" id="vo" }
+                            <div>
+                                直推矿机 <input type="text" name="traderTeams[num][]" style="width:10%" value="{$vo.num}"> 台
+                                团队有效矿机 <input type="text" name="traderTeams[layer][]" style="width:10%" value="{$vo.layer}"> 台
+                                收益比例 <input type="text" name="traderTeams[ratio][]" style="width:10%" value="{$vo.ratio}"> %
+                                <button type="button" class="btn btn-default" onClick="delTradeTeams(this);" style="margin-bottom: 1%;margin-left:2.3%">删除</button><br/>
+                            </div>
+                            {/volist}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">社区收益的基数是自己团队交易手续费的</label>
+                        <div class="controls">
+                            <input type="text" name="trade_ratio"  class="input-large" value="{$setting.trade_ratio}"> <span class="help-line">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <footer class="footer bg-white b-t p-t">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-1">
+                <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
+                </button>
+                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+            </div>
+        </div>
+    </footer>
+</form>
+{/block}
+
+{block name="footer"}
+<script type="text/javascript">
+seajs.use(["dist/plupload/init.js"]);
+
+function addRechargeMoney(){
+    var html = '<div><input type="text" name="rechargeMoneyList[]" class="input-large" value=""><button type="button" class="btn btn-default " onClick="delRechargeMoney(this);" style="margin-bottom: 1%;margin-left:2.3%">删除</button><br/></div>';
+
+    $('#rechargeMoneyList').append(html);
+}
+function delRechargeMoney(obj){
+     $(obj).siblings().remove();
+     $(obj).remove();
+}
+function addShareAwards(){
+    var html = 
+        '<div>'+
+            '直推量 <input type="text" name="shareAwards[num][]" style="width:10%" value=""> 台 '+
+            '分享代数 <input type="text" name="shareAwards[layer][]" style="width:10%" value=""> 代 '+
+            '收益比例 <input type="text" name="shareAwards[ratio][]" style="width:10%" value=""> % '+
+            '<button type="button" class="btn btn-default" onClick="delShareAwards(this);" style="margin-bottom: 1%;margin-left:2.3%">删除</button><br/>'+
+        '</div>';
+    $('#shareAwards').append(html);
+}
+function delShareAwards(obj){
+     $(obj).parent().remove();
+}
+function addTradeTeams(){
+    var html =
+        '<div>'+
+        '直推矿机 <input type="text" name="traderTeams[num][]" style="width:10%" value=""> 台 '+
+        '团队有效矿机 <input type="text" name="traderTeams[layer][]" style="width:10%" value=""> 台 '+
+        '收益比例 <input type="text" name="traderTeams[ratio][]" style="width:10%" value=""> % '+
+        '<button type="button" class="btn btn-default" onClick="delTradeTeams(this);" style="margin-bottom: 1%;margin-left:2.3%">删除</button><br/>'+
+        '</div>';
+    $('#tradeTeams').append(html);
+}
+function delTradeTeams(obj){
+    $(obj).parent().remove();
+}
+</script>
+{/block}
