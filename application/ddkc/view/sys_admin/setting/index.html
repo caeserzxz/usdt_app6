@@ -24,10 +24,11 @@
             <header>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#basic" data-toggle="tab">抢购设置</a></li>
-                    <li><a href="#usdt_wallet" data-toggle="tab">矿机配置</a></li>
-                    <li><a href="#gold_entry" data-toggle="tab">入金设置</a></li>
-                    <li><a href="#awards" data-toggle="tab">分享收益设置</a></li>
-                    <li><a href="#trade_team" data-toggle="tab">社区收益设置</a></li>
+                    <!-- <li><a href="#usdt_wallet" data-toggle="tab">矿机配置</a></li> -->
+                    <!-- <li><a href="#gold_entry" data-toggle="tab">入金设置</a></li> -->
+                    <!-- <li><a href="#awards" data-toggle="tab">分享收益设置</a></li> -->
+                    <!-- <li><a href="#trade_team" data-toggle="tab">社区收益设置</a></li> -->
+                    <li ><a href="#credit_integral" data-toggle="tab">信用评分设置</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -264,6 +265,33 @@
                         <label class="col-sm-2 control-label">社区收益的基数是自己团队交易手续费的</label>
                         <div class="controls">
                             <input type="text" name="trade_ratio"  class="input-large" value="{$setting.trade_ratio}"> <span class="help-line">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="credit_integral">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">实名并上传收款码赠送</label>
+                        <div class="controls">
+                            <input type="text" name="perfect_information"  class="input-large" value="{$setting.perfect_information}"> <span class="help-line"> 积分</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">推荐奖励</label>
+                        <div class="controls">
+                            <input type="text" name="recom_award" class="input-large" value="{$setting.recom_award}"> <span class="help-line">下级实名并上传收款码后增加信用评分；</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">预约抢购扣除</label>
+                        <div class="controls">
+                            <input type="text" name="subscribe_rob"  class="input-large" value="{$setting.subscribe_rob}"> <span class="help-line">预约成功有抢购信用积分退回账户，预约没抢购不退还；</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">封号扣除</label>
+                        <div class="controls">
+                            <input type="text" name="frozen_deduct"  class="input-large" value="{$setting.frozen_deduct}"> <span class="help-line">积分</span>
                         </div>
                     </div>
                 </div>
