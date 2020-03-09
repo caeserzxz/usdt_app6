@@ -1,0 +1,459 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>会员详情</strong>
+                </li>                                  
+            </ul>
+           <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+</header>
+<section class="scrollable  wrapper">
+           
+
+                <section class="panel panel-default">
+                  <header >
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tabinfo" data-toggle="tab">帐户信息</a></li>                            
+                            <li><a href="#tabbank" data-toggle="tab">会员资料</a></li>
+                            <li><a href="#tabdescribe" data-toggle="tab">地址信息</a></li>
+                            <li><a href="#superior" class="superior_tab" data-toggle="tab">上级关系树</a></li>
+                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>
+                            <li><a href="#stat" class="stat_tab" data-toggle="tab">业绩统计</a></li>
+                        </ul>
+                    </header>
+                    
+                  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+                       <div class="tab-content">
+                            <div class="tab-pane active" id="tabinfo">
+                                <div class="form-group">
+                                    <label class="control-label">注册手机：</label>
+                                    <div class="col-sm-3">
+                                      <label>
+                                        <input onchange="upMobile()" id="mobile" type="text" value="{$row.mobile}">
+                                      </label>
+                                    </div>
+                                    <label class="control-label">会员等级：</label>
+                                    <div class="col-sm-3"><label>{$row.account.total_integral|userLevel}</label>
+                                        <a href="{:url('member/sys_admin.log_operate/index',array('edit_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
+                                            <i class="fa fa-search"></i> 查看会员日志
+                                        </a>
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="control-label">真实姓名：</label>
+                                    <div class="col-sm-3"><label>{$row.real_name|default='未填写'}</label></div>
+                                   <label class="control-label">分销身份：</label>
+                                    <div class="col-sm-3"><label>{$row['role_id']==0?'粉丝':$roleList[$row['role_id']]['role_name']}</label>
+                                    <a href="javascript:;" title="修改分销身份" data-remote="{:url('editRole',array('user_id'=>$row['user_id']))}" data-toggle="ajaxModal" class="m-xs" >
+                <i class="fa fa-edit"></i>
+            </a>
+                                    </div>
+                                </div>
+                               
+                                 <div class="form-group">
+                                    <label class="control-label">注册时间：</label>
+                                    <div class="col-sm-3"><label>{$row.reg_time|dateTpl}</label></div>
+                                     <label class="control-label">最近购买时间：</label>
+                                    <div class="col-sm-3"><label>{$row.last_buy_time|dateTpl}</label>
+                                     <a href="{:url('shop/sys_admin.order/index',array('user_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
+                                         <i class="fa fa-search"></i> 查看会员订单
+                                     </a>
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="control-label">最近登陆时间：</label>
+                                    <div class="col-sm-3"><label>{$row.login_time|dateTpl}</label></div>
+                                    <label class="control-label">最近登陆IP：</label>
+                                    <div class="col-sm-3"><label>{$row.login_ip|default='未记录'}</label></div>
+                                </div>
+                                 <div class="line line-dashed line-lg pull-in"></div>
+                                <div class="form-group">
+                                    <label class="control-label">帐户余额：</label>
+                                    <div class="col-sm-3">
+                                        <label>
+                                            {$row.account.balance_money|priceFormat=true} 
+                                            <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$row['user_id']))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
+                                        </label>
+                                    </div>
+                                     <label class="control-label">待到帐佣金：</label>
+                                    <div class="col-sm-3">
+                                        <label>{$wait_money|priceFormat=true}</label>
+                                        <a href="{:url('distribution/sys_admin.dividend_log/index',array('keyword'=>$row['user_id'],'status'=>2))}" class="m-xs" title="查看明细"><i class="fa fa-search text-muted"></i> 查看明细</a>
+                                    </div>
+                                </div>   
+                                <div class="form-group">
+                                     <label class="control-label">历史总佣金：</label>
+                                    <div class="col-sm-5">
+                                        <label >{$row.account.total_dividend|priceFormat=true} <span class="help-inline">此项记录用户历史所有佣金总和</span></label>
+                                   </div>
+                                </div>  
+                                 <div class="form-group">
+                                    <label class="control-label">消费积分：</label>
+                                    <div class="col-sm-3">
+                                        <label>
+                                        {$row.account.use_integral|intval} 
+                                        </label>
+                                    </div>
+                                      <label class="control-label">历史总积分：</label>
+                                    <div class="col-sm-3">
+                                        <label>
+                                        {$row.account.total_integral|intval} 
+                                        </label>
+                                    </div>
+                                </div>   
+                               <div class="form-group">
+                                  <label class="control-label">下级数量：</label>
+                                  <div class="col-sm-9"  >
+                                  <label> {volist name="d_level" id="dval" }
+                                     {$d_level[$key]}：<strong>{$userShareStats[$key]|intval}</strong>；　 
+                                   {/volist}</label>
+                                  </div>
+                              </div>
+                            </div>      
+                      	
+                            <!--提现帐号-->
+                            <div class="tab-pane" id="tabbank" style="overflow: hidden">
+                               	<div class="form-horizontal">
+                                	<header class="panel-heading bg-light">
+                                        会员信息
+                                    </header>
+                                	 <div class="form-group m-t-md">
+                                            <label class="control-label">联系电话：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                {$row.tel|default='未填写'}
+                                                </label>
+                                            </div>
+                                            <label class="control-label">qq：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                 {$row.qq|default='未填写'}
+                                                </label>
+                                            </div>
+                        			</div>
+                                    <div class="form-group m-t-md">
+                                            <label class="control-label">电子邮箱：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                {$row.email|default='未填写'}
+                                                </label>
+                                            </div>
+                                            <label class="control-label">生日：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                 {$row.birthday}
+                                                </label>
+                                            </div>
+                        			</div>
+                                    <div class="form-group m-t-md">
+                                        <label class="control-label">会员昵称：</label>
+                                        <div class="col-sm-3">
+                                            <label>
+                                                {$row.nick_name|default='未填写'}
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <header class="panel-heading bg-light">
+                                        微信信息
+                                    </header>
+                                  
+                                	 <div class="form-group m-t-md" style="position:relative;">
+                                       {if condition="$row.wx.wx_headimgurl <> ''"}
+                                            <div style="position:absolute; right:20px; width:120px;"><img src="{$row.wx.wx_headimgurl}" style="width:100%" /></div>
+                                       {/if}
+                                            <label class="control-label">呢称：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                {$row.wx.wx_nickname|default='未获取'}
+                                                </label>
+                                                <a href="{:url('weixin/sys_admin.users/inviteLog',['wxuid'=>$row['wx']['wxuid']])}" data-toggle="ajaxModal"  class="m-xs" >
+                                                    <i class="fa fa-search"></i> 查看来源
+                                                </a>
+                                            </div>
+                                             <label class="control-label">性别：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                {$row['wx']['sex']==1?'男':$row['wx']['sex']==2?'女':'未知'}
+                                                </label>
+                                            </div>
+                                           
+                        			</div>
+                                    <div class="form-group m-t-md">
+                                            <label class="control-label">省份：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                 {$row.wx.wx_province|default='未获取'}
+                                                </label>
+                                            </div>
+                                             <label class="control-label">城市：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                 {$row.wx.wx_city|default='未获取'}
+                                                </label>
+                                            </div>
+                        			</div>
+                                    <div class="form-group m-t-md">
+                                            <label class="control-label">是否关注：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                {$row['wx']['subscribe']==1?'已关注':'未关注'}
+                                                </label>
+                                            </div>
+                                             <label class="control-label">关注时间：</label>
+                                            <div class="col-sm-3">
+                                                <label>
+                                                 {$row.wx.wx_subscribe_time|dateTpl}
+                                                </label>
+                                            </div>
+                        			</div>
+
+                                 </div>
+                                 
+                            </div>
+                            
+                             <!--地址信息-->
+                            <div class="tab-pane" id="tabdescribe" style="overflow: hidden">
+                               <div class="table-responsive " id="list_box">
+                                    <table class="table  table-hover  m-b-none">
+                                    <thead>
+                                    <tr>
+                                    	<th width="100">默认</th>
+                                        <th width="200">收货人</th>
+                                        <th width="200">联系电话</th>
+                                        <th>地址</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="row.user_address" id="ua" }                                   
+                                    <tr>
+                                    <td ><a href="javascript:;"  class="{$ua['is_default']?'active':''}" data-fun="shelves" data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+                                    <td >{$ua.consignee}</td>
+                                    <td >{$ua['mobile']}</td>
+                                    <td >{$ua.merger_name} - {$ua.address}</td>
+                                    </tr> 
+                                    {/volist}
+                                    {empty name="row.user_address"}
+                                     <tr>
+                                      <td colspan="4" align="center" style="height:150px;">暂无收货地址信息！</td>
+                                      </tr>
+                                      {/empty}  
+                                    </tbody>
+                                    </table>
+                                </div>                                
+                            </div>
+
+                            <!--上级关系树-->
+                            <div class="tab-pane" id="superior" style="overflow: hidden">
+                               	<div class="table-responsive"></div>
+                                <div class="form-group" style=" margin-left:0px;">
+                                    <div class="col-sm-8">
+                                        <button class="btn " type="button"  data-remote="{:url('editSuperior',array('user_id'=>$row['user_id']))}" data-toggle="ajaxModal"  ><i class="fa fa-edit"></i>修改所属上级</button>
+                                    </div>
+                                </div>
+                             </div>
+                             
+                              <!--下级关系树-->
+                            <div class="tab-pane" id="tabchain" style="overflow: hidden">
+                               	<div class="table-responsive"></div>
+                             </div>
+                           <!--统计-->
+                           <div class="tab-pane" id="stat" style="overflow: hidden">
+
+                               <div class="form-group fl m-r">
+                                   <a class="btn btn-default " data-toggle="reportrange" >
+                                       <i class="fa fa-calendar fa-lg"></i>
+                                       <small>下单时间</small>
+                                       <span></span> <b class="caret"></b>
+                                       <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                                   </a>
+                               </div>
+                                <button class="btn evalStat" type="button"  ><i class="fa fa-search"></i>执行统计</button>
+                               <div class="clearfix"></div>
+                               <div id="evalStatBox" class="form-horizontal"></div>
+                           </div>
+
+
+                       </div>
+                    
+                   </form>  
+                </section>
+
+         
+        </section>
+    </section>
+{literal}
+<script type="text/html" id="chainlist">
+{{each list as item index}}
+<div  style="margin-left:0px;padding-top:5px;">
+		{{icon}}
+        <a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" >{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.role_name?item.role_name:'普通会员'}} - 团队数（{{item.teamCount}}）</a>
+        <div class="nextList" id="next_box_{{item.user_id}}" data-nextlevel="{{nextlevel}}" style="clear:both;"></div>
+</div>
+{{/each}}
+</script>
+{/literal}
+<script type="text/html" id="superiorlist">
+{{each list as item index}}
+ <div class="form-group" style=" margin-left:0px;">                                            
+	  <div class="col-sm-8">
+	  <a href="{:_url('member/sys_admin.users/info',['user_id'=>'[[item.user_id]]'])}" target="_blank"> {{item.level}}级 - 会员ID:{{item.user_id}} - 昵称：{{item.nick_name}} - 身份：{{item.role_name}}</a>
+	  </div>
+  </div>
+{{/each}}
+</script>
+<script type="text/html" id="evalStatTpl">
+    <header class="panel-heading bg-light">
+        团队购买统计(包括个人)，时间：{{reportrange}}，总共【{{buy_user_num}}】会员下单：【{{order_num}}】张,订单金额：【￥{{order_amount}}】，产生佣金：【{{dividend_amount}}】
+    </header>
+
+    <div class="form-group m-t" >
+        <table class="table  table-hover  m-b-none">
+            <thead>
+            <tr>
+                <th >商品名称</th>
+                <th width="150">购买数量</th>
+                <th width="150">平均单价</th>
+                <th width="150">总金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{each buyGoods as item index}}
+            <tr>
+                <td>{{item.goods_name}}</td>
+                <td>{{item.num}}</td>
+                <td>{{item.price / item.num}}</td>
+                <td>{{item.price}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <header class="panel-heading bg-light">
+        个人统计，时间：{{reportrange}}，总共下单：【{{nowUser.order_num}}】张,订单金额：【￥{{nowUser.order_amount}}】，产生佣金：【{{nowUser.dividend_amount}}】
+    </header>
+    <div class="form-group m-t" >
+        <table class="table  table-hover  m-b-none">
+            <thead>
+            <tr>
+                <th >商品名称</th>
+                <th width="150">购买数量</th>
+                <th width="150">平均单价</th>
+                <th width="150">总金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{each nowUser.buyGoods as item index}}
+            <tr>
+                <td>{{item.goods_name}}</td>
+                <td>{{item.num}}</td>
+                <td>{{item.price / item.num}}</td>
+                <td>{{item.price}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</script>
+<script>
+  function upMobile(){
+    var mobile = $('#mobile').val();
+    var user_id = "{$row.user_id}";
+    var arr = new Object();
+    arr.mobile = mobile;
+    arr.user_id = user_id;
+    if (arr.mobile == ''){
+        _alert('请输入手机号码.');
+        return false;
+    }
+    $.ajax({ 
+        url: '{:url("upMobile")}',
+        type: "POST",
+        data: arr, 
+        success: function(res){
+            console.log(res)
+            _alert(res.msg);
+            if (res.code == 0) {
+              var mobile1 = "{$row.mobile}"
+              $('#mobile').val(mobile1)
+            };
+            return false;
+        }
+    });
+  }
+</script>
+<script type="text/javascript">
+	$('.superior_tab').click(function(){
+		if ($('#superior').find('.table-responsive').html() == ''){
+			getSuperiorList({$row['user_id']});
+		}
+	})
+	$('.tabchain_tab').click(function(){
+		if ($('#tabchain').find('.table-responsive').html() == ''){
+			getChainList({$row['user_id']});
+		}
+	})
+	$(document).on('click','.next_btn',function(){
+		getChainList($(this).data('id'),true)
+	})
+	//加载上级
+	function getSuperiorList(uid){
+		jq_ajax('{:url("sys_admin.users/getSuperiorList")}','user_id='+uid,function(res){
+			if (res.list.length < 1){
+				$('#superior .table-responsive').html('没有相关上级.');
+				return false;
+			}
+			$('#superior .table-responsive').html(template('superiorlist',res));
+			
+		});
+	}
+
+	//加载下级
+	function getChainList(uid,next){
+        if ($("#next_box_"+uid).html() != '' && typeof($("#next_box_"+uid).html()) != 'undefined'){
+            if ($("#next_box_"+uid).is(':visible')){
+                $("#next_box_"+uid).addClass('hide');
+            }else{
+                $("#next_box_"+uid).removeClass('hide');
+            }
+            return false;
+        }
+		jq_ajax('{:url("sys_admin.users/getChainList")}','user_id='+uid,function(res){
+			if (next == true){
+			    if (res.list.length > 0){
+                    res.nextlevel = $('#next_box_'+uid).data('nextlevel') + 1;
+                    res.icon = '';
+                    for (var i=0;i<res.nextlevel;i++){
+                        res.icon += '&nbsp;|-- &nbsp;';
+                    }
+                    console.log(res.icon)
+				    $('#next_box_'+uid).html(template('chainlist',res));
+                }else{
+                    $('#next_box_'+uid).html(' ');
+                }
+			}else{
+                if (res.list.length > 0) {
+                    res.nextlevel = 0;
+                    $('#tabchain .table-responsive').html(template('chainlist', res));
+                }else{
+                    $('#tabchain .table-responsive').html('没有下级');
+                }
+			}
+		});
+	}
+	//执行统计
+    $('.evalStat').click(function(){
+        jq_ajax('{:url("evalStat")}','user_id={$row.user_id}&reportrange='+$('#reportrange').val(),function(res) {
+            $('#evalStatBox').html(template('evalStatTpl', res));
+        })
+    })
+</script>
+
+   
+{/block}
+

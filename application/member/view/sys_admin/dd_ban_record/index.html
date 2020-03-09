@@ -1,0 +1,57 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>{$is_ban==1?'封禁':''}会员列表</strong>
+                </li>                                  
+            </ul>
+            <select name="time_type"  style="width: 130px;" data-toggle="select2">
+                    <option value="">选择时间类型</option>
+                    <option value="reg_time">注册时间</option>
+                    <option value="login_time">登陆时间</option>
+                    <option value="buy_time">购买时间</option>
+              </select>
+            <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
+                    <i class="fa fa-calendar fa-lg"></i>                      
+                    <span></span> <b class="caret"></b>
+                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+             </a>
+             <select name="rode_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+						<option value="-1">所有会员</option>
+                        <option value="all_role" {$search['roleId']=='all_role'?'selected':''}>身份会员</option>
+						<option value="0">普通粉丝</option>
+                        {$roleOpt|raw}
+              </select>
+              <select name="level_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                        <option value="">所有等级</option>
+                       {$levelOpt|raw}
+              </select>
+         <input type="hidden" value="0" name="export">
+              <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID/帐号/手机号码" data-rule-required="true" />
+              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+         <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出列表</a>
+         <a href="{:url('addUser')}" data-toggle="ajaxModal" title="新增会员" class="btn btn-sm btnbtn-default fr  m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>新增会员</a>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/dd_ban_record/list" /}
+        </div>
+    </section>
+</section>
+<script>
+    function ExportLog(){
+        $('input[name="export"]').val('1');
+        $('#forms').submit();
+        $('input[name="export"]').val('0');
+    }
+</script>
+{/block}
