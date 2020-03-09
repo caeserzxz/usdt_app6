@@ -2,8 +2,9 @@
 <thead>
 <tr>
   <th>身份名称</th>
-  <th>升级方法</th>
-  <th>级别</th>
+  <th>一级推广收益</th>
+  <th>二级推广收益</th>
+  <th>团队收益</th>
   <th>更新时间</th>
   <th width="100">操作</th>
 </tr>
@@ -13,15 +14,18 @@
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.role_name}</td>
-    <td>{$vo.uplevel_fun_name}</td>
-    <td>{$vo.level}</td>
+    <td>{$vo.exten_profit_one}%</td>
+    <td>{$vo.exten_profit_two}%</td>
+    <td>{$vo.team_profit}%</td>
     <td>{$vo.update_time|dateTpl}</td>
-    <td>  <a href="{:url('info',array('role_id'=>$vo['role_id']))}"   class="m-xs" title="编辑">
+    <td>
+        <a href="{:url('info',array('role_id'=>$vo['role_id']))}" class="m-xs" title="编辑">
             <i class="fa fa-edit text-muted"></i>
         </a>
         <a href="{:url('delete',array('role_id'=>$vo['role_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.level_name}" class="m-xs" title="删除">
             <i class="fa fa-trash-o text-muted"></i>
-        </a></td>
+        </a>
+    </td>
 </tr>
 {/volist} 
 </tbody>
