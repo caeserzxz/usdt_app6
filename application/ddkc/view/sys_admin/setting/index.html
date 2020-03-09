@@ -39,9 +39,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">叮叮</label>
+                        <label class="col-sm-2 control-label">出售叮叮手续费为</label>
                         <div class="controls">
-                            <input type="text" name="starting_number"  class="input-large" value="{$setting.starting_number}"> <span class="help-line">个起挂售</span>
+                            <input type="text" name="service_charge"  class="input-large" value="{$setting.service_charge}"> <span class="help-line">%,比如出售200个DDB,手续费1%,就是转换成198个叮叮</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">叮叮每天每次最低挂售</label>
+                        <div class="controls">
+                            <input type="text" name="min_number"  class="input-large" value="{$setting.min_number}"> <span class="help-line"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">叮叮每天每次最高挂售</label>
+                        <div class="controls">
+                            <input type="text" name="max_number"  class="input-large" value="{$setting.max_number}"> <span class="help-line"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">叮叮每天最多挂售总额</label>
+                        <div class="controls">
+                            <input type="text" name="max_total_number"  class="input-large" value="{$setting.max_total_number}"> <span class="help-line"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">叮叮每天最多挂售</label>
+                        <div class="controls">
+                            <input type="text" name="max_second"  class="input-large" value="{$setting.max_second}"> <span class="help-line">次</span>
                         </div>
                     </div>
                     <div class="form-group">
