@@ -23,7 +23,7 @@
         <section class="panel panel-default">
             <header>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#basic" data-toggle="tab">交易市场配置</a></li>
+                    <li class="active"><a href="#basic" data-toggle="tab">抢购设置</a></li>
                     <li><a href="#usdt_wallet" data-toggle="tab">矿机配置</a></li>
                     <li><a href="#gold_entry" data-toggle="tab">入金设置</a></li>
                     <li><a href="#awards" data-toggle="tab">分享收益设置</a></li>
@@ -33,119 +33,44 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="basic">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">取消时间</label>
+                        <label class="col-sm-2 control-label">开奖前</label>
                         <div class="controls">
-                            <input type="text" name="cancel_time"  class="input-large" value="{$setting.cancel_time}"> <span class="help-line">分钟内,没有上传打款凭证，此订单会自动取消</span>
+                            <input type="text" name="stop_booking_time"  class="input-large" value="{$setting.stop_booking_time}"> <span class="help-line">分钟停止预约</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">申诉时间</label>
+                        <label class="col-sm-2 control-label">叮叮</label>
                         <div class="controls">
-                            <input type="text" name="complain_time"  class="input-large" value="{$setting.complain_time}"> <span class="help-line">分钟内卖家可以申诉</span>
+                            <input type="text" name="starting_number"  class="input-large" value="{$setting.starting_number}"> <span class="help-line">个起挂售</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">1USDT=</label>
+                        <label class="col-sm-2 control-label">抢购未交易情况:第一次</label>
                         <div class="controls">
-                            <input type="text" name="USDT_RMB" class="input-large" value="{$setting.USDT_RMB}"> <span class="help-line">RMB</span>
+                            <input type="text" name="one_no_deal" class="input-large" value="{$setting.one_no_deal}"> <span class="help-line">天内所有矿机停止产币,且停止所有货币交易,第二次</span>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="col-sm-2 control-label">挂买价格交易范围：</label>
                         <div class="controls">
-                            <input type="text" value="{$setting['buy_price_start']}" class="input-small" name="buy_price_start"> -
-                            <input type="text" value="{$setting['buy_price_end']}" class="input-small" name="buy_price_end">
-                            <span class="help-line"> （注：请填写规范数字）</span>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="col-sm-2 control-label">挂卖价格交易范围：</label>
-                        <div class="controls">
-                            <input type="text" value="{$setting['sell_price_start']}" class="input-small" name="sell_price_start"> -
-                            <input type="text" value="{$setting['sell_price_end']}" class="input-small" name="sell_price_end">
-                            <span class="help-line"> （注：请填写规范数字）</span>
+                            <input type="text" name="two_no_deal" class="input-large" value="{$setting.two_no_deal}"> <span class="help-line">天,第三次永久封号</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">购买和出售代币的数量</label>
+                        <label class="col-sm-2 control-label">抢到货币后</label>
                         <div class="controls">
-                            <input type="text" name="trading_capacity"  class="input-large" value="{$setting.trading_capacity}"> <span class="help-line">起</span>
+                            <input type="text" name="valid_trade_time" class="input-mini" value="{$setting.valid_trade_time}"> <span class="help-line">分钟后未交易,会出现延迟</span>
+                            <input type="text" name="delay_trade_time" class="input-mini" value="{$setting.delay_trade_time}"> <span class="help-line">分钟的交易按钮,按钮只出现</span>
+                            <input type="text" name="delay_button_time" class="input-mini" value="{$setting.delay_button_time}"> <span class="help-line">分钟;如({$setting.valid_trade_time})分钟后,或延迟({$setting.delay_trade_time})分钟后还未交易则封号处理</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">每天交易未打款</label>
+                        <label class="col-sm-2 control-label">交易结束后</label>
                         <div class="controls">
-                            <input type="text" name="trading_close"  class="input-large" value="{$setting.trading_close}"> <span class="help-line">次就封号</span>
+                            <input type="text" name="valid_appeal_time"  class="input-large" value="{$setting.valid_appeal_time}"> <span class="help-line">分钟内,用户可进行申诉</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">实名认证是否需要审核：</label>
+                        <label class="col-sm-2 control-label">恶意申诉的,第一次直接封号</label>
                         <div class="controls">
-                            <label class="radio-inline">
-                                <input name="is_authentication" value="0" class="js_undertake"type="radio" {$setting['is_authentication']|tplckval='=0','checked',true}>不审核
-                            </label>
-                            <label class="radio-inline">
-                                <input name="is_authentication" value="1"  class="js_undertake " type="radio" {$setting['is_authentication']|tplckval='=1','checked'}>审核
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">挂买市场：</label>
-                        <div class="controls">
-                            <label class="radio-inline">
-                                <input name="is_open_buy" value="0" {$setting['is_open_buy']==0?'checked':''} type="radio">关闭
-                            </label>
-                            <label class="radio-inline">
-                                <input name="is_open_buy" value="1" {$setting['is_open_buy']==1?'checked':''} type="radio" >开启
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">挂卖市场：</label>
-                        <div class="controls">
-                            <label class="radio-inline">
-                                <input name="is_open_sell" value="0" {$setting['is_open_sell']==0?'checked':''} type="radio">关闭
-                            </label>
-                            <label class="radio-inline">
-                                <input name="is_open_sell" value="1" {$setting['is_open_sell']==1?'checked':''} type="radio" >开启
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">客服链接</label>
-                        <div class="controls">
-                            <input type="text" name="customer_service_url" class="input-large" value="{$setting.customer_service_url}">
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="col-sm-2 control-label">交易时间范围：</label>
-                        <div class="controls">
-                            <input type="text" value="{$setting['trade_time_start']}" class="input-small" name="trade_time_start"> -
-                            <input type="text" value="{$setting['trade_time_end']}" class="input-small" name="trade_time_end">
-                            <span class="help-line"> （注：请填写规范,最少精确到分钟 如9:30:29 17:00）</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">首页轮播图：</label>
-                        <div class="col-sm-10">
-                            <div class="js_upload_container">
-                                <div class="js_file_upload ">
-                                    <button type="button" class="btn btn-default js_new_upload" data-count="5" data-submitname="index_banner" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
-                                    <span class="help-inline">
-                                        <small>建议尺寸：750*410，最多5张 (可拖拽图片调整显示顺序) </small>
-                                    </span>
-                                </div>
-                                <div class="uploadify-queue js_file_upload_queue"></div>
-                                <ul class="ipost-list ui-sortable js_fileList" data-required="true">
-                                    {volist name="index_banner" id="shbg"  }
-                                    <li class="imgbox" data-path="{$shbg}">
-                                        <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}" title="删除" ></a>
-                                        <span class="item_box"><img src="{$shbg}"></span>
-                                        <input type="hidden" name="index_banner[path][]" value="{$shbg}">
-                                    </li>
-                                    {/volist}
-                                </ul>
-                            </div>
+                            <input type="text" name="malice_appeal"  class="input-large" value="{$setting.malice_appeal}"> <span class="help-line">天处理,第二次永久封号处理</span>
                         </div>
                     </div>
                 </div>
