@@ -12,92 +12,115 @@
            <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
         </div>
 </header>
-<section class="scrollable  wrapper w-f">
- <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+<form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+    <section class="scrollable  wrapper w-f">
         <section class="panel panel-default">
-                <div class="panel-body">            			
-                		<div class="form-group">
-                            <label class="control-label">身份名称：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="input-large" data-rule-maxlength="20" data-rule-required="true" name="role_name" value="{$row.role_name}" ><span class="maroon">*</span>
-                            </div>
-                        </div> 
-                         <div class="form-group">
-                            <label class=" control-label"> 级别：</label>
-                            <div class="col-sm-6 ">
-                                <input aria-required="true" class="input-small" data-rule-required="true" name="level" min=1 value="{$row.level|intval}" data-rule-integer="true" type="text"><span class="maroon">*</span><span class="help-inline">此决定身份的排序高低，身份越高请设越大</span>
-                            </div>
-                        </div>
-                    <div class="form-group">
-                        <label class="control-label">升级设置：</label>
-                        <div class="col-sm-6" >
-                            <select name="upleve_function" id="upleve_function"  >
-                               
-                                {volist name="upLevel" id="val"}	
-                                        <option value="{$val.function}" {$row['upleve_function'] == $val['function']?'selected':''} 
-                                        data-jsonval='{$val.val|json_encode}' data-explain="{$val.explain}">{$val.name}</option>            
-                                {/volist}
-                            </select>
-                            <input name="uplevel_fun_name" id="uplevel_fun_name" type="hidden" value="{$row.uplevel_fun_name}" />
-                            <span class="help-inline"></span>
-                        </div>
-              		</div>
-                 <div id="upleve_function_box" class="panel-default">
-                    	
-            	</div>
+            <div class="panel-body">                        
+                <div class="form-group">
+                    <label class="control-label">身份名称：</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="input-large" data-rule-maxlength="20" data-rule-required="true" name="role_name" value="{$row.role_name}" ><span class="maroon">*</span>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label class=" control-label"> 级别：</label>
+                    <div class="col-sm-6 ">
+                        <input aria-required="true" class="input-small" data-rule-required="true" name="level" min=1 value="{$row.level|intval}" data-rule-integer="true" type="text"><span class="maroon">*</span><span class="help-inline">此决定身份的排序高低，身份越高请设越大</span>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class=" control-label"> 升级条件：</label>
+                    <div class="col-sm-6">
+                        直推
+                        <input class="input-small" name="direct_num" min=0 value="{$row.direct_num}" type="number"> 台
+                        <select name="direct_role">
+                            {volist name="UsersRole" id="urow"}
+                            <option value="{$urow.role_id}" {$row['direct_role']==$urow['role_id']?'checked':''}>{$urow.role_name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=" control-label"> 推广收益：</label>
+                    <div class="col-sm-6 ">
+                        一级 <input class="input-small" name="exten_profit_one" min=0 value="{$row.exten_profit_one}" type="number"> %
+                        二级 <input class="input-small" name="exten_profit_two" min=0 value="{$row.exten_profit_two}" type="number"> %
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=" control-label"> 团队收益：</label>
+                    <div class="col-sm-6 ">
+                        <input class="input-small" name="team_profit" min=0 value="{$row.team_profit}" type="number"> %
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">升级设置：</label>-->
+                    <!--<div class="col-sm-6" >-->
+                        <!--<select name="upleve_function" id="upleve_function"  >-->
+
+                            <!--{volist name="upLevel" id="val"}-->
+                                    <!--<option value="{$val.function}" {$row['upleve_function'] == $val['function']?'selected':''}-->
+                                    <!--data-jsonval='{$val.val|json_encode}' data-explain="{$val.explain}">{$val.name}</option>-->
+                            <!--{/volist}-->
+                        <!--</select>-->
+                        <!--<input name="uplevel_fun_name" id="uplevel_fun_name" type="hidden" value="{$row.uplevel_fun_name}" />-->
+                        <!--<span class="help-inline"></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                 <div id="upleve_function_box" class="panel-default"></div>
             </div>
         </section>
-</section>
-<footer class="footer bg-white b-t p-t">
-    <div class="form-group">
-        <div class="col-sm-4 col-sm-offset-1">
-            <input name="role_id" type="hidden" value="{$row.role_id|intval}">
-            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
-            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+    </section>
+    <footer class="footer bg-white b-t p-t">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-1">
+                <input name="role_id" type="hidden" value="{$row.role_id|intval}">
+                <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 </form>
 {include file="shop@/sys_admin/goods/sel_goods" /}
 
 {literal}
 <script type="text/html" id="upLevel_tpl"> 
 <div class="form-group">
-	  <label class="control-label">详细说明：</label>
-	  <div class="col-sm-8 m-t-mc">{{explain}}</div>
+      <label class="control-label">详细说明：</label>
+      <div class="col-sm-8 m-t-mc">{{explain}}</div>
 </div>
 
 {{each list as item index}}
 {{if item.input == 'sel_role'}}
-	{{each roleList as role index}}
-	<div class="form-group">
-       	 <label class=" control-label">{{item.text}}{{role.name}}：</label>
-		  <div class="col-sm-9" >
-		  {{if value[item.name]}}
-		  	<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="{{value[item.name][role.role_id]}}"><span class="help-inline">{{item.tip}}</span>
-			{{else}}
-			<input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="0"><span class="help-inline">{{item.tip}}</span>
-			{{/if}}
-		  </div>
-	</div>	  
-	{{/each}}
+    {{each roleList as role index}}
+    <div class="form-group">
+         <label class=" control-label">{{item.text}}{{role.name}}：</label>
+          <div class="col-sm-9" >
+          {{if value[item.name]}}
+            <input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="{{value[item.name][role.role_id]}}"><span class="help-inline">{{item.tip}}</span>
+            {{else}}
+            <input type="text" name="function_val[{{item.name}}][{{role.role_id}}]"  class="input-ssmall" data-rule-required="true" value="0"><span class="help-inline">{{item.tip}}</span>
+            {{/if}}
+          </div>
+    </div>    
+    {{/each}}
 {{else}}
 <div class="form-group">
         <label class=" control-label">{{item.text}}：</label>
-        <div class="col-sm-9" >			
-			{{if item.rule == 'ismoney' || item.rule == 'integer'}}
-				<input type="text" name="function_val[{{item.name}}]"  class="input-ssmall" data-rule-required="true" data-rule-{{item.rule}}="true" value="{{value[item.name]}}">
-				<span class="help-inline">{{item.tip}}</span>
-			{{else if item.input == 'text'}}
-			   <input type="text" name="function_val[{{item.name}}]"  class="input-large" data-rule-required="true" value="{{value[item.name]}}"><span class="help-inline">{{item.tip}}</span>
-			{{else if item.input == 'radio'}}
-				{{each item.selval as selval index}}
-			      <label><input type="radio"  name="function_val[{{item.name}}]" value="{{index}}" {{value[item.name]==index?'checked':''}}> {{selval}}</label>
-				 {{/each}}
-			{{else if item.input == 'sel_goods'}}
-				{{include 'selGoods_tpl'}}
-				<div class="col-sm-6 col-sm-offset-1 m-t">指定商品，只有购买此商品的会员才能进行升级.</div>
-			{{/if}}
+        <div class="col-sm-9" >         
+            {{if item.rule == 'ismoney' || item.rule == 'integer'}}
+                <input type="text" name="function_val[{{item.name}}]"  class="input-ssmall" data-rule-required="true" data-rule-{{item.rule}}="true" value="{{value[item.name]}}">
+                <span class="help-inline">{{item.tip}}</span>
+            {{else if item.input == 'text'}}
+               <input type="text" name="function_val[{{item.name}}]"  class="input-large" data-rule-required="true" value="{{value[item.name]}}"><span class="help-inline">{{item.tip}}</span>
+            {{else if item.input == 'radio'}}
+                {{each item.selval as selval index}}
+                  <label><input type="radio"  name="function_val[{{item.name}}]" value="{{index}}" {{value[item.name]==index?'checked':''}}> {{selval}}</label>
+                 {{/each}}
+            {{else if item.input == 'sel_goods'}}
+                {{include 'selGoods_tpl'}}
+                <div class="col-sm-6 col-sm-offset-1 m-t">指定商品，只有购买此商品的会员才能进行升级.</div>
+            {{/if}}
       </div>
 </div>
 {{/if}}
@@ -112,27 +135,27 @@ arr.roleList = {$roleList|json_encode|raw};
 
 
 function upleveFunction(){
-	$("#upleve_function_box").html('');
-	var obj = $('#upleve_function').find('option:selected');		
-	var jsonval = obj.data('jsonval');
-	if (typeof(jsonval) == 'undefined') return false;
-	$('#uplevel_fun_name').val(obj.text());
-	var val = obj.val();
-	if (typeof(upleve_value[val]) == 'undefined'){
-		upleve_value[val] = [];
-	}
+    $("#upleve_function_box").html('');
+    var obj = $('#upleve_function').find('option:selected');        
+    var jsonval = obj.data('jsonval');
+    if (typeof(jsonval) == 'undefined') return false;
+    $('#uplevel_fun_name').val(obj.text());
+    var val = obj.val();
+    if (typeof(upleve_value[val]) == 'undefined'){
+        upleve_value[val] = [];
+    }
     arr.list = jsonval;
     arr.explain = obj.data('explain');
     arr.value = upleve_value[val];
     arr.goodsList = upleve_value[val].buy_goods;
     arr.select_type = 'buy_goods';
-	$("#upleve_function_box").html(template("upLevel_tpl", arr));
+    $("#upleve_function_box").html(template("upLevel_tpl", arr));
 }
 $(function(){
-	$("#upleve_function").change(function (){
-		upleveFunction();
-	})
-	upleveFunction();
+    $("#upleve_function").change(function (){
+        upleveFunction();
+    })
+    upleveFunction();
 })
 </script>
 {/block}

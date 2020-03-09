@@ -81,6 +81,7 @@ class Role extends AdminController
 				if (empty($list) == false) $data['function'][$data['upleve_function']]['buy_goods'] = $list->toArray(); 
 			}
 		}
+        $this->assign("UsersRole", $this->Model->getRows());//分销身份
 		
 		return $data;
 	}
