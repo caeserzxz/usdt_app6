@@ -147,6 +147,7 @@ class UsersModel extends BaseModel
             $wxInfo['wxuid'] = 0;
         }
         $inArr['pid'] = 0;
+//        $inArr['role_id'] = 1;//一注册就是会员
         //分享注册
         if ($is_admin == false) {
             if ($wxInfo['wxuid'] > 0) {//微信访问根据微信分享来源记录，执行
@@ -194,19 +195,24 @@ class UsersModel extends BaseModel
                 $register_invite_code = settings('register_invite_code');
                 $register_must_invite = settings('register_must_invite');
                 if ($register_invite_code > 0){
-                    if ($register_must_invite == 1 && empty($inArr['invite_code'])) {
-                        return '需要填写邀请信息才能注册.';
+                    if(empty($inArr['invite_code'])){
+                        if ($register_must_invite == 1) {
+                            return '需要填写邀请信息才能注册.';
+                        }
+                    }else{
+                        $share_user_id = 0;
+                        if ($register_invite_code == 1) {//会员邀请码
+                            $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
+                        }elseif ($register_invite_code == 2) {//会员ID
+                            $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
+                        }elseif ($register_invite_code == 3) {//会员手机号
+                            $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
+                        }
+                        if ($share_user_id < 1){
+                            return '邀请帐号不存在.';
+                        }
+                        $inArr['pid'] = $share_user_id;
                     }
-                    $share_user_id = 0;
-                    if ($register_invite_code == 2) {//会员ID
-                        $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
-                    }elseif ($register_invite_code == 3) {//会员手机号
-                        $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
-                    }
-                    if ($share_user_id < 1){
-                        return '邀请帐号不存在.';
-                    }
-                    $inArr['pid'] = $share_user_id;
                 }
             }
         }
