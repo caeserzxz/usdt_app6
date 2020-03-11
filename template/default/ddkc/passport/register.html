@@ -1,0 +1,229 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+
+<div class="page-bd registerPage" style="background-color:#fff">
+    <!-- 页面内容-->
+    <div class="logo dp-flex">
+        {if condition="$logo"}
+        <img src="{$logo}" alt="">
+        {else/}
+        <img src="__STATIC__/dingding/images/logo01.png" alt="">
+        {/if}
+    </div>
+    <div class="form">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg01.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    {empty name="$share_token"}
+                    <input class="weui-input" type="text" id="invite_code" placeholder="邀请码（必填）">
+                    {else/}
+                    <input class="weui-input" type="text" id="invite_code" value="{$share_token}"  placeholder="{$share_token}">
+                    {/empty}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg06.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" id="nick_name" placeholder="请输入昵称">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg02.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" id="mobile" placeholder="请输入手机号码">
+                </div>
+            </div>
+            {if condition="$sms_fun['register']==1"}
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg03.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" id="code" placeholder="请输入验证码">
+                </div>
+                <div class="weui-cell__ft">
+                    <div class="codeBox">
+                        <div class=" getCode " onclick="codeButton()">获取验证码</div>
+                        <span class=" time fs24" style="display:none">60s</span>
+                    </div>
+                </div>
+            </div>
+            {/if}
+
+            <div class="weui-cell">
+                <div class="weui-cell__bd pr">
+                    <input class="weui-input input-nbd" type="password" id="password" placeholder="请设置登入密码">
+                    <span class=" span-pos">(6-18位数字字母组合)</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd ">
+                    <input class="weui-input input-nbd" type="password" id="password2" placeholder="确认登录密码">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd pr">
+                    <input class="weui-input input-nbd" type="password" id="pay_password" placeholder="请设置交易密码">
+                    <span class=" span-pos"></span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd ">
+                    <input class="weui-input input-nbd" type="password" id="pay_password2" placeholder="确认交易密码">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd pr">
+                    <input class="weui-input input-nbd" type="text" id="contact_mobile" placeholder="紧急联系电话">
+                    <span class="span-pos">(保持通畅联系方式)</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="wrap">
+            <div class="background fs28 register">
+                立即注册
+            </div>
+        </div>
+        <div class="tip dp-flex">注册代表您同意<a href="{:url('shop/article/registerAgreement')}">&lt;&lt;{:settings('shop_title')}&gt;&gt;</a></div>
+    </div>
+</div>
+{/block}
+
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    var register_invite_code = {$register_invite_code|intval};
+    var register_must_invite = {$register_must_invite|intval};
+    $(function () {
+        $('.ereBox').on('click', function () {
+            var obj = $(this).find('img')
+            if (obj.attr('data-type') == '0') {
+                obj.attr('src', '__STATIC__/mobile/default/images/login02.png')
+                obj.attr('data-type', '1')
+                $(this).siblings('input').attr('type', 'text')
+            } else {
+                obj.attr('src', '__STATIC__/mobile/default/images/login01.png')
+                obj.attr('data-type', '0')
+                $(this).siblings('input').attr('type', 'password')
+            }
+        })
+    })
+    $('.register').on('click', function () {
+        var arr = new Object();
+        arr.mobile = $('#mobile').val();
+        arr.nick_name = $('#nick_name').val();
+        arr.password = $('#password').val();
+        arr.invite_code = $('#invite_code').val();
+        arr.pay_password = $('#pay_password').val();
+        arr.contact_mobile = $('#contact_mobile').val();
+        
+        if (arr.invite_code.length < 1) {
+            _alert('请填写邀请码.');
+            return false;
+        }
+        if (arr.nick_name == '') {
+            _alert('请输入用户昵称.');
+            return false;
+        }
+        if (arr.mobile == '') {
+            _alert('请输入手机号码.');
+            return false;
+        }
+        if ($('#code').length > 0) {
+            arr.code = $('#code').val();
+            if (arr.code == '') {
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+        if (arr.password == '') {
+            _alert('请输入用户密码.');
+            return false;
+        }
+        if (arr.password.length < 8) {
+            _alert('用户密码长度不能小于八位.');
+            return false;
+        }
+        if (arr.password != $('#password2').val()) {
+            _alert('两次登陆密码不一致.');
+            return false;
+        }
+        if (arr.pay_password == '') {
+            _alert('请输入交易密码.');
+            return false;
+        }
+        if (arr.pay_password != $('#pay_password2').val()) {
+            _alert('两次交易密码不一致.');
+            return false;
+        }
+        if (arr.contact_mobile == '') {
+            _alert('请输入紧急联系电话.');
+            return false;
+        }
+        jq_ajax('{:url("member/api.passport/register")}', arr, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg, '{:url("login")}');
+        })
+    })
+    function codeButton() {
+        var arr = new Object();
+        arr.type = 'register';
+        arr.mobile = $('#mobile').val();
+        if (arr.mobile == '') {
+            _alert('请输入手机号码');
+            return false;
+        }
+        jq_ajax('{:url("publics/api.sms/sendCode")}', arr, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        })
+    }
+    function _alert(msg,url) {
+        $.toast.prototype.defaults.duration = 800;
+        $.toast(msg, "text");
+        if (url) {
+            window.location.href = url;
+        }
+    }
+</script>
+</body>
+</html>
+{/block}

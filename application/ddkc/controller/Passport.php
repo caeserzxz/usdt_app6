@@ -32,7 +32,7 @@ class Passport  extends ClientbaseController{
 	/*------------------------------------------------------ */
     //-- 注册
     /*------------------------------------------------------ */
-    public function register(){       
+    public function register(){
 		$register_status = settings('register_status');
 		if ($register_status != 1){
 			return $this->error('暂不开放注册.');
@@ -46,7 +46,7 @@ class Passport  extends ClientbaseController{
         $this->assign('is_load',$is_load);
         $this->assign('appType',session('appType'));
         $this->assign('recommend',session('share_token'));
-		$this->assign('title', '会员注册');
+		$this->assign('title', '注册');
         return $this->fetch('register');
     }
     /*------------------------------------------------------ */

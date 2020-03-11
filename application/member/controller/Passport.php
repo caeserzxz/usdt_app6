@@ -24,6 +24,9 @@ class Passport  extends ClientbaseController{
 	//-- 登陆
 	/*------------------------------------------------------ */
 	public function login(){
+         # 重定向至叮叮登录页
+        $this->redirect(url('ddkc/passport/login'));
+
         $this->assign('title', '会员登录');
 		$this->assign('register_status',settings('register_status'));
         $this->assign('logo',settings('logo'));
@@ -32,7 +35,10 @@ class Passport  extends ClientbaseController{
 	/*------------------------------------------------------ */
     //-- 注册
     /*------------------------------------------------------ */
-    public function register(){       
+    public function register(){
+        # 重定向至叮叮注册页
+        $this->redirect(url('ddkc/passport/register'));
+
 		$register_status = settings('register_status');
 		if ($register_status != 1){
 			return $this->error('暂不开放注册.');

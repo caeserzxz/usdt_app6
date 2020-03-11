@@ -15,6 +15,11 @@ class ClientbaseController extends BaseController{
         'member/passport/login',// 登录页面
         'member/passport/register',// 注册页面
         'member/passport/forgetpwd',// 注册页面
+        
+        'ddkc/passport/register',// 注册页面
+        'ddkc/passport/forgetpwd',// 注册页面
+        'ddkc/passport/login',// 登录页面
+
         'shop/index',//商城首页
         'shop/goods',//商城商品相关
         'shop/flow/cart',//购物车

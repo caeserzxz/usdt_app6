@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="__STATIC__/dingding/css/zpui.css"/>
+    <link rel="stylesheet" href="__STATIC__/dingding/css/all.css"/>
+    <title>邀请注册 </title>
+</head>
+<body>
+    <div class="page">
+        <div class="page-bd registerPage registerPage1 pr">
+            <div class="top-pa dp-flex">
+                <span></span>
+                <p>简体中文</p>
+            </div>
+            <!-- 页面内容-->
+            <div class="logo dp-flex">
+                <img src="__STATIC__/dingding/images/reg04.png" alt="">
+            </div>
+            <div class="form">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd ">
+                            <input class="weui-input input-nbd" id="mobile" type="text" placeholder="账号">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd ">
+                            <input class="weui-input input-nbd" id="password" type="password" placeholder="密码">
+                        </div>
+                    </div>
+                    {if condition="$sms_fun['login']==1"}
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <input class="weui-input input-nbd" type="number" id="code" placeholder="验证码">
+                        </div>
+                        <div class="weui-cell__ft">
+                            <div class="codeBox">
+                                <div class=" getCode " onclick="codeButton()">获取验证码</div>
+                                <span class=" time fs24" style="display:none">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                </div>
+
+                <div class="forget-btn dp-flex">
+                    <a href="{:url('forgetPwd')}" >忘记密码</a>
+                    <label for="remember" class="weui-agree dp-flex">
+                        <input  type="checkbox"  name="checkbox1" id="remember" value="1" class="weui-agree__checkbox">
+                        <span style="padding-top: .053333rem;padding-left: .053333rem">
+                            记住密码
+                        </span>
+                    </label>
+                </div>
+
+                <div class="click-btn dp-flex">
+                    <a class="login"><img src="__STATIC__/dingding/images/sign01.png" alt=""></a>
+                    <a href="{:url('register')}"><img src="__STATIC__/dingding/images/reg05.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__STATIC__/dingding/js/lib/jquery-2.1.4.js"></script>
+    <script src="__STATIC__/dingding/js/jquery-weui.min.js"></script>
+    <script src="__STATIC__/dingding/js/lib/fastclick.js"></script>
+    <script src="__STATIC__/dingding/js/page.js"></script>
+    <script src="__STATIC__/mobile/default/js/page.js?v=1"></script>
+
+  <script>
+    window.onload = function(){
+      var oUser = document.getElementById('mobile');
+      var oPswd = document.getElementById('password');
+      var oRemember = document.getElementById('remember');
+      //页面初始化时，如果帐号密码cookie存在则填充
+      if(getCookie('mobile') && getCookie('password')){
+        oUser.value = getCookie('mobile');
+        oPswd.value = getCookie('password');
+        oRemember.checked = true;
+      }
+      //复选框勾选状态发生改变时，如果未勾选则清除cookie
+      oRemember.onchange = function(){
+        if(!this.checked){
+          delCookie('mobile');
+          delCookie('password');
+        }
+      };
+    };
+    //设置cookie
+    function setCookie(name,value,day){
+      var date = new Date();
+      date.setDate(date.getDate() + day);
+      document.cookie = name + '=' + value + ';expires='+ date;
+    };
+    //获取cookie
+    function getCookie(name){
+      var reg = RegExp(name+'=([^;]+)');
+      var arr = document.cookie.match(reg);
+      if(arr){
+        return arr[1];
+      }else{
+        return '';
+      }
+    };
+    //删除cookie
+    function delCookie(name){
+      setCookie(name,null,-1);
+    };
+
+    $(function(){
+      $('.ereBox').on('click',function(){
+        var obj=$(this).find('img')
+        if(obj.attr('data-type')=='0'){
+          obj.attr('src','__STATIC__/mobile/default/images/login02.png')
+          obj.attr('data-type','1')
+          $(this).siblings('input').attr('type','text')
+        }else{
+          obj.attr('src','__STATIC__/mobile/default/images/login01.png')
+          obj.attr('data-type','0')
+          $(this).siblings('input').attr('type','password')
+        }
+      })
+    })
+    $('.login').on('click',function(){
+        var arr = new Object();
+        arr.mobile = $('#mobile').val();
+        arr.password = $('#password').val();
+        if (arr.mobile == ''){
+            _alert('请输入手机号码.');
+            return false;
+        }
+        if ($('#code').length > 0){
+            arr.code = $('#code').val();
+            if (arr.code == ''){
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+        if (arr.password == '' ){
+            _alert('请输入用户密码.');
+            return false;
+        }
+        if (arr.password.length < 8){
+            _alert('用户密码长度不能小于八位.');
+            return false;
+        }
+        jq_ajax('{:url("member/api.passport/login")}',arr,function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            var remember = document.getElementById('remember');
+            if(remember.checked){ 
+              setCookie('mobile',arr.mobile,30); //保存帐号到cookie，有效期3天
+              setCookie('password',arr.password,30); //保存密码到cookie，有效期3天
+            }
+            if (res.url != ''){
+                return window.location.href = res.url;
+            }
+            window.location.href = '{:url("center/index")}';
+        })
+    })
+    function codeButton(){
+        var arr = new Object();
+        arr.type = 'login';
+        arr.mobile = $('#mobile').val();
+        if (arr.mobile == ''){
+            _alert('请输入手机号码');
+            return false;
+        }
+        jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            var timeObj=$('.time')
+            var getCodeObj=$('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set=setInterval(function(){
+                timeObj.text(""+--time+"s");
+                if (time<=0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        })
+    }
+    function _alert(msg,url) {
+        $.toast.prototype.defaults.duration = 800;
+        $.toast(msg, "text");
+        if (url) {
+            window.location.href = url;
+        }
+    }
+  </script>
+</body>
+</html>

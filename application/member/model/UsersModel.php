@@ -126,7 +126,8 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     public function getToken()
     {
-        $token = random_str(16);
+        // $token = random_str(16);
+        $token = random_str(6);
         $count = $this->where('token', $token)->count('user_id');
         if ($count >= 1) return $this->getToken();
         return $token;
@@ -179,6 +180,9 @@ class UsersModel extends BaseModel
             if (checkMobile($inArr['mobile']) == false) {
                 return '手机号码不正确.';
             }
+            if (checkMobile($inArr['contact_mobile']) == false) {
+                return '紧急联系号码不正确.';
+            }
             $count = $this->where('mobile', $inArr['mobile'])->count('user_id');
             if ($count > 0) return '手机号码：' . $inArr['mobile'] . '，已存在.';
             if (empty($inArr['nick_name']) == false) {//昵称不为空时，判断是否已存在
@@ -190,6 +194,7 @@ class UsersModel extends BaseModel
                 return $res;
             }
             $inArr['password'] = f_hash($inArr['password']);
+            $inArr['pay_password'] = f_hash($inArr['pay_password']);
 
             if ($is_admin == false && $inArr['pid'] == 0){//非后台新增会员
                 $register_invite_code = settings('register_invite_code');
@@ -220,7 +225,6 @@ class UsersModel extends BaseModel
         $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
-
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
             Db::startTrans();
         }
