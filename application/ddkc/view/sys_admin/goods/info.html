@@ -19,7 +19,21 @@
 <section class="scrollable  wrapper">
     <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
         <section class="panel panel-default">
-            <div class="panel-body">  
+            <div class="panel-body">
+                <div class="form-group m-t">
+                    <label class=" control-label">类型：</label>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input name="type" value="1" {$row.type==1? checked:''} type="radio">
+                            矿机
+                        </label>
+                        <label class="radio-inline">
+                            <input name="type" value="2" {$row.type==2? checked:''} type="radio">
+                            定存包
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label">型号</label>
                     <div class="controls">
@@ -67,7 +81,7 @@
                     <label class="control-label">消耗/租赁</label>
                     <div class="controls" >
                         <input type="number" class="input-small" data-rule-maxlength="10" name="price_min" value="{$row['price_min']}" >-
-                        <input type="number" class="input-small" data-rule-maxlength="10" name="price_max" value="{$row['price_max']}" >叮叮
+                        <input type="number" class="input-small" data-rule-maxlength="10" name="price_max" value="{$row['price_max']}" > 矿机消耗叮叮，定存包消耗DDB
                     </div>
                 </div>
                 <div class="form-group">
@@ -78,8 +92,8 @@
                     <span class="help-inline">%/天</span>
                 </div>
                 <div class="form-group">
-                      <label class="col-sm-2 control-label">可购买身份：</label>
-                      <div class="col-sm-8" >
+                      <label class="control-label">可购买身份</label>
+                      <div class="controls" >
                       {volist name="UsersRole" id="urow" }
                         <li style="list-style:none; float:left; margin:2px;">
                         <label><input type="checkbox" name="limit_user_role[]" value="{$urow.role_id}" <?=in_array($urow['role_id'],$limit_user_role)?'checked':'';?>> {$urow.role_name}</label></li>

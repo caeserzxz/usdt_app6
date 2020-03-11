@@ -1,7 +1,8 @@
 <table class="table  table-hover  m-b-none">
 <thead>
 <tr>
-  <th width="80">矿机类型</th>
+  <th width="80">类型</th>
+  <th width="80">型号</th>
   <th width="120">周期</th>
   <th width="150">消耗/租赁</th>
   <th width="120">日收益</th>
@@ -13,6 +14,7 @@
 
 {volist name="data.list" id="vo" }
 <tr>
+    <td>{if condition="$vo.type eq 1"} 矿机 {else/} 定存包 {/if}</td>
     <td>{$vo.miner_name}</td>
     <td>{$vo.scrap_days}天</td>
     <td>{$vo.price_min}-{$vo.price_max}</td>

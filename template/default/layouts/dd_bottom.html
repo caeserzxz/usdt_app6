@@ -1,13 +1,13 @@
 <div class="bottom-tabbar-wrapper">
     <div class="bottom-tabbar">
-        <a href="{:url('ddkc/trade/index')}" class="bottom-tabbar__item active">
+        <a href="{:url('ddkc/trade/index')}" class="bottom-tabbar__item {$routeUri=='trade/index'?'active':''}">
               <span class="icon">
                 <img src="__STATIC__/dingding//images/bottom_icon01.png" />
                 <img class="lhimg" src="__STATIC__/dingding//images/bottom_icon01_lh.png" />
               </span>
             <p class="label">叮叮市场</p>
         </a>
-        <a href="矿机.html" class="bottom-tabbar__item ">
+        <a href="{:url('ddkc/miner/index')}" class="bottom-tabbar__item {$routeUri=='miner/index'?'active':''}">
               <span class="icon">
                 <img src="__STATIC__/dingding//images/bottom_icon02.png" />
                 <img class="lhimg" src="__STATIC__/dingding//images/bottom_icon02_lh.png" />
@@ -21,7 +21,7 @@
               </span>
             <p class="label">服务快讯</p>
         </a>
-        <a href="个人中心.html" class="bottom-tabbar__item ">
+        <a href="{:url('ddkc/center/index')}" class="bottom-tabbar__item {$routeUri=='center/index'?'active':''}">
               <span class="icon">
                 <img src="__STATIC__/dingding//images/bottom_icon04.png" />
                 <img class="lhimg" src="__STATIC__/dingding//images/bottom_icon04_lh.png" />
