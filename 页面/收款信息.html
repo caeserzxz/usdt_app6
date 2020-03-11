@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 收款信息</title>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title"> 收款信息</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd pd-24 moneyInfo">
+            <!-- 页面内容-->
+            <div class="alipay">
+                <h3 class="h3">支付宝账号</h3>
+                <div class="alipay-con dp-flex">
+                    <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号">
+                    <input type="text" class="weui-input input-t" placeholder="请输入姓名">
+                    <div class="weui-uploader__bd">
+                        <div class="weui-uploader__input-box">
+                            <img src="../assets/images/up-img.png" class="info-img" alt="">
+                            <input id="uploaderInput" onchange="changepic(this)" class="weui-uploader__input"
+                                type="file" accept="image/*" multiple="">
+                        </div>
+                    </div>
+                    <div class="sure-btn">确认</div>
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+
+                </div>
+            </div>
+            <div class="wechat">
+                <h3 class="h3">微信账号</h3>
+                <div class="alipay-con dp-flex">
+                    <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号">
+                    <div class="weui-uploader__bd">
+                        <div class="weui-uploader__input-box">
+                            <img src="../assets/images/up-img.png" class="info-img" alt="">
+                            <input id="uploaderInput" onchange="changepic(this)" class="weui-uploader__input"
+                                type="file" accept="image/*" multiple="">
+                        </div>
+                    </div>
+                    <div class="sure-btn">确认</div>
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+
+                </div>
+            </div>
+            <div class="bank">
+                <h3 class="h3">银行卡号</h3>
+                <div class="alipay-con dp-flex">
+                    <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号">
+                    <input type="text" class="weui-input input-t" placeholder="请输入支行名称">
+                    <input type="text " class="weui-input input-t" placeholder="请输入银行卡号">
+                    <input type="text" class="weui-input input-t" placeholder="请输入姓名">
+
+                    <div class="sure-btn">确认</div>
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+
+    </script>
+</body>
+
+</html>

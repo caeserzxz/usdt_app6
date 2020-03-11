@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>邀请注册 </title>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">注册 </div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd registerPage">
+            <!-- 页面内容-->
+            <div class="logo dp-flex">
+                <img src="../assets/images/logo01.png" alt="">
+            </div>
+            <div class="form">
+                <div class="weui-cells weui-cells_form">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">
+                                <img class="form-img" src="../assets/images/reg01.png" alt="">
+                            </label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" placeholder="邀请码（必填）">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">
+                                <img class="form-img" src="../assets/images/reg02.png" alt="">
+                            </label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="number" placeholder="请输入手机号码">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">
+                                <img class="form-img" src="../assets/images/reg03.png" alt="">
+                            </label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="number" placeholder="请输入验证码">
+                        </div>
+                        <div class="weui-cell__ft">
+                            <div class="codeBox">
+                                <div class=" getCode " onclick="codeButton()">获取验证码</div>
+                                <span class=" time fs24" style="display:none">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd pr">
+                            <input class="weui-input input-nbd" type="text" placeholder="请设置登入密码">
+                            <span class=" span-pos">(6-18位数字字母组合)</span>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd ">
+                            <input class="weui-input input-nbd" type="text" placeholder="确认登录密码">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd pr">
+                            <input class="weui-input input-nbd" type="text" placeholder="请设置交易密码">
+                            <span class=" span-pos">(6-18位数字字母组合)</span>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd ">
+                            <input class="weui-input input-nbd" type="text" placeholder="确认交易密码">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd pr">
+                            <input class="weui-input input-nbd" type="text" placeholder="紧急联系电话">
+                            <span class=" span-pos">(保持通畅联系方式)</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="wrap">
+                    <div class="background fs28">
+                        立即注册
+                    </div>
+                </div>
+                <div class="tip dp-flex">注册代表您同意<a href="javascript:;">&lt;&lt;用户协议&gt;&gt;</a></div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+        function codeButton() {
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

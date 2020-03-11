@@ -6,7 +6,11 @@
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="top">
+        {if condition="$logo"}
+        <img src="{$logo}" alt="">
+        {else/}
         <img src="__STATIC__/mobile/default/images/APPLOGO.png" alt="">
+        {/if}
         <span class="fs34 color_3 fw_b">{:settings('shop_title')}</span>
     </div>
     <div class="inputBlock bor_b">

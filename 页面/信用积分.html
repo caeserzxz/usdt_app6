@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 账户信用积分</title>
+    <link rel="stylesheet" href="../assets/css/picker.css">
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">账户信用积分 </div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd creditScore">
+            <!-- 页面内容-->
+            <div class="content">
+                <div class="top">
+                    <h3>信用积分详情说明</h3>
+                    <div class="top-con">
+                        <p>
+                            人类长期只有口语传递信息，用文字记事传递信息形成的书面语历史较短。系统的语言成为人和禽兽分离的重要工具，文字使人类能进入有历史记录的文明社会。把时空的影像变化转码成视觉可见的符号系统，使后人能通过间接的文字想象出画面，了解历史和学习技术经验。使文字成为文化的主要载体。
+                        </p>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="cal dp-flex">
+                        <input type="text" class=" fs28 " readonly onClick="demoClick()" value="2020年3月3日"
+                            id="nowValue" />
+                    </div>
+                    <div class="btns dp-flex fs26">
+                        <div class="pay">支出</div>
+                        <div class="income">收入</div>
+                    </div>
+                    <div class="info">
+                        <div class="list">
+                            <div class="list-le fs24">
+                                <p>明细说明</p>
+                                <p>-100.00</p>
+                            </div>
+                            <div class="list-rt">2020-03-04 12:00:00</div>
+                        </div>
+                        <div class="list">
+                            <div class="list-le fs24">
+                                <p>明细说明</p>
+                                <p>-100.00</p>
+                            </div>
+                            <div class="list-rt">2020-03-04 12:00:00</div>
+                        </div>
+                        <div class="list">
+                            <div class="list-le fs24">
+                                <p>明细说明</p>
+                                <p>-100.00</p>
+                            </div>
+                            <div class="list-rt">2020-03-04 12:00:00</div>
+                        </div>
+                        <div class="list">
+                            <div class="list-le fs24">
+                                <p>明细说明</p>
+                                <p>-100.00</p>
+                            </div>
+                            <div class="list-rt">2020-03-04 12:00:00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="bottom-tabbar-wrapper">
+  <div class="bottom-tabbar">
+    <a href="index.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon01.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon01_lh.png" />
+      </span>
+      <p class="label">叮叮市场</p>
+    </a>
+    <a href="矿机.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon02.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon02_lh.png" />
+      </span>
+      <p class="label">DDB矿场</p>
+    </a>
+    <a href="服务.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon03.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon03_lh.png" />
+      </span>
+      <p class="label">服务快讯</p>
+    </a>
+    <a href="个人中心.html" class="bottom-tabbar__item active">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon04.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon04_lh.png" />
+      </span>
+      <p class="label">个人中心</p>
+    </a>
+    <a href="叮叮交易所.html" class="bottom-tabbar__item @@item5">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon05.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon05_lh.png" />
+      </span>
+      <p class="label">叮叮交易所</p>
+    </a>
+  </div>
+</div>
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script src="../assets/js/datePicker.js"></script>
+    <script>
+        // 日期选择器
+        function demoClick() {
+            var nowValue = document.getElementById('nowValue');
+            var reg = new RegExp("年|月", "g");
+            var nowval = nowValue.value.replace(reg, "-").substring(0, 7);
+            new DatePicker({
+                "type": 3,//0年, 1年月, 2月日, 3年月日
+                "title": '请选择年月',//标题(可选)
+                "maxYear": "2050",//最大年份（可选）
+                "minYear": "1950",//最小年份（可选）
+                "separator": "-",//分割符(可选)
+                "defaultValue": nowval,//默认值（可选）
+                "callBack": function (val) {
+                    //回调函数（val为选中的日期）
+                    var arr = val.split('-');
+                    val = arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
+                    nowValue.value = val;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

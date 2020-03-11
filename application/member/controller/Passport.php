@@ -25,7 +25,8 @@ class Passport  extends ClientbaseController{
 	/*------------------------------------------------------ */
 	public function login(){
         $this->assign('title', '会员登录');
-		$this->assign('register_status',settings('register_status'));		
+		$this->assign('register_status',settings('register_status'));
+        $this->assign('logo',settings('logo'));
 		return $this->fetch('login');
 	}
 	/*------------------------------------------------------ */
@@ -36,6 +37,7 @@ class Passport  extends ClientbaseController{
 		if ($register_status != 1){
 			return $this->error('暂不开放注册.');
 		}
+        $this->assign('logo',settings('logo'));
 		$this->assign('title', '会员注册');
         $this->assign('register_invite_code', settings('register_invite_code'));
         $this->assign('lang_register_invite_code', config('config.register_invite_code'));

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 首页 </title>
+    <link rel="stylesheet" href="../assets/js/Swiper-4.0.7/swiper.min.css">
+</head>
+
+<body>
+    <div class="page">
+        <!-- <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">首页</div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div> -->
+
+        <div class="page-bd indexPage ">
+            <!-- 页面内容-->
+            <div>
+                <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'
+                    data-autoplay="1000">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="../assets/images/swiper01.png" alt=""></div>
+                        <div class="swiper-slide"><img src="../assets/images/swiper01.png" alt=""></div>
+                        <div class="swiper-slide"><img src="../assets/images/swiper01.png" alt=""></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <div class="lists">
+                    <div class="list dp-flex">
+                        <img class="list-img" src="../assets/images/index12.png" alt="">
+                        <div class="list-txt">
+                            <p>基础型DDB</p>
+                            <p>抢购数量：100-299</p>
+                            <p>抢购时间：14:30-14:35</p>
+                            <p>信用积分：10</p>
+                        </div>
+                        <div class="list-btn sureBtn"><img src="../assets/images/index08.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 弹窗 -->
+            <div class="popup popup01">
+                <div class="popup-bgc"></div>
+                <div class="popup-content">
+                    <div class="sd-cont-net1" style="display: block;">
+                        <div class="sd-t dp-flex">是否消耗<span class="color-e7">10</span>信用积分预约抢购</div>
+                        <div class="con">
+                            <p>预约后未进行抢购，系统将永久扣除10信用积分；无论是否抢到叮叮，系统都将返回信用积分</p>
+                        </div>
+                        <div class="btns dp-flex">
+                            <div class="yesBtn"> <img src="../assets/images/yes.png" alt="">
+                            </div>
+                            <div class="noBtn" onclick="closePop() "> <img src="../assets/images/no.png" alt=""></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 首页进入显示 -->
+            <div class="popup popup02" style="display: block;">
+                <div class="popup-bgc"></div>
+                <div class="model-con">
+                    <div class="model-ctp"><img src="../assets/images/pop02.png" alt=""></div>
+                    <div class="model-cco">
+                        <img class="title" src="../assets/images/pop04.png" alt="">
+                        <div class="cont">
+                            <div>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                            </div>
+                        </div>
+                        <img class="tip-img" src="../assets/images/pop01.png" alt="">
+                    </div>
+                    <div class="model-cbt"><img onclick="closePop() " src="../assets/images/close01.png" alt=""></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="bottom-tabbar-wrapper">
+  <div class="bottom-tabbar">
+    <a href="index.html" class="bottom-tabbar__item active">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon01.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon01_lh.png" />
+      </span>
+      <p class="label">叮叮市场</p>
+    </a>
+    <a href="矿机.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon02.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon02_lh.png" />
+      </span>
+      <p class="label">DDB矿场</p>
+    </a>
+    <a href="服务.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon03.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon03_lh.png" />
+      </span>
+      <p class="label">服务快讯</p>
+    </a>
+    <a href="个人中心.html" class="bottom-tabbar__item ">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon04.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon04_lh.png" />
+      </span>
+      <p class="label">个人中心</p>
+    </a>
+    <a href="叮叮交易所.html" class="bottom-tabbar__item @@item5">
+      <span class="icon">
+        <img src="../assets/images/bottom_icon05.png" />
+        <img class="lhimg" src="../assets/images/bottom_icon05_lh.png" />
+      </span>
+      <p class="label">叮叮交易所</p>
+    </a>
+  </div>
+</div>
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script src="../assets/js/Swiper-4.0.7/swiper.min.js"></script>
+    <script>
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+        })
+
+        $(".sureBtn").on('click', function () {
+            $('.popup01').show()
+        })
+        function closePop() {
+            $('.popup').hide()
+        }
+
+    </script>
+</body>
+
+</html>
