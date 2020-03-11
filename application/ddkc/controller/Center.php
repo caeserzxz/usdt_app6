@@ -3,7 +3,7 @@
 //-- 会员主页
 //-- Author: iqgmy
 /*------------------------------------------------------ */
-namespace app\member\controller;
+namespace app\ddkc\controller;
 use app\ClientbaseController;
 
 use app\member\model\UsersModel;
@@ -14,8 +14,6 @@ class Center  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
-        $this->redirect(url('ddkc/center/index'));
-
         $this->assign('title', '会员中心');
         $this->assign('isUserIndex', 1);
         $this->assign('not_top_nav', true);
