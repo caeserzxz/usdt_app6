@@ -117,6 +117,13 @@ class AccountLog extends AdminController
 			    $name = '可用积分';
 				 $data['use_integral'] = $number = $use_integral_type == 'add' ? $use_integral : $use_integral * -1;
 			}
+
+            $ddb_money_type = input('ddb_money_type','add','trim');
+            $ddb_money = input('ddb_money',0,'intval');
+            if ($ddb_money > 0){
+                $name = 'DDB';
+                $data['ddb_money'] = $number = $ddb_money_type == 'add' ? $ddb_money : $ddb_money * -1;
+            }
 			if (empty($data)) return $this->error('请核实是否有输入正确的更改值？');
 			$data['user_id'] = $user_id;
 			$data['change_desc'] = input('change_desc','','trim');

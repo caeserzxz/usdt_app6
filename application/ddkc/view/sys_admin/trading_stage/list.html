@@ -2,11 +2,13 @@
 <thead>
 <tr>
   <th width="120">ID</th>
+  <th width="200">交易区间名称</th>
   <th width="200">开始时间</th>
   <th width="200">结束时间</th>
   <th width="200">最低出售数量</th>
   <th width="200">最高出售数量</th>
   <th width="200">预约所需信用积分</th>
+  <th width="200">状态</th>
   <th width="150">操作</th>
 </tr>
 </thead>
@@ -15,18 +17,26 @@
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.id}</td>
+    <td>{$vo.stage_name}</td>
     <td>{$vo.trade_start_time}</td>
     <td>{$vo.trade_end_time}</td>
     <td>{$vo.trade_min_num}</td>
     <td>{$vo.trade_max_num}</td>
     <td>{$vo.scribe_integral}</td>
     <td>
+        {if condition="$vo.isputaway eq 1"}
+            上架
+        {else /}
+            下架
+        {/if}
+    </td>
+    <td>
         <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑">
             <i class="fa fa-edit text-muted"></i>
         </a>
-        <a href="{:url('delete',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除?" class="m-xs" title="删除">
-            <i class="fa fa-trash-o text-muted"></i>
-        </a>
+<!--        <a href="{:url('delete',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除?" class="m-xs" title="删除">-->
+<!--            <i class="fa fa-trash-o text-muted"></i>-->
+<!--        </a>-->
     </td>
 </tr>
 {/volist}

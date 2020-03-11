@@ -3,10 +3,11 @@
 <tr>
     <th width="160" class="th-sortable" data-sort-name="change_time">变动时间</th>
     <th>变动原因</th>
-    <th width="200">帐户余额(金币)/变更后</th>
-    <th width="200">消费积分/变更后</th>
-    <th width="200">历史总佣金/变更后</th>
-    <th width="200">历史总积分/变更后</th>
+    <th width="200">帐户余额(叮叮)/变更后</th>
+    <th width="200">帐户余额(DDB)/变更后</th>
+    <th width="200">信用积分/变更后</th>
+<!--    <th width="200">历史总佣金/变更后</th>-->
+<!--    <th width="200">历史总积分/变更后</th>-->
    
 </tr>
 </thead>
@@ -24,9 +25,10 @@
     {/if}
 </td>
 <td style="{$row['balance_money']>0?'color:#F00;':''}{$row['balance_money']<0?'color:#390;':''}">{$row.balance_money} / {$row['balance_money']+$row['old_balance_money']}</td>
+    <td style="{$row['balance_money']>0?'color:#F00;':''}{$row['balance_money']<0?'color:#390;':''}">{$row.ddb_money} / {$row['ddb_money']+$row['old_ddb_money']}</td>
 <td  style="{$row['use_integral']>0?'color:#F00;':''}{$row['use_integral']<0?'color:#390;':''}">{$row.use_integral} / {$row['use_integral']+$row['old_use_integral']}</td>
-<td style="{$row['total_dividend']>0?'color:#F00;':''}{$row['total_dividend']<0?'color:#390;':''}">{$row.total_dividend} / {$row['total_dividend']+$row['old_total_dividend']}</td>
-<td  style="{$row['total_integral']>0?'color:#F00;':''}{$row['total_integral']<0?'color:#390;':''}">{$row.total_integral} / {$row['total_integral']+$row['old_total_integral']}</td>
+<!--<td style="{$row['total_dividend']>0?'color:#F00;':''}{$row['total_dividend']<0?'color:#390;':''}">{$row.total_dividend} / {$row['total_dividend']+$row['old_total_dividend']}</td>-->
+<!--<td  style="{$row['total_integral']>0?'color:#F00;':''}{$row['total_integral']<0?'color:#390;':''}">{$row.total_integral} / {$row['total_integral']+$row['old_total_integral']}</td>-->
 </tr>
 {/volist}
 </tbody>

@@ -31,6 +31,9 @@ class AccountModel extends BaseModel
 		if (isset($data['bean_value'])){
 			$updata['bean_value'] = ['INC',$data['bean_value']];
 		}
+        if (isset($data['ddb_money'])){
+            $updata['ddb_money'] = ['INC',$data['ddb_money']];
+        }
     	return $updata;
 	}
 }

@@ -51,10 +51,10 @@ class AccountLogModel extends BaseModel
 		$data['old_total_integral'] = $account['total_integral'];	
 		$data['old_balance_money'] = $account['balance_money'];	
 		$data['old_use_integral'] = $account['use_integral'];	
-		$data['old_bean_value'] = $account['bean_value'];	
-		$data['sign'] = $this->toKey($data);
+		$data['old_bean_value'] = $account['bean_value'];
+        $data['old_ddb_money'] = $account['ddb_money'];
+        $data['sign'] = $this->toKey($data);
 		$res = $this->create($data);
-
 		if ($res->log_id < 1){
             if ($isTrans == true){// 回滚事务
                 Db::rollback();

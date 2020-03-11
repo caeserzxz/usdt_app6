@@ -29,8 +29,7 @@ class TradingStage extends AdminController
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
-        $this->order_by = 'id';
-        $this->sort_by = 'DESC';
+        $this->sqlOrder = 'id ASC';
         $data = $this->getPageList($this->Model);
         $this->assign("data", $data);
         if ($runData == false){
