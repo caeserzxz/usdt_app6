@@ -1247,7 +1247,7 @@ img {
   margin-top: 0.133333rem;
 }
 
-.machinePage .lists .list:nth-child(odd) {
+.machinePage .lists .list:nth-child(even) {
   margin-right: 0.2rem;
 }
 

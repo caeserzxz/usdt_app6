@@ -55,6 +55,9 @@ class Goods extends AdminController
 		
 		$count = $this->Model->where('miner_name',$data['miner_name'])->count('miner_id');
 		if ($count > 0) return $this->error('操作失败:已存在相同的矿机名称，不允许重复添加！');
+
+        if(is_array(input('limit_user_role'))) $data['limit_user_role'] = implode(',',input('limit_user_role'));
+
 		return $data;
 	}
 	/*------------------------------------------------------ */
@@ -77,9 +80,7 @@ class Goods extends AdminController
 		$imgs = input('imgs');
         $data['imgs'] = '';
         if(is_array($imgs['path'])) $data['imgs'] = serialize($imgs['path']);
-        if(is_array(input('limit_user_role'))) {
-        	$data['limit_user_role'] = serialize(input('limit_user_role'));
-        }
+        if(is_array(input('limit_user_role'))) $data['limit_user_role'] = implode(',',input('limit_user_role'));
 		return $data;		
 	}
 	/*------------------------------------------------------ */
@@ -105,7 +106,7 @@ class Goods extends AdminController
     protected function asInfo($data) {
     	$DividendRoleModel = new DividendRoleModel();
     	
-		$this->assign('limit_user_role',unserialize($data['limit_user_role']));
+		$this->assign('limit_user_role',explode(",",$data['limit_user_role']));
         $this->assign("UsersRole", $DividendRoleModel->getRows());//分销身份
 		$this->assign('imgs',unserialize($data['imgs']));
         return $data;

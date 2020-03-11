@@ -1,0 +1,175 @@
+{extend name="layouts@dd_head" /}
+</style>
+{block name="main" }
+<div class="page-bd DDBBag machinePage">
+    <!-- 页面内容-->
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">矿机</a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getStorageList()">定存包</a>
+        </div>
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                <div>
+                    <div class="dp-flex top">
+                        <p class="fs32">{$userInfo['role']['role_name']}</p>
+                        <img src="__STATIC__/dingding/images/right.png" alt="">
+                    </div>
+                </div>
+                <div class="lists" id="list1">
+                    <script type="text/html" id="listTpl">
+                        {{each list as item index}}
+                        <div class="list">
+                            <div class="list-img">
+                                {literal}
+                                {{if item.img}}
+                                    <img src="{{item.img}}">
+                                {{else}}
+                                    <img src="__STATIC__/dingding/images/pro01.png";>
+                                {{/if}}
+                                {/literal}
+                            </div>
+                            <div class="list-txt">
+                                <h3>{{item.miner_name}}</h3>
+                                <div class="list-txt-con">
+                                    <div>
+                                        <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
+                                        <p>可产DDB：{{item.total_output}}枚</p>
+                                        <p>产矿周期：{{item.scrap_days}}天</p>
+                                        <p>信用积分：{{item.credit_integral}}</p>
+                                        <p>租赁会员等级：{{item.limit_buy_role}}</p>
+                                    </div>
+                                    <div class="lease-btn">确认租赁</div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+                <div>
+                    <div class="dp-flex top">
+                        <p class="fs32">{$userInfo['role']['role_name']}</p>
+                        <!-- <span class="fs24">（基础型）</span> -->
+                        <img src="__STATIC__/dingding/images/right.png" alt="">
+                    </div>
+                </div>
+                <div class="lists" id="list2">
+                    <script type="text/html" id="listTpl2">
+                        {{each list as item index}}
+                        <div class="list">
+                            <div class="list-img">
+                                {literal}
+                                {{if item.img}}
+                                    <img src="{{item.img}}">
+                                {{else}}
+                                    <img src="__STATIC__/dingding/images/pro01.png";>
+                                {{/if}}
+                                {/literal}
+                            </div>
+                            <div class="list-txt">
+                                <h3>{{item.miner_name}}</h3>
+                                <div class="list-txt-con">
+                                    <div>
+                                        <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
+                                        <p>可产DDB：{{item.total_output}}枚</p>
+                                        <p>产矿周期：{{item.scrap_days}}天</p>
+                                        <p>信用积分：{{item.credit_integral}}</p>
+                                        <p>租赁会员等级：{{item.limit_buy_role}}</p>
+                                    </div>
+                                    <div class="lease-btn">确认租赁</div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹窗 -->
+    <div class="popup">
+        <div class="popup-bgc"></div>
+        <div class="popup-content">
+            <div class="sd-cont-net1" style="display: block;">
+                <div class="sd-t fs40 dp-flex">是否消耗<span class="color-e7">100</span>DDB租赁</div>
+                <div class="btns dp-flex">
+                    <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
+                    </div>
+                    <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="layouts@dd_bottom" /}
+{/block}
+
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    function yesBtn() {
+        $(".popup").hide()
+    }
+    $(".lease-btn").on('click', function () {
+        $(".popup").show()
+    })
+</script>
+<script type="text/javascript">
+    var page_1 = 1;
+    var page_2 = 1;
+    var loading_1 = false; 
+    var loading_2 = false;
+    $(function () {
+        getMiningList();
+    })
+
+    $('#tab1').infinite().on("infinite", function() {
+        getMiningList();
+    });
+    // 获取矿机列表
+    function getMiningList(){
+        if(loading_1) return;
+        loading_1 = true;
+
+        var arr = new Object();
+        arr.p = page_1;
+        arr.type = 1;
+
+        jq_ajax('{:url("ddkc/api.miner/getMiningList")}',arr,function (res) {            
+            $('#list1').append(template('listTpl',res));
+            if (res.list.length > 0) {
+                page_1++;
+                loading_1 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+    function getStorageList() {
+        if(loading_2) return;
+        loading_2 = true;
+
+        var arr = new Object();
+        arr.p = page_2;
+        arr.type = 2;
+
+        jq_ajax('{:url("ddkc/api.miner/getMiningList")}',arr,function (res) {        
+            $('#list2').append(template('listTpl2',res));
+            if (res.list.length > 0) {
+                page_2++;
+                loading_2 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+</script>
+</body>
+</html>
+{/block}
