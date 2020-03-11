@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" type="image/png" href="__STATIC__/favicon.ico"/>
+    
+    <link rel="stylesheet" href="__STATIC__/dingding/css/all.css"/>
+    <link rel="stylesheet" href="__STATIC__/dingding/css/picker.css"/>
+    <link rel="stylesheet" href="__STATIC__/dingding/css/zpui.css"/>
+
+    <script src="__STATIC__/mobile/default/js/page.js?v=1"></script>
+    <script src="__STATIC__/dingding/js/lib/jquery-2.1.4.js"></script>
+    <script src="__STATIC__/dingding/js/jquery-weui.min.js"></script>
+    <script src="__STATIC__/dingding/js/lib/fastclick.js"></script>
+    <script src="__STATIC__/js/art-template.js"></script>
+    <script src="__STATIC__/js/jquery/lazyload/jquery.lazyload.js"></script>
+
+    <title>{$title}  - {$setting.shop_title}</title>
+    {block name="head"}{/block}
+      <style>#v5btn,.v5-btn{
+          top: 8%;
+          left: 80%!important;
+          display: none !important;
+      }
+      img{
+        max-width: 100%;
+      }
+      </style>
+</head>
+<body {block name="body"}{/block}>
+  <div class="page {block name='pageType'}{/block}">
+  {empty name="not_top_nav"}
+  		<div class="page-hd">
+            <div class="header base-header bor-1px-b">
+                <div class="header-left">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">{$title}</div>
+                <div class="header-right">
+                    <!-- <a href=""></a> -->
+                </div>
+            </div>
+        </div>
+   {/empty}     
+   {block name="main"}{/block}
+  </div>
+
+
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+		$("img.lazy").lazyload({effect:"fadeIn",event:"scroll",container:$(".page-bd")});		
+    });
+</script>
+{block name="footer"}{/block}
+  <div class="alertBox">
+      <div class="alertBG"></div>
+      <div class="alert">
+          <div class="text fs30 color_3 bor_b">
+
+          </div>
+          <!-- 单按钮 -->
+          <div class="button fs32 fw_b color_r">
+              知道了
+          </div>
+          <!-- 双按钮 -->
+          <div class="buttonBox fs32 fw_b">
+              <span class="color_9 bor_r cancel">取消</span>
+              <span class="color_r confirm">确定</span>
+          </div>
+      </div>
+  </div>
+</body>
+</html>
