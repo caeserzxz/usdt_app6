@@ -4,8 +4,8 @@
   <th width="80">矿机类型</th>
   <th width="120">周期</th>
   <th width="150">消耗/租赁</th>
-  <th width="200">日收益</th>
-  <th width="200">质押返还期</th>
+  <th width="120">日收益</th>
+  <th width="120">日库存</th>
   <th width="150">操作</th>
 </tr>
 </thead>
@@ -17,7 +17,7 @@
     <td>{$vo.scrap_days}天</td>
     <td>{$vo.price_min}-{$vo.price_max}</td>
     <td>{$vo.rebate_rate} %</td>
-    <td>{$vo.principal_periods}期/{$vo.principal_day}天</td>
+    <td>{$vo.stock}台</td>
     <td>  
         <a href="{:url('info',array('miner_id'=>$vo['miner_id']))}" class="m-xs" title="编辑">
             <i class="fa fa-edit text-muted"></i>
