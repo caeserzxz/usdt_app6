@@ -56,9 +56,30 @@ class DdBanRecord extends AdminController
         $this->search['keyword'] = input("keyword");
         $this->search['time_type'] = input("time_type");
 
-        $this->assign("search", $this->search);
         $where = [];
+        $time_type = input('time_type', '', 'trim');
+        if (empty($time_type) == false) {
+            $reportrange = input('reportrange');
+            if (empty($reportrange) == false) {
+                $dtime = explode('-', $reportrange);
+                $where[] = ' u.ban_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+            }
+        }
 
+        if ($this->search['roleId'] == -1){
+//            $where[] = ' u.role_id > 0 ';
+        }elseif ($this->search['roleId'] >= 0) {
+            $where[] = ' u.ban_status = ' . $this->search['roleId'] * 1;
+        }
+
+        if (empty($this->search['keyword']) == false) {
+            if (is_numeric($this->search['keyword'])) {
+                $where[] = "  u.user_id = '" . ($this->search['keyword']) . "' or uc.mobile like '" . $this->search['keyword'] . "%'";
+            } else {
+                $where[] = " ( uc.user_name like '" . $this->search['keyword'] . "%' or uc.nick_name like '" . $this->search['keyword'] . "%' )";
+            }
+        }
+        $this->assign("search", $this->search);
         $sort_by = input("sort_by", 'DESC', 'trim');
         $order_by = 'u.user_id';
         $viewObj = $this->Model->alias('u')->join("users uc", 'u.user_id=uc.user_id', 'left')->where(join(' AND ', $where))->field('u.*,uc.nick_name,uc.mobile')->order($order_by . ' ' . $sort_by);
@@ -69,7 +90,7 @@ class DdBanRecord extends AdminController
         $this->assign("data", $data);
         $this->assign("search",$this->search);
         if ($runData == false) {
-            $data['content'] = $this->fetch('sys_admin/users/list')->getContent();
+            $data['content'] = $this->fetch('sys_admin/dd_ban_record/list')->getContent();
             return $this->success('', '', $data);
         }
         return true;
