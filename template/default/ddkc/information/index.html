@@ -1,0 +1,100 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+<div class="page-bd indexPage server">
+    <!-- 页面内容-->
+    <div>
+        <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'
+            data-autoplay="1000">
+            <div class="swiper-wrapper">
+                {volist name="banner" id="rows" }
+                <div class="swiper-slide"><img src="{$rows}" alt=""></div>
+                {/volist}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <div class="tab dp-flex">
+            <div><img src="__STATIC__/dingding/images/server01.png" alt=""></div>
+            <div>
+                <a href="{:url('member/message/index')}">
+                    <img src="__STATIC__/dingding/images/server02.png" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="weui-cells" id="lists">
+            <script type="text/html" id="listTpl">
+            {{each list as item index}}
+            <a class="weui-cell" href="javascript:go_info({{item.id}})">
+                <div class="weui-cell__hd">
+                    <div class="radio">
+                        <video id="example_video_1" poster="" class="video-js vjs-default-skin">
+                            <source src="{{item.video_url}}" />
+                            <source src="" type='video/webm' />
+                            <source src="" type='video/ogg' />
+                        </video>
+                        <!-- <div class="video-length">00:00:00</div> -->
+                    </div>
+                </div>
+                <div class="weui-cell__bd">
+                    <p class="fw_b fs30">{{item.title}}</p>
+                    <div class="dp-flex look">
+                        <img src="__STATIC__/dingding/images/play.png" alt="">
+                        <p class="fs20 color-7f">{{item.add_data}}</p>
+                    </div>
+                </div>
+            </a>
+            {{/each}}
+            </script>
+        </div>
+    </div>
+</div>
+{include file="layouts@dd_bottom" /}
+{/block}
+
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="__STATIC__/dingding/js/video.min.js"></script>
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        autoplay: true,
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    })
+    var page = 1;
+    var loading = false;
+
+    $(function () {
+        // 获取资讯列表
+        getInformationList();
+    })
+    $('#lists').infinite().on("infinite", function() {
+        getInformationList();
+    });
+    function getInformationList(){
+        if(loading) return;
+        loading = true;
+
+        var arr = new Object();
+        arr.p = page;
+        jq_ajax('{:url("ddkc/api.information/getInformationList")}',arr,function (res) {            
+            $('#lists').append(template('listTpl',res));
+            if (res.list.length > 0) {
+                page++;
+                loading = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+    function go_info(id) {
+        window.location.href = '{:_url("info",'',false)}/?id='+id;
+    }
+
+</script>
+</body>
+</html>
+{/block}
