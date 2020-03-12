@@ -45,7 +45,7 @@ class Trade extends ApiController
     public function buy_trade(){
         $userModel = new UsersModel();
         $accountModel = new AccountLogModel();
-        $SellTradeModel = new SellTradeModel();
+        $BuyTradeMoel = new BuyTradeModel();
         $TradingStageModel = new TradingStageModel();
         # 是否登录
         $user = $userModel->info($this->userInfo['user_id']);
@@ -54,8 +54,44 @@ class Trade extends ApiController
         }
         $stage_id = input('stage_id');
         $stage_info = $TradingStageModel->where('id',$stage_id)->find();
+        if(empty($stage_info)){
+            return $this->ajaxReturn(['code' => 0,'msg' => '','url' => '']);
+        }
+        if($user['account']['use_integral']<$stage_info['scribe_integral']){
+            return $this->ajaxReturn(['code' => 0,'msg' => '信用积分不足,无法预约','url' => '']);
+        }
+        Db::startTrans();
+        $addData = [
+            'buy_user_id'=>$user['user_id'],
+            'buy_stage_id'=>$stage_id,
+            'buy_status'=>0,
+            'deduct_integral'=>$stage_info['scribe_integral'],
+            'isputaway'=>1,
+            'buy_start_time'=>time()
+        ];
+        $res = $BuyTradeMoel->create($addData);
+        if (!$res) {
+            Db::rollback();
+            return $this->ajaxReturn(['code' => 0,'msg' => '预约失败','url' => '']);
+        }
 
+        if($res){
+            //预约成功后,扣除用户的信用积分
+            $charge['ddb_money']   = -$stage_info['scribe_integral'];
+            $charge['change_desc'] = '预约扣除信用积分';
+            $charge['change_type'] = 11;
+            $res1 =$accountModel->change($charge, $user['user_id'], false);
+            if(!$res1){
+                Db::rollback();
+                return $this->ajaxReturn(['code' => 0,'msg' => '扣除信用积分失败','url' => '']);
+            }
+        }
+
+        # 预约成功
+        Db::commit();
+        return $this->ajaxReturn(['code' => 1,'msg' => '下单成功','url' => url('trade/index')]);
 
     }
+
 
 }

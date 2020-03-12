@@ -36,7 +36,7 @@
                                 <p>抢购时间：{{item.trade_start_time}}-{{item.trade_end_time}}</p>
                                 <p>信用积分：{{item.scribe_integral}}</p>
                             </div>
-                            <div class="list-btn sureBtn" onclick="sureBtn({{item.id}})"><img src="__STATIC__/dingding//images/index08.png" alt=""></div>
+                            <div class="list-btn sureBtn" onclick="sureBtn({{item.id}},{{item.scribe_integral}})"><img src="__STATIC__/dingding//images/index08.png" alt=""></div>
                         </div>
                         {{/each}}
                     </script>
@@ -47,9 +47,9 @@
                 <div class="popup-bgc"></div>
                 <div class="popup-content">
                     <div class="sd-cont-net1" style="display: block;">
-                        <div class="sd-t dp-flex">是否消耗<span class="color-e7">10</span>信用积分预约抢购</div>
+                        <div class="sd-t dp-flex">是否消耗<span class="color-e7 scribe_integral">10</span>信用积分预约抢购</div>
                         <div class="con">
-                            <p>预约后未进行抢购，系统将永久扣除10信用积分；无论是否抢到叮叮，系统都将返回信用积分</p>
+                            <p>预约后未进行抢购，系统将永久扣除<b class="scribe_integral">10</b>信用积分；无论是否抢到叮叮，系统都将返回信用积分</p>
                         </div>
                         <div class="btns dp-flex">
                             <div class="yesBtn" data-id="" onclick="yesBtn();"> <img src="__STATIC__/dingding//images/yes.png" alt="">
@@ -132,9 +132,10 @@
            })
        }
 
-       function sureBtn(id){
+       function sureBtn(id,scribe_integral){
            $('.popup01').show()
            $('.yesBtn').attr('data-id',id);
+           $('.scribe_integral').html(scribe_integral);
        }
 
        var isPostMsg = false;
@@ -146,7 +147,7 @@
            var arr = new Object();
            arr.stage_id = id;
 
-           jq_ajax('{:url("ddkc/api.trade/buy_trade")}',arr,function (res) {
+           jq_ajax('{:url("ddkc/api.trade/buy_trade")}',arr,function (data) {
                        isPostMsg = false;
                        if(data.code==1){
                            $.toast(data.msg, "text",function(){

@@ -29,6 +29,7 @@
                     <!-- <li><a href="#awards" data-toggle="tab">分享收益设置</a></li> -->
                     <!-- <li><a href="#trade_team" data-toggle="tab">社区收益设置</a></li> -->
                     <li ><a href="#credit_integral" data-toggle="tab">信用评分设置</a></li>
+                    <li ><a href="#sell_explain" data-toggle="tab">挂售详情说明</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -292,6 +293,18 @@
                         <label class="col-sm-2 control-label">封号扣除</label>
                         <div class="controls">
                             <input type="text" name="frozen_deduct"  class="input-large" value="{$setting.frozen_deduct}"> <span class="help-line">积分</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="sell_explain">
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">挂售详情说明：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                            <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                      data-kdheight="150" data-tongji="remain"
+                                      data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
+                                      name="sell_explain" style="visibility:hidden;">{$setting.sell_explain|raw}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>
                 </div>

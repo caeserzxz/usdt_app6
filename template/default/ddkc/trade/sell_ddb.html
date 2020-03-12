@@ -1,43 +1,18 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
-
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
-<link rel="stylesheet" href="../assets/css/zpui.css"/>
-<link rel="stylesheet" href="../assets/css/all.css"/>
-<script src="../assets/js/page.js"></script>
-
-    <title>DDB挂售 </title>
-</head>
-
-<body>
-    <div class="page">
-        <div class="page-hd">
-            <div class="header bor-1px-b">
-    <div class="header-left">
-        <a href="javascript:history.go(-1)" class="left-arrow"></a>
-    </div>
-    <div class="header-title">DDB挂售 </div>
-    <div class="header-right">
-        <a href="#"></a>
-    </div>
-</div>
-        </div>
-
+{extend name="layouts@dd_head" /}
+{block name="main" }
         <div class="page-bd DDB">
             <!-- 页面内容-->
-            <div class="dp-flex fs28 num-box"><span>当前可售DDB数量：</span><span>656</span></div>
+            <div class="dp-flex fs28 num-box"><span>当前可售DDB数量：</span><span>{$userInfo.account.ddb_money}</span></div>
             <div class="dp-flex">
                 <span>挂售数量</span>
-                <input type=" text" class="weui-input " placeholder="可售范围100-5000">
+                <input type=" text" class="weui-input " placeholder="可售范围{$setting.min_number}-{$setting.max_number}">
             </div>
-            <p class="rate">交易汇率：2%（挂售时，系统将自动扣除）</p>
+            <p class="rate">交易汇率：{$setting.service_charge}%（挂售时，系统将自动扣除）</p>
             <div class="sure-btn sureBtn">确认</div>
             <div class="sale-details">
                 <div class="sd-title">挂售详情说明</div>
                 <div class="sd-cont">
-
+                    {$setting.sell_explain|raw|html_entity_decode}
                 </div>
             </div>
             <!-- 弹窗 -->
@@ -46,38 +21,32 @@
                 <div class="popup-content">
                     <div class="sd-cont-net1">
                         <div class="sd-t color-e7">请选择挂售场次</div>
-                        <div class="weui-cells weui-cells_radio">
-                            <label class="weui-cell weui-check__label" for="x11">
-                                <div class="weui-cell__hd">
-                                    <input type="radio" class="weui-check" name="radio1" id="x11" checked="checked">
-                                    <span class="weui-icon-checked weui-icon-circle"></span>
-                                </div>
-                                <div class="weui-cell__ft">
-                                    <p>2020.04.20-14:00</p>
-                                </div>
+                        <div class="weui-cells weui-cells_radio" id="TradingStageList">
+                            <script type="text/html" id="listTpl">
+                                {{each list as item index}}
+                                <label class="weui-cell weui-check__label" >
+                                    <div class="weui-cell__hd">
+                                        <input type="radio" class="weui-check" name="radio1"  checked="checked">
+                                        <span class="weui-icon-checked weui-icon-circle"></span>
+                                    </div>
+                                    <div class="weui-cell__ft">
+                                        <p>{{item.trade_start_time}}-{{item.trade_end_time}}&nbsp&nbsp&nbsp&nbsp{{item.trade_min_num}}-{{item.trade_max_num}}</p>
+                                    </div>
+                                </label>
+                                {{/each}}
+                            </script>
 
-                            </label>
-                            <label class="weui-cell weui-check__label" for="x12">
-                                <div class="weui-cell__hd">
-                                    <input type="radio" name="radio1" class="weui-check" id="x12">
-                                    <span class="weui-icon-checked weui-icon-circle"></span>
-                                </div>
-                                <div class="weui-cell__ft">
-                                    <p>2020.04.20-21:00</p>
-                                </div>
-
-                            </label>
                         </div>
                         <div class="btns dp-flex">
-                            <div class="yesBtn" onclick="yesBtn()"> <img src="../assets/images/yes.png" alt="">
+                            <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
                             </div>
-                            <div class="noBtn"> <img src="../assets/images/no.png" alt=""></div>
+                            <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
                         </div>
                     </div>
                     <div class="sd-cont-net2">
                         <div class="sd-t color-e7">低于100枚DDB无法出售</div>
                         <div class="btns dp-flex">
-                            <div class="yesBtn" onclick="yesBtn()"> <img src="../assets/images/yes.png" alt="">
+                            <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -85,49 +54,11 @@
             </div>
         </div>
 
-        <div class="bottom-tabbar-wrapper">
-  <div class="bottom-tabbar">
-    <a href="index.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon01.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon01_lh.png" />
-      </span>
-      <p class="label">叮叮市场</p>
-    </a>
-    <a href="矿机.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon02.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon02_lh.png" />
-      </span>
-      <p class="label">DDB矿场</p>
-    </a>
-    <a href="服务.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon03.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon03_lh.png" />
-      </span>
-      <p class="label">服务快讯</p>
-    </a>
-    <a href="个人中心.html" class="bottom-tabbar__item active">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon04.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon04_lh.png" />
-      </span>
-      <p class="label">个人中心</p>
-    </a>
-    <a href="叮叮交易所.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon05.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon05_lh.png" />
-      </span>
-      <p class="label">叮叮交易所</p>
-    </a>
-  </div>
-</div>
+        {include file="layouts@dd_bottom" /}
     </div>
-    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
-<script src="../assets/js/jquery-weui.min.js"></script>
-<script src="../assets/js/lib/fastclick.js"></script>
+{/block}
+
+{block name="footer"}
 <script>
   $(function() {
     FastClick.attach(document.body);
@@ -138,7 +69,12 @@
             $('.popup').hide()
         })
         $(".sureBtn").on('click', function () {
-            $('.popup').show()
+            if ($(".weui-input").val() == "") {
+                $(".popup").hide()
+            } else {
+                $('.popup').show()
+            }
+
         })
 
         function yesBtn() {
@@ -148,18 +84,35 @@
         }
         $(".weui-input").on("change", function () {
             let inputVal = $(".weui-input").val()
-            if (inputVal > 100) {
-                $(".popup").show()
-                $(".sd-cont-net2").hide()
-                $(".sd-cont-net1").show()
-            } else {
+            if (inputVal < 100) {
                 $(".popup").show()
                 $(".sd-cont-net1").hide()
                 $(".sd-cont-net2").show()
                 return;
+            } else {
+                $(".popup").show()
+                $(".sd-cont-net2").hide()
+                $(".sd-cont-net1").show()
             }
         })
+        $(function(){
+            getTradingStageList();
+        })
+        function getTradingStageList(){
+            jq_ajax('{:url("ddkc/api.trade/getTradingStageList")}','',function (res) {
+                console.log(res);
+                // if (is_new == 1) $("#myMinerData").html('');
+                $('#TradingStageList').append(template('listTpl',res));
+                if (res.list.length > 0) {
+                    // page_2++;
+                    // loading_2 = false;
+                }else{
+                    $.toast('加载完成', "text");
+                }
+            })
+        }
     </script>
 </body>
 
 </html>
+{/block}
