@@ -1,0 +1,91 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>资讯管理</strong>
+            </li>                                  
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">标题</label>
+                    <div class="controls">
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="矿机型号不能为空" name="title" value="{$row['title']}" >
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label class="control-label">矿机描述</label>
+                    <div class="col-sm-4">
+                        <textarea class="input-max" name="content" style="width:100%; height:70px;" data-rule-maxlength="500" >{$row.content}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">矿机图片：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-count="1" data-submitname="imgs" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">
+                                    <small>建议尺寸：300*300</small>
+                                </span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue">
+                            </div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="imgs" id="shbg"  }
+                                <li class="imgbox" data-path="{$shbg}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}" title="删除" ></a>
+                                    <span class="item_box"><img src="{$shbg}"></span>
+                                    <input type="hidden" name="imgs[path][]" value="{$shbg}">
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="control-label">视频</label>
+                    <div class="controls col-sm-4">
+                        <div class="js_upload_container">
+                            <input  type="text" name="video_url" class="input-max" value="{$row.video_url}"/>
+                            <button type="button" class="btn btn-default js_file_upload"   data-uploadpath="{:url('uploadApp')}" style="position: relative; z-index: 1;">点击上传</button>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="miner_id" type="hidden" value="{$row.miner_id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"]);
+</script>
+<script type="text/javascript">
+    seajs.use("dist/plupload/file.js")
+</script>
+{/block}
+

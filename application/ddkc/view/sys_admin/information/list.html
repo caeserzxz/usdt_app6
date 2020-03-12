@@ -1,0 +1,40 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+  <th width="200">标题</th>
+  <th width="80">视频</th>
+  <th width="120">添加时间</th>
+  <th width="120">更新时间</th>
+  <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.title}</td>
+
+    <td>
+      {if condition="$vo.video_url"}
+      <a href="{$vo.video_url}" title="点击预览" class="btn btn-sm btnbtn-default" target="_blank"><i class="fa fa-search"></i>点击预览</a>
+      {else/} / {/if}
+    </td>
+    <td>{$vo.add_time|dateTpl}</td>
+    <td>{$vo.update_time|dateTpl}</td>
+    <td>  
+        <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="编辑">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+        <a href="{:url('delete',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.miner_name}" class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a>
+    </td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  
