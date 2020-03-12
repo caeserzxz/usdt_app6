@@ -5,7 +5,7 @@
             <div class="dp-flex fs28 num-box"><span>当前可售DDB数量：</span><span>{$userInfo.account.ddb_money}</span></div>
             <div class="dp-flex">
                 <span>挂售数量</span>
-                <input type=" text" class="weui-input " placeholder="可售范围{$setting.min_number}-{$setting.max_number}">
+                <input type=" text" class="weui-input " id="number" placeholder="可售范围{$setting.min_number}-{$setting.max_number}">
             </div>
             <p class="rate">交易汇率：{$setting.service_charge}%（挂售时，系统将自动扣除）</p>
             <div class="sure-btn sureBtn">确认</div>
@@ -26,7 +26,7 @@
                                 {{each list as item index}}
                                 <label class="weui-cell weui-check__label" >
                                     <div class="weui-cell__hd">
-                                        <input type="radio" class="weui-check" name="radio1"  checked="checked">
+                                        <input type="radio" class="weui-check" name="radio1" data-id="{{item.id}}"  checked="checked">
                                         <span class="weui-icon-checked weui-icon-circle"></span>
                                     </div>
                                     <div class="weui-cell__ft">
@@ -38,7 +38,7 @@
 
                         </div>
                         <div class="btns dp-flex">
-                            <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
+                            <div class="yesBtn"  onclick="sell_trade()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
                             </div>
                             <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
                         </div>
@@ -79,8 +79,8 @@
 
         function yesBtn() {
             $(".popup").hide()
-            $(".sd-cont-net1").hide()
-            $(".sd-cont-net2").hide()
+            // $(".sd-cont-net1").hide()
+            // $(".sd-cont-net2").hide()
         }
         $(".weui-input").on("change", function () {
             let inputVal = $(".weui-input").val()
@@ -110,6 +110,42 @@
                     $.toast('加载完成', "text");
                 }
             })
+        }
+
+        var isPostMsg = false;
+        function sell_trade(){
+            var id =  $("input[name='radio1']:checked").attr('data-id');
+            var number = $('#number').val();
+            if(isPInt(number)==false){
+                isPostMsg = false;
+                $.toast('请输入正确的数量', "text");
+                return false;
+            }
+
+            var arr = new Object();
+            arr.stage_id = id;
+            arr.number = number;
+            if(isPostMsg==true){
+                return false;
+            }
+            isPostMsg = true;
+            jq_ajax('{:url("ddkc/api.trade/sell_trade")}',arr,function (data) {
+                isPostMsg = false;
+                if(data.code==1){
+                    $.toast(data.msg, "text",function(){
+                        $(".popup").hide()
+                        window.location.reload();
+                        // window.location.href = data.url;
+                    });
+                }else{
+                    $.toast(data.msg, "text");
+                }
+            })
+        }
+        //正整数验证
+        function isPInt(str) {
+            var g = /^[1-9]*[1-9][0-9]*$/;
+            return g.test(str);
         }
     </script>
 </body>
