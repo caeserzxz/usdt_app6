@@ -24,6 +24,7 @@ class Setting extends AdminController
         $setting['shareAwards'] = unserialize($setting['shareAwards']);
         $setting['traderTeams'] = unserialize($setting['traderTeams']);
         $this->assign('index_banner',unserialize($setting['index_banner']));
+        $this->assign('informa_banner',unserialize($setting['informa_banner']));
         $this->assign('setting',$setting);
 		$this->assign('shippingFunction',  $this->getShippingFunction());
         return $this->fetch();
@@ -58,6 +59,11 @@ class Setting extends AdminController
         $index_banner = input('index_banner');
         $set['index_banner'] = '';
         if(is_array($index_banner['path'])) $set['index_banner'] = serialize($index_banner['path']);
+
+        # 资讯轮播图
+        $informa_banner = input('informa_banner');
+        $set['informa_banner'] = '';
+        if(is_array($informa_banner['path'])) $set['informa_banner'] = serialize($informa_banner['path']);
 
 		$res = $this->Model->editSave($set);
 		if ($res == false) return $this->error();
@@ -108,7 +114,7 @@ class Setting extends AdminController
     //-- 上传分享海报背景图片
     /*------------------------------------------------------ */
     public function uploadImg(){
-        $result = $this->_upload($_FILES['file'],'mining_index/');
+        $result = $this->_upload($_FILES['file'],'dd_images/');
         if ($result['error']) return $this->error('上传失败，请重试.');
         
         $file_url = str_replace('./','/',$result['info'][0]['savepath'].$result['info'][0]['savename']);
