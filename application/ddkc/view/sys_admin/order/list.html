@@ -1,0 +1,50 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+    <th width="80">编号</th>
+    <th width="100">类型</th>
+    <th width="150">购买用户</th>
+    <th width="150">矿机名称</th>
+    <!-- <th width="120">支付方式</th> -->
+    <th width="120">付款金额</th>
+    <th width="100">日返</th>
+    <th width="100">周期</th>
+    <th width="120">剩余天数</th>
+    <th width="120">当前状态</th>
+    <th width="180">购买时间</th>
+    <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.order_id}</td>
+    <td>{$order_type[$vo.pay_type]}</td>
+    <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$vo['user_id']])}" target="_blank">{$vo.user_id}-{$vo.user_id|userInfo}</a></td>
+
+    <td>{$vo.miner_name}</td>
+    <!-- <td>{$vo.pay_name}</td> -->
+    <td>{$vo.pay_money}</td>
+    <td>{$vo.rebate_rate} %</td>
+    <td>{$vo.scrap_days}天</td>
+    <td>{$vo.surplus_days}天</td>
+    <td>{$status[$vo.status]}</td>
+    <td>{$vo.add_date}</td>
+    <td>
+        <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="m-xs" title="查看">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+        <a href="{:url('destroy_mining',array('order_id'=>$vo['order_id']))}" data-toggle="ajaxRemove" data-msg="确定摧毁该矿机吗?" class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a>
+    </td>
+</tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

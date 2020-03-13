@@ -1,0 +1,57 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header b-b clearfix">
+    <form id="forms" class="talbe-search form-inline" method="post" action="{:url('getList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>产品订单列表</strong>
+                </li>                                  
+            </ul>
+            <div class="form-group m-l">
+                <a class="btn btn-default" data-toggle="reportrange" data-change="submit">
+                    <i class="fa fa-calendar fa-lg"></i>
+                    <small>下单时间</small>
+                    <span></span> <b class="caret"></b>
+                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                </a>
+            </div>
+            <select name="order_type" style="width: 100px;" data-toggle="select2" data-placeholder="订单类型" data-chang="submit">
+                <option value="0">订单类型</option>
+                <option value="1">矿机</option>
+                <option value="2">定存包</option>
+            </select>
+            <select name="pay_type" style="width: 100px;" data-toggle="select2" data-placeholder="支付方式" data-chang="submit">
+                <option value="0">支付方式</option>
+                <option value="1">叮叮支付</option>
+                <option value="2">DDB支付</option>
+            </select>
+            <select name="status" style="width: 100px;" data-toggle="select2" data-placeholder="当前状态" data-chang="submit">
+                <option value="0">当前状态</option>
+                <option value="1">运行中</option>
+                <option value="2">已到期</option>
+            </select>
+            <select name="key_type" style="width: 100px;" data-toggle="select2" data-placeholder="按自定义筛选" >
+                <option value="0">选择搜索</option>
+                <option value="1">用户ID</option>
+                <option value="2">产品名称</option>
+                <option value="3">剩余天数</option>
+            </select>
+            <input type="hidden" value="0" name="export">
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="请输入..." data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f">
+    <section class="panel panel-default">
+        <div class="table-responsive" id="list_box">
+            {include file="sys_admin/order/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}
