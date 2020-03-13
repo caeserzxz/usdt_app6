@@ -1,22 +1,22 @@
 {extend name="layouts@dd_head" /}
-</style>
 {block name="main" }
 <div class="page-bd DDBBag machinePage">
     <!-- 页面内容-->
     <div class="weui-tab">
         <div class="weui-navbar">
             <a class="weui-navbar__item weui-bar__item--on" href="#tab1">矿机</a>
-            <a class="weui-navbar__item" href="#tab2" onclick="getStorageList()">定存包</a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getStorageList(1)">增值包</a>
         </div>
-        <div class="weui-tab__bd">
+        <div class="weui-tab__bd body-c">
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
                 <div>
                     <div class="dp-flex top">
                         <p class="fs32">{$userInfo['role']['role_name']}</p>
+                        <!-- <span class="fs24">（基础型）</span> -->
                         <img src="__STATIC__/dingding/images/right.png" alt="">
                     </div>
                 </div>
-                <div class="lists" id="list1">
+                <div class="lists1" id="list1">
                     <script type="text/html" id="listTpl">
                         {{each list as item index}}
                         <div class="list">
@@ -44,42 +44,30 @@
                             </div>
                         </div>
                         {{/each}}
-                    </script>
+                    </script>                    
                 </div>
             </div>
-            <div id="tab2" class="weui-tab__bd-item">
-                <div>
-                    <div class="dp-flex top">
-                        <p class="fs32">{$userInfo['role']['role_name']}</p>
-                        <!-- <span class="fs24">（基础型）</span> -->
-                        <img src="__STATIC__/dingding/images/right.png" alt="">
-                    </div>
-                </div>
+            <div id="tab2" class="weui-tab__bd-item addValuePage ">
                 <div class="lists" id="list2">
                     <script type="text/html" id="listTpl2">
                         {{each list as item index}}
-                        <div class="list">
-                            <div class="list-img">
-                                {literal}
-                                {{if item.img}}
-                                    <img src="{{item.img}}">
-                                {{else}}
-                                    <img src="__STATIC__/dingding/images/pro01.png";>
-                                {{/if}}
-                                {/literal}
-                            </div>
-                            <div class="list-txt">
-                                <h3>{{item.miner_name}}</h3>
-                                <div class="list-txt-con">
-                                    <div>
-                                        <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
-                                        <p>可产DDB：{{item.total_output}}枚</p>
-                                        <p>产矿周期：{{item.scrap_days}}天</p>
-                                        <p>信用积分：{{item.credit_integral}}</p>
-                                        <p>租赁会员等级：{{item.limit_buy_role}}</p>
-                                    </div>
-                                    <div class="lease-btn">确认租赁</div>
+                        <div class="list dp-flex">
+                            {literal}
+                            {{if item.img}}
+                                <img src="{{item.img}}">
+                            {{else}}
+                                <img src="__STATIC__/dingding/images/ddb.png";>
+                            {{/if}}
+                            {/literal}
+                            <div class="con dp-flex">
+                                <div class="con-t">
+                                    <p>定存DDB：{{item.price_min}}-{{item.price_max}}</p>
+                                    <p>合约收益：{{item.rebate_rate}}%</p>
+                                    <p>定存周期：{{item.scrap_days}}天</p>
+                                    <p>信用积分：{{item.credit_integral}}</p>
+                                    <p>会员等级：{{item.limit_buy_role}}</p>
                                 </div>
+                                <div class="con-bt buyBtn" onclick="aa()">购买</div>
                             </div>
                         </div>
                         {{/each}}
@@ -89,7 +77,7 @@
         </div>
     </div>
     <!-- 弹窗 -->
-    <div class="popup">
+    <div class="popup pop01">
         <div class="popup-bgc"></div>
         <div class="popup-content">
             <div class="sd-cont-net1" style="display: block;">
@@ -100,13 +88,32 @@
                     <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
                 </div>
             </div>
+
+        </div>
+    </div>
+    <div class="popup pop02">
+        <div class="popup-bgc"></div>
+        <div class="popup-content">
+            <div class="sd-cont-net1" style="display: block;">
+                <div class="sd-t fs40 dp-flex">当前账户DDB余额：<span class="color-e7">999</span></div>
+                <label for="ne-input">
+                    <div class="wr-input fs28 dp-flex">是否消耗<input id="ne-input" type="text" class="weui-input"
+                            placeholder="100~300">购买</div>
+                </label>
+                <div class="btns dp-flex">
+                    <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
+                    </div>
+                    <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 {include file="layouts@dd_bottom" /}
 {/block}
 
-{block name="footer"}
+{block name="footer"}   
 <script>
   $(function() {
     FastClick.attach(document.body);
@@ -116,8 +123,14 @@
     function yesBtn() {
         $(".popup").hide()
     }
+    function buyBtn() {
+        $(".pop01").show()
+    }
     $(".lease-btn").on('click', function () {
-        $(".popup").show()
+        $(".pop01").show()
+    })
+    $(".buyBtn").on('click', function () {
+        $(".pop02").show()
     })
 </script>
 <script type="text/javascript">
@@ -131,6 +144,9 @@
 
     $('#tab1').infinite().on("infinite", function() {
         getMiningList();
+    });
+    $('#tab2').infinite().on("infinite", function() {
+        getStorageList();
     });
     // 获取矿机列表
     function getMiningList(){
@@ -151,9 +167,11 @@
             }
         })
     }
-    function getStorageList() {
+    function getStorageList(is_tab = 0) {
         if(loading_2) return;
         loading_2 = true;
+
+        if (is_tab == 1 && page_2 > 1) return;
 
         var arr = new Object();
         arr.p = page_2;
