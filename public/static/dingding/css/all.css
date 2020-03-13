@@ -52,10 +52,13 @@ img {
   border-color: #969594 !important;
 }
 
+.weui-grid__icon + .weui-grid__label {
+  margin-top: 0;
+}
+
 .indexPage,
 .addPackage,
-.machinePage,
-.addValuePage {
+.machinePage {
   background: url("../images/indexBgc.jpg") no-repeat;
   background-size: 100% 100%;
 }
@@ -837,14 +840,9 @@ img {
           justify-content: space-between;
 }
 
-.server .tab div {
-  width: 48%;
-  height: 1.066667rem;
-}
-
 .server .tab div img {
-  width: 100%;
-  height: 100%;
+  width: 1.066667rem;
+  height: 1.066667rem;
 }
 
 .server .weui-cell__hd {
@@ -1023,6 +1021,29 @@ img {
   height: 0.666667rem;
   line-height: 0.666667rem;
   border-radius: 0.08rem;
+}
+
+.teamcomDetail > div {
+  margin: 0 0.133333rem;
+}
+
+.teamcomDetail .detail-list {
+  border-radius: 0.133333rem;
+}
+
+.teamcomDetail .detail-list .weui-cell {
+  padding: 0.133333rem 0.266667rem;
+}
+
+.teamcomDetail .detail-list img {
+  width: 0.533333rem;
+  height: 0.533333rem;
+  margin-right: 0.133333rem;
+}
+
+.teamcomDetail .detail-list .weui-cell__bd p {
+  font-size: 0.173333rem;
+  color: #a9a8a8;
 }
 
 .moneyInfo .alipay,
@@ -1234,11 +1255,11 @@ img {
   font-size: 0.2rem;
 }
 
-.machinePage .weui-tab__bd {
+.machinePage .body-c {
   margin: 0 0.266667rem;
 }
 
-.machinePage .lists {
+.machinePage .lists1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -1247,11 +1268,11 @@ img {
   margin-top: 0.133333rem;
 }
 
-.machinePage .lists .list:nth-child(even) {
+.machinePage .lists1 .list:nth-child(even) {
   margin-right: 0.2rem;
 }
 
-.machinePage .lists .list {
+.machinePage .lists1 .list {
   width: 47%;
   padding: 0.066667rem;
   border-radius: 0.16rem;
@@ -1261,33 +1282,33 @@ img {
   margin-bottom: 0.133333rem;
 }
 
-.machinePage .lists .list-img {
+.machinePage .lists1 .list-img {
   width: 1.333333rem;
   height: 1.333333rem;
   margin: 0 auto;
 }
 
-.machinePage .lists .list-img img {
+.machinePage .lists1 .list-img img {
   width: 100%;
 }
 
-.machinePage .lists .list-txt h3 {
+.machinePage .lists1 .list-txt h3 {
   color: #fff;
   font-size: 0.186667rem;
   text-align: center;
 }
 
-.machinePage .lists .list-txt-con p {
+.machinePage .lists1 .list-txt-con p {
   opacity: 0.7;
 }
 
-.machinePage .lists .list-txt-con {
+.machinePage .lists1 .list-txt-con {
   color: #fff;
   font-size: 0.133333rem;
   margin: 0.133333rem 0.2rem;
 }
 
-.machinePage .lists .lease-btn {
+.machinePage .lists1 .lease-btn {
   width: 1.133333rem;
   height: 0.44rem;
   line-height: 0.44rem;
@@ -1349,6 +1370,17 @@ img {
   overflow: hidden;
 }
 
+.corePage .btns1 {
+  width: 0.8rem;
+  height: 0.32rem;
+  line-height: 0.32rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.12rem;
+  color: #ea8525;
+  font-size: 0.16rem;
+}
+
 .corePage .tab {
   margin: 0.133333rem 0.066667rem;
   -webkit-box-pack: justify;
@@ -1403,8 +1435,8 @@ img {
   border: 0.026667rem solid #dededd;
   border-radius: 0.666667rem;
   background-color: #131113;
-  padding: 0.066667rem 0.4rem;
-  width: 74%;
+  padding: 0.066667rem 0.266667rem;
+  width: 94%;
   margin: 0 auto;
   box-sizing: border-box;
   margin-bottom: 0.4rem;
@@ -1412,10 +1444,10 @@ img {
 
 .addValuePage .list img {
   position: absolute;
-  top: -0.12rem;
-  width: 1.333333rem;
-  height: 1.333333rem;
-  margin-left: -0.666667rem;
+  top: -0.066667rem;
+  width: 1.266667rem;
+  height: 1.266667rem;
+  margin-left: -0.4rem;
 }
 
 .addValuePage .list .con {
@@ -1442,18 +1474,34 @@ img {
 }
 
 .addValuePage .list .con-t p {
+  font-size: 0.146667rem;
   text-align: left;
   width: 50%;
 }
 
 .addValuePage .list .con-bt {
-  color: #b05c15;
-  border: 0.013333rem solid #b05c15;
-  border-radius: 0.16rem;
+  background: url("../images/ding2.png") no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
   width: 0.8rem;
   height: 0.333333rem;
   line-height: 0.333333rem;
   text-align: center;
   font-size: 0.186667rem;
   margin-top: 0.066667rem;
+  margin-right: 0.16rem;
+}
+
+.fs28 {
+  font-size: 0.186667rem;
+}
+
+.wr-input input {
+  width: 1.2rem;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  margin: 0.133333rem 0.026667rem;
+  border: 0.013333rem solid #c2c1c1;
+  border-radius: 0.066667rem;
+  text-align: center;
 }
