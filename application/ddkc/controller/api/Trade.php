@@ -114,6 +114,9 @@ class Trade extends ApiController
         if(empty($stage_info)){
             return $this->ajaxReturn(['code' => 0,'msg' => '场次不存在','url' => '']);
         }
+        if($user['account']['ddb_money']<$number){
+            return $this->ajaxReturn(['code' => 0,'msg' => 'DDB余额不足','url' => '']);
+        }
         #扣除手续费后的叮叮
         $service_charge = $number *($settints['service_charge']/100);
         $dingding = $number *(1-($settints['service_charge']/100));

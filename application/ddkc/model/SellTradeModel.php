@@ -2,6 +2,8 @@
 namespace app\ddkc\model;
 use app\BaseModel;
 use think\facade\Cache;
+use app\ddkc\model\TradingStageModel;
+use app\ddkc\model\BuyTradeModel;
 //*------------------------------------------------------ */
 //-- 会员等级表
 /*------------------------------------------------------ */
@@ -34,4 +36,23 @@ class SellTradeModel extends BaseModel
         return $data;
     }
 
+    /*------------------------------------------------------ */
+    //-- 抢购开奖
+    /*------------------------------------------------------ */
+    public function PanicBuying(){
+        $TradingStageModel = new TradingStageModel();
+        $time = time();
+        $stage_list = $TradingStageModel->getRows();
+
+        $stage_info = [];
+        foreach ($stage_list as $k=>$v){
+            $start_time = strtotime(date("Y-m-d ".$v['trade_start_time']));
+            $end_time =  strtotime(date("Y-m-d ".$v['trade_end_time']));
+
+//            if(){
+//
+//            }
+        }
+        dump($stage_list);die;
+    }
 }

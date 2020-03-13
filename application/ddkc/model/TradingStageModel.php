@@ -31,11 +31,11 @@ class TradingStageModel extends BaseModel
         if (empty($data) == false) {
             return $data;
         }
-        $rows = $this->field('*')->order('id DESC')->select()->toArray();
+        $rows = $this->field('*')->where('isputaway',1)->order('id DESC')->select()->toArray();
         foreach ($rows as $row) {
             $data[$row['id']] = $row;
         }
-        Cache::set(self::$mkey, $data, 600);
+        Cache::set(self::$mkey, $data, 86400);
         return $data;
     }
 }

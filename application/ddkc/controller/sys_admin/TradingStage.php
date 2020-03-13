@@ -1,5 +1,6 @@
 <?php
 namespace app\ddkc\controller\sys_admin;
+use think\facade\Cache;
 use app\AdminController;
 use app\mainadmin\model\SettingsModel;
 use app\ddkc\model\TradingStageModel;
@@ -51,6 +52,11 @@ class TradingStage extends AdminController
     //-- 添加后处理
     /*------------------------------------------------------ */
     public function afterAdd($data) {
+        $list = $this->Model->where('isputaway',1)->select();
+        foreach ($list as $row) {
+            $datas[$row['id']] = $row;
+        }
+        Cache::set('dd_trading_stage_list', $datas, 86400);
         $this->_Log($data['miner_id'],'矿机:'.$data['level_name']);
     }
 
@@ -77,6 +83,11 @@ class TradingStage extends AdminController
     //-- 修改后处理
     /*------------------------------------------------------ */
     public function afterEdit($data) {
+        $list = $this->Model->where('isputaway',1)->select();
+        foreach ($list as $row) {
+            $datas[$row['id']] = $row;
+        }
+        Cache::set('dd_trading_stage_list', $datas, 86400);
 //        $this->_Log($data['miner_id'],'修改矿机:'.$data['miner_name']);
     }
 

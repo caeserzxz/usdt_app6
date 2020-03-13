@@ -12,6 +12,7 @@ use think\facade\Session;
 use app\member\model\UsersModel;
 use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\SellTradeModel;
+use app\ddkc\model\TradingStageModel;
 
 class Trade  extends ClientbaseController{
     //*------------------------------------------------------ */
@@ -26,6 +27,8 @@ class Trade  extends ClientbaseController{
     //-- 叮叮市场
     /*------------------------------------------------------ */
     public function index(){
+//        $SellTradeModel = new SellTradeModel();
+//        $list = $SellTradeModel->PanicBuying();
         $this->assign('title', '叮叮市场');
         return $this->fetch('index');
     }
@@ -39,5 +42,13 @@ class Trade  extends ClientbaseController{
 
         $this->assign('title', 'DDB挂售');
         return $this->fetch('sell_ddb');
+    }
+
+    //*------------------------------------------------------ */
+    //-- 叮叮管理
+    /*------------------------------------------------------ */
+    public function dd_wallet(){
+        $this->assign('title', '叮叮管理');
+        return $this->fetch('dd_wallet');
     }
 }
