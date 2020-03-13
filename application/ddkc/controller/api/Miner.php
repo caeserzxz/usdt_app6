@@ -7,7 +7,7 @@ use app\member\model\UsersModel;
 // use app\ddkc\model\MiningProfitLog;
 use app\member\model\AccountLogModel;
 use app\ddkc\model\DdGoodsModel;
-// use app\ddkc\model\MiningOrderModel;
+use app\ddkc\model\MiningOrderModel;
 use app\mainadmin\model\SettingsModel;
 use app\distribution\model\DividendRoleModel;
 // use app\ddkc\model\MiningPaymentModel;
@@ -95,45 +95,71 @@ class Miner extends ApiController
  		$accountModel = new AccountLogModel();
 
  		$data = input('post.');
- 		$pay_type = $data['pay_type'];// 支付方式 1ZBL 2积分
  		$pay_money = $data['pay_money'];// 支付金额
 
- 		# 矿机是否存在
+		# =================================== 数据验证START ==============================
  		$where_m[] = ['miner_id','=',$data['id']];
  		$where_m[] = ['is_on_sale','=',1];
  		$mining = $this->Model->where($where_m)->find();	
-		if (!$mining) {
-			return $this->ajaxReturn(['code' => 0,'msg' => '矿机不存在或已下架','url' => url('miner/index')]);
-		}
-		# 支付金额是否大于起购价
-		if ($pay_money < $mining['price']) return $this->ajaxReturn(['code' => 0,'msg' => '支付金额不得小于起购价']);
+		if (!$mining) return $this->ajaxReturn(['code' => 0,'msg' => '产品不存在或已下架']);
 
+		# 支付金额是否在区间内
+		if ($pay_money < $mining['price_min'] || $pay_money > $mining['price_max']) return $this->ajaxReturn(['code' => 0,'msg' => '支付金额不在区间内']);
 
+		# 资金是否足够
+		$account_field = $mining['type'] == 1 ? 'balance_money' : 'ddb_money';
+		if ($user['account'][$account_field] < $pay_money) {
+			return $this->ajaxReturn(['code' => 0,'msg' => '当前可用余额不足']);
+ 		}
  		# 支付密码是否正确
- 		$payword = f_hash($data['pay_password']);
- 		if ($payword != $user['pay_password']) {
-			return $this->ajaxReturn(['code' => 0,'msg' => '支付密码错误','url' => '']);
+ 		// $payword = f_hash($data['pay_password']);
+ 		// if ($payword != $user['pay_password']) return $this->ajaxReturn(['code' => 0,'msg' => '支付密码错误']);
+ 		
+ 		# 信用积分是否足够
+ 		if ($user['account']['use_integral'] < $mining['credit_integral']) {
+			return $this->ajaxReturn(['code' => 0,'msg' => '当前信用积分不足']);
  		}
 
- 		# 是否超过限购
+ 		# 当前身份是否可购买
+ 		if ($mining['limit_user_role']) {
+ 			$role_arr = explode(",",$mining['limit_user_role']);
+ 			if (!in_array($user['role_id'], $role_arr)) return $this->ajaxReturn(['code' => 0,'msg' => '当前身份无法购买']);
+ 		} 		
+ 		
+ 		# 限购验证	
+ 		$where_o[] = ['miner_id','=',$data['id']];
+	 	$where_o[] = ['status','=',1];
+	 	$where_o[] = ['user_id','=',$user['user_id']];
+	 	$today = strtotime(date("Y-m-d"),time());
+
+		# 是否超过总限购 	
  		if ($mining['limit_buy']) {
- 			$where_o[] = ['miner_id','=',$data['id']];
-	 		$where_o[] = ['user_id','=',$user['user_id']];
-	 		$where_o[] = ['status','=',1];
 	 		$orderCount = $orderModel->where($where_o)->count('order_id');
-	 		if ($orderCount+$data['buy_num'] > $mining['limit_buy']) {
-//				return $this->ajaxReturn(['code' => 0,'msg' => '该矿机限购'.$mining['limit_buy'].'台','url' => '']);
+	 		if ($orderCount >= $mining['limit_buy']) {
+				return $this->ajaxReturn(['code' => 0,'msg' => '该产品总限购'.$mining['limit_buy']]);
 	 		}
  		}
- 		# 资金是否足够
- 		$needMoney = $data['buy_num']*$pay_money;
-		if ($user['account']['bteh_money'] < $needMoney) {
-			return $this->ajaxReturn(['code' => 0,'msg' => '当前可用矿池钱包不足']);
- 		}
+	 	$where_o[] = ['add_time','>=',$today];
 
- 		if ($needMoney <= 0) {
-			return $this->ajaxReturn(['code' => 0,'msg' => '订单金额错误']);
+ 		# 是否超过日限购
+ 		if ($mining['day_limit_buy']) {
+	 		$orderCount = $orderModel->where($where_o)->count('order_id');
+	 		if ($orderCount >= $mining['limit_buy']) {
+				return $this->ajaxReturn(['code' => 0,'msg' => '该产品当日限购'.$mining['day_limit_buy']]);
+	 		}
  		}
+ 		
+ 		# 是否超过日库存
+ 		if ($mining['stock']) {
+ 			unset($where_o[2]);
+	 		$orderCount = $orderModel->where($where_o)->count('order_id');
+	 		if ($orderCount >= $mining['limit_buy']) {
+				return $this->ajaxReturn(['code' => 0,'msg' => '该产品当日库存已售完']);
+	 		}
+ 		}
+		# ===================================== 数据验证END =============================
+		
+		# ==================================== 数据处理START ============================
  		Db::startTrans();
  		# 添加订单表
  		$orderData = [
@@ -142,38 +168,46 @@ class Miner extends ApiController
  			'miner_id'         => $mining['miner_id'],
  			'miner_name'       => $mining['miner_name'],
  			'original_img'     => $mining['imgs'],
- 			'miner_price'      => $mining['price'],
+ 			'price_min'        => $mining['price_min'],
+ 			'price_max'        => $mining['price_max'],
  			'rebate_rate'      => $mining['rebate_rate'],
  			'scrap_days'       => $mining['scrap_days'],
  			'surplus_days'     => $mining['scrap_days'],
- 			'principal_periods'=> $mining['principal_periods'],
- 			'principal_day'    => $mining['principal_day'],
- 			'miner_num'        => $data['buy_num'],
- 			'pay_type'         => $pay_type,
- 			'pay_money'        => $needMoney,
+ 			'pay_type'         => $mining['type'],
+ 			'pay_money'        => $pay_money,
  			'add_time'         => time(),
  			'update_time'      => time(),
  		];
-
  		$res1 = $orderModel->create($orderData); 		
  		if (!$res1['order_id']) {
  			Db::rollback();
-			return $this->ajaxReturn(['code' => 0,'msg' => '订单添加失败.','url' => '']);
+			return $this->ajaxReturn(['code' => 0,'msg' => '订单添加失败.']);
  		}
 
- 		# 扣除金额添加日志
- 		if ($pay_type == 1) {
- 			$cData['bteh_money']  = $needMoney * -1;
+ 		# 扣除相关金额添加日志
+		$cData[$account_field] = $pay_money * -1;
+    	$cData['by_id']        = $res1['order_id'];
+ 		if ($mining['type'] == 1) {
 	        $cData['change_desc'] = '购买矿机';
 	        $cData['change_type'] = 100;
-        	$cData['by_id']       = $res1['order_id'];
+ 		}else{
+ 			$cData['change_desc'] = '购买定存包';
+	        $cData['change_type'] = 101;
  		}
         $res2 = $accountModel->change($cData, $user['user_id'], false);        
         if ($res2 !== true) {
             Db::rollback();
-			return $this->ajaxReturn(['code' => 0,'msg' => '金额扣除失败.','url' => '']);
+			return $this->ajaxReturn(['code' => 0,'msg' => '金额扣除失败.']);
+        }
+        # 直推奖&团队奖
+        $res3 = $orderModel->extensionProfit($res1['order_id']);
+        if ($res3['code'] != 1) {
+        	Db::rollback();
+			return $this->ajaxReturn(['code' => 0,'msg' => $res3['msg']]);
         }
 		Db::commit();
+		# ===================================== 数据处理END =============================
+
 		return $this->ajaxReturn(['code' => 1,'msg' => '购买成功.','url' => url('miner/index')]);
 	}
 	/*------------------------------------------------------ */
