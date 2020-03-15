@@ -39,7 +39,7 @@
                                         <p>信用积分：{{item.credit_integral}}</p>
                                         <p>租赁会员等级：{{item.limit_buy_role}}</p>
                                     </div>
-                                    <div class="lease-btn">确认租赁</div>
+                                    <div class="lease-btn" onclick="getInfo({{item}})">确认租赁</div>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                     <p>信用积分：{{item.credit_integral}}</p>
                                     <p>会员等级：{{item.limit_buy_role}}</p>
                                 </div>
-                                <div class="con-bt buyBtn" onclick="aa()">购买</div>
+                                <div class="con-bt buyBtn" onclick="getInfo({{item}})">购买</div>
                             </div>
                         </div>
                         {{/each}}
@@ -76,38 +76,28 @@
             </div>
         </div>
     </div>
-    <!-- 弹窗 -->
-    <div class="popup pop01">
+    <div class="popup">
         <div class="popup-bgc"></div>
         <div class="popup-content">
             <div class="sd-cont-net1" style="display: block;">
-                <div class="sd-t fs40 dp-flex">是否消耗<span class="color-e7">100</span>DDB租赁</div>
-                <div class="btns dp-flex">
-                    <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
-                    </div>
-                    <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
+                <div class="sd-t fs40 dp-flex">
+                    当前账户<span id="account_type"></span>
+                    余额：<span class="color-e7" id="account"></span>
                 </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="popup pop02">
-        <div class="popup-bgc"></div>
-        <div class="popup-content">
-            <div class="sd-cont-net1" style="display: block;">
-                <div class="sd-t fs40 dp-flex">当前账户DDB余额：<span class="color-e7">999</span></div>
                 <label for="ne-input">
-                    <div class="wr-input fs28 dp-flex">是否消耗<input id="ne-input" type="text" class="weui-input"
-                            placeholder="100~300">购买</div>
+                    <div class="wr-input fs28 dp-flex">是否消耗<input id="ne-input" type="text" class="weui-input" placeholder="">购买</div>
                 </label>
                 <div class="btns dp-flex">
-                    <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
+                    <div class="yesBtn" onclick="payBtn()"> 
+                        <img src="__STATIC__/dingding/images/yes.png" alt="">
                     </div>
-                    <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
+                    <div class="noBtn" onclick="cancelBtn()"> 
+                        <img src="__STATIC__/dingding/images/no.png" alt="">
+                    </div>
                 </div>
             </div>
-
         </div>
+        <input type="hidden" id="miner_id">
     </div>
 </div>
 {include file="layouts@dd_bottom" /}
@@ -118,20 +108,6 @@
   $(function() {
     FastClick.attach(document.body);
   });
-</script>
-<script>
-    function yesBtn() {
-        $(".popup").hide()
-    }
-    function buyBtn() {
-        $(".pop01").show()
-    }
-    $(".lease-btn").on('click', function () {
-        $(".pop01").show()
-    })
-    $(".buyBtn").on('click', function () {
-        $(".pop02").show()
-    })
 </script>
 <script type="text/javascript">
     var page_1 = 1;
@@ -186,6 +162,43 @@
                 $.toast('加载完成', "text");
             }
         })
+    }
+    // 弹出购买框
+    function getInfo(info) {
+        if (info.type == 1) {
+            $("#account_type").text('叮叮');
+            $("#account").text("{$userInfo.account.balance_money}");
+        }else{
+            $("#account_type").text('DDB');
+            $("#account").text("{$userInfo.account.ddb_money}");
+        }
+        $("#ne-input").attr('placeholder',info.price_min+'~'+info.price_max);
+        $("#miner_id").val(info.miner_id);
+        $(".popup").show();
+    }
+    // 下单
+    function payBtn(){
+        var arr = new Object();
+        arr.id = $("#miner_id").val();
+        arr.pay_money = $("#ne-input").val();
+
+        if (arr.pay_money == ''){
+            $.toast('请输入支付金额.', "text");
+            return;
+        }
+        /*arr.pay_password = $("#pay_password").val();
+        if (arr.pay_password == '') {
+            $.toast('请输入支付密码.', "text");
+            return;
+        }*/
+        jq_ajax('{:url("ddkc/api.miner/buyMining")}',arr,function (res) {
+            $.toast(res.msg, "text");
+            if (res.url) window.location.href = res.url;
+        })
+    }
+    // 取消
+    function cancelBtn() {
+        $(".popup").hide();
     }
 </script>
 </body>

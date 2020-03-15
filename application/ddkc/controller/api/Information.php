@@ -23,7 +23,7 @@ class Information extends ApiController
         $this->Model = new DdInformationModel();
     }
     /*------------------------------------------------------ */
-	//-- 获取所有矿机列表
+	//-- 资讯列表
 	/*------------------------------------------------------ */
  	public function getInformationList(){
 
