@@ -31,6 +31,7 @@
                     <li ><a href="#credit_integral" data-toggle="tab">信用评分设置</a></li>
                     <li ><a href="#sell_explain" data-toggle="tab">挂售详情说明</a></li>
                     <li ><a href="#img_set" data-toggle="tab">图片设置</a></li>
+                    <li ><a href="#appeal_explain" data-toggle="tab">申诉注意事项</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -335,7 +336,18 @@
                         </div>
                     </div>
                 </div>
-
+                </div>
+                <div class="tab-pane" id="appeal_explain">
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">申诉注意事项：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                        <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                  data-kdheight="150" data-tongji="remain"
+                                  data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
+                                  name="appeal_explain" style="visibility:hidden;">{$setting.appeal_explain|raw}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

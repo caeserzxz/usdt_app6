@@ -48,6 +48,9 @@ class Trade  extends ClientbaseController{
     //-- 叮叮管理
     /*------------------------------------------------------ */
     public function dd_wallet(){
+        $this->assign('userInfo',$this->userInfo);
+        $this->assign('setting',settings());
+
         $this->assign('title', '叮叮管理');
         return $this->fetch('dd_wallet');
     }

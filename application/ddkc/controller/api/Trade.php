@@ -177,4 +177,42 @@ class Trade extends ApiController
         return $this->ajaxReturn(['code' => 1,'msg' => '挂售成功','url' => url('trade/index')]);
 
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取预约记录
+    /*------------------------------------------------------ */
+    public function getBuyList(){
+        $userModel = new UsersModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $this->order_by = 'id';
+        $this->sort_by = 'DESC';
+        $where[] =  ['buy_user_id' ,'neq' ,$this->userInfo['user_id']];
+        $viewObj = $BuyTradeModel->where($where)->order('id desc');
+        $data = $this->getPageList($BuyTradeModel,$viewObj);
+        return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取售出记录
+    /*------------------------------------------------------ */
+    public function getSellList(){
+        $userModel = new UsersModel();
+        $SellTradeModel = new SellTradeModel();
+        $this->order_by = 'id';
+        $this->sort_by = 'DESC';
+        $type = input('type');
+        if($type==1){
+        #未出售
+            $where[] =  ['sell_status' ,'eq' ,0];
+        }else if($type==2){
+        #出售中
+            $where[] =  ['sell_status' ,'in' ,[1,2,3]];
+        }else if($type==3){
+        #交易记录
+            $where[] =  ['sell_status' ,'in' ,[4,5]];
+        }
+        $where[] =  ['sell_user_id' ,'neq' ,$this->userInfo['user_id']];
+        $viewObj = $SellTradeModel->where($where)->order('id desc');
+        $data = $this->getPageList($SellTradeModel,$viewObj);
+        return $this->ajaxReturn($data);
+    }
 }

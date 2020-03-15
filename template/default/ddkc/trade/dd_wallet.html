@@ -1,44 +1,37 @@
-<!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+{extend name="layouts@dd_head" /}
+{block name="main" }
+<style>
+    .rushto {
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        background: url('__STATIC__/dingding/images/index05.png');
+        background-size: 100% 100%;
+    }
 
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
-<link rel="stylesheet" href="../assets/css/zpui.css"/>
-<link rel="stylesheet" href="../assets/css/all.css"/>
-<script src="../assets/js/page.js"></script>
-
-    <title>叮叮管理 </title>
-</head>
-
-<body>
-    <div class="page">
-        <div class="page-hd">
-            <div class="header bor-1px-b">
-    <div class="header-left">
-        <a href="javascript:history.go(-1)" class="left-arrow"></a>
-    </div>
-    <div class="header-title">叮叮管理 </div>
-    <div class="header-right">
-        <a href="#"></a>
-    </div>
-</div>
-        </div>
-
+    .ti {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+</style>
         <div class="page-bd DDB DDBBag dingding">
             <!-- 页面内容-->
             <div class="weui-tab">
                 <div class="weui-navbar">
-                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1" onclick="getSellList()">
                         待出售
                     </a>
-                    <a class="weui-navbar__item" href="#tab2">
+                    <a class="weui-navbar__item" href="#tab2" onclick="getSellList2()">
                         出售中
                     </a>
-                    <a class="weui-navbar__item" href="#tab3">
+                    <a class="weui-navbar__item" href="#tab3" onclick="getSellList3()">
                         交易记录
                     </a>
-                    <a class="weui-navbar__item" href="#tab4">
+                    <a class="weui-navbar__item" href="#tab4" onclick="getBuyList();">
                         预约记录
                     </a>
                     <a class="weui-navbar__item" href="#tab5">
@@ -47,11 +40,13 @@
                 </div>
                 <div class="weui-tab__bd">
                     <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-                        <div>
+<!--                        <div>-->
+                        <script type="text/html" id="listTpl1">
+                            {{each list as item index}}
                             <div class="weui-cells">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index13.png" alt=""></p>
+                                        <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
@@ -64,62 +59,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index14.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
-                                        </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer1">01:52:23</span></p>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index15.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
-                                        </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer2">01:52:23</span></p>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index16.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
-                                        </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer3">01:52:23</span></p>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!--                        </div>-->
+                            {{/each}}
+                        </script>
                     </div>
                     <div id="tab2" class="weui-tab__bd-item">
-                        <div>
+                        <script type="text/html" id="listTpl2">
+                            {{each list as item index}}
+<!--                        <div>-->
                             <div class="weui-cells">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index13.png" alt=""></p>
+                                        <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
@@ -132,35 +84,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index14.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
-                                        </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer5">01:52:23</span></p>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!--                        </div>-->
+                            {{/each}}
+                        </script>
                     </div>
                     <div id="tab3" class="weui-tab__bd-item">
-                        <div>
+                        <script type="text/html" id="listTpl3">
+                            {{each list as item index}}
+<!--                        <div>-->
 
                             <div class="weui-cells">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index14.png" alt=""></p>
+                                        <p><img src="__STATIC__/dingding/images/index14.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
-                                            <p>交易金额：240</p>
+                                            <p>交易金额：{{item.sell_number}}</p>
                                             <p>抢购方：13412341234</p>
                                         </div>
                                         <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
@@ -169,43 +109,39 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+<!--                        </div>-->
+                            {{/each}}
+                        </script>
                     </div>
-                    <div id="tab4" class="weui-tab__bd-item">
-                        <div>
+                    <div id="tab4" class="weui-tab__bd-item" >
+<!--                        <div >-->
+                        <script type="text/html" id="listTpl4">
+                            {{each list as item index}}
                             <div class="weui-cells">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index13.png" alt=""></p>
+                                        <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
                                             <p>交易金额：240</p>
                                             <p>抢购方：13412341234</p>
                                         </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer7">01:52:23</span></p>
+<!--                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span-->
+<!--                                                class="timer7">01:52:23</span></p>-->
+                                        <div class="ti">
+                                            <p class="times dp-flex" style="justify-content: flex-start;">
+                                                交易时间剩余：<span class="timer7">01:52:23</span>
+                                            </p>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="../assets/images/index14.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
+                                            <div class="rushto">抢购</div>
                                         </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer8">01:52:23</span></p>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            {{/each}}
+                        </script>
+<!--                        </div>-->
                     </div>
                     <div id="tab5" class="weui-tab__bd-item ">
                         <div class="tab5-text">
@@ -217,7 +153,7 @@
                             <div class="sale-details">
                                 <div class="sd-title">申诉注意事项</div>
                                 <div class="sd-cont">
-
+                                    {$setting.appeal_explain|raw|html_entity_decode}
                                 </div>
                             </div>
                         </div>
@@ -226,49 +162,9 @@
             </div>
 
         </div>
-        <div class="bottom-tabbar-wrapper">
-  <div class="bottom-tabbar">
-    <a href="index.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon01.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon01_lh.png" />
-      </span>
-      <p class="label">叮叮市场</p>
-    </a>
-    <a href="矿机.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon02.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon02_lh.png" />
-      </span>
-      <p class="label">DDB矿场</p>
-    </a>
-    <a href="服务.html" class="bottom-tabbar__item ">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon03.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon03_lh.png" />
-      </span>
-      <p class="label">服务快讯</p>
-    </a>
-    <a href="个人中心.html" class="bottom-tabbar__item active">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon04.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon04_lh.png" />
-      </span>
-      <p class="label">个人中心</p>
-    </a>
-    <a href="叮叮交易所.html" class="bottom-tabbar__item @@item5">
-      <span class="icon">
-        <img src="../assets/images/bottom_icon05.png" />
-        <img class="lhimg" src="../assets/images/bottom_icon05_lh.png" />
-      </span>
-      <p class="label">叮叮交易所</p>
-    </a>
-  </div>
-</div>
-    </div>
-    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
-<script src="../assets/js/jquery-weui.min.js"></script>
-<script src="../assets/js/lib/fastclick.js"></script>
+{/block}
+
+{block name="footer"}
 <script>
   $(function() {
     FastClick.attach(document.body);
@@ -304,6 +200,106 @@
 
 
     </script>
+<script type="text/javascript">
+    var page_1 = 1;
+    var page_2 = 1;
+    var page_3 = 1;
+    var page_4 = 1;
+    var loading_1 = false;
+    var loading_2 = false;
+    var loading_3 = false;
+    var loading_4 = false;
+    $(function() {
+        // console.log(22);
+        // getSellList();
+    });
+    $(function() {
+        getSellList1();
+    });
+    $('#tab1').infinite().on("infinite", function() {
+        getSellList1();
+    });
+    $('#tab2').infinite().on("infinite", function() {
+        getSellList2();
+    });
+
+    $('#tab3').infinite().on("infinite", function() {
+        getSellList3();
+    });
+    $('#tab4').infinite().on("infinite", function() {
+        getBuyList();
+    });
+    //获取待出售记录
+    function getSellList1(){
+        if(loading_1) return;
+        loading_1 = true;
+
+        var arr = new Object();
+        arr.p = page_1;
+        jq_ajax('{:url("ddkc/api.trade/getSellList")}',arr,function (res) {
+            if (res.list.length > 0) {
+                $('#tab1').append(template('listTpl1',res));
+                page_1++;
+                loading_1 = false;
+            }else{
+                $.toast('加载完成',"text");
+            }
+        })
+    }
+    //获取出售中记录
+    function getSellList2(){
+        if(loading_2) return;
+        loading_2 = true;
+
+        var arr = new Object();
+        arr.p = page_2;
+        arr.type = 2;
+        jq_ajax('{:url("ddkc/api.trade/getSellList")}',arr,function (res) {
+            if (res.list.length > 0) {
+                $('#tab2').append(template('listTpl2',res));
+                page_2++;
+                loading_2 = false;
+            }else{
+                $.toast('加载完成',"text");
+            }
+        })
+    }
+    //获取交易记录
+    function getSellList3(){
+        if(loading_3) return;
+        loading_3 = true;
+        var arr = new Object();
+        arr.p = page_3;
+        arr.type = 3;
+        jq_ajax('{:url("ddkc/api.trade/getSellList")}',arr,function (res) {
+            if (res.list.length > 0) {
+                $('#tab3').append(template('listTpl3',res));
+                page_3++;
+                loading_3 = false;
+            }else{
+                $.toast('加载完成',"text");
+            }
+        })
+    }
+    //获取预约记录
+    function getBuyList(){
+        if(loading_4) return;
+        loading_4 = true;
+
+        var arr = new Object();
+        arr.p = page_4;
+        jq_ajax('{:url("ddkc/api.trade/getBuyList")}',arr,function (res) {
+            if (res.list.length > 0) {
+                $('#tab4').append(template('listTpl4',res));
+                page_4++;
+                loading_4 = false;
+            }else{
+                $.toast('加载完成',"text");
+            }
+        })
+    }
+</script>
 </body>
 
 </html>
+{/block}
