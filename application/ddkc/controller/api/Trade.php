@@ -8,6 +8,7 @@ use app\member\model\AccountLogModel;
 use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\SellTradeModel;
 use app\ddkc\model\TradingStageModel;
+use think\cache\driver\Redis;
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
 /*------------------------------------------------------ */
@@ -215,4 +216,21 @@ class Trade extends ApiController
         $data = $this->getPageList($SellTradeModel,$viewObj);
         return $this->ajaxReturn($data);
     }
+
+    /*------------------------------------------------------ */
+    //-- 抢购
+    /*------------------------------------------------------ */
+    public function PanicBuying(){
+        $userModel = new UsersModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $redis = new Redis();
+        $id = input('id');
+        #将抢购id存入队列
+        $res = $redis->rPush('buyHandle',$id);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('trade/dd_wallet')]);
+        }
+    }
+
+
 }

@@ -7,7 +7,6 @@ namespace app\ddkc\controller;
 use app\ClientbaseController;
 
 use app\member\model\UsersModel;
-
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */

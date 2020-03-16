@@ -134,7 +134,7 @@
                                                 交易时间剩余：<span class="timer7">01:52:23</span>
                                             </p>
 
-                                            <div class="rushto">抢购</div>
+                                            <div class="rushto" onclick="PanicBuying({{item.id}});">抢购</div>
                                         </div>
                                     </div>
                                 </div>
@@ -295,6 +295,28 @@
                 loading_4 = false;
             }else{
                 $.toast('加载完成',"text");
+            }
+        })
+    }
+
+    //抢购
+    var isPostMsg = false;
+    function PanicBuying(id){
+        var arr = new Object();
+        arr.id = id;
+        if(isPostMsg==true){
+            return false;
+        }
+        isPostMsg = true;
+        jq_ajax('{:url("ddkc/api.trade/PanicBuying")}',arr,function (data) {
+            isPostMsg = false;
+            if(data.code==1){
+                $.toast(data.msg, "text",function(){
+                    window.location.reload();
+                    // window.location.href = data.url;
+                });
+            }else{
+                $.toast(data.msg, "text");
             }
         })
     }
