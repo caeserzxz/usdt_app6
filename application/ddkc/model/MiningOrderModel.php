@@ -241,7 +241,7 @@ class MiningOrderModel extends BaseModel
         $data['by_id']     = $order_id;
         $data['change_desc'] = '推广收益';
         $data['change_type'] = 102;
-        for ($i=1; $i <= 2; $i++) {
+        for ($i=1; $i <= 3; $i++) {
             // 上级信息
             $leaderInfo = $userModel->info($pid,'',false);
             if (!$leaderInfo) continue;
