@@ -175,6 +175,7 @@ class Miner extends ApiController
  			'surplus_days'     => $mining['scrap_days'],
  			'pay_type'         => $mining['type'],
  			'pay_money'        => $pay_money,
+ 			'type'             => $mining['type'],
  			'add_time'         => time(),
  			'update_time'      => time(),
  		];
@@ -215,29 +216,38 @@ class Miner extends ApiController
 	/*------------------------------------------------------ */
 	public function getMyMiner(){
  		$orderModel = new MiningOrderModel();
-        $profitModel = new MiningProfitLog();
+        // $profitModel = new MiningProfitLog();
 
  		$post = input('post.');
  		$page = 10;
 
  		$where[] = ['user_id','=',$this->userInfo['user_id']];
- 		if ($post['status'] == 1) {
- 			$where[] = ['status' ,'=',1];
- 		}elseif ($post['status'] == 2) {
- 			$where[] = ['status' ,'<>',1];
- 		}
+ 		$where[] = ['type','=',$post['type']];
+ 		if ($post['status']) $where[] = ['status' ,'=',$post['status']];
+ 		
 		$data['list'] = $orderModel
 			->where($where)
 			->order('order_id DESC')
 			->limit($post['p']*$page,$page)
 			->select();
+
 		if (count($data['list']) > 0) {
         	foreach ($data['list'] as $key => $value) {
         		$imgs = unserialize($value['original_img']);
         		$data['list'][$key]['img'] = $imgs[0];
-        		$data['list'][$key]['add_time'] = date("Y-m-d",$value['add_time']);
+
+        		// 到期收益
+        		$data['list'][$key]['total_profit'] = round($value['rebate_rate'] * $value['scrap_days'],2);
+        		
+        		// 合约期限
+        		$expire_data = $value['add_time'] + ($value['scrap_days']*86400+86400);
+        		$data['list'][$key]['expire_data'] = date("Y.m.d",$expire_data);
+
+        		$data['list'][$key]['img'] = $imgs[0];
+        		$data['list'][$key]['add_time'] = date("Y.m.d",$value['add_time']);
         	}
         }
+
 		return $this->ajaxReturn($data);
 	}
 	/*------------------------------------------------------ */

@@ -1,0 +1,144 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+<div class="page-bd DDBBag">
+    <!-- 页面内容-->
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                待收益
+            </a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getMiningList2(1)">
+                租赁记录
+            </a>
+        </div>
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                <div id="list1">
+                    <script type="text/html" id="listTpl">
+                        {{each list as item index}}
+                            <div class="weui-cells">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd">
+                                        <p>
+                                            {literal}
+                                            {{if item.img}}
+                                                <img src="{{item.img}}">
+                                            {{else}}
+                                                <img src="__STATIC__/dingding/images/pro01.png";>
+                                            {{/if}}
+                                            {/literal}
+                                        </p>
+                                    </div>
+                                    <div class="weui-cell__bd">
+                                        <p>租赁金额：{{item.pay_money}}</p>
+                                        <p>购买时间：{{item.add_time}}</p>
+                                        <p>增收DDB：{{item.rebate_rate}}%</p>
+                                        <p>租赁周期：{{item.scrap_days}}天</p>
+                                        <p>到期收益：{{item.total_profit}}</p>
+                                        <p>合约期限：{{item.expire_data}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+                <div id="list2">
+                    <script type="text/html" id="listTpl2">
+                        {{each list as item index}}
+                            <div class="weui-cells">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd">
+                                        <p>
+                                            {literal}
+                                            {{if item.img}}
+                                                <img src="{{item.img}}">
+                                            {{else}}
+                                                <img src="__STATIC__/dingding/images/pro01.png";>
+                                            {{/if}}
+                                            {/literal}
+                                        </p>
+                                    </div>
+                                    <div class="weui-cell__bd">
+                                        <p>租赁金额：{{item.pay_money}}</p>
+                                        <p>购买时间：{{item.add_time}}</p>
+                                        <p>增收DDB：{{item.rebate_rate}}%</p>
+                                        <p>租赁周期：{{item.scrap_days}}天</p>
+                                        <p>到期收益：{{item.total_profit}}</p>
+                                        <p>合约期限：{{item.expire_data}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script type="text/javascript">
+    var page_1 = 0;
+    var page_2 = 0;
+    var loading_1 = false; 
+    var loading_2 = false;
+    $(function () {
+        getMiningList();
+    })
+
+    $('#tab1').infinite().on("infinite", function() {
+        getMiningList();
+    });
+    $('#tab2').infinite().on("infinite", function() {
+        getMiningList2();
+    });
+    // 获取矿机列表
+    function getMiningList(){
+        if(loading_1) return;
+        loading_1 = true;
+
+        var arr = new Object();
+        arr.p = page_1
+        arr.type = 1;
+        arr.status = 1;
+        jq_ajax('{:url("ddkc/api.miner/getMyMiner")}',arr,function (res) { 
+            $('#list1').append(template("listTpl",res));
+            if (res.list.length > 0) {
+                page_1++;
+                loading_1 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+    function getMiningList2(is_tab = 0) {
+        if(loading_2) return;
+        loading_2 = true;
+
+        if (is_tab == 1 && page_2 >= 1) return;
+
+        var arr = new Object();
+        arr.p = page_2;
+        arr.type = 1;
+
+        jq_ajax('{:url("ddkc/api.miner/getMyMiner")}',arr,function (res) {        
+            $('#list2').append(template('listTpl2',res));
+            if (res.list.length > 0) {
+                page_2++;
+                loading_2 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+</script>
+</body>
+</html>
+{/block}

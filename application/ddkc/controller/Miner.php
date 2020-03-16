@@ -45,4 +45,18 @@ class Miner  extends ClientbaseController{
         $this->assign('title', '我的战队');
 		return $this->fetch();
 	}
+	/*------------------------------------------------------ */
+	//-- 矿机列表
+	/*------------------------------------------------------ */
+	public function miner_list(){
+        $this->assign('title', '矿机管理');
+		return $this->fetch();
+	}
+	/*------------------------------------------------------ */
+	//-- 增值包列表
+	/*------------------------------------------------------ */
+	public function increment_list(){
+        $this->assign('title', '增值包管理');
+		return $this->fetch();
+	}
 }?>
