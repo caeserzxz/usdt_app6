@@ -216,8 +216,6 @@ class Miner extends ApiController
 	/*------------------------------------------------------ */
 	public function getMyMiner(){
  		$orderModel = new MiningOrderModel();
-        // $profitModel = new MiningProfitLog();
-
  		$post = input('post.');
  		$page = 10;
 
@@ -237,7 +235,7 @@ class Miner extends ApiController
         		$data['list'][$key]['img'] = $imgs[0];
 
         		// 到期收益
-        		$data['list'][$key]['total_profit'] = round($value['rebate_rate'] * $value['scrap_days'],2);
+        		$data['list'][$key]['total_profit'] = round($value['pay_money'] + ($value['pay_money'] * $value['rebate_rate'] / 100 * $value['scrap_days']),2);
         		
         		// 合约期限
         		$expire_data = $value['add_time'] + ($value['scrap_days']*86400+86400);

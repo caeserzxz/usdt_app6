@@ -127,7 +127,7 @@
         var arr = new Object();
         arr.p = page_2;
         arr.type = 2;
-        arr.status = 2;
+        arr.status = 3;
 
         jq_ajax('{:url("ddkc/api.miner/getMyMiner")}',arr,function (res) {        
             $('#list2').append(template('listTpl2',res));
