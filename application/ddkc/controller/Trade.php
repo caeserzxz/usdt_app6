@@ -13,6 +13,7 @@ use app\member\model\UsersModel;
 use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\SellTradeModel;
 use app\ddkc\model\TradingStageModel;
+use app\ddkc\model\SlideModel;
 
 class Trade  extends ClientbaseController{
     //*------------------------------------------------------ */
@@ -27,8 +28,11 @@ class Trade  extends ClientbaseController{
     //-- 叮叮市场
     /*------------------------------------------------------ */
     public function index(){
-//        $SellTradeModel = new SellTradeModel();
-//        $list = $SellTradeModel->PanicBuying();
+        $SlideModel = new SlideModel();
+        $slide_where [] = ['status','eq',1];
+        $slide_where [] = ['img_type','eq',1];
+        $slideList = $SlideModel->where($slide_where)->order('sort_order DESC')->select();
+        $this->assign('slideList',$slideList);
         $this->assign('title', '叮叮市场');
         return $this->fetch('index');
     }

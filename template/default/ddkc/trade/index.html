@@ -18,11 +18,20 @@
             <div>
                 <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'
                     data-autoplay="1000">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>
-                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>
-                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>
-                    </div>
+<!--                    <div class="swiper-wrapper">-->
+<!--                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>-->
+<!--                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>-->
+<!--                        <div class="swiper-slide"><img src="__STATIC__/dingding//images/swiper01.png" alt=""></div>-->
+<!--                    </div>-->
+                            <div class="swiper-wrapper">
+                                {volist name='slideList' id='vol'}
+                                    {if condition="$vol.data neq ''"}
+                                        <div class="swiper-slide"><img src="{$vol.imgurl}" alt="" onclick="link('{$vol.data}');"></div>
+                                    {else /}
+                                        <div class="swiper-slide"><img src="{$vol.imgurl}" alt=""></div>
+                                    {/if}
+                                {/volist}
+                            </div>
                     <div class="swiper-pagination"></div>
                 </div>
                 <div class="lists"  id="TradingStageList">
@@ -113,7 +122,9 @@
         function closePop() {
             $('.popup').hide()
         }
-
+        function link(url){
+            window.location.href = url;
+        }
     </script>
     <script>
        $(function(){
