@@ -7,13 +7,27 @@
             data-autoplay="1000">
             <div class="swiper-wrapper">
                 {volist name="banner" id="rows" }
-                <div class="swiper-slide"><img src="{$rows}" alt=""></div>
+                <div class="swiper-slide">
+                    <a href="{$rows.data}">
+                        <img src="{$rows.imgurl}" alt="">
+                    </a>
+                </div>
                 {/volist}
             </div>
             <div class="swiper-pagination"></div>
         </div>
         <div class="tab dp-flex">
             <div><img src="__STATIC__/dingding/images/server01.png" alt=""></div>
+            <div>
+                <a href="{:url('shop/article/newUserCourse')}">
+                    <img src="__STATIC__/dingding/images/server02.png" alt="">
+                </a>
+            </div>
+            <div>
+                <a href="{:url('shop/article/newsFlash')}">
+                    <img src="__STATIC__/dingding/images/server03.png" alt="">
+                </a>
+            </div>
             <div>
                 <a href="{:url('member/message/index')}">
                     <img src="__STATIC__/dingding/images/server02.png" alt="">

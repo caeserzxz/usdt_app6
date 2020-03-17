@@ -138,6 +138,30 @@ class Article extends ClientbaseController
         $this->assign('info', $info['article']);
         return $this->fetch('info');
     }
+    /*------------------------------------------------------ */
+    //-- 新手教程
+    /*------------------------------------------------------ */
+    public function newUserCourse()
+    {
+
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('new_user_course'));
+
+        $this->assign('title', '新手教程');
+        $this->assign('content', $content);
+        return $this->fetch('register');
+    }
+    /*------------------------------------------------------ */
+    //-- 叮叮快讯
+    /*------------------------------------------------------ */
+    public function newsFlash()
+    {
+
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('news_flash'));
+
+        $this->assign('title', '叮叮快讯');
+        $this->assign('content', $content);
+        return $this->fetch('register');
+    }
 
 
 }

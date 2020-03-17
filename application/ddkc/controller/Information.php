@@ -6,20 +6,20 @@
 namespace app\ddkc\controller;
 use app\ClientbaseController;
 use app\ddkc\model\DdInformationModel;
-
-
+use app\ddkc\model\SlideModel;
 
 class Information extends ClientbaseController{	
 	/*------------------------------------------------------ */
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
-		$setting = settings();
- 		$banner = unserialize($setting['informa_banner']);
+ 		$SlideModel = new SlideModel();
+        $slide_where [] = ['status','eq',1];
+        $slide_where [] = ['img_type','eq',2];
+        $banner = $SlideModel->where($slide_where)->order('sort_order DESC')->select();
 
+        $this->assign('banner',$banner);
         $this->assign('not_top_nav', true);
-        $this->assign('banner', $banner);
-
 		return $this->fetch('index');
 	}
 	

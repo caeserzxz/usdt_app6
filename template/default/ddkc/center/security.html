@@ -1,0 +1,75 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<style>
+    .weui-cell {
+        height: .426667rem;
+    }
+</style>
+{/block}
+{block name="main" }
+<div class="page-bd selCon teamcomDetail">
+    <!-- 页面内容-->
+    <div>
+
+        <div class="weui-cells detail-list">
+            <a class="weui-cell weui-cell_access" href="{:url('ddkc/center/editpwd')}">
+                <div class="weui-cell__bd">
+                    <p>修改登录密码</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+        </div>
+        <div class="weui-cells detail-list">
+            <a class="weui-cell weui-cell_access" href="{:url('ddkc/center/editpaypwd')}">
+                <div class="weui-cell__bd">
+                    <p>修改支付密码</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+        </div>
+        <div class="weui-cells detail-list">
+            <a class="weui-cell weui-cell_access outBtn" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p style="text-align: center;">退出登录</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="popup pop01">
+        <div class="popup-bgc"></div>
+        <div class="popup-content">
+            <div class="sd-cont-net1" style="display: block;">
+                <div class="sd-t fs40 dp-flex">是否退出当前账户</div>
+                <div class="btns dp-flex">
+                    <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
+                    </div>
+                    <div class="noBtn"> <img src="__STATIC__/dingding/images/no.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    function yesBtn() {
+        window.location.href = "{:url('member/center/logout')}";
+    }
+    $(".outBtn").on('click', function () {
+        $(".pop01").show()
+    })
+    $(".noBtn").on('click', function () {
+        $(".popup").hide()
+    })
+</script>
+</body>
+</html>
+{/block}

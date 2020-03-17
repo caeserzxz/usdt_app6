@@ -9,6 +9,9 @@ use app\member\model\UsersModel;
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
+use app\member\model\UsersSignModel;
+use app\member\model\AccountLogModel;
+
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */
@@ -63,7 +66,8 @@ class Center  extends ClientbaseController{
     //-- 修改密码
     /*------------------------------------------------------ */
     public function editPwd(){
-        $this->assign('title', '修改密码');
+        $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
+        $this->assign('title', '修改登录密码');
         return $this->fetch('edit_pwd');
     }
     /*------------------------------------------------------ */
@@ -124,7 +128,7 @@ class Center  extends ClientbaseController{
         $roleModel = new DividendRoleModel();
         $userBindModel = new UsersBindModel();
         $userModel = new UsersModel();
-
+        $accountLogModel = new AccountLogModel();
 
         # 各等级直推人数统计
         $allRole = $roleModel->field('role_id,role_name')->where(1)->select();
@@ -139,13 +143,41 @@ class Center  extends ClientbaseController{
         $where[] = ['level','<=',3];
         $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
         $textInfo = ['其他','一','二','三'];
-        
+
+        # 直链收益
+        $award['extension'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 102])->sum('ddb_money');
+        # 联代收益
+        $award['team'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 103])->sum('ddb_money');
+
+        $this->assign('award', $award);
         $this->assign('roleInfo', $allRole);
         $this->assign('threeInfo', $threeInfo);
         $this->assign('textInfo', $textInfo);
 
-
         $this->assign('title', '团队管理');
         return $this->fetch('my_team');
     }
+    /*------------------------------------------------------ */
+    //-- 签到
+    /*------------------------------------------------------ */
+    public function sign(){
+        $year = input('year',date('Y')) * 1;
+        $month = input('month',date('n')) * 1;
+
+        $data = (new UsersSignModel)->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
+        $data['nowtime'] = time();
+        $data['days_time'] = json_encode(explode(',',$data['days_time']));
+
+        $this->assign('data', $data);
+        $this->assign('title', '签到送积分');
+
+        return $this->fetch('sign');
+    }
+    /*------------------------------------------------------ */
+    //-- 安全中心
+    /*------------------------------------------------------ */
+    public function security(){
+        $this->assign('title', '安全中心');
+        return $this->fetch();
+    }    
 }?>

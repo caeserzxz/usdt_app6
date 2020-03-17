@@ -1,0 +1,165 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<style>
+    .weui-cells {
+        background: none;
+        margin: 20px;
+    }
+
+    .weui-cell {
+        height: .426667rem;
+    }
+
+    .weui-label {
+        width: 1.6rem;
+        color: #54504f;
+    }
+
+    .weui-input {
+        border: 1px solid #d6d5d5;
+        background: #fff;
+        height: .453333rem;
+        padding: 0 .133333rem;
+        border-radius: .106667rem;
+        line-height: .453333rem;
+        box-sizing: border-box;
+    }
+
+    .codeBox span {
+        width: .853333rem;
+        border-radius: .32rem;
+        text-align: center;
+        color: #fff;
+        background-color: #f1a449;
+        margin-left: .133333rem;
+        padding: .053333rem .106667rem
+    }
+
+    .background {
+        width: 3.226667rem;
+        margin-top: .4rem;
+    }
+</style>
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">旧支付密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="password" id="old_password">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">新支付密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="password" id="password">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">再次输入新密码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="password" id="cfm_password">
+            </div>
+        </div>
+    </div>
+    {if condition="$sms_fun['edit_pay_pwd']==1"}
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">输入验证码</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" id="code">
+            </div>
+            <div class="weui-cell__ft">
+                <div class="codeBox">
+                    <span class="color_r fs24 fw_b getCode" onclick="codeButton()">获取验证码</span>
+                    <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
+    <p clss="fs28" style="text-align: center;color:#898786">为了您的账户安全，请谨慎修改</p>
+    <div class="wrap">
+        <div class=" background editpwd" style="margin-top: .133333rem">确认</div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script type="text/javascript">
+    $('.editpwd').on('click',function(){
+        var arr = new Object();
+        arr.old_password = $('#old_password').val();
+        arr.password = $('#password').val();
+        arr.cfm_password = $('#cfm_password').val();
+        if ($('#code').length > 0){
+            arr.code = $('#code').val();
+            if (arr.code == ''){
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+        if (arr.old_password == '' ){
+            _alert('请输入旧密码.');
+            return false;
+        }
+        if (arr.password == '' ){
+            _alert('请输入新支付密码.');
+            return false;
+        }
+        if (arr.password.length < 6){
+            _alert('新支付密码长度不能小于六位.');
+            return false;
+        }
+        if (arr.password !== arr.cfm_password){
+            _alert('两次输入的密码不一致.');
+            return false;   
+        }        
+        jq_ajax('{:url("member/api.users/editPayPwd")}',arr,function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg,'{:url("ddkc/center/index")}');
+        })
+    })
+    function codeButton(){
+        var arr = new Object();
+        arr.type = 'edit_pay_pwd';
+        jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        })
+    }
+    function _alert(msg,url) {
+        $.toast.prototype.defaults.duration = 800;
+        $.toast(msg, "text");
+        if (url) {
+            window.location.href = url;
+        }
+    }
+</script>
+</body>
+</html>
+{/block}

@@ -51,6 +51,7 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function editPwd()
     {
+        $this->checkCode('edit_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
         $res = $this->Model->editPwd(input(), $this);
         if ($res !== true) return $this->error($res);
         return $this->success('密码已重置，请用新密码登陆.');
@@ -61,11 +62,19 @@ class Users extends ApiController
     public function editPayPwd()
     {
         $pay_password = input('password','','trim');
-        if (empty($pay_password))  return $this->error('请输入新的支付密码.');
+        $old_password = input('old_password','','trim');
+
+        if (empty($pay_password)) return $this->error('请输入新的支付密码.');
+        if (empty($old_password)) return $this->error('请输入旧的支付密码.');
+
         $this->checkCode('edit_pay_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
         $data['pay_password'] = f_hash($pay_password);
         if ($data['pay_password'] == $this->userInfo['pay_password']){
             return $this->error('新密码与旧密码一致，无需修改.');
+        }
+        $old_password = f_hash($old_password);
+        if ($this->userInfo['pay_password'] && ($old_password != $this->userInfo['pay_password'])){
+            return $this->error('旧密码错误.');
         }
         $res = $this->Model->where('user_id', $this->userInfo['user_id'])->update($data);
         if ($res < 1) {
@@ -616,6 +625,8 @@ class Users extends ApiController
         $month = input('month',date('n')) * 1;
 
         $data = (new UsersSignModel)->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
+        $data['days_time'] = explode(',',$data['days_time']);
+        $data['nowtime'] = time();
         if(!$data){
             $data['days'] = '';
         }
@@ -632,6 +643,8 @@ class Users extends ApiController
         $year = date('Y');
         $month = date('n');
         $day = date('d');
+        $time = time();
+
         $sign_in = settings('sign_in');
         if ($sign_in == 0){
             return $this->error('签到功能未开启.');
@@ -650,6 +663,8 @@ class Users extends ApiController
         Db::startTrans();
         if(empty($data) == false){
             $dates = explode(',',$data['days']);
+            $times = explode(',',$data['days_time']);
+
             if(in_array($day, $dates)){
                 Db::rollback();
                 Cache::rm($mkey);
@@ -670,20 +685,24 @@ class Users extends ApiController
                 $logs .= '0';
             }
             $dates[] = $day;
+            $times[] = $time;
+
             //本月数据已有,直接更新
-            $upData = ['days'=>join(',',$dates),'constant_num'=>$constant_num,'last_time'=>time(),'integral'=>$sign_integral,'logs'=>$logs];
+            $upData = ['days'=>join(',',$dates),'constant_num'=>$constant_num,'last_time'=>$time,'integral'=>$sign_integral,'logs'=>$logs,'days_time'=>join(',',$times)];
+
             $res = $UsersSignModel->where(['sign_id'=>$data['sign_id'],'last_time'=>$data['last_time']])->update($upData);
         }else{
             //本月数据没有,进行插入
             $inData = [
-                'user_id' => $user_id,
+                'user_id'      => $user_id,
                 'constant_num' => 1,
-                'year'    => $year,
-                'month'   => $month,
-                'days'    => $day,
-                'log'   => $sign_integral.'|0',
-                'integral'   => $sign_integral,
-                'last_time' => time()
+                'year'         => $year,
+                'month'        => $month,
+                'days'         => $day,
+                'log'          => $sign_integral.'|0',
+                'integral'     => $sign_integral,
+                'last_time'    => $time,
+                'days_time'    => $time,
             ];
             //插入的,用户id,年月存在唯一索引所以不会重复插入
             $res = $UsersSignModel->insert($inData);
