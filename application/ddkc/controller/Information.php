@@ -17,7 +17,7 @@ class Information extends ClientbaseController{
         $slide_where [] = ['status','eq',1];
         $slide_where [] = ['img_type','eq',2];
         $banner = $SlideModel->where($slide_where)->order('sort_order DESC')->select();
-// dump($banner);die;
+
         $this->assign('banner',$banner);
         $this->assign('not_top_nav', true);
 		return $this->fetch('index');

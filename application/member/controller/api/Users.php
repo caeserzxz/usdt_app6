@@ -51,6 +51,7 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function editPwd()
     {
+        $this->checkCode('edit_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
         $res = $this->Model->editPwd(input(), $this);
         if ($res !== true) return $this->error($res);
         return $this->success('密码已重置，请用新密码登陆.');
@@ -61,11 +62,19 @@ class Users extends ApiController
     public function editPayPwd()
     {
         $pay_password = input('password','','trim');
-        if (empty($pay_password))  return $this->error('请输入新的支付密码.');
+        $old_password = input('old_password','','trim');
+
+        if (empty($pay_password)) return $this->error('请输入新的支付密码.');
+        if (empty($old_password)) return $this->error('请输入旧的支付密码.');
+
         $this->checkCode('edit_pay_pwd',$this->userInfo['mobile'],input('code'));//验证短信验证
         $data['pay_password'] = f_hash($pay_password);
         if ($data['pay_password'] == $this->userInfo['pay_password']){
             return $this->error('新密码与旧密码一致，无需修改.');
+        }
+        $old_password = f_hash($old_password);
+        if ($this->userInfo['pay_password'] && ($old_password != $this->userInfo['pay_password'])){
+            return $this->error('旧密码错误.');
         }
         $res = $this->Model->where('user_id', $this->userInfo['user_id'])->update($data);
         if ($res < 1) {

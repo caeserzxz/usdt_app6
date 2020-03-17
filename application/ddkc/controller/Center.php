@@ -66,7 +66,8 @@ class Center  extends ClientbaseController{
     //-- 修改密码
     /*------------------------------------------------------ */
     public function editPwd(){
-        $this->assign('title', '修改密码');
+        $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
+        $this->assign('title', '修改登录密码');
         return $this->fetch('edit_pwd');
     }
     /*------------------------------------------------------ */
@@ -156,6 +157,9 @@ class Center  extends ClientbaseController{
         $this->assign('title', '团队管理');
         return $this->fetch('my_team');
     }
+    /*------------------------------------------------------ */
+    //-- 签到
+    /*------------------------------------------------------ */
     public function sign(){
         $year = input('year',date('Y')) * 1;
         $month = input('month',date('n')) * 1;
@@ -169,4 +173,11 @@ class Center  extends ClientbaseController{
 
         return $this->fetch('sign');
     }
+    /*------------------------------------------------------ */
+    //-- 安全中心
+    /*------------------------------------------------------ */
+    public function security(){
+        $this->assign('title', '安全中心');
+        return $this->fetch();
+    }    
 }?>
