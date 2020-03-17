@@ -9,6 +9,8 @@ use app\member\model\UsersModel;
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
+use app\member\model\UsersSignModel;
+
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */
@@ -147,5 +149,18 @@ class Center  extends ClientbaseController{
 
         $this->assign('title', '团队管理');
         return $this->fetch('my_team');
+    }
+    public function sign(){
+        $year = input('year',date('Y')) * 1;
+        $month = input('month',date('n')) * 1;
+
+        $data = (new UsersSignModel)->where(['user_id'=>$this->userInfo['user_id'],'year'=>$year,'month'=>$month])->find();
+        $data['nowtime'] = time();
+        $data['days_time'] = json_encode(explode(',',$data['days_time']));
+
+        $this->assign('data', $data);
+        $this->assign('title', '签到送积分');
+
+        return $this->fetch('sign');
     }
 }?>

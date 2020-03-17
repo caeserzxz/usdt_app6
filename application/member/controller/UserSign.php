@@ -12,6 +12,7 @@ class UserSign extends ClientbaseController{
 	//-- 我的钱包
 	/*------------------------------------------------------ */
 	public function index(){
+        $this->redirect(url('ddkc/center/sign'));
 
 		if($this->userInfo['user_id']<0){
 			$this->error('请先登录！');

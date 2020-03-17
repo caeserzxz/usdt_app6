@@ -1,0 +1,136 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<link rel="stylesheet" href="__STATIC__/dingding/css/Calendar.css">
+<script src="__STATIC__/dingding/js/calendar.js"></script>
+<!-- <script src="__STATIC__/mobile/default/js/rili.js"></script> -->
+
+<style>
+    td>img {
+        width: .266667rem;
+        height: .266667rem;
+    }
+    em div {
+        width: .24rem;
+        height: .24rem;
+    }
+    .nodiv {
+        background: url('__STATIC__/dingding/images/singIn02.png');
+        background-size: 100% 100%;
+    }
+    td[class=active2] {
+        background: #fef5de;
+    }
+    .havaDiv {
+        background: url('__STATIC__/dingding/images/singIn02-lh.png');
+        background-size: 100% 100%;
+    }
+</style>
+{/block}
+
+{block name="main" }
+<div class="page-bd  signIn ">
+    <!-- 页面内容-->
+    <div class="top">
+        <div class="name">用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：{$userInfo.nick_name}</div>
+        <div class="integer-box">信用积分：<span class="integer">{$userInfo.account.use_integral}</span></div>
+        <div class="sign-box">
+            <p>当前签到增加<span class="sign-num">{:settings('sign_integral')}</span>信用积分</p>
+            <div class="wrap">
+                <div class=" background signInBtn" id="signIn" onclick="">签到</div>
+                <div class=" background" id="signIning" style="display: none">今日已签</div>
+            </div>
+        </div>
+    </div>
+    <div class="cale">
+        <div class="Calendar">
+            <div id="toyear ">
+                <div class="year-month dp-flex fs38 fw700 color-w">
+                    <span id="idCalendarYear">2020</span>年<span id="idCalendarMonth">5</span>月
+                </div>
+            </div>
+            <table>
+                <thead cellpadding="0" cellspacing="0">
+                    <tr class="tou fs28  color-w">
+                        <td>日</td>
+                        <td>一</td>
+                        <td>二</td>
+                        <td>三</td>
+                        <td>四</td>
+                        <td>五</td>
+                        <td>六</td>
+                    </tr>
+                </thead>
+                <tbody id="idCalendar"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="popup " style="display: none;">
+        <div class="popup-bgc" onclick="closePop()"></div>
+        <div class="popup-content" onclick="closePop()">
+            <div class="left"><img src="__STATIC__/dingding/images/signIn01.png" alt=""></div>
+            <div class="right">
+                <p>恭喜您签到成功</p>
+                <p>加油，保持良好习惯</p>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    var saveData = {
+        'nowtime': {$data.nowtime|raw},
+        'signIntime': {$data.days_time|raw}
+    }    
+    var cale = new Calendar("idCalendar", {
+        qdDay: saveData.signIntime,
+        nowtime: saveData.nowtime,
+        onToday: function (o) {
+
+            var numDateJifen = $(o).children("span").text()
+            var em = document.createElement("em")
+            em.innerHTML = `<div class="havaDiv"></div>`
+            var lastem = o.lastChild
+            lastem.parentNode.removeChild(lastem)
+
+            o.className = "active2";
+            o.appendChild(em)
+        },
+        onFinish: function () {
+            $("#idCalendarYear").html(this.Year);
+            $("#idCalendarMonth").html(this.Month);
+        },
+        onSignIn: function() {
+            $("#signIn").hide();
+            $("#signIning").show();
+        }
+    });
+    //添加今天签到
+    $(".signInBtn").on("click", function () {
+        $.post('/member/api.users/doSign',function(res){
+            if(res.code == 1){
+                var res2 = cale.SignIn();
+                var inteVal = $(".integer").text()
+                    inteVal = +inteVal+res.integral;
+             
+                $(".integer").text(inteVal)
+                $('.popup').show()
+                $("#signIn").hide();
+                $("#signIning").show();
+            }else{
+                $.toast(res.msg, "text");
+            }
+        })
+    })
+    function closePop() {
+        $('.popup').hide()
+    }
+</script>
+</body>
+</html>
+{/block}
