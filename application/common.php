@@ -785,3 +785,14 @@ function diffBetweenTwoDays ($day1, $day2)
     }
     return ($second1 - $second2) / 86400;
 }
+/*------------------------------------------------------ */
+//-- 生成订单编号
+/*------------------------------------------------------ */
+function getOrderSn()
+{
+    /* 选择一个随机的方案 */
+    mt_srand((double)microtime() * 1000000);
+    $date = date('Ymd');
+    $order_sn = $date . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+    return $order_sn;
+}

@@ -27,7 +27,7 @@
             <!-- 页面内容-->
             <div class="weui-tab">
                 <div class="weui-navbar">
-                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1" onclick="getSellList()">
+                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1" onclick="getSellList1()">
                         待出售
                     </a>
                     <a class="weui-navbar__item" href="#tab2" onclick="getSellList2()">
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
-                                            <p>交易金额：240</p>
+                                            <p>交易金额：{{item.sell_number}}</p>
                                             <p>抢购方：13412341234</p>
                                         </div>
                                         <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
@@ -71,16 +71,17 @@
                     </div>
                     <div id="tab2" class="weui-tab__bd-item">
                         <script type="text/html" id="listTpl2">
+                            <div class="weui-cells">
                             {{each list as item index}}
 <!--                        <div>-->
-                            <div class="weui-cells">
+                                <a href="{:url('ddkc/trade/sell_detail')}?id={{item.id}}">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
                                         <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
                                         <div class="shop">
-                                            <p>交易金额：240</p>
+                                            <p>交易金额：{{item.sell_number}}</p>
                                             <p>抢购方：13412341234</p>
                                         </div>
                                         <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
@@ -88,9 +89,10 @@
 
                                     </div>
                                 </div>
-                            </div>
+                                </a>
 <!--                        </div>-->
                             {{/each}}
+                            </div>
                         </script>
                     </div>
                     <div id="tab3" class="weui-tab__bd-item">
@@ -121,30 +123,33 @@
                     <div id="tab4" class="weui-tab__bd-item" >
 <!--                        <div >-->
                         <script type="text/html" id="listTpl4">
-                            {{each list as item index}}
                             <div class="weui-cells">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd">
-                                        <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
-                                    </div>
-                                    <div class="weui-cell__bd">
-                                        <div class="shop">
-                                            <p>交易金额：240</p>
-                                            <p>抢购方：13412341234</p>
+                            {{each list as item index}}
+                                <a href="{:url('ddkc/trade/buy_detail')}?id={{item.id}}">
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                         </div>
-<!--                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span-->
-<!--                                                class="timer7">01:52:23</span></p>-->
-                                        <div class="ti">
-                                            <p class="times dp-flex" style="justify-content: flex-start;">
-                                                交易时间剩余：<span class="timer7">01:52:23</span>
-                                            </p>
+                                        <div class="weui-cell__bd">
+                                            <div class="shop">
+                                                <p>{{item.stage_name}}</p>
+    <!--                                            <p>交易金额：240</p>-->
+                                                <p>抢购方：13412341234</p>
+                                            </div>
+    <!--                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span-->
+    <!--                                                class="timer7">01:52:23</span></p>-->
+                                            <div class="ti">
+                                                <p class="times dp-flex" style="justify-content: flex-start;">
+                                                    交易时间剩余：<span class="timer7">01:52:23</span>
+                                                </p>
 
-                                            <div class="rushto" onclick="PanicBuying({{item.id}});">抢购</div>
+                                                <div class="rushto" onclick="PanicBuying({{item.id}});">抢购</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </a>
                             {{/each}}
+                            </div>
                         </script>
 <!--                        </div>-->
                     </div>
@@ -214,10 +219,7 @@
     var loading_2 = false;
     var loading_3 = false;
     var loading_4 = false;
-    $(function() {
-        // console.log(22);
-        // getSellList();
-    });
+
     $(function() {
         getSellList1();
     });
@@ -241,6 +243,7 @@
 
         var arr = new Object();
         arr.p = page_1;
+        arr.type = 1;
         jq_ajax('{:url("ddkc/api.trade/getSellList")}',arr,function (res) {
             if (res.list.length > 0) {
                 $('#tab1').append(template('listTpl1',res));

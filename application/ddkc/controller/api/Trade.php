@@ -68,7 +68,8 @@ class Trade extends ApiController
             'buy_status'=>0,
             'deduct_integral'=>$stage_info['scribe_integral'],
             'isputaway'=>1,
-            'buy_start_time'=>time()
+            'buy_start_time'=>time(),
+            'buy_order_sn'=>getOrderSn()
         ];
         $res = $BuyTradeMoel->create($addData);
         if (!$res) {
@@ -143,7 +144,8 @@ class Trade extends ApiController
             'sell_status'=>0,
             'sell_start_time'=>time(),
             'old_ddb_money'=>$number,
-            'service_charge'=>$settints['service_charge']
+            'service_charge'=>$settints['service_charge'],
+            'sell_order_sn'=>getOrderSn()
         ];
         $res = $SellTradeMoel->create($addData);
         if (!$res) {
@@ -185,11 +187,16 @@ class Trade extends ApiController
     public function getBuyList(){
         $userModel = new UsersModel();
         $BuyTradeModel = new BuyTradeModel();
+        $TradingStageModel = new TradingStageModel();
         $this->order_by = 'id';
         $this->sort_by = 'DESC';
-        $where[] =  ['buy_user_id' ,'neq' ,$this->userInfo['user_id']];
+        $where[] =  ['buy_user_id' ,'eq' ,$this->userInfo['user_id']];
         $viewObj = $BuyTradeModel->where($where)->order('id desc');
         $data = $this->getPageList($BuyTradeModel,$viewObj);
+        foreach ($data['list'] as $k=>$v){
+            $stage_info = $TradingStageModel->where('id',$v['buy_stage_id'])->find();
+            $data['list'][$k]['stage_name'] = $stage_info['stage_name'];
+        }
         return $this->ajaxReturn($data);
     }
     /*------------------------------------------------------ */
@@ -211,7 +218,7 @@ class Trade extends ApiController
         #交易记录
             $where[] =  ['sell_status' ,'in' ,[4,5]];
         }
-        $where[] =  ['sell_user_id' ,'neq' ,$this->userInfo['user_id']];
+        $where[] =  ['sell_user_id' ,'eq' ,$this->userInfo['user_id']];
         $viewObj = $SellTradeModel->where($where)->order('id desc');
         $data = $this->getPageList($SellTradeModel,$viewObj);
         return $this->ajaxReturn($data);
