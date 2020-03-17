@@ -6,12 +6,9 @@
 namespace app\ddkc\controller;
 use app\ClientbaseController;
 use app\member\model\UsersModel;
-<<<<<<< HEAD
-use app\ddkc\model\PaymentModel;
-=======
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
->>>>>>> a246d8a7bc1b7c5116f373b8eb7f7f99b0ff1937
+use app\ddkc\model\PaymentModel;
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */

@@ -1,13 +1,6 @@
 <?php
 
 namespace app\ddkc\controller\api;
-<<<<<<< HEAD
-use think\Db;
-use app\ApiController;
-use app\member\model\UsersModel;
-use think\cache\driver\Redis;
-use app\ddkc\model\PaymentModel;
-=======
 
 use app\ApiController;
 use app\member\model\UsersModel;
@@ -16,8 +9,8 @@ use app\mainadmin\model\ArticleCategoryModel;
 use app\ddkc\model\MiningUnsealingModel;
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
+use app\ddkc\model\PaymentModel;
 
->>>>>>> a246d8a7bc1b7c5116f373b8eb7f7f99b0ff1937
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
 /*------------------------------------------------------ */
@@ -30,7 +23,7 @@ class Center extends ApiController
     public function initialize()
     {
         parent::initialize();
-<<<<<<< HEAD
+        $this->Model = new UsersModel();
     }
     /*------------------------------------------------------ */
     //-- 上传支付宝收款信息
@@ -196,11 +189,6 @@ class Center extends ApiController
         //return $return;
     }
 
-}
-=======
-        $this->Model = new UsersModel();
-    }
-   
     /*------------------------------------------------------ */
     //-- 团队统计
     /*------------------------------------------------------ */
@@ -231,4 +219,3 @@ class Center extends ApiController
         return $this->ajaxReturn($data);
     }
 }
->>>>>>> a246d8a7bc1b7c5116f373b8eb7f7f99b0ff1937
