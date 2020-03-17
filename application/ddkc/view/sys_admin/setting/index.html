@@ -26,7 +26,6 @@
                     <li class="active"><a href="#basic" data-toggle="tab">抢购设置</a></li>
                     <li ><a href="#credit_integral" data-toggle="tab">信用评分设置</a></li>
                     <li ><a href="#sell_explain" data-toggle="tab">挂售详情说明</a></li>
-                    <li ><a href="#img_set" data-toggle="tab">图片设置</a></li>
                     <li ><a href="#appeal_explain" data-toggle="tab">申诉注意事项</a></li>
                     <li ><a href="#information_article" data-toggle="tab">快讯文章</a></li>
                 </ul>
@@ -304,32 +303,6 @@
                                       data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
                                       name="sell_explain" style="visibility:hidden;">{$setting.sell_explain|raw}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="img_set">
-                    <div class="form-group">
-                    <label class="col-sm-2 control-label">服务快讯轮播图</label>
-                    <div class="col-sm-10">
-                        <div class="js_upload_container">
-                            <div class="js_file_upload ">
-                                <button type="button" class="btn btn-default js_new_upload" data-count="5" data-submitname="informa_banner" data-uploadpath="{:url('uploadImg')}"  data-delpath="{:url('removeImg')}" style="position: relative; z-index: 1;">上传图片</button>
-                                <span class="help-inline">
-                                    <!-- <small>建议尺寸：300*300</small> -->
-                                </span>
-                            </div>
-                            <div class="uploadify-queue js_file_upload_queue">
-                            </div>
-                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
-                                {volist name="informa_banner" id="shbg"  }
-                                <li class="imgbox" data-path="{$shbg}">
-                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}" title="删除" ></a>
-                                    <span class="item_box"><img src="{$shbg}"></span>
-                                    <input type="hidden" name="informa_banner[path][]" value="{$shbg}">
-                                </li>
-                                {/volist}
-                            </ul>
                         </div>
                     </div>
                 </div>
