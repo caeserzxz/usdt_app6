@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 个人资料</title>
+    <style>
+        .weui-cell {
+            height: .426667rem;
+        }
+
+        .weui-label {
+            width: 1.6rem;
+            color: #979695;
+        }
+
+        .input-s {
+            border: 1px solid #f5f5f5;
+            height: .453333rem;
+            padding: 0 .133333rem;
+            border-radius: .106667rem;
+            line-height: .453333rem;
+            box-sizing: border-box;
+        }
+
+        .codeBox span {
+            width: .853333rem;
+            border-radius: .32rem;
+            text-align: center;
+            color: #fff;
+            background-color: #f1a449;
+            margin-left: .133333rem;
+            padding: .053333rem .106667rem
+        }
+
+        .background {
+            width: 3.226667rem;
+            margin-top: .4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">个人资料 </div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd teamcomDetail">
+            <!-- 页面内容-->
+            <div>
+                <div class="weui-cells weui-cells_form detail-list">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">昵称：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="玩家3" placeholder="">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">账号ID：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="" placeholder="12312341231">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">注册手机：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="" placeholder="12312341231">
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cells weui-cells_form detail-list">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">紧急联系电话：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="" placeholder="12837281873">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">修改紧急联系电话：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input input-s" type="text" value="" placeholder="">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">填写验证码</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input input-s" type="text" value="" placeholder="">
+                        </div>
+                        <div class="weui-cell__ft">
+                            <div class="codeBox">
+                                <span class="color_r fs24 fw_b getCode" onclick="codeButton()">获取验证码</span>
+                                <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cells weui-cells_form detail-list">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">上级昵称：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="" placeholder="玩家3">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">注册时间：</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" value="" placeholder="2020-04-20">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="wrap">
+                    <div class=" background">保存</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+        function codeButton() {
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        }
+
+    </script>
+</body>
+
+</html>
