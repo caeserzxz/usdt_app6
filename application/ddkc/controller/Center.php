@@ -5,8 +5,9 @@
 /*------------------------------------------------------ */
 namespace app\ddkc\controller;
 use app\ClientbaseController;
-
 use app\member\model\UsersModel;
+use app\member\model\UsersBindModel;
+use app\distribution\model\DividendRoleModel;
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */
@@ -101,5 +102,37 @@ class Center  extends ClientbaseController{
     public function addBankCard(){
         $this->assign('title', '添加银行卡');
         return $this->fetch('add_bank_card');
+    }
+    /*------------------------------------------------------ */
+    //-- 团队管理
+    /*------------------------------------------------------ */
+    public function myTeam(){
+        $userId = $this->userInfo['user_id'];
+        $roleModel = new DividendRoleModel();
+        $userBindModel = new UsersBindModel();
+        $userModel = new UsersModel();
+
+
+        # 各等级直推人数统计
+        $allRole = $roleModel->field('role_id,role_name')->where(1)->select();
+        foreach ($allRole as $key => $value) {
+            # 该等级直推人数
+            $allRole[$key]['subNum'] = $userModel
+                ->where(['pid' => $userId,'role_id' => $value['role_id']])
+                ->count();
+        }
+        # 三层内各层级人数
+        $where[] = ['pid','=',$userId];
+        $where[] = ['level','<=',3];
+        $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
+        $textInfo = ['其他','一','二','三'];
+        
+        $this->assign('roleInfo', $allRole);
+        $this->assign('threeInfo', $threeInfo);
+        $this->assign('textInfo', $textInfo);
+
+
+        $this->assign('title', '团队管理');
+        return $this->fetch('my_team');
     }
 }?>

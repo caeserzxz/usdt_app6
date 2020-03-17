@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 安全中心</title>
+    <style>
+        .weui-cell {
+            height: .426667rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">安全中心 </div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd selCon teamcomDetail">
+            <!-- 页面内容-->
+            <div>
+
+                <div class="weui-cells detail-list">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p>修改登录密码</p>
+                        </div>
+                        <div class="weui-cell__ft">
+                        </div>
+                    </a>
+                </div>
+                <div class="weui-cells detail-list">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p>修改支付密码</p>
+                        </div>
+                        <div class="weui-cell__ft">
+                        </div>
+                    </a>
+                </div>
+                <div class="weui-cells detail-list">
+                    <a class="weui-cell weui-cell_access outBtn" href="javascript:;">
+                        <div class="weui-cell__bd">
+                            <p style="text-align: center;">退出登录</p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="popup pop01">
+                <div class="popup-bgc"></div>
+                <div class="popup-content">
+                    <div class="sd-cont-net1" style="display: block;">
+                        <div class="sd-t fs40 dp-flex">是否退出当前账户</div>
+                        <div class="btns dp-flex">
+                            <div class="yesBtn" onclick="yesBtn()"> <img src="../assets/images/yes.png" alt="">
+                            </div>
+                            <div class="noBtn"> <img src="../assets/images/no.png" alt=""></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+        function yesBtn() {
+            $(".popup").hide()
+        }
+        $(".outBtn").on('click', function () {
+            $(".pop01").show()
+        })
+
+    </script>
+</body>
+
+</html>

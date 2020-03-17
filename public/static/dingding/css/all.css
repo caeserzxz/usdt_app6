@@ -571,6 +571,7 @@ img {
 
 .DDB .popup-content,
 .sellerInfo .popup-content,
+.selCon .popup-content,
 .machinePage .popup-content {
   top: 30%;
   left: 10%;
@@ -585,15 +586,18 @@ img {
 
 .DDB .popup-content .sd-cont-net1,
 .sellerInfo .popup-content .sd-cont-net1,
+.selCon .popup-content .sd-cont-net1,
 .machinePage .popup-content .sd-cont-net1,
 .DDB .popup-content .sd-cont-net2,
 .sellerInfo .popup-content .sd-cont-net2,
+.selCon .popup-content .sd-cont-net2,
 .machinePage .popup-content .sd-cont-net2 {
   display: none;
 }
 
 .DDB .popup-content .sd-t,
 .sellerInfo .popup-content .sd-t,
+.selCon .popup-content .sd-t,
 .machinePage .popup-content .sd-t {
   font-size: 0.2rem;
   width: 100%;
@@ -604,18 +608,21 @@ img {
 
 .DDB .popup-content .weui-cells,
 .sellerInfo .popup-content .weui-cells,
+.selCon .popup-content .weui-cells,
 .machinePage .popup-content .weui-cells {
   margin-left: 0.666667rem;
 }
 
 .DDB .popup-content .weui-icon-circle,
 .sellerInfo .popup-content .weui-icon-circle,
+.selCon .popup-content .weui-icon-circle,
 .machinePage .popup-content .weui-icon-circle {
   font-size: 0.253333rem;
 }
 
 .DDB .popup-content .weui-cells_radio .weui-check:checked + .weui-icon-checked:before,
 .sellerInfo .popup-content .weui-cells_radio .weui-check:checked + .weui-icon-checked:before,
+.selCon .popup-content .weui-cells_radio .weui-check:checked + .weui-icon-checked:before,
 .machinePage .popup-content .weui-cells_radio .weui-check:checked + .weui-icon-checked:before {
   content: "";
   width: 0.186667rem;
@@ -627,6 +634,7 @@ img {
 
 .DDB .popup-content .btns,
 .sellerInfo .popup-content .btns,
+.selCon .popup-content .btns,
 .machinePage .popup-content .btns {
   -webkit-justify-content: space-around;
           justify-content: space-around;
@@ -635,6 +643,7 @@ img {
 
 .DDB .popup-content .btns div img,
 .sellerInfo .popup-content .btns div img,
+.selCon .popup-content .btns div img,
 .machinePage .popup-content .btns div img {
   width: 1.333333rem;
   height: 0.533333rem;
@@ -1023,7 +1032,7 @@ img {
   border-radius: 0.08rem;
 }
 
-.teamcomDetail > div {
+.teamcomDetail > div:first-child {
   margin: 0 0.133333rem;
 }
 
@@ -1504,4 +1513,106 @@ img {
   border: 0.013333rem solid #c2c1c1;
   border-radius: 0.066667rem;
   text-align: center;
+}
+
+.signIn .background {
+  width: 3.226667rem;
+  margin-top: 0.4rem;
+  font-size: 0.2rem;
+}
+
+.signIn .top {
+  background-color: #eb8c2d;
+  border-radius: 0 0 0.16rem 0.16rem;
+  padding: 0.266667rem;
+  height: 1.866667rem;
+}
+
+.signIn .top .name {
+  color: #fff;
+  font-size: 0.186667rem;
+}
+
+.signIn .top .integer-box {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  color: #fff;
+  font-size: 0.186667rem;
+}
+
+.signIn .top .integer-box .integer {
+  font-size: 0.266667rem;
+  font-weight: 700;
+}
+
+.signIn .top .sign-box {
+  background-color: #fff;
+  border-radius: 0.16rem;
+  padding: 0.266667rem;
+  margin-top: 0.133333rem;
+}
+
+.signIn .top .sign-box > p {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  font-size: 0.2rem;
+  color: #92908f;
+}
+
+.signIn .top .sign-box .sign-num {
+  font-size: 0.266667rem;
+  font-weight: 700;
+  color: #eb8c2d;
+  padding: 0 0.133333rem;
+}
+
+.signIn .cale {
+  background-color: #eb8c2d;
+  padding: 0.133333rem;
+  border-radius: 0.133333rem;
+  margin: 0.933333rem 0.266667rem 0.266667rem;
+}
+
+.signIn .popup-content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: initial !important;
+          flex-direction: initial !important;
+  background-color: #fff;
+  border-radius: 0.16rem;
+  padding: 0.266667rem;
+  top: 25%;
+  left: 10%;
+  right: 10%;
+}
+
+.signIn .popup-content .left img {
+  width: 1.333333rem;
+  height: 1.333333rem;
+}
+
+.signIn .popup-content .right p:first-child {
+  font-size: 0.253333rem;
+  color: #eb8d2e;
+  font-weight: 700;
+  margin-top: 0.133333rem;
+}
+
+.signIn .popup-content .right p:last-child {
+  font-size: 0.186667rem;
+  color: #c4c3c2;
 }

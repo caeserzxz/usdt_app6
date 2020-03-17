@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 签到送积分</title>
+    <link rel="stylesheet" href="../assets/css/Calendar.css">
+    <style>
+        td>img {
+            width: .266667rem;
+            height: .266667rem;
+        }
+
+        em div {
+            width: .24rem;
+            height: .24rem;
+        }
+
+        .nodiv {
+            background: url('../assets/images/singIn02.png');
+            background-size: 100% 100%;
+        }
+
+        td[class=active2] {
+            background: #fef5de;
+        }
+
+        .havaDiv {
+            background: url('../assets/images/singIn02-lh.png');
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+
+        <div class="header " style="  background-color: #eb8c2d;">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">签到送积分</div>
+            <div class="header-right">
+                <a href="#"></a>
+            </div>
+        </div>
+        <div class="page-bd  signIn ">
+            <!-- 页面内容-->
+            <div class="top">
+                <div class="name">用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：12342123323</div>
+                <div class="integer-box">信用积分：<span class="integer">92</span></div>
+                <div class="sign-box">
+                    <p>当前签到增加<span class="sign-num">1</span>信用积分</p>
+                    <div class="wrap signInBtn">
+                        <div class=" background">签到</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cale">
+                <div class="Calendar">
+                    <div id="toyear ">
+                        <div class="year-month dp-flex fs38 fw700 color-w">
+                            <span id="idCalendarYear">2020</span>年<span id="idCalendarMonth">5</span>月
+                        </div>
+                    </div>
+                    <table>
+                        <thead cellpadding="0" cellspacing="0">
+                            <tr class="tou fs28  color-w">
+                                <td>日</td>
+                                <td>一</td>
+                                <td>二</td>
+                                <td>三</td>
+                                <td>四</td>
+                                <td>五</td>
+                                <td>六</td>
+                            </tr>
+                        </thead>
+                        <tbody id="idCalendar">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="popup " style="display: block;">
+                <div class="popup-bgc" onclick="closePop()"></div>
+                <div class="popup-content" onclick="closePop()">
+                    <div class="left"><img src="../assets/images/signIn01.png" alt=""></div>
+                    <div class="right">
+                        <p>恭喜您签到成功</p>
+                        <p>加油，保持良好习惯</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script src="../assets/js/calendar.js"></script>
+    <script>
+        function closePop() {
+            $('.popup').hide()
+        }
+    </script>
+    <script>
+        var saveData = {
+            'nowtime': 1584028800,
+            'signIntime': [1582992000, 1583424000]
+        }
+        // var noday = new Array(); //未签到的数组
+        var cale = new Calendar("idCalendar", {
+            qdDay: saveData.signIntime,
+            nowtime: saveData.nowtime,
+            onToday: function (o) {
+                var numDateJifen = $(o).children("span").text()
+                var em = document.createElement("em")
+                em.innerHTML = `<div class="havaDiv"></div>`
+                var lastem = o.lastChild
+                lastem.parentNode.removeChild(lastem)
+
+                o.className = "active2";
+                o.appendChild(em)
+            },
+            onFinish: function () {
+                $("#idCalendarYear").html(this.Year);
+                $("#idCalendarMonth").html(this.Month);
+            }
+        });
+
+
+        //添加今天签到
+        $(".signInBtn").on("click", function () {
+            var res = cale.SignIn();
+            console.log(res)
+            var inteVal = $(".integer").text()
+            if (res == 1) {
+                inteVal++
+                $(".integer").text(inteVal)
+            } else if (res == 2) {
+                $('.popup').show()
+            }
+        })
+
+    </script>
+</body>
+
+</html>

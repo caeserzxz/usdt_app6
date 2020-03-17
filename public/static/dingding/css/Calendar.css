@@ -1,0 +1,68 @@
+.dp-flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.color-w {
+  color: #fff;
+}
+
+.fs20 {
+  font-size: 0.133333rem;
+}
+
+.fs26 {
+  font-size: 0.173333rem;
+}
+
+.fs38 {
+  font-size: 0.253333rem;
+}
+
+.fw700 {
+  font-weight: 700;
+}
+
+.Calendar {
+  box-sizing: border-box;
+}
+
+.Calendar table,
+.Calendar thead,
+.Calendar tbody {
+  width: 100%;
+}
+
+.Calendar thead {
+  height: 0.4rem;
+}
+
+.Calendar .tou,
+.Calendar tr {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  margin: 0.066667rem 0;
+}
+
+.Calendar .tou > td {
+  height: 0.266667rem;
+  background: none !important;
+}
+
+.Calendar td {
+  text-align: center;
+  background: #fff;
+  height: 0.52rem;
+  width: 14%;
+  padding: 0.026667rem;
+  box-sizing: border-box;
+}
+
+.Calendar td span {
+  text-align: right;
+  color: #c2c1c1;
+}
