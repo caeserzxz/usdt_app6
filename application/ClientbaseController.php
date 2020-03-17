@@ -54,6 +54,16 @@ class ClientbaseController extends BaseController{
             }
             session('is_wx',$this->is_wx);
         }//end
+
+        //获取安装包的参数
+        $appType = input('appType');
+        if(!empty($appType)){
+            if($appType=='IOS'||$appType=='Android'){
+                session('appType',$appType);
+            }else{
+                session('appType','other');
+            }
+        }
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
         $this->userInfo = $userInfo;

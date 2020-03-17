@@ -19,6 +19,7 @@ require __DIR__ . '/../thinkphp/base.php';
 define('INDEX', true);
 define('VIEWPATH', '../template/default/');
 define('EXTEND_PATH', '../extend/');
+define('UPLOAD_PATH','/static/dingding/upload');
 // 执行应用并响应
 Container::get('app')->run()->send();
 

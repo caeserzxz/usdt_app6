@@ -1,0 +1,248 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+        <div class="page-bd pd-24 moneyInfo">
+            <!-- 页面内容-->
+            <div class="alipay">
+                <h3 class="h3">支付宝账号</h3>
+                <div class="alipay-con dp-flex">
+                    <form action="" id="form">
+                    <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号" name="alipay_number" value="{$alipay_info.alipay_number}">
+                    <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="alipay_user_name" value="{$alipay_info.alipay_user_name}">
+                    <div class="weui-uploader__bd">
+                        <div class="weui-uploader__input-box">
+                            {if condition="$appType eq 'IOS'"}
+                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                    <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('alipay_payment_code');" class="info-img" alt="">
+                                 <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                                   type="file" accept="image/*" multiple="">
+                            {else /}
+                                    <img id="img" src="{$alipay_info.alipay_payment_code}"   class="info-img" alt="">
+                                {/if}
+                            {else /}
+                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                    <img id="img" src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
+                            <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                                   type="file" accept="image/*" multiple="">
+                                {else /}
+                                    <img id="img" src="{$alipay_info.alipay_payment_code}" class="info-img" alt="">
+                                {/if}
+                            {/if}
+
+                        </div>
+                    </div>
+                    <div class="images-list"><!--上传图片列表--></div>
+                       {if condition="$alipay_info eq ''"}
+                         <div class="sure-btn" onclick="alipay_btn();">确认</div>
+                       {else /}
+
+                       {/if}
+
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+                    </form>
+                </div>
+            </div>
+            <div class="wechat">
+                <h3 class="h3">微信账号</h3>
+                <div class="alipay-con dp-flex">
+                    <form action="" id="form2">
+                    <input type="text " class="weui-input input-t" placeholder="请输入微信账号" name="wx_number" value="{$wx_info.wx_number}">
+                    <div class="weui-uploader__bd">
+                        <div class="weui-uploader__input-box">
+                            {if condition="$appType eq 'IOS'"}
+                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                <img id="img2" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('wx_payment_code');" class="info-img" alt="">
+                                <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
+                                {else /}
+                                <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
+                                {/if}
+                            {else /}
+                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                <img id="img2" src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
+                                <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
+                                {else /}
+                                <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
+                                {/if}
+                            {/if}
+                        </div>
+                    </div>
+                    <div class="images-list2"><!--上传图片列表--></div>
+                        {if condition="$wx_info eq ''"}
+                            <div class="sure-btn" onclick="wx_btn();">确认</div>
+                        {else /}
+
+                        {/if}
+
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+                    </form>
+                </div>
+            </div>
+            <div class="bank">
+                <form action="" id="form3">
+                <h3 class="h3">银行卡号</h3>
+                <div class="alipay-con dp-flex">
+                    <input type="text " class="weui-input input-t" placeholder="请输入银行卡名称" name="bank_name" value="{$bank_info.bank_name}">
+                    <input type="text" class="weui-input input-t" placeholder="请输入支行名称" name="sub_branch" value="{$bank_info.sub_branch}">
+                    <input type="text " class="weui-input input-t" placeholder="请输入银行卡号" name="card_number" value="{$bank_info.card_number}">
+                    <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="bank_user_name" value="{$bank_info.bank_user_name}">
+
+                    {if condition="$bank_info eq ''"}
+                        <div class="sure-btn" onclick="bank_btn();">确认</div>
+                    {else /}
+
+                    {/if}
+
+                    <p>一旦确认，无法修改，请谨慎填写</p>
+
+                </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+{include file="layouts@dd_bottom" /}
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+        // 上传显示图片
+        function changepic() {
+            var reads = new FileReader();
+            f = document.getElementById('uploaderInput').files[0];
+            reads.readAsDataURL(f);
+            reads.onload = function(e) {
+                document.getElementById('img').src = this.result;
+
+            };
+
+        }
+        function changepic2() {
+            var reads = new FileReader();
+            f = document.getElementById('uploaderInput2').files[0];
+            reads.readAsDataURL(f);
+            reads.onload = function(e) {
+                document.getElementById('img2').src = this.result;
+
+            };
+
+        }
+    </script>
+<script>
+    var img_name = '';
+    function AppReturnBase64Image(base64imag) {
+        $.ajax({
+            'url': '{:url("ddkc/api.Center/uploadimage")}',
+            'type': 'post',
+            'data': {'img': base64imag, 'img_type': img_name,'img_name':img_name},
+            'dataType': 'json',
+            'success': function (data) {
+                if (data) {
+                    if (data.img_name == 'alipay_payment_code') {
+                        $('#img').attr('src',  data.path);
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="alipay_payment_code" class="imagesinput"/>';
+                        $('.images-list').append(str);
+                    }else if(data.img_name == 'wx_payment_code'){
+                        $('#img2').attr('src',  data.path);
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="wx_payment_code" class="imagesinput"/>';
+                        $('.images-list2').append(str);
+                    }
+
+
+                } else {
+                    $.toast('图片上传失败',"text");
+                    return false;
+                }
+            }
+        });
+    }
+
+    function loadimg(uploadfile){
+        img_name = uploadfile;
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) { //ios
+            window.app.Photo();
+        }
+    }
+
+    //支付宝上传收款信息
+    function alipay_btn(){
+        $.ajax({
+            url: '{:url("ddkc/api.Center/add_alipay")}',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#form')[0]),
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+
+            },
+            success : function(data) {
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        window.location.reload();
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+    //上传微信收款信息
+    function wx_btn(){
+        $.ajax({
+            url: '{:url("ddkc/api.Center/add_wxpay")}',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#form2')[0]),
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+
+            },
+            success : function(data) {
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        window.location.reload();
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+    //上传银行卡信息
+    function bank_btn(){
+        $.ajax({
+            url: '{:url("ddkc/api.Center/add_bank")}',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#form3')[0]),
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+
+            },
+            success : function(data) {
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        window.location.reload();
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+</script>
+</body>
+
+</html>
+{/block}

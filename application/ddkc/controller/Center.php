@@ -7,6 +7,7 @@ namespace app\ddkc\controller;
 use app\ClientbaseController;
 
 use app\member\model\UsersModel;
+use app\ddkc\model\PaymentModel;
 class Center  extends ClientbaseController{
   
 	/*------------------------------------------------------ */
@@ -99,7 +100,19 @@ class Center  extends ClientbaseController{
     //-- 添加银行卡
     /*------------------------------------------------------ */
     public function addBankCard(){
-        $this->assign('title', '添加银行卡');
+        $PaymentModel = new PaymentModel();
+        #获取银行卡信息
+        $bank_info = $PaymentModel->get_payment($this->userInfo['user_id'],1);
+        $this->assign('bank_info',$bank_info);
+        #获取支付宝信息
+        $alipay_info = $PaymentModel->get_payment($this->userInfo['user_id'],2);
+        $this->assign('alipay_info',$alipay_info);
+        #获取微信信息
+        $wx_info = $PaymentModel->get_payment($this->userInfo['user_id'],3);
+        $this->assign('wx_info',$wx_info);
+
+        $this->assign('appType',session('appType'));
+        $this->assign('title', '收款信息');
         return $this->fetch('add_bank_card');
     }
 }?>
