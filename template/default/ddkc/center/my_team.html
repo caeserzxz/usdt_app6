@@ -11,31 +11,27 @@
             <p class="weui-grid__label fs24">{$vo.role_name}</p>
         </a>
         {/volist}
-        <a href="" class="weui-grid js_grid dp-flex">
+        <!-- <a href="" class="weui-grid js_grid dp-flex">
             <div class="weui-grid__icon fs34 color-e7">
                 <p>2</p>
             </div>
             <p class="weui-grid__label fs24">
                 链接矿机
             </p>
-        </a>
-        <a href="" class="weui-grid js_grid dp-flex">
+        </a> -->
+        <a href="" class="weui-grid js_grid dp-flex" style="width:48%">
             <div class="weui-grid__icon fs34 color-e7">
-                <p>2</p>
+                <p>{$award['extension']}</p>
             </div>
-            <p class="weui-grid__label fs24">
-                直链收益
-                <span class="color-b6">（直推）</span>
-            </p>
+            <p class="weui-grid__label fs24">直链收益</p>
+            <span class="color-b6">（直推）</span>
+            
         </a>
-        <a href="" class="weui-grid js_grid dp-flex">
+        <a href="" class="weui-grid js_grid dp-flex" style="width:48%">
             <div class="weui-grid__icon fs34 color-e7">
-                <p>2</p>
+                <p>{$award['team']}</p>
             </div>
-            <p class="weui-grid__label fs24">
-                联代收益
-
-            </p>
+            <p class="weui-grid__label fs24">联代收益</p>
             <span class="color-b6">（团队）</span>
         </a>
 

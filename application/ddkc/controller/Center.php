@@ -10,6 +10,7 @@ use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
 use app\member\model\UsersSignModel;
+use app\member\model\AccountLogModel;
 
 class Center  extends ClientbaseController{
   
@@ -126,7 +127,7 @@ class Center  extends ClientbaseController{
         $roleModel = new DividendRoleModel();
         $userBindModel = new UsersBindModel();
         $userModel = new UsersModel();
-
+        $accountLogModel = new AccountLogModel();
 
         # 各等级直推人数统计
         $allRole = $roleModel->field('role_id,role_name')->where(1)->select();
@@ -141,11 +142,16 @@ class Center  extends ClientbaseController{
         $where[] = ['level','<=',3];
         $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
         $textInfo = ['其他','一','二','三'];
-        
+
+        # 直链收益
+        $award['extension'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 102])->sum('ddb_money');
+        # 联代收益
+        $award['team'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 103])->sum('ddb_money');
+
+        $this->assign('award', $award);
         $this->assign('roleInfo', $allRole);
         $this->assign('threeInfo', $threeInfo);
         $this->assign('textInfo', $textInfo);
-
 
         $this->assign('title', '团队管理');
         return $this->fetch('my_team');
