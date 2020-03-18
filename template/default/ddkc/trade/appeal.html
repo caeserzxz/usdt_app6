@@ -1,0 +1,88 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+<style>
+    .rushto {
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        background: url('__STATIC__/dingding/images/index05.png');
+        background-size: 100% 100%;
+    }
+
+    .ti {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .weui-tab{
+        position: relative;
+        height: 100%;
+        width: 100vw;
+    }
+</style>
+<div class="page-bd DDB DDBBag dingding">
+    <!-- 页面内容-->
+    <div class="weui-tab">
+        <div class="weui-tab__bd">
+            <div id="tab5" class="weui-tab__bd-item weui-tab__bd-item--active">
+                <div class="tab5-text">
+                    <p>订单号：{$sell_info.sell_order_sn}</p>
+                    <p>买家账号：{$buy_user.mobile}</p>
+                    <p>买家紧急联系电话：{$buy_user.contact_mobile}</p>
+                    <input type="text" class="weui-input " name="appeal_reason" id="appeal_reason"  placeholder="请输入申诉理由">
+                    <div class="sure-btn sureBtn" onclick="appeal_reason({$sell_info.id});">立即申诉</div>
+                    <div class="sale-details">
+                        <div class="sd-title">申诉注意事项</div>
+                        <div class="sd-cont">
+                            {$setting.appeal_explain|raw|html_entity_decode}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+
+    function appeal_reason(id){
+        var reason = $('#appeal_reason').val();
+        var obj = new Object();
+        obj.id = id;
+        obj.reason = reason;
+        $.ajax({
+            'url':'{:url("ddkc/api.Trade/appeal")}',
+            'type':'post',
+            'data':obj,
+            'dataType':'json',
+            'success':function(data){
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        window.location.href =data.url;
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+
+</script>
+<script type="text/javascript">
+
+</script>
+</body>
+
+</html>
+{/block}

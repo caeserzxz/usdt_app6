@@ -1,0 +1,55 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+    <th width="60">ID</th>
+    <th width="120">订单编号</th>
+    <th width="60">买家id</th>
+    <th width="60">卖家id</th>
+    <th width="120">叮叮数量</th>
+    <th width="120">状态</th>
+    <th width="120">售出场次id</th>
+    <th width="120">售出DDB</th>
+    <th width="120">手续费</th>
+    <th width="120">挂售时间</th>
+    <th width="120">匹配时间</th>
+    <th width="120">打款时间</th>
+<!--    <th width="120">申诉时间</th>-->
+    <th width="200">结束时间</th>
+    <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$vo.sell_order_sn}</td>
+    <td>{$vo.sell_user_id}</td>
+    <td>{$vo.buy_user_id}</td>
+    <td>{$vo.sell_number}</td>
+    <td>{$status[$vo.sell_status]}</td>
+    <td>{$vo.sell_stage_id}</td>
+    <td>{$vo.old_ddb_money}</td>
+    <td>{$vo.service_charge}</td>
+    <td>{$vo.sell_start_time|dateTpl}</td>
+    <td>{$vo.matching_time|dateTpl}</td>
+    <td>{$vo.payment_time|dateTpl}</td>
+<!--    <td>{$vo.complain_time|dateTpl}</td>-->
+    <td>{$vo.sell_end_time|dateTpl}</td>
+    <td>  
+        <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="查看">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+<!--        <a href="{:url('destroy_trade',array('trade_id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除该交易订单吗?" class="m-xs" title="删除">-->
+<!--            <i class="fa fa-trash-o text-muted"></i>-->
+<!--        </a>-->
+    </td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

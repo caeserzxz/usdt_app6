@@ -122,7 +122,6 @@ class Trade extends ApiController
         #扣除手续费后的叮叮
         $service_charge = $number *($settints['service_charge']/100);
         $dingding = $number *(1-($settints['service_charge']/100));
-
         $daybegin=strtotime(date("Ymd"));
         $dayend=$daybegin+86400;
         #今日售出数量
@@ -144,7 +143,7 @@ class Trade extends ApiController
             'sell_status'=>0,
             'sell_start_time'=>time(),
             'old_ddb_money'=>$number,
-            'service_charge'=>$settints['service_charge'],
+            'service_charge'=>$service_charge,
             'sell_order_sn'=>getOrderSn()
         ];
         $res = $SellTradeMoel->create($addData);
@@ -177,7 +176,7 @@ class Trade extends ApiController
 
         # 预约成功
         Db::commit();
-        return $this->ajaxReturn(['code' => 1,'msg' => '挂售成功','url' => url('trade/index')]);
+        return $this->ajaxReturn(['code' => 1,'msg' => '挂售成功','url' => url('trade/dd_wallet')]);
 
     }
 
