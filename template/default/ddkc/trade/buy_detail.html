@@ -69,26 +69,54 @@
                 <h3 class="h3">买家上传付款截图</h3>
                 <div class="alipay-con fs20">
                     <div class="con-img dp-flex" style="border-top:none;margin-top:0;">
-                        <div class="ali-code" style="margin-left: -0.426667rem;">
-                            <span class=" one">支付宝收款码</span>
-                            <img class="imgBig" src="__STATIC__/dingding/images/server01.png" alt="">
-                        </div>
-                        <div class="wechat-code">
+<!--                        <div class="ali-code" style="margin-left: -0.426667rem;">-->
+<!--                            <span class=" one">支付宝收款码</span>-->
+<!--                            <img class="imgBig" src="__STATIC__/dingding/images/server01.png" alt="">-->
+<!--                        </div>-->
+<!--                        <div class="wechat-code">-->
 
+<!--                        </div>-->
+                        <form action="" id="form">
+                        <div class="weui-uploader__bd">
+                            <div class="weui-uploader__input-box">
+                                {if condition="$appType eq 'IOS'"}
+                                    {if condition="$sell_info.sell_status lt 2"}
+                                        <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('pay_img');" class="info-img" alt="">
+                                        <input id="uploaderInput" onchange="changepic(this)" name="pay_img" class="weui-uploader__input"
+                                               type="file" accept="image/*" multiple="">
+                                    {else /}
+                                        <img id="img" src="{$sell_info.pay_img}"   class="info-img imgBig" alt="">
+                                    {/if}
+                                {else /}
+                                    {if condition="$sell_info.sell_status lt 2"}
+                                        <img id="img"  src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
+                                        <input id="uploaderInput" onchange="changepic(this)" name="pay_img" class="weui-uploader__input"
+                                               type="file" accept="image/*" multiple="">
+                                    {else /}
+                                        <img id="img"  src="{$sell_info.pay_img}" class="info-img imgBig" alt="">
+                                    {/if}
+                                {/if}
+                            </div>
                         </div>
+                            <input type="hidden" name="id" value="{$sell_info.id}">
+                            <div class="images-list"><!--上传图片列表--></div>
+                        </form>
                     </div>
-                    <p class="tip" style="margin-left: -1.066667rem;">图片点击放大</p>
+<!--                    <p class="tip" style="margin-left: -1.066667rem;">图片点击放大</p>-->
+                    <p class="tip">图片点击放大</p>
                 </div>
             </div>
+            {if condition="$sell_info.sell_status eq 1"}
             <div class="alipay">
                 <h3 class="fs24 dp-flex" style="height: .4rem;line-height: .4rem;"></h3>
                 <div class="alipay-con fs20">
                     <p class="zhu dp-flex color-e7">
                         您还有<span class="timer1">00：55：55</span>时间完成交易，上传虚假付款截图，一律作封号处理。
                     </p>
-                    <div class="pay-money">确认已付款</div>
+                    <div class="pay-money" onclick="make_money();">确认已付款</div>
                 </div>
             </div>
+
             <div class="alipay">
                 <h3 class="fs24 dp-flex" style="height: .4rem;line-height: .4rem;"></h3>
                 <div class="alipay-con fs20">
@@ -97,9 +125,8 @@
                     </p>
                     <div class="pay-money">延迟1小时</div>
                 </div>
-
-
             </div>
+            {/if}
             <!-- 图片放大 -->
             <div class="popup popup1">
                 <div class="popup-bgc"></div>
@@ -179,6 +206,77 @@
         }
 
     </script>
+<script>
+    // 上传显示图片
+    function changepic() {
+        var reads = new FileReader();
+        f = document.getElementById('uploaderInput').files[0];
+        reads.readAsDataURL(f);
+        reads.onload = function(e) {
+            document.getElementById('img').src = this.result;
+
+        };
+
+    }
+    var img_name = '';
+    function AppReturnBase64Image(base64imag) {
+        $.ajax({
+            'url': '{:url("ddkc/api.Center/uploadimage")}',
+            'type': 'post',
+            'data': {'img': base64imag, 'img_type': img_name,'img_name':img_name},
+            'dataType': 'json',
+            'success': function (data) {
+                if (data) {
+                    if (data.img_name == 'pay_img') {
+                        $('#img').attr('src',  data.path);
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="alipay_payment_code" class="imagesinput"/>';
+                        $('.images-list').append(str);
+                    }else if(data.img_name == 'wx_payment_code'){
+                        $('#img2').attr('src',  data.path);
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="wx_payment_code" class="imagesinput"/>';
+                        $('.images-list2').append(str);
+                    }
+
+
+                } else {
+                    $.toast('图片上传失败',"text");
+                    return false;
+                }
+            }
+        });
+    }
+
+    function loadimg(uploadfile){
+        img_name = uploadfile;
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) { //ios
+            window.app.Photo();
+        }
+    }
+    //确认打款
+    function make_money(){
+        $.ajax({
+            url: '{:url("ddkc/api.Trade/make_money")}',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#form')[0]),
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+
+            },
+            success : function(data) {
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        window.location.reload();
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

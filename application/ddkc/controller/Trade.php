@@ -112,6 +112,26 @@ class Trade  extends ClientbaseController{
         return $this->fetch('sell_detail');
     }
 
+    //*------------------------------------------------------ */
+    //-- 投诉
+    /*------------------------------------------------------ */
+    public function appeal(){
+        $UsersModel = new UsersModel();
+        $SellTradeModel = new SellTradeModel();
+        $BuyTradeModel = new BuyTradeModel();
 
+        $id = input('id');
+        #售出信息
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        #买入信息
+        $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
+        #抢购者信息
+        $buy_user = $UsersModel->info($buy_info['buy_user_id']);
+        $this->assign('sell_info',$sell_info);
+        $this->assign('buy_user',$buy_user);
+
+        $this->assign('title', '申诉');
+        return $this->fetch('appeal');
+    }
 
 }

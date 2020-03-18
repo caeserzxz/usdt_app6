@@ -239,5 +239,118 @@ class Trade extends ApiController
         }
     }
 
+    /*------------------------------------------------------ */
+    //-- 打款
+    /*------------------------------------------------------ */
+    public function make_money(){
+        $userModel = new UsersModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $SellTradeModel = new SellTradeModel();
+        $id = input('id');
+
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        if($sell_info['sell_status']==0){
+            return $this->ajaxReturn(['code' => 0,'msg' => '当前状态无法付款','url' => '']);
+        }else if($sell_info['sell_status']>1){
+            return $this->ajaxReturn(['code' => 0,'msg' => '此订单已付过款','url' => '']);
+        }
+
+        $file = $_FILES['pay_img'];
+        $ios_file = input('pay_img');
+        if(empty($file['name'])&&empty($ios_file)){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请上传付款截图','url' => '']);
+        }
+
+        #通过file提交的
+        if($file){
+            #上传打款凭证
+            $path = upload_img('pay_img');
+            if($path){
+                $data['pay_img'] = $path;
+            }
+        }
+
+        #IOS直接上传的地址
+        if($ios_file){
+            $data['pay_img'] = $ios_file;
+        }
+        $sell_save['sell_status'] = 2;
+        $sell_save['payment_time'] = time();
+        $sell_save['pay_img'] = $data['pay_img'];
+        $res = $SellTradeModel->where('id',$id)->update($sell_save);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '付款成功']);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '付款失败']);
+        }
+    }
+
+    /*------------------------------------------------------ */
+    //-- 确认收款
+    /*------------------------------------------------------ */
+    public  function  surePay(){
+        $accountModel = new AccountLogModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $SellTradeModel = new SellTradeModel();
+        $id = input('id');
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
+        if($sell_info['sell_status']==4){
+            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已付款']);
+        }
+
+        $sell_save['sell_status'] = 4;
+        $sell_save['sell_end_time'] = time();
+        Db::startTrans();
+        $res = $SellTradeModel->where('id',$id)->update($sell_save);
+        if($res){
+            #更新买家叮叮
+            $charge['balance_money']   = $sell_info['sell_number'];
+            $charge['change_desc'] = '交易成功';
+            $charge['change_type'] = 13;
+            $res1 =$accountModel->change($charge, $buy_info['buy_user_id'], false);
+            if(!$res1){
+                Db::rollback();
+                return $this->ajaxReturn(['code' => 0,'msg' => '更新买家叮叮失败','url' => '']);
+            }
+        }else{
+            Db::rollback();
+            return $this->ajaxReturn(['code' => 0,'msg' => '确认收款失败','url' => '']);
+        }
+        Db::commit();
+        return $this->ajaxReturn(['code' => 1,'msg' => '交易成功','url' => url('trade/dd_wallet')]);
+    }
+
+    /*------------------------------------------------------ */
+    //-- 申诉
+    /*------------------------------------------------------ */
+    public function appeal(){
+        $SellTradeModel = new SellTradeModel();
+        $id = input('id');
+        $reason = input('reason');
+
+        if(empty($reason)){
+            return $this->ajaxReturn(['code' => 0,'msg' => '申诉理由不能为空']);
+        }
+
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        if($sell_info['sell_status']==4){
+            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已完成,无法申诉']);
+        }elseif($sell_info['sell_status']==5){
+            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已失败,无法申诉']);
+        }
+
+        $sell_save['sell_status'] = 3;
+        $sell_save['complain_time'] = time();
+        $sell_save['appeal_reason'] = $reason;
+
+        $res = $SellTradeModel->where('id',$id)->update($sell_save);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '申诉成功','url' => url('trade/dd_wallet')]);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '申诉失败']);
+        }
+
+    }
 
 }

@@ -4,8 +4,19 @@
             <!-- 页面内容-->
             <div class="alipay">
                 <div class="top-btn">
-                    <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
-                    <a href="javacript:;" class="com wait-active">待付款</a>
+                    {if condition="$sell_info.sell_status eq 1"}
+                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        <a href="javacript:;" class="com wait-active">待付款</a>
+                    {elseif condition="$sell_info.sell_status eq 2" /}
+                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        <a href="javacript:;" class="com active11">已付款</a>
+                    {elseif condition="$sell_info.sell_status eq 3" /}
+                        <a href="javacript:;" class="com active11">申诉中</a>
+                    {elseif condition="$sell_info.sell_status eq 4" /}
+                        <a href="javacript:;" class="com active11">交易成功</a>
+                    {elseif condition="$sell_info.sell_status eq 5" /}
+                        <a href="javacript:;" class="com wait-active">交易失败</a>
+                    {/if}
                 </div>
                 <div class="alipay-con fs20">
                     <p>订单号：{$sell_info.sell_order_sn}</p>
@@ -38,11 +49,11 @@
             <div class="alipay">
                 <h3 class="h3">买家上传付款截图</h3>
                 <div class="alipay-con fs20">
-                    {if condition="$sell_info.sell_status lt 0"}
+                    {if condition="$sell_info.sell_status gt 1"}
                         <div class="con-img dp-flex" style="border-top:none;margin-top:0;">
                             <div class="ali-code" style="margin-left: -0.426667rem;">
                                 <span class=" one">付款截图</span>
-                                <img class="imgBig" src="__STATIC__/dingding/images/server01.png" alt="">
+                                <img class="imgBig" src="{$sell_info.pay_img}" alt="">
                             </div>
                             <div class="wechat-code">
 
@@ -63,11 +74,26 @@
                         <span class="timer2">00：55：55</span>
                         时间完成交易，正在打款中，若买家未按时付款，系统将作出处罚
                     </p>
-
                 </div>
-
-
             </div>
+            {if condition="$sell_info.sell_status eq 2"}
+            <div class="alipay">
+                <div class="alipay-con fs20" style="margin-top: .266667rem">
+                    <div class="top-btn">
+                        <p class="dp-flex color-e7">
+                            <span>您还有</span>
+                            <span class="timer1">01:22:33</span>
+                            <span>时间确认交易，超时自动放款</span>
+                        </p>
+
+                    </div>
+                    <div class="btns dp-flex">
+                        <a href="javascript:;" class="pay surePay" >确认交易</a>
+                        <a href="{:url('ddkc/trade/appeal')}?id={$sell_info.id}" class="income">我要申诉</a>
+                    </div>
+                </div>
+            </div>
+            {/if}
             <!-- 图片放大 -->
             <div class="popup popup1">
                 <div class="popup-bgc"></div>
@@ -83,9 +109,9 @@
                         <div class="sd-t ">为了您的资金安全，请您确认是否收到此次款项</div>
 
                         <div class="btns dp-flex">
-                            <div class="yesBtn yes-btns" onclick="yesBtn()"> 是
+                            <div class="yesBtn yes-btns" onclick="yesBtn({$sell_info.id})"> 是
                             </div>
-                            <div class="noBtn no-btns">否</div>
+                            <div class="noBtn no-btns "  onclick="noBtn()">否</div>
                         </div>
                     </div>
 
@@ -112,13 +138,32 @@
             $(".img img").attr('src', imgSrc)
             $(".popup1").show()
         })
-        function yesBtn() {
+        //确认交易
+        function yesBtn(id) {
             $(".popup2").hide()
+            $.ajax({
+                'url':'{:url("ddkc/api.Trade/surePay")}',
+                'type':'post',
+                'data':{'id':id},
+                'dataType':'json',
+                'success':function(data){
+                    if(data.code==1){
+                        $.toast(data.msg,"text",function(){
+                            window.location.href =data.url;
+                        });
+                    }else{
+                        $.toast(data.msg,"text");
+                    }
+                }
+            });
         }
         // 确认交易
         $(".surePay").on('click', function () {
             $(".popup2").show()
         })
+        function noBtn(){
+            $(".popup2").hide()
+        }
         // 页面多个倒计时
         var aTime = [3600, 3800, 899890];
         for (var i = 0; i < aTime.length; i++) {
@@ -145,9 +190,7 @@
                 }
             }, 1000);
         }
-
-
-
+        function income(){}
 
     </script>
 </body>
