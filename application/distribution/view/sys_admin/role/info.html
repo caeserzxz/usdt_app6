@@ -34,6 +34,7 @@
                         直推
                         <input class="input-small" name="direct_num" min=0 value="{$row.direct_num}" type="number"> 台
                         <select name="direct_role">
+                            <option value="0" {$row['direct_role']==0?'checked':''}>请选择</option>
                             {volist name="UsersRole" id="urow"}
                             <option value="{$urow.role_id}" {$row['direct_role']==$urow['role_id']?'checked':''}>{$urow.role_name}</option>
                             {/volist}

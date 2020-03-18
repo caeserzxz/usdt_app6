@@ -796,3 +796,84 @@ function getOrderSn()
     $order_sn = $date . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
     return $order_sn;
 }
+/*------------------------------------------------------ */
+//-- 身份升级
+/*------------------------------------------------------ */
+function roleUpgrade($user_id)
+{
+	$userModel = new \app\member\model\UsersModel();
+	$paymentModel = new \app\ddkc\model\PaymentModel();
+	$authenModel = new \app\ddkc\model\AuthenticationModel();
+	$roleModel = new \app\distribution\model\DividendRoleModel();
+	$accountModel = new \app\member\model\AccountLogModel();
+
+	$user = $userModel->info($user_id);
+
+	# 是否是游客
+	if ($user['role_id']) return false;
+	# 是否实名认证
+	$isAu = $authenModel->where('user_id',$user_id)->count();
+	if (!$isAu) return false;
+
+	# 是否上传2个收款信息
+	$payment = $paymentModel->where('user_id',$user_id)->count();
+	if ($payment < 2) return false;
+	
+	# 下一等级
+	$roleInfo = $roleModel->find();
+
+	# 更新等级
+	$userModel->where('user_id',$user_id)->update(['role_id' => $roleInfo['role_id']]);
+
+	# 积分奖励
+	if ($roleInfo['bonus_points']) {
+		$data['use_integral'] = $roleInfo['bonus_points'];
+    	$data['by_id']        = $roleInfo['role_id'];
+    	$data['change_desc']  = '升级奖励';
+	    $data['change_type']  = 107;
+        $accountModel->change($data, $user['user_id'], false); 
+	}
+	# 上级升级
+	superiorUpgrade($user['pid']);
+}
+/*------------------------------------------------------ */
+//-- 上级升级
+/*------------------------------------------------------ */
+function superiorUpgrade($user_id)
+{
+	$userModel = new \app\member\model\UsersModel();
+	$roleModel = new \app\distribution\model\DividendRoleModel();
+	$accountModel = new \app\member\model\AccountLogModel();
+
+	$user = $userModel->info($user_id);
+	if (!$user) return true;
+
+	$pid = $user['pid'];
+	# 游客无法升级
+	if (!$user['role_id']) return superiorUpgrade($pid);
+
+	# 下一等级
+	$roleInfo = $roleModel->where('role_id','>',$user['role_id'])->find();
+	if (!$roleInfo) return superiorUpgrade($pid);
+
+	# 直推人数是否达标
+	$where[] = ['pid','=',$user_id];
+	$where[] = ['role_id','>=',$roleInfo['direct_role']];
+	$directSub = $userModel->where($where)->count();
+
+	if ($directSub < $roleInfo['direct_num']) return superiorUpgrade($pid);
+
+	# 更新等级
+	$userModel->where('user_id',$user_id)->update(['role_id' => $roleInfo['role_id']]);
+
+	# 积分奖励
+	if ($roleInfo['bonus_points']) {
+		$data['use_integral'] = $roleInfo['bonus_points'];
+    	$data['by_id']        = $roleInfo['role_id'];
+    	$data['change_desc']  = '升级奖励';
+	    $data['change_type']  = 107;
+        $accountModel->change($data, $user['user_id'], false); 
+	}
+	# 再上一级升级
+	superiorUpgrade($pid);
+}
