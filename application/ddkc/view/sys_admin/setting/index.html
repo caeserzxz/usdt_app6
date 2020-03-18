@@ -27,7 +27,7 @@
                     <li ><a href="#credit_integral" data-toggle="tab">信用评分设置</a></li>
                     <li ><a href="#sell_explain" data-toggle="tab">挂售详情说明</a></li>
                     <li ><a href="#appeal_explain" data-toggle="tab">申诉注意事项</a></li>
-                    <li ><a href="#information_article" data-toggle="tab">快讯文章</a></li>
+                    <li ><a href="#information_article" data-toggle="tab">文章说明</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -269,15 +269,9 @@
                 </div>
                 <div class="tab-pane" id="credit_integral">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">实名并上传收款码赠送</label>
-                        <div class="controls">
-                            <input type="text" name="perfect_information"  class="input-large" value="{$setting.perfect_information}"> <span class="help-line"> 积分</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-2 control-label">推荐奖励</label>
                         <div class="controls">
-                            <input type="text" name="recom_award" class="input-large" value="{$setting.recom_award}"> <span class="help-line">下级实名并上传收款码后增加信用评分；</span>
+                            <input type="text" name="recom_award_integral" class="input-large" value="{$setting.recom_award_integral}"> <span class="help-line">下级实名并上传收款码后增加信用评分；</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -305,7 +299,6 @@
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>
-                </div>
                 </div>
                 <div class="tab-pane" id="appeal_explain">
                     <div class="form-group publicnote_status">
@@ -337,6 +330,16 @@
                                   data-kdheight="150" data-tongji="remain"
                                   data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
                                   name="news_flash" style="visibility:hidden;">{$setting.news_flash|raw}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">信用积分说明：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                        <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                  data-kdheight="150" data-tongji="remain"
+                                  data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
+                                  name="integral_article" style="visibility:hidden;">{$setting.integral_article|raw}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>

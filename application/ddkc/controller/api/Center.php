@@ -73,6 +73,8 @@ class Center extends ApiController
         }
 
         if($res){
+            # 升级
+            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '支付宝收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '支付宝收款信息上传失败']);
@@ -120,6 +122,7 @@ class Center extends ApiController
         }
 
         if($res){
+            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '微信收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '微信收款信息上传失败']);
@@ -157,6 +160,7 @@ class Center extends ApiController
         }
 
         if($res){
+            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '银行卡收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '银行卡收款信息上传失败']);

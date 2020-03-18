@@ -27,9 +27,9 @@
                  {/if}
             </div>
             </form>
-            <div onclick="go_userinfo();">
-                <p>用户：{$userInfo.mobile}</p>
-                <p>账户信用积分：{$userInfo.account.use_integral}</p>
+            <div>
+                <p onclick="go_userinfo();">用户：{$userInfo.mobile}</p>
+                <p onclick="go_integral();">账户信用积分：{$userInfo.account.use_integral}</p>
             </div>
             <div>
                 <p>等级：{$userInfo.role.role_name}</p>
@@ -141,6 +141,9 @@
 <script>
     function go_userinfo() {
         window.location.href = "{:url('ddkc/center/userinfo')}"
+    }
+    function go_integral() {
+        window.location.href = "{:url('ddkc/center/integralLog')}"
     }
     // 上传显示图片
     function changepic() {
