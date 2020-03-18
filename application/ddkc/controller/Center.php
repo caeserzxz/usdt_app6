@@ -84,6 +84,7 @@ class Center  extends ClientbaseController{
     public function userInfo(){
         $this->assign('title', '个人资料');	
 		$superior = (new UsersModel)->getSuperior($this->userInfo['pid']);
+        $this->assign('sms_fun', settings('sms_fun'));//获取短信配置
 		$this->assign('superior', $superior);
         return $this->fetch('user_info');
     }
@@ -179,5 +180,5 @@ class Center  extends ClientbaseController{
     public function security(){
         $this->assign('title', '安全中心');
         return $this->fetch();
-    }    
+    }   
 }?>

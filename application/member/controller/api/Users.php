@@ -306,17 +306,25 @@ class Users extends ApiController
         $upArr['nick_name'] = input('nick_name', '', 'trim');
         if (empty($upArr['nick_name']) == true) {
             return $this->error('请填写用户昵称.');
+        }        
+        # 修改紧急联系方式
+        if (input('contact_mobile', '', 'trim')) {
+            $upArr['contact_mobile'] = input('contact_mobile', '', 'trim');
+            if (checkMobile($upArr['contact_mobile']) == false) {
+                return $this->error('紧急联系方式格式不正确.');
+            }
+            $this->checkCode('contact_mobile',$this->userInfo['mobile'],input('code'));//验证短信验证
         }
 
         $where[] = ['nick_name', '=', $upArr['nick_name']];
         $where[] = ['user_id', '<>', $this->userInfo['user_id']];
         $count = $this->Model->where($where)->count('user_id');
         if ($count > 0) return '昵称：' . $upArr['nick_name'] . '，已存在.';
-        $upArr['signature'] = input('signature', '', 'trim');
-        $upArr['sex'] = input('sex', '男', 'trim');
-        $upArr['sex'] = $upArr['sex'] == '男' ? 1 : 0;
-        $upArr['birthday'] = input('birthday', '', 'trim');
-        $upArr['show_mobile'] = input('show_mobile', 0, 'intval');
+        // $upArr['signature'] = input('signature', '', 'trim');
+        // $upArr['sex'] = input('sex', '男', 'trim');
+        // $upArr['sex'] = $upArr['sex'] == '男' ? 1 : 0;
+        // $upArr['birthday'] = input('birthday', '', 'trim');
+        // $upArr['show_mobile'] = input('show_mobile', 0, 'intval');
         //验证数据是否出现变化
         $dbarr = $this->Model->field(join(',',array_keys($upArr)))->where('user_id',$this->userInfo['user_id'])->find()->toArray();
         $this->checkUpData($dbarr,$upArr,true);
