@@ -145,9 +145,9 @@
     }
     function getStorageList(is_tab = 0) {
         if(loading_2) return;
-        loading_2 = true;
-
         if (is_tab == 1 && page_2 > 1) return;
+        
+        loading_2 = true;
 
         var arr = new Object();
         arr.p = page_2;

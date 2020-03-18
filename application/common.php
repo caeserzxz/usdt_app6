@@ -833,8 +833,16 @@ function roleUpgrade($user_id)
 	    $data['change_type']  = 107;
         $accountModel->change($data, $user['user_id'], false); 
 	}
+	$pid = $user['pid'];
+	if (settings('recom_award_integral') && $pid) {
+		$pdata['use_integral'] = settings('recom_award_integral');
+    	$pdata['by_id']        = $user['user_id'];
+    	$pdata['change_desc']  = '推荐升级奖励';
+	    $pdata['change_type']  = 108;
+        $accountModel->change($pdata, $pid, false); 
+	}
 	# 上级升级
-	superiorUpgrade($user['pid']);
+	if ($pid) superiorUpgrade($pid);
 }
 /*------------------------------------------------------ */
 //-- 上级升级

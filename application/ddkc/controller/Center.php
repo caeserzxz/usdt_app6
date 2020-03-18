@@ -192,5 +192,15 @@ class Center  extends ClientbaseController{
     public function security(){
         $this->assign('title', '安全中心');
         return $this->fetch();
-    }   
+    }
+    /*------------------------------------------------------ */
+    //-- 积分日志
+    /*------------------------------------------------------ */
+    public function integralLog(){
+        $integral_article = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('integral_article'));
+        $this->assign('integral_article', $integral_article);
+        $this->assign('title', '信用积分');
+        $this->assign('year', date('Y',time()));
+        return $this->fetch();
+    }
 }?>

@@ -181,11 +181,17 @@ class Users extends ApiController
         $type = input('type', 'balance', 'trim');
         $time = input('time', '', 'trim');
         $flag = input('flag','all','trim');
+        $p = input('p',0,'intval');
+
         if (empty($time)) {
             $time = date('Y年m月');
         }
         $return['time'] = $time;
-        $_time = strtotime(str_replace(array('年', '月'), array('-', ''), $time));
+        // $_time = strtotime(str_replace(array('年', '月'), array('-', ''), $time));
+        $_time1 = str_replace(array('年'), array(''), $time);
+        $_time2 = strtotime($_time1.'-01-01 00:00:00');
+        $_time3 = strtotime(($_time1+1).'-01-01 00:00:00')-1;
+
         $return['code'] = 1;
         $AccountLogModel = new AccountLogModel();
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
@@ -212,8 +218,10 @@ class Users extends ApiController
         $arr = $flag == 'expend' ? [$field, '<', 0] : $arr;
         $where[] = $arr;
 
-        $where[] = ['change_time', 'between', array($_time, strtotime(date('Y-m-t', $_time)) + 86399)];
-        $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
+        // $where[] = ['change_time', 'between', array($_time, strtotime(date('Y-m-t', $_time)) + 86399)];
+        $where[] = ['change_time', 'between', array($_time2, $_time3)];
+        $rows = $AccountLogModel->where($where)->limit($p*10,10)->order('change_time DESC')->select();
+
         $return['income'] = 0;
         $return['expend'] = 0;
         foreach ($rows as $key => $row) {
@@ -226,6 +234,7 @@ class Users extends ApiController
             }
 
             $row['_time'] = timeTran($row['change_time']);
+            $row['_date'] = date('Y-m-d H:i:s',$row['change_time']);
             $return['list'][] = $row;
         }
         return $this->ajaxReturn($return);
