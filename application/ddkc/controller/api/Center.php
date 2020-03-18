@@ -10,6 +10,7 @@ use app\ddkc\model\MiningUnsealingModel;
 use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
+use think\facade\Cache;
 
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
@@ -217,5 +218,42 @@ class Center extends ApiController
         $data['threeInfo'] = $threeInfo;
         $data['textInfo'] = $hierarchyText;
         return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 上传头像
+    /*------------------------------------------------------ */
+    public function upload_user_img(){
+        $userModel = new UsersModel();
+
+        $file = $_FILES['head_pic'];
+        $ios_file = input('head_pic');
+
+        if(empty($file['name'])&&empty($ios_file)){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请上传头像','url' => '']);
+        }
+
+        # 通过file提交的
+        if($file){
+            #上传打款凭证
+            $path = upload_img('head_pic');
+            if($path){
+                $data['head_pic'] = $path;
+            }
+        }
+
+        # IOS直接上传的地址
+        if($ios_file) $data['head_pic'] = $ios_file;
+        $map['headimgurl'] = $data['head_pic'];
+
+        # 更新头像
+        $res = $userModel->where('user_id',$this->userInfo['user_id'])->update($map);
+
+        if($res){
+            Cache::set('user_info_mkey_'.$this->userInfo['user_id'],'',30);
+            $user = $userModel->info($this->userInfo['user_id']);
+            return $this->ajaxReturn(['code' => 1,'msg' => '头像修改成功','url'=> url('center/index')]);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
+        }
     }
 }

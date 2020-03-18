@@ -135,8 +135,9 @@
     function codeButton() {
         var arr = new Object();
         arr.type = 'contact_mobile';
-        arr.mobile = $('#contact_mobile').val();
-        if (arr.mobile == '') {
+        arr.mobile = "{$userInfo.mobile}";
+        var contact_mobile = $('#contact_mobile').val();
+        if (contact_mobile == '') {
             $.toast('请输入手机号码', "text");
             return false;
         }

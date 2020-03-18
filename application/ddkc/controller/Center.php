@@ -13,17 +13,29 @@ use app\member\model\UsersSignModel;
 use app\member\model\AccountLogModel;
 
 class Center  extends ClientbaseController{
-  
 	/*------------------------------------------------------ */
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
+        $userId = $this->userInfo['user_id'];
+        $accountLogModel = new AccountLogModel();
+
         $this->assign('title', '会员中心');
         $this->assign('isUserIndex', 1);
         $this->assign('not_top_nav', true);
         $this->assign('user_center_nav_tpl', settings('user_center_nav_tpl'));
         $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
 
+        # 矿机收益
+        $profit['miner'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 105])->sum('ddb_money');
+        # 增值包收益
+        $profit['increment'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 106])->sum('ddb_money');
+
+        $where[] = ['user_id','=',$userId];
+        $where[] = ['change_type','IN',[102,103]];
+        $profit['award'] = $accountLogModel->where($where)->sum('ddb_money');
+        
+        $this->assign('profit', $profit);
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */

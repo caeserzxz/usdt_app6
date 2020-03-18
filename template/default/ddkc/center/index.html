@@ -5,44 +5,63 @@
     <!-- 页面内容-->
     <div class="user">
         <div class="user-info dp-flex">
+            <form action="" id="form">
             <div>
-                <img id="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/dingding/images/photo01.png'}" alt="">
+                <!-- <img id="headimgurl" src="{$userInfo['headimgurl']|default='__STATIC__/dingding/images/photo01.png'}" alt=""> -->
+                <!-- <img src="{$userInfo['headimgurl']|default='__STATIC__/dingding/images/photo01.png'}" alt="" class="userimg"> -->
+                <!-- <input type="file" class="uploadInput" onchange="uploadFile(this,event)" style="display: none;"> -->
+
+                {if condition="$appType eq 'IOS'"}
+                     {if condition="$userInfo.headimgurl eq ''"}
+                        <img id="img" src="__STATIC__/dingding/images/photo01.png" onclick="loadimg('head_pic');" alt="">
+                     {else /}
+                        <img id="img" src="{$userInfo.headimgurl}"  onclick="loadimg('head_pic');" alt="">
+                     {/if}
+                 {else /}
+                     {if condition="$userInfo.headimgurl eq ''"}
+                        <img id="img" src="__STATIC__/dingding/images/photo01.png" alt="">
+                     {else /}
+                        <img id="img" src="{$userInfo.headimgurl}" alt="">
+                     {/if}
+                     <input id="uploaderInput"  onchange="changepic(this)" class="weui-uploader__input" style="width: .6rem;height: .6rem;margin-left: 8%;margin-top: 5%;" id="head_pic" name="head_pic" type="file" accept="image/*" multiple="">
+                 {/if}
             </div>
+            </form>
             <div onclick="go_userinfo();">
                 <p>用户：{$userInfo.mobile}</p>
-                <p>账户信用积分：100</p>
+                <p>账户信用积分：{$userInfo.account.use_integral}</p>
             </div>
             <div>
-                <p>等级：中级（加强型）</p>
+                <p>等级：{$userInfo.role.role_name}</p>
                 <a href="{:url('ddkc/center/sign')}" class="btns1">签到</a>  
             </div>
         </div>
         <div class="user-money dp-flex">
             <div>
                 <p>总资产</p>
-                <p>1122233.00</p>
+                <p>{$userInfo.account.balance_money+$userInfo.account.ddb_money}</p>
             </div>
             <div>
                 <p>总收益</p>
-                <p>1122233.04</p>
+                <p>{$profit.miner+$profit.increment}</p>
             </div>
             <div>
                 <p>矿机收益</p>
-                <p>1122233.04</p>
+                <p>{$profit.miner}</p>
             </div>
             <div>
                 <p>增值包收益</p>
-                <p>1122233.04</p>
+                <p>{$profit.increment}</p>
             </div>
         </div>
     </div>
     <div class="tab dp-flex">
         <div class="le">
-            <p>当前可售DDB：656</p>
+            <p>当前可售DDB：{$userInfo.account.ddb_money}</p>
             <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
         </div>
         <div class="rt">
-            <p>主链矿机收益：99</p>
+            <p>主链矿机收益：{$profit.award}</p>
             <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
         </div>
     </div>
@@ -122,6 +141,72 @@
 <script>
     function go_userinfo() {
         window.location.href = "{:url('ddkc/center/userinfo')}"
+    }
+    // 上传显示图片
+    function changepic() {
+        var reads = new FileReader();
+        f = document.getElementById('uploaderInput').files[0];
+        reads.readAsDataURL(f);
+        reads.onload = function(e) {
+            document.getElementById('img').src = this.result;
+        };
+        $.ajax({
+            url: '{:url("ddkc/api.Center/upload_user_img")}',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#form')[0]),
+            processData: false,
+            contentType: false,
+            dataType:"json",
+            beforeSend: function(){
+                $('.weui-loadmore').attr("style","display:block;")
+            },
+            success : function(data) {
+                $('.weui-loadmore').attr("style","display:none;");
+                if(data.code==1){
+                    $.toast(data.msg,"text",function(){
+                        // window.location.href = data.url;
+                    });
+                }else{
+                    $.toast(data.msg,"text");
+                }
+            }
+        });
+    }
+    function AppReturnBase64Image(base64imag) {
+        $.ajax({
+            'url': '{:url("ddkc/api.Center/uploadimage")}',
+            'type': 'post',
+            'data': {'img': base64imag, 'img_type': 'head_pic','img_name':img_name},
+            'dataType': 'json',
+            'success': function (data) {
+                if (data) {
+                    if (data.img_name == 'head_pic') {
+                        $('#img').attr('src',  data.path);
+                        var arr = new Object();
+                        arr.head_pic =  data.path;
+                        $.ajax({
+                            'url':'{:url("ddkc/api.Center/upload_user_img")}',
+                            'type':'post',
+                            'data':arr,
+                            'dataType':'json',
+                            'success':function(data){
+                                if(data.code==1){
+                                    $.toast(data.msg,"text",function(){
+                                        // window.location.href = data.url;
+                                    });
+                                }else{
+                                    $.toast(data.msg,"text");
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    $.toast('图片上传失败',"text");
+                    return false;
+                }
+            }
+        });
     }
 </script>
 </body>
