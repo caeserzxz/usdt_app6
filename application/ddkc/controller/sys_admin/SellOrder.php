@@ -1,10 +1,12 @@
 <?php
 namespace app\ddkc\controller\sys_admin;
 use app\AdminController;
+use think\Db;
 
 use app\ddkc\model\SellTradeModel;
 use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\TradingStageModel;
+use app\member\model\AccountLogModel;
 /**
  * 矿机订单
  */
@@ -43,38 +45,47 @@ class SellOrder extends AdminController
     public function getList($runData = false) {
         $BuyTradeModel = new BuyTradeModel();
         $this->search['keyword'] = input("keyword");
-        $this->search['key_type'] = input("key_type");
-        $this->search['pay_type'] = input("pay_type");
-        $this->search['status'] = input("status");
-        $this->search['order_type'] = input("order_type");
+        $this->search['sell_status'] = input("sell_status");
+        $this->search['time_type'] = input("time_type");
+        $this->assign("search", $this->search);
 
-
-        $this->order_by = 'order_id';
+        $this->order_by = 'id';
         $this->sort_by = 'DESC';
-        if (input('reportrange')) {
-            $dtime = explode('-', input('reportrange'));
-            $where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
-        }
-        if ($this->search['pay_type']) {
-            $where[] = ['pay_type','=',($this->search['pay_type'])];
-        }
-        if ($this->search['order_type']) {
-            $where[] = ['pay_type','=',($this->search['order_type'])];
-        }
+        $time_type = input('time_type', '', 'trim');
 
-        if ($this->search['status']) {
-            $where[] = ['status','=',($this->search['status'])];
+
+        $reportrange = input('reportrange');
+
+        if (empty($reportrange) == false) {
+            $dtime = explode('-', $reportrange);
+        }
+        switch ($time_type) {
+            case 'sell_start_time':
+                $where[] = ' sell_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
+            case 'matching_time':
+                $where[] = ' matching_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
+            case 'payment_time':
+                $where[] = ' payment_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
+            case 'complain_time':
+                $where[] = ' complain_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
+            case 'sell_end_time':
+                $where[] = ' sell_end_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
+            default:
+                break;
+        }
+        if ($this->search['sell_status']) {
+            $where[] = ' sell_status ='.($this->search['sell_status']-1);
         }
         if ($this->search['keyword']) {
-            if ($this->search['key_type'] == 1) {
-                $where[] = ['user_id','=',($this->search['keyword'])];
-            }elseif ($this->search['key_type'] == 2) {
-                $where[] = ['miner_name','=',($this->search['keyword'])];
-            }elseif ($this->search['key_type'] == 3) {
-                $where[] = ['surplus_days','=',($this->search['keyword'])];
-            }
+            $where[] = " id = '" . ($this->search['keyword']) . "' or sell_order_sn = '" . $this->search['keyword']."' ";
         }
-        $data = $this->getPageList($this->Model,$where);
+        $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
+        $data = $this->getPageList($this->Model,$viewObj);
         foreach ($data['list'] as $key => $value) {
             if($value>0){
                 $buy_info = $BuyTradeModel->where('id',$value['buy_id'])->find();
@@ -124,5 +135,66 @@ class SellOrder extends AdminController
         $data['sell_end_time'] = date('Y-m-d H:i:s',$data['sell_end_time']);
 
         return $data;
+    }
+    /*------------------------------------------------------ */
+    //-- 交易审核
+    /*------------------------------------------------------ */
+    public function examine(){
+        $BuyTradeModel = new BuyTradeModel();
+        $accountModel = new AccountLogModel();
+
+        $id = input('id');
+        $type = input('type');
+        $time = time();
+        $sell_info = $this->Model->where('id',$id)->find();
+        $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
+
+        Db::startTrans();
+        if($type==1){
+            #申诉通过
+            #修改订单状态
+            $sell_save['sell_status'] = 5;
+            $sell_save['sell_end_time'] =$time;
+            $res = $this->Model->where('id',$id)->update($sell_save);
+            #对买家封号处理
+            if($res){
+                $ban['user_id'] = $buy_info['buy_user_id'];
+                $ban['ban_time'] = $time;
+                $ban['ban_day'] = 10000;
+                $ban['ban_status'] = 0;
+                $ban['ban_reason'] = "后台审核申诉结果";
+                $ban['order_id'] = $id;
+
+                $res1 = Db::name('dd_ban_record')->insert($ban);
+                if($res1==false){
+                    Db::rollback();
+                    return $this->ajaxReturn(['code' => 0,'msg' => '添加封号记录失败','url' => '']);
+                }
+
+            }else{
+                Db::rollback();
+                return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);
+            }
+        }else{
+            #拒绝审核
+            #修改订单状态
+            $sell_save['sell_status'] = 4;
+            $sell_save['sell_end_time'] =$time;
+            $res = $this->Model->where('id',$id)->update($sell_save);
+            #更新叮叮到买家账户
+            if($res){
+                #更新买家叮叮
+                $charge['balance_money']   = $sell_info['sell_number'];
+                $charge['change_desc'] = '交易成功';
+                $charge['change_type'] = 13;
+                $res1 =$accountModel->change($charge, $buy_info['buy_user_id'], false);
+            }else{
+                Db::rollback();
+                return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);
+            }
+
+        }
+        Db::commit();
+        return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('index')]);
     }
 }

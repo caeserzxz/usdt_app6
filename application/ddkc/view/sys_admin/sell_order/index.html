@@ -10,19 +10,14 @@
                     <strong>订单列表</strong>
                 </li>                                  
             </ul>
-         <select name="type"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
-             <option value="-1">所有订单</option>
-             <option value="1">买入</option>
-             <option value="2">卖出</option>
-         </select>
 
             <select name="time_type"  style="width: 130px;" data-toggle="select2">
                 <option value="">选择时间类型</option>
-                <option value="craete_time">创建时间</option>
-                <option value="buying_time">购买时间</option>
+                <option value="sell_start_time">挂售时间</option>
+                <option value="matching_time">匹配时间</option>
                 <option value="payment_time">打款时间</option>
-                <option value="appeal_time">申诉时间</option>
-                <option value="end_time">结束时间</option>
+                <option value="complain_time">申诉时间</option>
+                <option value="sell_end_time">结束时间</option>
             </select>
              <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
                  <i class="fa fa-calendar fa-lg"></i>
@@ -30,18 +25,17 @@
                  <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
              </a>
 
-             <select name="status"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
-                 <option value="-1">全部</option>
-                 <option value="1">待拍单</option>
-                 <option value="2">已拍单</option>
+             <select name="sell_status"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                 <option value="">全部</option>
+                 <option value="1">待出售</option>
+                 <option value="2">待付款</option>
                  <option value="3">已打款</option>
-                 <option value="4">冻结</option>
+                 <option value="4">申诉中</option>
                  <option value="5">成功</option>
                  <option value="6">失败</option>
-                 <option value="7">取消订单</option>
              </select>
              <input type="hidden" value="0" name="export">
-             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="买家ID/卖家ID/订单ID/订单编号" data-rule-required="true" />
+             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="订单ID/订单编号" data-rule-required="true" />
              <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
         </div>
     </form>

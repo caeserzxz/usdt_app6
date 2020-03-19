@@ -117,8 +117,26 @@
                                         {$row.appeal_reason}
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">申诉理由：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {if condition="$row.pay_img eq ''"}
+                                            暂无打款凭证
+                                        {else /}
+                                            <a href="{$row.pay_img}" title="点击预览" class="btn btn-sm btnbtn-default" target="_blank"><i class="fa fa-search"></i>点击预览</a>
+                                        {/if}
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        {if condition="$row.sell_status eq 3"}
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button type="button" class="btn btn-primary"  onclick="examine(1,{$row.id});" data-loading-text="保存中...">申诉通过</button>
+                            <button type="button" class="btn btn-default" onclick="examine(2,{$row.id});" >拒绝申诉</button>
+                        </div>
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -130,6 +148,23 @@
 {block name="footer" }
 <script type="text/javascript">
     seajs.use(["dist/plupload/init.js"]);
+    function  examine(type,id){
+        $.ajax({
+            'url':'{:url("examine")}',
+            'type':'post',
+            'data':{'id':id,'type':type},
+            'dataType':'json',
+            'success':function(data){
+                if(data.code==1){
+                    layer.msg(data.msg,function(){
+                        window.location.href='{:url("index")}';
+                    });
+                }else{
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
 </script>
 {/block}
 
