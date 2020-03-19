@@ -5,19 +5,20 @@
             <div class="alipay">
                 <div class="top-btn">
                     {if condition="$sell_info.sell_status eq 1"}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        {if condition="$is_payment eq 1"}
+                            <p class="dp-flex fw_b" id="timer3">交易剩余时间：<span class="timer3"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
+                         {/if}
                         <a href="javacript:;" class="com wait-active">待付款</a>
                     {elseif condition="$sell_info.sell_status eq 2" /}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        {if condition="$is_confirm eq 1"}
+                            <p class="dp-flex fw_b" id="timer0">交易剩余时间：<span class="timer0"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
+                         {/if}
                         <a href="javacript:;" class="com active11">已付款</a>
                     {elseif condition="$sell_info.sell_status eq 3" /}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
                         <a href="javacript:;" class="com active11">申诉中</a>
                     {elseif condition="$sell_info.sell_status eq 4" /}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
                         <a href="javacript:;" class="com active11">交易成功</a>
                     {elseif condition="$sell_info.sell_status eq 5" /}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
                         <a href="javacript:;" class="com wait-active">交易失败</a>
                     {/if}
                 </div>
@@ -107,25 +108,26 @@
                 </div>
             </div>
             {if condition="$sell_info.sell_status eq 1"}
-            <div class="alipay">
+            <div class="alipay" id="timer1">
                 <h3 class="fs24 dp-flex" style="height: .4rem;line-height: .4rem;"></h3>
                 <div class="alipay-con fs20">
                     <p class="zhu dp-flex color-e7">
-                        您还有<span class="timer1">00：55：55</span>时间完成交易，上传虚假付款截图，一律作封号处理。
+                        您还有<span class="timer1"><?php echo gmdate('H:i:s',$payment_time);?></span></span>时间完成交易，上传虚假付款截图，一律作封号处理。
                     </p>
                     <div class="pay-money" onclick="make_money();">确认已付款</div>
                 </div>
             </div>
-
-            <div class="alipay">
-                <h3 class="fs24 dp-flex" style="height: .4rem;line-height: .4rem;"></h3>
-                <div class="alipay-con fs20">
-                    <p class="zhu dp-flex color-e7">
-                        您已超时，<span class="timer2">00：55：55</span>内可以选择延迟1小时，超时接受处罚
-                    </p>
-                    <div class="pay-money">延迟1小时</div>
-                </div>
-            </div>
+                {if condition="$sell_info.is_delay eq 0"}
+                    <div class="alipay" id="timer2">
+                        <h3 class="fs24 dp-flex" style="height: .4rem;line-height: .4rem;"></h3>
+                        <div class="alipay-con fs20">
+                            <p class="zhu dp-flex color-e7">
+                                您已超时，<span class="timer2"><?php echo gmdate('H:i:s',$payment_time);?></span></span>内可以选择延迟，超时接受处罚
+                            </p>
+                            <div class="pay-money" onclick="delay({$sell_info.id});">延迟1小时</div>
+                        </div>
+                    </div>
+                {/if}
             {/if}
             <!-- 图片放大 -->
             <div class="popup popup1">
@@ -178,18 +180,44 @@
         $(".surePay").on('click', function () {
             $(".popup2").show()
         })
-        // 页面多个倒计时
-        var aTime = [3600, 3800, 899890];
-        for (var i = 0; i < aTime.length; i++) {
-            (function (i) {
-                var obj = 'timer' + i;
-                countDown(aTime[i], function (msg) {
-                    var timeDom = document.getElementsByClassName(obj)
-                    timeDom[0].textContent = msg;
-                })
-            })(i)
+        // // 页面多个倒计时
+        // var aTime = [3600, 3800, 899890];
+        // for (var i = 0; i < aTime.length; i++) {
+        //     (function (i) {
+        //         var obj = 'timer' + i;
+        //         countDown(aTime[i], function (msg) {
+        //             var timeDom = document.getElementsByClassName(obj)
+        //             timeDom[0].textContent = msg;
+        //         })
+        //     })(i)
+        // }
+        //待确认定时
+        var is_confirm = {$is_confirm};
+        if(is_confirm==1){
+            var confirm_time = {$confirm_time};
+            countDown(confirm_time,'timer0', function (msg) {
+                var timeDom = document.getElementsByClassName('timer0')
+                timeDom[0].textContent = msg;
+            })
         }
-        function countDown(maxtime, fn) {
+        //待付款定时
+        var is_payment = {$is_payment};
+        if(is_payment==1){
+            var payment_time = {$payment_time};
+            countDown(payment_time,'timer1', function (msg) {
+                var timeDom = document.getElementsByClassName('timer1')
+                timeDom[0].textContent = msg;
+            })
+            countDown(payment_time,'timer2', function (msg) {
+                var timeDom = document.getElementsByClassName('timer2')
+                timeDom[0].textContent = msg;
+            })
+            countDown(payment_time,'timer3', function (msg) {
+                var timeDom = document.getElementsByClassName('timer3')
+                timeDom[0].textContent = msg;
+            })
+        }
+        function countDown(maxtime,obj, fn) {
             var timer = setInterval(function () {
                 if (!!maxtime) {
                     var day = Math.floor(maxtime / 86400),
@@ -201,6 +229,7 @@
                     --maxtime;
                 } else {
                     clearInterval(timer);
+                    $('#'+obj).hide();
                 }
             }, 1000);
         }
@@ -253,28 +282,72 @@
         }
     }
     //确认打款
+    var isPostMsg = false;
     function make_money(){
-        $.ajax({
-            url: '{:url("ddkc/api.Trade/make_money")}',
-            type: 'POST',
-            cache: false,
-            data: new FormData($('#form')[0]),
-            processData: false,
-            contentType: false,
-            dataType:"json",
-            beforeSend: function(){
-
-            },
-            success : function(data) {
-                if(data.code==1){
-                    $.toast(data.msg,"text",function(){
-                        window.location.reload();
-                    });
-                }else{
-                    $.toast(data.msg,"text");
-                }
+        $.confirm("是否已付款", function() {
+            if(isPostMsg==true){
+                return false;
             }
+            isPostMsg = true;
+            $.ajax({
+                url: '{:url("ddkc/api.Trade/make_money")}',
+                type: 'POST',
+                cache: false,
+                data: new FormData($('#form')[0]),
+                processData: false,
+                contentType: false,
+                dataType:"json",
+                beforeSend: function(){
+
+                },
+                success : function(data) {
+                    isPostMsg = false;
+                    if(data.code==1){
+                        $.toast(data.msg,"text",function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        $.toast(data.msg,"text");
+                    }
+                }
+            });
+        }, function() {
+            //点击取消后的回调函数
         });
+
+
+    }
+
+    var isPostMsg2 = false;
+    function delay(id){
+        $.confirm("是否延迟付款", function() {
+            if(isPostMsg2==true){
+                return false;
+            }
+            isPostMsg2 = true;
+            //点击确认后的回调函数
+            $.ajax({
+                'url': '{:url("ddkc/api.Trade/delay")}',
+                'type':'post',
+                'data':{'id':id},
+                'dataType':'json',
+                'success':function(data){
+                    isPostMsg2 = false;
+                    if(data.code==1){
+                        $.toast(data.msg,"text",function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        $.toast(data.msg,"text");
+                    }
+                }
+            });
+        }, function() {
+            //点击取消后的回调函数
+        });
+
+
+
     }
 </script>
 </body>

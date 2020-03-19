@@ -203,7 +203,9 @@ class Trade extends ApiController
     /*------------------------------------------------------ */
     public function getSellList(){
         $userModel = new UsersModel();
+        $BuyTradeModel = new BuyTradeModel();
         $SellTradeModel = new SellTradeModel();
+        $setting = settings();
         $this->order_by = 'id';
         $this->sort_by = 'DESC';
         $type = input('type');
@@ -220,6 +222,58 @@ class Trade extends ApiController
         $where[] =  ['sell_user_id' ,'eq' ,$this->userInfo['user_id']];
         $viewObj = $SellTradeModel->where($where)->order('id desc');
         $data = $this->getPageList($SellTradeModel,$viewObj);
+        foreach ($data['list'] as $k=>$v){
+            $data['list'][$k]['sell_start_time_date'] = date('Y-m-d H:i:s',$v['sell_start_time']);
+            $data['list'][$k]['matching_time_date'] = date('Y-m-d H:i:s',$v['matching_time']);
+            $data['list'][$k]['payment_time_date'] = date('Y-m-d H:i:s',$v['payment_time']);
+            $data['list'][$k]['complain_time_date'] = date('Y-m-d H:i:s',$v['complain_time']);
+            $data['list'][$k]['sell_end_time_date'] = date('Y-m-d H:i:s',$v['sell_end_time']);
+            if($v['sell_status']>0){
+                $buy_info = $BuyTradeModel->where('id',$v['buy_id'])->find();
+                $buy_user = $userModel->info($buy_info['buy_user_id']);
+                $data['list'][$k]['buy_user'] = $buy_user;
+            }
+            if($v['sell_status']==1){
+
+                #待付款倒计时
+                $payment_time = 0;
+                if($v['sell_status']==1){
+                    $is_payment = 1;
+
+                    if($v['is_delay']==1){
+                        $payment_time = $v['matching_time'] + ($setting['cancel_time']*60) + ($setting['delay_time']*60) - time();
+                    }else{
+                        $payment_time = $v['matching_time'] + ($setting['cancel_time']*60)  - time();
+                    }
+
+                    if(!($payment_time>0)){
+                        $is_payment =2;
+                    }
+                }else{
+                    $is_payment =2;
+                }
+                $data['list'][$k]['is_payment'] = $is_payment;
+                $data['list'][$k]['payment_times'] = $payment_time;
+                $data['list'][$k]['payment_time_gmdate'] = gmdate('H:i:s',$payment_time);
+            }
+            if($v['sell_status']==2){
+                #待确认倒计时
+                $confirm_time = 0;
+                if($v['sell_status']==2){
+                    $is_confirm = 1;
+                    $confirm_time = $v['payment_time'] + ($setting['complete_time']*60)  - time();
+                    if(!($confirm_time>0)){
+                        $is_confirm =2;
+                    }
+                }else{
+                    $is_confirm =2;
+                }
+                $data['list'][$k]['is_confirm'] = $is_confirm;
+                $data['list'][$k]['confirm_time'] = $confirm_time;
+                $data['list'][$k]['confirm_time_gmdate'] = gmdate('H:i:s',$confirm_time);
+            }
+
+        }
         return $this->ajaxReturn($data);
     }
 
@@ -278,7 +332,7 @@ class Trade extends ApiController
         $sell_save['pay_img'] = $data['pay_img'];
         $res = $SellTradeModel->where('id',$id)->update($sell_save);
         if($res){
-            return $this->ajaxReturn(['code' => 1,'msg' => '付款成功']);
+            return $this->ajaxReturn(['code' => 1,'msg' => '付款成功','url' =>url('trade/dd_wallet')]);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '付款失败']);
         }
@@ -352,4 +406,30 @@ class Trade extends ApiController
 
     }
 
+    /*------------------------------------------------------ */
+    //-- 延迟交易
+    /*------------------------------------------------------ */
+    public function delay(){
+        $SellTradeModel = new SellTradeModel();
+        $id = input('id');
+
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        if($sell_info['is_delay']==1){
+            return $this->ajaxReturn(['code' => 0,'msg' => '每笔订单只能延迟一次']);
+        }
+        if($sell_info['sell_status']!=1){
+            return $this->ajaxReturn(['code' => 0,'msg' => '只有待付款的订单才能延迟交易']);
+        }
+
+        $sell_save['is_delay'] = 1;
+        $sell_save['delay_time'] = time();
+
+        $res = $SellTradeModel->where('id',$id)->update($sell_save);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '延迟交易成功','url' =>'']);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '延迟交易失败']);
+        }
+
+    }
 }

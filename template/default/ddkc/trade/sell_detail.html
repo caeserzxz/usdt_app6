@@ -5,10 +5,15 @@
             <div class="alipay">
                 <div class="top-btn">
                     {if condition="$sell_info.sell_status eq 1"}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        {if condition="$is_payment eq 1"}
+                            <p class="dp-flex fw_b" id="timer3">交易剩余时间：<span class="timer3"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
+                        {/if}
                         <a href="javacript:;" class="com wait-active">待付款</a>
                     {elseif condition="$sell_info.sell_status eq 2" /}
-                        <p class="dp-flex fw_b">交易剩余时间：<span class="timer0">01:22:33</span></p>
+                        {if condition="$is_confirm eq 1"}
+                            <p class="dp-flex fw_b" id="timer0">交易剩余时间：<span class="timer0"><?php echo gmdate('H:i:s',$confirm_time);?></span></p>
+                        {/if}
+
                         <a href="javacript:;" class="com active11">已付款</a>
                     {elseif condition="$sell_info.sell_status eq 3" /}
                         <a href="javacript:;" class="com active11">申诉中</a>
@@ -65,27 +70,33 @@
                     {/if}
                 </div>
             </div>
+            {if condition="$sell_info.sell_status eq 1"}
             <div class="alipay">
-                <h3 class="fs24 dp-flex" style="height: .6rem;line-height: .6rem;">买家还有<span
-                        class="timer1">00：55：55</span>时间完成交易，正在打款中</h3>
-                <div class="alipay-con fs20">
-                    <p class="zhu dp-flex color-e7">
-                        买家延迟了1小时,还有
-                        <span class="timer2">00：55：55</span>
-                        时间完成交易，正在打款中，若买家未按时付款，系统将作出处罚
-                    </p>
-                </div>
+                {if condition="$sell_info.is_delay eq 0"}
+                    <h3 class="fs24 dp-flex" style="height: .6rem;line-height: .6rem;">买家还有<span
+                            class="timer2"><?php echo gmdate('H:i:s',$payment_time);?></span>时间完成交易，正在打款中</h3>
+                {else /}
+                    <div class="alipay-con fs20" id="timer2">
+                        <p class="zhu dp-flex color-e7">
+                            买家延迟了{$setting.delay_time}分钟,还有
+                            <span class="timer2"><?php echo gmdate('H:i:s',$payment_time);?></span>
+                            时间完成交易，正在打款中，若买家未按时付款，系统将作出处罚
+                        </p>
+                    </div>
+                {/if}
             </div>
+            {/if}
             {if condition="$sell_info.sell_status eq 2"}
             <div class="alipay">
                 <div class="alipay-con fs20" style="margin-top: .266667rem">
                     <div class="top-btn">
-                        <p class="dp-flex color-e7">
+                        {if condition="$is_confirm eq 1"}
+                        <p class="dp-flex color-e7" id="timer1">
                             <span>您还有</span>
-                            <span class="timer1">01:22:33</span>
+                            <span class="timer1"><?php echo gmdate('H:i:s',$confirm_time);?></span>
                             <span>时间确认交易，超时自动放款</span>
                         </p>
-
+                        {/if}
                     </div>
                     <div class="btns dp-flex">
                         <a href="javascript:;" class="pay surePay" >确认交易</a>
@@ -165,17 +176,45 @@
             $(".popup2").hide()
         }
         // 页面多个倒计时
-        var aTime = [3600, 3800, 899890];
-        for (var i = 0; i < aTime.length; i++) {
-            (function (i) {
-                var obj = 'timer' + i;
-                countDown(aTime[i], function (msg) {
-                    var timeDom = document.getElementsByClassName(obj)
-                    timeDom[0].textContent = msg;
-                })
-            })(i)
+        // var aTime = [10, 8];
+        // for (var i = 0; i < aTime.length; i++) {
+        //     (function (i) {
+        //         var obj = 'timer' + i;
+        //         countDown(aTime[i], function (msg) {
+        //             console.log(msg);
+        //             var timeDom = document.getElementsByClassName(obj)
+        //             timeDom[0].textContent = msg;
+        //         })
+        //     })(i)
+        // }
+
+        //待确认定时
+        var is_confirm = {$is_confirm};
+        if(is_confirm==1){
+            var confirm_time = {$confirm_time};
+            countDown(confirm_time,'timer0', function (msg) {
+                            var timeDom = document.getElementsByClassName('timer0')
+                            timeDom[0].textContent = msg;
+                        })
+            countDown(confirm_time,'timer1', function (msg) {
+                var timeDom = document.getElementsByClassName('timer1')
+                timeDom[0].textContent = msg;
+            })
         }
-        function countDown(maxtime, fn) {
+        //待付款定时
+        var is_payment = {$is_payment};
+        if(is_payment==1){
+            var payment_time = {$payment_time};
+            countDown(payment_time,'timer2', function (msg) {
+                var timeDom = document.getElementsByClassName('timer2')
+                timeDom[0].textContent = msg;
+            })
+            countDown(payment_time,'timer3', function (msg) {
+                var timeDom = document.getElementsByClassName('timer3')
+                timeDom[0].textContent = msg;
+            })
+        }
+        function countDown(maxtime,obj, fn) {
             var timer = setInterval(function () {
                 if (!!maxtime) {
                     var day = Math.floor(maxtime / 86400),
@@ -187,10 +226,13 @@
                     --maxtime;
                 } else {
                     clearInterval(timer);
+                    $('#'+obj).hide();
+                    // var timeDom = document.getElementsByClassName(obj);
+                    // console.log(timeDom)
+                    // $('timeDom').hide();
                 }
             }, 1000);
         }
-        function income(){}
 
     </script>
 </body>

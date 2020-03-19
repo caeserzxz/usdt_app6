@@ -56,10 +56,10 @@
                                     <div class="weui-cell__bd">
                                         <div class="shop">
                                             <p>交易金额：{{item.sell_number}}</p>
-                                            <p>抢购方：13412341234</p>
+<!--                                            <p>抢购方：13412341234</p>-->
                                         </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer0">01:52:23</span></p>
+                                        <p class="times dp-flex" style="justify-content: flex-start;">挂售时间：<span
+                                               >{{item.sell_start_time_date}}</span></p>
 
                                     </div>
                                 </div>
@@ -82,10 +82,19 @@
                                     <div class="weui-cell__bd">
                                         <div class="shop">
                                             <p>交易金额：{{item.sell_number}}</p>
-                                            <p>抢购方：13412341234</p>
+                                            <p>抢购方：{{item.buy_user.mobile}}</p>
                                         </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer4">01:52:23</span></p>
+                                        {literal}
+                                            {{if item.is_payment == 1}}
+                                                <p id="timer{{item.id}}" class="times dp-flex" style="justify-content: flex-start;">付款时间剩余：<span
+                                                    class="timer{{item.id}}">{{item.payment_time_gmdate}}</span></p>
+                                            {{/if}}
+                                            {{if item.is_confirm == 1}}
+                                                <p id="timer{{item.id}}" class="times dp-flex" style="justify-content: flex-start;">确认时间剩余：<span
+                                                class="timer{{item.id}}">{{item.confirm_time_gmdate}}</span></p>
+                                            {{/if}}
+                                        {/literal}
+
 
                                     </div>
                                 </div>
@@ -182,17 +191,33 @@
 </script>
     <script>
         // 页面多个倒计时
-        var aTime = [3600, 3800, 899890, 452334, 34, 24, 34343, 233242, 809];
-        for (var i = 0; i < aTime.length; i++) {
-            (function (i) {
-                var obj = 'timer' + i;
-                countDown(aTime[i], function (msg) {
-                    var timeDom = document.getElementsByClassName(obj)
-                    timeDom[0].textContent = msg;
-                })
-            })(i)
-        }
-        function countDown(maxtime, fn) {
+        // var aTime = [3600, 3800, 899890, 452334, 34, 24, 34343, 233242, 809];
+        // for (var i = 0; i < aTime.length; i++) {
+        //     (function (i) {
+        //         var obj = 'timer' + i;
+        //         countDown(aTime[i], function (msg) {
+        //             var timeDom = document.getElementsByClassName(obj)
+        //             timeDom[0].textContent = msg;
+        //         })
+        //     })(i)
+        // }
+        // function countDown(maxtime, fn) {
+        //     var timer = setInterval(function () {
+        //         if (!!maxtime) {
+        //             var day = Math.floor(maxtime / 86400),
+        //                 hour = Math.floor((maxtime % 86400) / 3600),
+        //                 minutes = Math.floor((maxtime % 3600) / 60),
+        //                 seconds = Math.floor(maxtime % 60),
+        //                 msg = (hour < 10 ? '0' + hour : hour) + ":" + (minutes < 10 ? '0' + minutes : minutes) + ":" + (seconds < 10 ? '0' + seconds : seconds);
+        //             fn(msg);
+        //             --maxtime;
+        //         } else {
+        //             clearInterval(timer);
+        //         }
+        //     }, 1000);
+        // }
+
+        function countDown2(maxtime,id, fn) {
             var timer = setInterval(function () {
                 if (!!maxtime) {
                     var day = Math.floor(maxtime / 86400),
@@ -204,6 +229,8 @@
                     --maxtime;
                 } else {
                     clearInterval(timer);
+                    var obj = 'timer'+id;
+                    $('#'+obj).hide();
                 }
             }, 1000);
         }
@@ -254,6 +281,8 @@
             }
         })
     }
+
+    var List2 = new Object();
     //获取出售中记录
     function getSellList2(){
         if(loading_2) return;
@@ -267,6 +296,23 @@
                 $('#tab2').append(template('listTpl2',res));
                 page_2++;
                 loading_2 = false;
+                $.each(res.list,function(i,v){
+                    var obj = 'timer' + v.id;
+                    if(v.is_payment == 1){
+                        countDown2(v.payment_times, v.id,function (msg) {
+                            var timeDom = document.getElementsByClassName(obj)
+                            timeDom[0].textContent = msg;
+                        })
+                    }
+                    if(v.is_confirm == 1){
+                        countDown2(v.confirm_time,v.id ,function (msg) {
+                            var timeDom = document.getElementsByClassName(obj)
+                            timeDom[0].textContent = msg;
+                        })
+                    }
+
+                })
+
             }else{
                 $.toast('加载完成',"text");
             }

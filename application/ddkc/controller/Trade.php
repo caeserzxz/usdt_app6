@@ -72,6 +72,7 @@ class Trade  extends ClientbaseController{
         $UsersModel = new UsersModel();
         $SellTradeModel = new SellTradeModel();
         $BuyTradeModel = new BuyTradeModel();
+        $setting = settings();
         $id = input('id');
         #买入信息
         $buy_info = $BuyTradeModel->where('id',$id)->find();
@@ -86,6 +87,38 @@ class Trade  extends ClientbaseController{
         $sell_info['alipay_info'] = $PaymentModel->get_payment($sell_info['sell_user_id'],2);
         #获取卖家的微信信息
         $sell_info['wx_info'] = $PaymentModel->get_payment($sell_info['sell_user_id'],3);
+        #待确认倒计时
+        $confirm_time = 0;
+        if($sell_info['sell_status']==2){
+            $is_confirm = 1;
+            $confirm_time = $sell_info['payment_time'] + ($setting['complete_time']*60)  - time();
+            if(!($confirm_time>0)){
+                $is_confirm =2;
+            }
+        }else{
+            $is_confirm =2;
+        }
+        #待付款倒计时
+        $payment_time = 0;
+        if($sell_info['sell_status']==1){
+            $is_payment = 1;
+
+            if($sell_info['is_delay']==1){
+                $payment_time = $sell_info['matching_time'] + ($setting['cancel_time']*60) + ($setting['delay_time']*60) - time();
+            }else{
+                $payment_time = $sell_info['matching_time'] + ($setting['cancel_time']*60)  - time();
+            }
+
+            if(!($payment_time>0)){
+                $is_payment =2;
+            }
+        }else{
+            $is_payment =2;
+        }
+        $this->assign('is_confirm',$is_confirm);
+        $this->assign('confirm_time',$confirm_time);
+        $this->assign('is_payment',$is_payment);
+        $this->assign('payment_time',$payment_time);
 
         $this->assign('sell_info',$sell_info);
         $this->assign('userInfo',$this->userInfo);
@@ -99,6 +132,7 @@ class Trade  extends ClientbaseController{
         $UsersModel = new UsersModel();
         $SellTradeModel = new SellTradeModel();
         $BuyTradeModel = new BuyTradeModel();
+        $setting = settings();
         $id = input('id');
         #售出信息
         $sell_info = $SellTradeModel->where('id',$id)->find();
@@ -107,6 +141,38 @@ class Trade  extends ClientbaseController{
         #买入信息
         $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
         $sell_info['buy_user_info'] =  $UsersModel->info($buy_info['buy_user_id']);
+        #待确认倒计时
+        $confirm_time = 0;
+        if($sell_info['sell_status']==2){
+            $is_confirm = 1;
+            $confirm_time = $sell_info['payment_time'] + ($setting['complete_time']*60)  - time();
+            if(!($confirm_time>0)){
+                $is_confirm =2;
+            }
+        }else{
+            $is_confirm =2;
+        }
+        #待付款倒计时
+        $payment_time = 0;
+        if($sell_info['sell_status']==1){
+            $is_payment = 1;
+
+            if($sell_info['is_delay']==1){
+                $payment_time = $sell_info['matching_time'] + ($setting['cancel_time']*60) + ($setting['delay_time']*60) - time();
+            }else{
+                $payment_time = $sell_info['matching_time'] + ($setting['cancel_time']*60)  - time();
+            }
+
+            if(!($payment_time>0)){
+                $is_payment =2;
+            }
+        }else{
+            $is_payment =2;
+        }
+        $this->assign('is_confirm',$is_confirm);
+        $this->assign('confirm_time',$confirm_time);
+        $this->assign('is_payment',$is_payment);
+        $this->assign('payment_time',$payment_time);
         $this->assign('sell_info',$sell_info);
         $this->assign('title', '卖家详情');
         return $this->fetch('sell_detail');
