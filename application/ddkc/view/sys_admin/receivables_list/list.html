@@ -1,0 +1,35 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+    <th width="80">编号</th>
+    <th width="100">类型</th>
+    <th width="150">购买用户</th>
+    <th width="150">账号</th>    
+    <th width="150">添加时间</th>
+    <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$type[$vo.type]}</td>
+    <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$vo['user_id']])}" target="_blank">{$vo.user_id}-{$vo.user_id|userInfo}</a></td>
+
+    <td>{$vo.account}</td>
+    <td>{$vo.add_date}</td>
+    <td>
+        <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="查看">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+    </td>
+</tr>
+{/volist}
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}
