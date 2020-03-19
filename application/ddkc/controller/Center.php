@@ -203,4 +203,9 @@ class Center  extends ClientbaseController{
         $this->assign('year', date('Y',time()));
         return $this->fetch();
     }
+    public function sub_list($level = 1){
+        $this->assign('title', '下级列表');
+        $this->assign('level', $level);
+        return $this->fetch();
+    }
 }?>

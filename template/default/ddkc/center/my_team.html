@@ -11,21 +11,12 @@
             <p class="weui-grid__label fs24">{$vo.role_name}</p>
         </a>
         {/volist}
-        <!-- <a href="" class="weui-grid js_grid dp-flex">
-            <div class="weui-grid__icon fs34 color-e7">
-                <p>2</p>
-            </div>
-            <p class="weui-grid__label fs24">
-                链接矿机
-            </p>
-        </a> -->
         <a href="" class="weui-grid js_grid dp-flex" style="width:48%">
             <div class="weui-grid__icon fs34 color-e7">
                 <p>{$award['extension']}</p>
             </div>
             <p class="weui-grid__label fs24">直链收益</p>
             <span class="color-b6">（直推）</span>
-            
         </a>
         <a href="" class="weui-grid js_grid dp-flex" style="width:48%">
             <div class="weui-grid__icon fs34 color-e7">
@@ -34,11 +25,10 @@
             <p class="weui-grid__label fs24">联代收益</p>
             <span class="color-b6">（团队）</span>
         </a>
-
     </div>
     {volist name="threeInfo" id="vo" }
     <div class="weui-cells">
-        <a class="weui-cell weui-cell_access" href="javascript:;">
+        <a class="weui-cell weui-cell_access" href="{:url('center/sub_list',['level' => $key])}">
             <div class="weui-cell__bd">
                 <p>第{$textInfo[$key]}链</p>
             </div>
@@ -51,30 +41,6 @@
 </div>
 {/block}
 {block name="footer"}        
-<script>
-  $(function() {
-    FastClick.attach(document.body);
-  });
-</script>
-<script type="text/javascript">
-    var loading = false;
-    $(function () {
-        // 获取资讯列表
-        // getTeamStatistics();
-    })
-    function getTeamStatistics(){
-        if(loading) return;
-        loading = true;
-
-        jq_ajax('{:url("ddkc/api.center/getTeamStatistics")}','',function (res) {            
-            $('#list1').append(template('listTpl',res));
-            $('#list2').append(template('listTpl2',res));
-            $('#list3').append(template('listTpl',res));
-
-            
-        })
-    }
-</script>
 </body>
 </html>
 {/block}

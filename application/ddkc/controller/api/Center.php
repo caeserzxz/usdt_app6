@@ -193,36 +193,6 @@ class Center extends ApiController
         $this->ajaxreturn($return);
         //return $return;
     }
-
-    /*------------------------------------------------------ */
-    //-- 团队统计
-    /*------------------------------------------------------ */
-    public function getTeamStatistics()
-    {
-        $userId = $this->userInfo['user_id'];
-        $roleModel = new DividendRoleModel();
-        $userBindModel = new UsersBindModel();
-
-        # 各等级直推人数统计
-        $allRole = $roleModel->field('role_id,role_name')->where(1)->select();
-        foreach ($allRole as $key => $value) {
-            # 该等级直推人数
-            $allRole[$key]['subNum'] = $this->Model
-                ->where(['pid' => $userId,'role_id' => $value['role_id']])
-                ->count();
-        }
-        # 三层内各层级人数
-        $where[] = ['pid','=',$userId];
-        $where[] = ['level','<=',3];
-        $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
-        $hierarchyText = ['其他','一','二','三'];
-
-
-        $data['roleInfo'] = $allRole;
-        $data['threeInfo'] = $threeInfo;
-        $data['textInfo'] = $hierarchyText;
-        return $this->ajaxReturn($data);
-    }
     /*------------------------------------------------------ */
     //-- 上传头像
     /*------------------------------------------------------ */
@@ -259,5 +229,21 @@ class Center extends ApiController
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
         }
+    }
+    /*------------------------------------------------------ */
+    //-- 获取相应等级用户
+    /*------------------------------------------------------ */
+    public function getSubList(){
+        $UsersBindModel = new UsersBindModel();
+
+        $where[] = ['pid' ,'eq' ,$this->userInfo['user_id']];
+        $where[] = ['level' ,'eq' ,input('level')];
+
+        $data = $this->getPageList($UsersBindModel,$where);
+        foreach ($data['list'] as $key => $value) {
+            $user = $this->Model->info($value['user_id']);
+            $data['list'][$key]['headimgurl'] = $user['headimgurl'];
+        }
+        return $this->ajaxReturn($data);
     }
 }
