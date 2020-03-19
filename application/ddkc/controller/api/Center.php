@@ -11,6 +11,7 @@ use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
 use think\facade\Cache;
+use app\ddkc\model\AuthenticationModel;
 
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
@@ -245,5 +246,33 @@ class Center extends ApiController
             $data['list'][$key]['headimgurl'] = $user['headimgurl'];
         }
         return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 实名认证
+    /*------------------------------------------------------ */
+    public function authentication(){
+        $AuthenticationModel = new AuthenticationModel();
+        # 是否已经实名
+        $isAu = $AuthenticationModel->where(['user_id' => $this->userInfo['user_id']])->count();
+        if ($isAu) return $this->ajaxReturn(['code' => 0,'msg' => '已经实名']);
+
+        $post = input('post.');
+        if (!$post['user_name'] || !$post['id_card']) return $this->ajaxReturn(['code' => 0,'msg' => '姓名与身份证号均不能为空']);
+
+        if (strlen($post['id_card']) != 18) return $this->ajaxReturn(['code' => 0,'msg' => '身份证号必须为18位']);
+
+        $data = [
+            'user_id' => $this->userInfo['user_id'],
+            'user_name' => $post['user_name'],
+            'id_card' => $post['id_card'],
+            'add_time' => time(),
+        ];
+
+        $res = $AuthenticationModel->create($data);  
+        if ($res) {
+            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功']);
+        } else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
+        }
     }
 }
