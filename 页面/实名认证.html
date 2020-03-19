@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/zpui.css"/>
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title> 实名认证</title>
+    <style>
+        .weui-cells {
+            background: none;
+            margin: 20px 20px 40px;
+        }
+
+        .weui-cell {
+            height: .426667rem;
+        }
+
+        .weui-label {
+            width: 1.2rem;
+            color: #54504f;
+            text-align: right;
+        }
+
+        .weui-input {
+            border: 1px solid #d6d5d5;
+            background: #fff;
+            height: .453333rem;
+            padding: 0 .133333rem;
+            border-radius: .106667rem;
+            line-height: .453333rem;
+            box-sizing: border-box;
+        }
+
+        .codeBox span {
+            width: .853333rem;
+            border-radius: .32rem;
+            text-align: center;
+            color: #fff;
+            background-color: #f1a449;
+            margin-left: .133333rem;
+            padding: .053333rem .106667rem
+        }
+
+        .background {
+            width: 3.226667rem;
+            margin-top: .4rem;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #c7c6c6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">实名认证 </div>
+    <div class="header-right">
+        <a href="#"></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd  ">
+            <!-- 页面内容-->
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">姓&nbsp;&nbsp;名：</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请填写真实姓名">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">身份证：</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入正确的身份证号">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">当前账户：</label></div>
+                    <div class="weui-cell__bd">
+                        <p class="fs24">15202030405</p>
+                    </div>
+                </div>
+            </div>
+            <p clss="fs28" style="text-align: center;color:#898786">一个身份证绑定一个账号，一旦绑定无法修改</p>
+            <div class="wrap">
+                <div class=" background" style="margin-top: .133333rem">确认</div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+    <script>
+        function codeButton() {
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        }
+
+    </script>
+</body>
+
+</html>
