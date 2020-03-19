@@ -1,0 +1,80 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<style>
+    .color-ab {
+        color: #a09f9f;
+    }
+    .lef-img img {
+        width: 50px;
+        height: 50px;
+        margin-right: .266667rem;
+    }
+    .weui-cells {
+        margin: .133333rem;
+        border-radius: .106667rem;
+    }
+</style>
+{/block}
+{block name="main"} 
+<div class="page-bd" id="tab1">
+    <!-- 页面内容-->
+    <div id="list">
+        <script type="text/html" id="listTpl">
+            {{each list as item index}}
+                <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="javascript:;">
+                        <div class="weui-cell__hd">
+                            <div class="lef-img">
+                                {literal}
+                                {{if item.headimgurl}}
+                                    <img src="{{item.headimgurl}}">
+                                {{else}}
+                                    <img src="__STATIC__/dingding/images/to.png";>
+                                {{/if}}
+                                {/literal}
+                            </div>
+                        </div>
+                        <div class="weui-cell__bd color-ab fs24">
+                            <p>ID {{item.user_id}}</p>
+                        </div>
+                    </a>
+                </div>
+            {{/each}}
+        </script>
+    </div>
+</div>
+{/block}
+{block name="footer"} 
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+        getSubList();
+    });
+   var loading = false;
+   var page = 1;
+    $('#tab1').infinite().on("infinite", function() {
+        getSubList();
+    });
+    // 获取矿机列表
+    function getSubList(){
+        if(loading) return;
+        loading = true;
+
+        var arr = new Object();
+        arr.p = page;
+        arr.level = "{$level}";
+
+        jq_ajax('{:url("ddkc/api.center/getSubList")}',arr,function (res) {          
+            $('#list').append(template('listTpl',res));
+            if (res.list.length > 0) {
+                page++;
+                loading = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+</script>
+</body>
+</html>
+{/block}

@@ -11,6 +11,7 @@ use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
 use think\facade\Cache;
+use app\ddkc\model\AuthenticationModel;
 
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
@@ -193,36 +194,6 @@ class Center extends ApiController
         $this->ajaxreturn($return);
         //return $return;
     }
-
-    /*------------------------------------------------------ */
-    //-- 团队统计
-    /*------------------------------------------------------ */
-    public function getTeamStatistics()
-    {
-        $userId = $this->userInfo['user_id'];
-        $roleModel = new DividendRoleModel();
-        $userBindModel = new UsersBindModel();
-
-        # 各等级直推人数统计
-        $allRole = $roleModel->field('role_id,role_name')->where(1)->select();
-        foreach ($allRole as $key => $value) {
-            # 该等级直推人数
-            $allRole[$key]['subNum'] = $this->Model
-                ->where(['pid' => $userId,'role_id' => $value['role_id']])
-                ->count();
-        }
-        # 三层内各层级人数
-        $where[] = ['pid','=',$userId];
-        $where[] = ['level','<=',3];
-        $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
-        $hierarchyText = ['其他','一','二','三'];
-
-
-        $data['roleInfo'] = $allRole;
-        $data['threeInfo'] = $threeInfo;
-        $data['textInfo'] = $hierarchyText;
-        return $this->ajaxReturn($data);
-    }
     /*------------------------------------------------------ */
     //-- 上传头像
     /*------------------------------------------------------ */
@@ -257,6 +228,50 @@ class Center extends ApiController
             $user = $userModel->info($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '头像修改成功','url'=> url('center/index')]);
         }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
+        }
+    }
+    /*------------------------------------------------------ */
+    //-- 获取相应等级用户
+    /*------------------------------------------------------ */
+    public function getSubList(){
+        $UsersBindModel = new UsersBindModel();
+
+        $where[] = ['pid' ,'eq' ,$this->userInfo['user_id']];
+        $where[] = ['level' ,'eq' ,input('level')];
+
+        $data = $this->getPageList($UsersBindModel,$where);
+        foreach ($data['list'] as $key => $value) {
+            $user = $this->Model->info($value['user_id']);
+            $data['list'][$key]['headimgurl'] = $user['headimgurl'];
+        }
+        return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 实名认证
+    /*------------------------------------------------------ */
+    public function authentication(){
+        $AuthenticationModel = new AuthenticationModel();
+        # 是否已经实名
+        $isAu = $AuthenticationModel->where(['user_id' => $this->userInfo['user_id']])->count();
+        if ($isAu) return $this->ajaxReturn(['code' => 0,'msg' => '已经实名']);
+
+        $post = input('post.');
+        if (!$post['user_name'] || !$post['id_card']) return $this->ajaxReturn(['code' => 0,'msg' => '姓名与身份证号均不能为空']);
+
+        if (strlen($post['id_card']) != 18) return $this->ajaxReturn(['code' => 0,'msg' => '身份证号必须为18位']);
+
+        $data = [
+            'user_id' => $this->userInfo['user_id'],
+            'user_name' => $post['user_name'],
+            'id_card' => $post['id_card'],
+            'add_time' => time(),
+        ];
+
+        $res = $AuthenticationModel->create($data);  
+        if ($res) {
+            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功']);
+        } else{
             return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
         }
     }

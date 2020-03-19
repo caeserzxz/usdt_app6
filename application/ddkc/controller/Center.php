@@ -11,6 +11,8 @@ use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
 use app\member\model\UsersSignModel;
 use app\member\model\AccountLogModel;
+use app\ddkc\model\AuthenticationModel;
+
 
 class Center  extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -201,6 +203,22 @@ class Center  extends ClientbaseController{
         $this->assign('integral_article', $integral_article);
         $this->assign('title', '信用积分');
         $this->assign('year', date('Y',time()));
+        return $this->fetch();
+    }
+    public function sub_list($level = 1){
+        $this->assign('title', '下级列表');
+        $this->assign('level', $level);
+        return $this->fetch();
+    }
+    /*------------------------------------------------------ */
+    //-- 实名认证
+    /*------------------------------------------------------ */
+    public function authentication(){
+        $AuthenticationModel = new AuthenticationModel();
+        $authenInfo = $AuthenticationModel->where(['user_id' => $this->userInfo['user_id']])->find();
+
+        $this->assign('authenInfo', $authenInfo);
+        $this->assign('title', '实名认证');
         return $this->fetch();
     }
 }?>
