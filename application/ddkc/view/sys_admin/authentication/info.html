@@ -1,0 +1,129 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>订单详情</strong>
+            </li>                                  
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">订单ID：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.order_id}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">订单编号：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.order_sn}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">用户信息：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$row['user_id']])}" target="_blank">{$row.user_id}-{$row.user_id|userInfo}</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">支付方式：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.pay_name}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">付款金额：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.pay_money}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">付款时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.add_date}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">上次更新时间：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$row.update_date}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">类型：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.order_type}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">矿机名称：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.miner_name}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">周期：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$row.scrap_days}天
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">日返：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.rebate_rate} %
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">剩余天数：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$row.surplus_days}天
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">有效天数：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$row.valid_days}天
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">当前状态：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.status_name}
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="miner_id" type="hidden" value="{$row.miner_id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"]);
+</script>
+{/block}
+

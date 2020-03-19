@@ -1,0 +1,42 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header b-b clearfix">
+    <form id="forms" class="talbe-search form-inline" method="post" action="{:url('getList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>实名认证列表</strong>
+                </li>                                  
+            </ul>
+            <div class="form-group m-l">
+                <a class="btn btn-default" data-toggle="reportrange" data-change="submit">
+                    <i class="fa fa-calendar fa-lg"></i>
+                    <small>认证时间</small>
+                    <span></span> <b class="caret"></b>
+                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+                </a>
+            </div>
+            <select name="key_type" style="width: 100px;" data-toggle="select2" data-placeholder="按自定义筛选" >
+                <option value="0">选择搜索</option>
+                <option value="1">用户ID</option>
+                <option value="2">真实姓名</option>
+                <option value="3">身份证号</option>
+            </select>
+            <input type="hidden" value="0" name="export">
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="请输入..." data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f">
+    <section class="panel panel-default">
+        <div class="table-responsive" id="list_box">
+            {include file="sys_admin/authentication/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}
