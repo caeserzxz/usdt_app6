@@ -25,11 +25,11 @@
 <!--                    </div>-->
                             <div class="swiper-wrapper">
                                 {volist name='slideList' id='vol'}
-                                    {if condition="$vol.data neq ''"}
-                                        <div class="swiper-slide"><img src="{$vol.imgurl}" alt="" onclick="link('{$vol.data}');"></div>
-                                    {else /}
-                                        <div class="swiper-slide"><img src="{$vol.imgurl}" alt=""></div>
-                                    {/if}
+                                <div class="swiper-slide">
+                                    <a href="{$vol.url}">
+                                       <img style="max-height: 200px;" src="{$vol.imgurl}" alt="">
+                                    </a>
+                                </div>
                                 {/volist}
                             </div>
                     <div class="swiper-pagination"></div>

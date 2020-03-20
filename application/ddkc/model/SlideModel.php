@@ -19,17 +19,21 @@ class SlideModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 获取列表
 	/*------------------------------------------------------ */
-    public static function getRows(){	
-		$rows = Cache::get(self::$mkey);	
-		if (empty($rows) == false) return $rows;
-		$rows = self::where('status',1)->order('sort_order DESC')->select()->toArray();
+    public static function getRows($img_type=''){
+//		$rows = Cache::get(self::$mkey);
+//		if (empty($rows) == false) return $rows;
+		$where[] = ['status','=',1];
+        if(empty($img_type)==false){
+            $where[] = ['img_type','=',$img_type];
+        }
+		$rows = self::where($where)->order('sort_order DESC')->select()->toArray();
 		foreach ($rows as $key=>$row){			
-			if($row['bind_type'] == 'article') $row['url'] = url('article/info',array('id'=>$row['ext_id']));
-			else if($row['bind_type'] == 'goods') $row['url'] = url('goods/info',array('id'=>$row['ext_id']));
+			if($row['bind_type'] == 'article') $row['url'] = url('/shop/article/info',array('id'=>$row['ext_id']));
+			else if($row['bind_type'] == 'goods') $row['url'] = url('/shop/goods/info',array('id'=>$row['ext_id']));
 			else $row['url'] = $row['data'];			
 			$rows[$key] = $row;
 		}
-		Cache::set(self::$mkey,$rows,3600);
+//		Cache::set(self::$mkey,$rows,3600);
 		return $rows;
 	}
 }

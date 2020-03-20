@@ -13,6 +13,7 @@ use app\member\model\UsersSignModel;
 use app\member\model\AccountLogModel;
 use app\ddkc\model\AuthenticationModel;
 use app\mainadmin\model\MessageModel;
+use app\ddkc\model\SlideModel;
 
 class Center  extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -230,4 +231,15 @@ class Center  extends ClientbaseController{
         $this->assign('title', '系统消息');
         return $this->fetch();
     }
+    /*------------------------------------------------------ */
+    //-- 叮叮交易所
+    /*------------------------------------------------------ */
+    public function trade_img(){
+        $SlideModel = new SlideModel();
+        $slideList = $SlideModel::getRows(3);
+        $this->assign('slideList',$slideList);
+        $this->assign('title', '叮叮交易所');
+        return $this->fetch();
+    }
+
 }?>

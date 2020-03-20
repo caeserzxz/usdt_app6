@@ -32,9 +32,7 @@ class Trade  extends ClientbaseController{
     /*------------------------------------------------------ */
     public function index(){
         $SlideModel = new SlideModel();
-        $slide_where [] = ['status','eq',1];
-        $slide_where [] = ['img_type','eq',1];
-        $slideList = $SlideModel->where($slide_where)->order('sort_order DESC')->select();
+        $slideList = $SlideModel::getRows(1);
         $this->assign('slideList',$slideList);
         $this->assign('title', '叮叮市场');
         return $this->fetch('index');
@@ -56,9 +54,9 @@ class Trade  extends ClientbaseController{
     /*------------------------------------------------------ */
     public function dd_wallet(){
         $BuyTradeModel = new BuyTradeModel();
-        $b = $BuyTradeModel->getIds('buyHandle');
-        $a = $BuyTradeModel->AutomaticCancellation();
-        $BuyTradeModel->AutoCompletion();
+//        $b = $BuyTradeModel->getIds('buyHandle');
+//        $a = $BuyTradeModel->AutomaticCancellation();
+//        $BuyTradeModel->AutoCompletion();
 //        $a = $BuyTradeModel->lottery(3);
 //        dump($a);die;
         $this->assign('userInfo',$this->userInfo);
