@@ -186,15 +186,40 @@ class Trade extends ApiController
     public function getBuyList(){
         $userModel = new UsersModel();
         $BuyTradeModel = new BuyTradeModel();
+        $SellTradeMoel = new SellTradeModel();
         $TradingStageModel = new TradingStageModel();
         $this->order_by = 'id';
         $this->sort_by = 'DESC';
         $where[] =  ['buy_user_id' ,'eq' ,$this->userInfo['user_id']];
         $viewObj = $BuyTradeModel->where($where)->order('id desc');
         $data = $this->getPageList($BuyTradeModel,$viewObj);
+        $ids = $BuyTradeModel->getIds('buyHandle');
+        $time = time();
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         foreach ($data['list'] as $k=>$v){
+
             $stage_info = $TradingStageModel->where('id',$v['buy_stage_id'])->find();
+            $start_time =strtotime(date('Y-m-d '.$stage_info['trade_start_time']));
+            $end_time =strtotime(date('Y-m-d '.$stage_info['trade_end_time']));
             $data['list'][$k]['stage_name'] = $stage_info['stage_name'];
+            $data['list'][$k]['buy_start_time_date'] = date('Y-m-d H:i:s',$v['buy_start_time']);
+            if($v['buy_status']==0){
+                #已预约
+                $data['list'][$k]['is_buying'] =0;
+                if(in_array($v['id'],$ids)){
+                    #抢购中
+                    $data['list'][$k]['is_buying'] =1;
+                }else{
+                   if($time>$start_time&&$end_time>$time){
+                       #可抢购
+                       $data['list'][$k]['is_buying'] =2;
+                   }
+                }
+            }
+            if($v['buy_status']==2){
+                $sell_info = $SellTradeMoel->where('id',$v['sell_id'])->find();
+                $data['list'][$k]['status_str'] =$status[$sell_info['sell_status']];
+            }
         }
         return $this->ajaxReturn($data);
     }

@@ -16,6 +16,7 @@ use app\ddkc\model\TradingStageModel;
 use app\ddkc\model\SlideModel;
 use app\ddkc\model\PaymentModel;
 use think\cache\driver\Redis;
+use app\member\model\DdBanRecordModel;
 
 class Trade  extends ClientbaseController{
     //*------------------------------------------------------ */
@@ -56,6 +57,8 @@ class Trade  extends ClientbaseController{
     public function dd_wallet(){
         $BuyTradeModel = new BuyTradeModel();
         $b = $BuyTradeModel->getIds('buyHandle');
+        $a = $BuyTradeModel->AutomaticCancellation();
+        $BuyTradeModel->AutoCompletion();
 //        $a = $BuyTradeModel->lottery(3);
 //        dump($a);die;
         $this->assign('userInfo',$this->userInfo);

@@ -2,6 +2,7 @@
 {block name="main" }
 <style>
     .rushto {
+        /*抢购中*/
         width: 60px;
         height: 50px;
         border-radius: 50%;
@@ -11,7 +12,39 @@
         background: url('__STATIC__/dingding/images/index05.png');
         background-size: 100% 100%;
     }
-
+    .rushto2 {
+        /*已预约*/
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        background: url('__STATIC__/dingding/images/index07.png');
+        background-size: 100% 100%;
+    }
+    .rushto3 {
+        /*抢购*/
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        background: url('__STATIC__/dingding/images/index09.png');
+        background-size: 100% 100%;
+    }
+    .rushto4 {
+        /*抢购时间已过期*/
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        background: url('__STATIC__/dingding/images/index11.png');
+        background-size: 100% 100%;
+    }
     .ti {
         display: flex;
         width: 100%;
@@ -39,9 +72,9 @@
                     <a class="weui-navbar__item" href="#tab4" onclick="getBuyList();">
                         预约记录
                     </a>
-                    <a class="weui-navbar__item" href="#tab5">
-                        申诉
-                    </a>
+<!--                    <a class="weui-navbar__item" href="#tab5">-->
+<!--                        申诉-->
+<!--                    </a>-->
                 </div>
                 <div class="weui-tab__bd">
                     <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
@@ -134,29 +167,64 @@
                         <script type="text/html" id="listTpl4">
                             <div class="weui-cells">
                             {{each list as item index}}
-                                <a href="{:url('ddkc/trade/buy_detail')}?id={{item.id}}">
-                                    <div class="weui-cell">
+
+                                    {literal}
+                                    {{if item.buy_status == 2}}
+                                        <div class="weui-cell" onclick="buy_detail({{item.id}});">
+                                    {{else}}
+                                        <div class="weui-cell">
+                                    {{/if}}
+                                    {/literal}
+
                                         <div class="weui-cell__hd">
                                             <p><img src="__STATIC__/dingding/images/index13.png" alt=""></p>
                                         </div>
                                         <div class="weui-cell__bd">
                                             <div class="shop">
                                                 <p>{{item.stage_name}}</p>
+                                                {literal}
+                                                {{if item.buy_status == 2}}
+                                                 <p>{{item.status_str}}</p>
+                                                {{/if}}
+                                                {{if item.buy_status == 3}}
+                                                    <p>未中奖</p>
+                                                {{/if}}
+                                                {/literal}
+
     <!--                                            <p>交易金额：240</p>-->
-                                                <p>抢购方：13412341234</p>
+<!--                                                <p>抢购方：13412341234</p>-->
                                             </div>
     <!--                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span-->
     <!--                                                class="timer7">01:52:23</span></p>-->
                                             <div class="ti">
+<!--                                                <p class="times dp-flex" style="justify-content: flex-start;">-->
+<!--                                                    交易时间剩余：<span class="timer7">01:52:23</span>-->
+<!--                                                </p>-->
                                                 <p class="times dp-flex" style="justify-content: flex-start;">
-                                                    交易时间剩余：<span class="timer7">01:52:23</span>
+                                                    预约时间：<span class="timer7">{{item.buy_start_time_date}}</span>
                                                 </p>
+                                                {literal}
+                                                    {{if item.buy_status == 0}}
+                                                        {{if item.is_buying == 0}}
+                                                            <div class="rushto2">已预约</div>
+                                                        {{/if}}
+                                                        {{if item.is_buying == 2}}
+                                                            <div class="rushto3" onclick="PanicBuying({{item.id}});">抢购</div>
+                                                        {{/if}}
+                                                    {{/if}}
 
-                                                <div class="rushto" onclick="PanicBuying({{item.id}});">抢购</div>
+                                                    {{if item.is_buying == 1}}
+                                                    <div class="rushto">抢购中</div>
+                                                    {{/if}}
+                                                    {{if item.rushto4 == 4}}
+                                                        <div class="rushto">已过期</div>
+                                                    {{/if}}
+                                                {/literal}
+
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+
                             {{/each}}
                             </div>
                         </script>
@@ -373,6 +441,12 @@
                 $.toast(data.msg, "text");
             }
         })
+    }
+
+    //详情
+    function buy_detail(id){
+        var url = "{:url('ddkc/trade/buy_detail')}?id="+id;
+        window.location.href =url;
     }
 </script>
 </body>
