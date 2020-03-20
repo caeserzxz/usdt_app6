@@ -12,7 +12,7 @@ use app\ddkc\model\PaymentModel;
 use app\member\model\UsersSignModel;
 use app\member\model\AccountLogModel;
 use app\ddkc\model\AuthenticationModel;
-
+use app\mainadmin\model\MessageModel;
 
 class Center  extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -219,6 +219,15 @@ class Center  extends ClientbaseController{
 
         $this->assign('authenInfo', $authenInfo);
         $this->assign('title', '实名认证');
+        return $this->fetch();
+    }
+    /*------------------------------------------------------ */
+    //-- 系统消息
+    /*------------------------------------------------------ */
+    public function message(){
+        (new MessageModel)->autoReceive();//执行自动接收消息
+
+        $this->assign('title', '系统消息');
         return $this->fetch();
     }
 }?>

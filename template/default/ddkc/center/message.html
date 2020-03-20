@@ -1,0 +1,141 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<style>
+    .content {
+        background: #fff;
+        margin-top: .266667rem;
+        padding: .133333rem;
+        border-radius: .133333rem;
+    }
+    h3 {
+        height: .6rem;
+        line-height: .6rem;
+    }
+    .con {
+        margin-top: .133333rem;
+        font-size: .16rem;
+        color: #625f5e;
+    }
+    .con p {
+        line-height: .346667rem;
+        text-indent: 2em;
+    }
+    span, p, a, img{
+        display: initial;
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="page-bd DDBBag SSmessage">
+    <!-- 页面内容-->
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                全部消息
+            </a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getList(2,1)">
+                系统消息
+            </a>
+            <a class="weui-navbar__item" href="#tab3" onclick="getList(3,1)">
+                活动消息
+            </a>
+        </div>
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active"></div>
+            <div id="tab2" class="weui-tab__bd-item"></div>
+            <div id="tab3" class="weui-tab__bd-item"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="listTpl">
+
+
+
+    {{each list as item index}}
+    <a href="javascript:go_url('{{item.url}}','{{item.rec_id}}','{{item.is_see}}');" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}" class="block">
+
+        <div class="content">
+            <h3>
+                <span>{{item.message_title}}</span>
+                <span style="float: right;">{{item._add_time}}</span>
+            </h3>
+            <hr>
+            <div class="con">
+                <p>{{item.message_content}}</p>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    var nowPage = [],isLoadend = [];
+    var _type = 1;// 1全部 2系统 3活动
+
+    $(function () {
+        //点击跳转
+        /*$('.listbox').on('click','.block',function (e) {
+            var rec_id =$(this).data('rec_id');
+            var is_see =$(this).data('is_see');
+            var url =$(this).data('url');
+            if(is_see<1){
+                jq_ajax('{:url("member/api.message/setIsSee")}', 'rec_id=' + rec_id,function (res){
+                })
+            }
+            window.location.href=url;
+        })*/
+        getList(1);
+    })
+    //请求列表数据
+    function getList(_type = 1,is_tab = 0) {
+        page = nowPage[_type];
+        if (typeof(page) == 'undefined') page = 1;
+
+        if (isLoadend[_type] == true ) return false;
+
+        if (is_tab == 1 && page > 1) return;
+
+        var arr = [];
+        arr.p = page;
+        arr.type = _type;
+
+        isLoadend[_type] = true;
+
+        jq_ajax('{:url("member/api.message/getList")}',arr,function (res) {   
+            isLoadend[_type] = false;
+            if (res.code == 0) {
+                $.toast(res.msg, "text");
+                return false;
+            }
+            nowPage[_type] = page+1;
+        
+            if (res.list) {
+                $('#tab'+_type).append(template('listTpl',res));
+                // $('.listbox').append(template('TabTpl', res));
+                if (res.page_count == page) {
+                    $.toast('加载完成', "text");
+                    isLoadend[_type] = true;
+                }
+            } else {
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+    function go_url(url,rec_id,is_see) {
+        if(is_see<1){
+            jq_ajax('{:url("member/api.message/setIsSee")}', 'rec_id=' + rec_id,function (res){
+            })
+        }
+        window.location.href=url;
+    }
+</script>
+</body>
+</html>
+{/block}

@@ -112,7 +112,7 @@ class Message extends AdminController
     /*------------------------------------------------------ */
     public function beforeAdd($row)
     {
-        if (empty($row['ext_id'])) return $this->error('请选择关联文章.');
+        if (empty($row['ext_id']) && empty($row['content'])) return $this->error('请选择关联文章或输入1内容.');
         if (empty($row['send_start_date'])) return $this->error('请选择发送起始日期.');
         if (empty($row['send_end_date'])) return $this->error('请选择发送结束日期.');
         if (empty($row['show_end_date'])) return $this->error('请选择显示过期日期.');
@@ -148,7 +148,8 @@ class Message extends AdminController
     {
         if ($row['type'] == 3) {//指定会员直接发放
             foreach ($row['user_id'] as $user_id) {
-                $this->Model->sendMessage($user_id, 0, $row['message_id'], '', $row['show_end_date']);
+                // $this->Model->sendMessage($user_id, 0, $row['message_id'], '', $row['show_end_date']);
+                $this->Model->sendMessage($user_id, 0, $row['message_id'],$row['title'],$row['content'], $row['show_end_date'],$row['type']);
             }
         }
         $this->Model->cleanMemcache();
@@ -168,7 +169,8 @@ class Message extends AdminController
     {
         if ($row['type'] == 3) {//指定会员直接发放
             foreach ($row['user_id'] as $user_id) {
-                $this->Model->sendMessage($user_id, 0, $row['message_id'], '', $row['show_end_date']);
+                // $this->Model->sendMessage($user_id, 0, $row['message_id'], '', $row['show_end_date']);
+                $this->Model->sendMessage($user_id, 0, $row['message_id'],$row['title'],$row['content'], $row['show_end_date'],$row['type']);
             }
         }
         return $this->success('修改成功.');

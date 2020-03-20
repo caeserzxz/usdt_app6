@@ -9,6 +9,8 @@ namespace app\shop\controller;
 use app\ClientbaseController;
 use app\mainadmin\model\ArticleModel;
 use app\mainadmin\model\ArticleCategoryModel;
+use app\mainadmin\model\MessageModel;
+use app\mainadmin\model\UserMessageModel;
 
 
 class Article extends ClientbaseController
@@ -155,15 +157,36 @@ class Article extends ClientbaseController
     /*------------------------------------------------------ */
     public function newsFlash()
     {
-
         $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('news_flash'));
 
         $this->assign('title', '叮叮快讯');
         $this->assign('content', $content);
         return $this->fetch('register');
     }
+    /*------------------------------------------------------ */
+    //-- 消息通知内容
+    /*------------------------------------------------------ */
+    public function messageInfo()
+    {
+        $UserMessageModel = new UserMessageModel();
+        $MessageModel = new MessageModel();
 
+        $id = input('id',0,'intval');
+        if ($id < 1) return $this->error('传参失败.');
+             
+        $info = $UserMessageModel->where(['rec_id' => $id,'user_id' => $this->userInfo['user_id']])->find();
+        $parMess = $MessageModel->where(['message_id' => $info['ext_id']])->find();
 
+        if (empty($info) || empty($parMess) ) return $this->error('消息不存在..');
+        if ($info['show_end_date'] < time() || $parMess['show_end_date'] < time()) return $this->error('消息已过期..');
+        if ($parMess['status']) return $this->error('消息已失效..');
+
+        $content = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', $info['message_content']);
+
+        $this->assign('title', '消息通知');
+        $this->assign('content', $content);
+        return $this->fetch('register');
+    }
 }
 
 ?>

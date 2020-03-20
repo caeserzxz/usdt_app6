@@ -98,8 +98,9 @@ class MessageModel extends BaseModel
     //--$message_title 标题
     //-- $message_content 内容
     //-- $show_end_date 过期时间，非系统消息默认为3个月
+    //-- $notice_type 通知类型（message_type为0时专用字段）
     /*------------------------------------------------------ */
-    public function sendMessage($user_id, $message_type, $ext_id = 0, $message_title, $message_content = '', $show_end_date = '')
+    public function sendMessage($user_id, $message_type, $ext_id = 0, $message_title, $message_content = '', $show_end_date = '',$notice_type = 0)
     {
         if (empty($show_end_date)) {
             $show_end_date = strtotime('+3 month', time());
@@ -111,6 +112,7 @@ class MessageModel extends BaseModel
         $inArr['message_content'] = $message_content;
         $inArr['show_end_date'] = $show_end_date;
         $inArr['add_time'] = time();
+        $inArr['notice_type'] = $notice_type;
         $res = (new UserMessageModel)->create($inArr);
         if ($res['rec_id'] < 1) return false;
         return true;
@@ -189,9 +191,10 @@ class MessageModel extends BaseModel
         $whereUnReceive[] = ['send_end_date', '>', $time];
         $user_level_id = isset($user['level']['level_id'])?$user['level']['level_id']:0;//防止无等级报错
         $whereUnReceiveOr = "type=0 OR (type=1 AND type_ext_id=" .$user_level_id . ") OR (type=2 AND type_ext_id=" . $user['role']['role_id'] . ")";
-        $rows = $this->where($whereUnReceive)->where($whereUnReceiveOr)->field('message_id,title,show_end_date')->select()->toArray();
+        $rows = $this->where($whereUnReceive)->where($whereUnReceiveOr)->field('message_id,title,show_end_date,type')->select()->toArray();
+
         foreach ($rows as $row) {
-            $this->sendMessage($user['user_id'], 0, $row['message_id'], $row['title'], '', $row['show_end_date']);//写入数据
+            $this->sendMessage($user['user_id'], 0, $row['message_id'], $row['title'],$row['content'], $row['show_end_date'],$row['type']);//写入数据
         }
         Cache::set($mkey, 'autoReceive', 300);
     }
