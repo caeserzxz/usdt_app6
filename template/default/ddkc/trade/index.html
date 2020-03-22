@@ -152,7 +152,6 @@
        var isPostMsg = false;
        function yesBtn(){
            var id =  $('.yesBtn').attr('data-id');
-
            var arr = new Object();
            arr.stage_id = id;
 
@@ -161,9 +160,10 @@
            }
            isPostMsg = true;
            jq_ajax('{:url("ddkc/api.trade/buy_trade")}',arr,function (data) {
+                        isPostMsg = false;
+                        $('.popup').hide();
                        if(data.code==1){
                            $.toast(data.msg, "text",function(){
-                               isPostMsg = false;
                                window.location.reload();
                            });
                        }else{

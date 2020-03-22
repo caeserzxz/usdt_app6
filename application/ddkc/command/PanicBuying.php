@@ -22,7 +22,7 @@ class PanicBuying extends Command
 {
     protected function configure()
     {
-        $this->setName('CleanTradingClose')->setDescription('开奖逻辑');
+        $this->setName('PanicBuying')->setDescription('开奖逻辑');
     }
 
     protected function execute(Input $input, Output $output)

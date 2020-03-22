@@ -58,6 +58,10 @@ class Trade extends ApiController
         if(empty($stage_info)){
             return $this->ajaxReturn(['code' => 0,'msg' => '场次不存在','url' => '']);
         }
+        $stageTime = strtotime(date('Y-m-d '.$stage_info['trade_end_time']))-(settings('stop_booking_time')*60);
+        if(time()>$stageTime){
+            return $this->ajaxReturn(['code' => 0,'msg' => '预约时间已过,不可预约','url' => '']);
+        }
         if($user['account']['use_integral']<$stage_info['scribe_integral']){
             return $this->ajaxReturn(['code' => 0,'msg' => '信用积分不足,无法预约','url' => '']);
         }
@@ -310,6 +314,7 @@ class Trade extends ApiController
         $BuyTradeModel = new BuyTradeModel();
         $redis = new Redis();
         $id = input('id');
+//        $fino = $BuyTradeModel->where('id')->find();
         #查看队列中是否已存在
         $ids = $BuyTradeModel->getIds('buyHandle');
         if(in_array($id,$ids)){
