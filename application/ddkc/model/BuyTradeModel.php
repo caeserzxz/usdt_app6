@@ -44,6 +44,7 @@ class BuyTradeModel extends BaseModel
     //-- 开奖
     /*------------------------------------------------------ */
     public function lottery(){
+        $accountModel = new AccountLogModel();
         $TradingStageModel = new TradingStageModel();
         $SellTradeModel = new SellTradeModel();
         $redis = new Redis();
@@ -52,14 +53,17 @@ class BuyTradeModel extends BaseModel
         if($buyCount==0){
             return '';
         }
+        $setting = settings();
         $time = time();
-        $stageList = $TradingStageModel->where('is_lottery',0)->select();
+        $stage_where[] = ['is_lottery','=',0];
+        $stage_where[] = ['isputaway','=',1];
+        $stageList = $TradingStageModel->where($stage_where)->select();
         if(empty($stageList))  return '';
         $stageInfo = [];
         #获取当前开奖的区间
         foreach ($stageList as $k=>$v){
             $stageTime = $v['trade_end_time'];
-            $stageTime = strtotime(date('Y-m-d '.$stageTime))+(5*60);
+            $stageTime = strtotime(date('Y-m-d '.$stageTime))+($setting['lottery_time']*60);
             if($time>$stageTime){
                 $stageInfo = $v;
             }
@@ -107,7 +111,15 @@ class BuyTradeModel extends BaseModel
                 $buy_save['panic_end_time'] = $time;
                 $this->where('id',$v)->update($buy_save);
             }
+            #返还用户的信用积分
+            $charge['use_integral']   = $stageInfo['scribe_integral'];
+            $charge['change_desc'] = '开奖结束,返还信用积分';
+            $charge['change_type'] = 11;
+            $accountModel->change($charge, $buy_info['buy_user_id'], false);
         }
+
+        #更新开奖区间状态
+        $TradingStageModel->where('id',$stageInfo['id'])->update(['is_lottery'=>1]);
     }
 
     public function getIds($HandleName){
@@ -221,4 +233,59 @@ class BuyTradeModel extends BaseModel
             return true;
         }
     }
+
+    /*------------------------------------------------------ */
+    //-- 预约没有抢购的自动过期
+    /*------------------------------------------------------ */
+    public function BeOverdue(){
+        $accountModel = new AccountLogModel();
+        $TradingStageModel = new TradingStageModel();
+        $SellTradeModel = new SellTradeModel();
+
+        $time = time();
+        $where[] = ['isputaway','=',1];
+        $where[] = ['is_overdue','=',0];
+        $stageList = $TradingStageModel->where($where)->select();
+        if(empty($stageList))  return '';
+        #获取当前开奖的区间
+        foreach ($stageList as $k=>$v){
+            $stageTime = $v['trade_end_time'];
+            $stageTime = strtotime(date('Y-m-d '.$stageTime));
+
+            if($time>$stageTime){
+                $ids  = $this->getIds('buyHandle');
+                #获取当前区间没有点击抢购的数据
+                $buy_where[] = ['buy_status','=',0];
+                $buy_where[] = ['buy_stage_id','=',$v['id']];
+                $list = $this->where($buy_where)->select();
+
+               foreach ($list as $key=>$value){
+                   #判断当前id是否存在于抢购队列中
+                    if(!(in_array($value['id'],$ids))){
+                        $buy_save['panic_end_time'] = $time;
+                        $buy_save['buy_status'] = 4;
+                        $res = $this->where('id',$value['id'])->update($buy_save);
+                    }
+               }
+               #更换当前区间的状态
+                $stage_save['is_overdue'] = 1;
+                $TradingStageModel->where('id',$v['id'])->update($stage_save);
+            }
+        }
+
+    }
+
+    /*------------------------------------------------------ */
+    //-- 每日重置开奖和过期情况
+    /*------------------------------------------------------ */
+    public function DailyReset(){
+        $TradingStageModel = new TradingStageModel();
+
+        $save['is_lottery'] = 0;
+        $save['is_overdue'] = 0;
+        $where[] = ['id','>',0];
+
+        $TradingStageModel->where($where)->update($save);
+    }
+
 }

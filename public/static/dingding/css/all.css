@@ -1163,10 +1163,15 @@ img {
 }
 
 .sellerInfo .model-con {
+  /*position: absolute;*/
+  /*top: 30%;*/
+  /*width: 100%;*/
+  /*z-index: 700;*/
   position: absolute;
-  top: 30%;
-  width: 100%;
+  top: 5%;
+  width: 90%;
   z-index: 700;
+  margin-left: 5%;
 }
 
 .sellerInfo .model-con img {

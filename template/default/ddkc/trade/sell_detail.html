@@ -150,14 +150,20 @@
             $(".popup1").show()
         })
         //确认交易
+        var isPostMsg = false;
         function yesBtn(id) {
             $(".popup2").hide()
+            if(isPostMsg==true){
+                return false;
+            }
+            isPostMsg = true;
             $.ajax({
                 'url':'{:url("ddkc/api.Trade/surePay")}',
                 'type':'post',
                 'data':{'id':id},
                 'dataType':'json',
                 'success':function(data){
+                    isPostMsg = false;
                     if(data.code==1){
                         $.toast(data.msg,"text",function(){
                             window.location.href =data.url;

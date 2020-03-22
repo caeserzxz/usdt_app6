@@ -57,7 +57,9 @@ class Trade  extends ClientbaseController{
 //        $b = $BuyTradeModel->getIds('buyHandle');
 //        $a = $BuyTradeModel->AutomaticCancellation();
 //        $BuyTradeModel->AutoCompletion();
-//        $a = $BuyTradeModel->lottery(3);
+//        $a = $BuyTradeModel->lottery();
+//        $a = $BuyTradeModel->BeOverdue();
+//        $a = $BuyTradeModel->DailyReset();
 //        dump($a);die;
         $this->assign('userInfo',$this->userInfo);
         $this->assign('setting',settings());

@@ -18,20 +18,19 @@ use think\Db;
  *
  */
 
-class CleanTradingClose extends Command
+class PanicBuying extends Command
 {
     protected function configure()
     {
-        $this->setName('CleanTradingClose')->setDescription('清除每天未打款的次数');
+        $this->setName('CleanTradingClose')->setDescription('开奖逻辑');
     }
 
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln("清除每天未打款的次数 begin");
-        $UsersModel = new UsersModel();
-        $map['trading_close'] = 0;
-        $UsersModel->where('is_ban',0)->where('user_id','gt',0)->update($map);
-        $output->writeln("清除每天未打款的次数 end");
+        $output->writeln("开奖 begin");
+        $BuyTradeModel  = new BuyTradeModel();
+        $BuyTradeModel->lottery();
+        $output->writeln("开奖 end");
 
     }
 }

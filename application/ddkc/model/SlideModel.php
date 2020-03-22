@@ -30,7 +30,7 @@ class SlideModel extends BaseModel
 		foreach ($rows as $key=>$row){			
 			if($row['bind_type'] == 'article') $row['url'] = url('/shop/article/info',array('id'=>$row['ext_id']));
 			else if($row['bind_type'] == 'goods') $row['url'] = url('/shop/goods/info',array('id'=>$row['ext_id']));
-			else $row['url'] = $row['data'];			
+			else $row['url'] = $row['data'];
 			$rows[$key] = $row;
 		}
 //		Cache::set(self::$mkey,$rows,3600);

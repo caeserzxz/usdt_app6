@@ -55,27 +55,37 @@
     });
 </script>
 <script>
-
+    var isPostMsg = false;
     function appeal_reason(id){
         var reason = $('#appeal_reason').val();
         var obj = new Object();
         obj.id = id;
         obj.reason = reason;
-        $.ajax({
-            'url':'{:url("ddkc/api.Trade/appeal")}',
-            'type':'post',
-            'data':obj,
-            'dataType':'json',
-            'success':function(data){
-                if(data.code==1){
-                    $.toast(data.msg,"text",function(){
-                        window.location.href =data.url;
-                    });
-                }else{
-                    $.toast(data.msg,"text");
-                }
+        $.confirm("是否确认申诉", function() {
+            if(isPostMsg==true){
+                return false;
             }
+            isPostMsg = true;
+            $.ajax({
+                'url':'{:url("ddkc/api.Trade/appeal")}',
+                'type':'post',
+                'data':obj,
+                'dataType':'json',
+                'success':function(data){
+                    isPostMsg = false;
+                    if(data.code==1){
+                        $.toast(data.msg,"text",function(){
+                            window.location.href =data.url;
+                        });
+                    }else{
+                        $.toast(data.msg,"text");
+                    }
+                }
+            });
+        }, function() {
+            //点击取消后的回调函数
         });
+
     }
 
 </script>

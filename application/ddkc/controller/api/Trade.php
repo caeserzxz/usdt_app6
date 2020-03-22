@@ -310,6 +310,11 @@ class Trade extends ApiController
         $BuyTradeModel = new BuyTradeModel();
         $redis = new Redis();
         $id = input('id');
+        #查看队列中是否已存在
+        $ids = $BuyTradeModel->getIds('buyHandle');
+        if(in_array($id,$ids)){
+            return $this->ajaxReturn(['code' => 0,'msg' => '不可重复抢购']);
+        }
         #将抢购id存入队列
         $res = $redis->rPush('buyHandle',$id);
         if($res){
@@ -330,7 +335,11 @@ class Trade extends ApiController
         if($sell_info['sell_status']==0){
             return $this->ajaxReturn(['code' => 0,'msg' => '当前状态无法付款','url' => '']);
         }else if($sell_info['sell_status']>1){
-            return $this->ajaxReturn(['code' => 0,'msg' => '此订单已付过款','url' => '']);
+            if($sell_info['sell_status']==5){
+                return $this->ajaxReturn(['code' => 0,'msg' => '此订单取消','url' => '']);
+            }else{
+                return $this->ajaxReturn(['code' => 0,'msg' => '此订单已付过款','url' => '']);
+            }
         }
 
         $file = $_FILES['pay_img'];
@@ -374,7 +383,10 @@ class Trade extends ApiController
         $sell_info = $SellTradeModel->where('id',$id)->find();
         $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
         if($sell_info['sell_status']==4){
-            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已付款']);
+            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已完成']);
+        }
+        if($sell_info['sell_status']==5){
+            return $this->ajaxReturn(['code' => 0,'msg' => '该订单已超时取消']);
         }
 
         $sell_save['sell_status'] = 4;

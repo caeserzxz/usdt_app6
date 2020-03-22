@@ -143,6 +143,7 @@
 <!--                        <div>-->
 
                             <div class="weui-cells">
+                                <a href="{:url('ddkc/trade/sell_detail')}?id={{item.id}}">
                                 <div class="weui-cell">
                                     <div class="weui-cell__hd">
                                         <p><img src="__STATIC__/dingding/images/index14.png" alt=""></p>
@@ -152,11 +153,21 @@
                                             <p>交易金额：{{item.sell_number}}</p>
                                             <p>抢购方：13412341234</p>
                                         </div>
-                                        <p class="times dp-flex" style="justify-content: flex-start;">交易时间剩余：<span
-                                                class="timer6">01:52:23</span></p>
+                                        {literal}
+                                        {{if item.sell_status == 4}}
+                                        <p class="times dp-flex" style="justify-content: flex-start;">交易完成时间：<span
+                                                >{{item.sell_end_time_date}}</span></p>
+                                        {{/if}}
+                                        {{if item.sell_status == 3}}
+                                        <p class="times dp-flex" style="justify-content: flex-start;">交易失败时间：<span
+                                                >{{item.sell_end_time_date}}</span></p>
+                                        {{/if}}
+                                        {/literal}
+
 
                                     </div>
                                 </div>
+                                </a>
                             </div>
 <!--                        </div>-->
                             {{/each}}
@@ -201,7 +212,7 @@
 <!--                                                    交易时间剩余：<span class="timer7">01:52:23</span>-->
 <!--                                                </p>-->
                                                 <p class="times dp-flex" style="justify-content: flex-start;">
-                                                    预约时间：<span class="timer7">{{item.buy_start_time_date}}</span>
+                                                    预约时间：<span >{{item.buy_start_time_date}}</span>
                                                 </p>
                                                 {literal}
                                                     {{if item.buy_status == 0}}

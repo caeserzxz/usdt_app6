@@ -29,7 +29,7 @@ class SlideModel extends BaseModel
 			else $row['url'] = $row['data'];			
 			$rows[$key] = $row;
 		}
-		Cache::set(self::$mkey,$rows,3600);
+		Cache::set(self::$mkey,$rows,10);
 		return $rows;
 	}
 }
