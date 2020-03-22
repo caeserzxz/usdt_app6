@@ -1,0 +1,60 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+<div class="page">
+    <!-- <div class="page-hd">
+        <div class="header bor-1px-b">
+<div class="header-left">
+    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+</div>
+<div class="header-title">首页</div>
+<div class="header-right">
+    <a href="#"></a>
+</div>
+</div>
+    </div> -->
+
+    <div class="page-bd indexPage ">
+        <!-- 页面内容-->
+            <div class="swiper-container" data-space-between='10' data-pagination='.swiper-pagination'
+                 data-autoplay="1000" style="height: 91.5%; width: 100%;">
+                <div class="swiper-wrapper">
+                        {volist name='slideList' id='vol'}
+                        <div class="swiper-slide">
+                            <a href="{$vol.url}">
+                                <img style="height: 100%;" src="{$vol.imgurl}" alt="">
+                            </a>
+                        </div>
+                        {/volist}
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+
+    </div>
+ {include file="layouts@dd_bottom" /}
+</div>
+{/block}
+
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="__STATIC__/dingding//js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        autoplay: true,
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    })
+    function link(url){
+        window.location.href = url;
+    }
+</script>
+</body>
+
+</html>
+{/block}
