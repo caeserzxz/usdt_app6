@@ -1,0 +1,48 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header b-b clearfix">
+    <form id="forms" class="talbe-search form-inline" method="post" action="{:url('getList')}" >
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>订单列表</strong>
+                </li>                                  
+            </ul>
+
+            <select name="time_type"  style="width: 130px;" data-toggle="select2">
+                <option value="">选择时间类型</option>
+                <option value="buy_start_time">预约时间</option>
+                <option value="panic_end_time">结束时间</option>
+            </select>
+             <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
+                 <i class="fa fa-calendar fa-lg"></i>
+                 <span></span> <b class="caret"></b>
+                 <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
+             </a>
+
+             <select name="buy_status"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                 <option value="">全部</option>
+                 <option value="1">已预约</option>
+                 <option value="2">抢购中</option>
+                 <option value="3">已中奖</option>
+                 <option value="4">未中奖</option>
+                 <option value="5">已过期</option>
+             </select>
+             <input type="hidden" value="0" name="export">
+             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="订单ID" data-rule-required="true" />
+             <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+        </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f">
+    <section class="panel panel-default">
+        <div class="table-responsive" id="list_box">
+            {include file="sys_admin/buy_order/list" /}
+        </div>
+    </section>
+</section>
+
+{/block}

@@ -1,0 +1,110 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>订单详情</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="col-sm-12">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">订单ID：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.id}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">用户信息：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        <a href="{:url('member/sys_admin.users/info',['user_id'=>$row['buy_user_id']])}" target="_blank">{$row.buy_user_id}-{$row.user_id|userInfo}</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">状态：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.status_str}
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">售出的场次：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.stage_name}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">预约时间：</label>
+                                    <div class="col-sm-5 form-control-static">
+                                        {$row.buy_start_time}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">结束时间：</label>
+                                    <div class="col-sm-8 form-control-static">
+                                        {$row.panic_end_time}
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {if condition="$row.sell_status eq 3"}
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button type="button" class="btn btn-primary"  onclick="examine(1,{$row.id});" data-loading-text="保存中...">申诉通过</button>
+                            <button type="button" class="btn btn-default" onclick="examine(2,{$row.id});" >拒绝申诉</button>
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="miner_id" type="hidden" value="{$row.miner_id|intval}">
+    </form>
+</section>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"]);
+    function  examine(type,id){
+        $.ajax({
+            'url':'{:url("examine")}',
+            'type':'post',
+            'data':{'id':id,'type':type},
+            'dataType':'json',
+            'success':function(data){
+                if(data.code==1){
+                    layer.msg(data.msg,function(){
+                        window.location.href='{:url("index")}';
+                    });
+                }else{
+                    layer.msg(data.msg);
+                }
+            }
+        });
+    }
+</script>
+{/block}
+
