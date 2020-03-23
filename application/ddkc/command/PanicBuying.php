@@ -29,7 +29,7 @@ class PanicBuying extends Command
     {
         $output->writeln("开奖 begin");
         $BuyTradeModel  = new BuyTradeModel();
-        $BuyTradeModel->PanicBuying();
+        $BuyTradeModel->PanicBuying_new();
         $output->writeln("开奖 end");
 
     }
