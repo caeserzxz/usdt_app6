@@ -28,6 +28,7 @@
                     <li ><a href="#sell_explain" data-toggle="tab">挂售详情说明</a></li>
                     <li ><a href="#appeal_explain" data-toggle="tab">申诉注意事项</a></li>
                     <li ><a href="#information_article" data-toggle="tab">文章说明</a></li>
+                    <li ><a href="#index_notice" data-toggle="tab">首页公告</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -370,6 +371,29 @@
                                   data-kdheight="150" data-tongji="remain"
                                   data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
                                   name="integral_article" style="visibility:hidden;">{$setting.integral_article|raw}</textarea>
+                            <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="index_notice">
+                    <div class="form-group publicnote_status">
+                        <label class="col-sm-2 control-label">开放首页公告：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="is_index_notice" value="0" {$setting['is_index_notice']<1?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="is_index_notice" value="1" {$setting['is_index_notice']==1?'checked':''} type="radio" >开启
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group publicnote_status">
+                        <label class="control-label">首页公告：</label>
+                        <div class="col-sm-9 " style="padding-left:0px;">
+                        <textarea rows="8" class="input-max hd" data-toggle="kindeditor" data-config="simple"
+                                  data-kdheight="150" data-tongji="remain"
+                                  data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
+                                  name="tips_notice" style="visibility:hidden;">{$setting.tips_notice|raw}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
                         </div>
                     </div>

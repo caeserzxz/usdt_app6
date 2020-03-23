@@ -813,7 +813,7 @@ function roleUpgrade($user_id)
 	if ($user['role_id']) return false;
 	# 是否实名认证
 	$isAu = $authenModel->where('user_id',$user_id)->count();
-	if (!$isAu) return false;
+    if (!$isAu) return false;
 
 	# 是否上传2个收款信息
 	$payment = $paymentModel->where('user_id',$user_id)->count();

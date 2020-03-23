@@ -33,6 +33,7 @@ class Trade  extends ClientbaseController{
     public function index(){
         $SlideModel = new SlideModel();
         $slideList = $SlideModel::getRows(1);
+        $this->assign('settings',settings());
         $this->assign('slideList',$slideList);
         $this->assign('title', '叮叮市场');
         return $this->fetch('index');

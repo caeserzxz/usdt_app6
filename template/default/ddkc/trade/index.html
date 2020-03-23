@@ -70,23 +70,16 @@
                 </div>
             </div>
             <!-- 首页进入显示 -->
+            {if condition="$settings.is_index_notice eq 1"}
             <div class="popup popup02" style="display: block;">
                 <div class="popup-bgc"></div>
                 <div class="model-con">
                     <div class="model-ctp"><img src="__STATIC__/dingding//images/pop02.png" alt=""></div>
                     <div class="model-cco">
                         <img class="title" src="__STATIC__/dingding//images/pop04.png" alt="">
-                        <div class="cont">
+                        <div class="cont" style="width: 100%;work-wrap:break-word;">
                             <div>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
-                                <p>因C型矿机备受大用户喜爱，公司决定于3.15-3.17日暂停C型矿机抢购，特此公告</p>
+                                {$settings.tips_notice|raw|html_entity_decode}
                             </div>
                         </div>
                         <img class="tip-img" src="__STATIC__/dingding//images/pop01.png" alt="">
@@ -95,6 +88,7 @@
                 </div>
 
             </div>
+            {/if}
 
         </div>
         {include file="layouts@dd_bottom" /}

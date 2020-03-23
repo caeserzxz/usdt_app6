@@ -54,7 +54,7 @@ class Center extends ApiController
                 $data['alipay_payment_code'] = $path;
             }
         }
-        
+
         #IOS直接上传的地址
         if($ios_file){
             $data['payment_code'] = $ios_file;
