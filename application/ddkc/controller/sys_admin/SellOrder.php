@@ -197,4 +197,25 @@ class SellOrder extends AdminController
         Db::commit();
         return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('index')]);
     }
+
+    /*------------------------------------------------------ */
+    //-- 指定/禁止用户id
+    /*------------------------------------------------------ */
+    public function save_sell(){
+        $SellTradeModel = new SellTradeModel();
+        if ($this->request->isPost()) {
+            $inArr = input('post.');
+
+            $res =$SellTradeModel->where('id',$inArr['id'])->update($inArr);
+            if($res){
+                return $this->success('操作成功.',url('index'));
+            }else{
+                return $this->error('操作失败.');
+            }
+        }
+        $id = input('id');
+        $info = $SellTradeModel->where('id',$id)->find();
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
 }

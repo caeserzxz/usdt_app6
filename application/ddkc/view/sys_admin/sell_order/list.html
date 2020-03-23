@@ -43,6 +43,9 @@
 <!--        <a href="{:url('destroy_trade',array('trade_id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除该交易订单吗?" class="m-xs" title="删除">-->
 <!--            <i class="fa fa-trash-o text-muted"></i>-->
 <!--        </a>-->
+        <a href="{:url('save_sell',array('id'=>$vo['id']))}"  data-toggle="ajaxModal" class="m-xs" title="指定ID/禁止ID">
+            <i class="fa fa-edit"></i>
+        </a>
     </td>
 </tr>
 {/volist} 
