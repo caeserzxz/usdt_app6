@@ -1,6 +1,8 @@
 <?php
 namespace app\member\model;
 use app\BaseModel;
+use app\member\model\UsersModel;
+use app\member\model\AccountLogModel;
 /*------------------------------------------------------ */
 //-- 封禁记录表
 //-- Author: iqgmy
@@ -36,6 +38,22 @@ class DdBanRecordModel extends BaseModel
         $ban['order_id'] = $order_id;
 
         $res = $this->insert($ban);
+        if($res){
+            #扣除用户信用积分
+            $UsersModel = new UsersModel();
+            $user_info = $UsersModel->info($user_id);
+            $integral = 0;
+            if($user_info['account']['use_integral']<$setting['deduction_use_integral']){
+                $integral = $user_info['account']['use_integral'];
+            }else{
+                $integral = $setting['deduction_use_integral'];
+            }
+            $accountModel = new AccountLogModel();
+            $charge['use_integral']   = -$integral;
+            $charge['change_desc'] = '封号,扣除信用积分';
+            $charge['change_type'] = 11;
+            $res1 =$accountModel->change($charge, $user_id, false);
+        }
         return $res;
     }
 }

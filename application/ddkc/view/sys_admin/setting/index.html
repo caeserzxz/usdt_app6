@@ -109,16 +109,22 @@
 <!--                            <input type="text" name="delay_button_time" class="input-mini" value="{$setting.delay_button_time}"> <span class="help-line">分钟;如({$setting.valid_trade_time})分钟后,或延迟({$setting.delay_trade_time})分钟后还未交易则封号处理</span>-->
 <!--                        </div>-->
 <!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">交易结束后</label>-->
+<!--                        <div class="controls">-->
+<!--                            <input type="text" name="valid_appeal_time"  class="input-large" value="{$setting.valid_appeal_time}"> <span class="help-line">分钟内,用户可进行申诉</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-2 control-label">恶意申诉的,第一次直接封号</label>-->
+<!--                        <div class="controls">-->
+<!--                            <input type="text" name="malice_appeal"  class="input-large" value="{$setting.malice_appeal}"> <span class="help-line">天处理,第二次永久封号处理</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">交易结束后</label>
+                        <label class="col-sm-2 control-label">封号一次扣</label>
                         <div class="controls">
-                            <input type="text" name="valid_appeal_time"  class="input-large" value="{$setting.valid_appeal_time}"> <span class="help-line">分钟内,用户可进行申诉</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">恶意申诉的,第一次直接封号</label>
-                        <div class="controls">
-                            <input type="text" name="malice_appeal"  class="input-large" value="{$setting.malice_appeal}"> <span class="help-line">天处理,第二次永久封号处理</span>
+                            <input type="text" name="deduction_use_integral"  class="input-large" value="{$setting.deduction_use_integral}"> <span class="help-line">信用积分</span>
                         </div>
                     </div>
                 </div>
