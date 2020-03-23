@@ -43,7 +43,7 @@ class BuyTradeModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 开奖
     /*------------------------------------------------------ */
-    public function lottery(){
+    public function PanicBuying(){
         $accountModel = new AccountLogModel();
         $TradingStageModel = new TradingStageModel();
         $SellTradeModel = new SellTradeModel();
