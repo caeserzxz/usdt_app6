@@ -270,6 +270,7 @@ class Center extends ApiController
 
         $res = $AuthenticationModel->create($data);  
         if ($res) {
+            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '操作成功']);
         } else{
             return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
