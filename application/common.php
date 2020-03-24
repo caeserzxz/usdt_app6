@@ -829,17 +829,17 @@ function roleUpgrade($user_id)
 	if ($roleInfo['bonus_points']) {
 		$data['use_integral'] = $roleInfo['bonus_points'];
     	$data['by_id']        = $roleInfo['role_id'];
-    	$data['change_desc']  = '升级奖励';
+    	$data['change_desc']  = '升级奖励积分';
 	    $data['change_type']  = 107;
         $accountModel->change($data, $user['user_id'], false); 
 	}
 	#叮叮奖励
     if($roleInfo['dingding_points']){
-        $data['balance_money'] = $roleInfo['dingding_points'];
-        $data['by_id']        = $roleInfo['role_id'];
-        $data['change_desc']  = '升级奖励';
-        $data['change_type']  = 107;
-        $accountModel->change($data, $user['user_id'], false);
+        $data_dingding['balance_money'] = $roleInfo['dingding_points'];
+        $data_dingding['by_id']        = $roleInfo['role_id'];
+        $data_dingding['change_desc']  = '升级奖励叮叮';
+        $data_dingding['change_type']  = 107;
+        $accountModel->change($data_dingding, $user['user_id'], false);
     }
 	$pid = $user['pid'];
 	if (settings('recom_award_integral') && $pid) {

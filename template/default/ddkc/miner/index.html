@@ -192,8 +192,15 @@
             return;
         }*/
         jq_ajax('{:url("ddkc/api.miner/buyMining")}',arr,function (res) {
-            $.toast(res.msg, "text");
-            if (res.url) window.location.href = res.url;
+
+            if(res.code==1){
+                $.toast(res.msg, "text",function(){
+                    window.location.href = res.url;
+                });
+            }else{
+                $.toast(res.msg, "text");
+            }
+
         })
     }
     // 取消
