@@ -434,4 +434,30 @@ class BuyTradeModel extends BaseModel
         $TradingStageModel->where($where)->update($save);
     }
 
+    /*------------------------------------------------------ */
+    //-- 解封
+    /*------------------------------------------------------ */
+    public function Unsealing(){
+        $DdBanRecordModel = new DdBanRecordModel();
+        $UsersModel = new UsersModel();
+        $where[] = ['ban_status','=',0];
+        $where[] = ['forever_ban','=',0];
+        $list = $DdBanRecordModel->where($where)->select();
+        $time = time();
+        foreach ($list as $k=>$v){
+            #解封时间
+            $ban_time = $v['ban_time']+($v['ban_day']*24*60*60);
+            if(!($time<$ban_time)){
+                #更新封号记录表
+                $save['ban_status'] = 1;
+                $save['unsealing_time'] = $time;
+                $save['manual'] = 1;
+                $res  = $DdBanRecordModel->where('id',$v['id'])->update($save);
+                #更新用户表状态
+                $save_user['is_ban'] = 0;
+                $res1 = $UsersModel->where('user_id',$v['user_id'])->update($save_user);
+            }
+
+        }
+    }
 }

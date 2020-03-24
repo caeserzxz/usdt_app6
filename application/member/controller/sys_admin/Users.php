@@ -11,6 +11,7 @@ use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\distribution\model\DividendModel;
 use app\weixin\model\WeiXinUsersModel;
+use app\member\model\DdBanRecordModel;
 
 use think\Db;
 use think\facade\Cache;
@@ -304,12 +305,15 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function evelBan()
     {
+        $DdBanRecordModel = new DdBanRecordModel();
         $user_id = input('user_id', 0, 'intval');
         $row = $this->Model->info($user_id);
         if ($row['is_ban'] == 1) return $this->error('会员已被封禁，无须重复操作.');
         $data['is_ban'] = 1;
         $res = $this->Model->upInfo($user_id, $data);
         if ($res < 1) return $this->error();
+        #新增封号记录
+        $DdBanRecordModel->ban_user($user_id,'后台手动封禁','');
         $this->_log($user_id, '后台封禁会员.', 'member');
         return $this->success('禁封成功.', 'reload');
     }
@@ -318,12 +322,20 @@ class Users extends AdminController
     /*------------------------------------------------------ */
     public function reBan()
     {
+        $DdBanRecordModel = new DdBanRecordModel();
         $user_id = input('user_id', 0, 'intval');
         $row = $this->Model->info($user_id);
         if ($row['is_ban'] == 0) return $this->error('会员已被解禁，无须重复操作.');
         $data['is_ban'] = 0;
         $res = $this->Model->upInfo($user_id, $data);
         if ($res < 1) return $this->error('操作失败,请重试.');
+        #更新封号记录
+        $save['ban_status'] = 1;
+        $save['manual'] = '2';
+        $save['unsealing_time'] = time();
+        $where[] = ['user_id','=',$user_id];
+        $where[] = ['ban_status','=',0];
+        $DdBanRecordModel->where($where)->update($save);
         $this->_log($user_id, '后台解禁会员.', 'member');
         return $this->success('解禁成功.', 'reload');
     }

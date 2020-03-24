@@ -61,6 +61,7 @@ class Trade  extends ClientbaseController{
 //        $a = $BuyTradeModel->lottery();
 //        $a = $BuyTradeModel->BeOverdue();
 //        $a = $BuyTradeModel->DailyReset();
+//        $a = $BuyTradeModel->Unsealing();
 //        dump($a);die;
         $this->assign('userInfo',$this->userInfo);
         $this->assign('setting',settings());

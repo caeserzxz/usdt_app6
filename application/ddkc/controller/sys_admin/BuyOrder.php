@@ -142,7 +142,7 @@ class BuyOrder extends AdminController
        }else if($data['buy_status']==4){
            $data['status_str'] =  '已过期';
        }
-       
+
         $stage_info = $TradingStageModel->where('id',$data['buy_stage_id'])->find();
         $data['stage_name'] = $stage_info["stage_name"];
 

@@ -16,6 +16,7 @@ class DdBanRecordModel extends BaseModel
     //-- 封号处理
     /*------------------------------------------------------ */
     public function ban_user($user_id,$desc='',$order_id=''){
+        $UsersModel = new UsersModel();
         $setting = settings();
         $ban_count = $this->where('user_id',$user_id)->count();
         if($ban_count>=2){
@@ -53,6 +54,10 @@ class DdBanRecordModel extends BaseModel
             $charge['change_desc'] = '封号,扣除信用积分';
             $charge['change_type'] = 11;
             $res1 =$accountModel->change($charge, $user_id, false);
+
+            #更新用户表状态
+            $save_user['is_ban'] = 1;
+            $UsersModel->where('user_id',$user_id)->update($save_user);
         }
         return $res;
     }
