@@ -309,9 +309,9 @@ class Users extends AdminController
         $user_id = input('user_id', 0, 'intval');
         $row = $this->Model->info($user_id);
         if ($row['is_ban'] == 1) return $this->error('会员已被封禁，无须重复操作.');
-//        $data['is_ban'] = 1;
-//        $res = $this->Model->upInfo($user_id, $data);
-//        if ($res < 1) return $this->error();
+        $data['is_ban'] = 1;
+        $res = $this->Model->upInfo($user_id, $data);
+        if ($res < 1) return $this->error();
         #新增封号记录
         $DdBanRecordModel->ban_user($user_id,'后台手动封禁','');
         $this->_log($user_id, '后台封禁会员.', 'member');
