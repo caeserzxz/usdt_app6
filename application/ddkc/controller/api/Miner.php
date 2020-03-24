@@ -106,7 +106,7 @@ class Miner extends ApiController
         if($user['role']['role_id']==0){
             return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);
         }
-        
+
  		$where_m[] = ['miner_id','=',$data['id']];
  		$where_m[] = ['is_on_sale','=',1];
  		$mining = $this->Model->where($where_m)->find();	
