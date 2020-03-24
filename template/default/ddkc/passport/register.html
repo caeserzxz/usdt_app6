@@ -19,10 +19,10 @@
                     </label>
                 </div>
                 <div class="weui-cell__bd">
-                    {empty name="$share_token"}
+                    {empty name="$recommend"}
                     <input class="weui-input" type="text" id="invite_code" placeholder="邀请码（必填）">
                     {else/}
-                    <input class="weui-input" type="text" id="invite_code" value="{$share_token}"  placeholder="{$share_token}">
+                    <input class="weui-input" type="text" id="invite_code" value="{$recommend}"  placeholder="{$recommend}">
                     {/empty}
                 </div>
             </div>
