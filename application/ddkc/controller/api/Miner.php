@@ -98,6 +98,15 @@ class Miner extends ApiController
  		$pay_money = $data['pay_money'];// 支付金额
 
 		# =================================== 数据验证START ==============================
+        # 是否登录
+        $user = $userModel->info($this->userInfo['user_id']);
+        if (!$user) {
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先登录','url' => url('passport/login')]);
+        }
+        if($user['role']['role_id']==0){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);
+        }
+        
  		$where_m[] = ['miner_id','=',$data['id']];
  		$where_m[] = ['is_on_sale','=',1];
  		$mining = $this->Model->where($where_m)->find();	

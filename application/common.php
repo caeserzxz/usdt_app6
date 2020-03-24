@@ -753,7 +753,7 @@ function upload_img($img_name){
 //            $path = substr($path, 9);
             return  $path;
         }else{
-            return $info->getError();die;
+            return '图片上传失败';die;
         }
     }
 }

@@ -49,7 +49,7 @@
                     <div class="weui-uploader__bd">
                         <div class="weui-uploader__input-box">
                             {if condition="$appType eq 'IOS'"}
-                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                {if condition="$wx_info.wx_payment_code eq ''"}
                                 <img id="img2" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('wx_payment_code');" class="info-img" alt="">
                                 <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
@@ -57,7 +57,7 @@
                                 <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
                                 {/if}
                             {else /}
-                                {if condition="$alipay_info.alipay_payment_code eq ''"}
+                                {if condition="$wx_info.wx_payment_code eq ''"}
                                 <img id="img2" src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
                                 <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">

@@ -53,6 +53,9 @@ class Trade extends ApiController
         if (!$user) {
             return $this->ajaxReturn(['code' => 0,'msg' => '请先登录','url' => url('passport/login')]);
         }
+        if($user['role']['role_id']==0){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);
+        }
         $stage_id = input('stage_id');
         $stage_info = $TradingStageModel->where('id',$stage_id)->find();
         if(empty($stage_info)){
@@ -112,6 +115,9 @@ class Trade extends ApiController
         $user = $userModel->info($this->userInfo['user_id']);
         if (!$user) {
             return $this->ajaxReturn(['code' => 0,'msg' => '请先登录','url' => url('passport/login')]);
+        }
+        if($user['role']['role_id']==0){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);
         }
         $number  = input('number');//出售的ddb
         $stage_id = input('stage_id');
