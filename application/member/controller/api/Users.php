@@ -761,7 +761,7 @@ class Users extends ApiController
         if (file_exists($file) == false) {
             include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
             $QRcode = new \phpqrcode\QRcode();
-            $value = config('config.host_path') . '/?share_token=' . $this->userInfo['token'];
+            $value = config('config.host_path') . '/ddkc/Passport/register/?share_token=' . $this->userInfo['token'];
             makeDir($file_path);
             $png = $QRcode::png($value, $file, "L", 10, 1, 2, true);
         }

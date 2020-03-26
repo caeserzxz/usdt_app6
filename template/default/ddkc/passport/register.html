@@ -101,6 +101,7 @@
             </div>
         </div>
         <div class="tip dp-flex">注册代表您同意<a href="{:url('shop/article/registerAgreement')}">&lt;&lt;{:settings('shop_title')}&gt;&gt;</a></div>
+        <div class="tip dp-flex"><a href='{:url("publics/download/app")}'>APP下载</a></div>
     </div>
 </div>
 {/block}
@@ -128,6 +129,7 @@
             }
         })
     })
+    var appType = '{$appType}';
     $('.register').on('click', function () {
         var arr = new Object();
         arr.mobile = $('#mobile').val();
@@ -185,7 +187,11 @@
                 _alert(res.msg);
                 return false;
             }
-            _alert(res.msg, '{:url("login")}');
+            if(appType=='IOS'||appType=='Android'){
+                _alert(res.msg, '{:url("login")}');
+            }else{
+                _alert(res.msg, '{:url("publics/download/app")}');
+            }
         })
     })
     function codeButton() {
@@ -218,9 +224,13 @@
     }
     function _alert(msg,url) {
         $.toast.prototype.defaults.duration = 800;
-        $.toast(msg, "text");
+
         if (url) {
-            window.location.href = url;
+            $.toast(msg, "text",function(){
+                window.location.href = url;
+            });
+        }else{
+            $.toast(msg, "text");
         }
     }
 </script>

@@ -577,7 +577,7 @@ img {
   left: 10%;
   right: 10%;
   width: 3.933333rem;
-  height: 2rem;
+  /*height: 2rem;*/
   border-radius: 0.16rem;
   border: 0.026667rem solid #dededd;
   padding: 0.2rem 0.066667rem;

@@ -50,7 +50,13 @@ class Passport extends ApiController
         $this->checkCode('register',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->register(input());
         if ($res !== true) return $this->error($res);
-        return $this->success(langMsg('注册成功.','member.register.success'));
+//        return $this->success(langMsg('注册成功.','member.register.success'));
+        $appType = session('appType');
+        if($appType=='IOS'||$appType=='Android'){
+            return $this->success('注册成功.',url('ddkc/Passport/login'));
+        }else{
+            $this->success('注册成功.',url('publics/download/app'));
+        }
     }
 	/*------------------------------------------------------ */
     //-- 找回用户密码

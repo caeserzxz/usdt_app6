@@ -13,6 +13,8 @@
             <div class="top-pa dp-flex">
                 <span></span>
                 <p>简体中文</p>
+                <span onclick="tips();" style="background-color: #5e5e5e;"></span>
+                <p onclick="tips();">英文版</p>
             </div>
             <!-- 页面内容-->
             <div class="logo dp-flex">
@@ -193,10 +195,16 @@
     }
     function _alert(msg,url) {
         $.toast.prototype.defaults.duration = 800;
-        $.toast(msg, "text");
         if (url) {
-            window.location.href = url;
+            $.toast(msg, "text",function(){
+                window.location.href = url;
+            });
+        }else{
+            $.toast(msg, "text");
         }
+    }
+    function tips() {
+        _alert('待开发');
     }
   </script>
 </body>
