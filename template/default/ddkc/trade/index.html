@@ -45,7 +45,24 @@
                                 <p>抢购时间：{{item.trade_start_time}}-{{item.trade_end_time}}</p>
                                 <p>信用积分：{{item.scribe_integral}}</p>
                             </div>
-                            <div class="list-btn sureBtn" onclick="sureBtn({{item.id}},{{item.scribe_integral}})"><img src="__STATIC__/dingding//images/index08.png" alt=""></div>
+                            {literal}
+                                {{if item.buy_status == 1}}
+                                    <div class="list-btn sureBtn" onclick="sureBtn({{item.id}},{{item.scribe_integral}})"><img src="__STATIC__/dingding//images/index08.png" alt=""></div>
+                                {{/if}}
+                                {{if item.buy_status == 2}}
+                                    <div class="list-btn " ><img src="__STATIC__/dingding//images/index06.png" alt=""></div>
+                                {{/if}}
+                                {{if item.buy_status == 3}}
+                                    <div class="list-btn " onclick="PanicBuying({{item.buy_id}});" ><img src="__STATIC__/dingding//images/index05.png" alt=""></div>
+                                {{/if}}
+                                {{if item.buy_status == 4}}
+                                    <div class="list-btn " ><img src="__STATIC__/dingding//images/index03.png" alt=""></div>
+                                {{/if}}
+                                {{if item.buy_status == 5}}
+                                    <div class="list-btn "><img src="__STATIC__/dingding//images/index10.png" alt=""></div>
+                                {{/if}}
+                            {/literal}
+
                         </div>
                         {{/each}}
                     </script>
@@ -165,6 +182,27 @@
                        }else{
                            $.toast(data.msg, "text");
                        }
+           })
+       }
+       //抢购
+       var isPostMsg2 = false;
+       function PanicBuying(id){
+           var arr = new Object();
+           arr.id = id;
+           if(isPostMsg2==true){
+               return false;
+           }
+           isPostMsg2 = true;
+           jq_ajax('{:url("ddkc/api.trade/PanicBuying")}',arr,function (data) {
+               isPostMsg2 = false;
+               if(data.code==1){
+                   $.toast(data.msg, "text",function(){
+                       window.location.reload();
+                       // window.location.href = data.url;
+                   });
+               }else{
+                   $.toast(data.msg, "text");
+               }
            })
        }
     </script>

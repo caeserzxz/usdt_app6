@@ -28,14 +28,74 @@ class Trade extends ApiController
     //-- 获取交易区间列表
     /*------------------------------------------------------ */
     public function getTradingStageList(){
+        $SellTradeModel = new SellTradeModel();
         $model = new TradingStageModel;
         $this->sqlOrder = 'id ASC';
-        $where[] = ['isputaway' ,'eq' ,1];
-        $data = $this->getPageList($model,$where);
+        $where_stage[] = ['isputaway' ,'eq' ,1];
+        $data = $this->getPageList($model,$where_stage);
+
+        #获取今日起始时间
+        $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $endToday=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $time = time();
+        $setting = settings();
         if (count($data['list']) > 0) {
             foreach ($data['list'] as $key => $value) {
+                $status = 0;
+                #1为可预约 2为已预约  3为可抢购 4为抢购中 5为已过期
+                $start_time =strtotime(date('Y-m-d '.$value['trade_start_time']));
+                $end_time =strtotime(date('Y-m-d '.$value['trade_end_time']));
+                #获取今日当前区间的订单
+                $where[] = ['buy_stage_id','=',$value['id']];
+                $where[] = ['buy_start_time','between',[$beginToday,$endToday]];
+                $where[] = ['buy_user_id','=',$this->userInfo['user_id']];
+                $buy_info = $this->Model->where($where)->find();
+                if(empty($buy_info)){
+                    #今日没预约过
+                    if($time<($start_time-($setting['stop_booking_time']*60))){
+                        #可预约
+                        $status = 1;
+                    }else{
+                        #预约已过期
+                        $status = 5;
+                    }
+                }else{
+                    #今日有预约过
+                    if($buy_info['buy_status']==0){
+                        $ids = $this->Model->getIds('buyHandle');
+                        if(in_array($buy_info['id'],$ids)){
+                          #抢购中
+                            $status = 4;
+                        }else{
+                            if($time>$start_time&&$time<$end_time){
+                                #可抢购
+                                $status = 3;
+                            }else{
+                                if($time<$start_time){
+                                    #已预约
+                                    $status = 2;
+                                }else if($time>$end_time){
+                                    #预约已过期
+                                    $status = 5;
+                                }
+                            }
+                        }
+                    }else if($buy_info['buy_status']==2){
+                        #预约过期
+                        $status = 5;
+                    }else if($buy_info['buy_status']==3){
+                        #预约过期
+                        $status = 5;
+                    }else if($buy_info['buy_status']==4){
+                        #预约过期
+                        $status = 5;
+                    }
 
+                }
+                $data['list'][$key]['buy_id'] = $buy_info['id'];
+                $data['list'][$key]['buy_status'] = $status;
             }
+
         }
         return $this->ajaxReturn($data);
     }

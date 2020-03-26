@@ -200,6 +200,21 @@
                                                 {{if item.buy_status == 3}}
                                                     <p>未中奖</p>
                                                 {{/if}}
+                                                {{if item.buy_status == 0}}
+                                                    {{if item.is_buying == 0}}
+                                                        <p>已预约</p>
+                                                    {{/if}}
+                                                    {{if item.is_buying == 2}}
+                                                       <p>可抢购</p>
+                                                    {{/if}}
+                                                {{/if}}
+
+                                                {{if item.is_buying == 1}}
+                                                    <p>抢购中</p>
+                                                {{/if}}
+                                                {{if item.rushto4 == 4}}
+                                                   <p>已过期</p>
+                                                {{/if}}
                                                 {/literal}
 
     <!--                                            <p>交易金额：240</p>-->
@@ -214,23 +229,23 @@
                                                 <p class="times dp-flex" style="justify-content: flex-start;">
                                                     预约时间：<span >{{item.buy_start_time_date}}</span>
                                                 </p>
-                                                {literal}
-                                                    {{if item.buy_status == 0}}
-                                                        {{if item.is_buying == 0}}
-                                                            <div class="rushto2">已预约</div>
-                                                        {{/if}}
-                                                        {{if item.is_buying == 2}}
-                                                            <div class="rushto3" onclick="PanicBuying({{item.id}});">抢购</div>
-                                                        {{/if}}
-                                                    {{/if}}
+<!--                                                {literal}-->
+<!--                                                    {{if item.buy_status == 0}}-->
+<!--                                                        {{if item.is_buying == 0}}-->
+<!--                                                            <div class="rushto2">已预约</div>-->
+<!--                                                        {{/if}}-->
+<!--                                                        {{if item.is_buying == 2}}-->
+<!--                                                            <div class="rushto3" onclick="PanicBuying({{item.id}});">抢购</div>-->
+<!--                                                        {{/if}}-->
+<!--                                                    {{/if}}-->
 
-                                                    {{if item.is_buying == 1}}
-                                                    <div class="rushto">抢购中</div>
-                                                    {{/if}}
-                                                    {{if item.rushto4 == 4}}
-                                                        <div class="rushto">已过期</div>
-                                                    {{/if}}
-                                                {/literal}
+<!--                                                    {{if item.is_buying == 1}}-->
+<!--                                                    <div class="rushto">抢购中</div>-->
+<!--                                                    {{/if}}-->
+<!--                                                    {{if item.rushto4 == 4}}-->
+<!--                                                        <div class="rushto">已过期</div>-->
+<!--                                                    {{/if}}-->
+<!--                                                {/literal}-->
 
                                             </div>
                                         </div>

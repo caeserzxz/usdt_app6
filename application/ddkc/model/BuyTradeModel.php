@@ -158,8 +158,8 @@ class BuyTradeModel extends BaseModel
         #获取队列中的抢购记录
         $ids = [];
         for ($i=0;$i<=$buyCount-1;$i++){
-            $id = $redis->lGet('buyHandle',$i);
-//            $id = $redis->rPop('buyHandle');
+//            $id = $redis->lGet('buyHandle',$i);
+            $id = $redis->rPop('buyHandle');
             array_push($ids,$id);
         }
         $MessageModel = new MessageModel();
