@@ -10,7 +10,7 @@ use app\member\model\AccountLogModel;
 /**
  * 矿机订单
  */
-class BuyOrder extends AdminController
+class DdList extends AdminController
 {
     //*------------------------------------------------------ */
     //-- 初始化
@@ -18,13 +18,14 @@ class BuyOrder extends AdminController
     public function initialize()
     {
         parent::initialize();
-        $this->Model = new BuyTradeModel();
+        $this->Model = new SellTradeModel();
     }
     /*------------------------------------------------------ */
     //--首页
     /*------------------------------------------------------ */
     public function index()
     {
+        $TradingStageModel = new TradingStageModel();
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getList(true);
@@ -36,6 +37,9 @@ class BuyOrder extends AdminController
             $this->assign("start_date",str_replace('_', '/', $start_date));
             $this->assign("end_date",str_replace('_', '/', $end_date));
         }
+        #获取所有的交易区间
+        $stage_list = $TradingStageModel->select();
+        $this->assign('stage_list',$stage_list);
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
@@ -43,13 +47,26 @@ class BuyOrder extends AdminController
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $TradingStageModel = new TradingStageModel();
         $BuyTradeModel = new BuyTradeModel();
         $this->search['keyword'] = input("keyword");
-        $this->search['buy_status'] = input("buy_status");
+        $this->search['sell_status'] = input("sell_status");
         $this->search['time_type'] = input("time_type");
+        $this->search['stage_id'] = input("stage_id");
         $this->assign("search", $this->search);
-
-        $ids = $BuyTradeModel->getIds('buyHandle');
+        #根据区间统计
+        $count = [];
+        if(empty( $this->search['stage_id'])){
+            $count['stage_name'] = "全部";
+            $count['order_num'] =  $this->Model->count();
+            $count['dingding_num'] =  $this->Model->sum('sell_number');
+        }else{
+            $count['stage_name'] = $TradingStageModel->where('id',$this->search['stage_id'])->value('stage_name');
+            $count['order_num'] =  $this->Model->where('sell_stage_id',$this->search['stage_id'])->count();
+            $count['dingding_num'] =  $this->Model->where('sell_stage_id',$this->search['stage_id'])->sum('sell_number');
+        }
+        $this->assign('count',$count);
+        $stage_info_sea =
         $this->order_by = 'id';
         $this->sort_by = 'DESC';
         $time_type = input('time_type', '', 'trim');
@@ -61,49 +78,28 @@ class BuyOrder extends AdminController
             $dtime = explode('-', $reportrange);
         }
         switch ($time_type) {
-            case 'buy_start_time':
-                $where[] = ' buy_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+            case 'sell_start_time':
+                $where[] = ' sell_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
-            case 'panic_end_time':
-                $where[] = ' panic_end_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                break;
-        }
-        if ($this->search['buy_status']) {
-
-            if($this->search['buy_status']==2){
-                $ids = [18];
-                $ids_str = join(',',$ids);
-                #抢购中,
-                $where[] = ' id IN ('.$ids_str.')';
-            }else{
-                $where[] = ' buy_status ='.($this->search['buy_status']-1);
-            }
         }
         if ($this->search['keyword']) {
-            $where[] = " id = '" . ($this->search['keyword']);
+            $where[] = " id = '" . ($this->search['keyword']) . "' or sell_user_id = '".$this->search['keyword']."' or sell_order_sn = '" . $this->search['keyword']."' ";
+        }
+        if ($this->search['stage_id']) {
+            $where[] = ' sell_stage_id ='.($this->search['stage_id']);
         }
         $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
         $data = $this->getPageList($this->Model,$viewObj);
-        foreach ($data['list'] as $key => $value) {
-//
-            $str = '';
-            if($value['buy_status']==0){
-                if(in_array($value['id'],$ids)){
-                    $str = '抢购中';
-                }else{
-                    $str = '已预约';
-                }
-            }else if($value['buy_status']==1){
 
-            }else if($value['buy_status']==2){
-                $str = '已中奖';
-            }else if($value['buy_status']==3){
-                $str = '未中奖';
-            }else if($value['buy_status']==4){
-                $str = '已过期';
+        foreach ($data['list'] as $key => $value) {
+            if($value>0){
+                $buy_info = $BuyTradeModel->where('id',$value['buy_id'])->find();
+                $data['list'][$key]['buy_user_id'] = $buy_info['buy_user_id'];
+            }else{
+                $data['list'][$key]['buy_user_id'] = '/';
             }
-            $data['list'][$key]['status_str'] = $str;
-//            $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
+            $data['list'][$key]['stage_name'] =$TradingStageModel->where('id',$value['sell_stage_id'])->value('stage_name');
+            $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
         }
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         $order_type = ['其他','矿机','定存包'];
@@ -125,29 +121,23 @@ class BuyOrder extends AdminController
     protected function asInfo($data) {
         $TradingStageModel = new TradingStageModel();
         $BuyTradeModel = new BuyTradeModel();
-        $ids = $BuyTradeModel->getIds('buyHandle');
-       if($data['buy_status']==0){
-           if(in_array($data['id'],$ids)){
-               $data['status_str'] = '抢购中';
-           }else{
-               $data['status_str'] = '已预约';
-           }
-           $data['status_str'] = '已预约';
-       }else if($data['buy_status']==1){
-           $data['status_str'] =  '抢购中';
-       }else if($data['buy_status']==2){
-           $data['status_str'] = '已中奖';
-       }else if($data['buy_status']==3){
-           $data['status_str'] = '未中奖';
-       }else if($data['buy_status']==4){
-           $data['status_str'] =  '已过期';
-       }
-
-        $stage_info = $TradingStageModel->where('id',$data['buy_stage_id'])->find();
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
+        $data['status_str'] =  $status[$data['sell_status']];
+        $buy_info = $BuyTradeModel->where('id',$data['buy_id'])->find();
+        if(empty($buy_info['buy_user_id'])){
+            $data['buy_user_id'] ='/';
+        }else{
+            $data['buy_user_id'] =$buy_info['buy_user_id'];
+        }
+        $stage_info = $TradingStageModel->where('id',$data['sell_stage_id'])->find();
         $data['stage_name'] = $stage_info["stage_name"];
 
-        $data['buy_start_time'] = date('Y-m-d H:i:s',$data['buy_start_time']);
-        $data['panic_end_time'] = date('Y-m-d H:i:s',$data['panic_end_time']);$data['sell_end_time'] = date('Y-m-d H:i:s',$data['sell_end_time']);
+        $data['status_name'] = $status[$data['status']];
+        $data['matching_time'] = date('Y-m-d H:i:s',$data['matching_time']);
+        $data['payment_time'] = date('Y-m-d H:i:s',$data['payment_time']);
+        $data['complain_time'] = date('Y-m-d H:i:s',$data['complain_time']);
+        $data['cancellation_time'] = date('Y-m-d H:i:s',$data['cancellation_time']);
+        $data['sell_end_time'] = date('Y-m-d H:i:s',$data['sell_end_time']);
 
         return $data;
     }

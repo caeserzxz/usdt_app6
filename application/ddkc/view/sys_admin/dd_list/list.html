@@ -1,0 +1,61 @@
+<div style="height: 40px;">
+    <span style="margin : 20px 50px 20px 100px; line-height: 40px;">当前区间:<b>{$count.stage_name}</b></span>
+    <span style="margin : 20px 100px 20px 100px;line-height: 40px;">订单数量: <b>{$count.order_num}</b></span>
+    <span style="margin : 20px 100px 20px 100px;line-height: 40px;">叮叮数量: <b>{$count.dingding_num}</b></span>
+</div style>
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+    <th width="60">ID</th>
+    <th width="120">订单编号</th>
+    <th width="60">卖家id</th>
+    <th width="120">叮叮数量</th>
+    <th width="120">状态</th>
+    <th width="120">售出场次</th>
+    <th width="120">售出DDB</th>
+    <th width="120">手续费</th>
+    <th width="120">挂售时间</th>
+<!--    <th width="120">匹配时间</th>-->
+<!--    <th width="120">打款时间</th>-->
+<!--&lt;!&ndash;    <th width="120">申诉时间</th>&ndash;&gt;-->
+<!--    <th width="200">结束时间</th>-->
+<!--    <th width="150">操作</th>-->
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$vo.sell_order_sn}</td>
+    <td>{$vo.sell_user_id}</td>
+    <td>{$vo.sell_number}</td>
+    <td>{$status[$vo.sell_status]}</td>
+    <td>{$vo.stage_name}</td>
+    <td>{$vo.old_ddb_money}</td>
+    <td>{$vo.service_charge}</td>
+    <td>{$vo.sell_start_time|dateTpl}</td>
+<!--    <td>{$vo.matching_time|dateTpl}</td>-->
+<!--    <td>{$vo.payment_time|dateTpl}</td>-->
+<!--&lt;!&ndash;    <td>{$vo.complain_time|dateTpl}</td>&ndash;&gt;-->
+<!--    <td>{$vo.sell_end_time|dateTpl}</td>-->
+    <td>  
+<!--        <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="查看">-->
+<!--            <i class="fa fa-edit text-muted"></i>-->
+<!--        </a>-->
+<!--        <a href="{:url('destroy_trade',array('trade_id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定删除该交易订单吗?" class="m-xs" title="删除">-->
+<!--            <i class="fa fa-trash-o text-muted"></i>-->
+<!--        </a>-->
+<!--        <a href="{:url('save_sell',array('id'=>$vo['id']))}"  data-toggle="ajaxModal" class="m-xs" title="指定ID/禁止ID">-->
+<!--            <i class="fa fa-edit"></i>-->
+<!--        </a>-->
+    </td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

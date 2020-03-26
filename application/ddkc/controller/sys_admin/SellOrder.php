@@ -96,7 +96,7 @@ class SellOrder extends AdminController
 
             $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
         }
-        $status = ['待出售','代付款','已付款','申诉中','交易成功','交易失败'];
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         $order_type = ['其他','矿机','定存包'];
 
         $this->assign("status", $status);
@@ -116,7 +116,7 @@ class SellOrder extends AdminController
     protected function asInfo($data) {
         $TradingStageModel = new TradingStageModel();
         $BuyTradeModel = new BuyTradeModel();
-        $status = ['待出售','代付款','已付款','申诉中','交易成功','交易失败'];
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         $data['status_str'] =  $status[$data['sell_status']];
         $buy_info = $BuyTradeModel->where('id',$data['buy_id'])->find();
         if(empty($buy_info['buy_user_id'])){
