@@ -72,6 +72,9 @@ class SellOrder extends AdminController
             case 'complain_time':
                 $where[] = ' complain_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
+            case 'burning_time':
+                $where[] = ' burning_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                break;
             case 'sell_end_time':
                 $where[] = ' sell_end_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
@@ -96,7 +99,7 @@ class SellOrder extends AdminController
 
             $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
         }
-        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败','已销毁'];
         $order_type = ['其他','矿机','定存包'];
 
         $this->assign("status", $status);
@@ -116,7 +119,7 @@ class SellOrder extends AdminController
     protected function asInfo($data) {
         $TradingStageModel = new TradingStageModel();
         $BuyTradeModel = new BuyTradeModel();
-        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
+        $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败','已销毁'];
         $data['status_str'] =  $status[$data['sell_status']];
         $buy_info = $BuyTradeModel->where('id',$data['buy_id'])->find();
         if(empty($buy_info['buy_user_id'])){
@@ -217,5 +220,22 @@ class SellOrder extends AdminController
         $info = $SellTradeModel->where('id',$id)->find();
         $this->assign('info',$info);
         return $this->fetch();
+    }
+
+    public function burning(){
+        $SellTradeModel = new SellTradeModel();
+        $id = input();
+
+        #修改订单状态
+        $sell_save['sell_status'] = 6;
+        $sell_save['burning_time'] = time();
+        $where['id'] =$id;
+        $res = $this->Model->where($where)->update($sell_save);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('index')]);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);
+        }
+
     }
 }
