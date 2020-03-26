@@ -1,0 +1,30 @@
+<form class="form-horizontal form-validate " method="post" action="{:url('save_sell')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">指定用户ID/禁止用户ID</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 指定用户ID中奖</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="input-large" data-rule-maxlength="20"  name="reserve_user_id" value="{$info.reserve_user_id}" ><span class="maroon">*</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 禁止用户ID中奖</label>
+                    <div class="col-sm-6 ">
+                        <input aria-required="true" class="input-large"  name="ban_user_id" value="{$info.ban_user_id}" data-rule-maxlength="11" type="text"><span class="maroon">*</span>
+                    </div>
+                </div>
+                <input type="hidden" name="id" value="{$info.id}">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
