@@ -31,6 +31,7 @@ class Trade  extends ClientbaseController{
     //-- 叮叮市场
     /*------------------------------------------------------ */
     public function index(){
+
         $SlideModel = new SlideModel();
         $slideList = $SlideModel::getRows(1);
         $this->assign('settings',settings());
@@ -62,6 +63,8 @@ class Trade  extends ClientbaseController{
 //        $a = $BuyTradeModel->BeOverdue();
 //        $a = $BuyTradeModel->DailyReset();
 //        $a = $BuyTradeModel->Unsealing();
+//        $a = $BuyTradeModel->PanicBuying_new();
+//        die;
 //        dump($a);die;
         $this->assign('userInfo',$this->userInfo);
         $this->assign('setting',settings());

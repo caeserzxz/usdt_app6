@@ -1,0 +1,169 @@
+{extend name="layouts@dd_head" /}
+{block name="main" }
+
+<div class="page-bd registerPage">
+    <!-- 页面内容-->
+    <div class="logo dp-flex">
+        {if condition="$logo"}
+        <img src="{$logo}" alt="">
+        {else/}
+        <img src="__STATIC__/dingding/images/logo01.png" alt="">
+        {/if}
+    </div>
+    <div class="form">
+        <div class="weui-cells weui-cells_form">
+
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg02.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" id="mobile" placeholder="请输入手机号码">
+                </div>
+            </div>
+            {if condition="$sms_fun['forget_password']==1"}
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">
+                        <img class="form-img" src="__STATIC__/dingding/images/reg03.png" alt="">
+                    </label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" id="code" placeholder="请输入验证码">
+                </div>
+                <div class="weui-cell__ft">
+                    <div class="codeBox">
+                        <div class=" getCode " onclick="codeButton()">获取验证码</div>
+                        <span class=" time fs24" style="display:none">60s</span>
+                    </div>
+                </div>
+            </div>
+            {/if}
+
+            <div class="weui-cell">
+                <div class="weui-cell__bd pr">
+                    <input class="weui-input input-nbd" type="password" id="password" placeholder="请设置登入密码">
+                    <span class=" span-pos">(6-18位数字字母组合)</span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd ">
+                    <input class="weui-input input-nbd" type="password" id="cfm_password" placeholder="确认登录密码">
+                </div>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="background fs28 register">
+                确定
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    var register_invite_code = {$register_invite_code|intval};
+    var register_must_invite = {$register_must_invite|intval};
+    $(function () {
+        $('.ereBox').on('click', function () {
+            var obj = $(this).find('img')
+            if (obj.attr('data-type') == '0') {
+                obj.attr('src', '__STATIC__/mobile/default/images/login02.png')
+                obj.attr('data-type', '1')
+                $(this).siblings('input').attr('type', 'text')
+            } else {
+                obj.attr('src', '__STATIC__/mobile/default/images/login01.png')
+                obj.attr('data-type', '0')
+                $(this).siblings('input').attr('type', 'password')
+            }
+        })
+    })
+    var appType = '{$appType}';
+    $('.register').on('click', function () {
+        var arr = new Object();
+        arr.mobile = $('#mobile').val();
+        arr.password = $('#password').val();
+        arr.cfm_password = $('#cfm_password').val();
+
+
+        if (arr.mobile == '') {
+            _alert('请输入手机号码.');
+            return false;
+        }
+        if ($('#code').length > 0) {
+            arr.code = $('#code').val();
+            if (arr.code == '') {
+                _alert('请输入验证码..');
+                return false;
+            }
+        }
+        if (arr.password.length < 8) {
+            _alert('用户密码长度不能小于八位.');
+            return false;
+        }
+        if (arr.password != arr.cfm_password) {
+            _alert('两次登陆密码不一致.');
+            return false;
+        }
+
+        jq_ajax('{:url("member/api.passport/forgetPwd")}', arr, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            _alert(res.msg, '{:url("login")}');
+
+        })
+    })
+    function codeButton() {
+        var arr = new Object();
+        arr.type = 'forget_password';
+        arr.mobile = $('#mobile').val();
+        if (arr.mobile == '') {
+            _alert('请输入手机号码');
+            return false;
+        }
+        jq_ajax('{:url("publics/api.sms/sendCode")}', arr, function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            var timeObj = $('.time')
+            var getCodeObj = $('.getCode')
+            getCodeObj.hide();
+            timeObj.show();
+            var time = 60;
+            var set = setInterval(function () {
+                timeObj.text("" + --time + "s");
+                if (time <= 0) {
+                    timeObj.hide();
+                    getCodeObj.show();
+                    clearInterval(set);
+                }
+            }, 1000);
+        })
+    }
+    function _alert(msg,url) {
+        $.toast.prototype.defaults.duration = 800;
+
+        if (url) {
+            $.toast(msg, "text",function(){
+                window.location.href = url;
+            });
+        }else{
+            $.toast(msg, "text");
+        }
+    }
+</script>
+</body>
+</html>
+{/block}
