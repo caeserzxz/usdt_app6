@@ -816,6 +816,8 @@ function roleUpgrade($user_id)
     if (!$isAu) return false;
 
 	# 是否上传2个收款信息
+    $payment_where[] = ['user_id','=',$user_id];
+    $payment_where[] = ['status','=',1];
 	$payment = $paymentModel->where('user_id',$user_id)->count();
 	if ($payment < 2) return false;
 	

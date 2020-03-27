@@ -124,12 +124,47 @@ class Center  extends ClientbaseController{
         $PaymentModel = new PaymentModel();
         #获取银行卡信息
         $bank_info = $PaymentModel->get_payment($this->userInfo['user_id'],1);
+        if(empty($bank_info)){
+            $bank_info['status_str'] = '';
+        }else{
+            if($bank_info['status']==0){
+                $bank_info['status_str'] = '审核中';
+            }else if($bank_info['status']==1){
+                $bank_info['status_str'] = '审核通过';
+            }else if($bank_info['status']==2){
+                $bank_info['status_str'] = '审核失败';
+            }
+        }
         $this->assign('bank_info',$bank_info);
+
         #获取支付宝信息
         $alipay_info = $PaymentModel->get_payment($this->userInfo['user_id'],2);
+        if(empty($alipay_info)){
+            $alipay_info['status_str'] = '';
+        }else{
+            if($alipay_info['status']==0){
+                $alipay_info['status_str'] = '审核中';
+            }else if($alipay_info['status']==1){
+                $alipay_info['status_str'] = '审核通过';
+            }else if($alipay_info['status']==2){
+                $alipay_info['status_str'] = '审核失败';
+            }
+        }
         $this->assign('alipay_info',$alipay_info);
         #获取微信信息
         $wx_info = $PaymentModel->get_payment($this->userInfo['user_id'],3);
+        if(empty($wx_info)){
+            $wx_info['status_str'] = '';
+        }else{
+            if($wx_info['status']==0){
+                $wx_info['status_str'] = '审核中';
+            }else if($wx_info['status']==1){
+                $wx_info['status_str'] = '审核通过';
+            }else if($wx_info['status']==2){
+                $wx_info['status_str'] = '审核失败';
+            }
+        }
+
         $this->assign('wx_info',$wx_info);
 
         $this->assign('appType',session('appType'));

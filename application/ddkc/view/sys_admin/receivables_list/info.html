@@ -115,16 +115,46 @@
                             </div>
                         </div>
                     </div>
+                    {if condition="$row.status eq 0"}
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="button" class="btn btn-primary"  onclick="examine(1,{$row.id});" data-loading-text="保存中...">审核通过</button>
+                        <button type="button" class="btn btn-default" onclick="examine(2,{$row.id});" >审核失败</button>
+                    </div>
+                    {/if}
                 </div>
             </div>
         </section>
-        <input name="miner_id" type="hidden" value="{$row.miner_id|intval}">
+        <input name="id" type="hidden" value="{$row.id|intval}">
     </form>
 </section>
 {/block}
 {block name="footer" }
 <script type="text/javascript">
     seajs.use(["dist/plupload/init.js"]);
+    function examine(type,id){
+        if(type==1){
+            var str = '你确定要审核通过吗?';
+        }else{
+            var str = '你确定要审核失败吗?';
+        }
+            layer.confirm(str, {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    'url':'{:url("examine")}',
+                    'type':'post',
+                    'data':{'id':id,'type':type},
+                    'dataType':'json',
+                    'success':function(data){
+                        if(data.code==1){
+                            layer.msg(data.msg,function(){
+                                window.location.href='{:url("index")}';
+                            });
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+            });
+    }
 </script>
 {/block}
 

@@ -45,7 +45,13 @@ class Center extends ApiController
         if(empty($file['name'])&&empty($ios_file)){
             return $this->ajaxReturn(['code' => 0,'msg' => '请上传支付宝收款码','url' => '']);
         }
-
+        $where[] = ['alipay_number','=',$data['alipay_number']];
+        $where[] = ['status','=',1];
+        $where[] = ['type','=',2];
+        $max_num = $PaymentModel->where($where)->count();
+        if(!($max_num<settings('payment_max'))){
+            return $this->ajaxReturn(['code' => 0,'msg' => '同一收款信息最多绑定'.settings('payment_max').'次','url' => '']);
+        }
         #通过file提交的
         if($file){
             #上传打款凭证
@@ -61,6 +67,7 @@ class Center extends ApiController
         }
 
         $data['type'] = 2;
+        $data['status'] = 0;
         $data['add_time'] = time();
         $data['user_id'] = $this->userInfo['user_id'];
 
@@ -74,8 +81,8 @@ class Center extends ApiController
         }
 
         if($res){
-            # 升级
-            roleUpgrade($this->userInfo['user_id']);
+//            # 升级
+//            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '支付宝收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '支付宝收款信息上传失败']);
@@ -96,7 +103,13 @@ class Center extends ApiController
         if(empty($file['name'])&&empty($ios_file)){
             return $this->ajaxReturn(['code' => 0,'msg' => '请上传微信收款码','url' => '']);
         }
-
+        $where[] = ['wx_number','=',$data['wx_number']];
+        $where[] = ['status','=',1];
+        $where[] = ['type','=',3];
+        $max_num = $PaymentModel->where($where)->count();
+        if(!($max_num<settings('payment_max'))){
+            return $this->ajaxReturn(['code' => 0,'msg' => '同一收款信息最多绑定'.settings('payment_max').'次','url' => '']);
+        }
         #通过file提交的
         if($file){
             #上传打款凭证
@@ -112,6 +125,7 @@ class Center extends ApiController
         }
 
         $data['type'] = 3;
+        $data['status'] = 0;
         $data['add_time'] = time();
         $data['user_id'] = $this->userInfo['user_id'];
         if($data['id']){
@@ -123,7 +137,7 @@ class Center extends ApiController
         }
 
         if($res){
-            roleUpgrade($this->userInfo['user_id']);
+//            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '微信收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '微信收款信息上传失败']);
@@ -148,8 +162,15 @@ class Center extends ApiController
         if(empty($data['bank_user_name'])){
             return $this->ajaxReturn(['code' => 0,'msg' => '银行卡姓名不能为空']);
         }
-
+        $where[] = ['card_number','=',$data['card_number']];
+        $where[] = ['status','=',1];
+        $where[] = ['type','=',1];
+        $max_num = $PaymentModel->where($where)->count();
+        if(!($max_num<settings('payment_max'))){
+            return $this->ajaxReturn(['code' => 0,'msg' => '同一收款信息最多绑定'.settings('payment_max').'次','url' => '']);
+        }
         $data['type'] = 1;
+        $data['status'] = 0;
         $data['add_time'] = time();
         $data['user_id'] = $this->userInfo['user_id'];
         if($data['id']){
@@ -161,7 +182,7 @@ class Center extends ApiController
         }
 
         if($res){
-            roleUpgrade($this->userInfo['user_id']);
+//            roleUpgrade($this->userInfo['user_id']);
             return $this->ajaxReturn(['code' => 1,'msg' => '银行卡收款信息上传成功']);
         }else{
             return $this->ajaxReturn(['code' => 0,'msg' => '银行卡收款信息上传失败']);

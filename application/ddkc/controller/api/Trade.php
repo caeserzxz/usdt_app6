@@ -9,6 +9,7 @@ use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\SellTradeModel;
 use app\ddkc\model\TradingStageModel;
 use think\cache\driver\Redis;
+use app\ddkc\model\PaymentModel;
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
 /*------------------------------------------------------ */
@@ -108,10 +109,15 @@ class Trade extends ApiController
         $accountModel = new AccountLogModel();
         $BuyTradeMoel = new BuyTradeModel();
         $TradingStageModel = new TradingStageModel();
+        $PaymentModel = new PaymentModel();
         # 是否登录
         $user = $userModel->info($this->userInfo['user_id']);
         if (!$user) {
             return $this->ajaxReturn(['code' => 0,'msg' => '请先登录','url' => url('passport/login')]);
+        }
+        $bank_info =  $bank_info = $PaymentModel->get_payment($this->userInfo['user_id'],1);
+        if($bank_info['status']!=1){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先上传银行卡收款信息']);
         }
         if($user['role']['role_id']==0){
             return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);
@@ -170,11 +176,16 @@ class Trade extends ApiController
         $accountModel = new AccountLogModel();
         $SellTradeMoel = new SellTradeModel();
         $TradingStageModel = new TradingStageModel();
+        $PaymentModel = new PaymentModel();
         $settints = settings();
         # 是否登录
         $user = $userModel->info($this->userInfo['user_id']);
         if (!$user) {
             return $this->ajaxReturn(['code' => 0,'msg' => '请先登录','url' => url('passport/login')]);
+        }
+        $bank_info =  $bank_info = $PaymentModel->get_payment($this->userInfo['user_id'],1);
+        if($bank_info['status']!=1){
+            return $this->ajaxReturn(['code' => 0,'msg' => '请先上传银行卡收款信息']);
         }
         if($user['role']['role_id']==0){
             return $this->ajaxReturn(['code' => 0,'msg' => '请先实名认证和至少上传两种收款信息']);

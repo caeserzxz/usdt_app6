@@ -40,22 +40,29 @@ class ReceivablesList extends AdminController
     public function getList($runData = false) {
         $this->search['keyword'] = input("keyword");
         $this->search['key_type'] = input("key_type");
-        $this->search['type'] = input("type");        
-		$this->order_by = 'order_id';
+        $this->search['type'] = input("type");
+        $this->search['status'] = input("status");
+        $this->assign("search", $this->search);
+		$this->order_by = 'id';
 		$this->sort_by = 'DESC';
-		if (input('reportrange')) {
-	        $dtime = explode('-', input('reportrange'));
-	        $where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
-		}
+//        $reportrange = input('reportrange');
+
+//        if (empty($reportrange) == false) {
+//            $dtime = explode('-', $reportrange);
+//            $where[] = ' add_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+//        }
+
         if ($this->search['type']) {
-            $where[] = ['type','=',($this->search['type'])];
+            $where[] =  ' type ='.($this->search['type']);
+        }
+        if ($this->search['status']) {
+            $where[] =  ' status ='.($this->search['status']-1);
         }
         if ($this->search['keyword']) {
-        	if ($this->search['key_type'] == 1) {
-            	$where[] = ['user_id','=',($this->search['keyword'])];
-        	}
+            $where[] = " id = '" . ($this->search['keyword'])."' ";
         }
-        $data = $this->getPageList($this->Model,$where);
+        $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
+        $data = $this->getPageList($this->Model,$viewObj);
         foreach ($data['list'] as $key => $value) {
         	$data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
             // 账号
@@ -87,5 +94,22 @@ class ReceivablesList extends AdminController
     	$data['type_name'] = $type[$data['type']];
     	$data['add_date'] = date('Y-m-d H:i:s',$data['add_time']);
         return $data;
+    }
+
+    public function examine(){
+        $id = input('id');
+        $type = input('type');
+        $pay_info = $this->Model->where('id',$id)->find();
+        $save['status'] = $type;
+        $save['audit_time'] = time();
+        $res = $this->Model->where('id',$id)->update($save);
+        if($res){
+            # 升级
+            roleUpgrade($pay_info['user_id']);
+            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('index')]);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
+        }
+
     }
 }

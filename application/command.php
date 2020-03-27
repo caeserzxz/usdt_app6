@@ -14,4 +14,5 @@ return [
     'AutoCompletion' => 'app\\ddkc\\command\\AutoCompletion',//自动完成&自动取消 每秒执行一次
     'BeOverdue' => 'app\\ddkc\\command\\BeOverdue',//预约没有抢购的自动过期 每秒执行一次
     'DailyReset' => 'app\\ddkc\\command\\DailyReset',//每日重置开奖和过期情况 每天0点执行一次
+    'Unsealing' => 'app\\ddkc\\command\\Unsealing',//每日重置开奖和过期情况 每天0点执行一次
 ];

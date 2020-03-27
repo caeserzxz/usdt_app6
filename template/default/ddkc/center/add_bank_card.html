@@ -3,11 +3,14 @@
         <div class="page-bd pd-24 moneyInfo">
             <!-- 页面内容-->
             <div class="alipay">
-                <h3 class="h3">支付宝账号</h3>
+                <h3 class="h3">
+                    支付宝账号 <b style="color: red;">{$alipay_info.status_str}</b>
+                </h3>
                 <div class="alipay-con dp-flex">
                     <form action="" id="form">
                     <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号" name="alipay_number" value="{$alipay_info.alipay_number}">
                     <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="alipay_user_name" value="{$alipay_info.alipay_user_name}">
+                        <input type="hidden" class="weui-input input-t" name="id" value="{$alipay_info.id}">
                     <div class="weui-uploader__bd">
                         <div class="weui-uploader__input-box">
                             {if condition="$appType eq 'IOS'"}
@@ -15,8 +18,12 @@
                                     <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('alipay_payment_code');" class="info-img" alt="">
                                  <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
                                    type="file" accept="image/*" multiple="">
-                            {else /}
+                                {else /}
                                     <img id="img" src="{$alipay_info.alipay_payment_code}"   class="info-img" alt="">
+                                    {if condition="$alipay_info.status neq 1"}
+                                        <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                                   type="file" accept="image/*" multiple="">
+                                    {/if}
                                 {/if}
                             {else /}
                                 {if condition="$alipay_info.alipay_payment_code eq ''"}
@@ -25,27 +32,34 @@
                                    type="file" accept="image/*" multiple="">
                                 {else /}
                                     <img id="img" src="{$alipay_info.alipay_payment_code}" class="info-img" alt="">
+                                    {if condition="$alipay_info.status neq 1"}
+                                        <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                                   type="file" accept="image/*" multiple="">
+                                    {/if}
                                 {/if}
                             {/if}
 
                         </div>
                     </div>
                     <div class="images-list"><!--上传图片列表--></div>
-                       {if condition="$alipay_info eq ''"}
+                       {if condition="$alipay_info['status'] neq 1"}
                          <div class="sure-btn" onclick="alipay_btn();">确认</div>
                        {else /}
 
                        {/if}
 
-                    <p>一旦确认，无法修改，请谨慎填写</p>
+                    <p>一旦通过审核，无法修改，请谨慎填写</p>
                     </form>
                 </div>
             </div>
             <div class="wechat">
-                <h3 class="h3">微信账号</h3>
+                <h3 class="h3">
+                    微信账号: <b style="color: red;">{$wx_info.status_str}</b>
+                </h3>
                 <div class="alipay-con dp-flex">
                     <form action="" id="form2">
                     <input type="text " class="weui-input input-t" placeholder="请输入微信账号" name="wx_number" value="{$wx_info.wx_number}">
+                    <input type="hidden" class="weui-input input-t" name="id" value="{$wx_info.id}">
                     <div class="weui-uploader__bd">
                         <div class="weui-uploader__input-box">
                             {if condition="$appType eq 'IOS'"}
@@ -55,6 +69,10 @@
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
                                 {else /}
                                 <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
+                                    {if condition="$wx_info.status neq 1"}
+                                        <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
+                                    {/if}
                                 {/if}
                             {else /}
                                 {if condition="$wx_info.wx_payment_code eq ''"}
@@ -62,38 +80,43 @@
                                 <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
                                 {else /}
-                                <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
+
+                                    <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
+                                    {if condition="$wx_info.wx_payment_code eq ''"}
+                                        <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
+                                    {/if}
                                 {/if}
                             {/if}
                         </div>
                     </div>
                     <div class="images-list2"><!--上传图片列表--></div>
-                        {if condition="$wx_info eq ''"}
+                        {if condition="$wx_info['status'] neq 1"}
                             <div class="sure-btn" onclick="wx_btn();">确认</div>
                         {else /}
 
                         {/if}
 
-                    <p>一旦确认，无法修改，请谨慎填写</p>
+                    <p>一旦通过审核，无法修改，请谨慎填写</p>
                     </form>
                 </div>
             </div>
             <div class="bank">
                 <form action="" id="form3">
-                <h3 class="h3">银行卡号</h3>
+                <h3 class="h3">银行卡号: <b style="color: red;">{$bank_info.status_str}</b></h3>
                 <div class="alipay-con dp-flex">
                     <input type="text " class="weui-input input-t" placeholder="请输入银行卡名称" name="bank_name" value="{$bank_info.bank_name}">
                     <input type="text" class="weui-input input-t" placeholder="请输入支行名称" name="sub_branch" value="{$bank_info.sub_branch}">
                     <input type="text " class="weui-input input-t" placeholder="请输入银行卡号" name="card_number" value="{$bank_info.card_number}">
                     <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="bank_user_name" value="{$bank_info.bank_user_name}">
-
-                    {if condition="$bank_info eq ''"}
+                    <input type="hidden" class="weui-input input-t" name="id" value="{$bank_info.id}">
+                    {if condition="$bank_info['status'] neq 1"}
                         <div class="sure-btn" onclick="bank_btn();">确认</div>
                     {else /}
 
                     {/if}
 
-                    <p>一旦确认，无法修改，请谨慎填写</p>
+                    <p>一旦通过审核，无法修改，请谨慎填写</p>
 
                 </div>
                 </form>

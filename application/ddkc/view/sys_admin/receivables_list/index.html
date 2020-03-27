@@ -9,19 +9,25 @@
                     <strong>会员收款列表</strong>
                 </li>                                  
             </ul>
-            <div class="form-group m-l">
-                <a class="btn btn-default" data-toggle="reportrange" data-change="submit">
-                    <i class="fa fa-calendar fa-lg"></i>
-                    <small>添加时间</small>
-                    <span></span> <b class="caret"></b>
-                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
-                </a>
-            </div>
+<!--            <div class="form-group m-l">-->
+<!--                <a class="btn btn-default" data-toggle="reportrange" data-change="submit">-->
+<!--                    <i class="fa fa-calendar fa-lg"></i>-->
+<!--                    <small>添加时间</small>-->
+<!--                    <span></span> <b class="caret"></b>-->
+<!--                    <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />-->
+<!--                </a>-->
+<!--            </div>-->
             <select name="type" style="width: 100px;" data-toggle="select2" data-placeholder="类型" data-chang="submit">
                 <option value="0">类型</option>
                 <option value="1">银行卡</option>
                 <option value="2">支付宝</option>
                 <option value="3">微信</option>
+            </select>
+            <select name="status" style="width: 100px;" data-toggle="select2" data-placeholder="状态" data-chang="submit">
+                <option value="">状态</option>
+                <option value="1">待审核</option>
+                <option value="2">审核通过</option>
+                <option value="3">审核失败</option>
             </select>
             <select name="key_type" style="width: 100px;" data-toggle="select2" data-placeholder="按自定义筛选" >
                 <option value="0">选择搜索</option>
