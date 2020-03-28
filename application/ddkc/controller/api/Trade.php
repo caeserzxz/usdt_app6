@@ -42,6 +42,7 @@ class Trade extends ApiController
         $setting = settings();
         if (count($data['list']) > 0) {
             foreach ($data['list'] as $key => $value) {
+                $where = [];
                 $status = 0;
                 #1为可预约 2为已预约  3为可抢购 4为抢购中 5为已过期
                 $start_time =strtotime(date('Y-m-d '.$value['trade_start_time']));
@@ -96,7 +97,6 @@ class Trade extends ApiController
                 $data['list'][$key]['buy_id'] = $buy_info['id'];
                 $data['list'][$key]['buy_status'] = $status;
             }
-
         }
         return $this->ajaxReturn($data);
     }

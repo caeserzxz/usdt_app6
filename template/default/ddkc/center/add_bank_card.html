@@ -82,7 +82,7 @@
                                 {else /}
 
                                     <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
-                                    {if condition="$wx_info.wx_payment_code eq ''"}
+                                    {if condition="$wx_info.status neq 1"}
                                         <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
                                     {/if}
