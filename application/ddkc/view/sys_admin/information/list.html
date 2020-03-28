@@ -2,6 +2,7 @@
 <thead>
 <tr>
   <th width="200">标题</th>
+<!--  <th width="80">缩略图</th>-->
   <th width="80">视频</th>
   <th width="120">添加时间</th>
   <th width="120">更新时间</th>
@@ -13,7 +14,11 @@
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.title}</td>
-
+<!--    <td>-->
+<!--        {if condition="$vo.video_url"}-->
+<!--        <a href="{$vo.imgs}" title="点击预览" class="btn btn-sm btnbtn-default" target="_blank"><i class="fa fa-search"></i>点击预览</a>-->
+<!--        {else/} / {/if}-->
+<!--    </td>-->
     <td>
       {if condition="$vo.video_url"}
       <a href="{$vo.video_url}" title="点击预览" class="btn btn-sm btnbtn-default" target="_blank"><i class="fa fa-search"></i>点击预览</a>
