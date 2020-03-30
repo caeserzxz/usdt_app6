@@ -140,7 +140,7 @@ class BuyTradeModel extends BaseModel
         $show_end_date = $time+(24*60*60*30);
         $stage_where[] = ['is_lottery','=',0];
         $stage_where[] = ['isputaway','=',1];
-        $stageList = $TradingStageModel->where($stage_where)->select();
+        $stageList = $TradingStageModel->where($stage_where)->order('id desc')->select();
         if(empty($stageList))  return '';
         $stageInfo = [];
         #获取当前开奖的区间
@@ -149,6 +149,7 @@ class BuyTradeModel extends BaseModel
             $stageTime = strtotime(date('Y-m-d '.$stageTime))+($setting['lottery_time']*60);
             if($time>$stageTime){
                 $stageInfo = $v;
+                break;
             }
         }
         if(empty($stageInfo)){
@@ -164,16 +165,19 @@ class BuyTradeModel extends BaseModel
         }
         $MessageModel = new MessageModel();
         #获取所有有指定用户的售出信息
+        $set_sell_where = [];
         $set_sell_where[] = ['sell_status','=',0];
         $set_sell_where[] = ['sell_stage_id','=',$stageInfo['id']];
         $set_sell_where[] = ['reserve_user_id','neq',''];
         $set_sell_list = $SellTradeModel->where($set_sell_where)->select();
         if(empty($set_sell_list)==false){
             foreach ($set_sell_list as  $k=>$v){
+                $set_where = [];
                 $set_where[] = ['id','in',$ids];
                 $set_where[] = ['buy_stage_id','=',$stageInfo['id']];
                 $set_where[] = ['buy_status','=',0];
                 $set_where[] = ['buy_user_id','=',$v['reserve_user_id']];
+                $set_buy_info = [];
                 $set_buy_info = $this->where($set_where)->find();
                 if(empty($set_buy_info)==false){
                     #更新售出表和卖出表
@@ -187,8 +191,9 @@ class BuyTradeModel extends BaseModel
         }
 
         #获取所有售出数据
+        $sell_where = [];
         $sell_where[] = ['sell_status','=',0];
-        $set_sell_where[] = ['sell_stage_id','=',$stageInfo['id']];
+        $sell_where[] = ['sell_stage_id','=',$stageInfo['id']];
         $sell_list = $SellTradeModel->where($sell_where)->select();
         if(!empty($sell_list)){
             foreach ($sell_list as $k=>$v){
@@ -213,8 +218,9 @@ class BuyTradeModel extends BaseModel
                             $buy_where[] = ['buy_stage_id','eq',$stageInfo['id']];
                             $buy_where[] = ['buy_status','eq',0];
                             $buy_where[] = ['id','in',$ids];
+                            $buy_info = [];
                             $buy_info = $this->where($buy_where)->orderRaw('rand()')->find();
-                            if(empty($buy_where)==false){
+                            if(empty($buy_info)==false){
                                 $this->up_order($v['id'],$buy_info['id'],$buy_info['deduct_integral'],$buy_info['buy_user_id'],$accountModel,$SellTradeModel);
                                 #给中奖的用户发送通知
                                 $MessageModel->sendMessage($buy_info['buy_user_id'],1,0,'中奖通知','您的预约已中奖,请按时交易',$show_end_date,3);
@@ -237,6 +243,7 @@ class BuyTradeModel extends BaseModel
                     $buy_where[] = ['buy_status','eq',0];
                     $buy_where[] = ['id','in',$ids];
                     $buy_where[] = ['buy_user_id','neq',$v['ban_user_id']];
+                    $buy_info = [];
                     $buy_info = $this->where($buy_where)->orderRaw('rand()')->find();
                     if(empty($buy_info)==false){
                         $this->up_order($v['id'],$buy_info['id'],$buy_info['deduct_integral'],$buy_info['buy_user_id'],$accountModel,$SellTradeModel);
@@ -253,10 +260,12 @@ class BuyTradeModel extends BaseModel
         if(!empty($ids)){
             #更新剩余预约记录的状态
             foreach ($ids as $k=>$v){
+                $up_buy = [];
                 $up_buy['buy_status'] = 3;
                 $up_buy['panic_end_time'] = $time;
                 $this->where('id',$v)->update($up_buy);
                 #给未中奖的用户发送通知
+                $up_info = [];
                 $up_info =  $this->where('id',$v)->find();
                 $MessageModel->sendMessage($up_info['buy_user_id'],1,0,'中奖通知','您的预约未中奖',$show_end_date,3);
             }
@@ -268,18 +277,21 @@ class BuyTradeModel extends BaseModel
     public  function up_order($sell_id,$buy_id,$scribe_integral,$buy_user_id,&$accountModel,&$SellTradeModel){
         $time = time();
         #更新出售表
+        $set_sell_save = [];
         $set_sell_save['buy_id'] = $buy_id;
         $set_sell_save['matching_time'] = $time;
         $set_sell_save['sell_status'] = 1;
         $SellTradeModel->where('id',$sell_id)->update($set_sell_save);
 
         #更新预约表
+        $set_buy_save = [];
         $set_buy_save['sell_id'] = $sell_id;
         $set_buy_save['buy_status'] =2;
         $set_buy_save['panic_end_time'] = $time;
         $this->where('id',$buy_id)->update($set_buy_save);
 
         #返还用户的信用积分
+        $charge = [];
         $charge['use_integral']   = $scribe_integral;
         $charge['change_desc'] = '开奖结束,返还信用积分';
         $charge['change_type'] = 11;
