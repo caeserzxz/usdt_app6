@@ -1,0 +1,33 @@
+<form class="form-horizontal form-validate " method="post" action="{:url('bind_payment')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">绑定用户收款信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">用户</label>
+                    <div class="controls">
+                        <input type="text" name="binding_user_id" placeholder="待绑定用户ID" class="input-small" value=""> <span class="help-line">的收款信息,绑定用户</span>
+                    </div>
+                    <div class="controls">
+                        <input type="text" name="target_user_id" placeholder="目标用户ID" class="input-small" value=""> <span class="help-line">的收款信息</span>
+                    </div>
+                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="col-sm-2 control-label"> </label>-->
+<!--                    <div class="col-sm-6 ">-->
+<!--                        <input aria-required="true" class="input-large"  name="ban_user_id" value="{$info.ban_user_id}" data-rule-maxlength="11" type="text"><span class="maroon">*</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <input type="hidden" name="id" value="{$info.id}">-->
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

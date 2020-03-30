@@ -203,7 +203,10 @@ class BuyTradeModel extends BaseModel
                     if(empty($buy_id)==false){
                         #更新售出表和卖出表
                         $buy_info = $this->where('id',$buy_id)->find();
-
+                        if($buy_info['buy_stage_id']!=$v['sell_stage_id']){
+                            unset($ids[array_search($buy_info['id'],$ids)]);
+                            continue;
+                        }
                         if($buy_info['buy_user_id']==$v['sell_user_id']){
                             #如果卖家跟买家是同一个人 则重新匹配
                             $buy_where = [];
@@ -259,7 +262,7 @@ class BuyTradeModel extends BaseModel
             }
         }
         #更新开奖区间状态
-        $TradingStageModel->where('id',$stageInfo['id'])->update(['is_lottery'=>1]);
+//        $TradingStageModel->where('id',$stageInfo['id'])->update(['is_lottery'=>1]);
     }
 
     public  function up_order($sell_id,$buy_id,$scribe_integral,$buy_user_id,&$accountModel,&$SellTradeModel){
