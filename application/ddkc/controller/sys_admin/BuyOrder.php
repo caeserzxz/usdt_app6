@@ -80,7 +80,8 @@ class BuyOrder extends AdminController
             }
         }
         if ($this->search['keyword']) {
-            $where[] = " id = '" . ($this->search['keyword']);
+//            $where[] = " id = '" . ($this->search['keyword'])."' ";
+            $where[] = " id = '" . ($this->search['keyword']) . "' or buy_user_id = '" . $this->search['keyword']."' ";
         }
         $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
         $data = $this->getPageList($this->Model,$viewObj);
