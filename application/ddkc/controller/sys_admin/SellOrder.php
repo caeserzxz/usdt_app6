@@ -173,7 +173,11 @@ class SellOrder extends AdminController
                     Db::rollback();
                     return $this->ajaxReturn(['code' => 0,'msg' => '添加封号记录失败','url' => '']);
                 }
-
+                #更新卖家叮叮
+                $charge['balance_money']   = $sell_info['sell_number'];
+                $charge['change_desc'] = '申诉成功';
+                $charge['change_type'] = 13;
+                $res1 =$accountModel->change($charge, $sell_info['sell_user_id'], false);
             }else{
                 Db::rollback();
                 return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);
