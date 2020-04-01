@@ -32,6 +32,7 @@ class Trade  extends ClientbaseController{
     /*------------------------------------------------------ */
     public function index(){
         $SlideModel = new SlideModel();
+        $TradingStageModel = new TradingStageModel();
         $slideList = $SlideModel::getRows(1);
         $this->assign('settings',settings());
         $this->assign('slideList',$slideList);

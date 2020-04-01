@@ -1,5 +1,54 @@
 {extend name="layouts@dd_head" /}
 {block name="main" }
+<style>
+    .cons {
+        align-items: center;
+        background: none !important;
+        border: 0 !important;
+        color: #fff;
+        width: 100vw !important;
+    }
+
+    .fs20 {
+        font-size: .266667rem;
+    }
+
+    .statusImg {
+        width: 4rem;
+        height: 4rem;
+        margin-left: 0.5rem;
+    }
+
+    .goto_btn {
+        width: 1.2rem;
+        height: .4rem;
+        text-align: center;
+        font-size: .16rem;
+        color: #fff;
+        border-radius: .106667rem;
+        line-height: .4rem;
+        background-color: #f08300;
+        margin: .133333rem 0 .186667rem;
+    }
+
+    .closeImg {
+        width: .4rem;
+        height: .4rem;
+        margin-top: .133333rem;
+    }
+
+    .bott {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+    }
+
+    audio {
+        opacity: 0;
+        height: .013333rem;
+    }
+</style>
     <div class="page">
         <!-- <div class="page-hd">
             <div class="header bor-1px-b">
@@ -106,7 +155,38 @@
 
             </div>
             {/if}
-
+            <!-- 开奖 -->
+            <div class="popup popup03" style="display: none;">
+                <div class="popup-bgc"></div>
+                <!-- 成功 -->
+                <div class="popup-content cons con3" style="top:0;left:0;right:0;display: none;">
+                    <img class="statusImg" src="__STATIC__/dingding/images/suc01.gif" alt="">
+<!--                    <audio  controls="controls" id="mp33"  src="__STATIC__/dingding/images/suc01.mp3"></audio>-->
+                    <div class="bott">
+                        <p class="fs20" style="text-align: center;">恭喜您<br />成功了！</p>
+                        <div class="goto_btn">前往叮叮记录</div>
+                        <img class="closeImg" src="__STATIC__/dingding/images/close01.png" alt="">
+                    </div>
+                </div>
+                <!-- 失败 -->
+                <div class="popup-content cons con4" style="top:0;left:0;right:0;display: none;">
+                    <img class="statusImg" src="__STATIC__/dingding/images/fail01.gif" alt="">
+<!--                    <audio  controls="controls"  id="mp34" src="__STATIC__/dingding/images/fail01.mp3"></audio>-->
+                    <div class="bott">
+                        <p class="fs20" style="text-align: center;">抱歉<br />失败了！</p>
+                        <div class="goto_btn">前往叮叮记录</div>
+                        <img class="closeImg" src="__STATIC__/dingding/images/close01.png" alt="">
+                    </div>
+                </div>
+                <!-- 等待 -->
+                <div class="popup-content  cons con5" style="top:0;left:0;right:0;display: none;">
+                    <img class="statusImg" src="__STATIC__/dingding/images/wait01.gif" alt="">
+                    <div class="bott">
+                        <p class="fs20" style="text-align: center;">等待中！</p>
+                        <img class="closeImg" src="__STATIC__/dingding/images/close01.png" alt="">
+                    </div>
+                </div>
+            </div>
         </div>
         {include file="layouts@dd_bottom" /}
 </div>
@@ -138,6 +218,9 @@
         function link(url){
             window.location.href = url;
         }
+        $(function () {
+            lottery_results();
+        })
     </script>
     <script>
        $(function(){
@@ -205,6 +288,34 @@
                }
            })
        }
+        function lottery_results() {
+            jq_ajax('{:url("ddkc/api.trade/lottery_results")}','',function (data) {
+                console.log(data);
+               if(data.lottery_status>0){
+                   $('.popup03').css('display','block');
+                    if(data.lottery_status==1){
+                        $('.con5').css('display','block');
+                    }else if(data.lottery_status==2){
+                        $('.con3').css('display','block');
+                        var str = '<audio  controls="controls"  autoplay src="__STATIC__/dingding/images/suc01.mp3"></audio>';
+                        $('.con3').append(str);
+                        $('.con3').find('.goto_btn').attr('data-id',data.buy_info.id)
+                    }else if(data.lottery_status==3){
+                        $('.con4').css('display','block');
+                        var str = '<audio  controls="controls"  autoplay src="__STATIC__/dingding/images/fail01.mp3"></audio>';
+                        $('.con4').append(str);
+                        $('.con4').find('.goto_btn').attr('data-id',data.buy_info.id)
+                    }
+               }
+            })
+        }
+        $('.goto_btn').on('click', function () {
+          var id = $(this).attr('data-id');
+          window.location.href ="{:url('ddkc/trade/dd_wallet')}";
+        })
+        $('.closeImg').on('click', function () {
+           $('.popup03').hide()
+       })
     </script>
 </body>
 

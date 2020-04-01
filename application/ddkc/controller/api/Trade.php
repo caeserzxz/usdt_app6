@@ -551,4 +551,71 @@ class Trade extends ApiController
         }
 
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取开奖结果
+    /*------------------------------------------------------ */
+    public function lottery_results(){
+        $TradingStageModel = new TradingStageModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $setting = settings();
+        $time = time();
+        $stage_where[] = ['isputaway','=',1];
+        $stageList = $TradingStageModel->where($stage_where)->order('id desc')->select();
+        #获取今日起始时间
+        $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $endToday=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        #获取当前开奖的区间
+        $lottery_status = 0;
+        foreach ($stageList as $k=>$v){
+            $stageTime = $v['trade_end_time'];
+            #结束抢购的时间
+            $stratTime = strtotime(date('Y-m-d '.$stageTime));
+            #开奖时间
+            $centreTime = strtotime(date('Y-m-d '.$stageTime))+($setting['lottery_time']*60);
+            #结束时间
+            $endTime = strtotime(date('Y-m-d '.$stageTime))+($setting['lottery_time']*60*2);
+            if($time>$stratTime&&$time<$centreTime){
+                #等待开奖
+                #获取今天当前区间的预约
+                $buy_where = [];
+                $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
+                $buy_where[] = ['buy_stage_id','=',$v['id']];
+                $buy_where[] = ['buy_start_time','between',[$beginToday,$endToday]];
+                $buy_info = [];
+                $buy_info =$BuyTradeModel->where($buy_where)->find();
+                if($buy_info){
+                    $ids = $BuyTradeModel->getIds('buyHandle');
+                    if(in_array($buy_info['id'],$ids)){
+                        #等待开奖
+                        $lottery_status = 1;
+                    }
+                }
+                break;
+            }
+            if($time>=$centreTime&&$time<$endTime){
+                #开奖结束
+                $buy_where = [];
+                $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
+                $buy_where[] = ['buy_stage_id','=',$v['id']];
+                $buy_where[] = ['buy_start_time','between',[$beginToday,$endToday]];
+                $buy_info = [];
+                $buy_info = $BuyTradeModel->where($buy_where)->find();
+                if($buy_info){
+                    if($buy_info['buy_status']==2){
+                        #中奖
+                        $lottery_status = 2;
+                    }else if($buy_info['buy_status']==3){
+                        #未中奖
+                        $lottery_status = 3;
+                    }
+                }
+                break;
+            }
+        }
+        $data['buy_info'] = $buy_info;
+        $data['lottery_status'] = $lottery_status;
+
+        return $this->ajaxReturn($data);
+    }
 }

@@ -279,7 +279,7 @@ class BuyTradeModel extends BaseModel
             }
         }
         #更新开奖区间状态
-//        $TradingStageModel->where('id',$stageInfo['id'])->update(['is_lottery'=>1]);
+        $TradingStageModel->where('id',$stageInfo['id'])->update(['is_lottery'=>1]);
     }
 
     public  function up_order($sell_id,$buy_id,$scribe_integral,$buy_user_id,&$accountModel,&$SellTradeModel){
