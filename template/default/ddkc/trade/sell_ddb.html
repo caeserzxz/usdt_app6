@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="sd-cont-net2">
-                        <div class="sd-t color-e7">低于100枚DDB无法出售</div>
+                        <div class="sd-t color-e7">低于{$setting['min_number']}枚DDB无法出售</div>
                         <div class="btns dp-flex">
                             <div class="yesBtn" onclick="yesBtn()"> <img src="__STATIC__/dingding/images/yes.png" alt="">
                             </div>
@@ -65,6 +65,7 @@
   });
 </script>
     <script>
+        var min_number = {$setting['min_number']};
         $(".noBtn").on('click', function () {
             $('.popup').hide()
         })
@@ -84,7 +85,7 @@
         }
         $(".weui-input").on("change", function () {
             let inputVal = $(".weui-input").val()
-            if (inputVal < 100) {
+            if (inputVal < min_number) {
                 $(".popup").show()
                 $(".sd-cont-net1").hide()
                 $(".sd-cont-net2").show()
