@@ -130,11 +130,7 @@ class BuyTradeModel extends BaseModel
         $TradingStageModel = new TradingStageModel();
         $SellTradeModel = new SellTradeModel();
         $redis = new Redis();
-        $HandleName= 'buyHandle';
-        $buyCount = $redis->lSize($HandleName);
-        if($buyCount==0){
-            return '';
-        }
+
         $setting = settings();
         $time = time();
         $show_end_date = $time+(24*60*60*30);
@@ -153,6 +149,13 @@ class BuyTradeModel extends BaseModel
             }
         }
         if(empty($stageInfo)){
+            return '';
+        }
+        $HandleName= 'buyHandle';
+        $buyCount = $redis->lSize($HandleName);
+        if($buyCount==0){
+            #没抢购,更新当前抢购区间的状态
+
             return '';
         }
 
@@ -444,12 +447,10 @@ class BuyTradeModel extends BaseModel
                 $list = $this->where($buy_where)->select();
 
                foreach ($list as $key=>$value){
-                   #判断当前id是否存在于抢购队列中
-                    if(!(in_array($value['id'],$ids))){
+                   #判断当前预约信息的状态
                         $buy_save['panic_end_time'] = $time;
                         $buy_save['buy_status'] = 4;
                         $res = $this->where('id',$value['id'])->update($buy_save);
-                    }
                }
                #更换当前区间的状态
                 $stage_save['is_overdue'] = 1;
