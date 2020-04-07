@@ -102,19 +102,19 @@
                             </div>
                             {literal}
                                 {{if item.buy_status == 1}}
-                                    <div class="list-btn sureBtn" onclick="sureBtn({{item.id}},{{item.scribe_integral}})"><img src="__STATIC__/dingding//images/index08.png" alt=""></div>
+                                    <div class="list-btn sureBtn" onclick="sureBtn({{item.id}},{{item.scribe_integral}})"><img src="{{item.img}}" alt=""></div>
                                 {{/if}}
                                 {{if item.buy_status == 2}}
-                                    <div class="list-btn " ><img src="__STATIC__/dingding//images/index06.png" alt=""></div>
+                                    <div class="list-btn " ><img src="{{item.img}}" alt=""></div>
                                 {{/if}}
                                 {{if item.buy_status == 3}}
-                                    <div class="list-btn " onclick="PanicBuying({{item.buy_id}});" ><img src="__STATIC__/dingding//images/index02.png" alt=""></div>
+                                    <div class="list-btn " onclick="PanicBuying({{item.buy_id}});" ><img src="{{item.img}}" alt=""></div>
                                 {{/if}}
                                 {{if item.buy_status == 4}}
-                                    <div class="list-btn " ><img src="__STATIC__/dingding//images/index03.png" alt=""></div>
+                                    <div class="list-btn " ><img src="{{item.img}}" alt=""></div>
                                 {{/if}}
                                 {{if item.buy_status == 5}}
-                                    <div class="list-btn "><img src="__STATIC__/dingding//images/index10.png" alt=""></div>
+                                    <div class="list-btn "><img src="{{item.img}}" alt=""></div>
                                 {{/if}}
                             {/literal}
 

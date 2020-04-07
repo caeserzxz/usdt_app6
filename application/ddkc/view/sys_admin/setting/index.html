@@ -29,6 +29,7 @@
                     <li ><a href="#appeal_explain" data-toggle="tab">申诉注意事项</a></li>
                     <li ><a href="#information_article" data-toggle="tab">文章说明</a></li>
                     <li ><a href="#index_notice" data-toggle="tab">首页公告</a></li>
+                    <li ><a href="#index_icon" data-toggle="tab">图标设置</a></li>
                 </ul>
             </header>
             <div class="tab-content">
@@ -407,6 +408,53 @@
                                   data-tongji-target=".js_kindeditor_tongji" data-rule-rangelength="[0,50000]"
                                   name="tips_notice" style="visibility:hidden;">{$setting.tips_notice|raw}</textarea>
                             <p class="pull-right js_kindeditor_tongji">还可输入{0}字</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="index_icon">
+                    <div class="form-group">
+                        <label class="control-label">可预约</label>
+                        <div class="col-sm-8 must" >
+                            <img class="thumb_img" name="imagefile" src="{$setting.subscribe_img1}" style="max-height: 100px;" />
+                            <input class="hide" type="text" name="subscribe_img1" value="{$setting.subscribe_img1}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                            <div style="color:red;margin-top:0.5rem">(请上传204*204的图片)</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">已预约</label>
+                        <div class="col-sm-8 must" >
+                            <img class="thumb_img" name="imagefile" src="{$setting.subscribe_img2}" style="max-height: 100px;" />
+                            <input class="hide" type="text" name="subscribe_img2" value="{$setting.subscribe_img2}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                            <div style="color:red;margin-top:0.5rem">(请上传500*500的图片)</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">可抢购</label>
+                        <div class="col-sm-8 must" >
+                            <img class="thumb_img" name="imagefile" src="{$setting.panic_buying_img1}" style="max-height: 100px;" />
+                            <input class="hide" type="text" name="panic_buying_img1" value="{$setting.panic_buying_img1}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                            <div style="color:red;margin-top:0.5rem">(请上传204*204的图片)</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">抢购中</label>
+                        <div class="col-sm-8 must" >
+                            <img class="thumb_img" name="imagefile" src="{$setting.panic_buying_img2}" style="max-height: 100px;" />
+                            <input class="hide" type="text" name="panic_buying_img2" value="{$setting.panic_buying_img2}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                            <div style="color:red;margin-top:0.5rem">(请上传204*204的图片)</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">已过期</label>
+                        <div class="col-sm-8 must" >
+                            <img class="thumb_img" name="imagefile" src="{$setting.be_overdue_img}" style="max-height: 100px;" />
+                            <input class="hide" type="text" name="be_overdue_img" value="{$setting.be_overdue_img}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-config="selectimg">选择图片</button>
+                            <div style="color:red;margin-top:0.5rem">(请上传204*204的图片)</div>
                         </div>
                     </div>
                 </div>

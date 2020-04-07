@@ -43,6 +43,7 @@ class Trade extends ApiController
         if (count($data['list']) > 0) {
             foreach ($data['list'] as $key => $value) {
                 $where = [];
+                $img = '';
                 $status = 0;
                 #1为可预约 2为已预约  3为可抢购 4为抢购中 5为已过期
                 $start_time =strtotime(date('Y-m-d '.$value['trade_start_time']));
@@ -57,9 +58,19 @@ class Trade extends ApiController
                     if($time<($start_time-($setting['stop_booking_time']*60))){
                         #可预约
                         $status = 1;
+                        if(empty($setting['subscribe_img1'])){
+                            $img = '/static/dingding/images/index08.png';
+                        }else{
+                            $img = $setting['subscribe_img1'];
+                        }
                     }else{
                         #预约已过期
                         $status = 5;
+                        if(empty($setting['subscribe_img2'])){
+                            $img = '/static/dingding/images/index10.png';
+                        }else{
+                            $img = $setting['subscribe_img2'];
+                        }
                     }
                 }else{
                     #今日有预约过
@@ -68,15 +79,29 @@ class Trade extends ApiController
                         if(in_array($buy_info['id'],$ids)){
                           #抢购中
                             $status = 4;
+                            if(empty($setting['panic_buying_img2'])){
+                                $img = '/static/dingding/images/index03.png';
+                            }else{
+                                $img = $setting['panic_buying_img2'];
+                            }
                         }else{
                             if($time>$start_time&&$time<$end_time){
                                 #可抢购
                                 $status = 3;
-
+                                if(empty($setting['panic_buying_img1'])){
+                                    $img = '/static/dingding/images/index02.png';
+                                }else{
+                                    $img = $setting['panic_buying_img1'];
+                                }
                             }else{
                                 if($time<$start_time){
                                     #已预约
                                     $status = 2;
+                                    if(empty($setting['subscribe_img2'])){
+                                        $img = '/static/dingding/images/index06.png';
+                                    }else{
+                                        $img = $setting['subscribe_img2'];
+                                    }
                                 if(($start_time-($setting['down_time']*60))<$time){
                                     $data['list'][$key]['down_time_date'] = gmdate('H:i:s',$start_time-$time);
                                     $data['list'][$key]['down_time'] = $start_time-$time;
@@ -84,6 +109,11 @@ class Trade extends ApiController
                                 }else if($time>$end_time){
                                     #预约已过期
                                     $status = 5;
+                                    if(empty($setting['be_overdue_img'])){
+                                        $img = '/static/dingding/images/index10.png';
+                                    }else{
+                                        $img = $setting['be_overdue_img'];
+                                    }
                                 }
                             }
                         }
@@ -99,6 +129,7 @@ class Trade extends ApiController
                     }
 
                 }
+                $data['list'][$key]['img'] = $img;
                 $data['list'][$key]['buy_id'] = $buy_info['id'];
                 $data['list'][$key]['buy_status'] = $status;
             }
