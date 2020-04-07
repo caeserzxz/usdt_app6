@@ -223,7 +223,7 @@ class UsersModel extends BaseModel
         }
         unset($inArr['invite_code']);
         $time = time();
-        $inArr['token'] = $this->getToken();
+//        $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
             Db::startTrans();
@@ -244,7 +244,13 @@ class UsersModel extends BaseModel
                 return '未知错误-2，请尝试重新提交.';
             }
         }
-        //创建会员帐户信息
+        $save_user['token'] = 'DD'.$user_id;
+        $res = $this->where('user_id',$user_id)->update($save_user);
+        if(!$user_id){
+            Db::rollback();
+            return 'token更新失败，请尝试重新提交.';
+        }
+        //创建会员帐户信息/
         $AccountLogModel = new AccountLogModel();
         $res = $AccountLogModel->createData(['user_id' => $user_id, 'update_time' => $time]);
         if ($res < 1) {

@@ -5,6 +5,7 @@
     <th width="120">注册手机</th>
     <th width="100">昵称</th>
     <th width="120">推荐人</th>
+    <th width="120">推荐码</th>
     <th width="150">等级/身份</th> 
     <th width="100">帐户余额</th> 
     <th width="130">最近登陆</th>    
@@ -19,6 +20,7 @@
 <td>{$vo.mobile}</td>
 <td>{$vo.nick_name}</td>
 <td>{if condition = "$vo.pid > 0" }{$vo.pid} - {$vo.pid|userInfo}{else/}没有上级{/if}</td>
+<td>{$vo.token}</td>
 <td>{$vo.total_integral|userLevel} / 
 {eq name="vo.role_id" value="0"}
 粉丝

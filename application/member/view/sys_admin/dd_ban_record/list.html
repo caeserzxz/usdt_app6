@@ -30,10 +30,8 @@
 <a title="重置密码"  data-confirm="您确定要重置该会员密码，重置为Abc123456" data-toggle="cfmAjax" href="{:url('restPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-rotate-left text-muted"></i></a>
 <a title="重置支付密码"  data-confirm="您确定要重置该会员支付密码" data-toggle="cfmAjax" href="{:url('restPayPassword',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa  fa-rotate-right text-muted"></i></a>
 
-{eq name="is_ban" value="0"}
-<a title="封禁会员"  data-confirm="您确定要封禁该会员，封禁后则会员则无法登陆? " data-toggle="cfmAjax" href="{:url('evelBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-lock text-muted"></i></a>
-{else/}
-<a title="解禁会员"  data-confirm="您确定要解禁该会员，解禁后则会员则可正常登陆? " data-toggle="cfmAjax" href="{:url('reBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-unlock"></i></a>
+{eq name="$vo.ban_status" value="0"}
+<a title="解禁会员"  data-confirm="您确定要解禁该会员，解禁后则会员则可正常登陆? " data-toggle="cfmAjax" href="{:url('member/sys_admin.users/reBan',array('user_id'=>$vo['user_id']))}" class="m-xs"><i class="fa fa-unlock"></i></a>
 {/eq}
 <a href="{:url('info',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看会员信息">
     <i class="fa fa-edit"></i>

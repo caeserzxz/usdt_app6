@@ -102,6 +102,26 @@ class Trade extends ApiController
     }
 
     /*------------------------------------------------------ */
+    //-- 获取交易区间列表2
+    /*------------------------------------------------------ */
+    public function getTradingStageList2(){
+        $SellTradeModel = new SellTradeModel();
+        $model = new TradingStageModel;
+        $number = input('number');
+        $this->sqlOrder = 'id ASC';
+        $where_stage[] = ['isputaway' ,'eq' ,1];
+        $data = $this->getPageList($model,$where_stage);
+        foreach ($data['list']  as $k=>$v){
+            if($number<$v['trade_min_num']){
+                unset($data['list'][$k]);
+            }
+            if($number>$v['trade_min_num']){
+                unset($data['list'][$k]);
+            }
+        }
+        return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
     //-- 预约交易
     /*------------------------------------------------------ */
     public function buy_trade(){
@@ -199,6 +219,9 @@ class Trade extends ApiController
         }
         if($user['account']['ddb_money']<$number){
             return $this->ajaxReturn(['code' => 0,'msg' => 'DDB余额不足','url' => '']);
+        }
+        if(time()>$stage_info['trade_end_time']){
+            return $this->ajaxReturn(['code' => 0,'msg' => '该场次今日交易时间已过','url' => '']);
         }
         #扣除手续费后的叮叮
         $service_charge = $number *($settints['service_charge']/100);

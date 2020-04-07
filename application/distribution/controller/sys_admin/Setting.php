@@ -145,6 +145,7 @@ class Setting extends AdminController
 
         $data['share_avatar'] = './static/share/avatar.jpg';
         $data['share_nick_name'] = '测试';
+        $data['share_token'] = 'DD29898';
         $data['share_qrcode'] = './static/share/qrcode.png';
 
         $data['share_avatar_xy'] = $post['setting']['share_avatar_xy'];
@@ -156,6 +157,9 @@ class Setting extends AdminController
         $data['share_qrcode_xy'] = $post['setting']['share_qrcode_xy'];
         $data['share_qrcode_width'] = $post['setting']['share_qrcode_width'];
 
+        $data['share_token_xy'] = $post['setting']['share_token_xy'];
+        $data['share_token_color'] = $post['setting']['share_token_color'];
+        $data['share_token_size'] = $post['setting']['share_token_size'];
 
         /*$data['share_bg'] = settings('share_bg');
         $data['share_bg'] = explode(',',$data['share_bg']);

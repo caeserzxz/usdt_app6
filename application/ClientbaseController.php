@@ -66,6 +66,11 @@ class ClientbaseController extends BaseController{
         }
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
+        if($userInfo['is_ban']==1){
+            session('userId', null);
+            $wxInfo = session('wxInfo');
+            return $this->fetch('member@center/logout');
+        }
         $this->userInfo = $userInfo;
          // 当前路由信息
         $this->getRouteinfo();

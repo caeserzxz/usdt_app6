@@ -777,7 +777,7 @@ class Users extends ApiController
         $data['share_avatar'] = $this->getHeadImg(true);
         $data['share_nick_name'] = $this->userInfo['nick_name'];
         $data['share_qrcode'] = $this->getMyCode();
-
+        $data['share_token'] =  $this->userInfo['token'];
         $data['share_bg'] = settings('share_bg');
         $data['share_bg'] = explode(',',$data['share_bg']);
         $allnum = count($data['share_bg']);
@@ -794,6 +794,9 @@ class Users extends ApiController
         $data['share_nick_name_size'] = settings('share_nick_name_size');
         $data['share_qrcode_xy'] = settings('share_qrcode_xy');
         $data['share_qrcode_width'] = settings('share_qrcode_width');
+        $data['share_token_xy'] =settings('share_token_xy');
+        $data['share_token_color'] = settings('share_token_color');
+        $data['share_token_size'] = settings('share_token_size');
         $res['img'] = $MergeImg->shareImg($data,-1);
         return $this->success('请求成功.','',$res);
     }

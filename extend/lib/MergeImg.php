@@ -50,7 +50,11 @@ class MergeImg{
         $rgb = $this->hex2rgb($data['share_nick_name_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
         imagettftext($im, $data['share_nick_name_size'], 0, $share_nick_name_xy[0] , $share_nick_name_xy[1] ,$balk, $fontfile, $data['share_nick_name']);
-        //呢称
+        //推广码
+        $share_token_xy = explode(',',$data['share_token_xy']);
+        $rgb = $this->hex2rgb($data['share_token_color']);
+        $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
+        imagettftext($im, $data['share_token_size'], 0, $share_token_xy[0] , $share_token_xy[1] ,$balk, $fontfile, $data['share_token']);
 
         //二维码处理
         //缩放比例end

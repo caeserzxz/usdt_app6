@@ -73,7 +73,8 @@
             if ($(".weui-input").val() == "") {
                 $(".popup").hide()
             } else {
-                $('.popup').show()
+                getTradingStageList();
+                // $('.popup').show()
             }
 
         })
@@ -96,19 +97,28 @@
                 $(".sd-cont-net1").show()
             }
         })
-        $(function(){
-            getTradingStageList();
-        })
+        // $(function(){
+        //     getTradingStageList();
+        // })
         function getTradingStageList(){
-            jq_ajax('{:url("ddkc/api.trade/getTradingStageList")}','',function (res) {
+            var number = $('#number').val();
+            if(isPInt(number)==false){
+                isPostMsg = false;
+                $.toast('请输入正确的数量', "text");
+                return false;
+            }
+            var arr = new Object();
+            arr.number = number;
+            jq_ajax('{:url("ddkc/api.trade/getTradingStageList2")}',arr,function (res) {
                 console.log(res);
                 // if (is_new == 1) $("#myMinerData").html('');
                 $('#TradingStageList').append(template('listTpl',res));
                 if (res.list.length > 0) {
+                    $('.popup').show()
                     // page_2++;
                     // loading_2 = false;
                 }else{
-                    $.toast('加载完成', "text");
+                    $.toast('没有合适的场次', "text");
                 }
             })
         }

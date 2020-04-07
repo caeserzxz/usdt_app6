@@ -1350,6 +1350,7 @@ img {
 .corePage .user .user-info img {
   width: 0.6rem;
   height: 0.6rem;
+  margin-top: 40%;
 }
 
 .corePage .user .user-info,
