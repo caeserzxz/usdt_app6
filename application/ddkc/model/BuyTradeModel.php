@@ -141,6 +141,7 @@ class BuyTradeModel extends BaseModel
         $stageInfo = [];
         #获取当前开奖的区间
         foreach ($stageList as $k=>$v){
+            $stageTime = 0;
             $stageTime = $v['trade_end_time'];
             $stageTime = strtotime(date('Y-m-d '.$stageTime))+($setting['lottery_time']*60);
             if($time>$stageTime){
@@ -155,7 +156,7 @@ class BuyTradeModel extends BaseModel
         $buyCount = $redis->lSize($HandleName);
         if($buyCount==0){
             #没抢购,更新当前抢购区间的状态
-
+            $TradingStageModel->where('id',$stageInfo['id'])->update(['is_overdue'=>1]);
             return '';
         }
 

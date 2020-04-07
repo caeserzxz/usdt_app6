@@ -72,10 +72,15 @@ class Trade extends ApiController
                             if($time>$start_time&&$time<$end_time){
                                 #可抢购
                                 $status = 3;
+
                             }else{
                                 if($time<$start_time){
                                     #已预约
                                     $status = 2;
+                                if(($start_time-($setting['down_time']*60))<$time){
+                                    $data['list'][$key]['down_time_date'] = gmdate('H:i:s',$start_time-$time);
+                                    $data['list'][$key]['down_time'] = $start_time-$time;
+                                }
                                 }else if($time>$end_time){
                                     #预约已过期
                                     $status = 5;

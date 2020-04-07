@@ -93,6 +93,12 @@
                                 <p>抢购数量：{{item.trade_min_num}}-{{item.trade_max_num}}</p>
                                 <p>抢购时间：{{item.trade_start_time}}-{{item.trade_end_time}}</p>
                                 <p>信用积分：{{item.scribe_integral}}</p>
+                                {literal}
+                                {{if item.down_time}}
+                                <p id="timer{{item.id}}" class="times dp-flex" style="justify-content: flex-start;">距离开始抢购时间：<span
+                                        class="timer{{item.id}}">{{item.down_time_date}}</span></p>
+                                {{/if}}
+                                {/literal}
                             </div>
                             {literal}
                                 {{if item.buy_status == 1}}
@@ -200,6 +206,8 @@
 </script>
     <script src="__STATIC__/dingding//js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
+        var end_time =2*60;
+
         var mySwiper = new Swiper('.swiper-container', {
             autoplay: true,
             pagination: {
@@ -230,7 +238,19 @@
            jq_ajax('{:url("ddkc/api.trade/getTradingStageList")}','',function (res) {
                // if (is_new == 1) $("#myMinerData").html('');
                $('#TradingStageList').append(template('listTpl',res));
+               console.log(res);
                if (res.list.length > 0) {
+                   $.each(res.list,function(i,v){
+                       if(v.down_time==''||v.down_time==null){
+
+                       }else{
+                           var obj = 'timer' + v.id;
+                           countDown(v.down_time,v.id ,v.buy_id,function (msg) {
+                               var timeDom = document.getElementsByClassName(obj)
+                               timeDom[0].textContent = msg;
+                           })
+                       }
+                   })
                    // page_2++;
                    // loading_2 = false;
                }else{
@@ -316,6 +336,30 @@
         $('.closeImg').on('click', function () {
            $('.popup03').hide()
        })
+
+       function countDown(maxtime,id,buy_id, fn) {
+           var timer = setInterval(function () {
+               if (!!maxtime) {
+                   var day = Math.floor(maxtime / 86400),
+                       hour = Math.floor((maxtime % 86400) / 3600),
+                       minutes = Math.floor((maxtime % 3600) / 60),
+                       seconds = Math.floor(maxtime % 60),
+                       msg = (hour < 10 ? '0' + hour : hour) + ":" + (minutes < 10 ? '0' + minutes : minutes) + ":" + (seconds < 10 ? '0' + seconds : seconds);
+                   fn(msg);
+                   --maxtime;
+               } else {
+                   clearInterval(timer);
+                   var obj = 'timer'+id;
+                   $('#'+obj).hide();
+                   var test = $("#"+obj).parent().next();
+                   var img = $(test).children();
+                   //更换图标
+                   $(img).attr('src','/static/dingding/images/index02.png');
+                   //添加事件
+                    $(test).attr("onclick","PanicBuying("+buy_id+");");
+               }
+           }, 1000);
+       }
     </script>
 </body>
 
