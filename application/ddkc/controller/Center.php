@@ -193,8 +193,12 @@ class Center  extends ClientbaseController{
         $where[] = ['pid','=',$userId];
         $where[] = ['level','<=',3];
         $threeInfo = $userBindModel->where($where)->group('level')->column('count(*) cc','level');
-        $textInfo = ['其他','一','二','三'];
+        # 默认0个下级 防止无法循环
+        if (!$threeInfo[1]) $threeInfo[1] = 0;
+        if (!$threeInfo[2]) $threeInfo[2] = 0;
+        if (!$threeInfo[3]) $threeInfo[3] = 0;
 
+        $textInfo = ['其他','一','二','三'];
         # 直链收益
         $award['extension'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 102])->sum('ddb_money');
         # 联代收益

@@ -187,6 +187,16 @@ class Article extends ClientbaseController
         $this->assign('content', $content);
         return $this->fetch('register');
     }
+
+    /*------------------------------------------------------ */
+    //-- 分类列表
+    /*------------------------------------------------------ */
+    public function cateArticleList()
+    {
+        $this->assign('title', '文章列表');
+        return $this->fetch();
+    }
+
 }
 
 ?>

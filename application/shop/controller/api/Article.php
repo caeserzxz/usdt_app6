@@ -4,6 +4,7 @@ namespace app\shop\controller\api;
 
 use app\ApiController;
 use app\mainadmin\model\ArticleModel;
+use app\mainadmin\model\ArticleCategoryModel;
 
 class Article extends ApiController
 {
@@ -52,7 +53,37 @@ class Article extends ApiController
         $return['goods_type'] = $goods_type;
         return $this->ajaxReturn($return);
     }
+    /*------------------------------------------------------ */
+    //-- 获取头条列表
+    /*------------------------------------------------------ */
+    public function getInformationList()
+    {
+        $CategoryModel = new ArticleCategoryModel();
+        $where[] = ['cid', 'IN', [21,22,23]];
+        $where[] = ['is_show', '=', 1];
+        $this->sqlOrder = "sort_order ASC,add_time DESC,id DESC";
+        $data = $this->getPageList($this->Model, $where, '*', 10);
 
+        foreach ($data['list'] as $key => $value) {
+            $data['list'][$key]['add_data'] = date('m-d H:i',$value['add_time']);
+            $data['list'][$key]['cid_name'] = $CategoryModel->where(['id' => $value['cid']])->value('name');
+        }
+        return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 分类列表
+    /*------------------------------------------------------ */
+    public function cateArticleList()
+    {
+        $cid = input('cid', 0, 'intval');
 
-
+        $this->sqlOrder = "sort_order ASC,add_time DESC,id DESC";
+        $where[] = ['cid', '=', $cid];
+        $where[] = ['is_show', '=', 1];
+        $data = $this->getPageList($this->Model, $where, '*', 10);
+        $return['list'] = $data['list'];
+        $return['page_count'] = $data['page_count'];
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 }
