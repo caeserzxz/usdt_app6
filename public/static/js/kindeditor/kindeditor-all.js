@@ -296,6 +296,7 @@ K.options = {
 		],
 		a : ['id', 'class', 'href', 'target', 'name'],
 		embed : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
+		video : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess','controls'],
 		img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border'],
 		'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : [
 			'id', 'class', 'align', '.text-align', '.color', '.background-color', '.font-size', '.font-family', '.background',
@@ -909,6 +910,9 @@ function _mediaType(src) {
 	if (/\.(swf|flv)(\?|$)/i.test(src)) {
 		return 'application/x-shockwave-flash';
 	}
+	if (/\.(mp4)(\?|$)/i.test(src)) {
+	    return 'video/mp4';
+	}
 	return 'video/x-ms-asf-plugin';
 }
 function _mediaClass(type) {
@@ -929,6 +933,13 @@ function _mediaEmbed(attrs) {
 		html += key + '="' + val + '" ';
 	});
 	html += '/>';
+	if(attrs.type=="video/mp4"){
+	    var html = '<video ';
+	    _each(attrs, function(key, val) {
+	        html += key + '="' + val + '" ';
+	    });
+	    html += 'controls="controls"/>';
+	}
 	return html;
 }
 function _mediaImg(blankPath, attrs) {
