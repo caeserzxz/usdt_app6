@@ -1,4 +1,33 @@
 {extend name="layouts@dd_head" /}
+
+{block name="head"}
+<style type="text/css">
+    .top-p {
+            border: 1px dashed #fff;
+            border-radius: .266667rem;
+            width: 1.866667rem;
+            height: .4rem;
+            line-height: .4rem;
+            text-align: center;
+            margin-bottom: .133333rem;
+            background-color: #4c4643;
+            color: #f1a449;
+        }
+
+        .leave-tl {
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px dashed #fff;
+            margin-top: .2rem
+        }
+        .space-style .list:nth-child(even) {
+            margin-right: 0 !important;
+        }
+        .space-style .list:nth-child(odd) {
+            margin-right: 0.2rem !important;
+        }
+</style>
+{/block}
 {block name="main" }
 <div class="page-bd DDBBag machinePage">
     <!-- 页面内容-->
@@ -9,15 +38,46 @@
         </div>
         <div class="weui-tab__bd body-c">
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-                <div>
-                    <div class="dp-flex top">
-                        <p class="fs32">{$userInfo['role']['role_name']}</p>
-                        <!-- <span class="fs24">（基础型）</span> -->
-                        <img src="__STATIC__/dingding/images/right.png" alt="">
-                    </div>
-                </div>
-                <div class="lists1" id="list1">
+                <div id="list1" class="space-style">
                     <script type="text/html" id="listTpl">
+                        {{each list as item1 index}}
+                        <div class="leave-tl">
+                            <p class="top-p fs28 fw_b">{{index}}</p>
+                        </div>
+                        <div class="lists1" >
+                        {{each item1 as item index2}}
+                            <div class="list">
+                                <div class="list-img">
+                                    {literal}
+                                    {{if item.img}}
+                                        <img src="{{item.img}}">
+                                    {{else}}
+                                        <img src="__STATIC__/dingding/images/pro01.png";>
+                                    {{/if}}
+                                    {/literal}
+                                </div>
+                                <div class="list-txt">
+                                    <h3>{{item.miner_name}}</h3>
+                                    <div class="list-txt-con">
+                                        <div>
+                                            <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
+                                            <p>日收益率：{{item.total_output}}枚</p>
+                                            <p>产矿周期：{{item.scrap_days}}天</p>
+                                            <p>信用积分：{{item.credit_integral}}</p>
+                                        </div>
+                                        <div class="lease-btn" onclick="getInfo({{item}})">确认租赁</div>
+                                    </div>
+                                </div>
+                            </div>                   
+                        {{/each}}
+                        </div>
+                        {{/each}}
+                    </script> 
+                </div>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+                <div class="lists1" id="list2">
+                    <script type="text/html" id="listTpl2">
                         {{each list as item index}}
                         <div class="list">
                             <div class="list-img">
@@ -25,7 +85,7 @@
                                 {{if item.img}}
                                     <img src="{{item.img}}">
                                 {{else}}
-                                    <img src="__STATIC__/dingding/images/pro01.png";>
+                                    <img src="__STATIC__/dingding/images/ddb.png";>
                                 {{/if}}
                                 {/literal}
                             </div>
@@ -33,21 +93,21 @@
                                 <h3>{{item.miner_name}}</h3>
                                 <div class="list-txt-con">
                                     <div>
-                                        <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
-                                        <p>可产DDB：{{item.total_output}}枚</p>
-                                        <p>产矿周期：{{item.scrap_days}}天</p>
+                                        <p>定存DDB：{{item.price_min}}-{{item.price_max}}</p>
+                                        <p>合约收益：{{item.rebate_rate}}%</p>
+                                        <p>定存周期：{{item.scrap_days}}天</p>
                                         <p>信用积分：{{item.credit_integral}}</p>
-                                        <p>租赁会员等级：{{item.limit_buy_role}}</p>
+                                        <p>会员等级：{{item.limit_buy_role}}</p>
                                     </div>
                                     <div class="lease-btn" onclick="getInfo({{item}})">确认租赁</div>
                                 </div>
                             </div>
                         </div>
-                        {{/each}}
-                    </script>                    
+                        {{/each}}                        
+                    </script>
                 </div>
             </div>
-            <div id="tab2" class="weui-tab__bd-item addValuePage ">
+            <!-- <div id="tab2" class="weui-tab__bd-item addValuePage ">
                 <div class="lists" id="list2">
                     <script type="text/html" id="listTpl2">
                         {{each list as item index}}
@@ -73,7 +133,7 @@
                         {{/each}}
                     </script>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="popup">
@@ -125,7 +185,7 @@
         getStorageList();
     });
     // 获取矿机列表
-    function getMiningList(){
+    /*function getMiningList(){
         if(loading_1) return;
         loading_1 = true;
 
@@ -134,6 +194,24 @@
         arr.type = 1;
 
         jq_ajax('{:url("ddkc/api.miner/getMiningList")}',arr,function (res) {            
+            $('#list1').append(template('listTpl',res));
+            if (res.list.length > 0) {
+                page_1++;
+                loading_1 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }*/
+    function getMiningList(){
+        if(loading_1) return;
+        loading_1 = true;
+
+        var arr = new Object();
+        arr.p = page_1;
+        arr.type = 1;
+
+        jq_ajax('{:url("ddkc/api.miner/getMiningListVariousRole")}',arr,function (res) {            
             $('#list1').append(template('listTpl',res));
             if (res.list.length > 0) {
                 page_1++;
