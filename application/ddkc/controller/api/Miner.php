@@ -57,6 +57,33 @@ class Miner extends ApiController
 		return $this->ajaxReturn($data);
 	}
 	/*------------------------------------------------------ */
+	//-- 获取所有矿机列表 分等级展示
+	/*------------------------------------------------------ */
+ 	public function getMiningListVariousRole(){
+		$roleModel = new DividendRoleModel();
+		# 取出所有身份
+		$roleArr = $roleModel->getRows();
+		# 循环身份 以身份名称为KEY重组数组
+		$newRoleArr = [];
+		foreach ($roleArr as $key => $value) {
+			# 该等级可购买矿机
+			$this->sqlOrder = 'miner_id ASC';
+			$roleMiner = $this->Model->where("is_on_sale = 1 AND type = ".input('type')." AND ( limit_user_role = ".$value['role_id']." OR limit_user_role like '".$value['role_id'].",%' )")->select();
+			
+			if (count($roleMiner)) {
+	        	foreach ($roleMiner as $key2 => $value2) {
+	        		$imgs = unserialize($value2['imgs']);
+	        		$roleMiner[$key2]['img'] = $imgs[0];
+	                $roleMiner[$key2]['total_output'] = $value2['price_min']+(sprintf("%.0f",$value2['price_min']*$value2['rebate_rate']*$value2['scrap_days']/100));
+	        	}
+	        }
+			$newRoleArr[$value['role_name']] = $roleMiner;
+		}
+		$data['list'] = $newRoleArr;
+		// dump($data);die;
+		return $this->ajaxReturn($data);
+	}
+	/*------------------------------------------------------ */
 	//-- 获取矿机信息
 	/*------------------------------------------------------ */
  	public function getMiningInfo(){

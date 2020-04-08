@@ -19,12 +19,12 @@
         <div class="tab dp-flex">
             <div><img src="__STATIC__/dingding/images/server01.png" alt=""></div>
             <div>
-                <a href="{:url('shop/article/newUserCourse')}">
+                <a href="{:url('shop/article/cateArticleList',['cid' => 21])}">
                     <img src="__STATIC__/dingding/images/server02.png" alt="">
                 </a>
             </div>
             <div>
-                <a href="{:url('shop/article/newsFlash')}">
+                <a href="{:url('shop/article/cateArticleList',['cid' => 22])}">
                     <img src="__STATIC__/dingding/images/server03.png" alt="">
                 </a>
             </div>
@@ -40,18 +40,14 @@
             <a class="weui-cell" href="javascript:go_info({{item.id}})">
                 <div class="weui-cell__hd">
                     <div class="radio">
-                        <video id="example_video_1" poster="{{item.imgs}}" class="video-js vjs-default-skin">
-                            <source src="{{item.video_url}}" />
-                            <source src="" type='video/webm' />
-                            <source src="" type='video/ogg' />
-                        </video>
-                        <!-- <div class="video-length">00:00:00</div> -->
+                        <img src="{{item.img_url}}" style="width: 26.5vw">
                     </div>
                 </div>
                 <div class="weui-cell__bd">
-                    <p class="fw_b fs30">{{item.title}}</p>
-                    <div class="dp-flex look">
-                        <img src="__STATIC__/dingding/images/play.png" alt="">
+                    <p class="fw_b fs30">【{{item.cid_name}}】{{item.title}}</p>
+                    <div class="dp-flex look" style="justify-content:space-between;">
+                        <p class="fs20 color-7f" style="padding-left:.1rem">阅读 {{item.click}}</p>
+                        <!-- <img src="__STATIC__/dingding/images/play.png" alt=""> -->
                         <p class="fs20 color-7f">{{item.add_data}}</p>
                     </div>
                 </div>
@@ -94,7 +90,8 @@
 
         var arr = new Object();
         arr.p = page;
-        jq_ajax('{:url("ddkc/api.information/getInformationList")}',arr,function (res) {            
+        // jq_ajax('{:url("ddkc/api.information/getInformationList")}',arr,function (res) {    
+        jq_ajax('{:url("shop/api.Article/getInformationList")}',arr,function (res) {
             $('#lists').append(template('listTpl',res));
             if (res.list.length > 0) {
                 page++;
@@ -105,7 +102,7 @@
         })
     }
     function go_info(id) {
-        window.location.href = '{:_url("info",'',false)}/?id='+id;
+        window.location.href = '{:_url("shop/article/info",'',false)}/?id='+id;
     }
 
 </script>

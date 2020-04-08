@@ -5,17 +5,24 @@
 {block name="main" }
 
 <header class="header  b-b clearfix">
-     <div class="page-breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="fa fa-ellipsis-v"></i>
-                    <strong>分组管理</strong>&nbsp; <small>拖拽后保存生效</small>
-                </li>                                  
-            </ul>
-        </div>
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>分组管理</strong>&nbsp; <small>拖拽后保存生效</small>
+            </li>                                  
+        </ul>
+    </div>
 </header>
 
 <section class="scrollable  wrapper">
+  <div class="alert alert-warning ">
+        <ul>
+            <li>ID21固定为新手教程；ID22固定为叮叮快讯；ID23固定为服务快讯；请谨慎操作</li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
     <section class="panel panel-default">
         <header class="panel-heading">
             <a href="javascript:;" data-remote="{:url('info')}" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i class="fa fa-plus m-r-xs"></i>添加分类</a>
@@ -23,21 +30,15 @@
                 <span class="text-active">展开全部</span>
                 <span class="text">折叠全部</span>
             </button>
-
-
         </header>
         <div class="panel-body">
-
-
             <div class="col-sm-12">
-
                 <div class="dd" id="dragClassify" data-toggle="nestable">
                     <ol class="dd-list">
-
                     {volist name="list[0]" id="vo" }
                         <li class="dd-item" data-id="{$vo.id}">
                             <div class="dd-handle">
-                                <img src="{$vo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; " /> {$vo.name}
+                                <img src="{$vo.pic|default='__STATIC__/main/img/def_img.jpg'}" style="width:25px; " /> ID: {$vo.id}  {$vo.name}
                                 <span class="pull-right">
                                     <a href="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-pencil icon-muted fa-fw m-r-xs"></i></a>
                                     <a href="{:url('info',array('pid'=>$vo['id']))}" data-toggle="ajaxModal"><i class="fa fa-plus icon-muted fa-fw m-r-xs"></i></a>
@@ -75,17 +76,12 @@
                          </ol>
                         {/notempty}
                    {/volist}  
-                      
                     </ol>
                 </div>
-
                 <div class="<?=empty($list)?'':'hide'?>" id="noClassify">
                     暂无分类 ...
                 </div>
-
             </div>
-
-
         </div>
         <footer class="panel-footer">
             <button type="submit" class="btn btn-primary" data-loading-text="保存中..." data-remote="{:url('saveSort')}" id="save_class">保存</button>

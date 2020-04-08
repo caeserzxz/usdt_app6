@@ -320,7 +320,7 @@ class BaseController extends Controller
             'image' => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
             'img'   => array('jpg', 'jpeg'),
             'flash' => array('swf', 'flv'),
-            'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
+            'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb','mp4'),
             'file'  => array('htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
             'work'  => array('doc', 'docx', 'xls', 'xlsx', 'ppt'),
         );

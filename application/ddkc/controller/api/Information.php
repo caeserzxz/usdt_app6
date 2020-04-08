@@ -23,18 +23,18 @@ class Information extends ApiController
         $this->Model = new DdInformationModel();
     }
     /*------------------------------------------------------ */
-	//-- 资讯列表
-	/*------------------------------------------------------ */
- 	public function getInformationList(){
+    //-- 资讯列表
+    /*------------------------------------------------------ */
+    public function getInformationList(){
 
-		$this->sqlOrder = 'id DESC';
-		$where[] = ['is_show' ,'eq' ,1];
+        $this->sqlOrder = 'id DESC';
+        $where[] = ['is_show' ,'eq' ,1];
         $data = $this->getPageList($this->Model,$where);
         if (count($data['list']) > 0) {
-        	foreach ($data['list'] as $key => $value) {
-        		$data['list'][$key]['add_data'] = date('m-d H:i',$value['add_time']);
-        	}
+            foreach ($data['list'] as $key => $value) {
+                $data['list'][$key]['add_data'] = date('m-d H:i',$value['add_time']);
+            }
         }
-		return $this->ajaxReturn($data);
-	}
+        return $this->ajaxReturn($data);
+    }
 }

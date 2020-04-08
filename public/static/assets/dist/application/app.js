@@ -31,7 +31,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                 b = {
                     kindeditor: {
                         "default": {
-                            items: ["source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste", "plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright", "justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript", "superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/", "formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage", "insertfile", "table", "hr", "emoticons", "baidumap", "code", "pagebreak", "link", "unlink"],
+                            items: ["source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste", "plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright", "justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript", "superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/", "formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage", "insertfile", "table", "hr", "emoticons", "baidumap", "code", "pagebreak", "link", "unlink","media"],
                             height: "400px",
                             width: "100%",
                             afterCreate: function() {
@@ -44,7 +44,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             extraFileUploadParams: window.extraFileUploadParams
                         },
                         simple: {
-                            items: ["source", "undo", "redo", "plainpaste", "plainpaste", "wordpaste", "clearhtml", "quickformat", "selectall", "fullscreen", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "hr", "removeformat", "|", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "|", "emoticons", "image", "link", "unlink", "preview"],
+                            items: ["source", "undo", "redo", "plainpaste", "plainpaste", "wordpaste", "clearhtml", "quickformat", "selectall", "fullscreen", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "hr", "removeformat", "|", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "|", "emoticons", "image", "link", "unlink", "preview","media"],
                             height: "300px",
                             width: "100%",
                             afterCreate: function() {
@@ -55,7 +55,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             }
                         },
                         mini: {
-                            items: ["fontsize", "forecolor", "hilitecolor", "bold", "italic", "removeformat", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "link", "unlink"],
+                            items: ["fontsize", "forecolor", "hilitecolor", "bold", "italic", "removeformat", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "link", "unlink","media"],
                             height: "300px",
                             width: "100%",
                             afterCreate: function() {
