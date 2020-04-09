@@ -66,10 +66,10 @@ class Trade extends ApiController
                     }else{
                         #预约已过期
                         $status = 5;
-                        if(empty($setting['subscribe_img2'])){
+                        if(empty($setting['be_overdue_img'])){
                             $img = '/static/dingding/images/index10.png';
                         }else{
-                            $img = $setting['subscribe_img2'];
+                            $img = $setting['be_overdue_img'];
                         }
                     }
                 }else{
@@ -120,12 +120,27 @@ class Trade extends ApiController
                     }else if($buy_info['buy_status']==2){
                         #预约过期
                         $status = 5;
+                        if(empty($setting['be_overdue_img'])){
+                            $img = '/static/dingding/images/index10.png';
+                        }else{
+                            $img = $setting['be_overdue_img'];
+                        }
                     }else if($buy_info['buy_status']==3){
                         #预约过期
                         $status = 5;
+                        if(empty($setting['be_overdue_img'])){
+                            $img = '/static/dingding/images/index10.png';
+                        }else{
+                            $img = $setting['be_overdue_img'];
+                        }
                     }else if($buy_info['buy_status']==4){
                         #预约过期
                         $status = 5;
+                        if(empty($setting['be_overdue_img'])){
+                            $img = '/static/dingding/images/index10.png';
+                        }else{
+                            $img = $setting['be_overdue_img'];
+                        }
                     }
 
                 }
@@ -157,6 +172,7 @@ class Trade extends ApiController
         }
         return $this->ajaxReturn($data);
     }
+
     /*------------------------------------------------------ */
     //-- 预约交易
     /*------------------------------------------------------ */
@@ -676,5 +692,65 @@ class Trade extends ApiController
         $data['lottery_status'] = $lottery_status;
 
         return $this->ajaxReturn($data);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取开奖结果
+    /*------------------------------------------------------ */
+    public function lottery_results2(){
+        $TradingStageModel = new TradingStageModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $setting = settings();
+        $lottery_status = 0;
+
+        #等待开奖
+        $buy_where = [];
+        $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
+        $buy_where[] = ['buy_status','=',0];
+        $buy_info =$BuyTradeModel->where($buy_where)->order('id desc')->find();
+        if($buy_info){
+            $ids = $BuyTradeModel->getIds('buyHandle');
+            if(in_array($buy_info['id'],$ids)){
+                #等待开奖
+                $lottery_status = 1;
+            }
+        }
+
+        #开奖结束
+        $buy_where = [];
+        $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
+        $buy_where[] = ['is_see','=',0];
+        $buy_where[] = ['buy_status','in',[2,3]];
+        $buy_info = [];
+        $buy_info = $BuyTradeModel->where($buy_where)->order('id desc')->find();
+        if($buy_info){
+            if($buy_info['buy_status']==2){
+                #中奖
+                $lottery_status = 2;
+            }else if($buy_info['buy_status']==3){
+                #未中奖
+                $lottery_status = 3;
+            }
+        }
+
+        $data['buy_info'] = $buy_info;
+        $data['lottery_status'] = $lottery_status;
+
+        return $this->ajaxReturn($data);
+
+    }
+
+    /*------------------------------------------------------ */
+    //-- 更新当前记录查看状态
+    /*------------------------------------------------------ */
+    public function update_see_status(){
+        $BuyTradeModel = new BuyTradeModel();
+        $id = input('id');
+        $type= input('type');
+        $res = $BuyTradeModel->where('id',$id)->update(['is_see'=>1]);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '更新成功']);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '延迟交易成功','url' =>'']);
+        }
     }
 }
