@@ -161,15 +161,10 @@ class Trade extends ApiController
         $number = input('number');
         $this->sqlOrder = 'id ASC';
         $where_stage[] = ['isputaway' ,'eq' ,1];
+        $where_stage[] = ['trade_min_num' ,'ELT' ,$number];
+        $where_stage[] = ['trade_max_num' ,'EGT' ,$number];
+
         $data = $this->getPageList($model,$where_stage);
-        foreach ($data['list']  as $k=>$v){
-            if($number<$v['trade_min_num']){
-                unset($data['list'][$k]);
-            }
-            if($number>$v['trade_min_num']){
-                unset($data['list'][$k]);
-            }
-        }
         return $this->ajaxReturn($data);
     }
 

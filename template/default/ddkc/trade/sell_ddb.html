@@ -110,10 +110,11 @@
             var arr = new Object();
             arr.number = number;
             jq_ajax('{:url("ddkc/api.trade/getTradingStageList2")}',arr,function (res) {
-                console.log(res);
                 // if (is_new == 1) $("#myMinerData").html('');
+                $('.weui-cell').hide();
                 $('#TradingStageList').append(template('listTpl',res));
                 if (res.list.length > 0) {
+
                     $('.popup').show()
                     // page_2++;
                     // loading_2 = false;
