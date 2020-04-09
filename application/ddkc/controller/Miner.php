@@ -12,7 +12,7 @@ class Miner  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
-		// dump($this->userInfo);die;
+        $this->assign('not_top_nav', true);
         $this->assign('title', '矿机');
 		return $this->fetch('index');
 	}

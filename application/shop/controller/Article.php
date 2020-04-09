@@ -193,10 +193,11 @@ class Article extends ClientbaseController
     /*------------------------------------------------------ */
     public function cateArticleList()
     {
-        $this->assign('title', '文章列表');
+        $id = input('cid',0,'intval');
+        $cateTitle = (new ArticleCategoryModel)->where(['id' => $id])->value('name');
+        $this->assign('title', $cateTitle);
         return $this->fetch();
     }
-
 }
 
 ?>
