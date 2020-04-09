@@ -143,7 +143,7 @@
             </div>
             <!-- 首页进入显示 -->
             {if condition="$settings.is_index_notice eq 1"}
-            <div class="popup popup02" style="display: block;">
+            <div class="popup popup02" style="display: none;">
                 <div class="popup-bgc"></div>
                 <div class="model-con">
                     <div class="model-ctp"><img src="__STATIC__/dingding//images/pop02.png" alt=""></div>
@@ -156,7 +156,7 @@
                         </div>
                         <img class="tip-img" src="__STATIC__/dingding//images/pop01.png" alt="">
                     </div>
-                    <div class="model-cbt"><img onclick="closePop() " src="__STATIC__/dingding//images/close01.png" alt=""></div>
+                    <div class="model-cbt"><img onclick="closePop2() " src="__STATIC__/dingding//images/close01.png" alt=""></div>
                 </div>
 
             </div>
@@ -214,13 +214,17 @@
                 el: '.swiper-pagination',
             },
         })
-        $('.popup-bgc').on('click', function () {
-            $('.popup02').hide()
-        })
+        // $('.popup-bgc').on('click', function () {
+        //     $('.popup02').hide()
+        // })
         $(".sureBtn").on('click', function () {
             $('.popup01').show()
         })
         function closePop() {
+            $('.popup').hide()
+        }
+        function closePop2() {
+            setCookie('is_index_notice',1,1);
             $('.popup').hide()
         }
         function link(url){
@@ -229,6 +233,36 @@
         $(function () {
             lottery_results();
         })
+        $(function () {
+            var index_notice = getCookie('is_index_notice');
+            var is_index_notice = {$settings.is_index_notice};
+            console.log(index_notice);
+            console.log(is_index_notice);
+            if(index_notice==''&&is_index_notice){
+                $('.popup02').css('display','block');
+            }
+        })
+
+        //设置cookie
+        function setCookie(name,value,day){
+            var date = new Date();
+            date.setDate(date.getDate() + day);
+            document.cookie = name + '=' + value + ';expires='+ date;
+        };
+        //获取cookie
+        function getCookie(name){
+            var reg = RegExp(name+'=([^;]+)');
+            var arr = document.cookie.match(reg);
+            if(arr){
+                return arr[1];
+            }else{
+                return '';
+            }
+        };
+        //删除cookie
+        function delCookie(name){
+            setCookie(name,null,-1);
+        };
     </script>
     <script>
        $(function(){
