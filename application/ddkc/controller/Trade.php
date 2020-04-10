@@ -31,8 +31,6 @@ class Trade  extends ClientbaseController{
     //-- 叮叮市场
     /*------------------------------------------------------ */
     public function index(){
-        $redis = new Redis();
-        $id = $redis->rPop('buyHandle');
         $SlideModel = new SlideModel();
         $TradingStageModel = new TradingStageModel();
         $slideList = $SlideModel::getRows(1);
