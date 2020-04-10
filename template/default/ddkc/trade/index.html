@@ -204,6 +204,7 @@
     FastClick.attach(document.body);
   });
 </script>
+    <script src='http://cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
     <script src="__STATIC__/dingding//js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
         var end_time =2*60;
@@ -236,8 +237,6 @@
         $(function () {
             var index_notice = getCookie('is_index_notice');
             var is_index_notice = {$settings.is_index_notice};
-            console.log(index_notice);
-            console.log(is_index_notice);
             if(index_notice==''&&is_index_notice){
                 $('.popup02').css('display','block');
             }
@@ -344,7 +343,7 @@
        }
         function lottery_results() {
             jq_ajax('{:url("ddkc/api.trade/lottery_results2")}','',function (data) {
-                console.log(data);
+                // console.log(data);
                if(data.lottery_status>0){
                    $('.popup03').css('display','block');
                     if(data.lottery_status==1){
@@ -415,6 +414,27 @@
            })
        }
     </script>
+<script>
+    // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
+    var socket = io('http://dd.weiqipan.com:2120');
+    // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
+    uid = 123;
+    // socket连接后以uid登录
+    socket.on('connect', function(){
+        console.log(22);
+        socket.emit('login', uid);
+    });
+    // 后端推送来消息时
+    socket.on('new_msg', function(msg){
+        console.log(333);
+        console.log("收到消息："+msg);
+    });
+    // 后端推送来在线数据时
+    socket.on('update_online_count', function(online_stat){
+        console.log(44);
+        console.log(online_stat);
+    });
+</script>
 </body>
 
 </html>
