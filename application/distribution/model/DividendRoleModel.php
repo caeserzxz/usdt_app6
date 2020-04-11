@@ -38,7 +38,7 @@ class DividendRoleModel extends BaseModel
 	/*------------------------------------------------------ */ 
 	public function info($role_id,$returnName = false){
 		$rows = $this->getRows();
-		$rows[0] = ['role_name'=>'粉丝','role_id'=>0,'level'=>0];
+		$rows[0] = ['role_name'=>'普通用户','role_id'=>0,'level'=>0];
 		if ($returnName == true){
 			return $rows[$role_id]['role_name'];
 		}

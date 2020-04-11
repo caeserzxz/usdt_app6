@@ -24,7 +24,7 @@
              <select name="rode_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
 						<option value="-1">所有会员</option>
                         <option value="all_role" {$search['roleId']=='all_role'?'selected':''}>身份会员</option>
-						<option value="0">普通粉丝</option>
+						<option value="0">普通用户</option>
                         {$roleOpt|raw}
               </select>
               <select name="level_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">

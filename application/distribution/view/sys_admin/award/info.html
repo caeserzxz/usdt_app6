@@ -26,7 +26,7 @@
                       <label class="control-label">参与分销身份：</label>
                       <div class="col-sm-9" >
                           <li style="list-style:none; float:left; margin:2px;">
-                              <label><input type="checkbox" name="limit_role[]" data-role_name="粉丝" class="selectRole" value="0" {:in_array(0,$row['limit_role'])?'checked':''}> 粉丝</label>
+                              <label><input type="checkbox" name="limit_role[]" data-role_name="普通用户" class="selectRole" value="0" {:in_array(0,$row['limit_role'])?'checked':''}> 普通用户</label>
                           </li>
                       {volist name="UsersRole" id="urow" }
                         <li style="list-style:none; float:left; margin:2px;">

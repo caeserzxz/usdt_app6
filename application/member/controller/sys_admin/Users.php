@@ -192,7 +192,7 @@ class Users extends AdminController
                         }
 
                     } elseif($val == 'userLevel'){
-                        $rode_name = $row['role_id'] == 0 ? '粉丝' : $roleList[$row['role_id']]['role_name'];
+                        $rode_name = $row['role_id'] == 0 ? '普通用户' : $roleList[$row['role_id']]['role_name'];
                         $data .= userLevel($row['total_integral']) . '/' . $rode_name  . "\t";
                     } else {
                         $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
@@ -291,7 +291,7 @@ class Users extends AdminController
             $data['last_up_role_time'] = time();
             $res = $this->Model->upInfo($user_id, $data);
             if ($res < 1) return $this->error('操作失败,请重试.');
-            $info = '后台手工操作由【' . ($row['role_id'] == 0 ? '粉丝' : $roleList[$row['role_id']]['role_name']) . '】调整为【' .($data['role_id'] < 1 ? '粉丝' : $roleList[$data['role_id']]['role_name']) . '】';
+            $info = '后台手工操作由【' . ($row['role_id'] == 0 ? '普通用户' : $roleList[$row['role_id']]['role_name']) . '】调整为【' .($data['role_id'] < 1 ? '普通用户' : $roleList[$data['role_id']]['role_name']) . '】';
             $this->_log($user_id, $info, 'member');
             return $this->success('修改分佣身份成功！', 'reload');
         }

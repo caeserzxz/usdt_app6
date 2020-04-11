@@ -102,7 +102,7 @@ class DdList extends AdminController
             $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
         }
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
-        $order_type = ['其他','矿机','定存包'];
+        $order_type = ['其他','矿机','增值包'];
 
         $this->assign("status", $status);
         $this->assign("order_type", $order_type);

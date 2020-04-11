@@ -33,8 +33,8 @@
     <!-- 页面内容-->
     <div class="weui-tab">
         <div class="weui-navbar">
-            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">矿机</a>
-            <a class="weui-navbar__item" href="#tab2" onclick="getStorageList(1)">增值包</a>
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">叮叮矿机</a>
+            <a class="weui-navbar__item" href="#tab2" onclick="getStorageList(1)">DDB增值包</a>
         </div>
         <div class="weui-tab__bd body-c">
             <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
@@ -60,7 +60,7 @@
                                     <h3>{{item.miner_name}}</h3>
                                     <div class="list-txt-con">
                                         <div>
-                                            <p>消耗叮叮量：{{item.price_min}}-{{item.price_max}}</p>
+                                            <p>消耗叮叮：{{item.price_min}}-{{item.price_max}}</p>
                                             <p>日收益率：{{item.rebate_rate}}%</p>
                                             <p>产矿周期：{{item.scrap_days}}天</p>
                                             <p>信用积分：{{item.credit_integral}}</p>
@@ -99,7 +99,7 @@
                                         <p>信用积分：{{item.credit_integral}}</p>
                                         <p>会员等级：{{item.limit_buy_role}}</p>
                                     </div>
-                                    <div class="lease-btn" onclick="getInfo({{item}})">确认租赁</div>
+                                    <div class="lease-btn" onclick="getInfo({{item}})">确认购买</div>
                                 </div>
                             </div>
                         </div>

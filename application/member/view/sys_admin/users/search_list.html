@@ -21,7 +21,7 @@
 <td>{if condition = "$vo.pid > 0" }{$vo.pid} - {$vo.pid|userInfo}{else/}没有上级{/if}</td>
 <td>{$vo.total_integral|userLevel} / 
 {eq name="vo.role_id" value="0"}
-粉丝
+普通用户
 {else/}
 {$roleList[$vo['role_id']]['role_name']}
 {/eq}

@@ -202,7 +202,7 @@ class Dividend extends BaseModel
                         $inArr['order_amount'] = $orderInfo['order_amount'];
                         $inArr['dividend_uid'] = $buyUserInfo['user_id'];
                         $inArr['role_id'] = $buyUserInfo['role_id'] * 1;
-                        $inArr['role_name'] = $buyUserInfo['role_id'] > 0 ? $buyUserInfo['role']['role_name'] : '粉丝';
+                        $inArr['role_name'] = $buyUserInfo['role_id'] > 0 ? $buyUserInfo['role']['role_name'] : '普通用户';
                         $inArr['level'] = $nowLevel;
                         $inArr['award_id'] = $award['award_id'];
                         $inArr['award_name'] = $award['award_name'];
@@ -242,7 +242,7 @@ class Dividend extends BaseModel
                         $inArr['order_amount'] = $orderInfo['order_amount'];
                         $inArr['dividend_uid'] = $userInfo['user_id'];
                         $inArr['role_id'] = $role_id;
-                        $inArr['role_name'] = $userInfo['role_id'] > 0 ? $userInfo['role']['role_name'] : '粉丝';
+                        $inArr['role_name'] = $userInfo['role_id'] > 0 ? $userInfo['role']['role_name'] : '普通用户';
                         $inArr['level'] = $value['level'];
                         $inArr['award_id'] = $award['award_id'];
                         $inArr['award_name'] = $award['award_name'];
@@ -479,7 +479,7 @@ class Dividend extends BaseModel
         if ($orderInfo['d_type'] == 'role_order') {
             $inData['log_info'] = '购买身份商品，';
         }
-        $inData['log_info'] .= '【' . ($usersInfo['role_id'] == 0 ? '粉丝' : $roleList[$usersInfo['role_id']]['role_name']) . '】升级为【' . $upRole['role_name'] . '】';
+        $inData['log_info'] .= '【' . ($usersInfo['role_id'] == 0 ? '普通用户' : $roleList[$usersInfo['role_id']]['role_name']) . '】升级为【' . $upRole['role_name'] . '】';
         $inData['module'] = request()->path();
         $inData['log_ip'] = request()->ip();
         $inData['log_time'] = time();

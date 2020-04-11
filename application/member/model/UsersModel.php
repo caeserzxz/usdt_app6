@@ -423,7 +423,7 @@ class UsersModel extends BaseModel
             $info['role'] = (new DividendRoleModel)->info($info['role_id']);
         }else{
             $info['role']['role_id'] = 0;
-            $info['role']['role_name'] = '粉丝';
+            $info['role']['role_name'] = '普通用户';
         }
         //还没有执行绑定关系执行
         if ($info['is_bind'] == 0 && $info['pid'] > 0){

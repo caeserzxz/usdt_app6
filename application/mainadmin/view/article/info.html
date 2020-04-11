@@ -102,8 +102,14 @@
                       <input type="text" class="input-mini" name="sort_order"  data-rule-min="0"  data-rule-number="true" value="{$row['sort_order']}">
                   </div>
               </div>
+              <div class="form-group">
+                  <label class="control-label">基础阅读量：</label>
+                  <div class="controls" >
+                      <input type="text" class="input-mini" name="click"  data-rule-min="0"  data-rule-number="true" value="{$row['click']}">
+                  </div>
+              </div>
 
-          <div class="form-group">
+          <div class="form-group hide">
               <label class="control-label">相关绑定类型</label>
               <div class="col-sm-2" >
                   <select id="link_type" name="link_type" onChange="showBindType(this.value,'');" class="input-medium" style="width:200px;">

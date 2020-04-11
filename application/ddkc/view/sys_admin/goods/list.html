@@ -14,7 +14,7 @@
 
 {volist name="data.list" id="vo" }
 <tr>
-    <td>{if condition="$vo.type eq 1"} 矿机 {else/} 定存包 {/if}</td>
+    <td>{if condition="$vo.type eq 1"} 矿机 {else/} 增值包 {/if}</td>
     <td>{$vo.miner_name}</td>
     <td>{$vo.scrap_days}天</td>
     <td>{$vo.price_min}-{$vo.price_max}</td>

@@ -83,7 +83,7 @@ class Order extends AdminController
         	$data['list'][$key]['pay_name'] = $pay_name;
         }
         $status = ['待运行','运行中','等待返还','已到期'];
-        $order_type = ['其他','矿机','定存包'];
+        $order_type = ['其他','矿机','增值包'];
 
 		$this->assign("status", $status);
 		$this->assign("order_type", $order_type);
@@ -102,7 +102,7 @@ class Order extends AdminController
     protected function asInfo($data) {
         $status = ['待运行','运行中','等待返还','已到期'];
         $pay_type = ['其他','叮叮支付','DDB支付'];
-        $order_type = ['其他','矿机','定存包'];
+        $order_type = ['其他','矿机','增值包'];
 
     	$data['order_type'] = $order_type[$data['pay_type']];
     	$data['status_name'] = $status[$data['status']];

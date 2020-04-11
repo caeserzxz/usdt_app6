@@ -41,7 +41,7 @@ class Award extends AdminController
 			$limit_role_name = [];
 			foreach ($row['limit_role'] as $role_id){
 			    if ($role_id == 0){
-                    $limit_role_name[] = '粉丝';
+                    $limit_role_name[] = '普通用户';
                 }else{
 				    $limit_role_name[] = $usersRole[$role_id]['role_name'];
                 }

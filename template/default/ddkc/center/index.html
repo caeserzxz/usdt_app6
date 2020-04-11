@@ -29,9 +29,9 @@
             </form>
             <div>
                 <p onclick="go_userinfo();">ID：{$userInfo.user_id}</p>
-                <p onclick="go_userinfo();">用户：{$userInfo.mobile}</p>
+                <p onclick="go_userinfo();">账号：{$userInfo.mobile}</p>
                 <p onclick="go_integral();">账户信用积分：{$userInfo.account.use_integral}</p>
-                <p >叮叮：{$userInfo.account.balance_money}</p>
+                <p >叮叮数量：{$userInfo.account.balance_money}</p>
             </div>
             <div>
                 <p>等级：{$userInfo.role.role_name}</p>
@@ -63,7 +63,7 @@
             <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
         </div>
         <div class="rt">
-            <p>主链矿机收益：{$profit.award}</p>
+            <p>主链矿机DDB收益：{$profit.award}</p>
             <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
         </div>
     </div>
