@@ -232,6 +232,7 @@
             window.location.href = url;
         }
         $(function () {
+            //获取开奖情况
             lottery_results();
         })
         $(function () {
@@ -415,25 +416,35 @@
        }
     </script>
 <script>
-    // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
-    var socket = io('http://dd.weiqipan.com:2120');
-    // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
-    uid = 123;
-    // socket连接后以uid登录
-    socket.on('connect', function(){
-        console.log(22);
-        socket.emit('login', uid);
-    });
-    // 后端推送来消息时
-    socket.on('new_msg', function(msg){
-        console.log(333);
-        console.log("收到消息："+msg);
-    });
-    // 后端推送来在线数据时
-    socket.on('update_online_count', function(online_stat){
-        console.log(44);
-        console.log(online_stat);
-    });
+    // // 连接服务端，workerman.net:2120换成实际部署web-msg-sender服务的域名或者ip
+    // var socket = io('http://dd.weiqipan.com:2346');
+    // // uid可以是自己网站的用户id，以便针对uid推送以及统计在线人数
+    // uid = 123;
+    // // socket连接后以uid登录
+    // socket.on('connect', function(){
+    //     console.log(22);
+    //     socket.emit('login', uid);
+    // });
+    // // 后端推送来消息时
+    // socket.on('new_msg', function(msg){
+    //     console.log(333);
+    //     console.log("收到消息："+msg);
+    // });
+    // // 后端推送来在线数据时
+    // socket.on('update_online_count', function(online_stat){
+    //     console.log(44);
+    //     console.log(online_stat);
+    // });
+    ws = new WebSocket("ws:47.244.145.248:2346");
+    ws.onopen = function() {
+        // alert("连接成功");
+        // ws.send('tom');
+        // alert("给服务端发送一个字符串：tom");
+    };
+    ws.onmessage = function(e) {
+        console.log( e.data);
+        // alert("收到服务端的消息：" + e.data);
+    };
 </script>
 </body>
 

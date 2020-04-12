@@ -272,7 +272,7 @@ class BuyTradeModel extends BaseModel
                 $buy_info = [];
                 $buy_info = $this->where('id',$v)->find();
                 $charge = [];
-                $charge['use_integral']   = $buy_info['scribe_integral'];
+                $charge['use_integral']   = $buy_info['deduct_integral'];
                 $charge['change_desc'] = '开奖结束,返还信用积分';
                 $charge['change_type'] = 11;
                 $accountModel->change($charge, $buy_info['buy_user_id'], false);
