@@ -708,6 +708,7 @@ class Trade extends ApiController
                 #等待开奖
                 $lottery_status = 1;
             }
+            $data['buy_info'] = $buy_info;
         }
 
         #开奖结束
@@ -725,9 +726,10 @@ class Trade extends ApiController
                 #未中奖
                 $lottery_status = 3;
             }
+            $data['buy_info'] = $buy_info;
         }
 
-        $data['buy_info'] = $buy_info;
+//        $data['buy_info'] = $buy_info;
         $data['lottery_status'] = $lottery_status;
 
         return $this->ajaxReturn($data);
@@ -748,4 +750,15 @@ class Trade extends ApiController
             return $this->ajaxReturn(['code' => 0,'msg' => '延迟交易成功','url' =>'']);
         }
     }
+
+    /*------------------------------------------------------ */
+    //-- 轮询获取开奖结果
+    /*------------------------------------------------------ */
+    public function polling(){
+        $BuyTradeModel = new BuyTradeModel();
+        $id = input('id');
+        $info =  $BuyTradeModel->where('id',$id)->find();
+        return $this->ajaxReturn($info);
+    }
+
 }
