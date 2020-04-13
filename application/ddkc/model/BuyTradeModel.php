@@ -520,20 +520,20 @@ class BuyTradeModel extends BaseModel
         #获取当前开奖的区间
         foreach ($stageList as $k=>$v){
             $stageTime = $v['trade_start_time'];
-            $stageTime = strtotime(date('Y-m-d '.$stageTime));
-
+            $stageTime = strtotime(date('Y-m-d '.$stageTime))+(settings('lottery_time')*60)+30;
             if($time>$stageTime){
                 $ids  = $this->getIds('buyHandle');
                 #获取当前区间没有点击抢购的数据
                 $buy_where[] = ['buy_status','=',0];
                 $buy_where[] = ['buy_stage_id','=',$v['id']];
                 $list = $this->where($buy_where)->select();
-
                foreach ($list as $key=>$value){
                    #判断当前预约信息的状态
-                        $buy_save['panic_end_time'] = $time;
-                        $buy_save['buy_status'] = 4;
-                        $res = $this->where('id',$value['id'])->update($buy_save);
+                   if(!in_array($value['id'],$ids)){
+                       $buy_save['panic_end_time'] = $time;
+                       $buy_save['buy_status'] = 4;
+                       $res = $this->where('id',$value['id'])->update($buy_save);
+                   }
                }
                #更换当前区间的状态
                 $stage_save['is_overdue'] = 1;
