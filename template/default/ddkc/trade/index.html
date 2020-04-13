@@ -351,7 +351,7 @@
                         $('.con5').css('display','block');
                         //轮询查询开奖结果
                         console.log(data);
-                        start (data.buy_info.id)
+                        timerId = setTimeout('start('+data.buy_info.id+')', data.time_difference)
                     }else if(data.lottery_status==2){
                         $('.con3').css('display','block');
                         var str = '<audio  controls="controls"  autoplay src="__STATIC__/dingding/images/suc01.mp3"></audio>';
@@ -436,6 +436,7 @@
                        if(data.buy_status==3){
                            //未中奖
                            $('.popup03').css('display','block');
+                           $('.con5').css('display','none');
                            $('.con4').css('display','block');
                            var str = '<audio  controls="controls"  autoplay src="__STATIC__/dingding/images/fail01.mp3"></audio>';
                            $('.con4').append(str);
@@ -471,16 +472,16 @@
     //     console.log(44);
     //     console.log(online_stat);
     // });
-    ws = new WebSocket("ws:47.244.145.248:2346");
-        ws.onopen = function() {
-            // alert("连接成功");
-            // ws.send('tom');
-            // alert("给服务端发送一个字符串：tom");
-        };
-        ws.onmessage = function(e) {
-            // console.log( e.data);
-            // alert("收到服务端的消息：" + e.data);
-    };
+    // ws = new WebSocket("ws:47.244.145.248:2346");
+    //     ws.onopen = function() {
+    //         // alert("连接成功");
+    //         // ws.send('tom');
+    //         // alert("给服务端发送一个字符串：tom");
+    //     };
+    //     ws.onmessage = function(e) {
+    //         // console.log( e.data);
+    //         // alert("收到服务端的消息：" + e.data);
+    // };
 </script>
 </body>
 

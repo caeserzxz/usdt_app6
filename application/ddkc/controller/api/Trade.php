@@ -85,7 +85,7 @@ class Trade extends ApiController
                                 $img = $setting['panic_buying_img2'];
                             }
                         }else{
-                            if($time>$start_time&&$time<$end_time){
+                            if($time>$start_time&&$time<($start_time+($setting['lottery_time']*60))){
                                 #可抢购
                                 $status = 3;
                                 if(empty($setting['panic_buying_img1'])){
@@ -102,11 +102,11 @@ class Trade extends ApiController
                                     }else{
                                         $img = $setting['subscribe_img2'];
                                     }
-                                if(($start_time-($setting['down_time']*60))<$time){
-                                    $data['list'][$key]['down_time_date'] = gmdate('H:i:s',$start_time-$time);
-                                    $data['list'][$key]['down_time'] = $start_time-$time;
-                                }
-                                }else if($time>$end_time){
+                                    if(($start_time-($setting['down_time']*60))<$time){
+                                        $data['list'][$key]['down_time_date'] = gmdate('H:i:s',$start_time-$time);
+                                        $data['list'][$key]['down_time'] = $start_time-$time;
+                                    }
+                                }else if($time>($start_time+($setting['lottery_time']*60))){
                                     #预约已过期
                                     $status = 5;
                                     if(empty($setting['be_overdue_img'])){
@@ -194,7 +194,7 @@ class Trade extends ApiController
         if(empty($stage_info)){
             return $this->ajaxReturn(['code' => 0,'msg' => '场次不存在','url' => '']);
         }
-        $stageTime = strtotime(date('Y-m-d '.$stage_info['trade_end_time']))-(settings('stop_booking_time')*60);
+        $stageTime = strtotime(date('Y-m-d '.$stage_info['trade_start_time']))-(settings('stop_booking_time')*60);
         if(time()>$stageTime){
             return $this->ajaxReturn(['code' => 0,'msg' => '预约时间已过,不可预约','url' => '']);
         }
@@ -267,7 +267,7 @@ class Trade extends ApiController
         if($user['account']['ddb_money']<$number){
             return $this->ajaxReturn(['code' => 0,'msg' => 'DDB余额不足','url' => '']);
         }
-        if(time()>$stage_info['trade_end_time']){
+        if(time()>strtotime(date('Y-m-d '.$stage_info['trade_start_time']))){
             return $this->ajaxReturn(['code' => 0,'msg' => '该场次今日交易时间已过','url' => '']);
         }
         #扣除手续费后的叮叮
@@ -343,9 +343,12 @@ class Trade extends ApiController
         $this->sort_by = 'DESC';
         $where[] =  ['buy_user_id' ,'eq' ,$this->userInfo['user_id']];
         $viewObj = $BuyTradeModel->where($where)->order('id desc');
+        #获取今日订单
         $data = $this->getPageList($BuyTradeModel,$viewObj);
+
         $ids = $BuyTradeModel->getIds('buyHandle');
         $time = time();
+        $setting = settings();
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         foreach ($data['list'] as $k=>$v){
 
@@ -697,41 +700,45 @@ class Trade extends ApiController
         $setting = settings();
         $lottery_status = 0;
 
-        #等待开奖
-        $buy_where = [];
-        $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
-        $buy_where[] = ['buy_status','=',0];
-        $buy_info =$BuyTradeModel->where($buy_where)->order('id desc')->find();
-        if($buy_info){
-            $ids = $BuyTradeModel->getIds('buyHandle');
-            if(in_array($buy_info['id'],$ids)){
-                #等待开奖
-                $lottery_status = 1;
-            }
-            $data['buy_info'] = $buy_info;
-        }
 
-        #开奖结束
-        $buy_where = [];
+        #获取今日起始时间
+        $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $endToday=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $buy_where[] = ['buy_user_id','=',$this->userInfo['user_id']];
-        $buy_where[] = ['is_see','=',0];
-        $buy_where[] = ['buy_status','in',[2,3]];
-        $buy_info = [];
-        $buy_info = $BuyTradeModel->where($buy_where)->order('id desc')->find();
-        if($buy_info){
-            if($buy_info['buy_status']==2){
-                #中奖
-                $lottery_status = 2;
-            }else if($buy_info['buy_status']==3){
-                #未中奖
-                $lottery_status = 3;
+        $buy_where[] = ['buy_start_time','between',[$beginToday,$endToday]];
+        $list =$BuyTradeModel->where($buy_where)->order('id desc')->select()->toArray();
+        if($list){
+            foreach ($list as $k=>$v){
+             #中奖与未中奖
+             if($v['buy_status']==2||$v['buy_status']==3){
+                 #是否查看过
+                if($v['is_see']==0){
+                    if($v['buy_status']==2){
+                        #中奖
+                        $lottery_status = 2;
+                    }else if($v['buy_status']==3){
+                        #未中奖
+                        $lottery_status = 3;
+                    }
+                    $data['buy_info'] = $v;
+                    break;
+                }
+             }
+             #等待开奖
+             if($v['buy_status']==0){
+                 $ids = $BuyTradeModel->getIds('buyHandle');
+                 if(in_array($v['id'],$ids)){
+                     #等待开奖
+                     $lottery_status = 1;
+                     #距离开奖的时间
+                     $data['time_difference']= ($v['buy_start_time']+($setting['lottery_time']*60)-time())*1000;
+                     $data['buy_info'] = $v;
+                     break;
+                 }
+             }
             }
-            $data['buy_info'] = $buy_info;
         }
-
-//        $data['buy_info'] = $buy_info;
         $data['lottery_status'] = $lottery_status;
-
         return $this->ajaxReturn($data);
 
     }
