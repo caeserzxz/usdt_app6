@@ -731,7 +731,8 @@ class Trade extends ApiController
                      #等待开奖
                      $lottery_status = 1;
                      #距离开奖的时间
-                     $data['time_difference']= ($v['buy_start_time']+($setting['lottery_time']*60)-time())*1000;
+                     $stage_time = $TradingStageModel->where('id',$v['buy_stage_id'])->value('trade_start_time');
+                     $data['time_difference']= ( strtotime(date('Y-m-d '.$stage_time))+($setting['lottery_time']*60)-time())*1000;
                      $data['buy_info'] = $v;
                      break;
                  }

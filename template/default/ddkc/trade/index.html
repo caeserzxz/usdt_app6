@@ -351,7 +351,8 @@
                         $('.con5').css('display','block');
                         //轮询查询开奖结果
                         console.log(data);
-                        timerId = setTimeout('start('+data.buy_info.id+')', data.time_difference)
+                        start(data.buy_info.id);
+                        // timerId = setTimeout('start('+data.buy_info.id+')', data.time_difference)
                     }else if(data.lottery_status==2){
                         $('.con3').css('display','block');
                         var str = '<audio  controls="controls"  autoplay src="__STATIC__/dingding/images/suc01.mp3"></audio>';
@@ -445,7 +446,7 @@
                        }
                        return false;
                    }else{
-                       timerId = setTimeout('start('+id+')', 5000)
+                       timerId = setTimeout('start('+id+')', 10000)
                    }
                }
            });
