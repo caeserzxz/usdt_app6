@@ -519,7 +519,7 @@ class BuyTradeModel extends BaseModel
         if(empty($stageList))  return '';
         #获取当前开奖的区间
         foreach ($stageList as $k=>$v){
-            $stageTime = $v['trade_end_time'];
+            $stageTime = $v['trade_start_time'];
             $stageTime = strtotime(date('Y-m-d '.$stageTime));
 
             if($time>$stageTime){
