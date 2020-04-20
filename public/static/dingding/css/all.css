@@ -327,6 +327,7 @@ img {
 }
 
 .indexPage .lists .list .list-img {
+  border-radius: 50%;
   width: 0.866667rem;
   height: 0.866667rem;
 }

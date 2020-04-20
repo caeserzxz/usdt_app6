@@ -87,7 +87,16 @@
                     <script type="text/html" id="listTpl">
                         {{each list as item index}}
                         <div class="list dp-flex">
-                            <img class="list-img" src="__STATIC__/dingding//images/index12.png" alt="">
+                            {literal}
+                                {{if item.stage_img}}
+                                    <img class="list-img" src="{{item.stage_img}}" alt="">
+
+                                {{else /}}
+                                    <img class="list-img" src="__STATIC__/dingding//images/index12.png" alt="">
+                                {{/if}}
+
+                            {/literal}
+
                             <div class="list-txt">
                                 <p>{{item.stage_name}}</p>
                                 <p>抢购数量：{{item.trade_min_num}}-{{item.trade_max_num}}</p>
@@ -270,6 +279,7 @@
        })
        function getTradingStageList(){
            jq_ajax('{:url("ddkc/api.trade/getTradingStageList")}','',function (res) {
+               console.log(res);
                // if (is_new == 1) $("#myMinerData").html('');
                $('#TradingStageList').append(template('listTpl',res));
                console.log(res);

@@ -144,6 +144,7 @@ class Trade extends ApiController
                     }
 
                 }
+                $data['list'][$key]['stage_img'] = $value['stage_img'];
                 $data['list'][$key]['img'] = $img;
                 $data['list'][$key]['buy_id'] = $buy_info['id'];
                 $data['list'][$key]['buy_status'] = $status;
