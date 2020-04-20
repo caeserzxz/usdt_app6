@@ -45,7 +45,8 @@ class ClientbaseController extends BaseController{
 		parent::initialize();
 
 		//判断是否微信访问
-        $this->is_wx = session('is_wx');
+//        $this->is_wx = session('is_wx');
+        $this->is_wx =2;
 		if (empty($this->is_wx)){
             if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
                 $this->is_wx = 1;//微信访问
