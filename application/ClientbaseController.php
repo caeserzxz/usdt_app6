@@ -170,6 +170,13 @@ class ClientbaseController extends BaseController{
             }
         }
         if (empty($this->userInfo) == false){
+            $UsersModel = new \app\member\model\UsersModel();
+            $ip =  request()->ip();
+            $user_ip = $UsersModel->where('user_id',$this->userInfo['user_id'])->value('login_ip');
+            if($ip!=$user_ip){
+                $this->logout();
+                return false;
+            }
             return true;
         }
         return false;
