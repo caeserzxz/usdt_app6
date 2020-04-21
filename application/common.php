@@ -818,8 +818,13 @@ function roleUpgrade($user_id)
 	# 是否上传2个收款信息
     $payment_where[] = ['user_id','=',$user_id];
     $payment_where[] = ['status','=',1];
-	$payment = $paymentModel->where('user_id',$user_id)->count();
-	if ($payment < 2) return false;
+	$payment = $paymentModel->where($payment_where)->count();
+	#银行卡必填
+    $payment_where2[] = ['user_id','=',$user_id];
+    $payment_where2[] = ['status','=',1];
+    $payment_where2[] = ['type','=',1];
+    $payment_bank = $paymentModel->where($payment_where2)->count();
+	if ($payment < 2||empty($payment_bank)) return false;
 	
 	# 下一等级
 	$roleInfo = $roleModel->find();

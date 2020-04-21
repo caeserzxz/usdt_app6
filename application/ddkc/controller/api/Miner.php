@@ -69,7 +69,6 @@ class Miner extends ApiController
 			# 该等级可购买矿机
 			$this->sqlOrder = 'miner_id ASC';
 			$roleMiner = $this->Model->where("is_on_sale = 1 AND type = ".input('type')." AND ( limit_user_role = ".$value['role_id']." OR limit_user_role like '".$value['role_id'].",%' )")->select();
-			
 			if (count($roleMiner)) {
 	        	foreach ($roleMiner as $key2 => $value2) {
 	        		$imgs = unserialize($value2['imgs']);

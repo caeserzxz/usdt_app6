@@ -144,6 +144,7 @@
                     'data':{'id':id,'type':type},
                     'dataType':'json',
                     'success':function(data){
+                        console.log(data);
                         if(data.code==1){
                             layer.msg(data.msg,function(){
                                 window.location.href='{:url("index")}';
