@@ -229,7 +229,7 @@ class Center extends ApiController
         }
 
         # 通过file提交的
-        if($file){
+        if($file && empty($ios_file)){
             #上传打款凭证
             $path = upload_img('head_pic');
             if($path){
