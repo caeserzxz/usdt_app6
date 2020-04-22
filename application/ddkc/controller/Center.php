@@ -37,7 +37,7 @@ class Center  extends ClientbaseController{
         $where[] = ['user_id','=',$userId];
         $where[] = ['change_type','IN',[102,103]];
         $profit['award'] = $accountLogModel->where($where)->sum('ddb_money');
-        
+        $this->assign('appType',session('appType'));
         $this->assign('profit', $profit);
 		return $this->fetch('index');
 	}
