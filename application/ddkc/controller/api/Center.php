@@ -53,7 +53,7 @@ class Center extends ApiController
             return $this->ajaxReturn(['code' => 0,'msg' => '同一收款信息最多绑定'.settings('payment_max').'次','url' => '']);
         }
         #通过file提交的
-        if($file){
+        if($file&&empty($ios_file)){
             #上传打款凭证
             $path = upload_img('alipay_payment_code');
             if($path){
@@ -63,7 +63,7 @@ class Center extends ApiController
 
         #IOS直接上传的地址
         if($ios_file){
-            $data['payment_code'] = $ios_file;
+            $data['alipay_payment_code'] = $ios_file;
         }
 
         $data['type'] = 2;
@@ -111,7 +111,7 @@ class Center extends ApiController
             return $this->ajaxReturn(['code' => 0,'msg' => '同一收款信息最多绑定'.settings('payment_max').'次','url' => '']);
         }
         #通过file提交的
-        if($file){
+        if($file&&empty($ios_file)){
             #上传打款凭证
             $path = upload_img('wx_payment_code');
             if($path){

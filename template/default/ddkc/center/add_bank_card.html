@@ -16,24 +16,18 @@
                             {if condition="$appType eq 'IOS'"}
                                 {if condition="$alipay_info.alipay_payment_code eq ''"}
                                     <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('alipay_payment_code');" class="info-img" alt="">
-                                 <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
-                                   type="file" accept="image/*" multiple="">
                                 {else /}
                                     <img id="img" src="{$alipay_info.alipay_payment_code}"   class="info-img" alt="">
-                                    {if condition="$alipay_info.status neq 1"}
-                                        <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
-                                   type="file" accept="image/*" multiple="">
-                                    {/if}
                                 {/if}
                             {else /}
                                 {if condition="$alipay_info.alipay_payment_code eq ''"}
                                     <img id="img" src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
-                            <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                            <input id="uploaderInput" onchange="changepic(this)" onclick="loadimg('alipay_payment_code');" name="alipay_payment_code" class="weui-uploader__input"
                                    type="file" accept="image/*" multiple="">
                                 {else /}
                                     <img id="img" src="{$alipay_info.alipay_payment_code}"  class="info-img" alt="">
                                     {if condition="$alipay_info.status neq 1"}
-                                        <input id="uploaderInput" onchange="changepic(this)" name="alipay_payment_code" class="weui-uploader__input"
+                                        <input id="uploaderInput" onchange="changepic(this)" onclick="loadimg('alipay_payment_code');" name="alipay_payment_code" class="weui-uploader__input"
                                    type="file" accept="image/*" multiple="">
                                     {/if}
                                 {/if}
@@ -65,25 +59,21 @@
                             {if condition="$appType eq 'IOS'"}
                                 {if condition="$wx_info.wx_payment_code eq ''"}
                                 <img id="img2" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('wx_payment_code');" class="info-img" alt="">
-                                <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
-                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
+
                                 {else /}
                                 <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
-                                    {if condition="$wx_info.status neq 1"}
-                                        <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
-                                   type="file" accept="image/*" name="wx_payment_code" multiple="">
-                                    {/if}
+
                                 {/if}
                             {else /}
                                 {if condition="$wx_info.wx_payment_code eq ''"}
                                 <img id="img2" src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
-                                <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                <input id="uploaderInput2" onchange="changepic2(this)" onclick="loadimg('wx_payment_code');" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
                                 {else /}
 
                                     <img id="img2" src="{$wx_info.wx_payment_code}" class="info-img" alt="">
                                     {if condition="$wx_info.status neq 1"}
-                                        <input id="uploaderInput2" onchange="changepic2(this)" class="weui-uploader__input"
+                                        <input id="uploaderInput2" onchange="changepic2(this)" onclick="loadimg('wx_payment_code');" class="weui-uploader__input"
                                    type="file" accept="image/*" name="wx_payment_code" multiple="">
                                     {/if}
                                 {/if}
