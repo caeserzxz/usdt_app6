@@ -184,6 +184,11 @@
 
     //支付宝上传收款信息
     function alipay_btn(){
+        var alipay_number =$('input[name=alipay_number]').val();
+        if (/[\u4E00-\u9FA5]/g.test(alipay_number)) {
+            $.toast('请输入正确支付宝账号',"text");
+            return false;
+        }
         $.ajax({
             url: '{:url("ddkc/api.Center/add_alipay")}',
             type: 'POST',
@@ -208,6 +213,11 @@
     }
     //上传微信收款信息
     function wx_btn(){
+        var wx_number =$('input[name=wx_number]').val();
+        if (/[\u4E00-\u9FA5]/g.test(wx_number)) {
+            $.toast('请输入正确微信账号',"text");
+            return false;
+        }
         $.ajax({
             url: '{:url("ddkc/api.Center/add_wxpay")}',
             type: 'POST',
@@ -230,8 +240,14 @@
             }
         });
     }
+    var regExp = /^([1-9]{1})(\d{15}|\d{18})$/;
     //上传银行卡信息
     function bank_btn(){
+        var card_number = $('input[name=card_number]').val();
+        if(!(regExp.test(card_number))){
+            $.toast('请输入正确的银行卡账号',"text");
+            return false;
+        }
         $.ajax({
             url: '{:url("ddkc/api.Center/add_bank")}',
             type: 'POST',
