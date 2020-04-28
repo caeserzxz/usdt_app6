@@ -5,7 +5,7 @@ use think\facade\Cache;
 use app\member\model\UsersModel;
 use app\member\model\AccountLogModel;
 use app\distribution\model\DividendRoleModel;
-
+use think\Db;
 //*------------------------------------------------------ */
 //-- 矿机订单表
 /*------------------------------------------------------ */
