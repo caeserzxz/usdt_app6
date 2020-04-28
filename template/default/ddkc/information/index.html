@@ -8,9 +8,13 @@
             <div class="swiper-wrapper">
                 {volist name="banner" id="rows" }
                 <div class="swiper-slide">
-                    <a href="{$rows.data}">
+                    {if condition="$rows.bind_type eq 'article'"}
+                    <a href="{:url('shop/article/info',['id' => $rows.ext_id])}">
                         <img src="{$rows.imgurl}" alt="">
                     </a>
+                    {else/}
+                        <a href="{$rows.data}"><img src="{$rows.imgurl}" alt=""></a>
+                    {/if}
                 </div>
                 {/volist}
             </div>
