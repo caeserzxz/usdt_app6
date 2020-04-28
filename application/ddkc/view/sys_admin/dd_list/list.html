@@ -28,7 +28,7 @@
 <tr>
     <td>{$vo.id}</td>
     <td>{$vo.sell_order_sn}</td>
-    <td>{$vo.sell_user_id}</td>
+    <td><a href="{:url('member/sys_admin.users/spe_info',['user_id'=>$vo['sell_user_id']])}" target="_blank">{$vo.sell_user_id}</a></td>
     <td>{$vo.sell_number}</td>
     <td>{$status[$vo.sell_status]}</td>
     <td>{$vo.stage_name}</td>

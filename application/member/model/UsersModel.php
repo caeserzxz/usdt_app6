@@ -107,6 +107,9 @@ class UsersModel extends BaseModel
         if (strlen($pwd) < 8) {//必须大于8个字符
             return langMsg('密码必须大于八字符.','member.checkpwd.pwd_length_error');
         }
+        if (strlen($pwd) > 18) {//必须大于8个字符
+            return langMsg('密码不能大于十八个字符.','member.checkpwd.pwd_length_error');
+        }
         if (preg_match("/^[0-9]+$/", $pwd)) { //必须含有特殊字符
             return langMsg('密码不能全是数字.','member.checkpwd.pwd_not_number');
         }

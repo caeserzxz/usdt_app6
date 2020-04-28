@@ -50,11 +50,13 @@
 <!--</a>-->
   <a href="{:url('sys_admin.accountLog/index',array('user_id'=>$vo['user_id']))}" class="m-xs" title="资金变动明细">
     <i class="fa fa-dollar"></i>
-</a>  
+</a>
   <a href="{:url('sys_admin.logOperate/index',array('edit_id'=>$vo['user_id']))}" class="m-xs" title="操作日志">
     <i class="fa fa-calendar"></i>
-</a> 
-
+</a>
+    <a href="{:url('spe_info',array('user_id'=>$vo['user_id']))}" class="m-xs" title="实名/收款信息">
+        <i class="fa fa-search"></i>
+    </a>
     </td>
 </tr>
 

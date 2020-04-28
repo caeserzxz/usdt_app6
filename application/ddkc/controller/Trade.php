@@ -129,6 +129,7 @@ class Trade  extends ClientbaseController{
         $this->assign('is_payment',$is_payment);
         $this->assign('payment_time',$payment_time);
 
+        $this->assign('appType',session('appType'));
         $this->assign('sell_info',$sell_info);
         $this->assign('userInfo',$this->userInfo);
         $this->assign('title', '买家详情');

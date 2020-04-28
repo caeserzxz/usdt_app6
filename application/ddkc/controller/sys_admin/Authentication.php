@@ -2,7 +2,7 @@
 namespace app\ddkc\controller\sys_admin;
 use app\AdminController;
 use app\ddkc\model\AuthenticationModel;
-
+use app\member\model\UsersModel;
 
 /**
  * 矿机订单
@@ -40,6 +40,7 @@ class Authentication extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $UsersModel = new UsersModel();
         $this->search['keyword'] = input("keyword");
         $this->search['key_type'] = input("key_type");
 
@@ -59,6 +60,10 @@ class Authentication extends AdminController
         	}
         }
         $data = $this->getPageList($this->Model,$where);
+		foreach ($data['list'] as $k=>$v){
+            $data['list'][$k]['mobile'] = $UsersModel->where('user_id',$v['user_id'])->value('mobile');
+            $data['list'][$k]['add_date'] = date('Y-m-d H:i;s',$v['add_time']);
+        }
 		$this->assign("data", $data);
 		if ($runData == false){
 			$data['content']= $this->fetch('list')->getContent();

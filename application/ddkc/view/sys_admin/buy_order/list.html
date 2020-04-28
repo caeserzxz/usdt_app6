@@ -3,6 +3,7 @@
 <tr>
     <th width="60">ID</th>
     <th width="60">用户id</th>
+    <th width="120">注册手机号</th>
     <th width="120">状态</th>
     <th width="120">售出场次id</th>
     <th width="120">预约时间</th>
@@ -15,7 +16,8 @@
 {volist name="data.list" id="vo" }
 <tr>
     <td>{$vo.id}</td>
-    <td>{$vo.buy_user_id}</td>
+    <td><a href="{:url('member/sys_admin.users/spe_info',['user_id'=>$vo['buy_user_id']])}" target="_blank">{$vo.buy_user_id}</a></td>
+    <td>{$vo.mobile}</td>
     <td>{$vo.status_str}</td>
     <td>{$vo.buy_stage_id}</td>
     <td>{$vo.buy_start_time|dateTpl}</td>

@@ -7,6 +7,7 @@ use app\ddkc\model\SellTradeModel;
 use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\TradingStageModel;
 use app\member\model\AccountLogModel;
+use app\member\model\UsersModel;
 /**
  * 矿机订单
  */
@@ -25,12 +26,15 @@ class BuyOrder extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+        $TradingStageModel = new TradingStageModel();
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getList(true);
         //首页跳转时间
         $start_date = input('start_time', '0', 'trim');
         $end_date = input('end_time', '0', 'trim');
+        $stageList = $TradingStageModel->select();
+        $this->assign('stageList',$stageList);
         if( $start_date || $end_date){
 
             $this->assign("start_date",str_replace('_', '/', $start_date));
@@ -44,9 +48,11 @@ class BuyOrder extends AdminController
     /*------------------------------------------------------ */
     public function getList($runData = false) {
         $BuyTradeModel = new BuyTradeModel();
+        $UsersModel = new UsersModel();
         $this->search['keyword'] = input("keyword");
         $this->search['buy_status'] = input("buy_status");
         $this->search['time_type'] = input("time_type");
+        $this->search['stage_id'] = input("stage_id");
         $this->assign("search", $this->search);
 
         $ids = $BuyTradeModel->getIds('buyHandle');
@@ -79,6 +85,12 @@ class BuyOrder extends AdminController
                 $where[] = ' buy_status ='.($this->search['buy_status']-1);
             }
         }
+        if ($this->search['stage_id']) {
+
+
+                $where[] = ' buy_stage_id ='.($this->search['stage_id']);
+
+        }
         if ($this->search['keyword']) {
 //            $where[] = " id = '" . ($this->search['keyword'])."' ";
             $where[] = " id = '" . ($this->search['keyword']) . "' or buy_user_id = '" . $this->search['keyword']."' ";
@@ -104,6 +116,7 @@ class BuyOrder extends AdminController
                 $str = '已过期';
             }
             $data['list'][$key]['status_str'] = $str;
+            $data['list'][$key]['mobile'] = $UsersModel->where('user_id',$value['buy_user_id'])->value('mobile');
 //            $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
         }
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];

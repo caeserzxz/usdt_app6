@@ -1,0 +1,245 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+     <div class="page-breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>会员详情</strong>
+                </li>                                  
+            </ul>
+           <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+        </div>
+</header>
+<section class="scrollable  wrapper">
+           
+
+                <section class="panel panel-default">
+                  <header >
+                        <ul class="nav nav-tabs">
+                            <!--<li class="active"><a href="#tabinfo" data-toggle="tab">帐户信息</a></li>-->
+                            <!--<li><a href="#tabbank" data-toggle="tab">会员资料</a></li>-->
+                            <!--<li><a href="#tabdescribe" data-toggle="tab">地址信息</a></li>-->
+                            <!--<li><a href="#superior" class="superior_tab" data-toggle="tab">上级关系树</a></li>-->
+                            <!--<li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>-->
+                            <!--<li><a href="#stat" class="stat_tab" data-toggle="tab">业绩统计</a></li>-->
+                            <li class="active"><a href="#auth"  data-toggle="tab">实名认证</a></li>
+                            <li><a href="#payment" class="payment_tab" data-toggle="tab">收款信息</a></li>
+                        </ul>
+                    </header>
+                    
+                  <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+                      <div class="tab-content">
+                      <!--地址信息-->
+                      <div class="tab-pane active" id="auth">
+                          <div class="table-responsive " >
+                              <table class="table  table-hover  m-b-none">
+                                  <thead>
+                                  <tr>
+                                      <th width="100">用户信息</th>
+                                      <th width="200">手机号</th>
+                                      <th width="200">姓名</th>
+                                      <th width="200">身份证号</th>
+                                      <th width="200">认证时间</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  {volist name="auth_list" id="ua" }
+                                  <tr>
+                                      <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$ua['user_id']])}" target="_blank">{$ua.user_id}-{$ua.user_id|userInfo}</a></td>
+                                      <td >{$userInfo.mobile}</td>
+                                      <td >{$ua.user_name}</td>
+                                      <td >{$ua.id_card}</td>
+                                      <td>{$vo.add_time|dateTpl}</td>
+                                  </tr>
+                                  {/volist}
+                                  {empty name="auth_list"}
+                                  <tr>
+                                      <td colspan="4" align="center" style="height:150px;">暂无实名信息！</td>
+                                  </tr>
+                                  {/empty}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      <div class="tab-pane" id="payment" style="overflow: hidden">
+                          <div class="table-responsive " >
+                              <table class="table  table-hover  m-b-none">
+                                  <thead>
+                                  <tr>
+                                      <th width="100">类型</th>
+                                      <th width="100">用户</th>
+                                      <th width="100">手机号</th>
+                                      <th width="100">状态</th>
+                                      <th width="100">账号</th>
+                                      <th width="100">添加时间</th>
+                                      <th width="100">审核时间</th>
+                                      <th width="100">操作</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  {volist name="payment_list" id="vo" }
+                                  <tr>
+                                      <td >
+                                          {if condition="$vo.type eq 1"}
+                                            银行卡
+                                          {elseif condition="$vo.type eq 2" /}
+                                            支付宝
+                                          {elseif condition="$vo.type eq 3" /}
+                                            微信
+                                          {/if}
+                                      </td>
+                                      <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$vo['user_id']])}" target="_blank">{$vo.user_id}-{$vo.user_id|userInfo}</a></td>
+                                      <td >{$userInfo.mobile}</td>
+                                      <td >
+                                          {if condition="$vo.status eq 0"}
+                                          待审核
+                                          {elseif condition="$vo.status eq 1" /}
+                                          审核通过
+                                          {elseif condition="$vo.status eq 2" /}
+                                          审核失败
+                                          {/if}
+                                      </td>
+                                      <td>
+                                          {if condition="$vo.type eq 1"}
+                                            {$vo.card_number}
+                                          {elseif condition="$vo.type eq 2" /}
+                                            {$vo.alipay_number}
+                                          {elseif condition="$vo.type eq 3" /}
+                                            {$vo.wx_number}
+                                          {/if}
+                                      </td>
+                                      <td>{$vo.add_time|dateTpl}</td>
+                                      <td>{$vo.audit_time|dateTpl}</td>
+                                      <td>
+                                          <a href="{:url('ddkc/sys_admin.receivablesList/info',array('id'=>$vo['id']))}" class="m-xs" title="查看">
+                                              <i class="fa fa-edit text-muted"></i>
+                                          </a>
+                                      </td>
+                                  </tr>
+                                  {/volist}
+                                  {empty name="payment_list"}
+                                  <tr>
+                                      <td colspan="12" align="center" style="height:150px;">暂无收款信息！</td>
+                                  </tr>
+                                  {/empty}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      </div>
+                   </form>  
+                </section>
+
+         
+        </section>
+    </section>
+{literal}
+<script type="text/html" id="chainlist">
+{{each list as item index}}
+<div  style="margin-left:0px;padding-top:5px;">
+		{{icon}}
+        <a href="javascript:void(0)" class="btn next_btn" data-id="{{item.user_id}}" >{{item.user_id}} - {{item.nick_name?item.nick_name:'未获取'}} - {{item.role_name?item.role_name:'普通会员'}} - 团队数（{{item.teamCount}}）</a>
+        <div class="nextList" id="next_box_{{item.user_id}}" data-nextlevel="{{nextlevel}}" style="clear:both;"></div>
+</div>
+{{/each}}
+</script>
+{/literal}
+<script type="text/html" id="superiorlist">
+{{each list as item index}}
+ <div class="form-group" style=" margin-left:0px;">                                            
+	  <div class="col-sm-8">
+	  <a href="{:_url('member/sys_admin.users/info',['user_id'=>'[[item.user_id]]'])}" target="_blank"> {{item.level}}级 - 会员ID:{{item.user_id}} - 昵称：{{item.nick_name}} - 身份：{{item.role_name}}</a>
+	  </div>
+  </div>
+{{/each}}
+</script>
+<script>
+  function upMobile(){
+    var mobile = $('#mobile').val();
+    var user_id = "{$row.user_id}";
+    var arr = new Object();
+    arr.mobile = mobile;
+    arr.user_id = user_id;
+    if (arr.mobile == ''){
+        _alert('请输入手机号码.');
+        return false;
+    }
+    $.ajax({ 
+        url: '{:url("upMobile")}',
+        type: "POST",
+        data: arr, 
+        success: function(res){
+            console.log(res)
+            _alert(res.msg);
+            if (res.code == 0) {
+              var mobile1 = "{$row.mobile}"
+              $('#mobile').val(mobile1)
+            };
+            return false;
+        }
+    });
+  }
+</script>
+<script type="text/javascript">
+
+	$(document).on('click','.next_btn',function(){
+		getChainList($(this).data('id'),true)
+	})
+	//加载上级
+	function getSuperiorList(uid){
+		jq_ajax('{:url("sys_admin.users/getSuperiorList")}','user_id='+uid,function(res){
+			if (res.list.length < 1){
+				$('#superior .table-responsive').html('没有相关上级.');
+				return false;
+			}
+			$('#superior .table-responsive').html(template('superiorlist',res));
+			
+		});
+	}
+
+	//加载下级
+	function getChainList(uid,next){
+        if ($("#next_box_"+uid).html() != '' && typeof($("#next_box_"+uid).html()) != 'undefined'){
+            if ($("#next_box_"+uid).is(':visible')){
+                $("#next_box_"+uid).addClass('hide');
+            }else{
+                $("#next_box_"+uid).removeClass('hide');
+            }
+            return false;
+        }
+		jq_ajax('{:url("sys_admin.users/getChainList")}','user_id='+uid,function(res){
+			if (next == true){
+			    if (res.list.length > 0){
+                    res.nextlevel = $('#next_box_'+uid).data('nextlevel') + 1;
+                    res.icon = '';
+                    for (var i=0;i<res.nextlevel;i++){
+                        res.icon += '&nbsp;|-- &nbsp;';
+                    }
+                    console.log(res.icon)
+				    $('#next_box_'+uid).html(template('chainlist',res));
+                }else{
+                    $('#next_box_'+uid).html(' ');
+                }
+			}else{
+                if (res.list.length > 0) {
+                    res.nextlevel = 0;
+                    $('#tabchain .table-responsive').html(template('chainlist', res));
+                }else{
+                    $('#tabchain .table-responsive').html('没有下级');
+                }
+			}
+		});
+	}
+	//执行统计
+    $('.evalStat').click(function(){
+        jq_ajax('{:url("evalStat")}','user_id={$row.user_id}&reportrange='+$('#reportrange').val(),function(res) {
+            $('#evalStatBox').html(template('evalStatTpl', res));
+        })
+    })
+</script>
+
+   
+{/block}
+

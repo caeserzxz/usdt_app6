@@ -23,12 +23,19 @@
              </a>
 
              <select name="buy_status"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
-                 <option value="">全部</option>
+                 <option value="">全部状态</option>
                  <option value="1">已预约</option>
                  <option value="2">抢购中</option>
                  <option value="3">已中奖</option>
                  <option value="4">未中奖</option>
                  <option value="5">已过期</option>
+             </select>
+             <select name="stage_id"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                 <option value="">全部场次</option>
+                 {volist name="stageList" id="vol"}
+                    <option value="{$vol.id}">{$vol.stage_name}</option>
+                 {/volist}
+
              </select>
              <input type="hidden" value="0" name="export">
              <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="订单ID" data-rule-required="true" />

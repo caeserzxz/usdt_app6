@@ -40,6 +40,7 @@ class ReceivablesList extends AdminController
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $UsersModel = new UsersModel();
         $this->search['keyword'] = input("keyword");
         $this->search['key_type'] = input("key_type");
         $this->search['type'] = input("type");
@@ -75,6 +76,7 @@ class ReceivablesList extends AdminController
             }elseif ($value['type'] == 3) {
                 $data['list'][$key]['account'] = $value['wx_number'];
             }
+            $data['list'][$key]['mobile'] = $UsersModel->where('user_id',$value['user_id'])->value('mobile');
         }
         $type = ['其他','银行卡','支付宝','微信'];
 
@@ -101,9 +103,11 @@ class ReceivablesList extends AdminController
     public function examine(){
         $id = input('id');
         $type = input('type');
+        $remarks = input('remarks');
         $pay_info = $this->Model->where('id',$id)->find();
         $save['status'] = $type;
         $save['audit_time'] = time();
+        $save['remarks'] = $remarks;
         $res = $this->Model->where('id',$id)->update($save);
         if($res){
             # 升级

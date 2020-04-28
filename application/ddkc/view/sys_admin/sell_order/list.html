@@ -15,6 +15,8 @@
     <th width="120">打款时间</th>
 <!--    <th width="120">申诉时间</th>-->
     <th width="200">结束时间</th>
+    <th width="60">指定买家id</th>
+    <th width="60">禁止买家id</th>
     <th width="150">操作</th>
 </tr>
 </thead>
@@ -24,8 +26,8 @@
 <tr>
     <td>{$vo.id}</td>
     <td>{$vo.sell_order_sn}</td>
-    <td>{$vo.sell_user_id}</td>
-    <td>{$vo.buy_user_id}</td>
+    <td><a href="{:url('member/sys_admin.users/spe_info',['user_id'=>$vo['sell_user_id']])}" target="_blank">{$vo.sell_user_id}</a></td>
+    <td><a href="{:url('member/sys_admin.users/spe_info',['user_id'=>$vo['buy_user_id']])}" target="_blank">{$vo.buy_user_id}</a></td>
     <td>{$vo.sell_number}</td>
     <td>{$status[$vo.sell_status]}</td>
     <td>{$vo.sell_stage_id}</td>
@@ -36,6 +38,8 @@
     <td>{$vo.payment_time|dateTpl}</td>
 <!--    <td>{$vo.complain_time|dateTpl}</td>-->
     <td>{$vo.sell_end_time|dateTpl}</td>
+    <td>{$vo.reserve_user_id}</td>
+    <td>{$vo.ban_user_id}</td>
     <td>  
         <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="查看">
             <i class="fa fa-edit text-muted"></i>

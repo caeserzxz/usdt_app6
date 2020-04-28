@@ -3,6 +3,7 @@
 <tr>
     <th width="80">编号</th>
     <th width="150">用户信息</th>
+    <th width="150">手机号</th>
     <th width="120">姓名</th>
     <th width="100">身份证号</th>
     <th width="150">认证时间</th>
@@ -15,6 +16,7 @@
 <tr>
     <td>{$vo.id}</td>
     <td><a href="{:url('member/sys_admin.users/info',['user_id'=>$vo['user_id']])}" target="_blank">{$vo.user_id}-{$vo.user_id|userInfo}</a></td>
+    <td>{$vo.mobile}</td>
     <td>{$vo.user_name}</td>
     <td>{$vo.id_card}</td>
     <td>{$vo.add_date}</td>

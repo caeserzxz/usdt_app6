@@ -7,12 +7,14 @@
                     {if condition="$sell_info.sell_status eq 1"}
                         {if condition="$is_payment eq 1"}
                             <p class="dp-flex fw_b" id="timer3">交易剩余时间：<span class="timer3"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
-                         {/if}
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        {/if}
                         <a href="javacript:;" class="com wait-active">待付款</a>
                     {elseif condition="$sell_info.sell_status eq 2" /}
                         {if condition="$is_confirm eq 1"}
                             <p class="dp-flex fw_b" id="timer0">交易剩余时间：<span class="timer0"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
-                         {/if}
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        {/if}
                         <a href="javacript:;" class="com active11">已付款</a>
                     {elseif condition="$sell_info.sell_status eq 3" /}
                         <a href="javacript:;" class="com active11">申诉中</a>
@@ -83,8 +85,6 @@
                                 {if condition="$appType eq 'IOS'"}
                                     {if condition="$sell_info.sell_status lt 2"}
                                         <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('pay_img');" class="info-img" alt="">
-                                        <input id="uploaderInput" onchange="changepic(this)" name="pay_img" class="weui-uploader__input"
-                                               type="file" accept="image/*" multiple="">
                                     {else /}
                                         <img id="img" src="{$sell_info.pay_img}"   class="info-img imgBig" alt="">
                                     {/if}
@@ -258,15 +258,9 @@
                 if (data) {
                     if (data.img_name == 'pay_img') {
                         $('#img').attr('src',  data.path);
-                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="alipay_payment_code" class="imagesinput"/>';
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="pay_img" class="imagesinput"/>';
                         $('.images-list').append(str);
-                    }else if(data.img_name == 'wx_payment_code'){
-                        $('#img2').attr('src',  data.path);
-                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="wx_payment_code" class="imagesinput"/>';
-                        $('.images-list2').append(str);
                     }
-
-
                 } else {
                     $.toast('图片上传失败',"text");
                     return false;

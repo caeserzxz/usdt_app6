@@ -30,7 +30,7 @@ class Center  extends ClientbaseController{
     public function myCode(){
         $DividendShareByRole = settings('DividendShareByRole');
         if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
-            return $this->error('请升级身份后再操作.');
+            return $this->error('请升级到基础型主链矿机（初级会员）后再操作！');
         }
         $default_img = settings('GoodsImages');
         $arr = explode(',', $default_img);

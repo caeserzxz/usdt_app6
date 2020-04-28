@@ -7,11 +7,13 @@
                     {if condition="$sell_info.sell_status eq 1"}
                         {if condition="$is_payment eq 1"}
                             <p class="dp-flex fw_b" id="timer3">交易剩余时间：<span class="timer3"><?php echo gmdate('H:i:s',$payment_time);?></span></p>
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                         {/if}
-                        <a href="javacript:;" class="com wait-active">待付款</a>
+                     <a href="javacript:;" class="com wait-active" >待付款</a>
                     {elseif condition="$sell_info.sell_status eq 2" /}
                         {if condition="$is_confirm eq 1"}
                             <p class="dp-flex fw_b" id="timer0">交易剩余时间：<span class="timer0"><?php echo gmdate('H:i:s',$confirm_time);?></span></p>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                         {/if}
 
                         <a href="javacript:;" class="com active11">已付款</a>

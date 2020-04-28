@@ -12,6 +12,8 @@ use app\distribution\model\DividendRoleModel;
 use app\distribution\model\DividendModel;
 use app\weixin\model\WeiXinUsersModel;
 use app\member\model\DdBanRecordModel;
+use app\ddkc\model\AuthenticationModel;
+use app\ddkc\model\PaymentModel;
 
 use think\Db;
 use think\facade\Cache;
@@ -615,4 +617,20 @@ class Users extends AdminController
         return $this->success('修改成功.');
     }
 
+    public function spe_info(){
+        $AuthenticationModel = new  AuthenticationModel();
+        $PaymentModel = new PaymentModel();
+
+        $user_id = input('user_id');
+        #获取实名信息
+        $auth_list = $AuthenticationModel->where('user_id',$user_id)->select();
+        #获取收款信息
+        $payment_list = $PaymentModel->where('user_id',$user_id)->select();
+        #用户信息
+        $userInfo = $this->Model->info($user_id);
+        $this->assign('userInfo',$userInfo);
+        $this->assign('auth_list',$auth_list);
+        $this->assign('payment_list',$payment_list);
+        return $this->fetch();
+    }
 }

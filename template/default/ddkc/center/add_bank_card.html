@@ -1,10 +1,87 @@
 {extend name="layouts@dd_head" /}
 {block name="main" }
+<!--定义弹窗的样式-->
+<style>
+
+    .popup {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, .5);
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .popup-content {
+        width: 400px;
+        height: 200px;
+        background-color: #fff;
+        box-sizing: border-box;
+        padding: 10px 30px;
+        color: black;
+    }
+
+    .top {
+        width: 100%;
+        border-bottom: 1px solid black;
+    }
+
+    .info {
+        margin-top: 50px;
+    }
+
+</style>
+<script>
+    //给定一个值,使点 确定按钮 为 true,点其他为 false
+    var isDelete = false;
+    //显示弹窗函数，设置display为flex
+    function showPopup(remarks) {
+        $('.inforemarks').html(remarks);
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    //关闭弹窗函数，设置display为none，传一个参数，把true和false传进去
+    function hidePopup(x, e) {
+        //处理冒泡，event 的 cancelable 事件返回一个布尔值
+        // 确定按钮有event参数，不会返回undefined（因为取消和其他区域，没传值 默认undefined）
+        if (e != undefined) {
+            e.cancelBubble = true;
+        }
+        document.getElementById("popup").style.display = "none";
+        isDelete = x;
+        console.log(x);
+    }
+</script>
+
+<div class="popup" id="popup" onclick="hidePopup(false)">
+    <div class="popup-content">
+        <div class="top">
+            <p>原因</p>
+        </div>
+        <div class="inforemarks" style="color: #e77a19;">
+
+        </div>
+        <div class="btn">
+            <!--因为两个按钮在popup这个大框里，点击确定和取消就会同时点击父元素，会产生事件冒泡（即点击确定，会同时出现true和false）-->
+            <button type="button" onclick="hidePopup(true,event)">确定</button>
+            <button type="button" onclick="hidePopup(false)">取消</button>
+        </div>
+    </div>
+</div>
         <div class="page-bd pd-24 moneyInfo">
             <!-- 页面内容-->
             <div class="alipay">
                 <h3 class="h3">
                     支付宝账号 <b style="color: red;">{$alipay_info.status_str}</b>
+                    {if condition="$alipay_info.status eq 2"}
+                    <button onclick="showPopup('{$alipay_info.remarks}')">查看原因</button>
+                    {/if}
                 </h3>
                 <div class="alipay-con dp-flex">
                     <form action="" id="form">
@@ -36,10 +113,10 @@
                         </div>
                     </div>
                     <div class="images-list"><!--上传图片列表--></div>
-                       {if condition="$alipay_info['status'] neq 1"}
-                         <div class="sure-btn" onclick="alipay_btn();">确认</div>
+                       {if condition="$alipay_info['is_submit'] eq 1"}
+                            <div class="sure-btn" onclick="alipay_btn();">确认</div>
                        {else /}
-
+                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
                        {/if}
 
                     <p>一旦通过审核，无法修改，请谨慎填写</p>
@@ -49,6 +126,10 @@
             <div class="wechat">
                 <h3 class="h3">
                     微信账号: <b style="color: red;">{$wx_info.status_str}</b>
+                    {if condition="$wx_info.status eq 2"}
+                        <button onclick="showPopup('{$wx_info.remarks}')">查看原因</button>
+                    {/if}
+
                 </h3>
                 <div class="alipay-con dp-flex">
                     <form action="" id="form2">
@@ -81,10 +162,10 @@
                         </div>
                     </div>
                     <div class="images-list2"><!--上传图片列表--></div>
-                        {if condition="$wx_info['status'] neq 1"}
+                        {if condition="$wx_info['is_submit'] eq 1"}
                             <div class="sure-btn" onclick="wx_btn();">确认</div>
                         {else /}
-
+                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
                         {/if}
 
                     <p>一旦通过审核，无法修改，请谨慎填写</p>
@@ -93,17 +174,22 @@
             </div>
             <div class="bank">
                 <form action="" id="form3">
-                <h3 class="h3">银行卡号(<b style="color: red;">必填</b>): <b style="color: red;">{$bank_info.status_str}</b></h3>
+                <h3 class="h3">
+                    银行卡号(<b style="color: red;">必填</b>): <b style="color: red;">{$bank_info.status_str}</b>
+                    {if condition="$bank_info.status eq 2"}
+                     <button type="button" onclick="showPopup('{$bank_info.remarks}')">查看原因</button>
+                    {/if}
+                </h3>
                 <div class="alipay-con dp-flex">
                     <input type="text " class="weui-input input-t" placeholder="请输入银行卡名称" name="bank_name" value="{$bank_info.bank_name}">
                     <input type="text" class="weui-input input-t" placeholder="请输入支行名称" name="sub_branch" value="{$bank_info.sub_branch}">
                     <input type="text " class="weui-input input-t" placeholder="请输入银行卡号" name="card_number" value="{$bank_info.card_number}">
                     <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="bank_user_name" value="{$bank_info.bank_user_name}">
                     <input type="hidden" class="weui-input input-t" name="id" value="{$bank_info.id}">
-                    {if condition="$bank_info['status'] neq 1"}
-                        <div class="sure-btn" onclick="bank_btn();">确认</div>
+                    {if condition="$bank_info['is_submit'] neq 1"}
+                        <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
                     {else /}
-
+                        <div class="sure-btn" onclick="bank_btn();">确认</div>
                     {/if}
 
                     <p>一旦通过审核，无法修改，请谨慎填写</p>
@@ -111,10 +197,12 @@
                 </div>
                 </form>
             </div>
+            <!-- 弹窗 -->
 
         </div>
 
     </div>
+
 {include file="layouts@dd_bottom" /}
 {/block}
 {block name="footer"}
@@ -240,7 +328,7 @@
             }
         });
     }
-    var regExp = /^([1-9]{1})(\d{15}|\d{18})$/;
+    var regExp = /^[0-9]*$/;
     //上传银行卡信息
     function bank_btn(){
         var card_number = $('input[name=card_number]').val();
@@ -269,6 +357,13 @@
                 }
             }
         });
+    }
+    //查看原因
+    function check_remarks(remarks){
+        $('.popup').show();
+    }
+    function closePop() {
+        $('.popup').hide()
     }
 </script>
 </body>

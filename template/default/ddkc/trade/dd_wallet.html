@@ -70,7 +70,7 @@
                         交易记录
                     </a>
                     <a class="weui-navbar__item" href="#tab4" onclick="getBuyList();">
-                        预约记录
+                        预约/抢购
                     </a>
 <!--                    <a class="weui-navbar__item" href="#tab5">-->
 <!--                        申诉-->
@@ -195,7 +195,12 @@
                                                 <p>{{item.stage_name}} </p>
                                                 {literal}
                                                 {{if item.buy_status == 2}}
-                                                 <p>{{item.status_str}}</p>
+                                                    {{if item.status_str == '待付款'}}
+                                                        <p style="color: red;">{{item.status_str}}</p>
+                                                    {{else}}
+                                                        <p>{{item.status_str}}</p>
+                                                    {{/if}}
+
                                                 {{/if}}
                                                 {{if item.buy_status == 3}}
                                                     <p>未中奖</p>

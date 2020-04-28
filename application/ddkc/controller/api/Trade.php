@@ -232,7 +232,7 @@ class Trade extends ApiController
 
         # 预约成功
         Db::commit();
-        return $this->ajaxReturn(['code' => 1,'msg' => '下单成功','url' => url('trade/index')]);
+        return $this->ajaxReturn(['code' => 1,'msg' => '预约成功','url' => url('trade/index')]);
 
     }
 
