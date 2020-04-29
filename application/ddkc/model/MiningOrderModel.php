@@ -248,8 +248,9 @@ class MiningOrderModel extends BaseModel
 
             $ratio = $leaderInfo['role']['exten_profit_'.$i];
 
-            // 获拥金额
-            $money = round($order['pay_money'] * $ratio / 100,2);
+            // 获拥金额 基数为下单者所获得总收益
+            $baseMoney = $order['pay_money'] * $order['rebate_rate'] * $order['scrap_days'] / 100;
+            $money = round($baseMoney * $ratio / 100,2);
             if ($money <= 0) continue;
 
             // 添加金额
@@ -289,8 +290,10 @@ class MiningOrderModel extends BaseModel
             $nowRole = $roleModel->info($value['role_id']);
             // 减掉上一获奖用户的比例
             $ratio = $nowRole['team_profit']-$lastRatio;
-            $money = round($order['pay_money'] * $ratio / 100,2);
 
+            // 获拥金额 基数为下单者所获得总收益
+            $baseMoney = $order['pay_money'] * $order['rebate_rate'] * $order['scrap_days'] / 100;
+            $money = round($baseMoney * $ratio / 100,2);
             if ($money <= 0) continue;
 
             // 记录比例 便于计算下一级差
