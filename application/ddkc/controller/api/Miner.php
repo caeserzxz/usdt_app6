@@ -273,7 +273,7 @@ class Miner extends ApiController
         		$data['list'][$key]['total_profit'] = round($value['pay_money'] + ($value['pay_money'] * $value['rebate_rate'] / 100 * $value['scrap_days']),2);
         		
         		// 合约期限
-        		$expire_data = $value['add_time'] + ($value['scrap_days']*86400+86400);
+        		$expire_data = $value['add_time'] + ($value['scrap_days']*86400);
         		$data['list'][$key]['expire_data'] = date("Y.m.d",$expire_data);
 
         		$data['list'][$key]['img'] = $imgs[0];
