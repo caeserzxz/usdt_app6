@@ -116,7 +116,7 @@
                        {if condition="$alipay_info['is_submit'] eq 1"}
                             <div class="sure-btn" onclick="alipay_btn();">确认</div>
                        {else /}
-                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
+                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">上传成功</div>
                        {/if}
 
                     <p>一旦通过审核，无法修改，请谨慎填写</p>
@@ -165,7 +165,7 @@
                         {if condition="$wx_info['is_submit'] eq 1"}
                             <div class="sure-btn" onclick="wx_btn();">确认</div>
                         {else /}
-                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
+                            <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">上传成功</div>
                         {/if}
 
                     <p>一旦通过审核，无法修改，请谨慎填写</p>
@@ -187,7 +187,7 @@
                     <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="bank_user_name" value="{$bank_info.bank_user_name}">
                     <input type="hidden" class="weui-input input-t" name="id" value="{$bank_info.id}">
                     {if condition="$bank_info['is_submit'] neq 1"}
-                        <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">确认</div>
+                        <div class="sure-btn" style="background:url(/static/dingding/images/ding1.png) no-repeat;background-size: 100% 100%;">上传成功</div>
                     {else /}
                         <div class="sure-btn" onclick="bank_btn();">确认</div>
                     {/if}

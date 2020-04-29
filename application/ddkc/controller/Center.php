@@ -285,7 +285,6 @@ class Center  extends ClientbaseController{
     public function authentication(){
         $AuthenticationModel = new AuthenticationModel();
         $authenInfo = $AuthenticationModel->where(['user_id' => $this->userInfo['user_id']])->find();
-
         $this->assign('authenInfo', $authenInfo);
         $this->assign('title', '实名认证');
         return $this->fetch();

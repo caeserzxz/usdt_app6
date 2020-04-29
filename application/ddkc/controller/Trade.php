@@ -64,6 +64,7 @@ class Trade  extends ClientbaseController{
 //        $a = $BuyTradeModel->DailyReset();
 //        $a = $BuyTradeModel->Unsealing();
 //        $a = $BuyTradeModel->PanicBuying_new();
+//        $a = $BuyTradeModel->PanicBuying_new2();
 
 //        die;
 //        dump($a);die;

@@ -70,6 +70,17 @@
         </div>
     </div>
     <p clss="fs28" style="text-align: center;color:#898786">一个身份证绑定一个账号，一旦绑定无法修改</p>
+    <br>
+    <p clss="fs28" style="text-align: center;">下列情况可能会导致实名认证失败:</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(1)现役军人、武警官兵、特殊部门人员及特殊级别官员；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(2)退役不到2年的军人和士兵（根据军衔、兵种不同，时间会有所不同，一般为2年）；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(3)户口迁出，且没有在新的迁入地迁入 eg：刚上大学或刚毕业的大学生；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(4)户口迁入新迁入地，当地公安系统未将迁移信息上报到公安部（上报时间地域不同而有所差异）；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(5)更改姓名，当地公安系统未将更改信息上报到公安部（上报时间因地域不同而有所差异）；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(6)移民；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(7)未更换二代身份证；</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(8)死亡。</p>
+    <p clss="fs28" style="text-align: left;color:#898786">(9)身份证号确实不存在</p>
     {empty name="$authenInfo"}
     <div class="wrap">
         <div class="background" style="margin-top: .133333rem" onclick="authentication()">确认</div>
@@ -102,8 +113,16 @@ function authentication(){
         return;
     }
     jq_ajax('{:url("ddkc/api.center/authentication")}',arr,function (res) {
-        $.toast(res.msg, "text");
-        window.location.href = "{:url('center/index')}";
+        if(res.code == 1){
+            $.toast(res.msg,"text",function(){
+                window.location.href = "{:url('center/index')}";
+            });
+        }else{
+            $.toast(res.msg, "text");
+            return ;
+        }
+
+
     })
 }
 </script>

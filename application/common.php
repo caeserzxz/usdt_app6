@@ -900,3 +900,32 @@ function superiorUpgrade($user_id)
 	# 再上一级升级
 	superiorUpgrade($pid);
 }
+
+function id_cart_check($cardNo,$realName){
+    $host = "https://zid.market.alicloudapi.com";
+    $path = "/idcard/VerifyIdcardv2";
+    $method = "GET";
+    $appcode = "99ddcfc4c2904bab84c66ca4f29f483e";
+    $headers = array();
+    array_push($headers, "Authorization:APPCODE " . $appcode);
+//    $querys = "cardNo=420923199303033494&realName=%E6%9D%8E%E5%9B%9B";
+    $querys = "cardNo=".$cardNo."&realName=".urlencode($realName);
+    $bodys = "";
+    $url = $host . $path . "?" . $querys;
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_FAILONERROR, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    if (1 == strpos("$".$host, "https://"))
+    {
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    }
+    $result = curl_exec($curl);
+    curl_close($curl);
+    return json_decode($result,true);
+}

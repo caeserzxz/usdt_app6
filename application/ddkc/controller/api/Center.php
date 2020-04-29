@@ -282,6 +282,19 @@ class Center extends ApiController
 
         if (strlen($post['id_card']) != 18) return $this->ajaxReturn(['code' => 0,'msg' => '身份证号必须为18位']);
 
+        $res = id_cart_check($post['id_card'],$post['user_name']);
+        if(empty($res)==false){
+            if($res['error_code']==0){
+                if($res['result']['isok']==false){
+                    return $this->ajaxReturn(['code' => 0,'msg' => '请检查身份信息是否正确']);
+                }
+            }else{
+                return $this->ajaxReturn(['code' => 0,'msg' => '请检查身份信息是否符合实名认证规则']);
+            }
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '网络正忙,请联系管理员']);
+        }
+
         $data = [
             'user_id' => $this->userInfo['user_id'],
             'user_name' => $post['user_name'],
@@ -292,9 +305,9 @@ class Center extends ApiController
         $res = $AuthenticationModel->create($data);  
         if ($res) {
             roleUpgrade($this->userInfo['user_id']);
-            return $this->ajaxReturn(['code' => 1,'msg' => '操作成功']);
+            return $this->ajaxReturn(['code' => 1,'msg' => '实名认证成功']);
         } else{
-            return $this->ajaxReturn(['code' => 0,'msg' => '操作失败']);
+            return $this->ajaxReturn(['code' => 0,'msg' => '实名认证失败']);
         }
     }
 }
