@@ -31,20 +31,40 @@ class Center  extends ClientbaseController{
         $this->assign('user_center_nav_tpl', settings('user_center_nav_tpl'));
         $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
 
-        # 矿机收益
-        $profit['miner'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 105])->sum('ddb_money');
-        # 增值包收益
-        $profit['increment'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 106])->sum('ddb_money');
-        # 当前可售DDB 所有订单的总收益（本金+收益)
+        # ======== 矿机收益 ================ 增值包收益 =========
+        $profit['minerProfit'] = $profit['incrementProfit'] = 0;
+        $totalProfit = $operPrincipal = 0;
+
         $allOrder = $MiningOrderModel->where(['user_id' => $userId])->select();
-        $profit['allOrderProfit'] = 0;
         foreach ($allOrder as $key => $value) {
-            $orderProfit = $value['pay_money'] + ($value['pay_money']*$value['rebate_rate']*$value['scrap_days']/100);
-            $profit['allOrderProfit'] += $orderProfit;
+            // 该订单收益
+            $orderProfit = $value['pay_money']*$value['rebate_rate']*$value['scrap_days']/100;
+            if ($value['status'] == 3) {
+                # 所有已到账的收益
+                $totalProfit += $orderProfit;
+                if ($value['type'] == 1) {
+                    # 矿机收益 矿机已到账的收益
+                    $profit['minerProfit'] += $orderProfit;
+                }else{
+                    # 增值包收益 增值包已到账的收益
+                    $profit['incrementProfit'] += $orderProfit;
+                }
+            }else{
+                # 运行中的订单本金
+                $operPrincipal += $value['pay_money'];
+            }
         }
+        # 主链矿机DDB收益：推广收益+团队收益
         $where[] = ['user_id','=',$userId];
         $where[] = ['change_type','IN',[102,103]];
         $profit['award'] = $accountLogModel->where($where)->sum('ddb_money');
+
+        # 总资产： 运行中的订单本金 +叮叮数量+DDB数量
+        $profit['totalAssets'] = $operPrincipal + $this->userInfo['account']['balance_money'] + $this->userInfo['account']['ddb_money'];
+
+        # 总收益： 所有已到账的收益 （不含本金）+主链矿机DDB收益
+        $profit['totalProfit'] = $totalProfit + $profit['award'];
+
         $this->assign('appType',session('appType'));
         $this->assign('profit', $profit);
 		return $this->fetch('index');

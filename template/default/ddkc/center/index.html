@@ -41,31 +41,30 @@
         <div class="user-money dp-flex">
             <div>
                 <p>总资产</p>
-                <p>{$userInfo.account.balance_money+$userInfo.account.ddb_money}</p>
+                <p>{$profit.totalAssets}</p>
             </div>
             <div>
                 <p>总收益</p>
-                <p>{$profit.miner+$profit.increment}</p>
+                <p>{$profit.totalProfit}</p>
             </div>
             <div>
                 <p>矿机收益</p>
-                <p>{$profit.miner}</p>
+                <p>{$profit.minerProfit}</p>
             </div>
             <div>
                 <p>增值包收益</p>
-                <p>{$profit.increment}</p>
+                <p>{$profit.incrementProfit}</p>
             </div>
         </div>
     </div>
     <div class="tab dp-flex">
         <div class="le">
-            <!-- <p>当前可售DDB：{$userInfo.account.ddb_money}</p> -->
-            <p>当前可售DDB：{$profit.allOrderProfit}</p>
+            <p>当前可售DDB：{$userInfo.account.ddb_money}</p>
             <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
         </div>
         <div class="rt">
             <p>主链矿机DDB收益：{$profit.award}</p>
-            <a href="{:url('ddkc/trade/sell_ddb')}">挂售</a>
+            <a href="{:url('ddkc/trade/sell_ddb')}">查询</a>
         </div>
     </div>
     <div class="weui-grids">
