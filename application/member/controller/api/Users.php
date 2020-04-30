@@ -800,4 +800,29 @@ class Users extends ApiController
         $res['img'] = $MergeImg->shareImg($data,-1);
         return $this->success('请求成功.','',$res);
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取主链矿机收益
+    /*------------------------------------------------------ */
+    public function getUpLevelProfit(){
+        $p = input('p',0,'intval');
+        $return['code'] = 1;
+        $AccountLogModel = new AccountLogModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['change_type', 'in', [102,103]];
+        $rows = $AccountLogModel->where($where)->limit($p*10,20)->order('change_time DESC')->select()->toArray();
+        foreach ($rows as $key => $row) {
+            if($row['ddb_money']<0){
+                $row['ddb_money_str'] ='-'.abs($row['ddb_money']);
+            }else if($row['ddb_money']>0){
+                $row['ddb_money_str'] ='+'.abs($row['ddb_money']);
+            }else{
+                $row['ddb_money_str'] =abs($row['ddb_money']);
+            }
+            $row['_time'] = timeTran($row['change_time']);
+            $row['_date'] = date('Y-m-d H:i:s',$row['change_time']);
+            $return['list'][] = $row;
+        }
+        return $this->ajaxReturn($return);
+    }
 }

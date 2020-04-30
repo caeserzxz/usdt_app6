@@ -316,5 +316,11 @@ class Center  extends ClientbaseController{
         $this->assign('title', '叮叮交易所');
         return $this->fetch();
     }
-
+    /*------------------------------------------------------ */
+    //-- 主链矿机收益
+    /*------------------------------------------------------ */
+    public function lower_level_profit(){
+        $this->assign('title', '主链矿机DDB收益');
+        return $this->fetch();
+    }
 }?>
