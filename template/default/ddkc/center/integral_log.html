@@ -36,6 +36,7 @@
                         {{/each}}
                     </script>
                 </div>
+                <div style='text-align:center;display: none;' id='loading1' onclick='getList1()'>加载更多</div>
             </div>
             <div class="info" id="tab2">
                 <div id="list2">
@@ -51,6 +52,7 @@
                         {{/each}}
                     </script>
                 </div>
+                <div style='text-align:center;display: none;' id='loading2' onclick='getList2()'>加载更多</div>
             </div>
         </div>
     </div>
@@ -97,10 +99,10 @@
     }
 
     $('#tab1').infinite().on("infinite", function() {
-        getList1();
+        // getList1();
     });
     $('#tab2').infinite().on("infinite", function() {
-        getList2();
+        // getList2();
     });
     function getList1(is_tab = 0){
         if(loading_1) return;
@@ -108,6 +110,7 @@
 
         if (is_tab == 1 && page_1 > 0) return;
         loading_1 = true;
+        $('#loading1').hide();
 
         var arr = new Object();
         arr.p = page_1;
@@ -119,6 +122,7 @@
             if (res.list) {
                 page_1++;
                 loading_1 = false;
+                if (res.list.length == 10) $('#loading1').show();
             }else{
                 $.toast('加载完成', "text");
             }
@@ -130,6 +134,7 @@
 
         if (is_tab == 1 && page_2 > 0) return;
         loading_2 = true;
+        $('#loading2').hide();
 
         var arr = new Object();
         arr.p = page_2;
@@ -142,6 +147,7 @@
             if (res.list) {
                 page_2++;
                 loading_2 = false;
+                if (res.list.length == 10) $('#loading2').show();
             }else{
                 $.toast('加载完成', "text");
             }
