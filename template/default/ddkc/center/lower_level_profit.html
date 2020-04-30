@@ -1,0 +1,120 @@
+{extend name="layouts@dd_head" /}
+{block name="head" }
+<link rel="stylesheet" href="__STATIC__/dingding/css/picker.css">
+<script src="__STATIC__/dingding/js/datePicker.js"></script>
+
+{/block}
+{block name="main" }
+<div class="page-bd creditScore">
+    <!-- 页面内容-->
+    <div class="content">
+        <div class="top">
+            <h3>主链矿机DDB收益</h3>
+        </div>
+        <div class="bottom" style="margin-left: -0.13rem;">
+            <!--<div class="cal dp-flex">-->
+                <!--<input type="text" class=" fs28 " readonly onClick="demoClick()" value="{$year}年" id="nowValue"/>-->
+            <!--</div>-->
+            <!--<div class="btns dp-flex fs26">-->
+                <!--&lt;!&ndash;<a href="#tab1" onclick="getList1(1)"><div class="pay">支出</div></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="#tab2" onclick="getList2(1)"><div class="income">收入</div></a>&ndash;&gt;-->
+            <!--</div>-->
+            <div class="info" id="tab1" style="overflow: auto;">
+                <div id="list1">
+                    <script type="text/html" id="listTpl">
+                        {{each list as item index}}
+                            <div class="list">
+                                <div class="list-le fs24">
+                                    <p>{{item.change_desc}}</p>
+                                    <p>{{item.ddb_money_str}}</p>
+                                </div>
+                                <div class="list-rt">{{item._date}}</div>
+                            </div>
+                        {{/each}}
+                    </script>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+    var page_1 = 0;
+    var page_2 = 0;
+    var loading_1 = false; 
+    var loading_2 = false;
+    var now_tab = 1;
+    $(function () {
+        getList1();
+    })
+    // 日期选择器
+    function demoClick() {
+        var nowValue = document.getElementById('nowValue');
+        var reg = new RegExp("年|月", "g");
+        var nowval = nowValue.value.replace(reg, "-").substring(0, 7);
+        new DatePicker({
+            "type": 3,//0年, 1年月, 2月日, 3年月日
+            "title": '请选择年月',//标题(可选)
+            "maxYear": "2050",//最大年份（可选）
+            "minYear": "1950",//最小年份（可选）
+            "separator": "-",//分割符(可选)
+            "defaultValue": nowval,//默认值（可选）
+            "callBack": function (val) {
+                //回调函数（val为选中的日期）
+                var arr = val.split('-');
+                // val = arr[0] + '年' + arr[1] + '月' + arr[2] + '日'
+                val = arr[0] + '年'
+                if (val != nowValue.value) {
+                    nowValue.value = val; // 给input赋值
+                    getList(); // 重新加载列表
+                }
+            }
+        });
+    }
+
+    $('.page-bd').infinite().on("infinite", function() {
+        console.log(1111)
+        getList1();
+    });
+    function getList1(is_tab = 0){
+        if(loading_1) return;
+        // change_tab(1);
+
+        if (is_tab == 1 && page_1 > 0) return;
+        loading_1 = true;
+
+        var arr = new Object();
+        arr.p = page_1;
+        jq_ajax('{:url("member/api.users/getUpLevelProfit")}',arr,function (res) {
+            $('#list1').append(template('listTpl',res));
+            if (res.list) {
+                page_1++;
+                loading_1 = false;
+            }else{
+                $.toast('加载完成', "text");
+            }
+        })
+    }
+    function getList() {
+        page_1 = page_2 = 0;
+        loading_1 = loading_2 = false; 
+        $("#list1").empty();
+        $("#list2").empty(); 
+
+        if (now_tab == 1) {
+            getList1();
+        }else{
+            getList2();
+        }
+    }
+</script>
+</body>
+</html>
+{/block}
