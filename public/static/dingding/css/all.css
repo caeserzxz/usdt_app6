@@ -1064,13 +1064,13 @@ img {
 
 .moneyInfo .sure-btn {
   width: 2.666667rem;
-  height: 0.6rem;
-  line-height: 0.6rem;
+  height: 1rem;
+  line-height: 1rem;
   color: #fff;
   font-size: 0.186667rem;
   text-align: center;
   margin-bottom: 0.133333rem;
-  background: url("../images/sureBtn.jpg") no-repeat;
+  background: url("../images/sureBtn2.png") no-repeat;
   background-size: 100% 100%;
 }
 
