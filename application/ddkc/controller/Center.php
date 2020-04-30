@@ -14,6 +14,7 @@ use app\member\model\AccountLogModel;
 use app\ddkc\model\AuthenticationModel;
 use app\mainadmin\model\MessageModel;
 use app\ddkc\model\SlideModel;
+use app\ddkc\model\MiningOrderModel;
 
 class Center  extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -22,6 +23,7 @@ class Center  extends ClientbaseController{
 	public function index(){
         $userId = $this->userInfo['user_id'];
         $accountLogModel = new AccountLogModel();
+        $MiningOrderModel = new MiningOrderModel();
 
         $this->assign('title', '会员中心');
         $this->assign('isUserIndex', 1);
@@ -33,7 +35,13 @@ class Center  extends ClientbaseController{
         $profit['miner'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 105])->sum('ddb_money');
         # 增值包收益
         $profit['increment'] = $accountLogModel->where(['user_id' => $userId,'change_type' => 106])->sum('ddb_money');
-
+        # 当前可售DDB 所有订单的总收益（本金+收益)
+        $allOrder = $MiningOrderModel->where(['user_id' => $userId])->select();
+        $profit['allOrderProfit'] = 0;
+        foreach ($allOrder as $key => $value) {
+            $orderProfit = $value['pay_money'] + ($value['pay_money']*$value['rebate_rate']*$value['scrap_days']/100);
+            $profit['allOrderProfit'] += $orderProfit;
+        }
         $where[] = ['user_id','=',$userId];
         $where[] = ['change_type','IN',[102,103]];
         $profit['award'] = $accountLogModel->where($where)->sum('ddb_money');
