@@ -73,8 +73,16 @@
             if ($(".weui-input").val() == "") {
                 $(".popup").hide()
             } else {
-                getTradingStageList();
-                // $('.popup').show()
+                let inputVal = $(".weui-input").val()
+                if (inputVal < min_number) {
+                    $(".popup").show()
+                    $(".sd-cont-net1").hide()
+                    $(".sd-cont-net2").show()
+                    return;
+                }else{
+                    getTradingStageList();
+                }
+
             }
 
         })
@@ -84,19 +92,15 @@
             // $(".sd-cont-net1").hide()
             // $(".sd-cont-net2").hide()
         }
-        $(".weui-input").on("change", function () {
-            let inputVal = $(".weui-input").val()
-            if (inputVal < min_number) {
-                $(".popup").show()
-                $(".sd-cont-net1").hide()
-                $(".sd-cont-net2").show()
-                return;
-            } else {
-                $(".popup").show()
-                $(".sd-cont-net2").hide()
-                $(".sd-cont-net1").show()
-            }
-        })
+        // $(".weui-input").on("change", function () {
+        //     let inputVal = $(".weui-input").val()
+        //     if (inputVal < min_number) {
+        //         $(".popup").show()
+        //         $(".sd-cont-net1").hide()
+        //         $(".sd-cont-net2").show()
+        //         return;
+        //     }
+        // })
         // $(function(){
         //     getTradingStageList();
         // })
@@ -115,7 +119,9 @@
                 $('#TradingStageList').append(template('listTpl',res));
                 if (res.list.length > 0) {
 
-                    $('.popup').show()
+                    $(".popup").show()
+                    $(".sd-cont-net2").hide()
+                    $(".sd-cont-net1").show()
                     // page_2++;
                     // loading_2 = false;
                 }else{

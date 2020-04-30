@@ -86,8 +86,9 @@
                 <div class="alipay-con dp-flex">
                     <form action="" id="form">
                     <input type="text " class="weui-input input-t" placeholder="请输入支付宝账号" name="alipay_number" value="{$alipay_info.alipay_number}">
+                    <div></div>
                     <input type="text" class="weui-input input-t" placeholder="请输入姓名" name="alipay_user_name" value="{$alipay_info.alipay_user_name}">
-                        <input type="hidden" class="weui-input input-t" name="id" value="{$alipay_info.id}">
+                    <input type="hidden" class="weui-input input-t" name="id" value="{$alipay_info.id}">
                     <div class="weui-uploader__bd">
                         <div class="weui-uploader__input-box">
                             {if condition="$appType eq 'IOS'"}
@@ -112,7 +113,7 @@
 
                         </div>
                     </div>
-                    <div class="images-list"><!--上传图片列表--></div>
+                        <div class="images-list"><!--上传图片列表--></div>
                        {if condition="$alipay_info['is_submit'] eq 1"}
                             <div class="sure-btn" onclick="alipay_btn();">确认</div>
                        {else /}
