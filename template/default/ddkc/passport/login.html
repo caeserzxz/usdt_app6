@@ -90,10 +90,14 @@
       };
     };
     //设置cookie
-    function setCookie(name,value,day){
-      var date = new Date();
-      date.setDate(date.getDate() + day);
-      document.cookie = name + '=' + value + ';expires='+ date;
+    function setCookie(name,value,day,path = ''){
+        var date = new Date();
+        date.setDate(date.getDate() + day);
+        if (path) {
+            document.cookie = name + '=' + value + ';expires='+ date+';path='+ path;
+        }else{
+            document.cookie = name + '=' + value + ';expires='+ date;
+        }
     };
     //获取cookie
     function getCookie(name){
@@ -157,7 +161,7 @@
               setCookie('mobile',arr.mobile,30); //保存帐号到cookie，有效期3天
               setCookie('password',arr.password,30); //保存密码到cookie，有效期3天
             }
-
+            setCookie('is_index_notice','',1,'/ddkc/trade');
             if (res.url == '' || res.url == null){
                 window.location.href = '{:url("index/index")}';
             }else{
