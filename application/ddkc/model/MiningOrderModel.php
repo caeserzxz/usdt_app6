@@ -376,13 +376,12 @@ class MiningOrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function miningPrincipalReturn(){
         $time = time();
-        $orderModel = new MiningOrderModel();
         $accountModel = new AccountLogModel();
         $usersModel = new UsersModel();
 
         # 取出所有等待返还的订单
         $where[] = ['status','=',2];
-        $allOrder = $orderModel->where($where)->select();
+        $allOrder = $this->where($where)->select();
         if (!count($allOrder)) exit('暂无有效数据');
         
         Db::startTrans();
@@ -410,10 +409,16 @@ class MiningOrderModel extends BaseModel
             # 更新订单表
             $orderUp['status'] = 3;
             $orderUp['update_time'] = $time;
-            $res2 = $orderModel->where('order_id',$value['order_id'])->update($orderUp);
+            $res2 = $this->where('order_id',$value['order_id'])->update($orderUp);
             if (!$res2) {
                 Db::rollback();
                 exit('订单更新失败');
+            }
+            # 直推奖&团队奖
+            $res3 = $this->extensionProfit($value['order_id']);
+            if ($res3['code'] != 1) {
+                Db::rollback();
+                exit($res3['msg']);
             }
         }
         Db::commit();

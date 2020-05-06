@@ -6,6 +6,7 @@
     <th width="150">用户</th>
     <th width="150">手机号</th>
     <th width="150">状态</th>
+    <th width="150">户名</th>
     <th width="150">账号</th>    
     <th width="150">添加时间</th>
     <th width="150">审核时间</th>
@@ -29,6 +30,7 @@
             审核失败
         {/if}
     </td>
+    <td>{$vo.bank_user_name}{$vo.alipay_user_name}</td>
     <td>{$vo.account}</td>
     <td>{$vo.add_date}</td>
     <td>{$vo.audit_time|dateTpl}</td>

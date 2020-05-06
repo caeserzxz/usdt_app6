@@ -179,7 +179,7 @@ class Miner extends ApiController
  		# 是否超过日限购
  		if ($mining['day_limit_buy']) {
 	 		$orderCount = $orderModel->where($where_o)->count('order_id');
-	 		if ($orderCount >= $mining['limit_buy']) {
+	 		if ($orderCount >= $mining['day_limit_buy']) {
 				return $this->ajaxReturn(['code' => 0,'msg' => '该产品当日限购'.$mining['day_limit_buy']]);
 	 		}
  		}
@@ -188,7 +188,7 @@ class Miner extends ApiController
  		if ($mining['stock']) {
  			unset($where_o[2]);
 	 		$orderCount = $orderModel->where($where_o)->count('order_id');
-	 		if ($orderCount >= $mining['limit_buy']) {
+	 		if ($orderCount >= $mining['stock']) {
 				return $this->ajaxReturn(['code' => 0,'msg' => '该产品当日库存已售完']);
 	 		}
  		}
@@ -234,12 +234,6 @@ class Miner extends ApiController
         if ($res2 !== true) {
             Db::rollback();
 			return $this->ajaxReturn(['code' => 0,'msg' => '金额扣除失败.']);
-        }
-        # 直推奖&团队奖
-        $res3 = $orderModel->extensionProfit($res1['order_id']);
-        if ($res3['code'] != 1) {
-        	Db::rollback();
-			return $this->ajaxReturn(['code' => 0,'msg' => $res3['msg']]);
         }
 		Db::commit();
 		# ===================================== 数据处理END =============================

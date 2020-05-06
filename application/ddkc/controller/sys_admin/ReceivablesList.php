@@ -54,7 +54,6 @@ class ReceivablesList extends AdminController
 //            $dtime = explode('-', $reportrange);
 //            $where[] = ' add_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
 //        }
-
         if ($this->search['type']) {
             $where[] =  ' type ='.($this->search['type']);
         }
@@ -62,7 +61,11 @@ class ReceivablesList extends AdminController
             $where[] =  ' status ='.($this->search['status']-1);
         }
         if ($this->search['keyword']) {
-            $where[] = " user_id = '" . ($this->search['keyword'])."' ";
+            if ($this->search['key_type'] == 1) {
+                $where[] = " user_id = '" . ($this->search['keyword'])."' ";
+            }elseif ($this->search['key_type'] == 2) {
+                $where[] = " bank_user_name LIKE '%" . $this->search['keyword']."%' OR alipay_user_name LIKE '%" . $this->search['keyword']."%'";
+            }
         }
         $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
         $data = $this->getPageList($this->Model,$viewObj);
