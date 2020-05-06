@@ -152,7 +152,7 @@
             </div>
             <!-- 首页进入显示 -->
             {if condition="$settings.is_index_notice eq 1"}
-            <div class="popup popup02" style="display: none;">
+            <div class="popup popup02" style="display: none;" onclick="closePop2() ">
                 <div class="popup-bgc"></div>
                 <div class="model-con">
                     <div class="model-ctp"><img src="__STATIC__/dingding//images/pop02.png" alt=""></div>
@@ -165,13 +165,13 @@
                         </div>
                         <img class="tip-img" src="__STATIC__/dingding//images/pop01.png" alt="">
                     </div>
-                    <div class="model-cbt"><img onclick="closePop2() " src="__STATIC__/dingding//images/close01.png" alt=""></div>
+                    <!-- <div class="model-cbt"><img onclick="closePop2() " src="__STATIC__/dingding//images/close01.png" alt=""></div> -->
                 </div>
 
             </div>
             {/if}
             <!-- 开奖 -->
-            <div class="popup popup03" style="display: none;">
+            <div class="popup popup03 close1" style="display: none;">
                 <div class="popup-bgc"></div>
                 <!-- 成功 -->
                 <div class="popup-content cons con3" style="top:0;left:0;right:0;display: none;">
@@ -180,7 +180,7 @@
                     <div class="bott">
                         <p class="fs20" style="text-align: center;">恭喜您<br />成功了！</p>
                         <div class="goto_btn">前往叮叮记录</div>
-                        <img class="closeImg close1" src="__STATIC__/dingding/images/close01.png" alt="">
+                        <!-- <img class="closeImg close1" src="__STATIC__/dingding/images/close01.png" alt=""> -->
                     </div>
                 </div>
                 <!-- 失败 -->
@@ -190,7 +190,7 @@
                     <div class="bott">
                         <p class="fs20" style="text-align: center;">抱歉<br />失败了！</p>
                         <div class="goto_btn">前往叮叮记录</div>
-                        <img class="closeImg close1" src="__STATIC__/dingding/images/close01.png" alt="">
+                        <!-- <img class="closeImg close1" src="__STATIC__/dingding/images/close01.png" alt=""> -->
                     </div>
                 </div>
                 <!-- 等待 -->
@@ -198,7 +198,7 @@
                     <img class="statusImg" src="__STATIC__/dingding/images/wait01.gif" alt="">
                     <div class="bott">
                         <p class="fs20" style="text-align: center;">等待中！</p>
-                        <img class="closeImg close2" src="__STATIC__/dingding/images/close01.png" alt="">
+                        <!-- <img class="closeImg close2" src="__STATIC__/dingding/images/close01.png" alt=""> -->
                     </div>
                 </div>
             </div>
@@ -354,13 +354,11 @@
        }
         function lottery_results() {
             jq_ajax('{:url("ddkc/api.trade/lottery_results2")}','',function (data) {
-                // console.log(data);
                if(data.lottery_status>0){
                    $('.popup03').css('display','block');
                     if(data.lottery_status==1){
                         $('.con5').css('display','block');
                         //轮询查询开奖结果
-                        console.log(data);
                         start(data.buy_info.id);
                         // timerId = setTimeout('start('+data.buy_info.id+')', data.time_difference)
                     }else if(data.lottery_status==2){
