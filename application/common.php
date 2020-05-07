@@ -897,6 +897,15 @@ function superiorUpgrade($user_id)
 	    $data['change_type']  = 107;
         $accountModel->change($data, $user['user_id'], false); 
 	}
+	# 叮叮奖励
+    if($roleInfo['dingding_points']){
+        $data_dingding['balance_money'] = $roleInfo['dingding_points'];
+        $data_dingding['by_id']        = $roleInfo['role_id'];
+        $data_dingding['change_desc']  = '升级奖励叮叮';
+        $data_dingding['change_type']  = 107;
+        $accountModel->change($data_dingding, $user['user_id'], false);
+    }
+
 	# 再上一级升级
 	superiorUpgrade($pid);
 }
