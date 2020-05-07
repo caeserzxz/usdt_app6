@@ -231,7 +231,7 @@ class MiningOrderModel extends BaseModel
         $accountModel = new AccountLogModel();
 
         $order = $this->where('order_id',$order_id)->find();
-        if (!$order || $order['status'] != 1) return ['code' => 0,'msg' => '订单错误'];
+        if (!$order || $order['status'] != 3) return ['code' => 0,'msg' => '订单错误'];
 
         $userModel = new UsersModel();
         $user = $userModel->info($order['user_id'],'',false);
@@ -275,7 +275,7 @@ class MiningOrderModel extends BaseModel
         $accountModel = new AccountLogModel();
 
         $order = $this->where('order_id',$order_id)->find();
-        if (!$order || $order['status'] != 1) return ['code' => 0,'msg' => '订单错误'];
+        if (!$order || $order['status'] != 3) return ['code' => 0,'msg' => '订单错误'];
 
         # 所有获佣上级
         $winningUsers = $this->getTeamWinningUsers($order['user_id']);
@@ -422,6 +422,6 @@ class MiningOrderModel extends BaseModel
             }
         }
         Db::commit();
-        echo "执行成功";
+        echo "<br/>执行成功<br/>";
     }
 }
