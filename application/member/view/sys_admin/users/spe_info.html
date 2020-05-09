@@ -72,6 +72,7 @@
                                       <th width="100">用户</th>
                                       <th width="100">手机号</th>
                                       <th width="100">状态</th>
+                                      <th width="100">户名</th>
                                       <th width="100">账号</th>
                                       <th width="100">添加时间</th>
                                       <th width="100">审核时间</th>
@@ -99,6 +100,15 @@
                                           审核通过
                                           {elseif condition="$vo.status eq 2" /}
                                           审核失败
+                                          {/if}
+                                      </td>
+                                      <td>
+                                          {if condition="$vo.type eq 1"}
+                                              {$vo.bank_user_name}
+                                          {elseif condition="$vo.type eq 2" /}
+                                              {$vo.alipay_user_name}
+                                          {elseif condition="$vo.type eq 3" /}
+
                                           {/if}
                                       </td>
                                       <td>

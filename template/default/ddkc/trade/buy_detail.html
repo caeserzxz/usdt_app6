@@ -91,7 +91,7 @@
                                 {else /}
                                     {if condition="$sell_info.sell_status lt 2"}
                                         <img id="img"  src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
-                                        <input id="uploaderInput" onchange="changepic(this)" name="pay_img" class="weui-uploader__input"
+                                        <input id="uploaderInput" onchange="changepic(this)" onclick="loadimg('pay_img');" name="pay_img" class="weui-uploader__input"
                                                type="file" accept="image/*" multiple="">
                                     {else /}
                                         <img id="img"  src="{$sell_info.pay_img}" class="info-img imgBig" alt="">

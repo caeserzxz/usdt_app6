@@ -17,6 +17,7 @@
     <th width="200">结束时间</th>
     <th width="60">指定买家id</th>
     <th width="60">禁止买家id</th>
+    <th width="100">打款凭证</th>
     <th width="150">操作</th>
 </tr>
 </thead>
@@ -40,6 +41,13 @@
     <td>{$vo.sell_end_time|dateTpl}</td>
     <td>{$vo.reserve_user_id}</td>
     <td>{$vo.ban_user_id}</td>
+    <td>
+        {if condition="$vo.pay_img eq ''"}
+            <a href="javscript:;" onclick="not_found();">查看</a>
+        {else /}
+            <a href="{$vo.pay_img}" target="_blank">查看</a>
+        {/if}
+    </td>
     <td>  
         <a href="{:url('info',array('id'=>$vo['id']))}" class="m-xs" title="查看">
             <i class="fa fa-edit text-muted"></i>
@@ -59,4 +67,9 @@
 <table width="100%" >
  	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
 </table>
-{/empty}  
+{/empty}
+<script>
+    function not_found(){
+        layer.msg('打款凭证不存在');
+    }
+</script>

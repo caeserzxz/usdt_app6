@@ -282,6 +282,9 @@ class Center extends ApiController
 
         if (strlen($post['id_card']) != 18) return $this->ajaxReturn(['code' => 0,'msg' => '身份证号必须为18位']);
 
+        $is_card =  $AuthenticationModel->where(['id_card' => $post['id_card']])->count();
+        if($is_card>0) return $this->ajaxReturn(['code' => 0,'msg' => '该身份信息已被使用']);
+
         $res = id_cart_check($post['id_card'],$post['user_name']);
         if(empty($res)==false){
             if($res['error_code']==0){

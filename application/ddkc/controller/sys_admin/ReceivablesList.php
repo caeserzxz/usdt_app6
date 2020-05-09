@@ -185,6 +185,10 @@ class ReceivablesList extends AdminController
                     return $this->error('更新收款信息失败');
                 }
             }
+
+            #更新会员等级
+            # 升级
+            roleUpgrade($binding_user_id);
             Db::commit();
             return $this->success('操作成功.',url('index'));
 
