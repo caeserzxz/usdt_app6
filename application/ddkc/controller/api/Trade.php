@@ -279,12 +279,12 @@ class Trade extends ApiController
         #今日售出数量
         $today_sell_num = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->count();
         $today_sell_total = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->sum('sell_number');
-        if($service_charge<$stage_info['trade_min_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最低售出数量为'.$stage_info['trade_min_num'],'url' => '']);
-        if($service_charge>$stage_info['trade_max_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最高售出数量为'.$stage_info['trade_max_num'],'url' => '']);
-        if($service_charge<$settints['min_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每次最低挂售'.$settints['min_number'],'url' => '']);
-        if($service_charge>$settints['max_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每次最高挂售'.$settints['max_number'],'url' => '']);
+        if($dingding<$stage_info['trade_min_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最低售出数量为'.$stage_info['trade_min_num'],'url' => '']);
+        if($dingding>$stage_info['trade_max_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最高售出数量为'.$stage_info['trade_max_num'],'url' => '']);
+        if($dingding<$settints['min_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每次最低挂售'.$settints['min_number'],'url' => '']);
+        if($dingding>$settints['max_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每次最高挂售'.$settints['max_number'],'url' => '']);
         if($today_sell_num>=$settints['max_second']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每天最多挂售'.$settints['max_second'].'次','url' => '']);
-        if(($today_sell_total+$service_charge)>$settints['max_total_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每天最多挂售总额为'.$settints['max_total_number'],'url' => '']);
+        if(($today_sell_total+$dingding)>$settints['max_total_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每天最多挂售总额为'.$settints['max_total_number'],'url' => '']);
 
 
         Db::startTrans();
