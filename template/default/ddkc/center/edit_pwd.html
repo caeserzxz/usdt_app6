@@ -127,7 +127,7 @@
     })
     function codeButton(){
         var arr = new Object();
-        arr.type = 'edit_pwd';          
+        arr.type = 'forget_password';
         jq_ajax('{:url("publics/api.sms/sendCode")}',arr,function (res) {
             if (res.code == 0){
                 _alert(res.msg);
