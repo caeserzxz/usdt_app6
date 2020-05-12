@@ -277,8 +277,8 @@ class Trade extends ApiController
         $daybegin=strtotime(date("Ymd"));
         $dayend=$daybegin+86400;
         #今日售出数量
-        $today_sell_num = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->count();
-        $today_sell_total = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->sum('sell_number');
+        $today_sell_num = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->where('sell_user_id',$this->userInfo['user_id'])->count();
+        $today_sell_total = $SellTradeMoel->where('sell_start_time','between',[$daybegin,$dayend])->where('sell_user_id',$this->userInfo['user_id'])->sum('sell_number');
         if($dingding<$stage_info['trade_min_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最低售出数量为'.$stage_info['trade_min_num'],'url' => '']);
         if($dingding>$stage_info['trade_max_num']) return $this->ajaxReturn(['code' => 0,'msg' => '该场次扣除手续费后最高售出数量为'.$stage_info['trade_max_num'],'url' => '']);
         if($dingding<$settints['min_number']) return $this->ajaxReturn(['code' => 0,'msg' => '叮叮扣除手续费后每次最低挂售'.$settints['min_number'],'url' => '']);
@@ -352,7 +352,6 @@ class Trade extends ApiController
         $setting = settings();
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         foreach ($data['list'] as $k=>$v){
-
             $stage_info = $TradingStageModel->where('id',$v['buy_stage_id'])->find();
             $start_time =strtotime(date('Y-m-d '.$stage_info['trade_start_time']));
             $end_time =strtotime(date('Y-m-d '.$stage_info['trade_end_time']));
@@ -770,4 +769,39 @@ class Trade extends ApiController
         return $this->ajaxReturn($info);
     }
 
+    /*------------------------------------------------------ */
+    //-- 取消申诉
+    /*------------------------------------------------------ */
+    public function cancel_appeal(){
+        $SellTradeModel = new SellTradeModel();
+        $BuyTradeModel = new BuyTradeModel();
+        $accountModel = new AccountLogModel();
+
+        $id = input('id');
+        $time = time();
+        $sell_info = $SellTradeModel->where('id',$id)->find();
+        $buy_info = $BuyTradeModel->where('id',$sell_info['buy_id'])->find();
+        Db::startTrans();
+        $sell_save['sell_status'] = 4;
+        $sell_save['sell_end_time'] =$time;
+        $res = $SellTradeModel->where('id',$id)->update($sell_save);
+        #更新叮叮到买家账户
+        if($res){
+            #更新买家叮叮
+            $charge['balance_money']   = $sell_info['sell_number'];
+            $charge['change_desc'] = '交易成功';
+            $charge['change_type'] = 13;
+            $res1 =$accountModel->change($charge, $buy_info['buy_user_id'], false);
+            if(!$res1){
+                Db::rollback();
+                return $this->ajaxReturn(['code' => 0,'msg' => '更新DDB失败','url' => '']);
+            }
+        }else{
+            Db::rollback();
+            return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);
+        }
+
+        Db::commit();
+        return $this->ajaxReturn(['code' => 1,'msg' => '操作成功','url' => url('trade/dd_wallet')]);
+    }
 }

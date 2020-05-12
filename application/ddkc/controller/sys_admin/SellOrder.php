@@ -25,17 +25,22 @@ class SellOrder extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
+        $TradingStageModel = new TradingStageModel();
+        $trading = $TradingStageModel->select();
+        $this->assign('trading',$trading);
         $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getList(true);
         //首页跳转时间
         $start_date = input('start_time', '0', 'trim');
         $end_date = input('end_time', '0', 'trim');
+
         if( $start_date || $end_date){
 
             $this->assign("start_date",str_replace('_', '/', $start_date));
             $this->assign("end_date",str_replace('_', '/', $end_date));
         }
+
         return $this->fetch('index');
     }
     /*------------------------------------------------------ */
@@ -43,9 +48,11 @@ class SellOrder extends AdminController
     //-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
     public function getList($runData = false) {
+        $TradingStageModel = new TradingStageModel();
         $BuyTradeModel = new BuyTradeModel();
         $this->search['keyword'] = input("keyword");
         $this->search['sell_status'] = input("sell_status");
+        $this->search['stage'] = input("stage");
         $this->search['time_type'] = input("time_type");
         $this->assign("search", $this->search);
 
@@ -84,6 +91,9 @@ class SellOrder extends AdminController
         if ($this->search['sell_status']) {
             $where[] = ' sell_status ='.($this->search['sell_status']-1);
         }
+        if ($this->search['stage']) {
+            $where[] = ' sell_stage_id ='.$this->search['stage'];
+        }
         if ($this->search['keyword']) {
             $where[] = " id = '" . ($this->search['keyword']) . "' or sell_order_sn = '" . $this->search['keyword']."' ";
         }
@@ -101,6 +111,7 @@ class SellOrder extends AdminController
         }
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败','已销毁'];
         $order_type = ['其他','矿机','定存包'];
+
 
         $this->assign("status", $status);
         $this->assign("order_type", $order_type);
@@ -173,11 +184,12 @@ class SellOrder extends AdminController
                     Db::rollback();
                     return $this->ajaxReturn(['code' => 0,'msg' => '添加封号记录失败','url' => '']);
                 }
-                #更新卖家叮叮
-                $charge['balance_money']   = $sell_info['sell_number'];
+                #更新卖家ddb
+                $charge['ddb_money']   = $sell_info['old_ddb_money'];
                 $charge['change_desc'] = '申诉成功';
                 $charge['change_type'] = 13;
                 $res1 =$accountModel->change($charge, $sell_info['sell_user_id'], false);
+
             }else{
                 Db::rollback();
                 return $this->ajaxReturn(['code' => 0,'msg' => '更新订单失败','url' => '']);

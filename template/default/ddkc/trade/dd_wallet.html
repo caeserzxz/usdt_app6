@@ -60,24 +60,45 @@
             <!-- 页面内容-->
             <div class="weui-tab">
                 <div class="weui-navbar">
-                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1" onclick="getSellList1()">
-                        待出售
-                    </a>
-                    <a class="weui-navbar__item" href="#tab2" onclick="getSellList2()">
-                        出售中
-                    </a>
-                    <a class="weui-navbar__item" href="#tab3" onclick="getSellList3()">
-                        交易记录
-                    </a>
-                    <a class="weui-navbar__item" href="#tab4" onclick="getBuyList();">
-                        预约/抢购
-                    </a>
+                    {if condition="$tab eq 'tab4'"}
+                        <a class="weui-navbar__item " href="#tab1" onclick="getSellList1()">
+                            待出售
+                        </a>
+                        <a class="weui-navbar__item" href="#tab2" onclick="getSellList2()">
+                            出售中
+                        </a>
+                        <a class="weui-navbar__item" href="#tab3" onclick="getSellList3()">
+                            交易记录
+                        </a>
+                        <a class="weui-navbar__item weui-bar__item--on" href="#tab4" onclick="getBuyList();">
+                            预约/抢购
+                        </a>
+                    {else /}
+                        <a class="weui-navbar__item weui-bar__item--on" href="#tab1" onclick="getSellList1()">
+                            待出售
+                        </a>
+                        <a class="weui-navbar__item" href="#tab2" onclick="getSellList2()">
+                            出售中
+                        </a>
+                        <a class="weui-navbar__item" href="#tab3" onclick="getSellList3()">
+                            交易记录
+                        </a>
+                        <a class="weui-navbar__item" href="#tab4" onclick="getBuyList();">
+                            预约/抢购
+                        </a>
+                    {/if}
+
 <!--                    <a class="weui-navbar__item" href="#tab5">-->
 <!--                        申诉-->
 <!--                    </a>-->
                 </div>
                 <div class="weui-tab__bd">
-                    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                    {if condition="$tab eq 'tab4'"}
+                        <div id="tab1" class="weui-tab__bd-item ">
+                    {else /}
+                        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                    {/if}
+
 <!--                        <div>-->
                         <script type="text/html" id="listTpl1">
                             {{each list as item index}}
@@ -122,6 +143,9 @@
                                                 <p id="timer{{item.id}}" class="times dp-flex" style="justify-content: flex-start;">付款时间剩余：<span
                                                     class="timer{{item.id}}">{{item.payment_time_gmdate}}</span></p>
                                             {{/if}}
+                                        {{if item.sell_status == 3}}
+                                        <span style="color: red;">此订单已申述</span>
+                                        {{/if}}
                                             {{if item.is_confirm == 1}}
                                                 <p id="timer{{item.id}}" class="times dp-flex" style="justify-content: flex-start;">确认时间剩余：<span
                                                 class="timer{{item.id}}">{{item.confirm_time_gmdate}}</span></p>
@@ -173,7 +197,12 @@
                             {{/each}}
                         </script>
                     </div>
-                    <div id="tab4" class="weui-tab__bd-item" >
+                    {if condition="$tab eq 'tab4'"}
+                        <div id="tab4" class="weui-tab__bd-item weui-tab__bd-item--active" >
+                    {else /}
+                        <div id="tab4" class="weui-tab__bd-item" >
+                    {/if}
+
 <!--                        <div >-->
                         <script type="text/html" id="listTpl4">
                             <div class="weui-cells">
@@ -195,7 +224,7 @@
                                                 <p>{{item.stage_name}} </p>
                                                 {literal}
                                                 {{if item.buy_status == 2}}
-                                                    {{if item.status_str == '待付款'}}
+                                                    {{if item.status_str == '待付款' || item.status_str == '申诉中'}}
                                                         <p style="color: red;">{{item.status_str}}</p>
                                                     {{else}}
                                                         <p>{{item.status_str}}</p>
@@ -345,9 +374,13 @@
     var loading_2 = false;
     var loading_3 = false;
     var loading_4 = false;
-
+    var tab = {$tab};
     $(function() {
-        getSellList1();
+        if(tab=='tab1'){
+            getSellList1();
+        }else{
+            getBuyList();
+        }
     });
     $('#tab1').infinite().on("infinite", function() {
         getSellList1();

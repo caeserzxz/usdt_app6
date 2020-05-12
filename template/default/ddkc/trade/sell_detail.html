@@ -107,6 +107,13 @@
                 </div>
             </div>
             {/if}
+            {if condition="$sell_info.sell_status eq 3"}
+            <div class="top-btn">
+                <div class="alipay-con fs20" style="margin-top: .266667rem">
+                    <a href="javacript:;" class="com active11" style="background-color: red;" onclick="cancel_appeal({$sell_info.id});">取消申诉</a>
+                </div>
+            </div>
+            {/if}
             <!-- 图片放大 -->
             <div class="popup popup1">
                 <div class="popup-bgc"></div>
@@ -241,7 +248,36 @@
                 }
             }, 1000);
         }
+        var isPostMsg = false;
+        function  cancel_appeal(id){
+            $.confirm("是否取消申诉,取消后DDB会转入买家账户", function() {
+                //点击确认后的回调函数
+                if(isPostMsg==true){
+                    return false;
+                }
+                isPostMsg = true;
+                $.ajax({
+                    'url':'{:url("ddkc/api.Trade/cancel_appeal")}',
+                    'type':'post',
+                    'data':{'id':id},
+                    'dataType':'json',
+                    'success':function(data){
+                        isPostMsg = false;
+                        if(data.code==1){
+                            $.toast(data.msg,"text",function(){
+                                window.location.href =data.url;
+                            });
+                        }else{
+                            $.toast(data.msg,"text");
+                        }
+                    }
+                });
+            }, function() {
+                //点击取消后的回调函数
+            });
 
+
+        }
     </script>
 </body>
 

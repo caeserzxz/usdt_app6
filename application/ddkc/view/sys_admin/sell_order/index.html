@@ -25,7 +25,12 @@
                  <span></span> <b class="caret"></b>
                  <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange" />
              </a>
-
+             <select name="stage"  style="width: 130px;" data-toggle="select2" data-placeholder="场次" data-chang="submit">
+                 <option value="">全部场次</option>
+                 {volist name="trading" id="vol"}
+                     <option value="{$vol.id}">{$vol.stage_name}</option>
+                 {/volist}
+             </select>
              <select name="sell_status"  style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
                  <option value="">全部</option>
                  <option value="1">待出售</option>

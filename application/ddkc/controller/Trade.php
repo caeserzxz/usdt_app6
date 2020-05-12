@@ -68,6 +68,8 @@ class Trade  extends ClientbaseController{
 
 //        die;
 //        dump($a);die;
+        $tab = input('tab','tab1');
+        $this->assign('tab',$tab);
         $this->assign('userInfo',$this->userInfo);
         $this->assign('setting',settings());
 
