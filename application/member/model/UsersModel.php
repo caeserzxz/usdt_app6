@@ -55,7 +55,7 @@ class UsersModel extends BaseModel
         }
         if ($userInfo['password'] != $password) {
             //记录异常登陆
-            $this->where('user_id', $userInfo['user_id'])->update(['login_odd_time' => $time, 'login_odd_num' => $userInfo['login_odd_num'] + 1]);
+            // $this->where('user_id', $userInfo['user_id'])->update(['login_odd_time' => $time, 'login_odd_num' => $userInfo['login_odd_num'] + 1]);
             return langMsg('用户密码不正确.','member.login.password_error');
         }
         $upData['login_odd_num'] = 0;//登陆异常清空
