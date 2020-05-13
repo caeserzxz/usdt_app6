@@ -80,24 +80,25 @@
 
 <!--                        </div>-->
                         <form action="" id="form">
-                            <div class="weui-uploader__bd">
-                                <div class="weui-uploader__input-box">
-                                    {if condition="$appType eq 'IOS'"}
-                                        {if condition="$sell_info.sell_status lt 2"}
-                                            <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('pay_img');" class="info-img" alt="">
-                                        {else /}
-                                            <img id="img" src="{$sell_info.pay_img}"   class="info-img imgBig" alt="">
-                                        {/if}
+                        <div class="weui-uploader__bd">
+                            <div class="weui-uploader__input-box">
+                                {if condition="$appType eq 'IOS'"}
+                                    {if condition="$sell_info.sell_status lt 2"}
+                                        <img id="img" src="__STATIC__/dingding/images/up-img.png"  onclick="loadimg('pay_img');" class="info-img" alt="">
                                     {else /}
-                                        {if condition="$sell_info.sell_status lt 2"}
-                                            <img id="img"  src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
-                                            <input id="uploaderInput" onchange="changepic(this)" onclick="loadimg('pay_img');" name="pay_img" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-                                        {else /}
-                                            <img id="img"  src="{$sell_info.pay_img}" class="info-img imgBig" alt="">
-                                        {/if}
+                                        <img id="img" src="{$sell_info.pay_img}"   class="info-img imgBig" alt="">
                                     {/if}
-                                </div>
+                                {else /}
+                                    {if condition="$sell_info.sell_status lt 2"}
+                                        <img id="img"  src="__STATIC__/dingding/images/up-img.png" class="info-img" alt="">
+                                        <input id="uploaderInput" onchange="changepic(this)" onclick="loadimg('pay_img');" name="pay_img" class="weui-uploader__input"
+                                               type="file" accept="image/*" multiple="">
+                                    {else /}
+                                        <img id="img"  src="{$sell_info.pay_img}" class="info-img imgBig" alt="">
+                                    {/if}
+                                {/if}
                             </div>
+                        </div>
                             <input type="hidden" name="id" value="{$sell_info.id}">
                             <div class="images-list"><!--上传图片列表--></div>
                         </form>
@@ -257,7 +258,7 @@
                 if (data) {
                     if (data.img_name == 'pay_img') {
                         $('#img').attr('src',  data.path);
-                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="pay_img" />';
+                        var str = '<input type="hidden" value="' + data.path + '" placeholder="上传图片返回URM" name="pay_img" class="imagesinput"/>';
                         $('.images-list').append(str);
                     }
                 } else {
