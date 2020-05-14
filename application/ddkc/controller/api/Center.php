@@ -95,6 +95,7 @@ class Center extends ApiController
         $PaymentModel = new PaymentModel();
 
         $data = input('post.');
+
         $file = $_FILES['wx_payment_code'];
         $ios_file = input('wx_payment_code');
         if(empty($data['wx_number'])){

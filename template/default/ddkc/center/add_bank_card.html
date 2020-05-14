@@ -307,6 +307,7 @@
             $.toast('请输入正确微信账号',"text");
             return false;
         }
+
         $.ajax({
             url: '{:url("ddkc/api.Center/add_wxpay")}',
             type: 'POST',
