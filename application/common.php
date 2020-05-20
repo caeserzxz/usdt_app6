@@ -893,7 +893,7 @@ function superiorUpgrade($user_id)
 	if ($roleInfo['bonus_points']) {
 		$data['use_integral'] = $roleInfo['bonus_points'];
     	$data['by_id']        = $roleInfo['role_id'];
-    	$data['change_desc']  = '升级奖励';
+    	$data['change_desc']  = '升级奖励积分';
 	    $data['change_type']  = 107;
         $accountModel->change($data, $user['user_id'], false); 
 	}
