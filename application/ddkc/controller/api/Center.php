@@ -12,7 +12,7 @@ use app\distribution\model\DividendRoleModel;
 use app\ddkc\model\PaymentModel;
 use think\facade\Cache;
 use app\ddkc\model\AuthenticationModel;
-
+use app\member\model\AccountLogModel;
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
 /*------------------------------------------------------ */
@@ -313,5 +313,37 @@ class Center extends ApiController
         } else{
             return $this->ajaxReturn(['code' => 0,'msg' => '实名认证失败']);
         }
+    }
+    /*------------------------------------------------------ */
+    //-- 叮叮/DDB兑换积分
+    /*------------------------------------------------------ */
+    public function exchangeIntegral(){
+        $data = input('');
+
+        # 参数验证
+        if (!in_array($data['currency'],['balance_money','ddb_money'])) return $this->error('兑换币种出错');
+        if ($data['exchangeNum'] <= 0) return $this->error('兑换数量出错');
+
+        # 游客不予兑换
+        if (!$this->userInfo['role_id']) return $this->error('您的身份等级不够，可兑换为0积分');
+
+        # 可兑换数量是否足够
+        if ($data['exchangeNum'] + $this->userInfo['account']['use_integral'] > $this->userInfo['role']['capping_integral']) return $this->error('超出可兑换数量');
+        $needNum = $data['exchangeNum'] * settings('integral_exchange_ratio');
+
+        # 叮叮/DDB是否足够
+        $currencyText = 'DDB';
+        if ($data['currency'] == 'balance_money') $currencyText = '叮叮';
+        if ($this->userInfo['account'][$data['currency']] < $needNum) return $this->error('当前'.$currencyText.'不足');
+
+        # 添加积分&减少叮叮/DDB
+        $cData['use_integral'] = $data['exchangeNum'] * 1;
+        $cData[$data['currency']] = $needNum * -1;
+        $cData['change_desc'] = $currencyText.'兑换积分';
+        $cData['change_type'] = $data['currency'] == 'balance_money' ? 109 : 110;
+
+        $res2 = (new AccountLogModel)->change($cData, $this->userInfo['user_id'], false);        
+        if ($res2 !== true) return $this->error('兑换失败');
+        return $this->success('兑换成功');
     }
 }

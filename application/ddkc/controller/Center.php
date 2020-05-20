@@ -297,7 +297,15 @@ class Center  extends ClientbaseController{
     /*------------------------------------------------------ */
     public function integralLog(){
         $integral_article = preg_replace("/img(.*?)src=[\"|\'](.*?)[\"|\']/", 'img class="lazy" width="750" src="/static/mobile/default/images/loading.svg" data-original="$2"', settings('integral_article'));
+        $roleModel = new DividendRoleModel();
+        $roleList = $roleModel->getRows();
+        $this->assign('roleList', $roleList);
+        // 可兑换数量
+        $exchange = $this->userInfo['role']['capping_integral'] - $this->userInfo['account']['use_integral'];
+        $exchange = $exchange > 0 ? $exchange : 0;
+
         $this->assign('integral_article', $integral_article);
+        $this->assign('exchange', $exchange);
         $this->assign('title', '信用积分');
         $this->assign('year', date('Y',time()));
         return $this->fetch();

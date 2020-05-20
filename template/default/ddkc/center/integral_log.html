@@ -2,12 +2,203 @@
 {block name="head" }
 <link rel="stylesheet" href="__STATIC__/dingding/css/picker.css">
 <script src="__STATIC__/dingding/js/datePicker.js"></script>
-
+<style>
+    span {
+        display: inline-block;
+    }
+    .integral-info {
+    }
+    .integral-info .info-title {
+        text-align: center;
+        border-bottom: 0.0267rem solid #abaaa9;
+    }
+    .type {
+        padding: 0.1333rem 0;
+        display: flex;
+        justify-content: space-around;
+        color: #605d5c;
+    }
+    .type span::before {
+        content: " ";
+        display: inline-block;
+        width: 0.0667rem;
+        height: 0.0667rem;
+        margin-right: 0.0534rem;
+        vertical-align: middle;
+        background-color: #605d5c;
+        transform: rotate(45deg);
+    }
+    .data-info {
+        margin-bottom: 0.48rem;
+        padding: 0.24rem 0.3064rem;
+        background-color: #ffffff;
+        border-radius: 0.1333rem;
+    }
+    .convert-num {
+        display: flex;
+    }
+    .convert-num .input-box input {
+        margin-left: 0.0667rem;
+        padding: 0.0534rem 0.1067rem;
+        width: 2.4rem;
+        border: 1px solid #e5f5e5;
+        border-radius: 0.0534rem;
+    }
+    .convert-title__txt {
+        margin-top: 0.2rem;
+        padding-bottom: 0.04rem;
+        text-align: center;
+        color: #e77817;
+        border-bottom: 0.0267rem dashed #eaeae9;
+    }
+    .weui-cells_checkbox {
+        margin-top: 0.1333rem;
+    }
+    .confirm-btn {
+        margin: 0.2rem auto 0;
+        width: 2.8935rem;
+        height: 0.5466rem;
+        text-align: center;
+        line-height: 0.5466rem;
+        color: #ffffff;
+        background: url("__STATIC__/dingding/images/sureBtn.jpg");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+    .convert-detail__txt .title {
+        margin-bottom: 0.1333rem;
+        padding-bottom: 0.0667rem;
+        text-align: center;
+        border-bottom: 0.0134rem solid #333333;
+    }
+    .detail—text {
+        margin-bottom: 0.2666rem;
+    }
+    .detail—text .text-title {
+        text-align: center;
+        margin-bottom: 0.1333rem;
+    }
+    .detail—text > p {
+        line-height: 0.32rem;
+    }
+    .txt-indent > p {
+        text-indent: 2em;
+    }
+    .txt-m2em > p {
+        text-indent: -2em;
+        margin-left: 2em;
+    }
+    /* 弹窗样式 */
+    .modal span {
+        display: inline-block;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+    }
+    .modal .modal-main {
+        position: absolute;
+        top: 25%;
+        left: 0.4rem;
+        right: 0.4rem;
+        padding: 0.2933rem;
+        background-color: #ffffff;
+        border-radius: 0.2rem;
+    }
+    .modal .modal-main .main-content {
+        padding-bottom: 0.1333rem;
+        color: #605d5c;
+        border-bottom: 0.0267rem dashed #e7e7e6;
+    }
+    .modal .modal-main .main-footer {
+        margin-top: 0.2666rem;
+        display: flex;
+        justify-content: space-around;
+    }
+    .main-footer .btn {
+        width: 1.36rem;
+        height: 0.5867rem;
+        text-align: center;
+        line-height: 0.5867rem;
+        color: #ffffff;
+    }
+    .main-footer .confirm-btn {
+        background: url("__STATIC__/dingding/images/ding2.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    } 
+    .main-footer .cancel-btn {
+        background: url("__STATIC__/dingding/images/ding1.png");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        margin-top: 5.5%;
+        margin-right:6%;
+    }
+    .text-index {
+        /*text-indent: 2em;*/
+    }
+    .color_e7 {
+        color: #e77817;
+    }
+    .color_0 {
+        color: #000000;
+    }
+</style>
 {/block}
 {block name="main" }
 <div class="page-bd creditScore">
     <!-- 页面内容-->
     <div class="content">
+        <div class="integral-info">
+            <div class="info-title fs30 fw_b">账号等级基础分</div>
+        </div>
+        <div class="type">
+            {volist name="roleList" id="val"}
+                <span>{$val.role_name}：{$val.capping_integral}</span>
+            {/volist}
+        </div>
+        <div class="data-info">
+            <div class="title fs26 tc mt5">
+                当前账号信用积分：<span class="fs28 fw_b">{$userInfo.account.use_integral}</span>
+            </div>
+            <div class="convert-num mt10">
+                <div class="fs26 mt5">兑换数量</div>
+                    <div class="input-box">
+                    <input class="weui-input" type="number" id="exchangeNum" name="exchangeNum" placeholder="{if $userInfo.role_id>0}您账号等级最高可兑换{$exchange}积分{else/}您的身份等级不够，可兑换为0积分{/if}"/>
+                    <p class="fs24 mt5">需要消耗<span id="needNum">0</span>个叮叮或DDB兑换</p>
+                </div>
+            </div>
+            <div class="convert-title__txt fs30 fw_b">请选择兑换方式</div>
+            <!-- start radio 单选框  -->
+            <div class="weui-cells_checkbox">
+                <label class="weui-cell weui-check__label" for="s11">
+                    <div class="weui-cell__hd">
+                        <input type="radio" class="weui-check" name="currency" value="balance_money" id="s11" checked="checked"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p>当前叮叮数量：{$userInfo.account.balance_money}</p>
+                    </div>
+                </label>
+                <label class="weui-cell weui-check__label" for="s12">
+                    <div class="weui-cell__hd">
+                        <input type="radio" name="currency" value="ddb_money" class="weui-check" id="s12"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p>当前DDB数量：{$userInfo.account.ddb_money}</p>
+                    </div>
+                </label>
+            </div>
+            <!-- end radio 单选框  -->
+            <div class="confirm-btn fs28" onclick="checkData()">确认兑换</div>
+        </div>
         <div class="top">
             <h3>信用积分详情说明</h3>
             <div class="top-con">
@@ -54,6 +245,21 @@
                 </div>
                 <div style='text-align:center;display: none;' id='loading2' onclick='getList2()'>加载更多</div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <div class="modal-main" onclick="stopPropagation()">
+        <div class="main-content fs36">
+            <!-- 根据条件显示对应内容  [ text-index 文本缩进 ]-->
+            <p class="text-index" id="msg"></p>
+        </div>
+        <div class="main-footer btn1">
+            <span class="btn confirm-btn fs30" onclick="hideModal()">确认</span>
+        </div>
+        <div class="main-footer btn2">
+            <span class="btn confirm-btn fs30" style="margin-left:7%" onclick="sub()">确认</span>
+            <span class="btn cancel-btn fs30" onclick="hideModal()">取消</span>
         </div>
     </div>
 </div>
@@ -177,6 +383,68 @@
             getList1();
         }else{
             getList2();
+        }
+    }
+    var needNum = exchangeNum = 0;
+    var arr = new Object();
+
+    $('#exchangeNum').blur(function () {
+        exchangeNum = $("#exchangeNum").val();
+        var exchangeRatio = {:settings('integral_exchange_ratio')};
+        needNum = exchangeRatio * exchangeNum;
+        $("#needNum").text(needNum);     
+    });
+    function checkData() {        
+        arr.currency = $('input[name="currency"]:checked').val();
+        arr.exchangeNum = exchangeNum;
+        var exchange = {$exchange};
+
+        if ({$userInfo['role_id']} == 0) {
+            showMsg('您的身份等级不够，可兑换为0积分');
+            return;
+        }
+        if (exchange <= 0) {
+            showMsg('您的信用分已超过账号等级 基础分,无法兑换。');
+            return;
+        }
+        if (arr.exchangeNum <= 0 || arr.exchangeNum == '') {
+            showMsg('请输入兑换数量');
+            return;
+        }
+        if (arr.exchangeNum > exchange) {
+            showMsg('您账号等级最多可兑换 <span class="color_e7 fw_b">'+exchange+'</span> 分');
+            return;
+        }
+        var currencyText = 'DDB';
+        if (arr.currency == 'balance_money') currencyText = '叮叮';
+
+        showMsg('是否消耗<span class="tc color_e7 fw_b">'+needNum+'</span>'+currencyText+'兑换<span class="color_0 fw_b">'+arr.exchangeNum+'</span>积分? ',2);
+    }
+    function sub() {
+        hideModal();
+        jq_ajax('{:url("ddkc/api.Center/exchangeIntegral")}',arr,function (res) { 
+            showMsg(res.msg);
+            if (res.code != 1)  return;
+            window.location.reload();
+        })
+    }
+    // 隐藏弹窗
+    function hideModal() {
+        $(".modal").hide();
+    }
+    // 阻止冒泡
+    function stopPropagation(ev) {
+        event.stopPropagation(); //阻止事件冒泡即可
+    }
+    function showMsg(msg,btn = 1) {
+        $("#msg").html(msg);
+        $(".modal").show();
+        if (btn == 1) {
+            $(".btn2").hide();
+            $(".btn1").show();
+        }else{
+            $(".btn1").hide();
+            $(".btn2").show();
         }
     }
 </script>
