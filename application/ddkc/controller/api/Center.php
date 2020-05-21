@@ -320,6 +320,11 @@ class Center extends ApiController
     public function exchangeIntegral(){
         $data = input('');
 
+        # 是否在可兑换时间范围
+        $startTime = settings('integral_exchange_start_time');
+        $endTime = settings('integral_exchange_end_time');
+        if (time() < strtotime($startTime) || time() > strtotime($endTime)) return $this->error('兑换时间为'.$startTime.'-'.$endTime);
+
         # 参数验证
         if (!in_array($data['currency'],['balance_money','ddb_money'])) return $this->error('兑换币种出错');
         if ($data['exchangeNum'] <= 0) return $this->error('兑换数量出错');

@@ -331,6 +331,14 @@
                             <input type="text" name="integral_exchange_ratio" class="input-large" value="{$setting.integral_exchange_ratio}"> <span class="help-line">叮叮/DDB</span><br/>该比例用于叮叮/DDB兑换信用积分时生效
                         </div>
                     </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">可兑换时间</label>
+                        <div class="controls">
+                            <input type="text" value="{$setting['integral_exchange_start_time']}" class="input-small" name="integral_exchange_start_time"> -
+                            <input type="text" value="{$setting['integral_exchange_end_time']}" class="input-small" name="integral_exchange_end_time">
+                            <span class="help-line"> （注：请填写规范,最少精确到分钟 如9:30:29 17:00）</span>
+                        </div>
+                    </div>
 <!--                    <div class="form-group">-->
 <!--                        <label class="col-sm-2 control-label">预约抢购扣除</label>-->
 <!--                        <div class="controls">-->
