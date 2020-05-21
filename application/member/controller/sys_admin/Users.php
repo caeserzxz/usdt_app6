@@ -633,4 +633,27 @@ class Users extends AdminController
         $this->assign('payment_list',$payment_list);
         return $this->fetch();
     }
+
+    //中奖状态
+    public function buyBan(){
+        $type = input('type');
+        $user_id = input('user_id');
+
+        if($type==1){
+            $map['open_prize'] = 1;
+        }else if($type==2){
+            $map['open_prize'] = 2;
+        }
+
+        $res = $this->Model->where('user_id',$user_id)->update($map);
+        if ($res < 1) return $this->error();
+        if($type==1){
+            $this->_log($user_id, '后台禁止会员中奖.', 'member');
+            return $this->success('禁封成功.', 'reload');
+        }else{
+            $this->_log($user_id, '后台允许会员中奖.', 'member');
+            return $this->success('解除成功.', 'reload');
+        }
+
+    }
 }

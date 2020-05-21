@@ -369,6 +369,7 @@ class BuyTradeModel extends BaseModel
     }
     /*------------------------------------------------------ */
     //-- 开奖
+    //-- 这个后增的,增加了全局封禁会员开奖
     /*------------------------------------------------------ */
     public function PanicBuying_new2(){
         $accountModel = new AccountLogModel();
@@ -465,45 +466,47 @@ class BuyTradeModel extends BaseModel
                         }
 
                         #查看会员信息里面有禁用该用户开奖没,这里是后来加的,
-//                        $buy_user_info = $UsersModel->where('user_id',$buy_info['buy_user_id'])->find;
-//                        if($buy_user_info['open_prize']==1){
-//                            #禁止该用户开奖
-//                            $up_buy = [];
-//                            $up_buy['buy_status'] = 3;
-//                            $up_buy['panic_end_time'] = $time;
-//                            $this->where('id',$buy_id)->update($up_buy);
-//                            #给未中奖的用户退信用积分
-//                            $charge = [];
-//                            $charge['use_integral']   = $buy_info['deduct_integral'];
-//                            $charge['change_desc'] = '开奖结束,返还信用积分';
-//                            $charge['change_type'] = 11;
-//                            $accountModel->change($charge, $buy_info['buy_user_id'], false);
-//                            #给未中奖的用户发送通知
-//                            $MessageModel->sendMessage($buy_info['buy_user_id'],1,0,'中奖通知','您的预约未中奖',$show_end_date,3);
-//
-//                            #给当前售出信息,重新匹配一个抢购信息
-//                            $new_buy_where = [];
-//                            $new_buy_where[] = ['a.buy_stage_id','eq',$stageInfo['id']];
-//                            $new_buy_where[] = ['a.buy_status','eq',0];
-//                            $new_buy_where[] = ['a.id','in',$ids];
-//                            $new_buy_where[] = ['b.open_prize','eq',0];
-//                            $new_buy_info = [];
-//                            $new_buy_info = $this
-//                                ->alias('a')
-//                                ->join('users b','a.buy_user_id = b.user_id')
-//                                ->where($new_buy_where)
-//                                ->orderRaw('rand()')
-//                                ->field('a.*')
-//                                ->find();
-//                            if(empty($new_buy_info)==false){
-//                                $this->up_order($v['id'],$new_buy_info['id'],$new_buy_info['deduct_integral'],$new_buy_info['buy_user_id'],$accountModel,$SellTradeModel);
-//                                #给中奖的用户发送通知
-//                                $MessageModel->sendMessage($new_buy_info['buy_user_id'],1,0,'中奖通知','您的预约已中奖,请按时交易',$show_end_date,3);
-//                                #删除掉已匹配的用户
-//                                unset($ids[array_search($new_buy_info['id'],$ids)]);
-//                            }
-//                            continue;
-//                        }
+                        $buy_user_info = $UsersModel->where('user_id',$buy_info['buy_user_id'])->find();
+                        if($buy_user_info['open_prize']==1){
+
+                            #禁止该用户开奖
+                            $up_buy = [];
+                            $up_buy['buy_status'] = 3;
+                            $up_buy['panic_end_time'] = $time;
+                            $this->where('id',$buy_id)->update($up_buy);
+                            #给未中奖的用户退信用积分
+                            $charge = [];
+                            $charge['use_integral']   = $buy_info['deduct_integral'];
+                            $charge['change_desc'] = '开奖结束,返还信用积分';
+                            $charge['change_type'] = 11;
+                            $accountModel->change($charge, $buy_info['buy_user_id'], false);
+                            #给未中奖的用户发送通知
+                            $MessageModel->sendMessage($buy_info['buy_user_id'],1,0,'中奖通知','您的预约未中奖',$show_end_date,3);
+
+                            #给当前售出信息,重新匹配一个抢购信息
+                            $new_buy_where = [];
+                            $new_buy_where[] = ['a.buy_stage_id','eq',$stageInfo['id']];
+                            $new_buy_where[] = ['a.buy_status','eq',0];
+                            $new_buy_where[] = ['a.id','in',$ids];
+                            $new_buy_where[] = ['b.open_prize','eq',0];
+                            $new_buy_where[] = ['a.buy_user_id','neq',$v['sell_user_id']];
+                            $new_buy_info = [];
+                            $new_buy_info = $this
+                                ->alias('a')
+                                ->join('users b','a.buy_user_id = b.user_id')
+                                ->where($new_buy_where)
+                                ->orderRaw('rand()')
+                                ->field('a.*')
+                                ->find();
+                            if(empty($new_buy_info)==false){
+                                $this->up_order($v['id'],$new_buy_info['id'],$new_buy_info['deduct_integral'],$new_buy_info['buy_user_id'],$accountModel,$SellTradeModel);
+                                #给中奖的用户发送通知
+                                $MessageModel->sendMessage($new_buy_info['buy_user_id'],1,0,'中奖通知','您的预约已中奖,请按时交易',$show_end_date,3);
+                                #删除掉已匹配的用户
+                                unset($ids[array_search($new_buy_info['id'],$ids)]);
+                            }
+                            continue;
+                        }
 
 
                         if($buy_info['buy_user_id']==$v['sell_user_id']){
@@ -512,6 +515,7 @@ class BuyTradeModel extends BaseModel
                             $buy_where[] = ['buy_stage_id','eq',$stageInfo['id']];
                             $buy_where[] = ['buy_status','eq',0];
                             $buy_where[] = ['id','in',$ids];
+                            $buy_where[] = ['buy_user_id','neq',$v['sell_user_id']];
                             $buy_info = [];
                             $buy_info = $this->where($buy_where)->orderRaw('rand()')->find();
                             if(empty($buy_info)==false){
@@ -537,6 +541,7 @@ class BuyTradeModel extends BaseModel
                     $buy_where[] = ['buy_status','eq',0];
                     $buy_where[] = ['id','in',$ids];
                     $buy_where[] = ['buy_user_id','neq',$v['ban_user_id']];
+                    $buy_where[] = ['buy_user_id','neq',$v['sell_user_id']];
                     $buy_info = [];
                     $buy_info = $this->where($buy_where)->orderRaw('rand()')->find();
                     if(empty($buy_info)==false){
