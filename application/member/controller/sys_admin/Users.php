@@ -642,7 +642,7 @@ class Users extends AdminController
         if($type==1){
             $map['open_prize'] = 1;
         }else if($type==2){
-            $map['open_prize'] = 2;
+            $map['open_prize'] = 0;
         }
 
         $res = $this->Model->where('user_id',$user_id)->update($map);
