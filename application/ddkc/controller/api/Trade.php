@@ -402,11 +402,36 @@ class Trade extends ApiController
         $viewObj = $SellTradeModel->where($where)->order('id desc');
         $data = $this->getPageList($SellTradeModel,$viewObj);
         foreach ($data['list'] as $k=>$v){
-            $data['list'][$k]['sell_start_time_date'] = date('Y-m-d H:i:s',$v['sell_start_time']);
-            $data['list'][$k]['matching_time_date'] = date('Y-m-d H:i:s',$v['matching_time']);
-            $data['list'][$k]['payment_time_date'] = date('Y-m-d H:i:s',$v['payment_time']);
-            $data['list'][$k]['complain_time_date'] = date('Y-m-d H:i:s',$v['complain_time']);
-            $data['list'][$k]['sell_end_time_date'] = date('Y-m-d H:i:s',$v['sell_end_time']);
+            if($v['sell_start_time']){
+                $data['list'][$k]['sell_start_time_date'] = date('Y-m-d H:i:s',$v['sell_start_time']);
+            }else{
+                $data['list'][$k]['sell_start_time_date'] = '';
+            }
+
+            if($v['matching_time']){
+                $data['list'][$k]['matching_time_date'] = date('Y-m-d H:i:s',$v['matching_time']);
+            }else{
+                $data['list'][$k]['matching_time_date'] = '';
+            }
+
+            if($v['payment_time']){
+                $data['list'][$k]['payment_time_date'] = date('Y-m-d H:i:s',$v['payment_time']);
+            }else{
+                $data['list'][$k]['payment_time_date'] = '';
+            }
+
+            if($v['complain_time']){
+                $data['list'][$k]['complain_time_date'] = date('Y-m-d H:i:s',$v['complain_time']);
+            }else{
+                $data['list'][$k]['complain_time_date'] = '';
+            }
+
+            if($v['sell_end_time']){
+                $data['list'][$k]['sell_end_time_date'] = date('Y-m-d H:i:s',$v['sell_end_time']);
+            }else{
+                $data['list'][$k]['sell_end_time_date'] = '';
+            }
+
             if($v['sell_status']>0){
                 $buy_info = $BuyTradeModel->where('id',$v['buy_id'])->find();
                 $buy_user = $userModel->info($buy_info['buy_user_id']);
@@ -453,6 +478,7 @@ class Trade extends ApiController
             }
 
         }
+//        dump($data);die;
         return $this->ajaxReturn($data);
     }
 

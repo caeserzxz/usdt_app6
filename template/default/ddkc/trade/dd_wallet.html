@@ -173,11 +173,14 @@
                                         <p><img src="__STATIC__/dingding/images/index14.png" alt=""></p>
                                     </div>
                                     <div class="weui-cell__bd">
+                                        {literal}
                                         <div class="shop">
                                             <p>交易金额：{{item.sell_number}}</p>
+                                            {{if item.buy_user != false}}
                                             <p>抢购方：{{item.buy_user.mobile}}</p>
+                                            {{/if}}
                                         </div>
-                                        {literal}
+
                                         {{if item.sell_status == 4}}
                                         <p class="times dp-flex" style="justify-content: flex-start;">交易完成时间：<span
                                                 >{{item.sell_end_time_date}}</span></p>
