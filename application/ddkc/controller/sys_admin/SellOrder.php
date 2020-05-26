@@ -56,7 +56,7 @@ class SellOrder extends AdminController
         $this->search['time_type'] = input("time_type");
         $this->assign("search", $this->search);
 
-        $this->order_by = 'id';
+        $this->order_by = 's.id';
         $this->sort_by = 'DESC';
         $time_type = input('time_type', '', 'trim');
 
@@ -68,36 +68,36 @@ class SellOrder extends AdminController
         }
         switch ($time_type) {
             case 'sell_start_time':
-                $where[] = ' sell_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.sell_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             case 'matching_time':
-                $where[] = ' matching_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.matching_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             case 'payment_time':
-                $where[] = ' payment_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.payment_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             case 'complain_time':
-                $where[] = ' complain_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.complain_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             case 'burning_time':
-                $where[] = ' burning_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.burning_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             case 'sell_end_time':
-                $where[] = ' sell_end_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where[] = ' s.sell_end_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
                 break;
             default:
                 break;
         }
         if ($this->search['sell_status']) {
-            $where[] = ' sell_status ='.($this->search['sell_status']-1);
+            $where[] = ' s.sell_status ='.($this->search['sell_status']-1);
         }
         if ($this->search['stage']) {
-            $where[] = ' sell_stage_id ='.$this->search['stage'];
+            $where[] = ' s.sell_stage_id ='.$this->search['stage'];
         }
         if ($this->search['keyword']) {
-            $where[] = " id = '" . ($this->search['keyword']) . "' or sell_order_sn = '" . $this->search['keyword']."' ";
+            $where[] = " s.id = '" . ($this->search['keyword']) . "' or s.sell_order_sn = '" . $this->search['keyword']."'or s.sell_user_id = '" . $this->search['keyword']."'or b.buy_user_id = '" . $this->search['keyword']."' ";
         }
-        $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
+        $viewObj = $this->Model->alias('s')->join("dd_buy_trade b", 's.buy_id=b.id', 'left')->where(join(' AND ', $where))->field('s.*')->order($this->order_by . ' ' . $this->sort_by);
         $data = $this->getPageList($this->Model,$viewObj);
         foreach ($data['list'] as $key => $value) {
             if($value>0){

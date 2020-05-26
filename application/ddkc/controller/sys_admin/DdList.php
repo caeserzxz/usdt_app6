@@ -66,7 +66,7 @@ class DdList extends AdminController
             $count['dingding_num'] =  $this->Model->where('sell_stage_id',$this->search['stage_id'])->sum('sell_number');
         }
         $this->assign('count',$count);
-        $stage_info_sea =
+//        $stage_info_sea =
         $this->order_by = 'id';
         $this->sort_by = 'DESC';
         $time_type = input('time_type', '', 'trim');
@@ -80,8 +80,21 @@ class DdList extends AdminController
         switch ($time_type) {
             case 'sell_start_time':
                 $where[] = ' sell_start_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
+                $where1[] = ['sell_start_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
                 break;
         }
+        #根据区间统计
+        $count = [];
+        if(empty( $this->search['stage_id'])){
+            $count['stage_name'] = "全部";
+            $count['order_num'] =  $this->Model->where($where1)->count();
+            $count['dingding_num'] =  $this->Model->where($where1)->sum('sell_number');
+        }else{
+            $count['stage_name'] = $TradingStageModel->where('id',$this->search['stage_id'])->value('stage_name');
+            $count['order_num'] =  $this->Model->where('sell_stage_id',$this->search['stage_id'])->where($where1)->count();
+            $count['dingding_num'] =  $this->Model->where('sell_stage_id',$this->search['stage_id'])->where($where1)->sum('sell_number');
+        }
+        $this->assign('count',$count);
         if ($this->search['keyword']) {
             $where[] = " id = '" . ($this->search['keyword']) . "' or sell_user_id = '".$this->search['keyword']."' or sell_order_sn = '" . $this->search['keyword']."' ";
         }
