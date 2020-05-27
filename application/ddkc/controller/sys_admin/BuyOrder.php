@@ -8,6 +8,7 @@ use app\ddkc\model\BuyTradeModel;
 use app\ddkc\model\TradingStageModel;
 use app\member\model\AccountLogModel;
 use app\member\model\UsersModel;
+use app\ddkc\model\PaymentModel;
 /**
  * 矿机订单
  */
@@ -97,6 +98,7 @@ class BuyOrder extends AdminController
         }
         $viewObj = $this->Model->where(join(' AND ', $where))->order($this->order_by . ' ' . $this->sort_by);
         $data = $this->getPageList($this->Model,$viewObj);
+        $PaymentModel = new PaymentModel();
         foreach ($data['list'] as $key => $value) {
 //
             $str = '';
@@ -118,6 +120,14 @@ class BuyOrder extends AdminController
             $data['list'][$key]['status_str'] = $str;
             $data['list'][$key]['mobile'] = $UsersModel->where('user_id',$value['buy_user_id'])->value('mobile');
 //            $data['list'][$key]['add_date'] = date('m-d H:i',$value['add_time']);
+            $bank_info = $PaymentModel->where(['user_id'=>$value['buy_user_id'],'type'=>1])->find();
+            if(empty($bank_info)==false){
+                $data['list'][$key]['bank_user_name'] = $bank_info['bank_user_name'];
+            }else{
+                $data['list'][$key]['bank_user_name'] = '/';
+            }
+
+
         }
         $status = ['待出售','待付款','已付款','申诉中','交易成功','交易失败'];
         $order_type = ['其他','矿机','增值包'];

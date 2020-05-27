@@ -65,8 +65,7 @@ class Trade  extends ClientbaseController{
 //        $a = $BuyTradeModel->Unsealing();
 //        $a = $BuyTradeModel->PanicBuying_new();
 //        $a = $BuyTradeModel->PanicBuying_new2();
-
-//        die;
+//        $a = send_sms300(17671853375,'SMS_152541910');
 //        dump($a);die;
         $tab = input('tab','tab1');
         $this->assign('tab',$tab);

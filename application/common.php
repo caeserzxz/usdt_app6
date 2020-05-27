@@ -758,7 +758,7 @@ function upload_img($img_name){
     }
 }
 
-//发送聚合断信
+//发送聚合短信
 function send_sms($mobile,$tplCode){
     $sms_fun = settings('sms_fun');
     $sms = new \sms\Juhe($sms_fun['function_val']);
@@ -766,6 +766,15 @@ function send_sms($mobile,$tplCode){
     $sms->send($mobile,$tplCode,['code'=>$code]);
 }
 
+//发送300短信
+function send_sms300($mobile,$tplCode){
+    $sms_fun = settings('sms_fun');
+    $fun = str_replace('/','\\','/sms/'.$sms_fun['function']);
+    $Class  = new $fun($sms_fun['function_val']);
+
+    $res = $Class->send($mobile,$tplCode);
+    return $res;
+}
 /**
  * 求两个日期之间相差的天数
  * (针对1970年1月1日之后，求之前可以采用泰勒公式)
