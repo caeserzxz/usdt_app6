@@ -212,7 +212,20 @@ class Trade extends ApiController
             'buy_start_time'=>time(),
             'buy_order_sn'=>getOrderSn()
         ];
-        $res = $BuyTradeMoel->create($addData);
+
+        #获取今日起始时间
+        $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $endToday=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+
+        $is_where[] = ['buy_user_id','=',$user['user_id']];
+        $is_where[] = ['buy_stage_id','=',$stage_id];
+        $is_where[] = ['buy_start_time','between',[$beginToday,$endToday]];
+        $is_being =$BuyTradeMoel->where($is_where)->count();
+        if($is_being>0){
+            return $this->ajaxReturn(['code' => 1,'msg' => '预约成功','url' => url('trade/index')]);
+        }else{
+            $res = $BuyTradeMoel->create($addData);
+        }
         if (!$res) {
             Db::rollback();
             return $this->ajaxReturn(['code' => 0,'msg' => '预约失败','url' => '']);
