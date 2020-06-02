@@ -579,19 +579,23 @@ class BuyTradeModel extends BaseModel
                 $up_buy = [];
                 $up_buy['buy_status'] = 3;
                 $up_buy['panic_end_time'] = $time;
-                $this->where('id',$v)->update($up_buy);
-                #给未中奖的用户退信用积分
-                $buy_info = [];
-                $buy_info = $this->where('id',$v)->find();
-                $charge = [];
-                $charge['use_integral']   = $buy_info['deduct_integral'];
-                $charge['change_desc'] = '开奖结束,返还信用积分';
-                $charge['change_type'] = 11;
-                $accountModel->change($charge, $buy_info['buy_user_id'], false);
-                #给未中奖的用户发送通知
-                $up_info = [];
-                $up_info =  $this->where('id',$v)->find();
-                $MessageModel->sendMessage($up_info['buy_user_id'],1,0,'中奖通知','您的预约未中奖',$show_end_date,3);
+                $res = $this->where('id',$v)->update($up_buy);
+
+                if($res){
+                    #给未中奖的用户退信用积分
+                    $buy_info = [];
+                    $buy_info = $this->where('id',$v)->find();
+                    $charge = [];
+                    $charge['use_integral']   = $buy_info['deduct_integral'];
+                    $charge['change_desc'] = '开奖结束,返还信用积分';
+                    $charge['change_type'] = 11;
+                    $accountModel->change($charge, $buy_info['buy_user_id'], false);
+                    #给未中奖的用户发送通知
+                    $up_info = [];
+                    $up_info =  $this->where('id',$v)->find();
+                    $MessageModel->sendMessage($up_info['buy_user_id'],1,0,'中奖通知','您的预约未中奖',$show_end_date,3);
+                }
+
             }
         }
         #更新开奖区间状态
