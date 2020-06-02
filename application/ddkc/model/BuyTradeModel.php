@@ -412,7 +412,9 @@ class BuyTradeModel extends BaseModel
         for ($i=0;$i<=$buyCount-1;$i++){
 //            $id = $redis->lGet('buyHandle',$i);
             $id = $redis->rPop('buyHandle');
-            array_push($ids,$id);
+            if(!in_array($id, $ids)){
+                array_push($ids,$id);
+            }
         }
         $MessageModel = new MessageModel();
         #获取所有有指定用户的售出信息
